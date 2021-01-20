@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="itemfilter" context="global/percussion/itemfilter/" deprecated="no" handler="Java" name="perc_publicAssetFilter" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Filters non-public assets</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.sitemanage.service.impl.PSPublicAssetItemFilterRule</initParam>
+      <initParam name="com.percussion.services.filter.priority">10</initParam>
+      <interface name="com.percussion.services.filter.IPSItemFilterRule"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

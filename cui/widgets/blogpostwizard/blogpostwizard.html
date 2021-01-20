@@ -1,0 +1,45 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<div class="blog-post-wizard" data-bind="visible: isBlogWizardVisible()">
+	<div class="blog-selector" data-bind="visible: multipleBlogs()">
+		<div class="form-title">* Select Blog</div>
+		<div class="wizard-form-error" data-bind="slideVisible: invalidBlogSelected()">Invalid Blog Selection</div>
+		<div class="blog-select">
+			<select class="styled-select" data-bind="options: blogs, optionsText: function(blog) {return multipleSites() ? blog.title + ' (' + blog.site + ')' : blog.title}, value: selectedBlog, optionsCaption: 'Select the blog for this post'">
+			</select>
+		</div>
+	</div>
+	<div class="form-title">* Blog Post Title</div>
+	<div class="wizard-form-error" data-bind="slideVisible: invalidBlogTitle()">Invalid Blog Post Title</div>
+	<div class="blog-title-input">
+		<input id="blog-title-input" data-bind="hasFocus: titleHasFocus, value: blogTitle, valueUpdate: 'afterkeydown'" type="text" name="blogTitle" class="styled-input" placeholder="Enter a title for your blog post"></input>
+	</div>
+	<div class="form-title">* Blog Post File Name (URL)</div>
+	<div class="wizard-form-error" data-bind="slideVisible: invalidBlogFile()">Invalid Blog File Name</div>
+	<div class="wizard-form-error" data-bind="slideVisible: blogFileTooLong()">File Name cannot exceed 255 characters</div>
+	<div class="blog-file-name-input">
+		<input id="blog-file-input" data-bind="hasFocus: fileHasFocus, value: blogFile, valueUpdate: 'afterkeydown'" type="text" name="blogFileName" class="styled-input" placeholder="Enter a file name. Your file name will be used in your URL. Include your file extension (.htm, .html, etc.)"></input>
+	</div>
+</div>

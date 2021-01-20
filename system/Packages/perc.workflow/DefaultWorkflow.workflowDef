@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="TRANSITIONROLES">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONROLEID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>TRANSITIONID</name>
+         <name>WORKFLOWAPPID</name>
+         <name>TRANSITIONROLEID</name>
+      </primarykey>
+      <foreignkey action="c">
+         <fkColumn>
+            <name>TRANSITIONID</name>
+            <externalTable>TRANSITIONS</externalTable>
+            <externalColumn>TRANSITIONID</externalColumn>
+         </fkColumn>
+         <fkColumn>
+            <name>WORKFLOWAPPID</name>
+            <externalTable>TRANSITIONS</externalTable>
+            <externalColumn>WORKFLOWAPPID</externalColumn>
+         </fkColumn>
+      </foreignkey>
+      <indexdefinitions>
+         <index action="c" isUnique="n" name="IX_TROLES_WID_RID">
+            <name>WORKFLOWAPPID</name>
+            <name>TRANSITIONROLEID</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table name="TRANSITIONROLES" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">1</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">1</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">1</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">2</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">2</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">3</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">3</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">3</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">4</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">4</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">4</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">5</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">5</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">6</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">6</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">2</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">6</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">6</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">8</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">8</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">8</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">11</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">11</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">11</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">12</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">12</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">5</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">13</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">13</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">13</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">14</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">14</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">14</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">15</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">15</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">16</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">16</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">17</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">17</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">17</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">18</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">18</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">18</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">19</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">19</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">20</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">1</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">20</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">3</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">20</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONROLEID">4</column>
+      </row>
+   </table>
+</PSXDependencyData>

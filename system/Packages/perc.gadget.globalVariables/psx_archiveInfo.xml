@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveInfo archiveRef="perc.gadget.globalVariables" category="USER" created="1376335479044" editable="true" serverName="dev-jb:9992" userName="Admin">
+   <PSXFormatVersion buildId="15" buildNumber="20130701" displayVersion="3.2.1" interfaceVersion="9" majorVersion="3" microVersion="1" minorVersion="2" optionalId="" versionString="INTERNAL"/>
+   <PSXDbmsInfo>
+      <datasource>RhythmyxData</datasource>
+      <driver>derby</driver>
+      <server>//localhost:1527/CMDB</server>
+      <database/>
+      <origin>CMDB</origin>
+      <userid>CMDB</userid>
+      <password>VU+mDbdsg+aP/aDNBItg+A==</password>
+   </PSXDbmsInfo>
+   <PSXArchiveDetail>
+      <PSXExportDescriptor archiveType="normal">
+         <PSXDescriptor id="5342956311409600272" name="perc.gadget.globalVariables">
+            <Description/>
+            <Publisher name="Percussion Software" url="http://www.percussion.com"/>
+            <CmsVersion max="8.0.0" min="2.9.0"/>
+            <Version>1.1.1</Version>
+            <ImplConfigFile/>
+            <LocalConfigFile/>
+            <PKGDependencies/>
+         </PSXDescriptor>
+         <Packages>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_UserDependency" dependencyType="Shared" displayName="User Dependency" isAssociation="yes" isIncluded="yes" objectType="Custom" objectTypeName="Custom" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes">
+                  <Dependencies>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercGlobalVariablesGadget/images/gadgetIconGlobalVariables.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercGlobalVariablesGadget/images/gadgetIconGlobalVariables.png" dependencyType="User" displayName="gadgetIconGlobalVariables.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercGlobalVariablesGadget/images/gadgetIconGlobalVariablesOver.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercGlobalVariablesGadget/images/gadgetIconGlobalVariablesOver.png" dependencyType="User" displayName="gadgetIconGlobalVariablesOver.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                   
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercGlobalVariablesGadget/images/PercAddVariableButton.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercGlobalVariablesGadget/images/PercAddVariableButton.png" dependencyType="User" displayName="PercAddVariableButton.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercGlobalVariablesGadget/images/PercAddVariableButtonOver.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercGlobalVariablesGadget/images/PercAddVariableButtonOver.png" dependencyType="User" displayName="PercAddVariableButtonOver.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/common/js/PercGlobalVariables.js">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/common/js/PercGlobalVariables.js" dependencyType="User" displayName="PercGlobalVariables.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercGlobalVariablesGadget/PercGlobalVariablesGadget.css">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercGlobalVariablesGadget/PercGlobalVariablesGadget.css" dependencyType="User" displayName="PercGlobalVariablesGadget.css" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercGlobalVariablesGadget/PercGlobalVariablesGadget.js">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercGlobalVariablesGadget/PercGlobalVariablesGadget.js" dependencyType="User" displayName="PercGlobalVariablesGadget.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercGlobalVariablesGadget/PercGlobalVariablesGadget.xml">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercGlobalVariablesGadget/PercGlobalVariablesGadget.xml" dependencyType="User" displayName="PercGlobalVariablesGadget.xml" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>   
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+         </Packages>
+         <ModifiedPackages/>
+         <MissingPackages/>
+      </PSXExportDescriptor>
+      <DbmsInfoMap>
+         <DbmsInfoMapping PkgKey="Custom-sys_UserDependency"/>
+      </DbmsInfoMap>
+   </PSXArchiveDetail>
+</PSXArchiveInfo>

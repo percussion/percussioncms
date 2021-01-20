@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+    <ModulePrefs title="SEO Audit" category="search" description="This gadget provides Search Engine Optimization scores." thumbnail="images/gadgetIconSeoAuditor.png" height="250">
+        <Require feature="perc_core"/>
+        <Require feature="perc_jquery_ui"/>
+        <Require feature="minimessage"/>
+        <Require feature="settitle" />
+        <Require feature="perc_getDashboardColumn" />
+    </ModulePrefs>
+    <UserPref name="status" display_name="Status" required="true" datatype="enum" default_value="Pending">
+        <EnumValue value="@url:/Rhythmyx/services/workflowmanagement/workflows/@ssworkflow@/states/choices"/>
+    </UserPref>
+    <!-- Used ss at the begining of the name to give the order in the dialog, all options are ordered using his name -->
+    <UserPref name="ssworkflow" display_name="Workflow" required="true" datatype="enum" default_value="Default Workflow">
+        <EnumValue value="@url:/Rhythmyx/services/workflowmanagement/workflows/"/>
+    </UserPref>
+    <UserPref name="site" display_name="Site" required="false" datatype="enum" default_value="@all">
+        <EnumValue value="@all" display_value="All Sites"/>
+        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+    </UserPref>
+    <UserPref name="ykeyword" display_name="Keyword" required="false" datatype="string"/>
+    <UserPref name="zeverity" display_name="Severity" required="false" datatype="enum" default_value="MEDIUM">
+        <EnumValue value="SEVERE" display_value="Severe only"/>
+        <EnumValue value="HIGH" display_value="High or above"/>
+        <EnumValue value="MEDIUM" display_value="Medium or above"/>
+        <EnumValue value="MODERATE" display_value="Moderate or above"/>
+        <EnumValue value="ALL" display_value="All"/>
+    </UserPref>
+    <UserPref name="zrows" display_name="Display height" required="false" datatype="enum" default_value="5">
+        <EnumValue value="5" display_value="5 results"/>
+        <EnumValue value="10" display_value="10 results"/>
+        <EnumValue value="15" display_value="15 results"/>
+        <EnumValue value="20" display_value="20 results"/>
+        <EnumValue value="25" display_value="25 results"/>
+    </UserPref>
+    <Content type="html">
+        <![CDATA[
+    <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
+    <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercDataTable/PercDataTable.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercSimpleMenu/PercSimpleMenu.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercTooltip/PercTooltip.css" rel="stylesheet" type="text/css" />
+
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+    <script src="/cm/jslib/jquery.dataTables.js" ></script>
+    <script src="/cm/jslib/jquery.text-overflow.js" ></script>
+    <script src="/cm/plugins/perc_utils.js" ></script>
+    <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
+    <script src="/cm/widgets/PercTooltip/PercTooltip.js" ></script>
+    <script src="/cm/widgets/PercDataTable/PercDataTable.js" ></script>
+    <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js" ></script>
+    <script src="/cm/widgets/PercPageDataTable/PercPageDataTable.js" ></script>
+    <script src="/cm/gadgets/repository/perc_seo_gadget/perc_seo_gadget.js" ></script>
+
+    <script >
+        var loadingMsg = null;
+        var miniMsg = null;
+        $(document).ready(function() {
+                miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
+                loadingMsg = miniMsg.createStaticMessage("Loading...");
+        });
+
+        function _expandNotify(){
+            self.location.reload();
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            var prefs = new gadgets.Prefs();
+            var site = prefs.getString("site");
+            var keyword = prefs.getString("ykeyword");
+            var PercServiceUtils = percJQuery.PercServiceUtils;
+            var pathService      = percJQuery.PercPathService;
+            var wfService        = percJQuery.PercWorkflowService();
+            var percUtils        = percJQuery.perc_utils;
+
+            // renamed preference "severity" to "zeverity" because preference ui controls are rendered in alphabetical order
+            var severity = prefs.getString("zeverity");
+
+            pathService.getLastExistingPath("/Sites/"+site, function(status, result){
+                if(result == ""){
+                    site = "";
+                }
+                else{
+                    site = result;
+                }
+                var workflow = prefs.getString("ssworkflow");
+                var state = prefs.getString("status");
+
+                wfService.getWorkflowList(function(status, result){
+
+                  var enumVals = result[0].EnumVals;
+                  if (!percUtils.contains(enumVals, workflow))
+                  {
+                      workflow = enumVals.entries[0].value;
+                      state = "Pending";
+                  }
+
+                  wfService.getStatusByWorkflow(workflow, function(status, result){
+
+                    enumVals = result.data.EnumVals;
+                    if (!percUtils.contains(enumVals, state))
+                    {
+                        state = $.isArray(enumVals.entries) ? enumVals.entries[0].value : enumVals.entries.value;
+                    }
+
+                    var site_title = site == null ? "All Sites" : site;
+                    var title = "SEO AUDIT: " + workflow + " - " + state + " (" + site_title + ")";
+                    gadgets.window.setTitle(title);
+
+                    var rows = parseInt(prefs.getString("zrows"));
+                    if(rows === NaN)
+                       rows = 5;
+
+                    $("#perc-seo-gadget").PercSeoGadget(site, workflow, state, keyword, severity, rows);
+                  });
+                });
+            });
+        });
+    </script>
+    <div id="perc-seo-gadget">
+    </div>
+     ]]>
+    </Content>
+</Module>

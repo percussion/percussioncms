@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema xmlns:com="urn:www.percussion.com/6.0.0/common" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/common" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="BasicObjects.xsd" />
+  <xsd:include schemaLocation="ContentEditorLocalDef.xsd" />
+  <xsd:include schemaLocation="ContentEditorSharedDef.xsd" />
+  <xsd:include schemaLocation="ContentEditorSystemDef.xsd" />
+  <xsd:simpleType name="ObjectType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="item" />
+      <xsd:enumeration value="folder" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="connectorTypes">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="and" />
+      <xsd:enumeration value="or" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Id">
+    <xsd:restriction base="xsd:long" />
+  </xsd:simpleType>
+  <xsd:simpleType name="operatorTypes">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="equal" />
+      <xsd:enumeration value="notequal" />
+      <xsd:enumeration value="lessthan" />
+      <xsd:enumeration value="lessthanequal" />
+      <xsd:enumeration value="greaterthan" />
+      <xsd:enumeration value="greaterthanequal" />
+      <xsd:enumeration value="isnull" />
+      <xsd:enumeration value="isnotnull" />
+      <xsd:enumeration value="in" />
+      <xsd:enumeration value="notin" />
+      <xsd:enumeration value="like" />
+      <xsd:enumeration value="notlike" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="SessionId">
+    <xsd:restriction base="xsd:string" />
+  </xsd:simpleType>
+  <xsd:complexType name="Reference">
+    <xsd:attribute name="id" type="com:Id" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The id of the referenced (design) object</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="name" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>The internal name of the referenced design object or the name of the referenced non-desgin object.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Property">
+    <xsd:attribute name="name" type="xsd:string" use="required" />
+    <xsd:attribute name="value" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:complexType name="DesignObject">
+    <xsd:attribute name="id" type="com:Id" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>
+               The id of the referenced design object. This may be missing if
+               the obejct is not persisted in the repository yet.
+            </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="description" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>
+               A description for the design object.
+            </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Relationship">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Properties">
+        <xsd:annotation>
+          <xsd:documentation>A collection of user defined properties as specified in the appropriate relationship configuration.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" name="Property">
+              <xsd:annotation>
+                <xsd:documentation>The property value.</xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:simpleContent>
+                  <xsd:extension base="xsd:string">
+                    <xsd:attribute name="name" type="xsd:string" use="required">
+                      <xsd:annotation>
+                        <xsd:documentation>The property name.</xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute default="false" name="persisted" type="xsd:boolean">
+                      <xsd:annotation>
+                        <xsd:documentation>Specifies whether or not this property is already persisted.</xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:attribute>
+                  </xsd:extension>
+                </xsd:simpleContent>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="com:Id" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>The id of the relationship. May not be present if the relationship has not been persisted in the repository.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute default="false" name="persisted" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Specifies whether or not this relationship is already persisted.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="type" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The relationship type name.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="ownerId" type="com:Id" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The id of the owner of this relationship. May include the revision depending on the relationship configuration.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="dependentId" type="com:Id" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The id of the dependent of this relationship. May include the revision depending on the relationship configuration.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="RelationshipFilter">
+    <xsd:annotation>
+      <xsd:documentation>Specifies all rules by which to filter relationship lookups. All specified rules will be AND'ed together except relationship name and type, 
+         which are OR'ed together before AND'ing with the other properties.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Id" nillable="true" type="com:Id">
+        <xsd:annotation>
+          <xsd:documentation>The relationship id for which to filter the results.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Owner" nillable="true" type="com:Id">
+        <xsd:annotation>
+          <xsd:documentation>The relationship owner id for which to filter the results.
+</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="OwnerObjectType" nillable="true" type="com:ObjectType">
+        <xsd:annotation>
+          <xsd:documentation>The name of the owner object type for which to filter the results. This can not be used in conjuction with the limitToEditOrCurrentOwnerRevision flag.
+</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="DependentObjectType" nillable="true" type="com:ObjectType">
+        <xsd:annotation>
+          <xsd:documentation>The name of the dependent object type for which to filter the results.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="RelationshipType" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Used to filter system-defined or user-defined Relationship Types.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="system" />
+            <xsd:enumeration value="user" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Configurations">
+        <xsd:annotation>
+          <xsd:documentation>The relationship configuration names for which to filter the results.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" name="Name" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Properties">
+        <xsd:annotation>
+          <xsd:documentation>The user defined relationship properties for which to filter the results.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" name="Property" type="com:Property" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="OwnerContentType" type="com:Reference">
+        <xsd:annotation>
+          <xsd:documentation>The reference of the owner content type for which to filter the results. This can not be used in conjuction with the limitToEditOrCurrentOwnerRevision flag.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="DependentContentType" type="com:Reference">
+        <xsd:annotation>
+          <xsd:documentation>The reference of the dependent content type for which to filter the results</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="Dependent" type="com:Id">
+        <xsd:annotation>
+          <xsd:documentation>The relationship dependent ids for which to filter the results.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute default="false" name="enableCommunityFilter" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Limit the results to the requestor's current community.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute default="false" name="limitToOwnerRevisions" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Limit the results to the owners revision.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute default="false" name="limitToEditOrCurrentOwnerRevision" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Limit the results to the owners edit revision if it exists or to the current revision otherwise. This can not be used in conjunction with the ownerContentType and ownerObjectType.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="PSAuthenticationHeader">
+    <xsd:annotation>
+      <xsd:documentation>An authentication header is required for each service call except the login call.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Session" type="com:SessionId">
+          <xsd:annotation>
+            <xsd:documentation>A valid rhythmyx session as returned with the login service.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSObjectSummary">
+    <xsd:annotation>
+      <xsd:documentation>Object summaries may be returned by lookup services for any design object. It contains most information required for user interface clients and all information to lookup the full object.
+</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Locked">
+          <xsd:annotation>
+            <xsd:documentation>This element is only present if the object that this summary references is locked. It contains the lock details.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:attribute name="session" type="xsd:string" use="required">
+              <xsd:annotation>
+                <xsd:documentation>The session which has the object locked.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="locker" type="xsd:string" use="required">
+              <xsd:annotation>
+                <xsd:documentation>The name of the locker.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="remainingTime" type="xsd:int" use="required">
+              <xsd:annotation>
+                <xsd:documentation>The remaining time of the lock.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Permissions">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element minOccurs="0" maxOccurs="unbounded" name="Permission" type="xsd:int" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>
+                  The id of the referenced object.
+               </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="type" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>
+                  The type of the referenced object.
+               </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>
+                  The name of the object. Defaults to the label if the
+                  referenced object does not specify a name.
+               </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="label" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>
+                  The display label of the object. Defaults to the name if the
+                  referenced object does not specify a label.
+               </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="description" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>
+                  A description of the referenced object.
+               </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

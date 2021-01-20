@@ -1,0 +1,99 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.percLogin-form-sample-content
+{
+    height: 100px;
+    background: transparent url(/Rhythmyx/rx_resources/widgets/form/images/widgetformSampleBackground.png) no-repeat scroll center center;
+    filter: alpha(opacity=50);
+    opacity: .50;
+}
+
+
+.percLogin-form {
+	text-align: left;
+    margin: 5px 5px 20px 15px;
+}
+
+.percLogin-form h2 {color: #000000;
+	display: block;
+	font-family: arial,sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	margin-left: 15px;
+}
+
+.percLogin-form-field-row {color: #000000;
+    font-family: Verdana;
+    font-size: 12px;
+    margin: 5px 5px 20px 15px;
+}
+
+.percLogin-form-label-required { color: #cc0000;
+	font-family: verdana,arial,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.percLogin-form-label-top { color: #000000;
+	display: block;
+	font-family: verdana,arial,sans-serif;
+	font-size: 11px;
+	clear:left;
+	font-weight: bold;
+	margin-top: 30px;
+	text-align: left;
+    margin-bottom: 10px;
+}
+
+.percLogin-form-label-left { color: #000000;
+	display: block;
+	float: left;
+	clear:left;
+	font-family: verdana,arial,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	text-align: left;
+	margin-right: 5px;
+}
+
+.percLogin-form-input { margin-top: 10px;
+	display: block;
+	margin-top: 10px;
+}
+
+.percLogin-form-button {outline: 0 none;
+	margin-top: 40px;
+	text-align: center;
+	border: 0 none;
+	cursor: pointer;
+	text-align: left;
+	clear:left;
+	overflow: visible;
+}
+
+.percLogin-form-button button {background:#eeccff;}
+
+
+

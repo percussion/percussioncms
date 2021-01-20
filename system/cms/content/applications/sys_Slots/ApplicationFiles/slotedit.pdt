@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT slotedit (relatedlinks, componentname, slotlookupurl, contentlookupurl, category* )>
+<!ELEMENT category (variant*, categoryid, categoryname )>
+<!ELEMENT categoryname (#PCDATA)>
+<!ELEMENT categoryid (#PCDATA)>
+<!ELEMENT variant (url, ss, addvarianturl, variantid, variantname, output )>
+<!ELEMENT output (#PCDATA)>
+<!ELEMENT variantname (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>
+<!ELEMENT addvarianturl (#PCDATA)>
+<!ELEMENT ss (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT slotlookupurl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

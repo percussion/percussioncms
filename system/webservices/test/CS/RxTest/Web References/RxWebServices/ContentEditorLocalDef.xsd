@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<xsd:schema xmlns:com="urn:www.percussion.com/6.0.0/common" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/common" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="BasicObjects.xsd" />
+  <xsd:element name="PSXContentEditor">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXDataSet" />
+        <xsd:element minOccurs="0" ref="com:PSXCommandHandlerStylesheets" />
+        <xsd:element minOccurs="0" ref="com:PSXApplicationFlow" />
+        <xsd:element minOccurs="0" ref="com:SectionLinkList" />
+        <xsd:element minOccurs="0" ref="com:PSXValidationRules" />
+        <xsd:element minOccurs="0" ref="com:PSXInputTranslations" />
+        <xsd:element minOccurs="0" ref="com:PSXOutputTranslations" />
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXCustomActionGroup" />
+        <xsd:element minOccurs="0" ref="com:PSXWorkflowInfo" />
+      </xsd:sequence>
+      <xsd:attribute name="contentType" type="xsd:string" use="required" />
+      <xsd:attribute name="workflowId" type="xsd:string" use="required" />
+      <xsd:attribute default="no" name="enableRelatedContent">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="1" name="objectType" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXContentEditorMapper">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:SystemFieldExcludes" />
+        <xsd:element minOccurs="0" ref="com:SharedFieldIncludes" />
+        <xsd:element ref="com:PSXFieldSet" />
+        <xsd:element ref="com:PSXUIDefinition" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXContentEditorPipe">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+        <xsd:element name="description" type="xsd:string" />
+        <xsd:element minOccurs="0" ref="com:InputDataExits" />
+        <xsd:element minOccurs="0" ref="com:ResultDataExits" />
+        <xsd:element ref="com:PSXContainerLocator" />
+        <xsd:element ref="com:PSXContentEditorMapper" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXDataSet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+        <xsd:element name="description" type="xsd:string" />
+        <xsd:element name="transactionType" type="xsd:string" />
+        <xsd:element ref="com:PSXContentEditorPipe" />
+        <xsd:element minOccurs="0" ref="com:PSXPageDataTank" />
+        <xsd:element minOccurs="0" ref="com:PSXRequestor" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXRequestor">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:outputMimeType" />
+        <xsd:element name="requestPage" type="xsd:string" />
+        <xsd:element minOccurs="0" ref="com:SelectionParams" />
+        <xsd:element minOccurs="0" ref="com:ValidationRules" />
+        <xsd:element name="characterEncoding" type="xsd:string" />
+        <xsd:element ref="com:MimeProperties" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute default="no" name="directDataStream">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXWorkflowInfo">
+    <xsd:complexType>
+      <xsd:attribute name="type" use="required">
+        <xsd:annotation>
+          <xsd:documentation>Specifies whether the values define all included or excluded workflows.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="inclusionary" />
+            <xsd:enumeration value="exclusionary" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="values" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>A coma separated list of workflow ids which are included or excluded.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SystemFieldExcludes">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:FieldRef" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="MimeProperties">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="com:htm" />
+        <xsd:element ref="com:html" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="htm">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXTextLiteral" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="html">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXTextLiteral" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXPageDataTank">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="schemaSource" type="xsd:string" />
+        <xsd:element name="actionTypeXmlField" type="xsd:string" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SelectionParams">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXConditional" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SharedFieldIncludes">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="SharedFieldGroupName" type="xsd:string" />
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:SharedFieldExcludes" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SharedFieldExcludes">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:FieldRef" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ValidationRules">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXConditional" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="outputMimeType">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="com:PSXBackEndColumn" />
+        <xsd:element ref="com:PSXCgiVariable" />
+        <xsd:element ref="com:PSXCookie" />
+        <xsd:element ref="com:PSXDateLiteral" />
+        <xsd:element ref="com:PSXExtensionCall" />
+        <xsd:element ref="com:PSXHtmlParameter" />
+        <xsd:element ref="com:PSXNumericLiteral" />
+        <xsd:element ref="com:PSXSingleHtmlParameter" />
+        <xsd:element ref="com:PSXTextLiteral" />
+        <xsd:element ref="com:PSXUserContext" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

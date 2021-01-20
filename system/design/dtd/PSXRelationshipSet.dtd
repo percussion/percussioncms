@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- Include the shared definitions -->
+<!ENTITY % BasicObjects SYSTEM "sys_BasicObjects.dtd">
+%BasicObjects;
+<!--
+   A collection of PSXRelationship objects.
+-->
+<!ELEMENT PSXRelationshipSet (PSXRelationship*)>
+<!--
+   A relationship object.
+   
+   id - the relationship id.
+   config - the name of the configuration used to create this relationship.
+   isPersisted - this flag specifies whether or not the relationship 
+      object is persisted in the database. Defaults to '0' if the
+      attribute is not defined.
+-->
+<!ELEMENT PSXRelationship (Owner, Dependent, PropertyList?)>
+<!ATTLIST PSXRelationship
+   id CDATA #REQUIRED
+   config CDATA #REQUIRED
+   isPersisted (1 | 0) "0"
+>
+<!--
+   The owner locator.
+-->
+<!ELEMENT Owner (PSXLocator)>
+<!--
+   The dependent locator.
+   
+   communityid - the community id of the dependent of this relationship.
+   objecttype - the object type of the dependent of this relationship.
+   
+   contentid - the contentid of the dependent of this relationship.
+   revision - the revision of the dependent of this relationship.
+-->
+<!ELEMENT Dependent (PSXLocator)>
+<!ATTLIST Dependent
+	communityid CDATA #IMPLIED
+	objecttype CDATA #IMPLIED
+>
+<!--
+   The locator.
+   
+   isPersisted - this flag specifies whether or not the object addressed by
+      this locator is persisted in the database. Defaults to 'yes' if the
+      attribute is not defined.
+-->
+<!ELEMENT PSXLocator (CONTENTID, REVISIONID)>
+<!ATTLIST PSXLocator
+   isPersisted (yes | no) "yes"
+>
+<!--
+   The content id part of the locator.
+-->
+<!ELEMENT CONTENTID (#PCDATA)>
+<!--
+   The revision id part of the locator, -1 specifies this as undefined, not used.
+-->
+<!ELEMENT REVISIONID (#PCDATA)>
+
+<!--
+   The relationship property list.
+-->
+<!ELEMENT PropertyList (Property*)>
+<!--
+   The relationship property 
+-->
+<!ELEMENT Property (#PCDATA)>
+<!ATTLIST Property
+   name CDATA #REQUIRED
+   isPersisted (1 | 0) "0"
+>
+
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings/>
+    <template-slot-ids/>
+    <guid>0-4-583</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/pageAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description/>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>"L" Left</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/html</mime-type>
+    <name>perc.base.lLeft</name>
+    <output-format>Page</output-format>
+    <publish-when>Default</publish-when>
+    <style-sheet-path/>
+    <template>#perc_templateHeader()##
+&lt;div id="container" class="perc-region perc-vertical hspan_12"&gt;
+     &lt;div class="perc-vertical"&gt;
+        &lt;div id="middle" class="perc-region perc-horizontal"&gt;
+           &lt;div class="perc-horizontal"&gt;
+              &lt;div id="leftsidebar" class="perc-region perc-vertical hspan_2 vspan_6 "&gt;
+                 &lt;div class="perc-vertical"&gt;
+					#region("leftsidebar" '' '' '' '')##
+                 &lt;/div&gt;
+              &lt;/div&gt;           
+              &lt;div id="content" class="perc-region perc-vertical hspan_10 vspan_6"&gt;
+                 &lt;div class="perc-vertical"&gt;
+					#region("content" '' '' '' '')##
+                 &lt;/div&gt;
+              &lt;/div&gt;             
+              &lt;div class="clear-float"&gt;&lt;/div&gt;
+           &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id="footer" class="perc-region perc-vertical vspan_2"&gt;
+           &lt;div class="perc-vertical"&gt;
+			  #region("footer" '' '' '' '')##
+           &lt;/div&gt;
+        &lt;/div&gt;              
+     &lt;/div&gt;
+  &lt;/div&gt;
+#perc_templateFooter()##</template>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

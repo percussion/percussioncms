@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (#PCDATA)>
+<!ATTLIST  item sysid CDATA #IMPLIED>
+<!ATTLIST  item sortrank CDATA #IMPLIED>
+<!ATTLIST  item contentid CDATA #IMPLIED>
+<!ATTLIST  item revision CDATA #IMPLIED>
+<!ATTLIST  item itemcontentid CDATA #IMPLIED>
+<!ATTLIST  item slotid CDATA #IMPLIED>
+<!ATTLIST  item variantid CDATA #IMPLIED>
+<!ATTLIST  item config CDATA #IMPLIED>
+<!ELEMENT updaterelateditems (item* )>

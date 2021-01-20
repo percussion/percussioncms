@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Generator (Class, AssemblyUrl, Params* )>
+<!ELEMENT Value EMPTY>
+<!ATTLIST  Value current CDATA #REQUIRED>
+<!ELEMENT Params (Value )>
+<!ATTLIST  Params sequence CDATA #REQUIRED>
+<!ATTLIST Params type (string | column | passthrough ) "string">
+<!ATTLIST  Params name CDATA #REQUIRED>
+<!ELEMENT AssemblyUrl EMPTY>
+<!ELEMENT Class EMPTY>
+<!ATTLIST  Class current CDATA #REQUIRED>
+<!ATTLIST  Generator sys_context CDATA #REQUIRED>
+<!ATTLIST  Generator sys_contenttype CDATA #REQUIRED>
+<!ATTLIST  Generator sys_variantid CDATA #REQUIRED>
+<!ELEMENT LocationGenerators (Generator* )>

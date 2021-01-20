@@ -1,0 +1,12 @@
+${0}_linkId = $assetItem.getNode().getProperty(''{0}_linkId'').String;
+${0}_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, ${0}_linkId, $sys.assemblyItem.PubServerId);
+${0}_alt_text="";
+${0}_title="";
+${0}_sys_contentId = $rx.pageutils.getManagedLinkDependentId(${0}_linkId);
+if (${0}_sys_contentId != "")
+'{'
+    ${0}_assetMap = $rx.pageutils.findItemFieldValues(''percImageAsset'', ''displaytitle,alttext'', ${0}_sys_contentId);
+    ${0}_alt_text = ${0}_assetMap.get(''alttext'');
+    ${0}_title = ${0}_assetMap.get(''displaytitle'');
+'}'
+

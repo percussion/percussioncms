@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<!--
+$Id: BackEndTestProviders.xml 1.7 2001/10/23 14:15:59Z JaySeletz Release $
+-->
+<PSXServerConfiguration id="1">
+  <SecurityProviders>
+    <PSXSecurityProviderInstance id="20001" type="BackEndTable">
+      <name>BECLEARTEXTSPINST</name>
+      <Properties>
+        <uidColumn>col_uid</uidColumn>
+        <passwordColumn>col_cleartextpw</passwordColumn>
+        <tableName>BackEndProviderTable</tableName>
+        <datasourceName/>
+      </Properties>
+    </PSXSecurityProviderInstance>
+    <PSXSecurityProviderInstance id="20002" type="BackEndTable">
+      <name>BEFILTEREDSPINST</name>
+      <Properties>
+        <uidColumn>col_filtered_uid</uidColumn>
+        <passwordColumn>col_filteredpw</passwordColumn>
+        <tableName>BackEndProviderTable</tableName>
+        <passwordFilter>Java/rxTest/RxFilterTest</passwordFilter>
+        <datasourceName/>
+      </Properties>
+    </PSXSecurityProviderInstance>
+    <PSXSecurityProviderInstance id="20003" type="BackEndTable">
+      <name>BENUMERICUIDSPINST</name>
+      <Properties>
+        <uidColumn>col_numeric_uid</uidColumn>
+        <passwordColumn>col_cleartextpw</passwordColumn>
+        <tableName>BackEndProviderTable</tableName>
+        <datasourceName/>
+      </Properties>
+    </PSXSecurityProviderInstance>
+    <PSXSecurityProviderInstance id="20005" type="BackEndTable">
+      <name>QA</name>
+      <Properties>
+        <passwordColumn>PASSWORD</passwordColumn>
+        <uidColumn>USERID</uidColumn>
+        <tableName>USERLOGIN_QA</tableName>
+        <datasourceName/>
+      </Properties>
+    </PSXSecurityProviderInstance>
+  </SecurityProviders>
+</PSXServerConfiguration>
+
+

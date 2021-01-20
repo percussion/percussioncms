@@ -1,0 +1,240 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+	<tx:annotation-driven transaction-manager="sys_transactionManager"/>
+
+	<!-- Publishing handler setup for the assembly and status queues -->
+	<bean id="sys_publishMessageHandlerContainerQ"
+		  class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		  <property name="concurrentConsumers" value="4"/>
+		  <property name="connectionFactory" ref="sys_jmsConnectionFactory" />
+		  <property name="destination" ref="sys_publishQueueDestination" />
+		  <property name="messageListener" ref="sys_publishQueueListener" />
+	</bean>	
+		
+	<bean id="sys_filesystem"
+		class="com.percussion.rx.delivery.impl.PSFileDeliveryHandler">
+	</bean>
+
+   <bean id="sys_fileDeliveryHandler"
+      class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">  
+      <property name="deliveryHandlers">
+         <list>
+            <ref bean="sys_filesystem" />
+            <ref bean="sys_metadataDeliveryHandler" />
+         </list>
+      </property>
+   </bean>
+
+    <bean id="sys_amazons3"
+        class="com.percussion.rx.delivery.impl.PSAmazonS3DeliveryHandler">
+  		<!--  targetRegion - when configured sets the primary region where the S3 
+  		bucket is deployed.  Defaults to region of EC2 instance when running on EC2 or
+  		the default AWS region if not on EC2.
+  		for S3 publishing.    <property name="targetRegion" value="us-east-1"/>
+		 -->
+        <property name="targetRegion" value="us-east-1"/>
+    </bean>
+    
+   <bean id="sys_amazons3DeliveryHandler"
+      class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">  
+      <property name="deliveryHandlers">
+         <list>
+            <ref bean="sys_amazons3" />
+            <ref bean="sys_metadataDeliveryHandler" />
+         </list>
+      </property>
+   </bean>
+	
+	<bean id="sys_ftp"
+		class="com.percussion.rx.delivery.impl.PSFtpDeliveryHandler">
+		<!-- Properties that can be set here:
+			timeout 
+				(defaults to -1 as not defined. 
+				It is the socket timeout in milliseconds for both when opening a 
+				socket and a currently open connection).
+			usePassiveMode 
+				(defaults to false. 
+				Determines if using passive or active mode for the FTP client. 
+				Defaults to use active mode. If using passive mode is on, then it 
+				will also disable the remote verification  
+		-->
+		<property name="usePassiveMode" value="true" />
+	</bean>
+	
+	<bean id="sys_ftp_default"
+        class="com.percussion.rx.delivery.impl.PSFtpDeliveryHandler">
+        <!-- Properties that can be set here:
+            timeout 
+                (defaults to -1 as not defined. 
+                It is the socket timeout in milliseconds for both when opening a 
+                socket and a currently open connection).
+            usePassiveMode 
+                (defaults to false. 
+                Determines if using passive or active mode for the FTP client. 
+                Defaults to use active mode. If using passive mode is on, then it 
+                will also disable the remote verification  
+        -->
+        <property name="usePassiveMode" value="true" />
+    </bean> 	
+	
+   <bean id="sys_ftpDeliveryHandler"
+      class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">  
+      <property name="deliveryHandlers">
+         <list>
+            <ref bean="sys_ftp_default" />
+            <ref bean="sys_metadataDeliveryHandler" />
+         </list>
+      </property>
+   </bean>
+	
+	<bean id="sys_databaseDeliveryHandler"
+	  class="com.percussion.rx.delivery.impl.PSDatabaseDeliveryHandler">
+	</bean>
+	
+   <bean id="sys_sftp"
+      class="com.percussion.rx.delivery.impl.PSSFtpDeliveryHandler">
+		<!-- Properties that can be set here:
+			timeout 
+				(defaults to -1 as not defined. 
+				It is the socket timeout in milliseconds for the underlying provider) 
+			umask
+				(defaults to null as not defined
+				It is a 3-character string of octal digits if defined.
+				if the umask is not defined, then the permissions of the created
+				files and directories are controled by the configuration of the
+				login user ID of the SSH server. If the umask is defined, then
+				the permissions of the created filed and directories will be 
+				modified according to the specified umask.  
+				
+				property name="umask"	value="022"
+				) 
+		-->
+   </bean>
+   
+   <bean id="sys_sftp_default"
+      class="com.percussion.rx.delivery.impl.PSSFtpDeliveryHandler">
+        <!-- Properties that can be set here:
+            timeout 
+                (defaults to -1 as not defined. 
+                It is the socket timeout in milliseconds for the underlying provider) 
+            umask
+                (defaults to null as not defined
+                It is a 3-character string of octal digits if defined.
+                if the umask is not defined, then the permissions of the created
+                files and directories are controled by the configuration of the
+                login user ID of the SSH server. If the umask is defined, then
+                the permissions of the created filed and directories will be 
+                modified according to the specified umask.  
+                
+                property name="umask"   value="022"
+                ) 
+        -->
+   </bean>   
+
+   <bean id="sys_sftpDeliveryHandler"
+      class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">  
+      <property name="deliveryHandlers">
+         <list>
+            <ref bean="sys_sftp_default" />
+            <ref bean="sys_metadataDeliveryHandler" />
+         </list>
+      </property>
+   </bean>
+
+   <!-- Delivery Handler Runner is used to run one or more delivery handlers, so that
+        it can be used to delivery published content to more than one locations -->
+   <bean id="sys_deliveryHandlerRunner"
+      class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">  
+      <property name="deliveryHandlers">
+         <list>
+            <ref bean="sys_fileDeliveryHandler" />
+            <ref bean="sys_metadataDeliveryHandler" />
+         </list>
+      </property>
+   </bean>
+
+    <bean id="sys_metadataDeliveryHandler"
+        class="com.percussion.rx.delivery.impl.PSMetadataDeliveryHandler">
+        <property name="supportedMimeTypes">
+            <list>
+               <value>text/html</value>
+            </list>
+        </property>
+        <property name="supportedContentTypes">
+            <list>
+               <value>percPage</value>
+            </list>
+        </property>
+        <property name="retryCount" value="3" />
+        <property name="connectionTimeout" value="30000" />
+        <property name="operationTimeout" value="30000" />
+    </bean> 
+    
+
+	<!-- Below is a few examples of using the wrapper handler to encapsulate a 
+	  legacy publishing handler for use with the new publishing model.
+	  
+	  The properties implemented by PSWrapperDeliveryHandler are:
+	  
+	  publisherClass (plugin class name), 
+	  DebugMode ("true" or "false"), 
+ 	  usePassiveMode (use FTP passive mode, "true" or "false", 
+ 	     defaults to "false"), 
+ 	  ftpRcvTimeout (FTP timeout in seconds) and 
+ 	  useSyncDelivery ("true" or "false", defaults to "true". It may deliver in 
+ 	     parallel if it is "true". It must be "false" for the legacy handler of
+ 	     "com.percussion.publisher.client.PSFtpPublisherHandler" and 
+ 	     "com.percussion.publisher.client.PSDatabasePublisherHandler")
+	  -->
+ 
+   <!-- 
+	<bean id="sys_legacyFileDeliveryHandler"
+		class="com.percussion.rx.delivery.impl.PSWrapperDeliveryHandler">
+		<property name="publisherClass" 
+			value="com.percussion.publisher.client.PSFilePublisherHandler"/>
+		<property name="useSyncDelivery" value="false" />
+	</bean>
+	<bean id="sys_legacyFtpDeliveryHandler" scope="prototype"
+		class="com.percussion.rx.delivery.impl.PSWrapperDeliveryHandler">
+		<property name="publisherClass" 
+			value="com.percussion.publisher.client.PSFtpPublisherHandler"/>
+	</bean>
+	<bean id="sys_legacyDatabaseDeliveryHandler" scope="prototype"
+		class="com.percussion.rx.delivery.impl.PSWrapperDeliveryHandler">
+		<property name="publisherClass" 
+			value="com.percussion.publisher.client.PSDatabasePublisherHandler"/>
+	</bean>
+	 -->
+    <bean autowire="constructor" class="com.percussion.delivery.metadata.PSMetadataExtractorService" id="sys_metadataExtractor">
+    </bean>
+</beans>

@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+	   
+-->
+
+<styleSheetDocument xmlns="http://myfaces.apache.org/uix/style"
+                    version="2.0">
+                    
+  <!-- The SimpleDesktopSkin's stylesheet extends the 
+  BaseDesktop stylesheet. We could combine these Skins and 
+  stylesheets someday. I'm not sure why we wouldn't.-->
+  <import href="base-desktop.xss"/>                    
+
+<!-- 
+  The base style sheet for the desktop implementation of
+  the Simple Look And Feel.
+ -->
+<styleSheet>
+
+
+  <!--
+    panelBox Styles
+  -->
+
+  <style selector="af|panelBox::header">
+    <property name="width">100%</property>
+
+    <!-- Only tile the header's background image horizontally.
+         That way, if the user zooms up the text size, the 
+         header's top border won't end up repeating -->
+    <property name="background-repeat">repeat-x</property>
+  </style>
+
+  <!-- 
+    MenuBar styles
+  -->
+
+  <!-- Disable item wrapping - can make MenuBar's icons look bad -->
+  <style name="AFMenuBarItem">
+    <property name="white-space">nowrap</property> 
+  </style>
+  
+  <!-- Move the background color to af|menuBar::body/title -->
+  <style name="af|menuBar">
+    <property name="background-color"/>
+  </style>
+
+  <style selector="af|menuBar::body">
+    <includeStyle name="AFDarkBackground"/>
+  </style>
+
+  <style selector="af|menuBar::title">
+    <includeStyle name="AFDarkBackground"/>
+  </style>
+
+  <!-- Also set the background color for the empty globalHeader -->
+  <style selector="af|menuBar::empty">
+    <includeStyle name="AFDarkBackground"/>
+    <!--
+      Custom Skins can use the height property to control the empty
+      MenuBar's height.  We let it default though...
+    -->
+    <!--
+      <property name="height">4px</property>
+    -->
+  </style>
+
+  <!-- messages style -->
+  <style selector="af|messages::body">
+    <includeStyle name="AFLightAccentBackground"/>
+  </style>
+  
+  
+  <!--
+    TabBar Styles
+  -->
+
+  <!-- Disable item wrapping - can make tabBar's icons look bad -->
+  <style name="AFTabBarItem">
+    <property name="white-space">nowrap</property> 
+  </style>
+
+  <!--
+    Table Styles
+  -->
+
+  <!-- Add a border around the table contents.
+       Does this really belong here? -->
+  <style selector="af|table::content">
+    <includeStyle name="AFVeryDarkAccentBorder"/>  
+    <includeStyle selector=".OraTableBorder1111"/>
+  </style> 
+  
+  <style selector="af|treeTable::content">
+    <includeStyle name="AFVeryDarkAccentBorder"/>  
+    <includeStyle selector=".OraTableBorder1111"/>
+  </style>    
+
+  <!-- 
+    Styles for dynamically generated images 
+   -->
+
+  <!-- The style for dynamically generated button images -->
+  <style name="AFButtonServerText">
+    <includeStyle name="DefaultServerFont"/>
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+
+  <!-- The style for dynamically generated disabled button images -->
+  <style name="AFButtonServerTextDisabled">
+    <includeStyle name="DefaultServerFont"/>
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFVeryDarkAccentForeground"/>
+  </style>
+
+  <!-- Button padding for Albany WT J -->
+  <style name="AlbanyButtonPadding">
+    <property name="padding-top">-3px</property>
+    <property name="padding-bottom">-2px</property>
+  </style>
+
+  <style name="ButtonServerPaddingAlbany WT J">
+    <includeStyle name="AlbanyButtonPadding"/>
+  </style>
+
+  <style selector=".AFLogo">
+    <property name="width">103px</property>
+    <property name="height">13px</property>
+    <property name="background-image">url('../../images/logo-dark.png')</property>
+    <property name="background-repeat">no-repeat</property>
+    <property name="background-position">center</property>
+    <property name="vertical-align">middle</property>
+  </style>
+
+</styleSheet>
+
+<styleSheet browsers="ie" versions="6">
+  <style selector=".AFLogo">
+    <property name="background-image">url('../../images/logo-dark.gif')</property>
+  </style>
+</styleSheet>
+
+<!-- Style sheet just for Korean-specific styles -->
+<styleSheet locales="ko">
+
+  <!-- Button padding for Albany WT K -->
+  <style name="ButtonServerPaddingAlbany WT K">
+    <includeStyle name="AlbanyButtonPadding"/>
+  </style>
+
+</styleSheet>
+
+<!-- Style sheet just for Traditional Chinese specific styles -->
+<styleSheet locales="zh_TW">
+
+  <!-- Button padding for Albany WT TC -->
+  <style name="ButtonServerPaddingAlbany WT TC">
+    <includeStyle name="AlbanyButtonPadding"/>
+  </style>
+
+</styleSheet>
+
+<!-- Style sheet just for Simplified Chinese specific styles -->
+<styleSheet locales="zh_CN">
+
+  <!-- Button padding for Albany WT SC -->
+  <style name="ButtonServerPaddingAlbany WT SC">
+    <includeStyle name="AlbanyButtonPadding"/>
+  </style>
+
+</styleSheet>
+
+</styleSheetDocument>

@@ -1,0 +1,92 @@
+ ############################################################################
+ #
+ # $Id: package.nmk 1.5 2001/09/19 00:22:03Z davidgennaco Release $
+ #
+ # Version Labels	: $Name: Pre_CEEditorUI RX_40_REL $
+ #
+ # Locked By		: $Locker: $
+ #
+ # Revision History:
+ #	$Log: package.nmk $
+ #	Revision 1.5  2001/09/19 00:22:03Z  davidgennaco
+ #	Added database component loader, removed backendobjectstorehandler
+ #	Revision 1.4  2001/02/08 22:09:20Z  JaySeletz
+ #	Added PSServerXmlObjectStore (for Deployment)
+ #	Revision 1.3  1999/11/19 23:25:26Z  paulhoward
+ #	Fixed infinite recursion on EXCLUDED_CLASSES macro.
+ #	
+ #	Revision 1.2  1999/09/22 22:29:41Z  chadloder
+ #	Fixed minor bugs; added PROPERTIES, IMAGES, RESOURCES, ALL_FILES
+ #	Revision 1.1  1999/09/21 23:50:39  AlexTeng
+ #	Initial revision
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.design.objectstore.server
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+	PSXmlObjectStoreLockManagerTest
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = \
+	IPSApplicationListener \
+	IPSLockerId \
+	IPSObjectStoreHandler \
+	IPSObjectStoreLockManager \
+	IPSServerConfigurationListener \
+	PSApplicationSummary \
+	PSApplicationSummaryCollection \
+	PSObjectStoreStatistics \
+	PSSecuredMethod \
+	PSValidatorAdapter \
+	PSXmlObjectStoreHandler \
+	PSXmlObjectStoreLockerId \
+	PSXmlObjectStoreLockManager \
+   PSDatabaseComponentLoader \
+	PSServerXmlObjectStore
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+	PSLockAcquisitionException
+
+#
+# Properties files
+#
+PROPERTIES =
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)

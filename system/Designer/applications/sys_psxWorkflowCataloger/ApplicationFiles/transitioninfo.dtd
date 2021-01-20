@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT transitioninfo (#PCDATA)>
+<!ATTLIST  transitioninfo transitionid CDATA #IMPLIED>
+<!ATTLIST  transitioninfo default CDATA #IMPLIED>
+<!ATTLIST  transitioninfo workflowid CDATA #IMPLIED>
+<!ATTLIST  transitioninfo transitionToState CDATA #IMPLIED>
+<!ATTLIST  transitioninfo transitionFromState CDATA #IMPLIED>
+<!ELEMENT Transitions (transitioninfo* )>
+<!ELEMENT StatesTrans (Transitions )>

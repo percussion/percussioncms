@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT slot (slotname, slotid, contentid, revision )>
+<!ELEMENT revision (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT slotid (#PCDATA)>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT itemslots (slot* )>
+<!ATTLIST  itemslots xml:lang CDATA #IMPLIED>
+<!ATTLIST  itemslots checkoutstatus CDATA #IMPLIED>
+<!ATTLIST  itemslots assignmenttype CDATA #IMPLIED>

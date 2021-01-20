@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveInfo archiveRef="perc.gadget.siteImprove" category="USER" created="1478814575507" editable="true" serverName="eng-jwalker2:9992" userName="Admin">
+   <PSXFormatVersion buildId="83" buildNumber="20161101" displayVersion="5.4.4" interfaceVersion="9" majorVersion="5" microVersion="4" minorVersion="4" optionalId="" versionString="INTERNAL"/>
+   <PSXDbmsInfo>
+      <datasource>RhythmyxData</datasource>
+      <driver>derby</driver>
+      <server>//localhost:1527/CMDB</server>
+      <database/>
+      <origin>CMDB</origin>
+      <userid>CMDB</userid>
+      <password>sLakLiMpiDDHM9G9j6nPjQ==</password>
+   </PSXDbmsInfo>
+   <PSXArchiveDetail>
+      <PSXExportDescriptor archiveType="normal">
+         <PSXDescriptor id="2752637758253049616" name="perc.gadget.siteImprove">
+            <Description>This gadget shows the Siteimprove integration with Percussion CMS.</Description>
+            <Publisher name="Percussion Software, Inc." url="http://www.percussion.com/"/>
+            <CmsVersion max="8.0.0" min="5.3.15"/>
+            <Version>1.1.3</Version>
+            <ImplConfigFile/>
+            <LocalConfigFile/>
+            <PKGDependencies/>
+         </PSXDescriptor>
+         <Packages>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_UserDependency" dependencyType="Shared" displayName="User Dependency" isAssociation="yes" isIncluded="yes" objectType="Custom" objectTypeName="Custom" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes">
+                  <Dependencies>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_site_improve_gadget/perc_site_improve_gadget.xml">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_site_improve_gadget/perc_site_improve_gadget.xml" dependencyType="User" displayName="perc_site_improve_gadget.xml" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_site_improve_gadget/images/SIGadgetIcon.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_site_improve_gadget/images/SIGadgetIcon.png" dependencyType="User" displayName="SIGadgetIcon.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_site_improve_gadget/site_improve.css">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_site_improve_gadget/site_improve.css" dependencyType="User" displayName="site_improve.css" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_site_improve_gadget/Siteimprove.js">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_site_improve_gadget/Siteimprove.js" dependencyType="User" displayName="Siteimprove.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_site_improve_gadget/images/siteimprove-logo.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_site_improve_gadget/images/siteimprove-logo.png" dependencyType="User" displayName="siteimprove-logo.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+         </Packages>
+         <ModifiedPackages/>
+         <MissingPackages/>
+      </PSXExportDescriptor>
+      <DbmsInfoMap>
+         <DbmsInfoMapping PkgKey="Custom-sys_UserDependency"/>
+      </DbmsInfoMap>
+   </PSXArchiveDetail>
+</PSXArchiveInfo>

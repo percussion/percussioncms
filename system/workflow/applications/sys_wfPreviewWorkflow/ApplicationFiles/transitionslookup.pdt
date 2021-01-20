@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT transition (description )>
+<!ATTLIST  transition id CDATA #IMPLIED>
+<!ATTLIST  transition to CDATA #IMPLIED>
+<!ATTLIST  transition from CDATA #IMPLIED>
+<!ATTLIST  transition link CDATA #IMPLIED>
+<!ATTLIST  transition type CDATA #IMPLIED>
+<!ATTLIST  transition label CDATA #IMPLIED>
+<!ATTLIST  transition trigger CDATA #IMPLIED>
+<!ELEMENT transitionslookup (transition* )>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="trace" name="feeds">
+  <Appenders>
+    <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${sys:catalina.base}/logs/feeds.log"
+                 filePattern="logs/$${date:yyyy-MM}/feeds-%d{MM-dd-yyyy}-%i.log.gz">
+      <PatternLayout>
+        <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [Thread: %t] %level [%c][%M] - %msg%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10 MB"/>
+      </Policies>
+    </RollingRandomAccessFile>
+  </Appenders>
+  <Loggers>
+    <Root level="trace" includeLocation="true" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+    </Root>
+    
+    <!-- 
+    <Logger name="com.percussion.delivery.feeds.services.PSFeedService" level="info" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	<Logger name="com.percussion.delivery.feeds.services.PSFeedService" level="error" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+
+	<Logger name="com.percussion.delivery.feeds.services.PSFeedService" level="debug" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>	
+
+    <Logger name="com.percussion.delivery.feeds.services.PSFeedService" level="warn" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+     -->
+    
+  </Loggers>
+</Configuration>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT usercommunity (url, community, componentname, pagename )>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT community (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ATTLIST  usercommunity xml:lang CDATA #IMPLIED>

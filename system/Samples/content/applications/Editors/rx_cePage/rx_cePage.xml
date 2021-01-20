@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="1007" startPriority="0" version="2.0">
+   <name>rx_cePage</name>
+   <description/>
+   <requestRoot>rx_cePage</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/_winkelried_1042568579937/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20030114T132445375</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="21">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20030428T134925269</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="user">
+         <name>Anonymous</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataCreate="no" dataDelete="no" dataQuery="no" dataUpdate="no" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>0</maxThreads>
+   <maxRequestTime>0</maxRequestTime>
+   <maxRequestsInQueue>0</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>0</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="128">
+      <name>Dataset534</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXUpdatePipe id="49">
+         <name>UpdatePipe</name>
+         <description/>
+         <PSXBackEndDataTank id="48">
+            <PSXBackEndTable id="47">
+               <alias>RXPAGE</alias>
+               <table>RXPAGE</table>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="45" returnEmptyXml="no">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXSingleHtmlParameter id="0">
+                  <name>sys_contentid</name>
+               </PSXSingleHtmlParameter>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXPAGE</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSynchronizer allowDeletes="yes" allowInserts="no" allowUpdates="no" id="46">
+            <PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXPAGE</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </PSXUpdateColumn>
+         </PSXDataSynchronizer>
+      </PSXUpdatePipe>
+      <PSXPageDataTank id="127">
+         <schemaSource>file:rx451_20021209_RXPAGE.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>purge</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+         </MimeProperties>
+      </PSXRequestor>
+   </PSXDataSet>
+   <PSXContentEditor contentType="9" enableRelatedContent="yes" objectType="1" workflowId="1">
+      <PSXDataSet id="130">
+         <name>page</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <InputDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="116">
+                     <name>Java/global/percussion/generic/sys_FileInfo</name>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="275">
+                        <alias>contentCredential</alias>
+                        <comment/>
+                        <datasource>datasource</datasource>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="RXPAGE" name="RXPAGE"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="rxpage" repeatability="zeroOrMore" supportsSequencing="yes" type="parent">
+                  <PSXField forceBinary="no" modificationType="user" name="displaytitle" showInPreview="yes" showInSummary="yes" type="local" userSearchable="yes">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXPAGE</tableAlias>
+                           <column>DISPLAYTITLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>100</DataFormat>
+                  </PSXField>
+                  <PSXField forceBinary="no" modificationType="user" name="description" showInPreview="yes" showInSummary="yes" type="local" userSearchable="yes">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXPAGE</tableAlias>
+                           <column>DESCRIPTION</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                  </PSXField>
+                  <PSXField forceBinary="no" modificationType="user" name="content" showInPreview="yes" showInSummary="yes" type="local" userSearchable="yes">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXPAGE</tableAlias>
+                           <column>CONTENT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                  </PSXField>
+                  <PSXField forceBinary="no" modificationType="user" name="sourceurl" showInPreview="yes" showInSummary="yes" type="local" userSearchable="yes">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXPAGE</tableAlias>
+                           <column>SOURCEURL</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="rxpage" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>content</FieldRef>
+                        <PSXUISet accessKey="O">
+                           <Label>
+                              <PSXDisplayText>Content Upload:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="115" name="sys_File"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Content:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>description</FieldRef>
+                        <PSXUISet accessKey="W">
+                           <Label>
+                              <PSXDisplayText>Description:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="57" name="sys_EditBox"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Description:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>displaytitle</FieldRef>
+                        <PSXUISet accessKey="D">
+                           <Label>
+                              <PSXDisplayText>Displaytitle:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="58" name="sys_EditBox"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Displaytitle:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sourceurl</FieldRef>
+                        <PSXUISet accessKey="Q">
+                           <Label>
+                              <PSXDisplayText>Sourceurl:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="59" name="sys_EditBox"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Sourceurl:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_suffix</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+         </PSXContentEditorPipe>
+         <PSXPageDataTank id="129">
+            <schemaSource>file:unspecified</schemaSource>
+            <actionTypeXmlField/>
+         </PSXPageDataTank>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>page</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+   </PSXContentEditor>
+   <PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+   <PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+   <PSXErrorWebPages id="125" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="126">
+      <providerType>SMTP</providerType>
+      <server>localhost</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="locationY128">195</userProperty>
+   <userProperty name="locationY130">174</userProperty>
+   <userProperty name="locationY126">100</userProperty>
+   <userProperty name="locationY125">55</userProperty>
+   <userProperty name="locationY124">10</userProperty>
+   <userProperty name="locationX128">232</userProperty>
+   <userProperty name="locationX130">118</userProperty>
+   <userProperty name="locationX126">16</userProperty>
+   <userProperty name="schemaSourceReadOnly129">false</userProperty>
+   <userProperty name="locationX125">16</userProperty>
+   <userProperty name="schemaSourceReadOnly127">true</userProperty>
+   <userProperty name="locationX124">16</userProperty>
+   <userProperty name="Control115_DependencyIds">116</userProperty>
+   <userProperty name="pageDatatankSrcType129">3</userProperty>
+   <userProperty name="Control115_Dependency116">sys_FileInfo</userProperty>
+   <userProperty name="pageDatatankSrcType127">3</userProperty>
+</PSXApplication>

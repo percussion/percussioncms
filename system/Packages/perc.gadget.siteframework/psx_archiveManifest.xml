@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_gadgetConfigSitewiseFrmw-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\images\gadgetConfigSitewiseFrmw.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_gadgetConfigSitewiseFrmw-png\gadgetConfigSitewiseFrmw.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonSave-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\images\buttonSave.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonSave-png\buttonSave.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonCancelOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\images\buttonCancelOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonCancelOver-gif\buttonCancelOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_perc__sitewide__framework__gadget-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\perc_sitewide_framework_gadget.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_perc__sitewide__framework__gadget-xml\perc_sitewide_framework_gadget.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonCancel-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\images\buttonCancel.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonCancel-gif\buttonCancel.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonSaveInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\images\buttonSaveInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonSaveInactive-png\buttonSaveInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_perc__sitewide__framework__gadget-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\perc_sitewide_framework_gadget.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_perc__sitewide__framework__gadget-js\perc_sitewide_framework_gadget.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonConnect-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\images\buttonConnect.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonConnect-png\buttonConnect.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonSaveOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\images\buttonSaveOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonSaveOver-png\buttonSaveOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_perc__sitewide__framework__gadget-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\perc_sitewide_framework_gadget.css</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_perc__sitewide__framework__gadget-css\perc_sitewide_framework_gadget.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonConnectOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\images\buttonConnectOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonConnectOver-png\buttonConnectOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonConnectInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\cm\gadgets\repository\PercSiteFrameworkGadget\images\buttonConnectInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercSiteFrameworkGadget_images_buttonConnectInactive-png\buttonConnectInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

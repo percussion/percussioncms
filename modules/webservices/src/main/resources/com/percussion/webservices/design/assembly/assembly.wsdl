@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<wsdl:definitions name="assembly" targetNamespace="urn:www.percussion.com/6.0.0/assembly" xmlns:asm="urn:www.percussion.com/6.0.0/assembly" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/faults" schemaLocation="../faults.xsd">
+         </xsd:import>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/assembly" schemaLocation="assembly.xsd">
+         </xsd:import>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="AuthenticationHeader">
+      <wsdl:part name="Session" element="com:PSAuthenticationHeader"/>
+   </wsdl:message>
+   <wsdl:message name="LoadSlotsRequest">
+      <wsdl:part name="LoadSlotsRequest" element="asm:LoadSlotsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadSlotsResponse">
+      <wsdl:part name="LoadSlotsResponse" element="asm:LoadSlotsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadAssemblyTemplatesRequest">
+      <wsdl:part name="LoadAssemblyTemplatesRequest" element="asm:LoadAssemblyTemplatesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadAssemblyTemplatesResponse">
+      <wsdl:part name="LoadAssemblyTemplatesResponse" element="asm:LoadAssemblyTemplatesResponse"/>
+   </wsdl:message>
+   <!--
+      Fault messages
+    -->
+   <wsdl:message name="InvalidSessionFaultMessage">
+      <wsdl:part name="fault" element="flt:PSInvalidSessionFault"/>
+   </wsdl:message>
+   <wsdl:message name="NotAuthorizedFaultMessage">
+      <wsdl:part name="fault" element="flt:PSNotAuthorizedFault"/>
+   </wsdl:message>
+   <wsdl:portType name="assembly">
+      <wsdl:operation name="LoadSlots">
+         <wsdl:input message="asm:LoadSlotsRequest"/>
+         <wsdl:output message="asm:LoadSlotsResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="asm:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asm:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadAssemblyTemplates">
+         <wsdl:input message="asm:LoadAssemblyTemplatesRequest"/>
+         <wsdl:output message="asm:LoadAssemblyTemplatesResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="asm:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asm:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="assemblySOAP" type="asm:assembly">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="LoadSlots">
+         <soap:operation soapAction="urn:LoadSlots"/>
+         <wsdl:input>
+            <soap:header message="asm:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="LoadSlotsRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadAssemblyTemplates">
+         <soap:operation soapAction="urn:LoadAssemblyTemplates"/>
+         <wsdl:input>
+            <soap:header message="asm:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="LoadAssemblyTemplatesRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

@@ -1,0 +1,153 @@
+<!-- Build file for Rhythmyx fast forward install -->
+<project name="Rhythmyx FastForward" default="install" basedir="..">
+
+  <condition property="FF_TABLE_DATA_INSTALLED">
+    <PSFFTableDataInstallProdCondition/>
+  </condition>
+
+  <!-- The main install target -->
+  <target name="install">
+    <if>
+      <equals arg1="${fastforward.apps}" arg2="yes"/>
+      <then>
+        <!-- Call FastForward Applications Install Target -->
+        <antcall target="fastforwardApplications" inheritrefs="true"/>
+      </then>
+    </if>
+    <if>
+      <equals arg1="${fastforward.content}" arg2="yes"/>
+      <then>
+        <!-- Call FastForward Sample Content Install Target -->
+        <antcall target="fastforwardSampleContent" inheritrefs="true"/>
+      </then>
+    </if>
+  </target>
+
+  <!-- FastForward Applications Sequence -->
+  <target name="fastforwardApplications">
+    <!-- Always Replace Files -->
+    <!-- ContentEditor DTD Files -->
+    <mkdir dir="${install.ContentEditors}/DTD"/>
+    <PSCopy todir="${install.ContentEditors}/DTD">
+      <fileset dir="${design.dtddir}">
+        <include name="sys_ContentEditorSystemDef.dtd"/>
+        <include name="sys_BasicObjects.dtd"/>
+      </fileset>
+    </PSCopy>
+    
+    <!-- Never Replace Files -->
+    <!-- DTD Files -->    
+    <mkdir dir="${install.DTD}"/>
+    <PSCopy todir="${install.DTD}" replaceType="never">
+      <fileset dir="${design.dtddir}"/>
+    </PSCopy>
+    <mkdir dir="${install.ContentEditors}/shared"/>
+    
+    <!-- Core -->
+    <!-- ContentEditors -->
+    <PSCopy todir="${install.ContentEditors}" replaceType="never">
+      <fileset dir="${ff.ceditorsdir}"/>
+    </PSCopy>
+    
+    <!-- Shared ContentEditors -->
+    <PSCopy todir="${install.ContentEditors}/shared" replaceType="never">
+      <fileset dir="${ff.ceditorsdir}/Shared"/>
+    </PSCopy>
+    
+    <!-- Server System Files -->
+    <PSCopy todir="${install.Server}" replaceType="never">
+      <fileset dir="${ff.serverdir}"/>
+    </PSCopy>
+    
+    <!-- ObjectStore Files -->
+    <PSCopy todir="${install.ObjectStore}" replaceType="never">
+      <fileset dir="${ff.coredir}/rxsObjectStore"/>
+    </PSCopy>
+    
+    <!-- Application Support Files -->
+    <PSApplicationFiles srcDir="${ff.coredir}/rxsAppSupport" destDir="${install.dir}"/>
+    
+    <!-- rx_resources -->
+    <PSApplicationFiles srcDir="${ff.coredir}/rx_resources" destDir="${install.dir}/rx_resources"/>
+	<PSCopy todir="${install.rx_resources}/images" replaceType="never">
+      <fileset dir="${fastforward.coredir}/Content/Applications/rx_resources/ApplicationFiles/images"/>
+	</PSCopy>
+    
+    <!-- web_resources -->
+    <PSApplicationFiles srcDir="${ff.coredir}/web_resources" destDir="${install.dir}/web_resources"/>
+    
+    <!-- Tablefactory Files -->
+    <mkdir dir="${install.rxconfig}/FastForward"/>
+    <PSCopy todir="${install.rxconfig}/FastForward" replaceType="never">
+      <fileset dir="${ff.datadir}" includes="RxffTableDef.xml, RxffTableData.xml"/>
+    </PSCopy>
+    
+    <!-- MSM Files -->
+    <PSCopy todir="${install.dir}" replaceType="never">
+      <fileset dir="${fastforward.coredir}/MSM"/>
+    </PSCopy>
+       
+    <!-- Rx Repository Action -->
+    <if>
+      <and>
+        <equals arg1="${repository}" arg2="yes"/>
+        <not>
+          <isSet property="FF_TABLE_DATA_INSTALLED"/>
+        </not>
+      </and>
+      <then>
+        <!-- Install Rhythmyx FastForward Tables -->
+        <PSTableAction
+          repositoryLocation="${install.dir}/rxconfig/Installer/rxrepository.properties"
+          tableFactoryLogFile="${install.dir}/logs/tableFactory.log"
+          tableData="${install.rxconfig}/FastForward/RxffTableData.xml"
+          tableDef="${install.Server}/sys_cmstableDef.xml,${install.rxconfig}/FastForward/RxffTableDef.xml"/>
+      </then>
+    </if>
+    
+    <!-- ManagedNav -->
+    <mkdir dir="${install.ObjectStore}"/>
+    <PSCopy todir="${install.ObjectStore}" replaceType="date">
+      <fileset dir="${ff.managednavdir}/rxsObjectStore"/>
+    </PSCopy>
+    <PSApplicationFiles srcDir="${ff.managednavdir}/rxsAppSupport" destDir="${install.dir}"/>
+    <PSInstallExtensions srcDir="${ff.managednavdir}/Exits" destDir="ManagedNavExits"
+      extXml="${basedir}/FastForward/ManagedNav/Exits/Java/Extensions.xml"/>
+    
+    <PSInstallExtensions srcDir="${ff.sfpdir}/Exits" destDir="SiteFolderPublishingExits"
+      extXml="${basedir}/FastForward/SiteFolderPublishing/Exits/Java/Extensions.xml"/>
+    <!-- DefaultTemplate -->
+    <PSInstallExtensions srcDir="${ffdir}/DefaultTemplate/Exits" destDir="DefaultTemplateExits"
+      extXml="${basedir}/FastForward/DefaultTemplate/Exits/Java/Extensions.xml"/>
+  </target>
+  
+  <!-- FastForward Sample Content Sequence -->
+  <target name="fastforwardSampleContent">
+    <!-- SampleContent -->
+    <!-- Tablefactory Files -->
+    <mkdir dir="${install.rxconfig}/FastForward"/>
+    <PSCopy
+      tofile="${install.rxconfig}/FastForward/RxffSampleTableData.xml"
+      file="${ffdir}/SampleContent/Config/Data/RxffSampleTableData.xml"
+      replaceType="never"/>
+    
+    <!-- Rx Repository Action -->
+    <if>
+      <and>
+        <equals arg1="${repository}" arg2="yes"/>
+        <not>
+          <isSet property="FF_TABLE_DATA_INSTALLED"/>
+        </not>
+      </and>
+      <then>
+        <!-- Install Rhythmyx FastForward Table Data -->
+        <PSTableAction
+	  repositoryLocation="${install.Installer}/rxrepository.properties"
+	  tableFactoryLogFile="${install.dir}/logs/tableFactory.log"
+	  tableData="${install.rxconfig}/FastForward/RxffSampleTableData.xml"
+	  tableDef="${install.Server}/sys_cmstableDef.xml,${install.rxconfig}/FastForward/RxffTableDef.xml"/>
+      </then>
+    </if>
+  </target>
+  
+</project>

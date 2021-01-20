@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT AdhocUser (#PCDATA)>
+<!ELEMENT Transition (AdhocUser* )>
+<!ATTLIST  Transition id CDATA #REQUIRED>
+<!ATTLIST  Transition commentRequired CDATA #IMPLIED>
+<!ATTLIST  Transition name CDATA #IMPLIED>
+<!ELEMENT TransitionListResponse (Transition* )>

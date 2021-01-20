@@ -1,0 +1,191 @@
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   A process model was added to the Rx server that allows for the definition
+   of processes and their parameters in an xml file and their subsequent
+   execution by the server, either by the code or by an administrator
+   thru the Rx console. Processes are accessed by name.
+   This model allows for remote process execution by setting up a listener
+   on the remote machine and sending process names to be executed.
+   This file defines how to express a process definition.
+   
+   For those elements that have a resolver attribute, the specified class 
+   processes the value before it is used. 
+   The model is all string based, therefore you have flexibility in specifying
+   parameters.
+   
+   At the time of creation, the following resolvers were known (prepend
+   all names below w/ com.percussion.process):
+      PSEnvironmentResolver - Each macro found in the template is resolved
+         by calling the Java System.getProperty() method. Example: 
+         {user.dir}/foo/bar would look up the system property "user.dir".
+      PSLiteralResolver - returns the supplied value, this is the default
+      PSNamedResolver - Substitutes macros w/ values found in the context
+         supplied to the resolve method.
+      PSPathResolver - Like PSNamedResolver, except it takes the resulting
+         substituted string and converts it to an absolute path using the
+         Java File class.
+   All resolvers above that perform substitutions expect macros of the form
+   {name}. This sequence will be replaced by looking up name in the context 
+   supplied to the resolver and placing the value found in the context into
+   the template.
+-->
+
+<!--
+   A container for all process definitions.
+-->
+<!ELEMENT PSXProcesses (PSXProcess*)>
+
+<!--
+   A container for a group of definitions that perform the same work, but 
+   may do it differently on different operating systems.
+Attributes:
+   type - the fully qualified name of the java class that implements
+      the IPSProcess interface that must be used to handle this process.
+   
+   name - a unique name w/in the process definition file used to access the
+      command.
+-->
+<!ELEMENT PSXProcess (PSXProcessDef+)>
+<!ATTLIST PSXProcess
+   type CDATA #REQUIRED
+   name CDATA #REQUIRED
+   >
+
+<!--
+   One of these may be required for each operating system. The same def can
+   be used for multiple OS's, see the os attribute.
+Children:
+   dir - The working directory. This value is made available to the variable
+      resolvers as WORKING_DIR. If not supplied, the Rx installation directory
+      is used.
+   executable - 
+   params - the arguments to pass to the exe when it is started
+   env - settings for the environment in which the process will run
+   
+Attributes:
+   os - The name(s) of the operating systems under which this form of the
+      command will execute. Seperate multiple entries with commas. The allowed
+      values are win, solaris and linux.
+-->
+<!ELEMENT PSXProcessDef (dir?, executable, params?, env?)>
+<!ATTLIST PSXProcessDef
+   os CDATA #REQUIRED
+   >
+
+<!--
+   The container for environmental argument definitions.  Only the name and
+   value of the parameters are used, all other attributes are ignored.  If name
+   is not supplied, param is ignored
+-->
+<!ELEMENT env (PSXParam+)>
+
+<!--
+   The container for executable argument definitions.
+   Each PSXParam name and value is supplied as a seperate command parameter
+   when the command is executed. If a name or value is empty, it is not
+   included. The names and values are supplied to the executable in the same
+   order they appear in the document. 
+   All parameters in a group are placed together in a string seperated by 
+   spaces and provided to the executable as a single parameter.
+-->
+<!ELEMENT params ((PSXParam | group)+)>
+
+<!--
+   The element that allows to group one or more PSXParam elements.
+   This is primarily useful for unix systems where sometimes it
+   is needed to supply a set of parameters as one space separated
+   string; ie: sh -c "execd -cfg /home/exec.cfg etc."
+   So in effect, group element makes it possible to concatenate
+   or group multiple parameters and supply them as one string.
+   The group element has no attributes.
+-->
+<!ELEMENT group (PSXParam+)>
+
+<!--
+   The path (relative to the working directory) and executable name.
+Attributes:
+   resolver - the fully qualified name of the java class that implements
+      the IPSVariableResolver interface that must be used to handle this 
+      value. The content of the value attribute is passed to this class
+      before it is used to start the process. If not provided, the value
+      is used directly w/ no substitution.
+   value - the content for the path. Always use / for the path seperator.
+      If parameter substitution is required, the correct resolver must be 
+      specified.
+-->  
+<!ELEMENT executable EMPTY>
+<!ATTLIST executable
+   resolver CDATA #IMPLIED
+   value CDATA #REQUIRED
+   >
+ 
+<!--
+   The working directory for the process.
+Attributes:
+   resolver - the fully qualified name of the java class that implements
+      the IPSVariableResolver interface that must be used to handle this 
+      value. The content of the value attribute is passed to this class
+      before it is used to start the process. If not provided, the value
+      is used directly w/ no substitution.
+   value - the content for the working dir. Always use / for the path 
+      separator. If parameter substitution is required, the correct resolver 
+      must be specified.
+-->  
+<!ELEMENT dir EMPTY>
+<!ATTLIST dir
+   resolver CDATA #IMPLIED
+   value CDATA #REQUIRED
+   >
+
+<!--
+   A single parameter definition. 
+Attributes:
+   name - the name of the parameter.
+   resolver - the fully qualified name of the java class that implements
+      the IPSVariableResolver interface that must be used to handle this 
+      value. The content of the value attribute is passed to this class
+      before it is used to start the process. If not provided, the value
+      is used directly w/ no substitution.
+   value - The content for the parameter. If parameter substitution is 
+      required, the correct resolver must be specified.
+   ifDefined - Controls optional inclusion of the parameter.  If a variable is
+   	  defined whose name matches the value of this attribute, then this 
+   	  parameter is included, otherwise it is not.  The value of 
+   	  the variable may be null or empty, it only matters if it is defined.
+   separator - By default the name and value are space delimited and thus passed
+   	  as two separate parameters.  If this attribute is specified with a value
+   	  that is not empty after trimming, the name and value are concatenated
+   	  using the trimmed separator and passed as a single parameter. Ignored if
+   	  name is not supplied.
+-->  
+<!ELEMENT PSXParam EMPTY>
+<!ATTLIST PSXParam
+   name CDATA #IMPLIED
+   resolver CDATA #IMPLIED
+   value CDATA #IMPLIED
+   ifDefined CDATA #IMPLIED
+   separator CDATA #IMPLIED
+   >

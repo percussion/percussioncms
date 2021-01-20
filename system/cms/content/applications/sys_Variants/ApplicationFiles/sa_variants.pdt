@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT sa_variants (userstatusincludeurl, bannerurl, userstatusurl, bannerincludeurl, leftnavurl, pagename, sloturlbyname, rowkiller, contentlookupurl, category* )>
+<!ELEMENT category (categoryid, addvarianturl, copyvarianturl, categoryname, variant* )>
+<!ELEMENT variant (ID, editvarianturl, url, name, description, ss )>
+<!ELEMENT ss (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT editvarianturl (#PCDATA)>
+<!ELEMENT ID (#PCDATA)>
+<!ELEMENT categoryname (#PCDATA)>
+<!ELEMENT copyvarianturl (#PCDATA)>
+<!ELEMENT addvarianturl (#PCDATA)>
+<!ELEMENT categoryid (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT rowkiller (#PCDATA)>
+<!ELEMENT sloturlbyname (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT leftnavurl (#PCDATA)>
+<!ELEMENT bannerincludeurl (#PCDATA)>
+<!ELEMENT userstatusurl (#PCDATA)>
+<!ELEMENT bannerurl (#PCDATA)>
+<!ELEMENT userstatusincludeurl (#PCDATA)>

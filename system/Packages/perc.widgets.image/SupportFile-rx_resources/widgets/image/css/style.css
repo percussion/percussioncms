@@ -1,0 +1,197 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.image_asset_rotate_left {
+	background:transparent url(../images/rotate_left.png) no-repeat scroll 0 0;
+	border:medium none;
+	cursor:pointer;
+	height:28px;
+	width:28px;
+}
+.image_asset_rotate_right {
+	background:transparent url(../images/rotate_right.png) no-repeat scroll 0 0;
+	border:medium none;
+	cursor:pointer;
+	height:28px;
+	width:28px;
+}
+#image_asset_upload_container {
+	width:400px;
+}
+
+/* This is the full background panel of the custom control. */
+#imageWidgetPanel {
+	/* color to match background of containing editor */
+	background-color:#E6E6E9;
+	border: none;
+}
+
+input.image_asset_rotate_right, input.image_asset_upload_image,input.image_asset_next_image{
+	margin-left:5px;
+}
+.image_resize_wrapper {
+	float: left;
+	width:600px;
+}
+
+.image_asset_prop_wrapper {
+	float: left;
+	margin-top:-9px;
+}
+
+.image_asset_rotate {
+	width:600px;
+	border:1px solid white;
+	border-bottom:0px;
+	border-right:0px;
+	float:right;
+	text-align:right;
+	background-color:#E6E6E9;
+}
+
+
+.image_asset_navigation {
+	width:600px;
+	clear:both;
+}
+
+
+#image_asset_main_goto_thumb {
+	float: right;
+}
+#image_asset_thumb_change_photo {
+	float: right;
+}
+
+#imageWidgetPanel label {
+	font-size:0.8em;
+	font-weight:bold;
+	margin-bottom:0.2em;
+}
+label.error {
+	color:red;
+	font-size:0.8em;
+}
+.image_asset_image {
+	background-color:#FFFFFF;
+	height:435px;
+	margin-bottom:0.5em;
+	padding:0.1em 0.1em 0;
+	width:600px;
+}
+input.image_asset_upload_image {
+	float:none;
+
+}
+input.image_asset_height, input.image_asset_width {
+	margin-bottom:9px;
+	margin-top:0px;
+	width: 67px;
+}
+input[type="checkbox"].image_asset_constrain{
+	margin-bottom:9px;
+	margin-top:2px;
+}
+.image_asset_prop_wrapper td{
+	padding:0px;
+}
+
+td.image-checkbox{
+	padding:3px 0px 2px 0px;
+}
+
+
+/* Styles for Image widget */
+
+#perc-asset-browser-dialog-direc{
+	padding:7px;
+	background-color:#FFFFFF;
+	border: 1px inset #FFFFFF;
+	width:304px;
+}
+
+#perc-saveas-dialog-direc{
+	padding:7px;
+	background-color:#FFFFFF;
+	border: 1px inset #FFFFFF;
+}
+
+#perc-image-upload,#perc-image-resize,#perc-image-thumbnail {
+	font-size: 11px;
+	font-weight: normal;
+	color: #0099CC;
+	padding-left:25px;
+	padding-right:20px;
+	height:22px;
+	overflow:hidden;
+	vertical-align:top;
+	padding-top:2px;
+	background-image:url("../images/imageWidgetSteps.png");
+	background-repeat:no-repeat;
+}
+
+.perc-image-label {
+	font-size: 11px;
+	font-weight: normal;
+	color: #000000;
+}
+
+#perc-image-upload{
+	background-position: 0px -38px;
+}
+#perc-image-resize{
+	background-position: 0px -152px;
+
+}
+#perc-image-thumbnail{
+	background-position: 0px -76px;
+}
+
+#image_asset_upload_container{
+	width:500px;
+}
+
+.image-widget-step-header{
+	width:500px;
+	margin-bottom:17px;
+
+}
+#imageWidgetPanel label {
+	font-size: 11px;
+	font-weight:normal;
+	margin-bottom:0.2em;
+}
+.font_normal_07em_black{
+	font-weight:bold;
+	margin-bottom:17px;
+	font-size: 11px;
+	display:block;
+	color: #000000;
+}
+.image-widget-step-header table{
+	border-spacing:0px;
+}
+body * {
+	font-family: 'Open Sans', sans-serif;
+}

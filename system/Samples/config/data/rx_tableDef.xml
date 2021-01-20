@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DTD in Tools/TableFactory/dtd/tabledef.dtd -->
+<tables>
+   <table name="RXARTICLE">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="DISPLAYTITLE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="AUTHORNAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="BODYCONTENT">
+            <jdbctype>CLOB</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="BODYML">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="ABSTRACTCONTENT" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="VARIANT">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="KEYWORDS">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>
+   <table name="RXARTICLEWORD">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="DISPLAYTITLE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="AUTHORNAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="BODYCONTENT">
+            <jdbctype>CLOB</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="BODYML">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="ABSTRACTCONTENT" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="VARIANT">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="KEYWORDS">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="BODYSOURCE">
+            <jdbctype>BLOB</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="ENCODING">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FILENAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>
+   <table name="RXBRIEF">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="DISPLAYTITLE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="BODYCONTENT">
+            <jdbctype>CLOB</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="BODYML">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>
+   <table name="RXEXTERNAL">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+			<column name="ITEMURL" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>2100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="ITEMTEXT" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="DESCRIPTION" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>
+   <table name="RXFILE">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="DISPLAYTITLE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FILEDATA">
+            <jdbctype>BLOB</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="FILEDESCRIPTION" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="MIMETYPE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>128</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FILEEXTENSION">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>25</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="ICONSRC">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>128</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FILESIZE">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="ABSTRACTCONTENT" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FILENAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>
+   <table name="RXIMAGE">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="DISPLAYTITLE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="ABSTRACTCONTENT" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGDISPLAYTITLE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGDATA">
+            <jdbctype>BLOB</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGFILENAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGEXTENSION">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>20</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGFILESIZE">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGPUBPATH">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGMIMETYPE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>128</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGALIGN">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>25</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGWIDTH">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="IMGHEIGHT">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="THUMDATA">
+            <jdbctype>BLOB</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="THUMFILENAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="THUMEXTENSION">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>20</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="THUMFILESIZE">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="THUMPUBPATH">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="THUMMIMETYPE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>128</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="THUMALIGN">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>25</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="THUMWIDTH">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="THUMHEIGHT">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>
+   <table name="RXINDEXPAGE">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="DISPLAYTITLE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="ABSTRACTCONTENT" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="VARIANT">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FILENAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="QUERYURL" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>2100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>
+   <table name="RXPAGE">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="DISPLAYTITLE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="SOURCEURL" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="CONTENT">
+            <jdbctype>CLOB</jdbctype>
+            <size/>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="DESCRIPTION" limitSizeForIndex="n">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey name="PK_RXPAGE">
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>
+</tables>

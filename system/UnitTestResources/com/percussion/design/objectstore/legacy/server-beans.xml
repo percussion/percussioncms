@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE beans
+  PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean class="com.percussion.services.PSResourceHelper" id="dummy">
+	
+   </bean>
+   <bean class="com.percussion.services.general.impl.PSRhythmyxInfo" id="sys_rhythmyxinfo">
+		
+      <property name="bindings">
+			
+         <map>
+				
+            <entry key="UNIT_TESTING">
+					
+               <value>false</value>
+				
+            </entry>
+			
+         </map>
+		
+      </property>
+	
+   </bean>
+   <bean class="com.percussion.utils.jdbc.PSDatasourceResolver" id="sys_datasourceResolver">
+      <property name="repositoryDatasource" value="RhythmyxData"/>
+      <property name="datasourceConfigurations">
+         <list>
+            <bean class="com.percussion.utils.jdbc.PSDatasourceConfig" id="sys_RhythmyxData">
+               <property name="name" value="sys_RhythmyxData"/>
+               <property name="dataSource" value="jdbc/RhythmyxData"/>
+               <property name="database" value="rx60_1123_full"/>
+               <property name="origin" value="dbo"/>
+            </bean>
+            <bean class="com.percussion.utils.jdbc.PSDatasourceConfig" id="sys_RhythmyxData1">
+               <property name="name" value="sys_RhythmyxData1"/>
+               <property name="dataSource" value="jdbc/RhythmyxData"/>
+               <property name="database" value="rxcrimson_200509Q07"/>
+               <property name="origin" value="dbo"/>
+            </bean>
+            <bean class="com.percussion.utils.jdbc.PSDatasourceConfig" id="sys_RhythmyxData12">
+               <property name="name" value="sys_RhythmyxData12"/>
+               <property name="dataSource" value="jdbc/RhythmyxData"/>
+               <property name="database" value="rxcrimson_200509Q08"/>
+               <property name="origin" value="dbo"/>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   <bean class="com.percussion.services.datasource.PSHibernateDialectConfig" id="sys_hibernateDialects">
+		
+      <property name="dialects">
+			
+         <map>
+                <entry key="jtds:sqlserver">
+                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
+                </entry>
+                <entry key="inetdae7">
+                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
+                </entry>
+                <entry key="oracle:thin">
+                    <value>org.hibernate.dialect.OracleDialect</value>
+                </entry>
+                <entry key="db2">
+                    <value>org.hibernate.dialect.DB2Dialect</value>
+                </entry>
+			
+         </map>
+		
+      </property>		
+	
+   </bean>
+   <bean class="com.percussion.services.security.impl.PSRoleMgr" id="sys_roleMgr" singleton="true">
+      <property name="subjectCatalogers">
+         <list/>
+      </property>    
+      <property name="roleCatalogers">
+         <list/>
+      </property>          
+   </bean>
+</beans>

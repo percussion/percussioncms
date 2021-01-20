@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Processes>
+   <!--
+      Test cases
+   -->
+   <PSXProcess name="sindex_create" type="com.percussion.process.PSSimpleProcess">
+      <!-- C:\convera\rware70\bin\sindex -cfg c:\convera\rware70\rx\config\rware.cfg -library ce2 -new -create -->
+      <PSXProcessDef os="win, solaris, linux">
+         <executable value="sindex"/>
+         <params>
+            <PSXParam resolver="com.percussion.process.PSPathResolver" name="cfg" value="{WORKING_DIR}/config/rware.cfg"/>
+            <PSXParam resolver="com.percussion.process.PSBasicResolver" name="library" value="{RW_LIBRARY_NAME}"/>
+            <PSXParam name="new"/>
+            <PSXParam name="create"/>
+         </params>
+      </PSXProcessDef>
+   </PSXProcess>
+   
+   <PSXProcess name="dirlisting" type="com.percussion.process.PSSimpleProcess">
+      <PSXProcessDef os="win, solaris, linux">
+         <executable value="cmd"/>
+         <params>
+            <PSXParam name="/c" value="dir" />
+         </params>
+      </PSXProcessDef>
+   </PSXProcess>   
+</Processes>

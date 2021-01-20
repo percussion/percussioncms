@@ -1,0 +1,118 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+#perc-finder-listview .perc-datatable-column
+{
+    white-space : nowrap;
+}
+
+#perc-finder-listview .perc-datatable-columnrow {
+    text-align : left;
+    font-weight : normal;
+}
+
+#perc-finder-listview .perc-datatable-column {
+    border-bottom : 0px solid black !important;
+    border-top : 0px solid black !important;
+    border-right : 1px solid rgb(106,110,125) !important;
+    border-left : 0px solid black !important;
+    
+}
+
+.perc-fixedtableheader .sorting_asc,
+#perc-finder-listview .dataTables_wrapper .sorting_asc {
+    background-image: none !important;
+    font-style: italic;
+}
+
+.perc-fixedtableheader .sorting_desc,
+#perc-finder-listview .dataTables_wrapper .sorting_desc {
+    background-image: none !important;
+    font-style: italic;
+}
+
+.perc-fixedtableheader .sorting_asc .perc-sort,
+#perc-finder-listview .sorting_asc .perc-sort {
+    background: url("/cm/widgets/PercFinderListView/FinderSortingArrowUp.gif") no-repeat scroll 0 50% transparent !important;
+}
+
+.perc-fixedtableheader .sorting_desc .perc-sort,
+#perc-finder-listview .sorting_desc .perc-sort {
+    background: url("/cm/widgets/PercFinderListView/FinderSortingArrowDown.gif") no-repeat scroll 0 50% transparent !important;
+}
+
+.perc-fixedtableheader .perc-datatable-head-column,
+#perc-finder-listview .perc-datatable-head-column {
+    padding : 5px 10px !important;
+    cursor : pointer;
+    text-align : left !important;
+    color: #444444;
+    font-weight: normal;
+    font-size: 11px !important;
+    border-bottom : 0px solid black !important;
+    border-top : 0px solid black !important;
+    border-right : 1px solid rgb(106,110,125) !important;
+    border-left : 0px solid black !important;    
+}
+
+#perc-finder-listview .perc-datatable-columnrow span{
+    font-weight: bold;
+}
+
+#perc-finder-listview table.perc-datatable div.perc-first {
+    padding-top: 5px;
+}
+
+#perc-finder-listview .dataTables_empty {
+    border-bottom : none;
+}
+
+.perc-fixedtableheader .perc-datatable-head-row,
+#perc-finder-listview .perc-datatable-head-row {
+    border-bottom : 0px solid black !important;
+    border-top : 0px solid black !important;
+    border-left : 0px solid black !important;
+}
+
+#perc-finder-listview .perc-datatable-row {
+    border : 0px solid black !important;
+}
+
+#perc-finder-listview .perc-datatable-row-highlighted {
+    background-color: whitesmoke !important;
+}
+
+#perc-finder-listview .dataTables_wrapper table tr td.perc-first {
+    padding-left : 4px;
+}
+
+#perc-finder-listview span.perc-sort {
+    cursor : default;
+}
+
+body * {
+    font-family: 'Open Sans', sans-serif;
+}
+
+

@@ -1,0 +1,90 @@
+ ############################################################################
+ #
+ # $Id: package.nmk 1.1 2002/11/08 18:17:29Z JaySeletz Exp $
+ #
+ # Version Labels	: $Name: $
+ #
+ # Locked By		: $Locker: $
+ #
+ # Revision History:
+ #	$Log: package.nmk $
+ #	Revision 1.1  2002/11/08 18:17:29Z  JaySeletz
+ #	Initial revision
+ #	Revision 1.2  2002/10/14 17:53:47Z  yubingchen
+ #	Revision 1.1  2002/10/01 11:38:16Z  JaySeletz
+ #	Initial revision
+ #
+ ############################################################################
+
+PACKAGE=com.percussion.deployer.objectstore.idtypes
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+PSApplicationIdContextTest \
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES +=
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES =
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+   PSAppCEItemIdContext \
+   PSAppConditionalIdContext \
+   PSAppDataMappingIdContext \
+   PSAppDisplayMapperIdContext \
+   PSAppEntryIdContext \
+   PSAppExtensionCallIdContext \
+   PSAppExtensionParamIdContext \
+   PSAppIndexedItemIdContext \
+   PSApplicationIdContext \
+   PSApplicationIDContextFactory \
+   PSAppNamedItemIdContext \
+   PSAppUISetIdContext \
+   PSAppUrlRequestIdContext \
+   PSBindingIdContext \
+   PSBindingParamIdContext \
+   PSJexlBindings \
+   PSJexlBinding \
+
+#
+# Properties files
+#
+PROPERTIES =
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)
+
+all :
+	[-@
+	]

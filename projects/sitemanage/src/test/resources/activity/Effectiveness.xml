@@ -1,0 +1,78 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<Data>
+<!--
+Acceptable property values for the Settings of a Request:
+
+durationType - days, weeks, months, years
+duration - numeric value
+path - /Sites/ for all sites, /Sites/<your site name> for a particular site
+usage - pageviews, unique_pageviews
+threshold - numeric value
+-->
+	<Request>
+		<Settings>
+			<property name="durationType" value="days"/>
+			<property name="duration" value="5"/>
+			<property name="path" value="/Sites/"/>
+			<property name="usage" value="pageviews"/>
+			<property name="threshold" value="10"/>
+		</Settings>
+		<Response>
+			<Result>
+				<property name="effectiveness">
+					<pvalues>
+						<pair value1="Site1" value2="10"/>
+						<pair value1="Site2" value2="5"/>
+					</pvalues>
+				</property>
+			</Result>
+		</Response>
+	</Request>
+	<Request>
+		<Settings>
+			<property name="durationType" value="days"/>
+			<property name="duration" value="5"/>
+			<property name="path" value="/Sites/MySite.com"/>
+			<property name="usage" value="pageviews"/>
+			<property name="threshold" value="10"/>
+		</Settings>
+		<Response>
+			<Result>
+				<property name="effectiveness">
+					<pvalues>
+						<pair value1="Products" value2="100"/>
+						<pair value1="Services" value2="90"/>
+						<pair value1="About Us" value2="10"/>
+						<pair value1="News" value2="20"/>
+					</pvalues>
+				</property>
+			</Result>
+		</Response>
+	</Request>
+</Data>

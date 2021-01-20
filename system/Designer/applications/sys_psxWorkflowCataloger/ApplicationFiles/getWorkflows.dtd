@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXWorkflow (name, description?, administrator?, initial_state? )>
+<!ELEMENT initial_state (#PCDATA)>
+<!ELEMENT administrator (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST  PSXWorkflow id CDATA #REQUIRED>
+<!ELEMENT getWorkflows (PSXWorkflow* )>

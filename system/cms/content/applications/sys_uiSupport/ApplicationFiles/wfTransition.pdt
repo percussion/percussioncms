@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT wfTransition (fromRoles, transitionName, commentRequired, showAdhoc, redirectUrl, UserAgent )>
+<!ELEMENT UserAgent (#PCDATA)>
+<!ELEMENT redirectUrl (#PCDATA)>
+<!ELEMENT showAdhoc (#PCDATA)>
+<!ELEMENT commentRequired (#PCDATA)>
+<!ELEMENT transitionName (#PCDATA)>
+<!ELEMENT fromRoles (#PCDATA)>
+<!ATTLIST  wfTransition xml:lang CDATA #IMPLIED>

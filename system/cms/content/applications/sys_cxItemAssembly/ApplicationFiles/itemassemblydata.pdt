@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT itemassemblydata (label, contentid, revision, slotname )>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT revision (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT label (#PCDATA)>
+<!ATTLIST  itemassemblydata xml:lang CDATA #IMPLIED>

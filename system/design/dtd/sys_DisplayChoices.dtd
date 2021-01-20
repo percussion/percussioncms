@@ -1,0 +1,84 @@
+<?xml encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   File: sys_DisplayChoices.dtd
+
+   This DTD defines the stucture of the XML document that is
+   intended for presentation in the HTML elements that display
+   a list of choices for user to select from.
+-->
+
+<!-- Include the shared definitions -->
+<!ENTITY % BasicObjects SYSTEM "sys_BasicObjects.dtd">
+%BasicObjects;
+
+<!--
+   The style sheet must display these values in document order. If default
+   values are provided, the stylesheet can use them if it desires, but is not
+   required to.
+
+   Attributes:
+   href - If the output is a URL that the stylesheet will use to perform the
+      lookup, then this attribute will be set to the lookup location. If set,
+      the content is empty. If not set, there will be at least 1 DisplayEntry
+      element.
+-->
+<!ELEMENT DisplayChoices (DisplayEntry*)>
+<!ATTLIST DisplayChoices
+   href CDATA #IMPLIED
+>
+<!--
+   A single value in a list.
+
+   Attributes:
+   selected - Set to "yes" if the entry is selected, "no" otherwise.
+   sourceType - indicates where the definition of this DisplayEntry was
+      located. If a DispalyEntry is originally defined in the system def,
+      then overridden in the local def, this value will be sys_local.
+      This attribute is only provided for entries that were defined in
+      the def, not for those that were obtained via a lookup. Allowed
+      values are sys_local, sys_shared and sys_system.
+-->
+<!ELEMENT DisplayEntry (Value, DisplayLabel)>
+<!ATTLIST DisplayEntry
+   selected %Boolean; "no"
+   sourceType CDATA #IMPLIED
+>
+
+<!ELEMENT Value (#PCDATA)>
+
+<!--
+   Attributes:
+   sourceType - indicates where the definition of this DisplayLabel was
+      located. If a DisplayLabel is originally defined in the system def,
+      then overridden in the local def, this value will be sys_local.
+      This attribute will be present on all DisplayLabel elements passed to
+      controls. Allowed values are sys_local, sys_shared and sys_system.
+-->
+<!ELEMENT DisplayLabel (#PCDATA)>
+<!ATTLIST DisplayLabel
+   sourceType CDATA #IMPLIED
+>

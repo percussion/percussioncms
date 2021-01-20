@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonAddFileInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonAddFileInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonAddFileInactive-png\buttonAddFileInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_jquery-fileupload-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\js\jquery.fileupload.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_jquery-fileupload-js\jquery.fileupload.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancel-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonCancel.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancel-png\buttonCancel.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonBlueMinus-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonBlueMinus.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonBlueMinus-png\buttonBlueMinus.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonDeleteSmallOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonDeleteSmallOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonDeleteSmallOver-png\buttonDeleteSmallOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonClearAll-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonClearAll.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonClearAll-png\buttonClearAll.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonDeleteSmall-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonDeleteSmall.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonDeleteSmall-png\buttonDeleteSmall.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonBluePlusOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonBluePlusOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonBluePlusOver-png\buttonBluePlusOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonStartUploadOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonStartUploadOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonStartUploadOver-png\buttonStartUploadOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonStartUploadInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonStartUploadInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonStartUploadInactive-png\buttonStartUploadInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_expandable-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\expandable.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_expandable-gif\expandable.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelUploadInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonCancelUploadInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelUploadInactive-png\buttonCancelUploadInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonCancelInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelInactive-png\buttonCancelInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonAddFile-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonAddFile.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonAddFile-png\buttonAddFile.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonClearAllInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonClearAllInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonClearAllInactive-png\buttonClearAllInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_perc__bulk__file__upload__collapse-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\js\perc_bulk_file_upload_collapse.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_perc__bulk__file__upload__collapse-js\perc_bulk_file_upload_collapse.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonUploadInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonUploadInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonUploadInactive-png\buttonUploadInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelUploadOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonCancelUploadOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelUploadOver-png\buttonCancelUploadOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_vendor_jquery-ui-widget-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\js\vendor\jquery.ui.widget.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_vendor_jquery-ui-widget-js\jquery.ui.widget.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonCancelOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelOver-png\buttonCancelOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_gadgetIconBulkFileUpload-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\gadgetIconBulkFileUpload.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_gadgetIconBulkFileUpload-png\gadgetIconBulkFileUpload.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonBlueMinusOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonBlueMinusOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonBlueMinusOver-png\buttonBlueMinusOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_collapsable-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\collapsable.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_collapsable-gif\collapsable.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_perc__bulk__file__upload-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\js\perc_bulk_file_upload.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_perc__bulk__file__upload-js\perc_bulk_file_upload.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonAddFileOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonAddFileOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonAddFileOver-png\buttonAddFileOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonUpload-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonUpload.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonUpload-png\buttonUpload.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonBluePlus-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonBluePlus.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonBluePlus-png\buttonBluePlus.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_finderTreeBackground-jpg">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\finderTreeBackground.jpg</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_finderTreeBackground-jpg\finderTreeBackground.jpg</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonClearAllOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonClearAllOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonClearAllOver-png\buttonClearAllOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonUploadOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonUploadOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonUploadOver-png\buttonUploadOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_perc__bulk__file__upload__gadget-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\perc_bulk_file_upload_gadget.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_perc__bulk__file__upload__gadget-xml\perc_bulk_file_upload_gadget.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonStartUpload-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonStartUpload.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonStartUpload-png\buttonStartUpload.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_perc__bulk__file__upload__finder__tree-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\js\perc_bulk_file_upload_finder_tree.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_js_perc__bulk__file__upload__finder__tree-js\perc_bulk_file_upload_finder_tree.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_css_perc__bulk__file__upload-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\css\perc_bulk_file_upload.css</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_css_perc__bulk__file__upload-css\perc_bulk_file_upload.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_css_jquery-fileupload-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\css\jquery.fileupload.css</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_css_jquery-fileupload-css\jquery.fileupload.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelUpload-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\cm\gadgets\repository\perc_bulk_file_upload_gadget\images\buttonCancelUpload.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__bulk__file__upload__gadget_images_buttonCancelUpload-png\buttonCancelUpload.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xs:schema targetNamespace="urn:www.percussion.com/webservices/miscellaneous" xmlns:si="urn:www.percussion.com/webservices/standarditem" xmlns="urn:www.percussion.com/webservices/miscellaneous" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:com="urn:www.percussion.com/webservices/common" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="urn:www.percussion.com/webservices/common" schemaLocation="sys_Common.xsd"/>
+	<xs:import namespace="urn:www.percussion.com/webservices/standarditem" schemaLocation="sys_StandardItem.xsd"/>
+	<xs:element name="checkIn">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CheckInRequest">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="si:ContentKey"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CheckInResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="com:ResultResponse"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="checkOut">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CheckOutRequest">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="si:ContentKey"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CheckOutResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="com:ResultResponse"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="lockRevision">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="LockRevisionRequest">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="si:ContentKey"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LockRevisionResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="com:ResultResponse"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="login">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="LoginRequest">
+					<xs:annotation>
+						<xs:documentation>no parameters</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LoginResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="LoginData">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SessionId" type="xs:string"/>
+							<xs:element name="Communities" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Community" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="id" type="xs:positiveInteger"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Roles" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Role" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string"/>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Locales" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Locale" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="code" type="xs:string" use="required"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="defaultCommunityId" type="xs:int"/>
+						<xs:attribute name="defaultLocale" type="xs:string"/>
+						<xs:attribute name="hostUrl" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="logout">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="LogoutRequest">
+					<xs:annotation>
+						<xs:documentation>no parameters</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LogoutResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="com:ResultResponse"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="callDirect">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CallDirectRequest">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AppLocation" type="xs:string"/>
+							<xs:element name="Params" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Param" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="name" type="xs:string"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CallDirectResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:annotation>
+					<xs:documentation>Choice</xs:documentation>
+				</xs:annotation>
+				<xs:element name="XMLData" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>xs:any</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="com:ResultResponse" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

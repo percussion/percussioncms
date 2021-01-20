@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>  <item-filter id="1">
+    <guid>12806958-7-13</guid>
+    <description>FIlters out items that are not allowed for staging.</description>
+    <label>perc_staging</label>
+    <legacy-authtype-id>1</legacy-authtype-id>
+    <name>perc_staging</name>
+    <parent-filter-id/>
+    <rule-defs>
+      <rule-def id="2">
+        <filter idref="1"/>
+        <params/>
+        <rule-name>Java/global/percussion/itemfilter/perc_stagingFilter</rule-name>
+      </rule-def>
+    </rule-defs>
+  </item-filter>

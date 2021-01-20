@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>A binary image file used in Managed Navigation.</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>313</id>
+    <internal-name>percNavImage</internal-name>
+    <label>Nav Image</label>
+    <mandatory>false</mandatory>
+    <name>rx:percNavImage</name>
+    <new-request>../psx_cepercNavImage/percNavImage.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercNavImage/percNavImage.html</query-request>
+    <raw-content-type>313</raw-content-type>
+    <template-ids>
+      <template-id>0-4-550</template-id>
+      <template-id>0-4-515</template-id>
+      <template-id>0-4-517</template-id>
+      <template-id>0-4-516</template-id>
+    </template-ids>
+    <update-request/>
+    <workflow-ids>
+      <string>0-23-6</string>
+      <string>0-23-5</string>
+      <string>0-23-4</string>
+      <string>0-23-7</string>
+    </workflow-ids>
+  </node-definition>

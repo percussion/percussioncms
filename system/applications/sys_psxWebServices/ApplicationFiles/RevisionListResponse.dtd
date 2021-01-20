@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT RevisionList (Revision, Date, Username, Comment )>
+<!ELEMENT Comment (#PCDATA)>
+<!ELEMENT Username (#PCDATA)>
+<!ELEMENT Date (#PCDATA)>
+<!ELEMENT Revision (#PCDATA)>
+<!ELEMENT RevisionListResponse (RevisionList* )>

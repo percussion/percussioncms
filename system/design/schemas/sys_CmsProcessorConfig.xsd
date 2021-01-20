@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xs:element name="CmsComponents">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="CmsComponent" maxOccurs="unbounded">
+               <xs:annotation>
+                  <xs:documentation>If multiple elements have the same type and within those elements have the same Processor type, an error will occur. </xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="Properties" minOccurs="0">
+                        <xs:annotation>
+                           <xs:documentation>General properties will be overlaid to become part of the set of properties for each processor. If a specific processor property has the same name as a generic property, the specific property wins. Generic properties must use the Value node only. Custom properties are not allowed here.</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                           <xs:sequence>
+                              <xs:element ref="Property" minOccurs="0" maxOccurs="unbounded"/>
+                           </xs:sequence>
+                        </xs:complexType>
+                     </xs:element>
+                     <xs:element name="Processors">
+                        <xs:complexType>
+                           <xs:sequence>
+                              <xs:element name="Processor" maxOccurs="unbounded">
+                                 <xs:complexType>
+                                    <xs:sequence>
+                                       <xs:element ref="Property" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="type" use="required">
+                                       <xs:simpleType>
+                                          <xs:restriction base="xs:string">
+                                             <xs:minLength value="1"/>
+                                          </xs:restriction>
+                                       </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="className" use="required">
+                                       <xs:simpleType>
+                                          <xs:restriction base="xs:string">
+                                             <xs:minLength value="1"/>
+                                          </xs:restriction>
+                                       </xs:simpleType>
+                                    </xs:attribute>
+                                 </xs:complexType>
+                              </xs:element>
+                           </xs:sequence>
+                        </xs:complexType>
+                     </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="type" use="required">
+                     <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                           <xs:minLength value="1"/>
+                        </xs:restriction>
+                     </xs:simpleType>
+                  </xs:attribute>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Property">
+      <xs:annotation>
+         <xs:documentation>If multiple properties with the same name are found, an error will occur.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice>
+            <xs:any/>
+            <xs:element name="Value"/>
+         </xs:choice>
+         <xs:attribute name="name" use="required">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:attribute>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>

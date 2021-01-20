@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-125">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\Adhoc_Type.keyword</RxFile>
+         <ArchiveFile>Keyword-125\Adhoc_Type.keyword</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_blogIndexPage_images_widgetIconBlogEmpty-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\blogIndexPage\images\widgetIconBlogEmpty.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_blogIndexPage_images_widgetIconBlogEmpty-png\widgetIconBlogEmpty.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_blogIndexPage_images_iconBlog-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\blogIndexPage\images\iconBlog.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_blogIndexPage_images_iconBlog-gif\iconBlog.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_blogIndexPage_images_widgetIconBlogIndexOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\blogIndexPage\images\widgetIconBlogIndexOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_blogIndexPage_images_widgetIconBlogIndexOver-gif\widgetIconBlogIndexOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_blogIndexPage_images_widgetIconBlogIndex-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\blogIndexPage\images\widgetIconBlogIndex.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_blogIndexPage_images_widgetIconBlogIndex-gif\widgetIconBlogIndex.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percBlogIndexPage-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percBlogIndexPage.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percBlogIndexPage-xml\percBlogIndexPage.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-6502868081449107528">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percBlogIndexAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-6502868081449107528\percBlogIndexAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/blogIndexPageControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\blogIndexPageControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\blogIndexPageControl.xsl\blogIndexPageControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\blogIndexPageControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-348">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percBlogIndexAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-348\percBlogIndexAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percBlogIndexAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-348\percBlogIndexAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percBlogIndexAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-348\percBlogIndexAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percBlogIndexAsset(1).contentType</RxFile>
+         <ArchiveFile>ContentType-348\percBlogIndexAsset(1).contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percBlogIndexPage-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Resources\percBlogIndexPage.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percBlogIndexPage-xml\percBlogIndexPage.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_percBlogIndexPage_css_percBlogIndexPage-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\percBlogIndexPage\css\percBlogIndexPage.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_percBlogIndexPage_css_percBlogIndexPage-css\percBlogIndexPage.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/blogIndexPage/js/jquery.blogIndexPage.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\jquery.blogIndexPage.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\blogIndexPage\js\jquery.blogIndexPage.js\jquery.blogIndexPage.js</ArchiveFile>
+         <OriginalFile>widgets\blogIndexPage\js\jquery.blogIndexPage.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

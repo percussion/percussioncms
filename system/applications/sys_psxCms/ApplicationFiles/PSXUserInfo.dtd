@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXUserInfo (SessionId, UserName, CommunityId, Locale, Roles )>
+<!ELEMENT Role (#PCDATA)>
+<!ELEMENT Roles (Role+ )>
+<!ELEMENT Locale (#PCDATA)>
+<!ELEMENT CommunityId (#PCDATA)>
+<!ELEMENT UserName (#PCDATA)>
+<!ELEMENT SessionId (#PCDATA)>
+<!ATTLIST  PSXUserInfo SecurityProviderInstance CDATA #IMPLIED>
+<!ATTLIST  PSXUserInfo SecurityProviderTypeId CDATA #IMPLIED>
+<!ATTLIST  PSXUserInfo SecurityProvider CDATA #IMPLIED>

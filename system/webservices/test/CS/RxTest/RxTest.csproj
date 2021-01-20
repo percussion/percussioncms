@@ -1,0 +1,269 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B0777CD7-5C0E-4BBA-B10F-92C24950A5AB}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RxTest</RootNamespace>
+    <AssemblyName>RxTest</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PSAssemblyTestBase.cs" />
+    <Compile Include="PSAssemblyTestCase.cs" />
+    <Compile Include="PSContentTestBase.cs" />
+    <Compile Include="PSFaultFactory.cs" />
+    <Compile Include="PSSecurityTestBase.cs" />
+    <Compile Include="PSSecurityTestCase.cs" />
+    <Compile Include="PSSystemTestBase.cs" />
+    <Compile Include="PSSystemTestCase.cs" />
+    <Compile Include="PSUiTestBase.cs" />
+    <Compile Include="PSUiTestCase.cs" />
+    <Compile Include="RxTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="PSContentTestCase.cs" />
+    <Compile Include="PSFileUtils.cs" />
+    <Compile Include="PSWsUtils.cs" />
+    <Compile Include="Web References\RxWebServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="C:\dev\main\system\webservices\design\rhythmyx.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\RxWebServices\</RelPath>
+      <UpdateFromURL>C:\dev\main\system\webservices\design\rhythmyx.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>RxTest_WebReference_assembly</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\RxWebServices\AddFolderResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\assembly.wsdl" />
+    <None Include="Web References\RxWebServices\assembly.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\assemblyServices.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\BasicObjects.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\content.wsdl" />
+    <None Include="Web References\RxWebServices\content.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\ContentEditorLocalDef.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\ContentEditorSharedDef.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\ContentEditorSystemDef.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\contentServices.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\CreateRelationshipResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\faults.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\FilterByRuntimeVisibilityResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\FindDependentsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\FindFolderPathResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\FindOwnersResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\FindPathIdsResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\GetAllowedTransitionsResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\GetAssemblyUrlsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\LoginResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSAaRelationship1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSAction1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSAssemblyTemplate1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSAuditTrail1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSAutoTranslation1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSChildEntry1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSCommunity1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSContentTypeSummary1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSDisplayFormat1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSFolder1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSItem1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSItemStatus1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSItemSummary1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSKeyword1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSLocale1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSRelationship1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSRevisions1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSRole1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSSearchDef1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSSearchResults1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSTemplateSlot1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSViewDef1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\PSWorkflow1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\RxWebServices\RelationshipConfigSummary1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\rhythmyx.wsdl" />
+    <None Include="Web References\RxWebServices\SaveFoldersResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\SaveItemsResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\security.wsdl" />
+    <None Include="Web References\RxWebServices\security.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\securityServices.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\system.wsdl" />
+    <None Include="Web References\RxWebServices\system.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\systemServices.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\TransitionItemsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\RxWebServices\ui.wsdl" />
+    <None Include="Web References\RxWebServices\ui.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\RxWebServices\uiServices.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Loader.xml" />
+    <Content Include="LoaderData.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

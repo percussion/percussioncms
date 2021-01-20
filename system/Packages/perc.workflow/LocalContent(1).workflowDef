@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="ROLES">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="ROLEID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ROLENAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ROLEDESC">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>ROLEID</name>
+         <name>WORKFLOWAPPID</name>
+      </primarykey>
+      <indexdefinitions>
+         <index action="c" isUnique="n" name="IX_ROLES_WRK_NAME">
+            <name>WORKFLOWAPPID</name>
+            <name>ROLENAME</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table name="ROLES" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="ROLEID">1</column>
+         <column encoding="text" name="ROLENAME">Admin</column>
+         <column encoding="text" name="ROLEDESC"/>
+         <column encoding="text" name="WORKFLOWAPPID">7</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="ROLEID">2</column>
+         <column encoding="text" name="ROLENAME">Contributor</column>
+         <column encoding="text" name="ROLEDESC"/>
+         <column encoding="text" name="WORKFLOWAPPID">7</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="ROLEID">4</column>
+         <column encoding="text" name="ROLENAME">Designer</column>
+         <column encoding="text" name="ROLEDESC"/>
+         <column encoding="text" name="WORKFLOWAPPID">7</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="ROLEID">3</column>
+         <column encoding="text" name="ROLENAME">Editor</column>
+         <column encoding="text" name="ROLEDESC"/>
+         <column encoding="text" name="WORKFLOWAPPID">7</column>
+      </row>
+   </table>
+</PSXDependencyData>

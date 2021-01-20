@@ -1,0 +1,636 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+    <tx:annotation-driven transaction-manager="sys_transactionManager"/>
+
+    <context:component-scan base-package="com.percussion" use-default-filters="false">
+        <context:include-filter type="annotation" expression="com.percussion.util.PSBaseBean"/>
+        <context:exclude-filter type="annotation"
+                                expression="com.percussion.utils.annotations.IgnoreInWebAppSpringContext"/>
+
+    </context:component-scan>
+    <!--
+       <bean id="sys_guidmanager"
+             class="com.percussion.services.guidmgr.impl.PSGuidManager">
+          <property name="sessionFactory">
+             <ref bean="sys_sessionFactory" />
+          </property>
+       </bean>
+       -->
+    <!--
+       <bean id="sys_cmsObjectMgr"
+             class="com.percussion.services.legacy.impl.PSCmsObjectMgr">
+          <property name="sessionFactory">
+             <ref bean="sys_sessionFactory" />
+          </property>
+       </bean>
+    -->
+    <!--
+    <bean id="sys_aclService"
+          class="com.percussion.services.security.impl.PSAclService">
+       <property name="sessionFactory">
+          <ref bean="sys_sessionFactory" />
+       </property>
+       <property name="grantDefaultCommunityVisibility" value="true"/>
+    </bean>
+ -->
+
+    <bean id="sys_deployService"
+          class="com.percussion.deploy.services.impl.PSDeployService">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_loginMgr"
+          class="com.percussion.services.security.loginmods.impl.PSLoginMgr">
+    </bean>
+
+    <bean id="sys_contentManager"
+          class="com.percussion.services.contentmgr.impl.PSContentMgr">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="repository" ref="sys_legacyContentRepository"/>
+    </bean>
+
+    <!--
+    <bean id="sys_assemblyService"
+          class="com.percussion.services.assembly.impl.PSAssemblyService">
+       <property name="sessionFactory">
+          <ref bean="sys_sessionFactory" />
+       </property>
+       <property name="notificationService">
+          <ref bean="sys_notificationService" />
+       </property>
+       <property name="cache">
+          <ref bean="sys_cacheAccessor" />
+       </property>
+       <property name="configurationBean">
+          <ref bean="sys_beanConfiguration" />
+       </property>
+    </bean>
+ -->
+    <!--
+    <bean id="sys_assemblyWs"
+          class="com.percussion.webservices.assembly.impl.PSAssemblyWs">
+       <property name="sessionFactory">
+          <ref bean="sys_sessionFactory" />
+       </property>
+    </bean>
+ -->
+    <!--
+    <bean id="sys_assemblyDesignWs"
+          class="com.percussion.webservices.assembly.impl.PSAssemblyDesignWs">
+       <property name="sessionFactory">
+          <ref bean="sys_sessionFactory" />
+       </property>
+       <property name="cache">
+          <ref bean="sys_cacheAccessor" />
+       </property>
+    </bean>
+ -->
+    <bean id="sys_contentService"
+          class="com.percussion.services.content.impl.PSContentService">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_contentWs"
+          class="com.percussion.webservices.content.impl.PSContentWs">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_contentDesignWs"
+          class="com.percussion.webservices.content.impl.PSContentDesignWs">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="contentMgr" ref="sys_contentManager"/>
+    </bean>
+
+    <bean id="sys_publishingWs"
+          class="com.percussion.webservices.publishing.impl.PSPublishingWs">
+        <property name="filterSvc" ref="sys_filtermanager"/>
+        <property name="pubSvc" ref="sys_publisherservice"/>
+        <property name="siteMgr" ref="sys_sitemanager"/>
+        <property name="pubServerDao" ref="sys_pubserverdao"/>
+    </bean>
+
+    <bean id="sys_dbPubServerFileService"
+          class="com.percussion.services.pubserver.impl.PSDatabasePubServerFilesService"/>
+
+    <bean id="sys_securityWs"
+          class="com.percussion.webservices.security.impl.PSSecurityWs">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_securityDesignWs"
+          class="com.percussion.webservices.security.impl.PSSecurityDesignWs">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_systemWs"
+          class="com.percussion.webservices.system.impl.PSSystemWs">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_systemDesignWs"
+          class="com.percussion.webservices.system.impl.PSSystemDesignWs">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_workflowService"
+          class="com.percussion.services.workflow.impl.PSWorkflowService">
+        <constructor-arg type="com.percussion.services.memory.IPSCacheAccess" ref="sys_cacheAccessor"/>
+        <constructor-arg type="com.percussion.services.guidmgr.IPSGuidManager" ref="sys_guidmanager"/>
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_uiService"
+          class="com.percussion.services.ui.impl.PSUiService">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_uiWs"
+          class="com.percussion.webservices.ui.impl.PSUiWs">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_uiDesignWs"
+          class="com.percussion.webservices.ui.impl.PSUiDesignWs">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="cache" ref="sys_cacheAccessor"/>
+    </bean>
+
+    <!-- This bean creates its own session factory as it's configured -->
+    <bean id="sys_legacyContentRepository"
+          destroy-method="destroy"
+          class="com.percussion.services.contentmgr.impl.legacy.PSContentRepository">
+        <!-- While this is specified here, the actual manager will replace this
+           session factory -->
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="datasourceManager" ref="sys_datasourceManager"/>
+
+    </bean>
+
+    <bean id="sys_relationshipService"
+          class="com.percussion.services.relationship.impl.PSRelationshipService">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_filtermanager"
+          class="com.percussion.services.filter.impl.PSFilterManager">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_sitemanager"
+          class="com.percussion.services.sitemgr.impl.PSSiteManager">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="notifications" ref="sys_notificationService"/>
+        <property name="cache" ref="sys_cacheAccessor"/>
+    </bean>
+    <bean id="sys_searchindexqueue"
+          class="com.percussion.search.impl.PSSearchIndexQueue">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_pubserverdao"
+          class="com.percussion.services.pubserver.impl.PSPubServerDao">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_siteRenameListener"
+             class="com.percussion.services.siterename.impl.PSSiteRenameListener">
+      <constructor-arg ref="sys_notificationService" />
+      <constructor-arg ref="sys_deliveryInfoService" />
+   </bean>
+
+    <!-- Hibernate support beans -->
+    <bean id="sys_transactionManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_sessionFactory"
+          depends-on="sys_cacheManager"
+          class="com.percussion.services.datasource.PSSessionFactoryBean">
+
+        <property name="packagesToScan" value="com.percussion"/>
+
+        <!-- Uncomment for debugging hibernate events
+        <property name="interceptEvents">
+        <list>
+           <value>delete</value>
+           <value>persist</value>
+           <value>load</value>
+        </list>
+        </property>
+         -->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.current_session_context_class">
+                    org.springframework.orm.hibernate5.SpringSessionContext
+                </prop>
+                <prop key="spring.jpa.hibernate.naming.implicit-strategy">
+                    org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+                </prop>
+                <prop key="spring.jpa.hibernate.naming.physical-strategy">
+                    com.percussion.services.datasource.UpperCaseNamingStrategy
+                </prop>
+                <prop key="hibernate.implicit_naming_strategy">
+                    org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+                </prop>
+                <prop key="hibernate.physical_naming_strategy">
+                    com.percussion.services.datasource.UpperCaseNamingStrategy
+                </prop>
+                <prop key="hibernate.cache.region.factory_class">
+                    org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+                </prop>
+                <prop key="hibernate.cache.use_query_cache">
+                    true
+                </prop>
+                <prop key="hibernate.jdbc.batch_size">
+                    50
+                </prop>
+                <prop key="hibernate.show_sql">
+                    false
+                </prop>
+                <prop key="hibernate.generate_statistics">
+                    false
+                </prop>
+            </props>
+        </property>
+        <property name="datasourceManager" ref="sys_datasourceManager"/>
+        <property name="dialects" ref="sys_hibernateDialects"/>
+    </bean>
+
+    <bean id="sys_cacheManager"
+          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="shared" value="true"/>
+        <property name="cacheManagerName" value="sys_cacheManager"/>
+        <property name="configLocation" value="classpath:/ehcache.xml"/>
+    </bean>
+
+    <bean id="sys_datasourceManager"
+          class="com.percussion.services.datasource.impl.PSDatasourceManager">
+        <property name="defaultHibernateProperties">
+            <props>
+
+
+                <prop key="hibernate.current_session_context_class">
+                    org.springframework.orm.hibernate5.SpringSessionContext
+                </prop>
+
+
+                <prop key="spring.jpa.hibernate.naming.implicit-strategy">
+                    org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+                </prop>
+                <prop key="spring.jpa.hibernate.naming.physical-strategy">
+                    com.percussion.services.datasource.UpperCaseNamingStrategy
+                </prop>
+                <prop key="hibernate.implicit_naming_strategy">
+                    org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+                </prop>
+                <prop key="hibernate.physical_naming_strategy">
+                    com.percussion.services.datasource.UpperCaseNamingStrategy
+                </prop>
+                <prop key="hibernate.cache.region.factory_class">
+                    org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+                </prop>
+                <prop key="hibernate.cache.use_query_cache">
+                    true
+                </prop>
+                <prop key="hibernate.jdbc.batch_size">
+                    50
+                </prop>
+                <prop key="hibernate.show_sql">
+                    false
+                </prop>
+                <prop key="hibernate.generate_statistics">
+                    false
+                </prop>
+            </props>
+        </property>
+        <property name="dialectCfg" ref="sys_hibernateDialects"/>
+
+
+    </bean>
+
+    <bean id="sys_connectionHelper"
+          class="com.percussion.utils.jdbc.PSConnectionHelper"
+          factory-method="createInstance">
+        <constructor-arg ref="sys_datasourceManager"/>
+    </bean>
+    <!--
+       <bean id="sys_backEndRoleMgr"
+             class="com.percussion.services.security.impl.PSBackEndRoleMgr">
+          <property name="sessionFactory">
+             <ref bean="sys_sessionFactory" />
+          </property>
+       </bean>
+    -->
+    <!--
+    <bean id="sys_cacheAccessor"
+          class="com.percussion.services.memory.impl.PSEhCacheAccessor">
+       <property name="notificationService">
+          <ref bean="sys_notificationService"/>
+       </property>
+    </bean>
+ -->
+    <bean id="sys_lockingService"
+          class="com.percussion.services.locking.impl.PSObjectLockService">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_WebServiceSecurityInterceptor"
+          class="com.percussion.webservices.aop.security.PSSecurityInterceptor"/>
+
+    <bean id="sys_WebServiceSecurityClassFilter"
+          class="com.percussion.webservices.aop.security.PSSecurityClassFilter"/>
+
+    <bean id="sys_WebServiceSecurityAdvisor"
+          class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedNames">
+            <list>
+                <value>save*</value>
+                <value>load*</value>
+                <value>delete*</value>
+                <value>find*</value>
+            </list>
+        </property>
+        <property name="classFilter" ref="sys_WebServiceSecurityClassFilter"/>
+        <property name="advice" ref="sys_WebServiceSecurityInterceptor"/>
+    </bean>
+
+    <bean id="sys_autoProxyCreator"
+          class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+    <bean id="webServiceAuthorizationInterceptor"
+          class="com.percussion.webservices.aop.authorization.PSAuthorizationInterceptor"/>
+
+    <bean id="webServiceAuthorizationClassFilter"
+          class="com.percussion.webservices.aop.authorization.PSAuthorizationClassFilter"/>
+
+    <bean id="webServiceAuthorizationAdvisor"
+          class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedNames">
+            <list>
+                <value>create*</value>
+                <value>load*</value>
+                <value>delete*</value>
+                <value>save*</value>
+            </list>
+        </property>
+        <property name="classFilter" ref="webServiceAuthorizationClassFilter"/>
+        <property name="advice" ref="webServiceAuthorizationInterceptor"/>
+    </bean>
+
+    <bean id="sys_dataCollectionBean"
+          class="com.percussion.services.utils.orm.PSDataCollectionHelper">
+        <constructor-arg ref="sys_sessionFactory"/>
+    </bean>
+
+    <!--<bean id="sys_roleMgr"-->
+    <!--class="com.percussion.services.security.impl.PSRoleMgr">-->
+    <!--</bean>-->
+
+    <bean id="sys_notificationService"
+          class="com.percussion.services.notification.impl.PSNotificationService">
+    </bean>
+
+    <bean id="sys_messageQueueService"
+          class="com.percussion.services.notification.impl.PSMessageQueueService">
+        <property name="queueSender" ref="sys_notificationQueueSender"/>
+    </bean>
+
+    <bean id="sys_jmsConnectionFactory"
+          class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jms/ConnectionFactory"/>
+        <property name="lookupOnStartup" value="false"/>
+        <property name="cache" value="true"/>
+        <property name="proxyInterface" value="javax.jms.QueueConnectionFactory"/>
+    </bean>
+
+    <bean id="sys_crossSiteRemoveQL" class="com.percussion.services.touchitem.impl.PSCrossSiteRemoveQueueListener">
+        <property name="messageQueueService" ref="sys_messageQueueService"/>
+    </bean>
+    <bean id="sys_crossSiteMoveQL" class="com.percussion.services.touchitem.impl.PSCrossSiteMoveQueueListener">
+        <property name="messageQueueService" ref="sys_messageQueueService"/>
+    </bean>
+    <bean id="sys_touchItemQL" class="com.percussion.services.touchitem.impl.PSTouchItemQueueListener">
+        <property name="messageQueueService" ref="sys_messageQueueService"/>
+    </bean>
+    <!--
+       <bean id="sys_publisherservice"
+             class="com.percussion.services.publisher.impl.PSPublisherService" init-method="init">
+          <property name="sessionFactory">
+             <ref bean="sys_sessionFactory" />
+          </property>
+          <property name="configurationBean">
+             <ref bean="sys_beanConfiguration" />
+          </property>
+          <property name="rxpub">
+             <ref bean="sys_rxpublisherservice" />
+          </property>
+       </bean>
+    -->
+    <bean id="sys_rxpublisherservice"
+          class="com.percussion.rx.publisher.impl.PSRxPublisherService">
+        <property name="publishSenderFactory" ref="sys_publishQueueSenderFactory"/>
+        <property name="configurationBean" ref="sys_beanConfiguration"/>
+    </bean>
+
+
+    <bean id="sys_touchItemService"
+          class="com.percussion.services.touchitem.impl.PSTouchItemService">
+        <constructor-arg type="com.percussion.webservices.content.IPSContentWs" ref="sys_contentWs"/>
+        <constructor-arg type="com.percussion.services.guidmgr.IPSGuidManager" ref="sys_guidmanager"/>
+        <constructor-arg type="com.percussion.webservices.system.IPSSystemWs" ref="sys_systemWs"/>
+        <constructor-arg type="com.percussion.services.legacy.IPSCmsObjectMgr" ref="sys_cmsObjectMgr"/>
+        <constructor-arg type="com.percussion.fastforward.managednav.IPSManagedNavService" ref="sys_managedNavService"/>
+    </bean>
+
+    <bean id="sys_publishQueueSender"
+          class="com.percussion.services.jms.impl.PSQueueSender" scope="prototype">
+        <property name="connectionFactory" ref="sys_jmsConnectionFactory"/>
+        <property name="destination" ref="sys_publishQueueDestination"/>
+    </bean>
+
+    <bean id="sys_publishQueueSenderFactory"
+          class="org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean">
+        <property name="targetBeanName">
+            <idref bean="sys_publishQueueSender"/>
+        </property>
+    </bean>
+
+    <bean id="sys_emailQueueSender"
+          class="com.percussion.services.jms.impl.PSQueueSender">
+        <property name="connectionFactory" ref="sys_jmsConnectionFactory"/>
+        <property name="destination" ref="sys_emailQueueDestination"/>
+    </bean>
+
+    <bean id="sys_notificationQueueSender"
+          class="com.percussion.services.jms.impl.PSQueueSender">
+        <property name="connectionFactory" ref="sys_jmsConnectionFactory"/>
+        <property name="destination" ref="sys_notificationQueueDestination"/>
+    </bean>
+
+    <bean id="sys_systemService"
+          class="com.percussion.services.system.impl.PSSystemService">
+        <constructor-arg type="com.percussion.services.workflow.IPSWorkflowService" ref="sys_workflowService"/>
+        <constructor-arg type="com.percussion.services.guidmgr.IPSGuidManager" ref="sys_guidmanager"/>
+        <constructor-arg type="com.percussion.utils.jdbc.IPSDatasourceManager" ref="sys_datasourceManager"/>
+        <constructor-arg type="com.percussion.services.legacy.IPSCmsObjectMgr" ref="sys_cmsObjectMgr"/>
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="emailSender" ref="sys_emailQueueSender"/>
+    </bean>
+
+    <bean id="sys_emailQueueDestination"
+          class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/queue/emailQueue"/>
+        <property name="lookupOnStartup" value="false"/>
+        <property name="cache" value="true"/>
+        <property name="proxyInterface" value="javax.jms.Queue"/>
+    </bean>
+
+    <bean id="sys_notificationQueueDestination"
+          class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/queue/notificationQueue"/>
+        <property name="lookupOnStartup" value="false"/>
+        <property name="cache" value="true"/>
+        <property name="proxyInterface" value="javax.jms.Queue"/>
+    </bean>
+
+    <bean id="sys_publishQueueDestination"
+          class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/queue/publishQueue"/>
+        <property name="lookupOnStartup" value="false"/>
+        <property name="cache" value="true"/>
+        <property name="proxyInterface" value="javax.jms.Queue"/>
+    </bean>
+
+    <bean id="sys_managedNavService"
+          class="com.percussion.fastforward.managednav.PSManagedNavService">
+        <constructor-arg type="com.percussion.webservices.content.IPSContentWs" ref="sys_contentWs"/>
+        <constructor-arg type="com.percussion.webservices.content.IPSContentDesignWs" ref="sys_contentDesignWs"/>
+        <constructor-arg type="com.percussion.services.guidmgr.IPSGuidManager" ref="sys_guidmanager"/>
+        <constructor-arg type="com.percussion.services.assembly.IPSAssemblyService" ref="sys_assemblyService"/>
+        <constructor-arg type="com.percussion.services.legacy.IPSCmsObjectMgr" ref="sys_cmsObjectMgr"/>
+    </bean>
+
+    <bean id="sys_publishQueueListener"
+          class="com.percussion.rx.publisher.impl.PSPublishHandler">
+        <constructor-arg type="com.percussion.rx.publisher.IPSRxPublisherServiceInternal" ref="sys_rxpublisherservice"/>
+        <constructor-arg type="com.percussion.rx.delivery.IPSDeliveryManager" ref="sys_deliveryManager"/>
+    </bean>
+
+    <bean id="sys_designModelFactory"
+          class="com.percussion.rx.design.impl.PSDesignModelFactory">
+    </bean>
+
+    <bean id="sys_fileMonitorService"
+          class="com.percussion.services.notification.filemonitor.impl.PSFileMonitorService">
+    </bean>
+
+    <!--  Uncomment to add profiling to services, adjust the expression(s) to
+        customize what methods are hooked
+    <bean id="sys_profiler"
+        class="com.percussion.utils.timing.PSStopwatchStack" />
+     <aop:config>
+         <aop:aspect id="profilingAspect1" ref="sys_profiler">
+             <aop:pointcut id="serviceMethods1"
+                           expression="execution(* com.percussion.services..impl.*Service.*(..))"/>
+             <aop:around method="profile" pointcut-ref="serviceMethods1"/>
+         </aop:aspect>
+         <aop:aspect id="profilingAspect2" ref="sys_profiler">
+             <aop:pointcut id="serviceMethods2"
+                           expression="execution(* com.percussion.services..impl.*Mgr.*(..))"/>
+             <aop:around method="profile" pointcut-ref="serviceMethods2"/>
+         </aop:aspect>
+         <aop:aspect id="profilingAspect3" ref="sys_profiler">
+             <aop:pointcut id="serviceMethods3"
+                           expression="execution(* com.percussion.services..impl.*Manager.*(..))"/>
+             <aop:around method="profile" pointcut-ref="serviceMethods3"/>
+         </aop:aspect>
+     </aop:config>
+     -->
+
+    <bean id="sys_proxyConfigService"
+          class="com.percussion.proxyconfig.service.impl.PSProxyConfigService"
+    />
+
+    <bean id="sys_deliveryInfoService"
+          class="com.percussion.delivery.service.impl.PSDeliveryInfoService"
+    />
+    <bean id="sys_managedLinkDao" class="com.percussion.services.linkmanagement.impl.PSManagedLinkDao">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="guidManager" ref="sys_guidmanager"/>
+    </bean>
+
+
+    <bean id="sys_siteImportSummaryDao" class="com.percussion.services.siteimportsummary.impl.PSSiteImportSummaryDao">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="guidManager" ref="sys_guidmanager"/>
+    </bean>
+
+    <bean id="sys_userItemsDao" class="com.percussion.services.useritems.impl.PSUserItemsDao">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="guidManager" ref="sys_guidmanager"/>
+    </bean>
+
+    <bean id="sys_widgetBuilderDefinitionDao"
+          class="com.percussion.services.widgetbuilder.PSWidgetBuilderDefinitionDao">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="guidManager" ref="sys_guidmanager"/>
+    </bean>
+
+    <bean id="sys_i18nStartupManager" class="com.percussion.i18n.PSI18nStartupManager">
+        <property name="notificationService" ref="sys_notificationService"/>
+    </bean>
+
+    <bean id="sys_contentChangeService" class="com.percussion.services.contentchange.impl.PSContentChangeService">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="guidManager" ref="sys_guidmanager"/>
+        <property name="notificationService" ref="sys_notificationService"/>
+    </bean>
+
+    <bean id="sys_startupProcessManager" class="com.percussion.server.PSStartupProcessManager">
+        <property name="notificationService" ref="sys_notificationService"/>
+        <property name="propFilePath" value="rxconfig/Server/startupProcessManager.properties"/>
+    </bean>
+
+    <bean id="sys_purgeHelper" class="com.percussion.services.purge.impl.PSSqlPurgeHelper">
+        <property name="sessionFactory" ref="sys_sessionFactory"/>
+    </bean>
+
+    <bean id="sys_autotuneCache" class="com.percussion.server.cache.PSAutotuneCache">
+        <property name="cacheAccessor" ref="sys_cacheAccessor"/>
+    </bean>
+
+</beans>

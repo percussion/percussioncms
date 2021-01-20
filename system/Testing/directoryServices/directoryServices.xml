@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXServerConfiguration id="1">
+   <DirectoryServices>
+      <Directories>
+         <PSXDirectory catalog="shallow" name="Sun ONE - test/shallow">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=level_1c,ou=shallow,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <Attributes>
+               <Attribute name="mail"/>
+            </Attributes>
+         </PSXDirectory>
+         <PSXDirectory catalog="shallow" name="Sun ONE - test/passwordfilter">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE - passwordfilter" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=passwordfilter,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <Attributes>
+               <Attribute name="mail"/>
+            </Attributes>
+         </PSXDirectory>
+         <PSXDirectory catalog="deep" name="Sun ONE - test/deep">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=level_1a,ou=deep,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <Attributes>
+               <Attribute name="cn"/>
+               <Attribute name="givenname"/>
+               <Attribute name="sn"/>
+            </Attributes>
+         </PSXDirectory>
+         <PSXDirectory catalog="deep" name="Sun ONE - test/multiple 1">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=level_2e,ou=level_1e,ou=multiple,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <Attributes>
+               <Attribute name="givenname"/>
+               <Attribute name="cn"/>
+               <Attribute name="mail"/>
+            </Attributes>
+         </PSXDirectory>
+         <PSXDirectory catalog="shallow" name="Sun ONE - test/multiple 2">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=level_1f,ou=multiple,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <Attributes>
+               <Attribute name="givenname"/>
+               <Attribute name="sn"/>
+               <Attribute name="mail"/>
+            </Attributes>
+         </PSXDirectory>
+         <PSXDirectory catalog="deep" name="Sun ONE - test/groupstatic">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=groupstatic,ou=test,dc=percussion,dc=com</ProviderUrl>
+	         <groupProviders>
+	            <groupName>groupstatic</groupName>
+	         </groupProviders>
+         </PSXDirectory>
+         <PSXDirectory catalog="deep" name="Sun ONE - test/groupdynamic">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=groupdynamic,ou=test,dc=percussion,dc=com</ProviderUrl>
+	         <groupProviders>
+	            <groupName>groupdynamic</groupName>
+	         </groupProviders>
+         </PSXDirectory>
+         <PSXDirectory catalog="shallow" name="Sun ONE - test/backend">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=backend,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <Attributes>
+               <Attribute name="cn"/>
+               <Attribute name="givenname"/>
+               <Attribute name="sn"/>
+            </Attributes>
+         </PSXDirectory>
+         <PSXDirectory catalog="shallow" name="Sun ONE - test/backendroleprovider">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=backendroleprovider,ou=test,dc=percussion,dc=com</ProviderUrl>
+         </PSXDirectory>
+         <PSXDirectory catalog="deep" name="Sun ONE - test/groupnested">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=groupnested,ou=test,dc=percussion,dc=com</ProviderUrl>
+	         <groupProviders>
+	            <groupName>groupnested</groupName>
+	         </groupProviders>
+         </PSXDirectory>
+         <PSXDirectory catalog="deep" name="Sun ONE - test/performance">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=performance,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <Attributes>
+               <Attribute name="mail"/>
+            </Attributes>
+         </PSXDirectory>
+         <PSXDirectory catalog="shallow" name="Sun ONE - ui/bottomup/reference">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE - ui/bottomup/reference" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=uitest,ou=test,dc=percussion,dc=com</ProviderUrl>
+         </PSXDirectory>
+         <PSXDirectory catalog="deep" name="Sun ONE - ui/topdown/reference">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="Sun ONE - ui/topdown/reference" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://e2srv:390/ou=uitest,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <Attributes>
+               <Attribute name="cn"/>
+               <Attribute name="givenname"/>
+               <Attribute name="sn"/>
+            </Attributes>
+         </PSXDirectory>
+	      <GroupProviders>
+	         <PSXGroupProviderInstance classname="com.percussion.design.objectstore.PSJndiGroupProviderInstance" id="0" name="groupstatic" type="DirectoryConn">
+	            <PSXJnidGroupProviderInstance>
+	               <objectClasses>
+	                  <objectClass memberattr="member" name="group" type="static"/>
+	                  <objectClass memberattr="member" name="groupOfNames" type="static"/>
+	                  <objectClass memberattr="uniquemember" name="groupOfUniqueNames" type="static"/>
+	                  <objectClass memberattr="memberurl" name="groupOfUrls" type="dynamic"/>
+	               </objectClasses>
+	               <groupNodes>
+	                  <groupNode>ou=groupstatic,ou=test,dc=percussion,dc=com</groupNode>
+	               </groupNodes>
+	            </PSXJnidGroupProviderInstance>
+	         </PSXGroupProviderInstance>
+	         <PSXGroupProviderInstance classname="com.percussion.design.objectstore.PSJndiGroupProviderInstance" id="0" name="groupdynamic" type="DirectoryConn">
+	            <PSXJnidGroupProviderInstance>
+	               <objectClasses>
+	                  <objectClass memberattr="member" name="group" type="static"/>
+	                  <objectClass memberattr="member" name="groupOfNames" type="static"/>
+	                  <objectClass memberattr="uniquemember" name="groupOfUniqueNames" type="static"/>
+	                  <objectClass memberattr="memberurl" name="groupOfUrls" type="dynamic"/>
+	               </objectClasses>
+	               <groupNodes>
+	                  <groupNode>ou=groupdynamic,ou=test,dc=percussion,dc=com</groupNode>
+	               </groupNodes>
+	            </PSXJnidGroupProviderInstance>
+	         </PSXGroupProviderInstance>
+	         <PSXGroupProviderInstance classname="com.percussion.design.objectstore.PSJndiGroupProviderInstance" id="0" name="groupnested" type="DirectoryConn">
+	            <PSXJnidGroupProviderInstance>
+	               <objectClasses>
+	                  <objectClass memberattr="member" name="group" type="static"/>
+	                  <objectClass memberattr="member" name="groupOfNames" type="static"/>
+	                  <objectClass memberattr="uniquemember" name="groupOfUniqueNames" type="static"/>
+	                  <objectClass memberattr="memberurl" name="groupOfUrls" type="dynamic"/>
+	               </objectClasses>
+	               <groupNodes>
+	                  <groupNode>ou=groupnested,ou=test,dc=percussion,dc=com</groupNode>
+	               </groupNodes>
+	            </PSXJnidGroupProviderInstance>
+	         </PSXGroupProviderInstance>
+	      </GroupProviders>
+      </Directories>
+      <DirectorySets>
+         <PSXDirectorySet name="Sun ONE - test/shallow">
+            <PSXReference name="Sun ONE - test/shallow" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - test/multiple">
+            <PSXReference name="Sun ONE - test/multiple 1" type="com.percussion.design.objectstore.PSDirectory"/>
+            <PSXReference name="Sun ONE - test/multiple 2" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - test/passwordfilter">
+            <PSXReference name="Sun ONE - test/passwordfilter" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">cn</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - test/backend">
+            <PSXReference name="Sun ONE - test/backend" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - test/backendroleprovider">
+            <PSXReference name="Sun ONE - test/backendroleprovider" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName"/>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName"/>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - test/deep">
+            <PSXReference name="Sun ONE - test/deep" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - test/groupdynamic">
+            <PSXReference name="Sun ONE - test/groupdynamic" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName"/>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - test/groupnested">
+            <PSXReference name="Sun ONE - test/groupnested" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName"/>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - test/groupstatic">
+            <PSXReference name="Sun ONE - test/groupstatic" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName"/>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - test/performance">
+            <PSXReference name="Sun ONE - test/performance" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - ui/bottomup/reference">
+            <PSXReference name="Sun ONE - ui/bottomup/reference" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="Sun ONE - ui/topdown/reference">
+            <PSXReference name="Sun ONE - ui/topdown/reference" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+      </DirectorySets>
+   </DirectoryServices>
+</PSXServerConfiguration>

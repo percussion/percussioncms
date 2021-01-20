@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT extstatenotifs (newlink, componentname, statenotif* )>
+<!ELEMENT statenotif (notifid, subject, description, body, link, deletelink )>
+<!ELEMENT deletelink (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT body (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT subject (#PCDATA)>
+<!ELEMENT notifid (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT newlink (#PCDATA)>

@@ -1,0 +1,310 @@
+<!-- Build file for Rhythmyx development tools install -->
+<project name="Rhythmyx Development Tools" default="install" basedir="..">
+
+  <condition property="FF_TABLE_DATA_INSTALLED">
+    <PSFFTableDataInstallProdCondition/>
+  </condition>
+  
+  <condition property="VERSION_50_TO_61">
+    <PSVersionBuildNumberProdCondition
+            buildFrom="-1"
+            buildTo="-1"
+            majorVersionFrom="5"
+            majorVersionTo="6"
+            minorVersionFrom="0"
+            minorVersionTo="1"/>
+  </condition>
+
+  <!-- The main install target -->
+  <target name="install">
+    <if>
+      <equals arg1="${devtools.core}" arg2="yes"/>
+      <then>
+        <!-- Call Developer Tools Install Target -->
+        <antcall target="developerTools" inheritrefs="true"/>
+      </then>
+    </if>
+    <if>
+      <equals arg1="${devtools.doc}" arg2="yes"/>
+      <then>
+        <!-- Call Documentation Target -->
+        <antcall target="documentation" inheritrefs="true"/>
+      </then>
+    </if>
+  </target>
+
+  <!-- Developer Tools Install Sequence -->
+  <target name="developerTools">
+    <!-- Binaries -->
+    <mkdir dir="${install.bin}"/>
+    <PSCopy todir="${install.bin}">
+      <fileset dir="${nativedir}/prebuilt/windows">
+        <include name="PSODBC.DLL"/>
+        <include name="PSJNIUTIL.DLL"/>
+        <include name="PSJniRegistry.DLL"/>
+        <include name="PSInstaller.DLL"/>
+        <include name="DesignerUtil.DLL"/>
+      </fileset>
+    </PSCopy>
+    
+    <!-- Files w/o server -->
+    <if>
+      <equals arg1="${server}" arg2="no"/>
+      <then>
+        <mkdir dir="${install.dir}/lib"/>
+        <PSCopy todir="${install.dir}/lib" flatten="true">
+          <fileset dir="${libdir}">
+            <include name="psjniregistry.jar"/>
+            <include name="rhythmyx.jar"/>
+            <include name="percbeans.jar"/>
+            <include name="htmlConverter.jar"/>
+            <include name="rxclient.jar"/>
+			<include name="rxdeployer.jar"/>
+			<include name="pspackagerui.jar"/>
+            <include name="rxmisctools.jar"/>
+            <include name="rxtablefactory.jar"/>
+            <include name="help.jar"/>
+            <include name="serveruicomp.jar"/>
+            <include name="deployui.jar"/>
+            <include name="rxutils.jar"/>
+            <include name="rxservices.jar"/>
+          </fileset>
+          <fileset dir="${toolsdir}">
+            <include name="HTMLparser/lib/htmlparser.jar"/>
+            <include name="log4j/log4j.jar"/>
+            <include name="saxon/saxon.jar"/>
+            <include name="Tidy/9.0/jtidy-r938.jar"/>
+            <include name="JavaHelp/jh.jar"/>
+            <include name="regex/jakarta-oro-2.0.8.jar"/>
+			<include name="jndi/nis.jar"/>
+          </fileset>
+          <fileset dir="${toolsdir}/xerces" includes="xercesImpl.jar,xml-apis.jar"/>
+          <fileset dir="${toolsdir}/Commons">
+            <include name="commons-codec-1.11.jar"/>
+            <include name="commons-logging-1.1.1.jar"/>
+            <include name="commons-lang-2.4.jar"/>
+          </fileset>
+        </PSCopy>
+
+		<!-- Install the patch install toolkit -->
+		<PSInstallPatchToolkit/>
+      </then>
+    </if>
+	
+    
+	<!-- Always install these jars -->	
+	<mkdir dir="${install.dir}/lib"/>
+    <PSCopy todir="${install.dir}/lib" flatten="true">
+	  <fileset dir="${libdir}">
+	    <include name="pspackagerui.jar"/>
+      </fileset>
+	  <fileset dir="build/dist/Tools/thirdpartytools">
+		<include name="miglayout-3.6.3-swing.jar"/>
+		<include name="substance.jar"/>
+      </fileset>
+	</PSCopy>
+	
+    <!-- Server Page Tags -->
+    <PSUpgradeServerPageTags
+      serverPageTagsXmlE2FilePath="${htmlconverterdir}/config/serverPageTags.xml"
+      serverPageTagsXmlRxFilePath="rxconfig/XSplit/serverPageTags.xml"/>
+    <mkdir dir="${install.XSplit}"/>
+    <PSCopy tofile="${install.XSplit}/serverPageTags.xml" file="${htmlconverterdir}/config/serverPageTags.xml"
+      replaceType="never"/>
+    
+    <!-- Administration -->
+    <mkdir dir="${install.Administrator}"/>
+    <PSCopy todir="${install.Administrator}" file="${designerdir}/config/admin.properties"/>
+    <PSPropertySet
+      propertyFile="${install.Administrator}/admin.properties"
+      propertyName="installRoot"
+      propertyValue="${install.dir}"/>
+    <PSPropertySet
+      propertyFile="${install.Administrator}/admin.properties"
+      propertyName="docRoot"
+      propertyValue="${install.Docs}"/>
+      
+    <!-- Server Config -->
+    <mkdir dir="${install.Server}"/>
+    <PSCopy tofile="${install.Server}/csmaps.xml" file="${configdir}/csmaps.xml" replaceType="never"/>
+       
+    <!-- DTDs -->
+    <mkdir dir="${install.DTD}"/>
+    <PSCopy todir="${install.DTD}">
+      <fileset dir="${design.dtddir}"/>
+      <fileset dir="${basedir}/applications/DTD/ApplicationFiles"/>
+    </PSCopy>
+	
+    <!-- XSpLit Config  Files-->
+    <PSCopy todir="${install.XSplit}" replaceType="never">
+      <fileset dir="${htmlconverterdir}/config"/>
+    </PSCopy>
+        
+    <!-- sys-templates -->
+    <mkdir dir="${install.dir}/rx_ceTemplates"/>
+    <PSCopy todir="${install.dir}/rx_ceTemplates" file="${basedir}/../designer/ui/Designer/src/com/percussion/E2Designer/sys_Default.xml"/>
+    
+    <!-- MoveTemplates1 -->
+    <PSMoveTemplate template="Article"/>
+  
+    <!-- MoveTemplates2 -->
+    <PSMoveTemplate template="ArticleWord"/>
+    
+    <!-- MoveTemplates3 -->
+    <PSMoveTemplate template="Brief"/>
+    
+    <!-- MoveTemplates4 -->
+    <PSMoveTemplate template="ExternalURL"/>
+    
+    <!-- MoveTemplates5 -->
+    <PSMoveTemplate template="File"/>
+    
+    <!-- MoveTemplates6 -->
+    <PSMoveTemplate template="Image"/>
+    
+    <!-- MoveTemplates7 -->
+    <PSMoveTemplate template="Index"/>
+    
+    <!-- MoveTemplates8 -->
+    <PSMoveTemplate template="IndexAutomated"/>
+    
+    <!-- MoveTemplates9 -->
+    <if>
+      <available file="${install.dir}/sys_psxTemplates"/>
+      <then>
+        <move tofile="${install.dir}/rx_ceTemplates" file="${install.dir}/sys_psxTemplates"/>
+      </then>
+    </if>	
+	<!-- install SDK -->
+	<PSCopy todir="${install.dir}">
+	  <fileset dir="${basedir}/installResources/cm1sdk" excludes="**/docs/**,Widget_SDK.doc,Widget_Development_Quick_Start.doc"/>
+	</PSCopy>
+	<!-- Rename ServerRegistration.xml -->
+    <if>
+      <and>
+        <available file="${install.sys_msm}/client/ServerRegistration.xml"/>
+        <equals arg1="${install.type}" arg2="upgrade"/>
+      </and>
+      <then>
+        <move tofile="${install.sys_msm}/client/ServerRegistration.xml.bak" file="${install.sys_msm}/client/ServerRegistration.xml"/>
+      </then>
+    </if>
+    
+    <!-- Workbench Plugins -->
+    <PSCopy todir="${install.dir}">
+      <fileset dir="${basedir}/eclipse" includes="RhythmyxWorkbench.zip,RhythmyxWorkbenchHelp.zip,PackageInstallerHelp.zip,PackageBuilderHelp.zip"/>
+    </PSCopy>
+    
+    <!-- Delete Eclipse on Upgrade -->
+    <if>
+      <and>
+        <equals arg1="${install.type}" arg2="upgrade"/>
+        <available file="${install.dir}/eclipse"/>
+      </and>
+      <then>
+        <delete dir="${install.dir}/eclipse"/>
+      </then>      
+    </if>
+    
+    <!-- Extract Eclipse, Workbench Zip Files -->
+	<if>
+        <equals arg1="${os}" arg2="windows"/>
+		<then>
+          <unzip src="${releasedir}/eclipse/eclipse-minimal-WB.zip" dest="${install.dir}"/>
+          <unzip src="${install.dir}/RhythmyxWorkbench.zip" dest="${install.dir}/eclipse/plugins"/>
+		</then>
+	</if>
+	
+	<if>
+        <equals arg1="${os}" arg2="linux"/>
+		<then>
+          <mkdir dir="${install.dir}/plugins"/>		
+          <unzip src="${install.dir}/RhythmyxWorkbench.zip" dest="${install.dir}/plugins"/>
+		</then>
+	</if>
+		
+        
+    <!-- Extract Workbench Help Zip File -->
+    <if>
+      <available file="${install.dir}/RhythmyxWorkbenchHelp.zip"/>
+      <then>
+        <unzip src="${install.dir}/RhythmyxWorkbenchHelp.zip" dest="${install.dir}/eclipse/plugins"/>
+    
+        <!-- Add JavaDoc To Help Plugin -->
+	<PSCopy todir="${install.dir}/eclipse/plugins/com.percussion.doc.workbench/JavaDocs">
+	  <fileset dir="${basedir}/publicJavaDocs/docs"/>
+        </PSCopy>
+      </then>
+    </if>
+	
+	<if>
+      <available file="${install.dir}/PackageInstallerHelp.zip"/>
+      <then>
+        <unzip src="${install.dir}/PackageInstallerHelp.zip" dest="${install.dir}/eclipse/plugins"/>
+      </then>
+    </if>
+	
+	<if>
+      <available file="${install.dir}/PackageBuilderHelp.zip"/>
+      <then>
+        <unzip src="${install.dir}/PackageBuilderHelp.zip" dest="${install.dir}/eclipse/plugins"/>
+      </then>
+    </if>
+	
+	
+    <!-- Update Site Files -->
+    <mkdir dir="${install.dir}/updatesite"/>
+    <PSCopy todir="${install.dir}/updatesite">
+      <fileset dir="${basedir}/updatesite" excludes="Procedure.doc"/>
+    </PSCopy>
+    
+    <!-- .ja Files -->
+    <PSJaFiles/>
+       
+    <!-- Add PSUpgrade -->
+    <if>
+      <and>
+        <equals arg1="${install.type}" arg2="upgrade"/>
+        <isSet property="VERSION_50_TO_61"/>
+      </and>
+      <then>
+        <touch file="${install.dir}/eclipse/plugins/com.percussion.workbench_1.0.0/default-config/rxconfig/Workbench/psUpgrade"/>
+      </then>
+    </if>
+    
+    <!-- Update designer properties -->
+    <if>
+      <equals arg1="${install.type}" arg2="upgrade"/>
+      <then>
+        <PSCopyProperties
+          destPropertiesFile="eclipse/plugins/com.percussion.workbench_1.0.0/default-config/rxconfig/Workbench/designer.properties"
+          properties="last_server_opened,last_port_opened,last_user_name"
+          srcPropertiesFile="rxconfig/Workbench/designer.properties"/>
+      </then>
+    </if>    
+  </target>
+  
+  <!-- Developer Tools Documentation Sequence -->
+  <target name="documentation">
+	<!-- sdk docs -->
+	<PSCopy todir="${install.Docs}">
+      <fileset dir="${basedir}/installResources/cm1sdk/docs"/>
+    </PSCopy>
+  </target>
+      
+  <!--==========================================================-->
+  <!-- PSMoveTemplate                                           -->
+  <!--==========================================================-->
+  <macrodef name="PSMoveTemplate">
+    <attribute name="template" default=""/>
+    <sequential>
+      <if>
+        <available file="${install.dir}/sys_psxTemplates/sys_@{template}.xml"/>
+          <then>
+            <move tofile="${install.dir}/rx_ceTemplates/rx_@{template}.xml" file="${install.dir}/sys_psxTemplates/sys_@{template}.xml"/>
+          </then>
+      </if>
+    </sequential>
+  </macrodef>
+   
+</project>

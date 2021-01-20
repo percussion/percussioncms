@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>Title Widget</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>355</id>
+    <internal-name>percTitleAsset</internal-name>
+    <label>percTitleAsset</label>
+    <mandatory>false</mandatory>
+    <name>rx:percTitleAsset</name>
+    <new-request>../psx_cepercTitleAsset/percTitleAsset.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercTitleAsset/percTitleAsset.html</query-request>
+    <raw-content-type>355</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

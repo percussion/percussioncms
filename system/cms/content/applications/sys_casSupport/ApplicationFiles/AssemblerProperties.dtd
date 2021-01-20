@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Value EMPTY>
+<!ATTLIST  Value current CDATA #REQUIRED>
+<!ELEMENT Property (Value )>
+<!ATTLIST  Property name CDATA #REQUIRED>
+<!ELEMENT AssemblerProperties (Property* )>

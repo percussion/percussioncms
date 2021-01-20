@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="contentlist" context="global/percussion/system/" deprecated="no" handler="Java" name="perc_ResourceTemplateExpander" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Template expander that expands resources and pages.</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="className">com.percussion.pagemanagement.assembler.impl.PSResourceTemplateExpander</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.services.publisher.IPSTemplateExpander"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

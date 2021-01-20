@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT CopyCommunity (Community*, componentname, pagename, relatedlinks, RolesLookup )>
+<!ELEMENT RolesLookup (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT Community (UpdateLink, CommunityName )>
+<!ELEMENT CommunityName (#PCDATA)>
+<!ELEMENT UpdateLink (#PCDATA)>

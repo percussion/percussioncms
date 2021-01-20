@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT linkurl (#PCDATA)>
+<!ATTLIST  linkurl variantid CDATA #REQUIRED>
+<!ATTLIST  linkurl contentid CDATA #REQUIRED>
+<!ATTLIST  linkurl relateditemid CDATA #REQUIRED>
+<!ATTLIST  linkurl slotid CDATA #REQUIRED>
+<!ATTLIST  linkurl rxcontext CDATA #REQUIRED>
+<!ELEMENT casSupport (linkurl )>
+<!ATTLIST  casSupport contentid CDATA #REQUIRED>
+<!ATTLIST  casSupport authtype CDATA #REQUIRED>
+<!ATTLIST  casSupport siteid CDATA #REQUIRED>
+<!ATTLIST  casSupport rxcontext CDATA #REQUIRED>

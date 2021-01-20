@@ -1,0 +1,133 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+   xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+   <bean id="propertyPlaceholderProps"
+         class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
+      <property name="ignoreResourceNotFound" value="true" />
+      <property name="autoSecure" value="true" />
+      <property name="securedProperties">
+         <list>
+            <value>mongodb.password</value>
+         </list>
+      </property>
+      <property name="locations">
+         <!-- One or more locations of the property files. Properties with 
+            the same name override based on the order the file appears in the list last 
+            one defined wins -->
+         <list>
+            <value>/WEB-INF/test/perc-datasources.properties</value>
+            <value>perc-mongodb.properties</value>
+         </list>
+      </property>
+      <!-- Local properties to default to if no file exists or the properties 
+         do not exist in the file DO NOT USE THESE FOR PRODUCTION, put them in the 
+         properties file where the password will be encrypted -->
+      <property name="properties">
+         <props>
+            <!-- MongoDb -->
+            <prop key="mongo.url">mongodb://localhost:27017/?safe=true</prop>
+	        <prop key="mongo.username"></prop>
+	        <prop key="mongo.password"></prop>
+	        <prop key="mongo.db">delivery</prop>
+	        <prop key="tenant.cache.ttl">1440</prop>
+	        <prop key="tenant.cache.reauth">true</prop>
+	        <prop key="metrics.server">metrics.cloud.percussion.com</prop>
+	        <prop key="metrics.port">8125</prop>     
+         </props>
+      </property>
+   </bean>
+
+<bean id="propertyConfigurer"
+         class="com.percussion.delivery.utils.spring.PSPropertyPlaceholderConfigurer">
+      <property name="properties" ref="propertyPlaceholderProps" />
+      <property name="nullValue" value=""></property>
+   </bean>
+  
+    <bean class="com.mongodb.MongoURI" id="mongoUri">
+        <constructor-arg value="${mongo.url}"  />
+    </bean>
+
+    <bean id="mongo" class="com.mongodb.Mongo">
+        <constructor-arg ref="mongoUri" />
+    </bean>
+    
+     <bean id="morphia" class="com.percussion.delivery.multitenant.morphia.PSMultitenantMorphia" />
+   
+  <bean id="datastore" factory-bean="morphia" factory-method="createDatastore">
+      <constructor-arg index="0" ref="mongo" />
+      <constructor-arg index="1" value="${mongo.db}" type="java.lang.String" /> 
+      <constructor-arg index="2" value="${mongo.username}" type="java.lang.String" />
+      <constructor-arg index="3" value="${mongo.password}" />
+      <constructor-arg index="4" value="true" />      
+   </bean>   
+
+   
+   <bean id="pollsDao"
+         class="com.percussion.delivery.polls.service.mongodb.PSPollsDao">      
+      <constructor-arg ref="morphia"/>
+      <constructor-arg ref="datastore"/>
+   </bean> 
+    
+   <!-- Polls Service bean -->
+   <bean id="pollsService"
+      class="com.percussion.delivery.polls.services.impl.PSPollsService"
+      autowire="constructor">
+   </bean>
+
+   <bean id="pollRestService"
+      class="com.percussion.delivery.polls.services.PSPollsRestService">
+      <constructor-arg ref="pollsService" />
+   </bean>
+   
+    <!-- Handles Authorization of tenants to use the service.  -->
+   <bean id="authProvider" class="com.percussion.delivery.multitenant.PSTenantAuthorization">
+      <constructor-arg ref="morphia"/>
+      <constructor-arg ref="datastore"/>
+   </bean>
+     
+   <bean id="authCache" class="com.percussion.delivery.multitenant.PSSimpleTenantCache">
+   	<property name="MaxTTL" value="${tenant.cache.ttl}"/>
+    <property name="AuthorizationProvider" ref="authProvider" />
+    <property name="AuthorizeExpiredTTL" value="${tenant.cache.reauth}" />
+   </bean>
+   
+   <!--  Filters all requests to ensure tenants are authorized and that the tenant ID is added to the request context -->
+   <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
+   	<constructor-arg index="0" ref="authProvider" />
+   	<constructor-arg index="1" ref="authCache" />
+   </bean>
+   
+</beans>

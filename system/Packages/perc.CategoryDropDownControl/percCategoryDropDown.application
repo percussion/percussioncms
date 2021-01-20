@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXApplication active="no" appType="USER" enabled="yes" hidden="no" id="1127" startPriority="0" version="2.0">
+   <name>percCategoryDropDown</name>
+   <description/>
+   <requestRoot>percCategoryDropDown</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/_DEV_SPATEL2_1449107353067/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>Admin</agent>
+         <description>Saved</description>
+         <time>20151202T204940738</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="4">
+         <agent>Admin</agent>
+         <description>Renamed sys_categoryDropDown to percCategoryDropDown</description>
+         <time>20151208T124555223</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="user">
+         <name>Admin</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior/>
+   </PSXAcl>
+   <maxThreads>0</maxThreads>
+   <maxRequestTime>0</maxRequestTime>
+   <maxRequestsInQueue>0</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>0</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="10018">
+      <name>Dataset10008</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="10015">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="10011">
+            <PSXBackEndTable id="10010">
+               <alias>RXDUAL</alias>
+               <table>RXDUAL</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="10013" returnEmptyXml="no">
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>CategoryTree</name>
+               </PSXXmlField>
+               <PSXTextLiteral id="0">
+                  <text>RXDUAL.GB</text>
+               </PSXTextLiteral>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="10012" method="whereClause" unique="no">
+            <WhereClauses/>
+            <Sorting/>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="10016">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/extensions/general/sys_CategoryDropDown</name>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="10017">
+         <schemaSource>file:category.xml</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>sys_Lookup</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+   </PSXDataSet>
+   <PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+   <PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="locationX10018">400</userProperty>
+   <userProperty name="10010sizewidth">120</userProperty>
+   <userProperty name="locationX10017">346</userProperty>
+   <userProperty name="locationX10016">56</userProperty>
+   <userProperty name="locationX10015">11</userProperty>
+   <userProperty name="locationX10014">346</userProperty>
+   <userProperty name="locationX10013">211</userProperty>
+   <userProperty name="locationY10018">217</userProperty>
+   <userProperty name="locationX10012">77</userProperty>
+   <userProperty name="locationY10017">0</userProperty>
+   <userProperty name="locationX10011">0</userProperty>
+   <userProperty name="locationY10016">22</userProperty>
+   <userProperty name="locationY10015">10</userProperty>
+   <userProperty name="locationY10014">0</userProperty>
+   <userProperty name="locationY10013">24</userProperty>
+   <userProperty name="locationY10012">24</userProperty>
+   <userProperty name="locationY10011">0</userProperty>
+   <userProperty name="10010sizeheight">200</userProperty>
+   <userProperty name="10010locationy">20</userProperty>
+   <userProperty name="10010locationx">20</userProperty>
+   <userProperty name="pageDatatankSrcType10017">1</userProperty>
+   <userProperty name="10010readonly">true</userProperty>
+   <userProperty name="pageDatatankSrcType10014">1</userProperty>
+   <userProperty name="pageDatatankFilePath10017">C:\DevEnv\Installs\dev\rx_resources\category\category.xml</userProperty>
+   <userProperty name="pageDatatankFilePath10014">C:\DevEnv\Installs\dev\rx_resources\category\category.xml</userProperty>
+   <userProperty name="schemaSourceReadOnly10017">true</userProperty>
+   <userProperty name="schemaSourceReadOnly10014">true</userProperty>
+</PSXApplication>

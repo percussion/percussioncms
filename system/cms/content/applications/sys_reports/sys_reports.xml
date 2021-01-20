@@ -1,0 +1,1774 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXApplication active="no" appType="SYSTEM" enabled="yes" hidden="no" id="1095" startPriority="0" version="2.0">
+   <name>sys_reports</name>
+   <description/>
+   <requestRoot>sys_reports</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/_jbr_1126642388056/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20050913T161307962</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="66">
+         <agent>admin1</agent>
+         <description>Saved</description>
+         <time>20071211T163900244</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Report Admin</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>0</maxThreads>
+   <maxRequestTime>0</maxRequestTime>
+   <maxRequestsInQueue>0</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>0</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="197">
+      <name>CommunityContent</name>
+      <description>Gives the details of content by community.</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="1167">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="1162">
+            <PSXBackEndTable id="1157">
+               <alias>CONTENTTYPES</alias>
+               <table>CONTENTTYPES</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1158">
+               <alias>RXCOMMUNITY</alias>
+               <table>RXCOMMUNITY</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1159">
+               <alias>CONTENTSTATUS</alias>
+               <table>CONTENTSTATUS</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1160">
+               <alias>STATES</alias>
+               <table>STATES</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1161">
+               <alias>WORKFLOWAPPS</alias>
+               <table>WORKFLOWAPPS</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>STATES</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXCOMMUNITY</tableAlias>
+                     <column>COMMUNITYID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>COMMUNITYID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTTYPES</tableAlias>
+                     <column>CONTENTTYPEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTTYPEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTSTATEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>STATES</tableAlias>
+                     <column>STATEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>WORKFLOWAPPS</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="1165" returnEmptyXml="yes">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Community_Details/Content/Content_Id</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Community_Details/Content/Content_Id/@type</name>
+               </PSXXmlField>
+               <PSXTextLiteral id="0">
+                  <text>Number</text>
+               </PSXTextLiteral>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Community_Details/Content/Title</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>TITLE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="2" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Community_Details/Content/Community</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXCOMMUNITY</tableAlias>
+                  <column>NAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="3" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Community_Details/Content/Content_Type</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTTYPES</tableAlias>
+                  <column>CONTENTTYPENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="4" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Community_Details/Content/Workflow</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>WORKFLOWAPPS</tableAlias>
+                  <column>WORKFLOWAPPNAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="5" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Community_Details/Content/State</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>STATES</tableAlias>
+                  <column>STATENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Community_Details/Content/State_Entered_Date</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>STATEENTEREDDATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="1163" method="whereClause" unique="no">
+            <WhereClauses/>
+            <Sorting>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXCOMMUNITY</tableAlias>
+                     <column>NAME</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>STATES</tableAlias>
+                     <column>STATENAME</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTTYPES</tableAlias>
+                     <column>CONTENTTYPENAME</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+            </Sorting>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="195">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_emptyDoc</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>Content_Community_Details</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="196">
+         <schemaSource>file:CommunityContent.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>CommunityContent</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="202">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+      <PSXResultPager id="1164">
+         <maxRowsPerPage>-1</maxRowsPerPage>
+         <maxPages>-1</maxPages>
+         <maxPageLinks>10</maxPageLinks>
+      </PSXResultPager>
+   </PSXDataSet>
+   <PSXDataSet id="206">
+      <name>PubStatus</name>
+      <description>Gives the details of publishing status.</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="1823">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="1818">
+            <PSXBackEndTable id="1814">
+               <alias>CONTENTTYPES</alias>
+               <table>CONTENTTYPES</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1815">
+               <alias>RXCOMMUNITY</alias>
+               <table>RXCOMMUNITY</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1816">
+               <alias>PSX_PUBLICATION_DOC</alias>
+               <table>PSX_PUBLICATION_DOC</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1817">
+               <alias>CONTENTSTATUS</alias>
+               <table>CONTENTSTATUS</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                     <column>CONTENT_ID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXCOMMUNITY</tableAlias>
+                     <column>COMMUNITYID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>COMMUNITYID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTTYPES</tableAlias>
+                     <column>CONTENTTYPEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTTYPEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="1821" returnEmptyXml="yes">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Content_Id</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Content_Id/@type</name>
+               </PSXXmlField>
+               <PSXTextLiteral id="0">
+                  <text>Number</text>
+               </PSXTextLiteral>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Title</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>TITLE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="2" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Community</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXCOMMUNITY</tableAlias>
+                  <column>NAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="3" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Content_Type</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTTYPES</tableAlias>
+                  <column>CONTENTTYPENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="4" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Pub_Status</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                  <column>STATUS</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="4" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Pub_Date</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                  <column>PUBLISHING_DATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="4" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Location</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                  <column>LOCATION</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="4" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Publish_Status_Id</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                  <column>STATUS_ID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="4" id="0">
+               <PSXXmlField id="0">
+                  <name>Publish_Status_Details/Status/Publish_Status_Id/@type</name>
+               </PSXXmlField>
+               <PSXTextLiteral id="0">
+                  <text>Number</text>
+               </PSXTextLiteral>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="1819" method="whereClause" unique="no">
+            <WhereClauses>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                           <column>STATUS_ID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>IN</operator>
+                     <value>
+                        <PSXFunctionCall id="0">
+                           <name>IN-NUMBER</name>
+                           <PSXFunctionParamValue id="0">
+                              <value>
+                                 <PSXHtmlParameter id="0">
+                                    <name>pubstatusids</name>
+                                 </PSXHtmlParameter>
+                              </value>
+                           </PSXFunctionParamValue>
+                           <PSXFunctionParamValue id="0">
+                              <value>
+                                 <PSXTextLiteral id="0">
+                                    <text>0</text>
+                                 </PSXTextLiteral>
+                              </value>
+                           </PSXFunctionParamValue>
+                        </PSXFunctionCall>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </WhereClauses>
+            <Sorting>
+               <PSXSortedColumn id="0" isAscending="no">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                     <column>STATUS_ID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                     <column>STATUS</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+            </Sorting>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <InputDataExits>
+            <PSXExtensionCallSet id="203">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/extensions/general/sys_SetArrayHtmlParameter</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>pubstatusids</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>sys_reports/PubStatusIds</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>Status</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>3</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </InputDataExits>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="204">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_emptyDoc</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>Publish_Status_Details</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="205">
+         <schemaSource>file:PubStatus.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>PubStatus</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="202">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+      <PSXResultPager id="1820">
+         <maxRowsPerPage>-1</maxRowsPerPage>
+         <maxPages>-1</maxPages>
+         <maxPageLinks>10</maxPageLinks>
+      </PSXResultPager>
+   </PSXDataSet>
+   <PSXDataSet id="209">
+      <name>StaleContent</name>
+      <description>Gives the details of content that has not been modified for last seven days.</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="1187">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="1182">
+            <PSXBackEndTable id="1178">
+               <alias>CONTENTSTATUS</alias>
+               <table>CONTENTSTATUS</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1179">
+               <alias>RXCOMMUNITY</alias>
+               <table>RXCOMMUNITY</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1180">
+               <alias>CONTENTTYPES</alias>
+               <table>CONTENTTYPES</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="1181">
+               <alias>STATES</alias>
+               <table>STATES</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXCOMMUNITY</tableAlias>
+                     <column>COMMUNITYID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>COMMUNITYID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>STATES</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTSTATEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>STATES</tableAlias>
+                     <column>STATEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTTYPES</tableAlias>
+                     <column>CONTENTTYPEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTTYPEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="1185" returnEmptyXml="yes">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Content_Id</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Content_Id/@type</name>
+               </PSXXmlField>
+               <PSXTextLiteral id="0">
+                  <text>Number</text>
+               </PSXTextLiteral>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Title</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>TITLE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Untouched_Days</name>
+               </PSXXmlField>
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/generic/sys_DateDifference</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CONTENTSTATUS</tableAlias>
+                           <column>CONTENTLASTMODIFIEDDATE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Untouched_Days/@type</name>
+               </PSXXmlField>
+               <PSXTextLiteral id="0">
+                  <text>Number</text>
+               </PSXTextLiteral>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="2" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Community</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXCOMMUNITY</tableAlias>
+                  <column>NAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="3" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Content_Type</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTTYPES</tableAlias>
+                  <column>CONTENTTYPENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="4" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/State</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>STATES</tableAlias>
+                  <column>STATENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="5" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Last_Modified_Date</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTLASTMODIFIEDDATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="5" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Checked_out_User</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTCHECKOUTUSERNAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="5" id="0">
+               <PSXXmlField id="0">
+                  <name>Stale_Content/Content/Creator</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTCREATEDBY</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="1183" method="whereClause" unique="yes">
+            <WhereClauses>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CONTENTSTATUS</tableAlias>
+                           <column>OBJECTTYPE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXNumericLiteral id="0">
+                           <number>1</number>
+                           <format>#,##0.###</format>
+                        </PSXNumericLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>STATES</tableAlias>
+                           <column>STATENAME</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>&lt;&gt;</operator>
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>Public</text>
+                        </PSXTextLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+               <PSXWhereClause id="0" omitWhenNull="yes">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXFunctionCall id="0">
+                           <name>DAYSFROMDATE</name>
+                           <PSXFunctionParamValue id="0">
+                              <value>
+                                 <PSXBackEndColumn id="0">
+                                    <tableAlias>CONTENTSTATUS</tableAlias>
+                                    <column>CONTENTLASTMODIFIEDDATE</column>
+                                    <columnAlias/>
+                                 </PSXBackEndColumn>
+                              </value>
+                           </PSXFunctionParamValue>
+                        </PSXFunctionCall>
+                     </variable>
+                     <operator>&gt;</operator>
+                     <value>
+                        <PSXFunctionCall id="0">
+                           <name>CHAR_TO_INT</name>
+                           <PSXFunctionParamValue id="0">
+                              <value>
+                                 <PSXSingleHtmlParameter id="0">
+                                    <name>daysuntouched</name>
+                                 </PSXSingleHtmlParameter>
+                              </value>
+                           </PSXFunctionParamValue>
+                        </PSXFunctionCall>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </WhereClauses>
+            <Sorting>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTLASTMODIFIEDDATE</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+            </Sorting>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="207">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_emptyDoc</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>Stale_Content</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="208">
+         <schemaSource>file:StaleContent.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>StaleContent</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="202">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+      <PSXResultPager id="1184">
+         <maxRowsPerPage>-1</maxRowsPerPage>
+         <maxPages>-1</maxPages>
+         <maxPageLinks>10</maxPageLinks>
+      </PSXResultPager>
+   </PSXDataSet>
+   <PSXDataSet id="212">
+      <name>ContentStats</name>
+      <description>Gives the details of content state.</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="834">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="829">
+            <PSXBackEndTable id="824">
+               <alias>RXCOMMUNITY</alias>
+               <table>RXCOMMUNITY</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="825">
+               <alias>WORKFLOWAPPS</alias>
+               <table>WORKFLOWAPPS</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="826">
+               <alias>CONTENTTYPES</alias>
+               <table>CONTENTTYPES</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="827">
+               <alias>STATES</alias>
+               <table>STATES</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="828">
+               <alias>CONTENTSTATUS</alias>
+               <table>CONTENTSTATUS</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTTYPES</tableAlias>
+                     <column>CONTENTTYPEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTTYPEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>WORKFLOWAPPS</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXCOMMUNITY</tableAlias>
+                     <column>COMMUNITYID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>COMMUNITYID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>WORKFLOWAPPS</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>STATES</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTSTATEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>STATES</tableAlias>
+                     <column>STATEID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>STATES</tableAlias>
+                     <column>WORKFLOWAPPID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="832" returnEmptyXml="yes">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Content_Id</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Content_Id/@type</name>
+               </PSXXmlField>
+               <PSXTextLiteral id="0">
+                  <text>Number</text>
+               </PSXTextLiteral>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Title</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>TITLE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="2" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Community</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXCOMMUNITY</tableAlias>
+                  <column>NAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="3" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Content_Type</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTTYPES</tableAlias>
+                  <column>CONTENTTYPENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="4" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Workflow</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>WORKFLOWAPPS</tableAlias>
+                  <column>WORKFLOWAPPNAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="5" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/State</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>STATES</tableAlias>
+                  <column>STATENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Creation_Date</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTCREATEDDATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Creator</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTCREATEDBY</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Content_Checked_out_to</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTCHECKOUTUSERNAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Last_Modifier</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTLASTMODIFIER</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Current_State_Entry_Date</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>STATEENTEREDDATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Last_Transition_Date</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>LASTTRANSITIONDATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Aging_Date</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>NEXTAGINGDATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Go_Live_Date</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTSTARTDATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Expiry_Date</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CONTENTEXPIRYDATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Current_Revision</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>CONTENTSTATUS</tableAlias>
+                  <column>CURRENTREVISION</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="6" id="0">
+               <PSXXmlField id="0">
+                  <name>Content_Inventory_Details/Content/Current_Revision/@type</name>
+               </PSXXmlField>
+               <PSXTextLiteral id="0">
+                  <text>Number</text>
+               </PSXTextLiteral>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="830" method="whereClause" unique="no">
+            <WhereClauses/>
+            <Sorting>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+            </Sorting>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="210">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_emptyDoc</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>Content_Inventory_Details</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="211">
+         <schemaSource>file:ContentStats.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>ContentStats</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="202">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+      <PSXResultPager id="831">
+         <maxRowsPerPage>-1</maxRowsPerPage>
+         <maxPages>-1</maxPages>
+         <maxPageLinks>10</maxPageLinks>
+      </PSXResultPager>
+   </PSXDataSet>
+   <PSXDataSet id="215">
+      <name>PubTimeStatistics</name>
+      <description>Retrieves the statistics of publishing time for all published editions. This is used for SQLServer, Oracle and DB2</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="1479">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="1475">
+            <PSXBackEndTable id="1474">
+               <alias>RXDUAL</alias>
+               <table>RXDUAL</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="1477" returnEmptyXml="no">
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>Publishing_Time_Statistics/Publishing_Time_Statistic/Publish_Status_Id</name>
+               </PSXXmlField>
+               <PSXSingleHtmlParameter id="0">
+                  <name>sys_pubstatusid</name>
+               </PSXSingleHtmlParameter>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="1476" method="nativeStatement" unique="no">
+            <WhereClauses/>
+            <Sorting/>
+            <nativeStatement>SELECT STATUS_ID PUB_STATUS_ID, CONTENTTYPENAME CONTENT_TYPE, 
+        NAME VARIANT, STATUS STATUS, 
+	AVG(ELAPSED) AVG_TIME, MIN(ELAPSED) MIN_TIME, MAX(ELAPSED) MAX_TIME,
+        SUM(ELAPSED) TOTAL_TIME, COUNT(*) NUM_ITEMS 
+FROM PSX_PUBLICATION_DOC, CONTENTSTATUS, CONTENTTYPES, PSX_TEMPLATE
+WHERE PSX_PUBLICATION_DOC.TEMPLATE_ID IS NOT NULL AND 
+        PSX_PUBLICATION_DOC.ELAPSED IS NOT NULL AND
+        PSX_PUBLICATION_DOC.CONTENT_ID=CONTENTSTATUS.CONTENTID AND 
+	CONTENTSTATUS.CONTENTTYPEID=CONTENTTYPES.CONTENTTYPEID AND
+	PSX_PUBLICATION_DOC.TEMPLATE_ID=PSX_TEMPLATE.TEMPLATE_ID
+GROUP BY PSX_PUBLICATION_DOC.STATUS_ID, CONTENTTYPES.CONTENTTYPENAME, 
+         PSX_TEMPLATE.NAME, PSX_PUBLICATION_DOC.STATUS
+</nativeStatement>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="213">
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="214">
+         <schemaSource>file:PubTimeStatistics.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>PubTimeStatistics</requestPage>
+         <SelectionParams>
+            <PSXConditional id="0">
+               <variable>
+                  <PSXSingleHtmlParameter id="0">
+                     <name>sys_pubstatusid</name>
+                  </PSXSingleHtmlParameter>
+               </variable>
+               <operator>IS NULL</operator>
+               <boolean>AND</boolean>
+            </PSXConditional>
+         </SelectionParams>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="217">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXDataSet id="220">
+      <name>PubTimeStatisticsWithSpecifiedPubStatusIds</name>
+      <description>Retrieves the statistics of publishing time for a set of specified published status ids. This is used for SQLServer, Oracle and DB2</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="194">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="190">
+            <PSXBackEndTable id="189">
+               <alias>RXDUAL</alias>
+               <table>RXDUAL</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="192" returnEmptyXml="no">
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>Publishing_Time_Statistics/Publishing_Time_Statistic/Publish_Status_Id</name>
+               </PSXXmlField>
+               <PSXSingleHtmlParameter id="0">
+                  <name>sys_pubstatusid</name>
+               </PSXSingleHtmlParameter>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="191" method="nativeStatement" unique="no">
+            <WhereClauses/>
+            <Sorting/>
+            <nativeStatement>SELECT STATUS_ID PUB_STATUS_ID, CONTENTTYPENAME CONTENT_TYPE, 
+        NAME VARIANT, STATUS STATUS, 
+	AVG(ELAPSED) AVG_TIME, MIN(ELAPSED) MIN_TIME, MAX(ELAPSED) MAX_TIME,
+        SUM(ELAPSED) TOTAL_TIME, COUNT(*) NUM_ITEMS 
+FROM PSX_PUBLICATION_DOC, CONTENTSTATUS, CONTENTTYPES, PSX_TEMPLATE
+WHERE PSX_PUBLICATION_DOC.TEMPLATE_ID IS NOT NULL AND 
+        PSX_PUBLICATION_DOC.ELAPSED IS NOT NULL AND
+        PSX_PUBLICATION_DOC.STATUS_ID IN (:"PSXSingleParam/sys_pubstatusid") AND
+        PSX_PUBLICATION_DOC.CONTENT_ID=CONTENTSTATUS.CONTENTID AND 
+	CONTENTSTATUS.CONTENTTYPEID=CONTENTTYPES.CONTENTTYPEID AND
+	PSX_PUBLICATION_DOC.TEMPLATE_ID=PSX_TEMPLATE.TEMPLATE_ID
+GROUP BY PSX_PUBLICATION_DOC.STATUS_ID, CONTENTTYPES.CONTENTTYPENAME, PSX_TEMPLATE.NAME, PSX_PUBLICATION_DOC.STATUS
+</nativeStatement>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="218">
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="219">
+         <schemaSource>file:PubTimeStatistics.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>PubTimeStatistics</requestPage>
+         <SelectionParams>
+            <PSXConditional id="0">
+               <variable>
+                  <PSXSingleHtmlParameter id="0">
+                     <name>sys_pubstatusid</name>
+                  </PSXSingleHtmlParameter>
+               </variable>
+               <operator>IS NOT NULL</operator>
+               <boolean>AND</boolean>
+            </PSXConditional>
+         </SelectionParams>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="217">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXDataSet id="223">
+      <name>PubStatusIds</name>
+      <description>Gives the details of publishing status ids.</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="1830">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="1825">
+            <PSXBackEndTable id="1824">
+               <alias>PSX_PUBLICATION_DOC</alias>
+               <table>PSX_PUBLICATION_DOC</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="1828" returnEmptyXml="yes">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>PublishStatusIds/Status</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                  <column>STATUS_ID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="1826" method="nativeStatement" unique="no">
+            <WhereClauses/>
+            <Sorting>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>PSX_PUBLICATION_DOC</tableAlias>
+                     <column>STATUS</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+            </Sorting>
+            <nativeStatement>SELECT DISTINCT PSX_PUBLICATION_DOC.STATUS_ID FROM PSX_PUBLICATION_DOC PSX_PUBLICATION_DOC ORDER BY STATUS_ID DESC</nativeStatement>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="221">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_emptyDoc</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>PubStatusIds</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="222">
+         <schemaSource>file:PubStatusIds.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>PubStatusIds</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="202">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+      <PSXResultPager id="1827">
+         <maxRowsPerPage>-1</maxRowsPerPage>
+         <maxPages>-1</maxPages>
+         <maxPageLinks>10</maxPageLinks>
+      </PSXResultPager>
+   </PSXDataSet>
+   <PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+   <PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+   <PSXErrorWebPages id="1812" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="1813">
+      <providerType>SMTP</providerType>
+      <server>//jbr:1032</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="locationX216">301</userProperty>
+   <userProperty name="schemaSourceReadOnly214">true</userProperty>
+   <userProperty name="locationX215">94</userProperty>
+   <userProperty name="locationY219">0</userProperty>
+   <userProperty name="locationX213">60</userProperty>
+   <userProperty name="locationY218">22</userProperty>
+   <userProperty name="schemaSourceReadOnly211">true</userProperty>
+   <userProperty name="locationX212">249</userProperty>
+   <userProperty name="locationY217">597</userProperty>
+   <userProperty name="locationY216">597</userProperty>
+   <userProperty name="locationX210">56</userProperty>
+   <userProperty name="locationY215">440</userProperty>
+   <userProperty name="locationY213">22</userProperty>
+   <userProperty name="locationY212">324</userProperty>
+   <userProperty name="locationY210">22</userProperty>
+   <userProperty name="pageDatatankSrcType222">2</userProperty>
+   <userProperty name="pageDatatankFilePath196">C:\rx57\rx20051015\sys_reports\CommunityContent.dtd</userProperty>
+   <userProperty name="schemaSourceReadOnly208">true</userProperty>
+   <userProperty name="locationX209">182</userProperty>
+   <userProperty name="schemaSourceReadOnly205">true</userProperty>
+   <userProperty name="locationX207">56</userProperty>
+   <userProperty name="locationX206">177</userProperty>
+   <userProperty name="locationY209">213</userProperty>
+   <userProperty name="locationX204">69</userProperty>
+   <userProperty name="locationX203">10</userProperty>
+   <userProperty name="locationY207">22</userProperty>
+   <userProperty name="locationX202">442</userProperty>
+   <userProperty name="pageDatatankSrcType219">2</userProperty>
+   <userProperty name="locationY206">91</userProperty>
+   <userProperty name="locationX201">442</userProperty>
+   <userProperty name="locationX200">442</userProperty>
+   <userProperty name="locationY204">22</userProperty>
+   <userProperty name="locationY203">22</userProperty>
+   <userProperty name="locationY202">165</userProperty>
+   <userProperty name="pageDatatankSrcType214">2</userProperty>
+   <userProperty name="locationY201">165</userProperty>
+   <userProperty name="locationY200">165</userProperty>
+   <userProperty name="pageDatatankSrcType211">2</userProperty>
+   <userProperty name="pageDatatankFilePath222">C:\rx57\rx20051015\sys_reports\PubStatusIds.dtd</userProperty>
+   <userProperty name="pageDatatankFilePath219">E:\rx\5.7\200509Q14\rx_supportSiteFolderContentList\PubTimeStatistics.dtd</userProperty>
+   <userProperty name="pageDatatankSrcType208">2</userProperty>
+   <userProperty name="pageDatatankSrcType205">2</userProperty>
+   <userProperty name="pageDatatankFilePath214">E:\rx\5.7\200509Q14\rx_supportSiteFolderContentList\PubTimeStatistics.dtd</userProperty>
+   <userProperty name="pageDatatankFilePath211">C:\rx57\rx20051015\sys_reports\ContentStats.dtd</userProperty>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="resultPageFilePath199">C:\Documents and Settings\BillLanglais\My Documents\Manticore\EI Views\ContentStats.dtd</userProperty>
+   <userProperty name="pageDatatankFilePath208">C:\rx56\rx20050831\sys_reports\StaleContent.dtd</userProperty>
+   <userProperty name="resultPageFilePath198">C:\Documents and Settings\BillLanglais\My Documents\Manticore\EI Views\ContentStats.dtd</userProperty>
+   <userProperty name="pageDatatankFilePath205">C:\rx57\rx20051015\sys_reports\PubStatus.dtd</userProperty>
+   <userProperty name="locationX199">442</userProperty>
+   <userProperty name="schemaSourceReadOnly196">true</userProperty>
+   <userProperty name="locationX198">442</userProperty>
+   <userProperty name="locationX197">269</userProperty>
+   <userProperty name="locationX195">63</userProperty>
+   <userProperty name="locationY199">165</userProperty>
+   <userProperty name="locationY198">165</userProperty>
+   <userProperty name="locationY197">24</userProperty>
+   <userProperty name="locationY195">22</userProperty>
+   <userProperty name="resultPageFilePath217">E:\rx\5.7\200509Q14\rx_supportSiteFolderContentList\PubTimeStatistics.dtd</userProperty>
+   <userProperty name="resultPageFilePath216">E:\rx\5.7\200509Q14\rx_supportSiteFolderContentList\PubTimeStatistics.dtd</userProperty>
+   <userProperty name="schemaSourceReadOnly222">true</userProperty>
+   <userProperty name="locationX223">338</userProperty>
+   <userProperty name="locationX221">56</userProperty>
+   <userProperty name="locationX220">93</userProperty>
+   <userProperty name="locationY223">412</userProperty>
+   <userProperty name="locationY221">22</userProperty>
+   <userProperty name="locationY220">542</userProperty>
+   <userProperty name="pageDatatankSrcType196">2</userProperty>
+   <userProperty name="schemaSourceReadOnly219">true</userProperty>
+   <userProperty name="locationX219">331</userProperty>
+   <userProperty name="resultPageFilePath202">C:\Documents and Settings\BillLanglais\My Documents\Manticore\EI Views\ContentStats.dtd</userProperty>
+   <userProperty name="resultPageFilePath201">C:\Documents and Settings\BillLanglais\My Documents\Manticore\EI Views\ContentStats.dtd</userProperty>
+   <userProperty name="locationX218">60</userProperty>
+   <userProperty name="resultPageFilePath200">C:\Documents and Settings\BillLanglais\My Documents\Manticore\EI Views\ContentStats.dtd</userProperty>
+   <userProperty name="locationX217">301</userProperty>
+</PSXApplication>

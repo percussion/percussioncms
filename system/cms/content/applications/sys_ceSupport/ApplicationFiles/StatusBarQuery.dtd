@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT StatusBarQuery (LastModifier*, Creator*, CreatedDate*, ContentTitle*, LastModifyDate*, ContentId* )>
+<!ELEMENT ContentId (#PCDATA)>
+<!ELEMENT LastModifyDate (#PCDATA)>
+<!ELEMENT ContentTitle (#PCDATA)>
+<!ELEMENT CreatedDate (#PCDATA)>
+<!ELEMENT Creator (#PCDATA)>
+<!ELEMENT LastModifier (#PCDATA)>

@@ -1,0 +1,291 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSCharacterEncodings>
+	
+	<PSEncoding stdName="UTF-8" javaName="UTF8" desc="">
+		<Alias name="UNICODE-1-1-UTF-8"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="UTF-16" javaName="UTF-16" desc="">
+	</PSEncoding>
+
+	<PSEncoding stdName="" javaName="" ref="">
+		<Alias name=""/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ANSI" javaName="Cp1252" desc="">
+		<Alias name="1252"/>
+		<Alias name="CP1252"/>
+		<Alias name="WINDOWS-1252"/>
+      <Alias name="WINDOWS-LATIN1"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-8859-1" javaName="ISO8859_1" desc="">
+		<Alias name="8859_1"/>
+		<Alias name="CP819"/>
+		<Alias name="IBM819"/>
+		<Alias name="ISO-8859-1-WINDOWS-3.0-LATIN-1"/>
+		<Alias name="ISO-8859-1-WINDOWS-3.1-LATIN-1"/>
+		<Alias name="ISO-IR-100"/>
+		<Alias name="ISO_8859-1:1987"/>
+		<Alias name="ISO_8859-1"/>
+		<Alias name="L1"/>
+		<Alias name="LATIN1"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-8859-2" javaName="ISO8859_2" desc="">
+		<Alias name="8859_2"/>
+		<Alias name="ISO-8859-2-WINDOWS-LATIN-2"/>
+		<Alias name="ISO-IR-101"/>
+		<Alias name="ISO_8859-2:1987"/>
+		<Alias name="ISO_8859-2"/>
+		<Alias name="L2"/>
+		<Alias name="LATIN2"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-8859-3" javaName="ISO8859_3" desc="">
+		<Alias name="8859_3"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-8859-4" javaName="ISO8859_4" desc="">
+		<Alias name="8859_4"/>
+		<Alias name="CSISOLATIN4"/>
+		<Alias name="ISO-IR-110"/>
+		<Alias name="ISO_8859-4:1988"/>
+		<Alias name="ISO_8859-4"/>
+		<Alias name="L4"/>
+		<Alias name="LATIN4"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-8859-5" javaName="ISO8859_5" desc="">
+		<Alias name="8859_5"/>
+		<Alias name="CSISOLATINCYRILLIC"/>
+		<Alias name="CYRILLIC"/>
+		<Alias name="ISO-IR-144"/>
+		<Alias name="ISO_8859-5:1988"/>
+		<Alias name="ISO_8859-5"/>
+	</PSEncoding>
+
+	<PSEncoding name="ISO-8859-6" javaName="ISO8859_6" desc="">
+		<Alias name="8859_6"/>
+		<Alias name="ARABIC"/>
+		<Alias name="ASMO-708"/>
+		<Alias name="CSISOLATINARABIC"/>
+		<Alias name="ECMA-114"/>
+		<Alias name="ISO-IR-127"/>
+		<Alias name="ISO_8859-6:1987"/>
+		<Alias name="ISO_8859-6"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-8859-7" javaName="ISO8859_7" desc="">
+	<!--
+		Note that Windows-1253 differs from 8859-7 in its placement of the capital
+		alpha with tonos and some other symbols. Therefore, it is listed as
+		a separate type.
+    -->
+		<Alias name="8859_7"/>
+		<Alias name="CSISOLATINGREEK"/>
+		<Alias name="ECMA-118"/>
+		<Alias name="ELOT_928"/>
+		<Alias name="GREEK8"/>
+		<Alias name="GREEK"/>
+		<Alias name="ISO-IR-126"/>
+		<Alias name="ISO_8859-7:1987"/>
+		<Alias name="ISO_8859-7"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-8859-8" javaName="ISO8859_8" desc="">
+		<Alias name="8859_8"/>
+		<Alias name="CSISOLATINHEBREW"/>
+		<Alias name="HEBREW"/>
+		<Alias name="ISO-IR-138"/>
+		<Alias name="ISO_8859-8"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-8859-9" javaName="ISO8859_9" desc="">
+		<Alias name="8859_9"/>
+		<Alias name="CP1254"/>
+		<Alias name="CSISOLATIN5"/>
+		<Alias name="ISO-IR-148"/>
+		<Alias name="ISO_8859-9:1989"/>
+		<Alias name="ISO_8859-9"/>
+		<Alias name="L5"/>
+		<Alias name="LATIN5"/>
+		<Alias name="WINDOWS-1254"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-2022-JP" javaName="ISO2022JP" desc="Japanese">
+	<!-- See [RFC1468,Murai] and [RFC1554,Ohta] -->
+		<Alias name="JIS"/>
+		<Alias name="CSISO2022JP"/>
+		<Alias name="ISO-2022-JP-2"/>
+		<Alias name="CSISO2022JP2"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="WINDOWS-1253" javaName="Cp1253" desc="Windows Greek">
+		<Alias name="X-CP1253"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="SHIFT_JIS" javaName="SJIS" desc="Japanese">
+		<Alias name="X-SJIS"/>
+		<Alias name="MS_KANJI"/>
+		<Alias name="CSSHIFTJIS"/>
+		<Alias name="WINDOWS-31J"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="US-ASCII" javaName="ASCII" desc="ASCII">
+		<Alias name="ANSI_X3.4-1968"/>
+		<Alias name="ISO-IR-6"/>
+		<Alias name="ANSI_X3.4-1986"/>
+		<Alias name="ISO_646.IRV:1991"/>
+		<Alias name="ISO646-US"/>
+		<Alias name="US"/>
+		<Alias name="IBM367"/>
+		<Alias name="CP367"/>
+		<Alias name="CSASCII"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="EUC-JP" javaName="EUC_JP" desc="Extended Unix Code, packed for Japanese">
+		<Alias name="EUCJIS"/>
+		<Alias name="EXTENDED_UNIX_CODE_PACKED_FORMAT_FOR_JAPANESE"/>
+		<Alias name="CSEUCPKDFMTJAPANESE"/>
+		<Alias name="X-EUC-JP"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="EUC-CN" javaName="EUC_CN" desc="GB2312, EUC encoding, Simplified Chinese">
+		<Alias name="CSGB2312"/>
+		<Alias name="CN-GB"/>
+		<Alias name="CN-GB-ISOIR165"/>
+		<Alias name="GB2312"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="BIG5" javaName="Big5" desc="Traditional Chinese (Big 5)">
+		<Alias name="CSBIG5"/>
+		<Alias name="CN-BIG5"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="EUC-KR" javaName="EUC_KR" desc="Extended Unix Code, packed for Korean">
+		<Alias name="CSEUCKR"/>
+
+		<!--
+			Note that both Java and IBM's XML4J XML parser list EUC-KR as equivalent
+			to KSC5601. Don't know if that's correct, because IANA and RFC1700 list
+			them as separate. Here are the KSC5601 equivalences.
+		-->
+		<Alias name="KS_C_5601-1987"/>
+		<Alias name="ISO-IR-149"/>
+		<Alias name="KS_C_5601-1989"/>
+		<Alias name="KSC_5601"/>
+		<Alias name="KS_C_5601"/>
+		<Alias name="KOREAN"/>
+		<Alias name="CSKSC56011987"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="ISO-2022-KR" javaName="ISO2022KR" desc="Korean">
+		<Alias name="ISO2022KR"/>
+		<Alias name="CSISO2022KR"/>
+		<Alias name="KR2022"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="KOI8-R" javaName="KOI8_R" desc="Cyrillic">
+		<Alias name="CSKOI8R"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP037" javaName="Cp037" desc="USA, Canada(Bilingual, French), Netherlands, Portugal, Brazil, Australia">
+	<!-- See [RFC1345,KXS2] -->
+		<Alias name="CSIBM037"/>
+		<Alias name="EBCDIC-CP-CA"/>
+		<Alias name="EBCDIC-CP-NL"/>
+		<Alias name="EBCDIC-CP-NL"/>
+		<Alias name="EBCDIC-CP-US"/>
+		<Alias name="EBCDIC-CP-US"/>
+		<Alias name="EBCDIC-CP-WT"/>
+		<Alias name="IBM037"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP277" javaName="Cp277" desc="IBM Denmark, Norway">
+		<Alias name="CSIBM277"/>
+		<Alias name="EBCDIC-CP-DK"/>
+		<Alias name="EBCDIC-CP-DK"/>
+		<Alias name="EBCDIC-CP-DK"/>
+		<Alias name="EBCDIC-CP-NO"/>
+		<Alias name="IBM277"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP278" javaName="Cp278" desc="IBM Finland, Sweden">
+		<Alias name="CSIBM278"/>
+		<Alias name="EBCDIC-CP-FI"/>
+		<Alias name="EBCDIC-CP-SE"/>
+		<Alias name="IBM278"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP280" javaName="Cp280" desc="IBM Italy">
+		<Alias name="CSIBM280"/>
+		<Alias name="EBCDIC-CP-IT"/>
+		<Alias name="IBM280"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP284" javaName="Cp284" desc="IBM Catalan/Spain, Spanish Latin America">
+		<Alias name="EBCDIC-CP-ES"/>
+		<Alias name="CSIBM284"/>
+		<Alias name="IBM284"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP285" javaName="Cp285" desc="IBM United Kingdom, Ireland">
+		<Alias name="EBCDIC-CP-GB"/>
+		<Alias name="IBM285"/>
+		<Alias name="CSIBM285"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP297" javaName="Cp297" desc="IBM France">
+		<Alias name="EBCDIC-CP-FR"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP420" javaName="Cp420" desc="IBM Arabic">
+		<Alias name="EBCDIC-CP-AR1"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP424" javaName="Cp424" desc="IBM Hebrew">
+		<Alias name="EBCDIC-CP-HE"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP500" javaName="Cp500" desc="IBM Switzerland">
+		<Alias name="EBCDIC-CP-CH"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP870" javaName="Cp870" desc="IBM Multilingual Latin-2">
+		<Alias name="EBCDIC-CP-ROECE"/>
+		<Alias name="EBCDIC-CP-YU"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP871" javaName="Cp871" desc="IBM Iceland">
+		<Alias name="EBCDIC-CP-IS"/>
+	</PSEncoding>
+
+	<PSEncoding stdName="CP918" javaName="Cp918" desc="IBM Urdu">
+		<Alias name="EBCDIC-CP-AR2"/>
+	</PSEncoding>
+</PSCharacterEncodings>

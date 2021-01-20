@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percLocalLang/js/percLocalLang.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percLocalLang.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percLocalLang\js\percLocalLang.js\percLocalLang.js</ArchiveFile>
+         <OriginalFile>widgets\percLocalLang\js\percLocalLang.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--7311778639975022511">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percDefaultLanguage.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--7311778639975022511\percDefaultLanguage.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-373">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percLocalLanguage.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-373\percLocalLanguage.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percLocalLanguage.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-373\percLocalLanguage.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percLocalLanguage.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-373\percLocalLanguage.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percLocalLang_css_percLocalLang-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rx_resources\widgets\percLocalLang\css\percLocalLang.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percLocalLang_css_percLocalLang-css\percLocalLang.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percDefaultLangControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percDefaultLangControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percDefaultLangControl.xsl\percDefaultLangControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percDefaultLangControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--2373722386051628988">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percLocalLanguage.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--2373722386051628988\percLocalLanguage.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-371">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percDefaultLanguage.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-371\percDefaultLanguage.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percDefaultLanguage.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-371\percDefaultLanguage.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percDefaultLanguage.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-371\percDefaultLanguage.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percLocalLang_images_percLocalLangIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rx_resources\widgets\percLocalLang\images\percLocalLangIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percLocalLang_images_percLocalLangIcon-png\percLocalLangIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDefaultLang_js_percDefaultLang-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rx_resources\widgets\percDefaultLang\js\percDefaultLang.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDefaultLang_js_percDefaultLang-js\percDefaultLang.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percDefaultLang/css/percDefaultLang.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percDefaultLang.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percDefaultLang\css\percDefaultLang.css\percDefaultLang.css</ArchiveFile>
+         <OriginalFile>widgets\percDefaultLang\css\percDefaultLang.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percDefaultLang-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rxconfig\Widgets\percDefaultLang.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percDefaultLang-xml\percDefaultLang.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percLocalLangControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percLocalLangControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percLocalLangControl.xsl\percLocalLangControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percLocalLangControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percDefaultLang-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rxconfig\Resources\percDefaultLang.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percDefaultLang-xml\percDefaultLang.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percDefaultLang/js/percDefaultLang.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percDefaultLang.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percDefaultLang\js\percDefaultLang.js\percDefaultLang.js</ArchiveFile>
+         <OriginalFile>widgets\percDefaultLang\js\percDefaultLang.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percLocalLang_js_percLocalLang-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rx_resources\widgets\percLocalLang\js\percLocalLang.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percLocalLang_js_percLocalLang-js\percLocalLang.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDefaultLang_css_percDefaultLang-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rx_resources\widgets\percDefaultLang\css\percDefaultLang.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDefaultLang_css_percDefaultLang-css\percDefaultLang.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percLocalLang-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rxconfig\Widgets\percLocalLang.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percLocalLang-xml\percLocalLang.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percLocalLang-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rxconfig\Resources\percLocalLang.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percLocalLang-xml\percLocalLang.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDefaultLang_images_percDefaultLangPlaceholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rx_resources\widgets\percDefaultLang\images\percDefaultLangPlaceholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDefaultLang_images_percDefaultLangPlaceholder-png\percDefaultLangPlaceholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDefaultLang_images_percDefaultLangIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rx_resources\widgets\percDefaultLang\images\percDefaultLangIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDefaultLang_images_percDefaultLangIcon-png\percDefaultLangIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percLocalLang_images_percLocalLangPlaceholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion_5.3_04-APR-2016_Derby\rx_resources\widgets\percLocalLang\images\percLocalLangPlaceholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percLocalLang_images_percLocalLangPlaceholder-png\percLocalLangPlaceholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percLocalLang/css/percLocalLang.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\PIOTRB~1\AppData\Local\Temp\percLocalLang.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percLocalLang\css\percLocalLang.css\percLocalLang.css</ArchiveFile>
+         <OriginalFile>widgets\percLocalLang\css\percLocalLang.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

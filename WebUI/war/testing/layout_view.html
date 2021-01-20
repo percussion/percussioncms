@@ -1,0 +1,97 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  <title>Layout View Tests</title>
+  <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.7.2.custom.css">
+  <script src="../jslib/jquery-1.3.2.js"></script>
+  <script src="../jslib/jquery-ui-1.7.2.custom.js"></script>
+  <script src="../jslib/jquery.xmldom-1.0.js"></script>
+  <script src="../jslib/json.js"></script>
+  <script src="../jslib/jquery.layout.js"></script>
+  <script src="../plugins/perc_utils.js"></script>
+  <script src="../plugins/perc_page_schema.js"></script>
+  <script src="../plugins/perc_path_constants.js"></script>
+  <script src="../plugins/perc_template_schema.js"></script>
+  <script src="../plugins/perc_template_manager.js"></script>
+  <script src="../models/Template.js"></script>
+  <script src="../controllers/layout.js"></script>
+  <script src="../controllers/sizes.js"></script>
+  <script src="../controllers/decorator.js"></script>
+  <script src="../views/layout.js"></script>
+  <script src="../views/template.js"></script>
+  <script src="../views/content.js"></script>
+  <script>
+   $(document).ready(function(){
+        $('body').layout({});
+        $.Percussion.templateView();
+   });
+  </script>
+  <style> 
+.perc-region { 
+    position: relative;
+    border: 1px dashed black; } 
+
+.perc-region-puff {
+    padding: 10px;
+}
+
+.perc-show-feedback {
+    background: grey;
+}
+
+.perc-horizontal > .perc-region {
+    float: left;
+}
+  </style>
+  </head>
+  <body>
+    <div class="ui-layout-north">
+      <div id="region-tool">RT</div>
+      <div id="w1" class="perc-widget-tool">Widget</div>
+      <a href="#" id="load-template-1">Load template 1</a>
+      <a href="#" id="load-template-2">Load template 2</a>
+      <a href="#" id="layout-link">Layout</a> ||
+      <a href="#" id="content-link">Content</a> <br/>
+      <a href="#" id="show-hide-decorations">Show / Hide decorations</a>
+    </div>
+    <iframe id="layout" class="ui-layout-center">
+      <!--
+      <div id="r4" class="perc-region perc-region-horizontal">
+        <div id="r1" class="perc-region perc-region-vertical">
+          <div id="r2" class="perc-region perc-region-leaf perc-region-horizontal">
+            <div id="w2" class="perc-widget">w2</div>
+            <div id="w3" class="perc-widget">w3</div>
+          </div>
+          <div id="r3" class="perc-region perc-region-leaf perc-region-horizontal">
+          </div>
+        </div>
+      <div id="r5" class="perc-region perc-region-vertical"></div>
+      </div>
+      -->
+    </iframe>
+  </body>
+</html>

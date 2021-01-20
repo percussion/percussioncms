@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Site EMPTY>
+<!ATTLIST  Site SiteId CDATA #REQUIRED>
+<!ATTLIST  Site SiteName CDATA #REQUIRED>
+<!ATTLIST  Site SiteDesc CDATA #IMPLIED>
+<!ATTLIST  Site BaseUrl CDATA #IMPLIED>
+<!ATTLIST  Site Root CDATA #IMPLIED>
+<!ATTLIST  Site IpAddress CDATA #IMPLIED>
+<!ATTLIST  Site Port CDATA #IMPLIED>
+<!ATTLIST  Site UserId CDATA #IMPLIED>
+<!ATTLIST  Site Password CDATA #IMPLIED>
+<!ATTLIST  Site State CDATA #IMPLIED>
+<!ATTLIST  Site NavTheme CDATA #IMPLIED>
+<!ATTLIST  Site FolderRoot CDATA #IMPLIED>
+<!ELEMENT SiteLookup (Site* )>

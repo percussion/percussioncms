@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- This document will have all the object classes listed that need to be
+	serialized and deserialized. For each class in this file a <classname>.betwixt 
+	file must be created if a default behavior of betwixt is not enough as far 
+	element-field mapping is concerned -->
+<registry>
+	<!--  classes for unit test of object serializer -->
+	<!--
+	<class name="com.percussion.xml.serialization.junit.Address" />
+	<class name="com.percussion.xml.serialization.junit.Book" />
+	<class name="com.percussion.xml.serialization.junit.Name" />
+	<class name="com.percussion.xml.serialization.junit.Person" />
+	-->
+	<!-- webservices related object classes -->
+	<class name="com.percussion.services.guidmgr.data.PSGuid" />
+	<class name="com.percussion.services.content.data.PSKeyword" />		
+	<class name="com.percussion.services.ui.data.PSHierarchyNode" />	
+	
+	<class name="com.percussion.services.security.data.PSCommunity" />
+	<class name="com.percussion.services.security.data.PSAclImpl" />
+	<class name="com.percussion.services.security.data.PSAclEntryImpl" />
+	<class name="com.percussion.services.security.PSTypedPrincipal" />
+	<class name="com.percussion.services.security.data.PSAccessLevelImpl" />
+	<class name="com.percussion.services.security.data.PSUserAccessLevel" />
+	
+	<!-- utility classes -->
+	<class name="com.percussion.utils.types.PSPair" />
+</registry>

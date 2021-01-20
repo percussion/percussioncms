@@ -1,0 +1,63 @@
+ ############################################################################
+ #
+ # $Id: package.nmk 1.8 2002/04/29 18:53:28Z jamesschultz Exp $
+ #
+ # Version Labels	: $Name: $
+ #
+ # Locked By		: $Locker: $
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.testing
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+   IPSClientBasedJunitTest \
+   IPSClientJunitTest \
+   IPSCustomJunitTest \
+   IPSUnitTestConfigHelper \
+   IPSServerBasedJunitTest \
+   PSClientTestCase \
+   PSConfigHelperTestCase \
+   PSMockRequestContext \
+   PSContentHelper \
+   PSCustomFileFilter \
+   PSTidyUtilsTest \
+   PSJunitRequestHandler \
+   PSJunitTestRunnerDialog \
+   PSRequestHandlerTestSuite \
+   PSSqlTest \
+   PSTestRunner \
+   PSTestRunnerJunit \
+   PSTestSetupBean \
+	TestErrorCoverage \
+	PSTestCompare \
+	PSFolderTreeCreator
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES =
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES =
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)

@@ -1,0 +1,51 @@
+<!--
+  This file is used by the com.percussion.server.job.PSJobHandlerConfigurationTest
+-->
+<PSXJobHandlerConfiguration>
+   <InitParams>
+      <InitParam name="name1" value="value1"/>
+      <InitParam name="name2" value="value2"/>
+   </InitParams>
+   <Categories>
+      <Category name="cat1">
+         <InitParams>
+            <InitParam name="cat1name1" value="cat1value1"/>
+            <InitParam name="cat1name2" value="cat1value2"/>
+         </InitParams>
+         <Jobs>
+            <Job jobType="cat1job1" className="com.percussion.cat1.job1">
+               <InitParams>
+                  <InitParam name="cat1job1name1" value="cat1job1value1"/>
+                  <InitParam name="cat1job1name2" value="cat1job1value2"/>
+               </InitParams>
+            </Job>
+            <Job jobType="cat1job2" className="com.percussion.cat1.job2">
+               <InitParams>
+                  <InitParam name="cat1job2name1" value="cat1job2value1"/>
+                  <InitParam name="cat1job2name2" value="cat1job2value2"/>
+               </InitParams>
+            </Job>
+         </Jobs>
+      </Category>
+      <Category name="cat2">
+         <InitParams>
+            <InitParam name="cat2name1" value="cat2value1"/>
+            <InitParam name="cat2name2" value="cat2value2"/>
+         </InitParams>
+         <Jobs>
+            <Job jobType="cat2job1" className="com.percussion.cat2.job1">
+               <InitParams>
+                  <InitParam name="cat2job1name1" value="cat2job1value1"/>
+                  <InitParam name="cat2job1name2" value="cat2job1value2"/>
+               </InitParams>
+            </Job>
+            <Job jobType="cat2job2" className="com.percussion.cat2.job2">
+               <InitParams>
+                  <InitParam name="cat2job2name1" value="cat2job2value1"/>
+                  <InitParam name="cat2job2name2" value="cat2job2value2"/>
+               </InitParams>
+            </Job>
+         </Jobs>
+      </Category>
+   </Categories>
+</PSXJobHandlerConfiguration>

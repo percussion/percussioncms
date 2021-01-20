@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item EMPTY>
+<!ATTLIST  item sys_contentid CDATA #IMPLIED>
+<!ELEMENT NavonItems (item* )>

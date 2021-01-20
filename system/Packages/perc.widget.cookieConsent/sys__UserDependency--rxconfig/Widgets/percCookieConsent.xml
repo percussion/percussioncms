@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percCookieConsent - Version 1.0.0]
+-->
+<Widget>
+    <WidgetPrefs title="Cookie Consent"
+        contenttype_name="percCookieConsent"
+        description="This widget is used to display a paginated list of people belonging to a selected organization and enable users to search through the list."
+        author="Percussion Software Inc."
+        thumbnail="/rx_resources/widgets/percCookieConsent/images/percCookieConsentIcon.png"
+        preferred_editor_width="800"
+        preferred_editor_height="600"
+        is_responsive="true"/>
+    <UserPref name="overlayPosition"
+        display_name="Position of the dialog on the screen"
+        required="true"
+        datatype="enum" default_value="bottom">
+        <EnumValue value="top" display_value="Top" />
+        <EnumValue value="bottom" display_value="Bottom" />
+    </UserPref>
+    <UserPref name="privacyPolicyLinkText"
+        display_name="Text to use for privacy policy link text"
+        datatype="string"
+        default_value="Privacy Policy">
+    </UserPref>
+    <UserPref name="cookiePolicyLinkText"
+        display_name="Text to use for cookie policy link text"
+        datatype="string"
+        default_value="Cookie Policy">
+    </UserPref>
+    <UserPref name="ariaLabel"
+        display_name="Text to use for 'aria-label' attribute. E.g 'cookie consent'"
+        datatype="string"
+        default_value="">
+    </UserPref>
+    <UserPref name="ariaRole"
+        display_name="Text to use for 'role' attribute. E.g 'dialog'"
+        datatype="string"
+        default_value="">
+    </UserPref>
+    <UserPref name="hideInPreview"
+        display_name="Hide cookie consent dialog in preview mode"
+        datatype="bool"
+        default_value="false">
+    </UserPref>
+    <Code type="jexl">
+    <!-- This section is used to set up data that will be used in the content section -->
+    <![CDATA[
+        $pageId = $perc.page.id;
+        $widgetId = $perc.widget.item.id;
+        $rootclass = 'percCookieConsent';
+
+        ## Get asset item(s)
+        $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+        $perc.setWidgetContents($assets);
+
+        $overlayPosition = $perc.widget.item.properties.get('overlayPosition');
+        $privacyPolicyLinkText = $perc.widget.item.properties.get('privacyPolicyLinkText');
+        $cookiePolicyLinkText = $perc.widget.item.properties.get('cookiePolicyLinkText');
+        $ariaLabel = $perc.widget.item.properties.get('ariaLabel');
+        $ariaRole = $perc.widget.item.properties.get('ariaRole');
+        $hideInPreview = $perc.widget.item.properties.get('hideInPreview');
+
+        if ($overlayPosition == 'bottom') {
+            $overlayPosClass = 'perc-consent-bottom';
+        }
+        else if ($overlayPosition == 'top') {
+            $overlayPosClass = 'perc-consent-top';
+        }
+
+        if ($privacyPolicyLinkText == '' || $privacyPolicyLinkText == null) {
+            $privacyPolicyLinkText = 'Privacy Policy';
+        }
+
+        if ($cookiePolicyLinkText == '' || $cookiePolicyLinkText == null) {
+            $cookiePolicyLinkText = 'Cookie Policy';
+        }
+
+        if ($ariaLabel != '' || $ariaLabel != null) {
+            $ariaLabelHtml = 'aria-label="' + $ariaLabel + '"';
+        }
+        
+        if ($ariaRole != '' || $ariaRole != null) {
+            $ariaRoleHtml = 'role="' + $ariaRole + '"';
+        }
+
+        if ( ! $assets.isEmpty() )
+        {
+            $assetItem = $assets.get(0); ## Get first item (which may be only item)
+            $assetContentId = $assetItem.getNode().getProperty('sys_contentid').String;
+
+            $consentText = $rx.pageutils.html($assetItem, 'consenttext');
+
+            $privacypolicy_linkId = $assetItem.getNode().getProperty('privacypolicy_linkId').String;
+            $privacypolicy_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $privacypolicy_linkId);
+
+            $cookiepolicy_linkId = $assetItem.getNode().getProperty('cookiepolicy_linkId').String;
+            $cookiepolicy_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $cookiepolicy_linkId);
+
+            $baseUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+            
+            if( ! empty($pageId))
+            {
+                $finderPath = $rx.pageutils.getItemPath($pageId);
+                $pathParts = $finderPath.split("\/");
+                $siteName = $pathParts[2];
+            }
+
+            ##Build the query string for the delivery side auto list
+            $dynamicListData = "{" + "&quot;siteName&quot;:&quot;" + $siteName + "&quot;";
+            $dynamicListData = $dynamicListData + ", &quot;deliveryurl&quot;:&quot;" + $baseUrl + "&quot;";
+            $dynamicListData = $dynamicListData + "}";
+        }
+    ]]>
+    </Code>
+    <Content type="velocity">
+    <!-- This section defines the rendered content -->
+    <![CDATA[
+
+#if ($assetItem)##
+    ## If the asset has been populated, we don't want to display the overlay as it will overlay widgets. ##
+    ## For this reason, only show in preview mode. ##
+    #if ($perc.isEditMode())##
+       #createEmptyWidgetContent("cookie-consent-preview-content", "This page should be previewed to display the cookie-consent dialog.")##
+    #elseif( $perc.isPreviewMode() && $hideInPreview)##
+        ## do nothing
+    #else##
+    <div id="perc-cookie-consent" $!{ariaRoleHtml} aria-live="polite" $!{ariaLabelHtml} class="perc-consent-window perc-consent-banner $!{overlayPosClass}" data-query="$!{dynamicListData}">
+        <div id="perc-cookieconsent" class="perc-consent-msg">$!{consentText}</div>
+
+        <div class="perc-policy-links">
+            #if ($privacypolicy_path != '#')##
+                <a href="$!{privacypolicy_path}">$!{privacyPolicyLinkText}</a>
+            #end##
+            #if ($cookiepolicy_path != '#')##
+                <a href="$!{cookiepolicy_path}">$!{cookiePolicyLinkText}</a>
+            #end##
+        </div>
+
+        #if ( $perc.isEditMode() || $perc.isPreviewMode() )##
+            <button id="accept-btn-preview" class="perc-consent-btn">Accept</button>
+        #else##
+            <div>
+				<button id="accept-btn" class="perc-consent-btn">Accept</button>
+				<button id="deny-btn" class="perc-consent-btn">Deny</button>
+			</div>
+        #end##
+    </div>
+    #end##
+#elseif ($perc.isEditMode())##
+   #createEmptyWidgetContent("cookie-consent-sample-content", "This cookie consent widget is showing sample content.")##
+#end
+
+    ]]>
+    </Content>
+</Widget>

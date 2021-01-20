@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Community (#PCDATA)>
+<!ATTLIST  Community commid CDATA #REQUIRED>
+<!ELEMENT UserCommunities (Community* )>
+<!ATTLIST  UserCommunities username CDATA #REQUIRED>

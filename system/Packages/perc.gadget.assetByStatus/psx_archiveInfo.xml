@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveInfo archiveRef="perc.gadget.assetByStatus" category="USER" created="1399483626176" editable="true" serverName="dev-jb:9992" userName="Admin">
+   <PSXFormatVersion buildId="58" buildNumber="20140401" displayVersion="4.1.3" interfaceVersion="9" majorVersion="4" microVersion="3" minorVersion="1" optionalId="" versionString="INTERNAL"/>
+   <PSXDbmsInfo>
+      <datasource>RhythmyxData</datasource>
+      <driver>derby</driver>
+      <server>//localhost:1527/CMDB</server>
+      <database/>
+      <origin>CMDB</origin>
+      <userid>CMDB</userid>
+      <password>J3vRXLZ6cTHEiPbS45wbzQ==</password>
+   </PSXDbmsInfo>
+   <PSXArchiveDetail>
+      <PSXExportDescriptor archiveType="normal">
+         <PSXDescriptor id="5699039749134624528" name="perc.gadget.assetByStatus">
+            <Description>Shows a list of assets based on user selected search criteria, allows users to bulk approve them.</Description>
+            <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
+            <CmsVersion max="8.0.0" min="4.1.3"/>
+            <Version>1.1.1</Version>
+            <ImplConfigFile/>
+            <LocalConfigFile/>
+            <PKGDependencies/>
+         </PSXDescriptor>
+         <Packages>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_UserDependency" dependencyType="Shared" displayName="User Dependency" isAssociation="yes" isIncluded="yes" objectType="Custom" objectTypeName="Custom" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes">
+                  <Dependencies>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercAssetStatusGadget/images/errorIcon.gif">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercAssetStatusGadget/images/errorIcon.gif" dependencyType="User" displayName="errorIcon.gif" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercAssetStatusGadget/images/gadgetIconAssetsByStatus.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercAssetStatusGadget/images/gadgetIconAssetsByStatus.png" dependencyType="User" displayName="gadgetIconAssetsByStatus.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercAssetStatusGadget/PercAssetStatusGadget.js">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercAssetStatusGadget/PercAssetStatusGadget.js" dependencyType="User" displayName="PercAssetStatusGadget.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercAssetStatusGadget/PercAssetStatusGadget.xml">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercAssetStatusGadget/PercAssetStatusGadget.xml" dependencyType="User" displayName="PercAssetStatusGadget.xml" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercAssetStatusGadget/images/previewIcon.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercAssetStatusGadget/images/previewIcon.png" dependencyType="User" displayName="previewIcon.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercAssetStatusGadget/images/processing.gif">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercAssetStatusGadget/images/processing.gif" dependencyType="User" displayName="processing.gif" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/PercAssetStatusGadget/images/tobeprocessed.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/PercAssetStatusGadget/images/tobeprocessed.png" dependencyType="User" displayName="tobeprocessed.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+         </Packages>
+         <ModifiedPackages/>
+         <MissingPackages/>
+      </PSXExportDescriptor>
+      <DbmsInfoMap>
+         <DbmsInfoMapping PkgKey="Custom-sys_UserDependency"/>
+      </DbmsInfoMap>
+   </PSXArchiveDetail>
+</PSXArchiveInfo>

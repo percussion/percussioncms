@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<SolutionConfigurations publisherPrefix="com.percussion" publisherName="Percussion" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+   <SolutionConfig name="RSS">
+      <!-- Basic Properties -->
+      <property name="label" value="My-Label"/>
+      <property name="globalTemplate" value="rffGtEnterpriseInvestmentsCommon"/>
+      <property name="globalTemplateUsage" value="None"/>
+      <property name="publishWhen" value="Never"/>
+      <property name="mimeType" value="text/xml"/>
+      <property name="charset" value="UTF-16"/>
+      <property name="locationPrefix" value="TestPrefix"/>
+      <property name="locationSuffix" value="TestSuffix"/>
+      <property name="bindingSet">
+            <!-- If you want to expose all bindings, add them like this in the default
+		      config. If the user wants to add/remove any bindings, they would copy this
+		      entire node to their local config and make the desired changes. See later
+		      in this file for other ways of exposing bindings to configuration. -->      
+         <pvalues>
+            <pair value1="$rxs_navbase_1" value2="$sys.variables.rxs_navbase_1"/>
+            <pair value1="$rxs_navbase" value2="$sys.variables.rxs_navbase"/>
+            <pair value1="$rxs_navbase_2" value2="$sys.variables.rxs_navbase_2"/>
+         </pvalues>
+      </property>
+      
+      <propertySet name="bindings">
+      	<!-- If you want to expose merge some bindings, add them like this -->
+         <property name="$rxs_navbase_1" value="$sys.variables.rxs_navbase_1"/>
+         <property name="$rxs_navbase_2" value="$sys.variables.rxs_navbase_2"/>
+         <property name="binding_sequence">
+	         <pvalues>
+	            <pvalue>$rxs_navbase_1</pvalue>
+	            <pvalue>$rxs_navbase</pvalue>
+	            <pvalue>$$rxs_navbase_2</pvalue>
+	         </pvalues>
+         </property>
+      </propertySet>
+
+   </SolutionConfig>
+</SolutionConfigurations>

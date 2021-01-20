@@ -1,0 +1,128 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<Data>
+	<Request>
+		<!-- Settings that will be chosen on the gadget -->
+		<Settings>
+			<!-- path to site  -->
+			<property name="path" value="//Sites/site1"/>
+			<!-- start date selected in the format of mm/dd/yyyy  -->
+			<property name="startDate" value="10/10/2010"/>
+			<!-- start date selected in the format of mm/dd/yyyy  -->
+			<property name="endDate" value="10/14/2010"/>
+			<!-- granularity for dates - Options are DAY, MONTH, or YEAR  -->
+			<property name="granularity" value="DAY"/>
+			<!-- Traffic type to display.  Order bellow is required but you can omit any you don't want  -->
+			<property name="trafficRequested" value="[VISITS, NEW_PAGES, UPDATED_PAGES, TAKE_DOWNS, LIVE_PAGES]" />
+			<!-- usage type - Options are pageviews, uniquepageviews -->
+			<property name="usage" value="uniquepageviews"/>
+		</Settings>
+		<Response>
+			<Result>
+				<!-- Dates to return in the granularity specified in settings -->
+				<property name="dates">
+					<pvalues>
+						<pvalue>10/10/2010</pvalue>
+						<pvalue>10/11/2010</pvalue>
+						<pvalue>10/12/2010</pvalue>
+						<pvalue>10/13/2010</pvalue>
+						<pvalue>10/14/2010</pvalue>
+					</pvalues>
+				</property>
+				<!-- End date should match end date in settings -->
+				<property name="endDate" value="10/14/2010"/>
+				<!-- Values for graph - needs to have same amount of values as dates -->
+				<property name="livePages">
+					<pvalues>
+						<pvalue>10</pvalue>
+						<pvalue>10</pvalue>
+						<pvalue>10</pvalue>
+						<pvalue>13</pvalue>
+						<pvalue>14</pvalue>
+					</pvalues>
+				</property>
+				<!-- Values for graph - needs to have same amount of values as dates -->
+				<property name="newPages">
+					<pvalues>
+						<pvalue>0</pvalue>
+						<pvalue>0</pvalue>
+						<pvalue>0</pvalue>
+						<pvalue>1</pvalue>
+						<pvalue>1</pvalue>
+					</pvalues>
+				</property>
+				<!-- Values for graph - needs to have same amount of values as dates -->
+				<property name="pageUpdates">
+					<pvalues>
+						<pvalue>2</pvalue>
+						<pvalue>1</pvalue>
+						<pvalue>1</pvalue>
+						<pvalue>1</pvalue>
+						<pvalue>1</pvalue>
+					</pvalues>
+				</property>
+				<!-- Site Name that shows in the path in settings -->
+				<property name="site" value="site1"/>
+				<!-- Site ID not currently used -->
+				<property name="siteId" value="1111"/>
+				<!-- Start date should match start date in settings -->
+				<property name="startDate" value="10/10/2010"/>
+				<!-- Values for graph - needs to have same amount of values as dates -->>
+				<property name="takeDowns">
+					<pvalues>
+						<pvalue>0</pvalue>
+						<pvalue>0</pvalue>
+						<pvalue>0</pvalue>
+						<pvalue>0</pvalue>
+						<pvalue>0</pvalue>
+					</pvalues>
+				</property>
+				<!-- Values for graph - values are the totals of takeDowns + pageUpdates + newPages  needs to have same amount of values as dates  -->
+				<property name="updateTotals">
+					<pvalues>
+						<pvalue>2</pvalue>
+						<pvalue>1</pvalue>
+						<pvalue>1</pvalue>
+						<pvalue>2</pvalue>
+						<pvalue>2</pvalue>
+					</pvalues>
+				</property>
+				<!-- Values for graph - needs to have same amount of values as dates -->
+				<property name="visits">
+					<pvalues>
+						<pvalue>30</pvalue>
+						<pvalue>10</pvalue>
+						<pvalue>11</pvalue>
+						<pvalue>13</pvalue>
+						<pvalue>20</pvalue>
+					</pvalues>
+				</property>
+			</Result>
+		</Response>
+	</Request>
+</Data>

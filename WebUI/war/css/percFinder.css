@@ -1,0 +1,826 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+
+/** Finder Resizing Classes */
+.perc-finder-body .ui-resizable-handle.ui-resizable-s {
+    height: 15px;
+    z-index: 999999 !important;
+    opacity: 0.25;
+    background-image: url(../images/images/finderBottomHandleBg.gif);
+}
+.perc-resize {
+    overflow: hidden !important;
+    /* you will need to pad for the width of your ui-resizable-handle */
+}
+.perc-resize-width {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+.perc-resize-height {
+    width: 100%;
+    height: 100%;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+}
+
+.perc-finder .mcol-direc-wrapper.perc-resize-width {
+    margin-right: 5px;
+}
+
+.perc-finder .mcol-direc-wrapper .ui-resizable-e {
+    height: 100% !important;
+    border-right: 1px solid #e8efef;
+    z-index: 101;
+}
+
+.perc-finder .mcol-listing {
+    margin: 0px;
+    padding: 4px 4px 2px 8px;
+}
+
+.perc-finder {
+    min-width: 952px;
+    /* set the minimum height that the Finder can drag to */
+    min-height: 100px;
+    padding: 0;
+    float: none;
+}
+
+.perc-finder-outer[collapsed=true] .perc-finder-view-options .icon-list,
+.perc-finder-outer[collapsed=true] .perc-finder-view-options .icon-star,
+.perc-finder-outer[collapsed=true] .perc-finder-view-options .icon-columns {
+    display: none;
+}
+
+.perc-finder-outer[collapsed=true] .perc-finder-view-options {
+    width: 30px;
+}
+
+.ui-disabled #perc-finder-expander {
+    color: #ccc;
+}
+
+#perc-finder-expander:hover {
+    font-size: 15pt;
+    color: #298AC0;
+    background: transparent;
+}
+
+#perc-finder-expander {
+    font-size: 15pt;
+    -color: #399ECE;
+    color: #133c55;
+    margin-right: 6px;
+    background: transparent;
+}
+
+.perc-dropshadow {
+    min-width:975px;
+    margin:0;
+    padding-bottom: 2px;
+    background: transparent url(../images/images/finderShadowBg.gif) repeat-x scroll center bottom;
+}
+
+.perc-main {
+
+    background-color: white;
+
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt;
+
+    margin-left:auto;
+    margin-right:auto;
+    min-width:1000px;
+}
+
+.perc-finder-header td {
+    vertical-align: middle;
+}
+
+.perc-finder-header {
+    width: 100%;
+    margin: 20px 12px 10px 2px;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.perc-finder .perc-finder-panel-loading {
+    padding: 8px;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+}
+.perc-finder-view-options {
+    width: 145px;
+}
+
+.perc-finder-buttonbar .perc-font-icon {
+    float: right;
+    margin-right: 4px;
+}
+
+.perc-finder-buttonbar .perc-font-icon:focus {
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;;
+}
+
+.perc-finder-goto-or-search .perc-flex {
+    vertical-align: middle;
+}
+.perc-finder-goto-or-search .perc-fixed {
+    width: 25px;
+}
+.perc-finder-goto-or-search input {
+    width: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border-top-left-radius: 11px;
+    border-bottom-left-radius: 11px;
+    padding: 0 6px 0 6px;
+    border: 0;
+    height: 26px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.perc-finder-goto-or-search .perc-font-icon:hover {
+    background: transparent;
+}
+
+.perc-finder-goto-or-search .perc-font-icon {
+    display: inline-block;
+    font-size: 13pt;
+    margin: 0;
+    border-radius: 0;
+    border-top-right-radius: 11px;
+    border-bottom-right-radius: 11px;
+    background: transparent;
+}
+
+.perc-finder-goto-or-search .perc-wrapper {
+    border: 1px solid #C0C0C0;
+    padding: 1px;
+    border-radius: 12px;
+}
+.perc-finder-goto-or-search .perc-wrapper-bg {
+    background: #C0C0C0;
+}
+
+.perc-finder-goto-or-search .perc-wrapper table {
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    width: 100%;
+    height: 25px;
+}
+
+#perc-finder-listing-Sites {
+    margin-top: 33px;
+}
+
+/*********min size for the iframe should be same as main are set by perc-main above ************/
+#frame
+{
+    min-width:1000px;
+}
+
+.perc-about
+{
+    width:330px;
+    text-align:center;
+}
+
+.perc-about .perc-logo
+{
+    background-image:url(../images/images/aboutLogo.png);
+    width:175px;
+    height:50px;
+    background-repeat:no-repeat;
+    margin:auto;
+}
+
+.perc-required-field:before
+{
+    content:"* ";
+    margin-left:-11px;
+}
+
+.perc-required-legend
+{
+    float:right;
+    padding-right:9px;
+    margin-top:-25px;
+    position:relative;
+}
+
+/* Fix the position of Finder/Navigation at top */
+.perc-finder-fix {
+    position: relative;
+    top:0;
+    left:0;
+    z-index:1001;
+    width:100%;
+    padding-bottom: 0;
+    background: #FFF;
+}
+
+#perc_sa_container {
+    margin-top: 8px;
+}
+
+/* Main help icon related styles */
+
+#perc-user-id-icon
+{
+    position:relative;
+    top:5px;
+    padding-right:5px;
+}
+
+#perc-logout-arrow-icon
+{
+    position:relative;
+    top:2px;
+    padding-right:4px;
+}
+
+/******* Finder menu *************
+****** Utilized for Finder resizing
+ and adding, removing sites  *****/
+.perc-finder-body {
+    /* width is always 100% need to override jquery resize */
+    width: 100% !important;
+    /* finder visibility is initialized in perc_finder.js
+        hide to prevent a flicker when page is loading */
+    display: none;
+    border-radius: 6px;
+    border: 1px solid silver;
+    background-color: #F7F7F7;
+    /* resize scroll-fix padding */
+    padding-right: 0;
+    padding-bottom: 10px;
+}
+
+.perc-finder-message > i {
+    color: red;
+    font-size: 15pt;
+    margin-right: 5px;
+}
+.perc-finder-message {
+    text-align: left;
+    padding-left: 153px;
+    margin-bottom: 7px;
+}
+
+.perc-finder-outer {
+    margin:0 10px;
+}
+
+/* The primary label for the finder. */
+#perc-finder-label
+{
+    padding:5px 0 0;
+}
+
+.perc-finder-menu label
+{
+    color:#999999;
+    float:left;
+    font-size:11px;
+    font-weight:normal;
+    padding-left:10px;
+    margin:14px 0 0 5px;
+    text-decoration:none;
+}
+
+div#perc-finder-selected-label
+{
+    color:#999999;
+    display:none;
+    float:left;
+    font-size:11px;
+    font-weight:normal;
+    padding-left:10px;
+    margin:15px 0 0 5px;
+    text-decoration:none;
+    width:500px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-align:left;
+    text-overflow:ellipsis;
+}
+
+#mcol-path-summary-short
+{
+    background-color:#41434F;
+    color:#CCCCCC;
+    border:0;
+    font-family: 'Open Sans', sans-serif;
+    text-decoration:none;
+    font-weight:normal;
+}
+
+.perc-finder .perc-finder-table > table {
+    height: 100%;
+}
+
+/* reset browser default */
+.perc-finder-table td
+{
+    padding:0;
+}
+
+.perc-finder .label
+{
+    text-transform:uppercase;
+    font-family: 'Open Sans', sans-serif;
+    color:#CCCCCC;
+    font-size:15px;
+}
+
+#perc-finder-input-wrapper
+{
+    width:80%;
+    min-width:790px;
+    overflow:auto;
+    padding:2px 0 0;
+}
+
+.perc-finder-preview-link
+{
+    color:#0055ee;
+}
+
+.perc-finder-menu #perc-finder-copy-page,.perc-finder-menu #perc-finder-folderproperties,.perc-finder-menu #perc-finder-download,.perc-finder-menu #perc-finder-upload, .perc-finder-menu #perc-finder-restore-item
+{
+    color:#0099CC;
+    padding:9px 0 10px 14px;
+    display:block;
+}
+
+.perc-finder-menu #perc-finder-copy-page.ui-enabled:hover,.perc-finder-menu #perc-finder-folderproperties.ui-enabled:hover,.perc-finder-menu #perc-finder-download.ui-enabled:hover,.perc-finder-menu #perc-finder-upload.ui-enabled:hover, .perc-finder-restore-item #perc-finder-restore-item.ui-enabled:hover
+{
+    cursor:pointer;
+}
+
+.perc-finder-menu #perc-finder-copy-page.ui-disabled,.perc-finder-menu #perc-finder-folderproperties.ui-disabled,.perc-finder-menu #perc-finder-download.ui-disabled,.perc-finder-menu #perc-finder-upload.ui-disabled, .perc-finder-menu #perc-finder-restore-item.ui-disabled
+{
+    cursor:default;
+    color:#9FA3AA;
+}
+
+/* Finder Action Buttons Ends
+ Finder Misc Buttons */
+
+#perc-finder-search-submit,
+#perc-finder-search-submit:hover,
+.perc-page-help,
+.perc-page-help:hover
+{
+    background:url(../images/images/finderButtons.png);
+}
+#perc-finder-choose-view #perc-finder-choose-mypagesview
+{
+    background:url(../images/images/star_filled.png);
+    cursor:pointer;
+    float:right;
+    height:24px;
+    width:24px;
+    margin-top:2px;
+}
+
+
+#perc-finder-choose-listview.ui-enabled {
+
+}
+#perc-finder-choose-columnview.ui-enabled {
+
+}
+
+#perc-finder-search-submit
+{
+    background-position:0 -272px;
+    display:block;
+    float:left;
+    margin-left:6px;
+    margin-top:-3px;
+    width:36px;
+    height:25px;
+}
+
+#perc-finder-search-submit:hover
+{
+    background-position:0 -300px;
+}
+
+.perc-page-help
+{
+    width:16px;
+    height:16px;
+    background-position:0 -328px;
+    float:right;
+    margin:14px 14px 0 0;
+    position:relative;
+}
+
+.perc-page-help:hover
+{
+    background-position:0 -347px;
+    cursor:pointer;
+}
+
+/* Finder Misc Buttons Ends */
+.box_shadow_with_padding
+{
+    background-color:#41434f;
+    -moz-box-shadow:0 0 8px #000000;
+    -webkit-box-shadow:0 0 8px #000000;
+    box-shadow:0 0 8px #000000;
+}
+
+.perc-finder #perc_newSiteDialogButtons input
+{
+    color:#343434;
+}
+
+.perc-finder #perc_newSiteDialogButtons #perc_wizard_cancel:hover
+{
+    background-image:url(../images/images/buttonCancelOver.gif);
+}
+
+#perc-finder-input-foldername
+{
+    border:1px solid #999999;
+    height:12px;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+}
+
+/***** Finder Menu, applying additional styling to the menu *****/
+#perc-finder-table-top td {
+    font-size: 8pt;
+}
+.perc-finder
+{
+    background-color:white;
+}
+
+.perc-finder .mcol-direc
+{
+    vertical-align:bottom;
+}
+
+.perc-finder .mcol-direc-wrapper {
+    min-width: 60px;
+    z-index: 100;
+}
+
+.perc-finder .perc-address-bar
+{
+    border-style:solid;
+    font-family: 'Open Sans', sans-serif;
+    font-size:10px;
+    font-weight:normal;
+    color:#cccccc;
+    text-decoration:none;
+}
+
+.perc-finder .perc-node a selected
+{
+    background-color:#D3D3D3;
+}
+
+.perc-finder .perc-view-column-resize-bar
+{
+    background-image:url(../images/images/finderScrollbarBg.gif);
+}
+.perc-finder .mcol-listing .perc-finder-item-name {
+    padding-left: 4px;
+}
+.perc-finder .mcol-listing.mcol-opened,
+.perc-finder.ui-resizable-resizing .mcol-listing.mcol-opened,
+.perc-finder.ui-resizable-resizing .mcol-listing.mcol-opened:hover {
+    font-weight: bolder;
+    -border-bottom: 3px solid #67d1e5;
+    -border-bottom: 3px solid #d4e6f7;
+    -background-color: #d4e6f7;
+    -background-color: #67d1e5;
+    -background-color: #abe8f3;
+    -background-color: #133c55;
+    background-color: #D0E2E5;
+}
+.perc-finder .mcol-listing:hover {
+    -background-color: #f8971d;
+    background-color: #CAF589;
+}
+.perc-finder .mcol-listing,
+.perc-finder.ui-resizable-resizing .mcol-listing,
+.perc-finder.ui-resizable-resizing .mcol-listing:hover {
+    height: 20px;
+    background-color: transparent;
+}
+
+/***First column styles***/
+.perc-finder .mcol-direc-wrapper.perc-view-column-fixed {
+    width: 95px;
+}
+
+.perc-finder-menu {
+    padding-right: 20px;
+    width: 240px;
+}
+
+#perc_finder_inline_field_edit
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+}
+
+/*************Finder Paging*********************/
+.perc-paging-finder.perc-paging-finder-top {
+    font-weight: bold;
+    font-size: 11.5pt;
+    opacity: 0.25;
+    padding: 9px 4px 4px 9px;
+}
+.perc-paging-finder
+{
+    -background-color:#35363F;
+    -background-color: red;
+
+    -color:#FFFFFF;
+    -color: yellow;
+
+    -font-size:9px;
+    -font-weight:bold;
+
+    width:auto;
+    height: 20px;
+
+    -padding:5px 0 0 5px;
+    padding: 0;
+}
+
+.perc-paging-finder span {
+    white-space: nowrap;
+}
+
+.perc-paging-finder-navigator
+{
+    float:right;
+    padding-right:5px;
+}
+
+.perc-paging-finder-navigator a
+{
+    cursor:pointer;
+    margin-right:10px;
+}
+
+.perc-hide-navigator
+{
+    visibility:hidden;
+}
+
+#perc-page-help-menu
+{
+    position:absolute;
+    top:18px;
+    right:0;
+    z-index:20000;
+    color:white;
+    border:1px solid #35363f;
+    background-color:#5A5D69;
+}
+
+#perc-page-help-menu li
+{
+    padding:5px 40px 5px 5px;
+}
+
+#perc-page-help-menu li:first-child
+{
+    padding:5px 40px 5px 5px;
+    border-bottom:1px solid #6c717c;
+}
+
+#perc-page-help-menu li:hover
+{
+    background-color:#CAF589;
+    color:black;
+}
+
+.perc-about > p
+{
+    text-align:center;
+}
+
+.perc-about .perc-company-link
+{
+    font-weight:bold;
+    font-size:14px;
+    color:#0099CC;
+}
+
+/* Navigation Menu
+*** Selected Page ****
+*******Page 1 ********
+*******Page 2 ********
+*******Page 3 *********/
+#perc_head #perc_topnav .perc-selected
+{
+    display:block;
+    background-color:#6C717C;
+    cursor:pointer;
+}
+
+#perc_head #perc_topnav .perc-selected .perc-label
+{
+    font-family: 'Open Sans', sans-serif;
+    text-transform:uppercase;
+    font-size:17px;
+    color:#FFFFFF;
+}
+
+#perc_head #perc_topnav .perc-selected #perc-dropdown-img
+{
+    background-image:url(../images/images/navDropdownArrow.gif);
+}
+
+#perc_head #perc_topnav #perc-dropdown-img:hover
+{
+    background-image:url(../images/images/navDropdownArrowOver.gif);
+    cursor:pointer;
+}
+
+#perc_head #perc_topnav .perc-selected a
+{
+    color:inherit !important;
+}
+
+#perc_head div ul .unselected
+{
+    display:block;
+    font-weight:bold;
+    font-size:11px;
+    font-family: 'Open Sans', sans-serif;
+    background-color:#5a5d69;
+    border-color:#5a5d69;
+    border-bottom:solid 1px #6d6f79;
+    color:#FFFFFF;
+    opacity:1%;
+    z-index:100;
+}
+
+#perc_head div ul .selected
+{
+    display:block;
+    font-weight:bold;
+    font-size:11px;
+    font-family: 'Open Sans', sans-serif;
+    background-color:#5a5d69;
+    border-bottom:solid 1px #6d6f79;
+    color:#FFFFFF;
+    opacity:1%;
+    z-index:100;
+}
+
+#perc_head div ul .unselected a,#perc_head div ul .inactive a
+{
+    border-left:6px solid;
+    border-color:inherit !important;
+    padding-left:6px;
+    padding-top:0;
+    padding-bottom:3px;
+    color:inherit;
+}
+
+#perc_head div ul .selected a
+{
+    border-left-color:#caf589 !important;
+    color:inherit;
+}
+
+#perc_head div ul li
+{
+    display:inline;
+    clear:none;
+}
+
+#perc_head div ul li:hover
+{
+    background-color:#caf589 !important;
+    cursor:pointer;
+    color:#000000;
+    border-color:#caf589 !important;
+}
+
+#perc_head div ul .unselected.subsection,#perc_head div ul .selected.subsection
+{
+    padding-left:30px;
+    font-weight:normal;
+}
+
+#perc_head div ul .selected.nosubsection
+{
+    min-width:276px;
+}
+
+#perc_head div ul .unselected.inactive,#perc_head div ul .selected.inactive
+{
+    border-bottom:dashed 1px #6d6f79;
+    cursor:default;
+}
+
+#perc_head div ul .inactive a
+{
+    cursor:default;
+}
+
+#perc_head div ul .inactive
+{
+    display:block;
+    font-weight:bold;
+    font-size:11px;
+    font-family: 'Open Sans', sans-serif;
+    background-color:#5a5d69;
+    border-color:#5a5d69;
+    border-bottom:dashed 1px #6d6f79;
+    color:#FFFFFF;
+    opacity:1%;
+    z-index:100;
+}
+
+#perc_head div ul .inactive:hover
+{
+    cursor:default;
+    background-color:#5A5D69 !important;
+    color:#ffffff;
+    border-color:#5a5d69 !important;
+    border-bottom:dashed 1px #6d6f79 !important;
+}
+
+#perc_head div ul .last
+{
+    height:33px;
+}
+
+
+.perc-finder .ui-resizable-e {
+    width: 5px;
+    right: 0px;
+}
+.perc-finder .ui-resizable-e.perc-resize-disabled {
+    cursor: default;
+    background-image: none;
+}
+.perc-finder .ui-resizable-e {
+    background-color: white;
+    background-image:url(../images/images/finderBottomHandleBgVert.gif);
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+.perc-fixedtableheader {
+    display: none;
+}
+
+[perc-view=list] .ui-resizable-handle.ui-resizable-e,
+[perc-view=search] .ui-resizable-handle.ui-resizable-e,
+[perc-view=MyPages] .ui-resizable-handle.ui-resizable-e {
+    display: none !important;
+}
+
+.perc-fixedtableheader .perc-datatable-head-row,
+#perc-finder-listview .perc-datatable-head-row,
+#perc-finder-listview .perc-datatable-column:last-child,
+.perc-fixedtableheader .perc-datatable-head-column:last-child,
+#perc-finder-listview .perc-datatable-head-column:last-child {
+    border-right: none !important;
+}

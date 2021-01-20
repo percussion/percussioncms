@@ -1,0 +1,212 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/contentdata/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://www.w3.org/2001/XMLSchema" xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:cdp="urn:www.percussion.com/webservices/contentdata" targetNamespace="urn:www.percussion.com/webservices/contentdata/wsdl">
+	<import location="sys_Header.xsd" namespace="urn:www.percussion.com/webservices/header"/>
+	<import location="sys_ContentDataParameters.xsd" namespace="urn:www.percussion.com/webservices/contentdata"/>
+	<message name="header-request">
+		<part name="Authentication" element="hdr:Authentication"/>
+	</message>
+	<message name="header-response">
+		<part name="HeaderResponse" element="hdr:HeaderResponse"/>
+	</message>
+	<message name="openItem-request">
+		<part name="parameters" element="cdp:openItem"/>
+	</message>
+	<message name="openItem-response">
+		<part name="parameters" element="cdp:OpenItemResponse"/>
+	</message>
+	<message name="openChild-request">
+		<part name="parameters" element="cdp:openChild"/>
+	</message>
+	<message name="openChild-response">
+		<part name="parameters" element="cdp:OpenChildResponse"/>
+	</message>
+	<message name="openRelated-request">
+		<part name="parameters" element="cdp:openRelated"/>
+	</message>
+	<message name="openRelated-response">
+		<part name="parameters" element="cdp:OpenRelatedResponse"/>
+	</message>
+	<message name="openField-request">
+		<part name="parameters" element="cdp:openField"/>
+	</message>
+	<message name="openField-response">
+		<part name="parameters" element="cdp:OpenFieldResponse"/>
+	</message>
+	<message name="newItem-request">
+		<part name="parameters" element="cdp:newItem"/>
+	</message>
+	<message name="newItem-response">
+		<part name="parameters" element="cdp:NewItemResponse"/>
+	</message>
+	<message name="newCopy-request">
+		<part name="parameters" element="cdp:newCopy"/>
+	</message>
+	<message name="newCopy-response">
+		<part name="parameters" element="cdp:NewCopyResponse"/>
+	</message>
+	<message name="updateItem-request">
+		<part name="parameters" element="cdp:updateItem"/>
+	</message>
+	<message name="updateItem-response">
+		<part name="parameters" element="cdp:UpdateItemResponse"/>
+	</message>
+	<message name="promoteRevision-request">
+		<part name="parameters" element="cdp:promoteRevision"/>
+	</message>
+	<message name="promoteRevision-response">
+		<part name="parameters" element="cdp:PromoteRevisionResponse"/>
+	</message>
+	<portType name="ContentDataPort">
+		<operation name="openItem">
+			<input message="tns:openItem-request"/>
+			<output message="tns:openItem-response"/>
+		</operation>
+		<operation name="openChild">
+			<input message="tns:openChild-request"/>
+			<output message="tns:openChild-response"/>
+		</operation>
+		<operation name="openRelated">
+			<input message="tns:openRelated-request"/>
+			<output message="tns:openRelated-response"/>
+		</operation>
+		<operation name="openField">
+			<input message="tns:openField-request"/>
+			<output message="tns:openField-response"/>
+		</operation>
+		<operation name="newItem">
+			<input message="tns:newItem-request"/>
+			<output message="tns:newItem-response"/>
+		</operation>
+		<operation name="newCopy">
+			<input message="tns:newCopy-request"/>
+			<output message="tns:newCopy-response"/>
+		</operation>
+		<operation name="updateItem">
+			<input message="tns:updateItem-request"/>
+			<output message="tns:updateItem-response"/>
+		</operation>
+		<operation name="promoteRevision">
+			<input message="tns:promoteRevision-request"/>
+			<output message="tns:promoteRevision-response"/>
+		</operation>
+	</portType>
+	<binding name="ContentDataBinding" type="tns:ContentDataPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="openItem">
+			<soap:operation soapAction="urn:#openItem"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="openChild">
+			<soap:operation soapAction="urn:#openChild"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="openRelated">
+			<soap:operation soapAction="urn:#openRelated"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="openField">
+			<soap:operation soapAction="urn:#openField"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="newItem">
+			<soap:operation soapAction="urn:#newItem"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="newCopy">
+			<soap:operation soapAction="urn:#newCopy"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="updateItem">
+			<soap:operation soapAction="urn:#updateItem"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="promoteRevision">
+			<soap:operation soapAction="urn:#promoteRevision"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="ContentDataServices">
+		<port name="ContentDataPort" binding="tns:ContentDataBinding">
+			<soap:address location="http://localhost:9980/RxServices/servlet/messagerouter"/>
+		</port>
+	</service>
+</definitions>

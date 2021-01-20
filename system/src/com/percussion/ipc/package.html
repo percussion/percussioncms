@@ -1,0 +1,140 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   $Id: package.html 1.2 1999/04/30 20:22:08Z TasGiakouminakis Release $
+
+   Version Labels  : $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 20000724_2_0 20000522_1_1 20000501_1_1 20000327_1_1 20000111_1_0 991227_1_0 991214_1_0 991213_1_0 991202_1_0 Release_1_0_Intl Release_10_1 Release_10 $
+
+   Locked By       : $Locker: $
+
+   Revision History:
+                     $Log: package.html $
+                     Revision 1.2  1999/04/30 20:22:08Z  TasGiakouminakis
+                      fixed class name for PSSharedMemoryHttpRequestEvent
+                     Revision 1.1  1999/04/30 18:58:16  TasGiakouminakis
+                     Initial revision
+-->
+
+<BODY>
+
+The IPC package provides access to the inter-process communication
+primitives of the underlying OS. Java does not have support for IPC, thus
+the need for us to develop our own IPC classes using native method support.
+Our native library is identical to the Java library, but it is written in
+C++.
+
+IPC is primarily used to allow the E2 server to communicate efficiently
+with the web server hooks (eg, ISAPI filter). When E2 resides on a 
+separate server than the web server, TCP/IP sockets are used for
+communication. The use of sockets on the web server can be a burden as each
+client opens a socket to the web server. The web server hands the request to
+the E2 hook which then opens a socket to the E2 server. This means for each
+request two sockets are maintained. Since there is a limit on the number of
+open sockets, the use of E2 on a web server effectively cuts the maximum 
+number of users possible in half.
+
+Let's take a look at the IPC primitives we will use in E2.
+
+<H3>Shared Memory</H3>
+Shared memory is a piece of memory which can be accessed by multiple
+processes on the same system. The users of the shared memory must agree
+upon its structure as well as the access mechanisms to guarantee its
+integrity. In particular, processes/threads should not read from areas
+of the shared memory that are being written by other processes/threads.
+
+<H3>Mutex Semaphore</H3>
+A mutex semaphore is one way to synchronize shared memory. Mutex
+stands for mutual exclusion. When a thread or process wants access to a 
+piece of shared memory, it must first acquire the mutex. The mutex only
+permits a single thread or process to acquire it at any given time. This
+guarantees serial access to the area of shared memory. When a user is done
+with the shared memory, they must then release the mutex to allow others
+access to it. It is important to minimize the amount of time spend holding
+the mutex lock. The longer the lock is held, the longer other threads and
+processes must wait. Furthermore, caution must be used when acquiring
+multiple mutex locks. It is possible to get into deadlock conditions, in
+which case no one can access the resource as the holder of one mutex is
+trying to get the other mutex and vice versa.
+
+<H3>Event Semaphore</H3>
+The final mechanism we will implement is the event semaphore. Event
+semaphores provide a way for producers to signal a consumers that they've
+created something the consumer is interested in. Unlike a mutex, event
+semaphores act like counters rather than locks. When a producer signals the
+semaphore the count goes up. The consumer wakes up whenever the count is
+greater than 0. Once all the produce is consumed, the count goes back down
+to 0 and the consumer must wait until a producer signals him.
+<P>
+The primary use of event semaphores within E2 is for the hook process
+(eg, ISAPI filter) to signal the E2 server when an incoming request has
+been added to the shared memory.
+
+<H2>Using IPC in E2</H2>
+
+When the E2 server starts up, it will create a named shared memory area,
+which we'll call "E2CTLSHM". This area will contain the control area
+defining how the E2 server is setup. It will also create a mutex to control
+access to the shared memory block, which we'll call "E2CTLMTX". These will
+then be wrapped up into the
+<A href="../server/PSSharedMemoryControlBlock.html">PSSharedMemoryControlBlock</A>
+object which provides simplified access to the shared memory. The structre
+of the control block is defined in the
+<A href="../server/PSSharedMemoryControlBlock.html">PSSharedMemoryControlBlock</A>
+class.
+
+<P>
+To access the shared memory, a process such as our ISAPI filter must
+gain access to the named shared memory and the named mutex. Once both
+pieces have been acquired, the process must define a global variable to
+store the PSSharedMemoryControlBlock object (the shared control block).
+
+<P>
+Checking the value of shmApplication should be done while holding the
+mutex. Once that's done, the mutex can be release. As you may have realized,
+access to the application area is not protected. This does not pose a 
+problem. When the server wants to change the settings for an application,
+it will create a new shared memory block then update shmApplications with
+the new handler. It will then release the lock on the control structure.
+Any subsequent readers will see that shmApplications changed and will 
+map to the new memory area. Anyone in the application prior to the server
+making the changes will see the old data. This is not a problem. They will
+take an action based upon the setting, just as they would have should they
+have held the mutex. When the server processes the request it will use the
+latest copy of its data, in which case it will fail the request if
+information has changed (such as the application going down). Once again,
+this behavior is no different than if we serialized the memory, but we
+achieve gains in performance. The structure of the application shared
+memory area is defined in the
+<A href="../server/PSSharedMemoryApplications.html">PSSharedMemoryApplications</A>
+class.
+
+<P>
+Once the producer (ISAPI filter) wants to place an event in the server's
+request queue, it will create a 
+<A href="../server/PSSharedMemoryHttpRequestEvent.html">PSSharedMemoryHttpRequestEvent</A>
+object. It must then call the PSSharedMemoryControlBlock.postEvent method
+to add the event to the server's request queue.
+</BODY>
+

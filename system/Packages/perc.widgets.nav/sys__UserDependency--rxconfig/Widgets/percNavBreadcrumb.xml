@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="Breadcrumb"
+        contenttype_name=""
+        category="navigation"
+        description="Display a navigation breadcrumb in your site"
+        author="Percussion Software Inc"
+        thumbnail="/web_resources/widgets/navBar/images/widgetIconBreadcrumb.png"
+		is_responsive="true"/>
+    <Resource href="/web_resources/widgets/navBar/css/breadcrumb.css" 
+        type="css" 
+        placement="head" />     
+    <UserPref name="showHome" 
+        display_name="Show home"
+        default_value="true"
+        datatype="bool" />    
+    <UserPref name="showCurrentPage" 
+        display_name="Show current page"
+        default_value="true"
+        datatype="bool" /> 
+    <UserPref name="separator"
+        display_name="Separator" 
+        default_value=" &gt; "
+        datatype="string" />
+    <UserPref name="ariaLabel"
+        display_name="Aria Label" 
+        default_value="Breadcrumb Navigation"
+        datatype="string" />        
+    <CssPref name="rootclass"
+        display_name="CSS root class" 
+        datatype="string" /> 
+    <Code type="jexl">
+    <![CDATA[
+    $linkContext = $perc.linkContext;
+    $showHome = $perc.widget.item.properties.get('showHome');
+    $showCurrentPage = $perc.widget.item.properties.get('showCurrentPage');
+    $ariaLabel = $perc.widget.item.properties.get('ariaLabel');
+    $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+    if (!empty($rootclass))
+        $rootclass = $rootclass + " ";
+    $separator = $perc.widget.item.properties.get('separator');
+    $finderName="Java/global/percussion/widgetcontentfinder/perc_NavWidgetContentFinder"; 
+    $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, null, true);
+    if ( ! $assetItems.isEmpty() ) {
+        $navSelf = $assetItems.get(0).getNode(); 
+        $sampleTooltip = ''; 
+    }
+    else if ($perc.isEditMode()){
+		$navTooltip = $rx.pageutils.getWidgetTooltip($perc, $perc.widget, "This navBreadCrumb is showing sample content.");
+        $sampleTooltip = ' title="' + $navTooltip + '"'; 
+    }
+    ]]>
+    </Code>
+    <Content type="velocity">
+    <![CDATA[
+<div role="navigation" class="$!{rootclass}perc-breadcrumb" aria-label="$!{ariaLabel}">
+#if ($navSelf)##
+#set($ancestors = $navSelf.getAncestors())##
+#if($ancestors.size()>0 && !$showHome)##
+#set($d=$ancestors.remove(0))##
+#end##
+#if($showCurrentPage)##
+#set($d=$ancestors.add($navSelf))##
+#end##
+#if ($ancestors.size() > 0)##
+<ul class="perc-breadcrumb-main" role="menubar">
+#foreach($node in $ancestors)##
+#set($liclass="perc-list-element")##
+#if ($velocityCount==1)##
+#set($liclass="$liclass perc-list-first")##
+#end##
+#if ($velocityCount == $ancestors.size())##
+#set($liclass="$liclass perc-list-last")##
+#end##
+#if ($velocityCount % 2 == 0)##
+#set($liclass="$liclass perc-list-even")##
+#else##
+#set($liclass="$liclass perc-list-odd")##
+#end##
+#set($landing_page = $tools.esc.html($rx.pageutils.navLink($linkContext, $node)))##
+#set($title = $rx.pageutils.html($node,"displaytitle"))##
+<li class="$liclass" role="presentation">##
+#if ($velocityCount > 1 )$separator#end##
+#if($velocityCount == $ancestors.size() && $showCurrentPage)##
+<a href="$landing_page" role="menuitem">$!{title}</a>##
+#else##
+<a href="$landing_page" role="menuitem">$!{title}</a>##
+#end##
+</li>
+#end##
+</ul>
+#end##
+#elseif ($perc.isEditMode())##
+<ul class="perc-breadcrumb-main" $sampleTooltip>
+#set ($sampleContent = ["Section 1", "Section 2"])##
+#foreach($node in $sampleContent)##
+#set($liclass="perc-list-element")##
+#if ($velocityCount==1)## 
+#set($liclass="$liclass perc-list-first")##
+#end##
+#if ($velocityCount == $sampleContent.size())##
+#set($liclass="$liclass perc-list-last")##
+#end##
+#if ($velocityCount % 2 == 0)##
+#set($liclass="$liclass perc-list-even")##
+#else##
+#set($liclass="$liclass perc-list-odd")##
+#end##
+#set($title = $node)##
+<li class="$liclass">##
+#if ($velocityCount > 1 )$separator#end##
+#if($velocityCount == $ancestors.size() && $showCurrentPage)##
+$!{title}
+#else##
+<a href="#">$title</a>##
+#end</li>##
+#end##
+</ul>
+#end##
+</div>]]>
+</Content>    
+</Widget>

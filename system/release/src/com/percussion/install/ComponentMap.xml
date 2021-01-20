@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<componentmap>
+   <currentVersions>
+      <currentVersion RhythmyxVersion="5.5" value="1"/>
+      <currentVersion RhythmyxVersion="6.6" value="1"/>
+   </currentVersions>
+   <components>
+      <component id="1" name="Repository"/>
+      <component id="2" name="Server"/>
+      <component id="4" name="Publisher"/>
+      <component id="8" name="Development Tools"/>
+      <component id="16" name="Database Publisher"/>
+      <component id="32" name="BEA Accelerator"/>
+      <component id="64" name="Multi-Server Manager"/>
+      <component id="128" name="Enterprise Content Connector"/>
+      <component id="256" name="Word Connector"/>
+      <component id="512" name="Inline Editing"/>
+      <component id="1024" name="Sprinta JDBC Driver for MS SQL"/>
+      <component id="2048" name="Application Server"/>
+      <component id="4096" name="Web Services Listener"/>
+      <component id="8192" name="Document Assembler"/>
+      <component id="16384" name="Websphere Accelerator"/>
+      <component id="32768" name="Full Text Search"/>
+      <component id="65536" name="Ektron eWebEditPro+XML"/>
+      <component id="131072" name="Ektron WebImageFX"/>
+   </components>
+   <properties>
+      <property id="0" name="Number of Processors"/>
+      <property id="1" name="Number of Workstations"/>
+      <property id="2" name="Additional Domains"/>
+   </properties>
+   <map version="1" supportsExtendedProductInfo="n">
+      <supportedVersions>
+         <rxversion buildFrom="-1" buildTo="-1" value="5.5"/>
+      </supportedVersions>
+      <parts>
+         <part componentid="6671" id="1" name="System Master"/>
+         <part componentid="8192" id="2" name="Document Management"/>
+         <part componentid="6927" id="4" name="Content Hub"/>
+         <part componentid="6927" id="8" name="Publishing Hub"/>
+         <part componentid="6927" id="16" name="Hot Standby Server"/>
+         <part componentid="6927" id="32" name="Test/Development Server"/>
+         <part componentid="6927" id="64" name="Workstation"/>
+         <part componentid="256" id="128" name="Word Connector"/>
+         <part componentid="16" id="256" name="Portal Connector for Oracle 9iAS Portal"/>
+         <part componentid="48" id="512" name="Portal Connector for BEA WebLogic Portal"/>
+         <part componentid="0" id="1024" name="Digital Asset Manager Connector for MediaBin"/>
+         <part componentid="0" id="2048" name="Imaging Connector for Kofax Ascent Capture"/>
+         <part componentid="128" id="4096" name="Site Migration"/>
+         <part componentid="128" id="8192" name="Syndication Connector"/>
+         <part componentid="128" id="16384" name="Enterprise Content Connector"/>
+         <part componentid="4" id="32768" name="File Publisher"/>
+         <part componentid="16" id="65536" name="Database Publisher"/>
+         <part componentid="1024" id="131072" name="Sprinta JDBC Driver for MS SQL"/>
+         <part componentid="64" id="262144" name="Multi-Server Manager"/>
+         <part componentid="16400" id="524288" name="Portal Connector for IBM Websphere Portal"/>
+         <part componentid="32768" id="1048576" name="Full Text Search"/>
+         <part componentid="65536" id="2097152" name="Ektron eWebEditPro+XML"/>
+         <part componentid="131072" id="4194304" name="Ektron WebImageFX"/>
+      </parts>
+      <licenses>
+
+         <!--
+         requiredpartid = "System Master" + "Multi-Server Manager" + "Word Connector"
+         
+         optionalpartidselected = "Document Management" + "Database Publisher" + "File Publisher" +  "Full Text Search"
+                                          
+         optionalpartidunselected = "Digital Asset Manager Connector for MediaBin"
+                                 + "Portal Connector for Oracle 9iAS Portal" + "Portal Connector for BEA WebLogic Portal"
+                                 + "Portal Connector for IBM Websphere Portal" + "Imaging Connector for Kofax Ascent Capture"
+                                 + "Enterprise Content Connector" + "Site Migration" + "Sprinta" + "Syndication Connector"
+                                 + "Ektron eWebEditPro+XML" + "Ektron WebImageFX" 
+         -->
+         <license id="0" name="Enterprise Edition" propertiesid="0" requiredpartid="262273"
+             optionalpartidselected="1146882" optionalpartidunselected="6979328"/>
+
+         <!--
+         requiredpartid = "System Master"
+         
+         optionalpartidselected = "Multi-Server Manager" + "Word Connector"
+                                   + "File Publisher"  + "Full Text Search"
+                                            
+         optionalpartidunselected = "Database Publisher" + "Enterprise Content Connector"
+                                    + "Site Migration" + "Sprinta" + "Syndication Connector"
+                                    + "Ektron eWebEditPro+XML" + "Ektron WebImageFX" 
+         -->
+         <license id="1" name="Standard Edition" propertiesid="0" requiredpartid="1"
+            optionalpartidselected="1343616" optionalpartidunselected="6516736"/>
+
+         <!--
+         requiredpartid = "Workstation" + "Multi-Server Manager"
+         
+         optionalpartidselected = "Word Connector" + "File Publisher" + "Full Text Search"
+                                          
+         optionalpartidunselected = "Document Management" + "Database Publisher" + "Digital Asset Manager Connector for MediaBin"
+                                 + "Portal Connector for Oracle 9iAS Portal" + "Portal Connector for BEA WebLogic Portal"
+                                 + "Portal Connector for IBM Websphere Portal" + "Imaging Connector for Kofax Ascent Capture" +
+                                 + "Enterprise Content Connector" + "Site Migration" + "Sprinta" + "Syndication Connector"
+                                 + "Test/Development Server"
+                                 + "Ektron eWebEditPro+XML" + "Ektron WebImageFX" 
+         -->
+         <license id="2" name="Development" propertiesid="0,1" requiredpartid="262208"
+            optionalpartidselected="1081472" optionalpartidunselected="7044898"/>
+
+         <!--
+         requiredpartid = "Multi-Server Manager"
+         optionalpartidselected = "Word Connector" + "File Publisher" + "Full Text Search"
+                                           
+         optionalpartidunselected = "Content Hub" +  "Hot Standby Server" + "Publishing Hub"
+                                 + "Document Management" + "Database Publisher" + "Digital Asset Manager Connector for MediaBin"
+                                 + "Portal Connector for Oracle 9iAS Portal" + "Portal Connector for BEA WebLogic Portal"
+                                 + "Portal Connector for IBM Websphere Portal" + "Imaging Connector for Kofax Ascent Capture"
+                                 + "Enterprise Content Connector" + "Site Migration" + "Sprinta" + "Syndication Connector"
+                                 + "Ektron eWebEditPro+XML" + "Ektron WebImageFX"
+         -->
+         <license id="3" name="Multi-Server" propertiesid="0" requiredpartid="262144"
+            optionalpartidselected="1081472" optionalpartidunselected="7044894"/>
+            
+      </licenses>
+   </map>   
+   
+   <map version="2"  supportsExtendedProductInfo="y">
+      <supportedVersions>
+         <rxversion buildFrom="-1" buildTo="-1" value="6.6"/>
+      </supportedVersions>
+      <parts>
+         <part componentid="6671" id="1" name="System Master"/>
+         <part componentid="8192" id="2" name="Document Management"/>
+         <part componentid="6927" id="4" name="Content Hub" deprecatedVersion="2"/>
+         <part componentid="6927" id="8" name="Publishing Hub" deprecatedVersion="2"/>
+         <part componentid="6927" id="16" name="Hot Standby Server" deprecatedVersion="2"/>
+         <part componentid="6927" id="32" name="Test/Development Server" deprecatedVersion="2"/>
+         <part componentid="6927" id="64" name="Workstation" deprecatedVersion="2"/>
+         <part componentid="256" id="128" name="Word Connector"/>
+         <part componentid="16" id="256" name="Portal Connector for Oracle 9iAS Portal" deprecatedVersion="2"/>
+         <part componentid="48" id="512" name="Portal Connector for BEA WebLogic Portal" deprecatedVersion="2"/>
+         <part componentid="0" id="1024" name="Digital Asset Manager Connector for MediaBin" deprecatedVersion="2"/>
+         <part componentid="0" id="2048" name="Imaging Connector for Kofax Ascent Capture" deprecatedVersion="2"/>
+         <part componentid="128" id="4096" name="Site Migration" deprecatedVersion="2"/>
+         <part componentid="128" id="8192" name="Syndication Connector" deprecatedVersion="2"/>
+         <part componentid="128" id="16384" name="Enterprise Content Connector" deprecatedVersion="2"/>
+         <part componentid="4" id="32768" name="File Publisher"/>
+         <part componentid="16" id="65536" name="Database Publisher"/>
+         <part componentid="1024" id="131072" name="Sprinta JDBC Driver for MS SQL"/>
+         <part componentid="64" id="262144" name="Multi-Server Manager"/>
+         <part componentid="16400" id="524288" name="Portal Connector for IBM Websphere Portal" deprecatedVersion="2"/>
+         <part componentid="32768" id="1048576" name="Full Text Search" deprecatedVersion="2"/>
+         <part componentid="65536" id="2097152" name="Ektron eWebEditPro+XML"/>
+         <part componentid="131072" id="4194304" name="Ektron WebImageFX"/>
+      </parts>
+      <licenses>
+
+         <!--
+         requiredpartid = ""System Master" + "Multi-Server Manager" + "Word Connector" + Document Management" + "File Publisher" + "Database Publisher" 
+         
+         optionalpartidselected = none
+                                          
+         optionalpartidunselected = "Sprinta" + "Ektron eWebEditPro+XML" + "Ektron WebImageFX"         
+         -->
+         <license id="0" name="Enterprise Edition" propertiesid="" requiredpartid="360579"
+             optionalpartidselected="0" optionalpartidunselected="6422528"/>
+
+         <!--
+         requiredpartid =  "System Master" + "Multi-Server Manager" + "Word Connector" + Document Management" + "File Publisher" + "Database Publisher" 
+         
+         optionalpartidselected = none
+                                            
+         optionalpartidunselected = "Sprinta" + "Ektron eWebEditPro+XML" + "Ektron WebImageFX" 
+         -->
+         <license id="1" name="Standard Edition" propertiesid="2" requiredpartid="360579"
+            optionalpartidselected="0" optionalpartidunselected="6422528"/>
+
+         <!--
+         requiredpartid =  "System Master" + "Multi-Server Manager" + "Word Connector" + Document Management" + "File Publisher" + "Database Publisher" 
+         
+         optionalpartidselected = none
+                                            
+         optionalpartidunselected = "Sprinta" + "Ektron eWebEditPro+XML" + "Ektron WebImageFX" 
+         -->
+         <license id="2" name="Development" propertiesid="1" requiredpartid="360579"
+            optionalpartidselected="0" optionalpartidunselected="6422528" limitedServerTypes="0"/>
+      </licenses>
+   </map>   
+</componentmap>

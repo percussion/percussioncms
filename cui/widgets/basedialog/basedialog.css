@@ -1,0 +1,171 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.ui-dialog {
+	border: 2px;
+	background-color: #fff;
+	width:800px;
+	z-index:2000
+}
+.confirmation-dialog,
+.error-dialog {
+	border: 2px;
+	background-color: #fff;
+	width: 800px;
+	height: 175px;
+    overflow:auto;
+}
+.confirmation-dialog p, .error-dialog p{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    padding:20px 50px 20px 50px;
+    font-family: 'Open Sans', sans-serif; 
+    font-weight: 600; 
+}
+.error-dialog p{
+	color: #EE5336; 
+}
+
+.ui-widget-header {
+	height: 60px;
+	margin: 10px 10px 0px 0px;
+	background-color: #133c55;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 24px;
+	color: #fff;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-radius: 2px;
+	width:800px;
+}
+
+.ui-dialog-buttonpane {
+	border-top: 1px solid #e9e9e9;
+	height: 72px;
+	width:800px;
+	background-color: #F9F9f9;
+	padding-top:20px;
+	padding-right: 40px;
+}
+
+.ui-widget-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #aaaaaa;
+	opacity: .3;
+}
+
+.ui-dialog-buttonset {
+	float: right;
+}
+
+.ui-dialog-buttonset .primary-button, .ui-dialog-buttonset .secondary-button {
+	display: inline-block;
+	width: 120px;
+	height: 40px;
+	border-radius: 2px;
+	border: none;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	color: #fff;  
+	text-align: center; 
+	
+}
+.ui-dialog-buttonset .primary-button{
+    background-color: #133c55;
+}
+.ui-dialog-buttonset .primary-button:hover {
+	text-decoration: none;
+	color: #e9f6fc;
+	background-color: #d22f12;
+}
+.ui-dialog-buttonset .primary-button.disabled{
+    background-color: #F9F9F9;
+    border: 1px solid #979797;
+    color:#979797;
+    cursor:default;
+}
+.ui-dialog-buttonset .secondary-button {
+	border: 1px solid #979797;
+	color: #576071; 
+	margin-right: 20px; 
+    text-align: center;
+}
+
+.ui-dialog-buttonset .secondary-button:hover {
+	color: #133c55;
+	border: 1px solid #17accc;
+}
+
+.dialog {
+	border: 2px;
+	background-color: #fff;
+	width: 800px;
+	min-height: 450px;
+}
+.base-dialog {
+	border: 2px;
+	background-color: #fff;
+	width: 800px;
+	min-height: 416px;
+}
+.base-confirmation-dialog,
+.base-error-dialog {
+	border: 2px;
+	background-color: #fff;
+	width: 800px;
+	height: 175px;
+}
+
+.ui-dialog-titlebar-close {
+	display: inline-block;
+	background-color: #133c55;
+	border-radius: 2px;
+	border: none;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	color: #fff;  
+	text-align: center; 
+	float:right;
+	margin-top: 15px;
+}
+
+
+.ui-dialog-titlebar-close:hover {
+	text-decoration: none;
+	color: #e9f6fc;
+}
+.fa-3 {
+	font-size: 2em;
+}
+
+.ui-dialog-title {
+	float: left;
+	margin-top: 8px;
+}

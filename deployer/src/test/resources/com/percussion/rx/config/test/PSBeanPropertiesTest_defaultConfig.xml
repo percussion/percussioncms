@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<SolutionConfigurations publisherPrefix="psx" publisherName="Percussion" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+   <SolutionConfig name="Sample">
+
+<!---  ========================================
+        Bean Properties      
+        =========================================
+-->
+      <property name="stringKey" value="String Value"/>
+      <property name="intKey" value="9992"/>
+      <propertySet name="mapKey">
+      	<property name="key1" value="value1"/>
+      	<property name="key2" value="value2"/>
+      	<property name="key3" value="value3"/>
+      </propertySet>
+      <property name="listKey">
+      	<pvalues>
+      		<pvalue>element 1</pvalue>
+      		<pvalue>element 2</pvalue>
+      		<pvalue>element 3</pvalue>
+      	</pvalues>
+      </property>
+   </SolutionConfig>
+</SolutionConfigurations>

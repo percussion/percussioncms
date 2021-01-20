@@ -1,0 +1,5 @@
+*****PUBLISHER AS STANDALONE INSTALLATION ONLY*****
+You must now run the InstallPublisherDaemon.sh script located 
+in the {installation root}/AppServer directory to complete 
+the install.  You must have root privileges in order 
+to run this script.

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Standard filters used by the runJunitTest task.  This will include by default
+  all classes with a package that begins with "com.percussion.", and will use
+  the "filter.classpath" property to load the test classes.  
+-->
+<custom classname="com.percussion.ant.PSJunitFileSelector" classpathref="antExt.class.path">
+   <param name="filterClasspath" type="path" value="${filter.classpath}"/>
+   <param name="packageFilter" type="include" value="com.percussion.*"/>
+   <param name="classImplFilter" type="include"
+   	  value="junit.framework.TestCase"/>
+   <param name="classImplFilter" type="include"
+   	  value="org.jmock.MockObjectTestCase"/>
+   <param name="classImplFilter" type="include"
+   	  value="org.jmock.cglib.MockObjectTestCase"/>
+   <param name="classImplFilter" type="exclude"
+      value="com.percussion.testing.IPSServerBasedJunitTest"/>
+   <param name="classImplFilter" type="exclude"
+      value="com.percussion.testing.IPSClientJunitTest"/>
+   <param name="classImplFilter" type="exclude"
+      value="com.percussion.testing.IPSClientBasedJunitTest"/>
+   <param name="classImplFilter" type="exclude"
+      value="com.percussion.testing.IPSCustomJunitTest"/>
+   <param name="classImplFilter" type="exclude"
+      value="org.apache.cactus.ServletTestCase"/>
+   <!-- base classes -->
+   <param name="classNameFilter" type="exclude"
+      value="PSSimpleJavaUdfBaseTest"/>
+
+   <!-- Failing tests. Fix and uncomment. -->
+   <param name="classNameFilter" type="exclude" value="PSCharacterSetTest"/>
+
+   <param name="classNameFilter" type="exclude" value="PSArchiveHandlerTest"/>
+   <param name="classNameFilter" type="exclude" value="PSArchiveInfoTest"/>
+   <param name="classNameFilter" type="exclude" value="PSArchiveSummaryTest"/>
+   <param name="classNameFilter" type="exclude" value="PSArchiveTest"/>
+   <param name="classNameFilter" type="exclude" value="PSAssemblyWorkItemTest"/>
+   <param name="classNameFilter" type="exclude" value="AssemblyDesignTestCase"/>
+   <param name="classNameFilter" type="exclude" value="PSCmsModelFrameworkTest"/>
+   <param name="classNameFilter" type="exclude" value="PSCmsModelFrameworkTest2Test"/>
+   <param name="classNameFilter" type="exclude" value="ContentDesignTestCase"/>
+   <param name="classNameFilter" type="exclude" value="PSContentItemDependencyTreeTest"/>
+   <param name="classNameFilter" type="exclude" value="PSContentTypeAssociateTemplateNodeHandlerTest"/>
+   <param name="classNameFilter" type="exclude" value="PSDatabaseAssemblerTest"/>
+   <param name="classNameFilter" type="exclude" value="PSDbmsInfoTest"/>
+   <param name="classNameFilter" type="exclude" value="PSDbmsMapTest"/>
+   <param name="classNameFilter" type="exclude" value="PSDbmsMappingTest"/>
+   <param name="classNameFilter" type="exclude" value="PSDeclarativeHierarchyTest"/>
+   <param name="classNameFilter" type="exclude" value="PSDescriptorTest"/>
+   <param name="classNameFilter" type="exclude" value="PSDesignObjectHierarchyTest"/>
+   <param name="classNameFilter" type="exclude" value="PSFilterServiceTest"/>
+   <param name="classNameFilter" type="exclude" value="PSFilterTest"/>
+   <param name="classNameFilter" type="exclude" value="PSJexlExtensionsServerTest"/>
+   <param name="classNameFilter" type="exclude" value="PSLegacyDnDHelperTest"/>
+   <param name="classNameFilter" type="exclude" value="PSLocalFileSystemNodeHandlerTest"/>
+   <param name="classNameFilter" type="exclude" value="PSLogSummaryTest"/>
+   <param name="classNameFilter" type="exclude" value="PSModelTrackerTest"/>
+   <param name="classNameFilter" type="exclude" value="PSRelationshipServiceTest"/>
+   <param name="classNameFilter" type="exclude" value="PSRelTypeGeneralPageTest"/>
+   <param name="classNameFilter" type="exclude" value="PSRelTypePropertiesPageTest"/>
+   <param name="classNameFilter" type="exclude" value="PSResourceFileHierarchyModelProxyTest"/>
+   <param name="classNameFilter" type="exclude" value="SecurityDesignTestCase"/>
+   <param name="classNameFilter" type="exclude" value="PSSlotsControlTest"/>
+   <param name="classNameFilter" type="exclude" value="PSStopwatchTest"/>
+   <param name="classNameFilter" type="exclude" value="SystemDesignTestCase"/>
+   <param name="classNameFilter" type="exclude" value="PSTemplateContentTypesPageTest"/>
+   <param name="classNameFilter" type="exclude" value="PSTemplatePropertiesPageTest"/>
+   <param name="classNameFilter" type="exclude" value="PSTemplateSlotsPageTest"/>
+   <param name="classNameFilter" type="exclude" value="PSTemplateTypePageTest"/>
+   <param name="classNameFilter" type="exclude" value="PSUiConfigManagerTest"/>
+   <param name="classNameFilter" type="exclude" value="UiDesignTestCase"/>
+   <param name="classNameFilter" type="exclude" value="UiTestCase"/>
+   <param name="classNameFilter" type="exclude" value="PSUserConnectionSetTest"/>
+   <param name="classNameFilter" type="exclude" value="PSWsFolderProcessorTest"/>
+   <param name="classNameFilter" type="exclude" value="PSXmlApplicationConverterTest"/>
+
+   <!--  Workbench Related Tests -->
+   <param name="classNameFilter" type="exclude" value="PSContentTypesControlTest" />
+   <param name="classNameFilter" type="exclude" value="PSDlgUtilTest" />
+   <param name="classNameFilter" type="exclude" value="PSFilteredSlushBucketControlTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateOutputCompositeTest" />
+   <param name="classNameFilter" type="exclude" value="PSSelectCommunitiesCompositeTest" />
+   <param name="classNameFilter" type="exclude" value="PSActiveAssemblyHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSMnemonicControlTest" />
+   <param name="classNameFilter" type="exclude" value="PSCharSetHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSLocationHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSMimeTypeHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSPublishWhenHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSRelTypeFieldOverrideTableHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateGeneralPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSRelTypeCategoryHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSRelTypeEffectsExecutionContextDialogTest" />
+   <param name="classNameFilter" type="exclude" value="PSRelTypeFieldOverrideTableHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSRelTypePropertiesTableHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSRelTypeFieldOverrideTableHelperTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateEditorTest" />
+   <param name="classNameFilter" type="exclude" value="PSXmlApplicationWizardTest" />
+   <param name="classNameFilter" type="exclude" value="PSControlValueFileExistsValidatorTest" />
+   <param name="classNameFilter" type="exclude" value="PSControlValueTextIdValidatorTest" />
+   <param name="classNameFilter" type="exclude" value="PSSitesControlTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateGeneralPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateGlobalPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplatePropertiesPageBaseTest" />
+   <param name="classNameFilter" type="exclude" value="PSExtensionRegistrationWizardTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateSitesPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateVariantPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSDesignObjectExportPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateVariantPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSExtensionRegistrationPropertiesPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSExtensionRegistrationWizardTest" />
+   <param name="classNameFilter" type="exclude" value="PSRelationshipTypeWizardTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateOutputPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSTemplateWizardTest" />
+   <param name="classNameFilter" type="exclude" value="PSVariantPropertiesPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSVariantWizardTest" />
+   <param name="classNameFilter" type="exclude" value="PSVariantPropertiesPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSXmlApplicationPropertiesPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSVariantPropertiesPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSXmlApplicationPropertiesPageTest" />
+   <param name="classNameFilter" type="exclude" value="PSXmlApplicationWizardTest" />
+   <param name="classNameFilter" type="exclude" value="PSControlValueFileExistsValidatorTest" />
+   <param name="classNameFilter" type="exclude" value="PSControlValueTextIdValidatorTest" />
+   <param name="classNameFilter" type="exclude" value="PSGetUrlActionTest"/>  
+   <param name="classNameFilter" type="exclude" value="PSMoveActionTest"/>
+   <param name="classNameFilter" type="exclude" value="PSAssemblyActionsTest"/> 
+   <param name="classNameFilter" type="exclude" value="PSPkgInfoServiceTest"/>
+     
+    <!--  Temporary Ignore --> 
+   <param name="classNameFilter" type="exclude" value="RxFileManagerTest"/>
+      
+   <!-- Test to exclude from automated tests as they are difficult to setup for automatically -->
+   <param name="classNameFilter" type="exclude" value="PSChildExtractionTest"/>
+   <param name="classNameFilter" type="exclude" value="PSInlineLinkProcessorTest"/>
+   <param name="classNameFilter" type="exclude" value="PSRoleManagerTest"/>
+</custom>

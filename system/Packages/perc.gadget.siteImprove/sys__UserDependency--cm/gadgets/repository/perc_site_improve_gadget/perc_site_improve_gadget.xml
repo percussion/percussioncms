@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+    <ModulePrefs title="Siteimprove" description="This gadget shows the Siteimprove integration with Percussion CMS." thumbnail="images/SIGadgetIcon.png" height="450" adminOnly="true">
+        <Require feature="perc_core"/>
+        <Require feature="perc_jquery_ui"/>
+        <Require feature="settitle" />
+    </ModulePrefs>
+    <Content type="html">
+        <![CDATA[
+	   <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+     <link href="/cm/css/percWorkflow.css" rel="stylesheet" type="text/css" />
+     <link href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+     <link href="/cm/gadgets/repository/perc_site_improve_gadget/site_improve.css" rel="stylesheet" type="text/css" />
+	   <link rel="stylesheet" href="https://use.fontawesome.com/b5599b836a.css" />
+
+     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+     <script  src="/cm/services/PercSiteService.js"></script>
+     <script  src="/cm/plugins/perc_utils.js" ></script>
+     <script  src="/cm/services/PercMetadataService.js"></script>
+     <script  src="/cm/cui/components/twitter-bootstrap-3.0.0/js/collapse.js"></script>
+     <script  src="/cm/services/PercUtilService.js"></script>
+     <script  src="/cm/services/PercServiceUtils.js"></script>
+     <script  src="/cm/gadgets/repository/perc_site_improve_gadget/Siteimprove.js"></script>
+
+		<div class="perc-gadget perc-site-improve-gadget" aria-label="site-improve gadget">
+
+			<div id="perc-site-improve-back-div" style="display: none;">
+
+				<div>
+					<button id="perc-site-improve-back-btn" class="btn btn-primary site-improve-back-btn" type="button" tabindex="0" aria-label="Go back to previous page">
+						Back
+					</button>
+				</div>
+
+				<img id="site-improve-logo-main-inline" class="perc-site-improve-logo-inline-top" src="/cm/gadgets/repository/perc_site_improve_gadget/images/siteimprove-logo.png"
+					alt="Siteimprove logo" aria-label="Siteimprove logo"/>
+			</div>
+
+			<!-- Main Screen -->
+			<div id="perc-site-improve-main">
+				<div aria-label="Site improve logo">
+					<img id="site-improve-logo-main-stacked" class="perc-site-improve-logo-top" src="/cm/gadgets/repository/perc_site_improve_gadget/images/siteimprove-logo.png"
+						alt="Siteimprove logo" />
+				</div>
+
+				<br/>
+
+				<div class="perc-site-improve-text perc-site-improve-text-center perc-site-improve-text-main">
+					<p>
+						Welcome to the Siteimprove gadget.
+						<br/><br/>
+						Using this gadget, you will be able to integrate Siteimprove with CMS.
+						The integration will alert Siteimprove to page changes whenever pages are published from CMS.
+					</p>
+				</div>
+
+				<br/>
+
+				<div id="perc-site-improve-buttons" class="si-btn-div" aria-label="site improve gadget navigation">
+					<button id="perc-existing-site-improve-btn" aria-label="Go to site improve integration setup" class="btn btn-primary site-improve-btn"
+						type="button" title="Input Siteimprove integration settings">
+						I already have Siteimprove
+					</button>
+
+					<button id="perc-try-site-improve-btn" aria-label="Go to Percussion site improve partnership page" class="btn btn-primary site-improve-btn"
+						type="button" title="Go to Percussion's Siteimprove partnership page">
+						I want to try out Siteimprove
+					</button>
+				</div>
+			</div>
+
+			<!-- try out site improve screen -->
+<!--
+			<div id="perc-try-out-siteimprove" style="display: none;">
+
+				<br/>
+
+				<div class="perc-site-improve-text perc-site-improve-text-center perc-site-improve-text-main">
+					<p>
+						Siteimprove is "Build a better web experience for your visitors with our all-in-one web governance suite. Whether
+						it’s maintaining, monitoring, or optimizing your website, Siteimprove allows web teams of all sizes to work smarter, not
+						harder.
+
+						<br/><br/>
+
+						If you wish to try out Siteimprove, click this link:
+					</p>
+					<div>
+						<a href="https://www.percussion.com/partners/siteimprove/" target="_blank">Try out Siteimprove!</a>
+					</div>
+				</div>
+				<br/>
+			</div>
+-->
+			<!-- Site improve setup -->
+			<div id="perc-existing-site-improve-credentials" style="display: none;">
+
+				<!-- instructions should be here -->
+				<div class="perc-site-improve-text perc-site-improve-text-instructions">
+					<h6 class="perc-site-improve-text-instructions">
+						Instructions:
+						<br/>
+						To enable Siteimprove for a site, select the site you'd wish to enable the service for from the dropdown below.
+						<br/>
+						To remove Siteimprove for a site, simply turn off the 'Enable Siteimprove' switch.
+					</h6>
+				</div>
+				<div aria-label="Select Site" class="site-improve-select-site">
+					Select Site:
+					<select id="mySites" class="form-control site-improve-perc-form-control perc-siteimprove-select" name="select" aria-label="Select Site drop down box" />
+				</div>
+
+				<br/>
+
+				<div aria-label="Enable Siteimprove">
+					<span class="perc-site-improve-text">Enable Siteimprove</span>
+					<input type="checkbox" id="enableSiteimprove" /><label for="enableSiteimprove">Enable Siteimprove</label>
+				</div>
+
+				<!-- checkboxes -->
+				<div class="checkbox site-improve-checkboxes" aria-label="Siteimprove configuration checkboxes">
+
+					<p class="site-improve-checkboxes-desc">
+						Enable Siteimprove integration on:
+					</p>
+
+					<div id="disabled-checkbox" style="display: none;">
+						<label aria-label="Checkbox to enable for preview sites">
+						<input type="checkbox" id="perc-si-preview" value="">
+							Preview Sites
+						</label>
+						<br/>
+					</div>
+
+					<div id="site-improve-checkboxes" class="site-improve-checkboxes">
+						<label aria-label="Checkbox to enable for production sites">
+							<input type="checkbox" id="perc-si-production" value="" checked>
+							Production Sites
+						</label>
+
+						<br/>
+
+						<label aria-label="Checkbox to enable for staging sites">
+							<input type="checkbox" id="perc-si-staging" value="">
+							Staging Sites
+						</label>
+
+						<br/><br/>
+
+						<button id="perc-site-improve-advanced-btn" type="button" aria-label="Advanced Settings" class="btn btn-info site-improve-checkboxes-desc" data-moduleid="__MODULE_ID__" data-toggle="collapse" data-target="#advanced">Advanced</button>
+						<div id="advanced" class="collapse">
+							<p class="site-improve-checkboxes-desc site-improve-advanced">Problems with Siteimprove account? Reset the token for the account.</p>
+							<button id="perc-site-improve-reset-btn" aria-label="Reset the site improve token for the account" class="site-improve-checkboxes-desc">Reset Token</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- save button -->
+				<div class="site-improve-button-line">
+					<button id="perc-site-improve-save-btn" aria-label="Save site improve settings" class="btn btn-primary site-improve-save-btn"
+						type="button" title="save button">
+						Save
+					</button>
+					<span id="inactive-save-settings-site-improve-img" style="display: none;" aria-label="Please wait, processing.">
+						<img src="/cm/images/images/Busy.gif" alt="Please wait, processing." style="padding-left: 20px; height:50;"/>
+					</span>
+
+					<div id="siteimprove-status-wrapper" style="display: inline;">
+					<i id="save-config-status"></i>
+					<em id="save-config-status-failure-message" class="site-improve-config-status-failure-message"></em>
+					</div>
+				</div>
+				<div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
+
+			</div>
+		</div>
+     ]]>
+    </Content>
+</Module>

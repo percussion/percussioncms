@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This DTD describes the configuration needed for each relationship 
+   type. The document element is a collection of all defined 
+   relationships.
+   This is the DTD how relationship configurations are stored in the 
+   database.  
+-->
+<!-- Include the shared definitions -->
+<!ENTITY % CloneHandlerConfig SYSTEM "sys_CloneHandlerConfig.dtd">
+%CloneHandlerConfig;
+<!--
+   A collection of relationship configurations. This is how relationship
+   configurations are stored in the repository.
+-->
+<!ELEMENT PSXRelationshipConfigSet (PSXRelationshipConfig*)>
+<!--
+   This specifies the relationship configuration how its represented in the
+   object store.
+   
+   name - the relationship name, must be unique accross all relationships 
+      in the system. Used as key to identify relationships of this type.
+      
+   label - the reltionship label as used in user interfaces. This can be
+      translated.
+      
+   category - the category of this relationship, optional. Categories can be used to 
+      group several relationship types together by a unique name, e.g.
+      rs_activeassembly is used to group all Active Assembly relationships
+      together.
+      
+   type - the relationship type is either 'system' or 'user'. 'system'
+      relationships cannot be deleted by the user.
+-->
+<!ELEMENT PSXRelationshipConfig (PSXCloneOverrideFieldList?, EffectSet?, PSXPropertySet?, UserPropertySet?, ProcessChecks?, Description?)>
+<!ATTLIST PSXRelationshipConfig
+	name CDATA #REQUIRED
+	label CDATA #REQUIRED
+	category CDATA #IMPLIED
+	type (system | user) "system"
+>
+<!--
+   A collection of Effect elements.
+-->
+<!ELEMENT EffectSet (PSXConditionalEffect+)>
+<!--
+   Conditional effects. The extension call specified must be of type IPSEffect.
+
+   Attributes:
+   activationEndpoint - Determines when this effect is executed. If 'owner', 
+      the effect will be executed when processing relationships in which
+      the current item is the owner of the relationship. Similarly for the
+      other values.
+-->
+<!ELEMENT PSXConditionalEffect (PSXExtensionCall, Conditions?, ExecutionContextSet?)>
+<!ATTLIST PSXConditionalEffect
+	activationEndpoint (owner | dependent | either) "owner"
+>
+<!--
+   The execution context that is relevent for the effect.
+-->
+<!ELEMENT ExecutionContext EMPTY>
+<!ATTLIST ExecutionContext 
+	type (PostConstruction | PostDestruction | PreWorkflow | PostWorkflow | PreCheckin | PreCheckout | PostUpdate | PreClone )  #REQUIRED
+
+>
+<!--
+   A set of execution context relevent for the effect.
+-->
+<!ELEMENT ExecutionContextSet (ExecutionContext*)>
+
+<!--
+   A set of user specified properties. The relationship itself will not use 
+   these properties, they might be used by relationship Effects attached
+   to the relationship.
+-->
+<!ELEMENT UserPropertySet (PSXProperty*)>
+<!-- 
+   List of fields to be overridden during cloning process.
+-->
+<!ELEMENT PSXCloneOverrideFieldList (PSXCloneOverrideField*)>
+<!-- 
+   A field to be overridden for the new clone during cloning process. 
+   An existing field in the original item shall be replaced with the 
+   evaluated replacement value if the conditionals on this evaluates to true.
+   
+   Note: only PSExtensionCall replacement values are allowed for the
+      'value' element. 
+-->
+<!ELEMENT PSXCloneOverrideField (value, Conditions?)>
+<!ATTLIST PSXCloneOverrideField
+	name CDATA #REQUIRED
+>

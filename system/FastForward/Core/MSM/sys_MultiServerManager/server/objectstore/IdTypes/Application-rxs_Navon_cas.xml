@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplicationIDTypes>
+   <PSXDeployableObject>
+      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rxs_Navon_cas" dependencyType="Local" displayName="rxs_Navon_cas" isIncluded="yes" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+      <RequiredClasses/>
+   </PSXDeployableObject>
+   <PSXApplicationIDTypesResource resourceName="navon (navon)">
+      <PSXApplicationIDTypesElement elementName="ResultPages">
+         <PSXApplicationIDTypeMapping type="VariantDef" value="347">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>347</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="copyxml.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="321">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>321</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="navon.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+      <PSXApplicationIDTypesElement elementName="DataMapper">
+         <PSXApplicationIDTypeMapping type="VariantDef" value="347">
+            <PSXAppExtensionParamIdContext index="0" paramName="variantid">
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>347</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXAppExtensionCallIdContext extRef="Java/global/percussion/assemblers/sys_casGenerateAssemblerLink">
+                  <PSXAppDataMappingIdContext beMapping="sys_casGenerateAssemblerLink(347, CONTENTSTATUS.CONTENTID, RXS_CT_NAVON.REVISIONID, PSXSingleHtmlParameter/sys_authtype)" docMapping="PSXXmlField/whitebox/navlink" type="Backend"/>
+               </PSXAppExtensionCallIdContext>
+            </PSXAppExtensionParamIdContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+   </PSXApplicationIDTypesResource>
+   <PSXApplicationIDTypesResource resourceName="navontree (NavTree)">
+      <PSXApplicationIDTypesElement elementName="ResultPages">
+         <PSXApplicationIDTypeMapping type="VariantDef" value="315">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>315</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_breadcrumbs.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="314">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>314</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_bottom.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="320">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>320</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_preload.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="319">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>319</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_left_multi.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="322">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>322</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_top.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="320">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>320</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_preload_multi.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="322">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>322</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_top_multi.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="319">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>319</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_left.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="372">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>372</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="imageandtitleLinked.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="401">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>401</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_topDescendant.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="VariantDef" value="402">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>sys_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>402</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="nav_topCI.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+   </PSXApplicationIDTypesResource>
+</PSXApplicationIDTypes>

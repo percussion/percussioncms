@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>core</artifactId>
+        <groupId>com.percussion</groupId>
+        <version>8.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>perc-thumbnail</artifactId>
+
+    <properties>
+        <version.arquillian>1.1.11.Final</version.arquillian>
+        <version.shrinkwrap>1.0.0-cr-3</version.shrinkwrap>
+        <phantomjs.version>2.1.1</phantomjs.version>
+        <windows.url>https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${phantomjs.version}-windows.zip
+        </windows.url>
+        <linux.url>https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${phantomjs.version}-linux-x86_64.tar.bz2
+        </linux.url>
+        <download-folder>${project.basedir}/target/phantomjs-download</download-folder>
+    </properties>
+
+    <profiles>
+<profile>
+    <id>populate-nexus</id>
+    <repositories>
+        <repository>
+            <id>perc-java-repo</id>
+            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>a-thirdparty</id>
+            <name>thirdparty</name>
+            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+        </repository>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+    </repositories>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+
+                    <execution>
+                        <phase>process-resources</phase>
+                        <id>import-installs</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <mkdir dir="${download-folder}"/>
+                                <echo message="download windows archive"/>
+                                <get src="${windows.url}" dest="${download-folder}"/>
+                                <echo message="download linux archive"/>
+                                <get src="${linux.url}" dest="${download-folder}"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+               <executions>
+                   <execution>
+                       <id>default-deploy</id>
+                       <phase>none</phase>
+                   </execution>
+                   <execution>
+                       <id>phantomjs-nexus-deploy-win</id>
+                       <phase>deploy</phase>
+                       <goals>
+                           <goal>deploy-file</goal>
+                       </goals>
+                       <configuration>
+                           <repositoryId>repo-man</repositoryId>
+                           <file>${download-folder}/phantomjs-${phantomjs.version}-windows.zip</file>
+                           <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty</url>
+                           <groupId>phantomjs</groupId>
+                           <artifactId>phantomjs-win</artifactId>
+                           <version>2.1.1</version>
+                           <packaging>zip</packaging>
+                           <generatePom>true</generatePom>
+                       </configuration>
+                   </execution>
+                   <execution>
+                       <id>phantomjs-nexus-deploy-linux</id>
+                       <phase>deploy</phase>
+                       <goals>
+                           <goal>deploy-file</goal>
+                       </goals>
+                       <configuration>
+                           <repositoryId>repo-man</repositoryId>
+                           <file>${download-folder}/phantomjs-${phantomjs.version}-linux-x86_64.tar.bz2</file>
+                           <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty</url>
+                           <groupId>phantomjs</groupId>
+                           <artifactId>phantomjs-linux</artifactId>
+                           <version>2.1.1</version>
+                           <packaging>tar.bz2</packaging>
+                           <generatePom>true</generatePom>
+                       </configuration>
+                   </execution>
+
+               </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</profile>
+    </profiles>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-phantomjs-archive</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.outputDirectory}/phantomjs-inst
+                            </outputDirectory>
+                            <includeArtifactIds>phantomjs-linux,phantomjs-win,phantomjs-macosx</includeArtifactIds>
+                            <stripVersion>true</stripVersion>
+
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>phantomjs</groupId>
+            <artifactId>phantomjs-linux</artifactId>
+            <version>2.1.1</version>
+            <type>tar.bz2</type>
+        </dependency>
+        <dependency>
+            <groupId>phantomjs</groupId>
+            <artifactId>phantomjs-win</artifactId>
+            <version>2.1.1</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>phantomjs</groupId>
+            <artifactId>phantomjs-macosx</artifactId>
+            <version>2.1.1</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rxutils</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-jetty-embedded-9</artifactId>
+            <version>1.0.0.CR3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.test</groupId>
+            <artifactId>arquillian-test-impl-base</artifactId>
+            <version>1.1.11.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-core</artifactId>
+            <version>${version.arquillian}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.core</groupId>
+            <artifactId>arquillian-core-impl-base</artifactId>
+            <version>${version.arquillian}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- plus and naming requires for using JNDI -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-plus</artifactId>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Weld servlet, EL and JSP required for testing CDI injections -->
+        <dependency>
+            <groupId>org.jboss.weld.servlet</groupId>
+            <artifactId>weld-servlet</artifactId>
+            <version>1.0.1-Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>el-impl</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-exec</artifactId>
+            <version>1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jul</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jcl</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-1.2-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rxutils</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jboss.shrinkwrap/shrinkwrap-impl-base -->
+        <dependency>
+            <groupId>org.jboss.shrinkwrap</groupId>
+            <artifactId>shrinkwrap-impl-base</artifactId>
+            <version>1.2.3</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>perc-java-repo</id>
+            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>a-thirdparty</id>
+            <name>thirdparty</name>
+            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+        </repository>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+    </repositories>
+
+</project>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXSProperty (PSXKey, Value, Description? )>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT Value (#PCDATA)>
+<!ELEMENT PSXKey (PROPERTYNAME, PROPERTYVALUE, SEARCHID )>
+<!ELEMENT SEARCHID (#PCDATA)>
+<!ELEMENT PROPERTYVALUE (#PCDATA)>
+<!ELEMENT PROPERTYNAME (#PCDATA)>
+<!ATTLIST PSXKey isPersisted (yes | no ) "yes">
+<!ATTLIST PSXKey needGenerateId (yes | no ) "no">
+<!ATTLIST  PSXSProperty keyControl CDATA #REQUIRED>
+<!ATTLIST  PSXSProperty propName CDATA #REQUIRED>
+<!ATTLIST  PSXSProperty state CDATA #REQUIRED>
+<!ELEMENT PSXSearchMultiProperty (PSXSProperty+ )>
+<!ATTLIST  PSXSearchMultiProperty className CDATA #REQUIRED>
+<!ATTLIST PSXSearchMultiProperty ordered (yes | no ) "no">
+<!ATTLIST  PSXSearchMultiProperty propName CDATA #REQUIRED>
+<!ATTLIST  PSXSearchMultiProperty state CDATA #REQUIRED>
+<!ELEMENT PSX_PROPERTIES (PSXSearchMultiProperty+ )>
+<!ATTLIST  PSX_PROPERTIES className CDATA #REQUIRED>
+<!ATTLIST PSX_PROPERTIES ordered (yes | no ) "no">
+<!ATTLIST  PSX_PROPERTIES state CDATA #REQUIRED>

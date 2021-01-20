@@ -1,0 +1,8 @@
+[{
+	"config_css": "../sys_resources/css/tinymce/content.css",
+	"menubar": "null",
+	"browser_spellcheck": true,
+	"plugins" : "-example",
+	"toolbar": "bold,italic,underline,undo,redo,formatselect",
+	"valid_elements": "*[*]"
+}]

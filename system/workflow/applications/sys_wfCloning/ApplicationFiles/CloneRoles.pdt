@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Role (RoleDesc, RoleId, RoleName, WorkflowId )>
+<!ELEMENT WorkflowId (#PCDATA)>
+<!ELEMENT RoleName (#PCDATA)>
+<!ELEMENT RoleId (#PCDATA)>
+<!ELEMENT RoleDesc (#PCDATA)>
+<!ELEMENT CloneRoles (Role* )>

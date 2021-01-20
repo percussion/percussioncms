@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LibraryLoader traceEnabled="no">
+   <!--
+      Native libraries to be loaded on the server startup.
+   -->
+   <NativeLibs os="win">
+      <!-- common -->
+      <NativeLib name="msvcrt.dll" location="bin"/>
+      <NativeLib name="MSVCP60.dll" location="bin"/>
+      <NativeLib name="libnspr21.dll" location="bin"/>
+      <NativeLib name="PSJNIUTIL.dll" location="bin"/>
+      <NativeLib name="PSIPC.dll" location="bin"/>
+      <NativeLib name="js32.dll" location="bin"/>
+      <NativeLib name="PSInstaller.dll" location="bin"/>
+      <NativeLib name="PSODBC.dll" location="bin"/>
+      <NativeLib name="PSOSPROVIDER.dll" location="bin"/>
+      <NativeLib name="PSJS.dll" location="bin"/>
+      <NativeLib name="PSOSPROVIDERMETADATA.dll" location="bin"/>
+   </NativeLibs>
+   <NativeLibs os="solaris">
+
+      
+   </NativeLibs>
+   <NativeLibs os="linux">
+      
+      <!-- 
+      	       <NativeLib name="libdocueng.so" location="bin"/>
+               <NativeLib name="libdocuvis.so" location="bin"/>
+               <NativeLib name="libdcjavad.so" location="bin"/>
+       -->
+   </NativeLibs>
+   <NativeLibs os="unix">
+      <NativeLib name="libPSInstaller.so" location="bin"/>
+      <NativeLib name="libPSJNIUTIL.so" location="bin"/>
+   </NativeLibs>
+</LibraryLoader>

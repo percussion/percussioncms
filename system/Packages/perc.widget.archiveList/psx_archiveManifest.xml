@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="SharedGroup-queryfields">
+      <PSXDependencyFile fileType="SHARED_GROUP_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\queryfields.sharedGroup</RxFile>
+         <ArchiveFile>SharedGroup-queryfields\queryfields.sharedGroup</ArchiveFile>
+         <OriginalFile>rxs_ct_queryfields_shared.xml</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_archiveList_images_widgetIconArchive-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\archiveList\images\widgetIconArchive.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_archiveList_images_widgetIconArchive-gif\widgetIconArchive.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Schema-QUERYFIELDS_QUERYFIELDS2">
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\QUERYFIELDS_QUERYFIELDS2.schema</RxFile>
+         <ArchiveFile>Schema-QUERYFIELDS_QUERYFIELDS2\QUERYFIELDS_QUERYFIELDS2.schema</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--4314270249122791342">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percArchiveList.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--4314270249122791342\percArchiveList.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsArchiveList.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\images\ContentTypeIcons\filetypeIconsArchiveList.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsArchiveList.png\filetypeIconsArchiveList.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_archiveList_images_widgetIconArchiveOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\archiveList\images\widgetIconArchiveOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_archiveList_images_widgetIconArchiveOver-gif\widgetIconArchiveOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_archiveList_images_widgetIconArchiveEmpty-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\archiveList\images\widgetIconArchiveEmpty.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_archiveList_images_widgetIconArchiveEmpty-png\widgetIconArchiveEmpty.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percArchiveList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rxconfig\Resources\percArchiveList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percArchiveList-xml\percArchiveList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percArchiveList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rxconfig\Widgets\percArchiveList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percArchiveList-xml\percArchiveList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-351">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percArchiveList.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-351\percArchiveList.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percArchiveList.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-351\percArchiveList.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percArchiveList.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-351\percArchiveList.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

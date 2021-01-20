@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT DisplayChoices (DisplayEntry* )>
+<!ATTLIST  DisplayChoices href CDATA #IMPLIED>
+
+<!ELEMENT DisplayEntry (Value, DisplayLabel )>
+<!ATTLIST  DisplayEntry sourceType CDATA #IMPLIED>
+<!ATTLIST  DisplayEntry selected (yes | no ) "no">
+
+<!ELEMENT Value (#PCDATA)>
+<!ATTLIST Value type (Boolean | Date | String ) "String">
+
+<!ELEMENT DisplayLabel (#PCDATA)>
+<!ATTLIST  DisplayLabel sourceType CDATA #IMPLIED>
+
+

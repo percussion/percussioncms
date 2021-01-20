@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Status (Content_Id, Title, Community, Content_Type, Pub_Status, Pub_Date, Location, Publish_Status_Id )>
+<!ELEMENT Publish_Status_Id (#PCDATA)>
+<!ATTLIST  Publish_Status_Id type CDATA #IMPLIED>
+<!ELEMENT Location (#PCDATA)>
+<!ELEMENT Pub_Date (#PCDATA)>
+<!ELEMENT Pub_Status (#PCDATA)>
+<!ELEMENT Content_Type (#PCDATA)>
+<!ELEMENT Community (#PCDATA)>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT Content_Id (#PCDATA)>
+<!ATTLIST  Content_Id type CDATA #IMPLIED>
+<!ELEMENT Publish_Status_Details (Status* )>

@@ -1,0 +1,65 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.perc-wb-list-outer {
+    margin: 0 10px;
+}
+.perc-wb-list-toolbar {
+    width: 100%;
+    margin: 20px 12px 10px 2px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.perc-wb-list-toolbar td {
+    vertical-align: middle;
+}
+.perc-wb-list-view-options{
+    width:100px;
+}
+.ui-disabled #perc-wb-list-expander {
+    color: #ccc;
+}
+
+#perc-wb-list-expander:hover {
+    font-size: 15pt;
+    color: #298AC0;
+    background: transparent;
+}
+
+#perc-wb-list-expander {
+    font-size: 15pt;
+    -color: #399ECE;
+    color: #133c55;
+    margin-right: 6px;
+    background: transparent;
+}
+.perc-wb-list-menu {
+    padding-right: 20px;
+    width: 240px;
+}
+.perc-wb-list-buttonbar .perc-font-icon {
+    float: right;
+    margin-right: 4px;
+}

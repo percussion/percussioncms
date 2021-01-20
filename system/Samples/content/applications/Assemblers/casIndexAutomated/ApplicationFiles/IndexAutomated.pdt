@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT IndexAutomated (contenttitle*, displaytitle*, abstractcontent*, preferredvariant*, category*, subcategory*, queryurl* )>
+<!ELEMENT queryurl (#PCDATA)>
+<!ELEMENT subcategory (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT preferredvariant (#PCDATA)>
+<!ELEMENT abstractcontent (#PCDATA)>
+<!ELEMENT displaytitle (#PCDATA)>
+<!ELEMENT contenttitle (#PCDATA)>
+<!ATTLIST  IndexAutomated AutoRelatedContentURL CDATA #IMPLIED>

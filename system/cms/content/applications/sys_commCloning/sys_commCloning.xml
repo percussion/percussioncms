@@ -1,0 +1,1253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="1088" startPriority="0" version="2.0">
+	<name>sys_commCloning</name>
+	<description/>
+	<requestRoot>sys_commCloning</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_jbr_1105632327858/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050113T110016924</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="11">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050120T113110642</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>admin1</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior/>
+	</PSXAcl>
+	<maxThreads>0</maxThreads>
+	<maxRequestTime>0</maxRequestTime>
+	<maxRequestsInQueue>0</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>0</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="3668">
+		<name>UpdateWorkflowCommunity</name>
+		<description>Update resource to set the Workflow Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3624">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3623">
+				<PSXBackEndTable id="3622">
+					<alias>RXWORKFLOWCOMMUNITY</alias>
+					<table>RXWORKFLOWCOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3620" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityWorkflows/Workflow/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityWorkflows/Workflow/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3621">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3667">
+			<schemaSource>file:CloneCommunityWorkflows.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateWorkflowCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3670">
+		<name>UpdateContentTypeCommunity</name>
+		<description>Update resource to set the ContentType Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3630">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3629">
+				<PSXBackEndTable id="3628">
+					<alias>RXCONTENTTYPECOMMUNITY</alias>
+					<table>RXCONTENTTYPECOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3626" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityContentTypes/ContentType/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCONTENTTYPECOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityContentTypes/ContentType/ContentTypeId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCONTENTTYPECOMMUNITY</tableAlias>
+						<column>CONTENTTYPEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3627">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCONTENTTYPECOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCONTENTTYPECOMMUNITY</tableAlias>
+						<column>CONTENTTYPEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3669">
+			<schemaSource>file:CloneCommunityContentTypes.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateContentTypeCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3672">
+		<name>UpdateComponentCommunity</name>
+		<description>Update resource to set the Component Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3636">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3635">
+				<PSXBackEndTable id="3634">
+					<alias>RXCOMPONENTCOMMUNITY</alias>
+					<table>RXCOMPONENTCOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3632" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityComponents/Component/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMPONENTCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityComponents/Component/ComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMPONENTCOMMUNITY</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3633">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMPONENTCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMPONENTCOMMUNITY</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3671">
+			<schemaSource>file:CloneCommunityComponents.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateComponentCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3674">
+		<name>UpdateVariantCommunity</name>
+		<description>Update resource to set the Variant Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3642">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3641">
+				<PSXBackEndTable id="3640">
+					<alias>RXVARIANTCOMMUNITY</alias>
+					<table>RXVARIANTCOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3638" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityVariants/Variant/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityVariants/Variant/VariantId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTCOMMUNITY</tableAlias>
+						<column>VARIANTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3639">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTCOMMUNITY</tableAlias>
+						<column>VARIANTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3673">
+			<schemaSource>file:CloneCommunityVariants.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateVariantCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3676">
+		<name>UpdateSiteCommunity</name>
+		<description>Update resource to set the Site Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3615">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3614">
+				<PSXBackEndTable id="3613">
+					<alias>RXSITECOMMUNITY</alias>
+					<table>RXSITECOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3611" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunitySites/Site/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXSITECOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunitySites/Site/SiteId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXSITECOMMUNITY</tableAlias>
+						<column>SITEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3612">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXSITECOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXSITECOMMUNITY</tableAlias>
+						<column>SITEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3675">
+			<schemaSource>file:CloneCommunitySites.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateSiteCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3678">
+		<name>QueryWorkflowCommunity</name>
+		<description>Query resource to get the Workflow Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3648">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3644">
+				<PSXBackEndTable id="3643">
+					<alias>RXWORKFLOWCOMMUNITY</alias>
+					<table>RXWORKFLOWCOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3646" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityWorkflows/Workflow/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityWorkflows/Workflow/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3645" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+									<column>COMMUNITYID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_communityid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3677">
+			<schemaSource>file:CloneCommunityWorkflows.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryWorkflowCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3684">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3686">
+		<name>QueryContentTypeCommunity</name>
+		<description>Query resource to get the ContentType Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3654">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3650">
+				<PSXBackEndTable id="3649">
+					<alias>RXCONTENTTYPECOMMUNITY</alias>
+					<table>RXCONTENTTYPECOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3652" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityContentTypes/ContentType/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCONTENTTYPECOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityContentTypes/ContentType/ContentTypeId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCONTENTTYPECOMMUNITY</tableAlias>
+						<column>CONTENTTYPEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3651" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXCONTENTTYPECOMMUNITY</tableAlias>
+									<column>COMMUNITYID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_communityid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3685">
+			<schemaSource>file:CloneCommunityContentTypes.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryContentTypeCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3684">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3688">
+		<name>QueryComponentCommunity</name>
+		<description>Query resource to get the Component Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3660">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3656">
+				<PSXBackEndTable id="3655">
+					<alias>RXCOMPONENTCOMMUNITY</alias>
+					<table>RXCOMPONENTCOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3658" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityComponents/Component/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMPONENTCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityComponents/Component/ComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMPONENTCOMMUNITY</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3657" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXCOMPONENTCOMMUNITY</tableAlias>
+									<column>COMMUNITYID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_communityid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3687">
+			<schemaSource>file:CloneCommunityComponents.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryComponentCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3684">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3690">
+		<name>QueryVariantCommunity</name>
+		<description>Query resource to get the Variant Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3666">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3662">
+				<PSXBackEndTable id="3661">
+					<alias>RXVARIANTCOMMUNITY</alias>
+					<table>RXVARIANTCOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3664" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityVariants/Variant/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunityVariants/Variant/VariantId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTCOMMUNITY</tableAlias>
+						<column>VARIANTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3663" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXVARIANTCOMMUNITY</tableAlias>
+									<column>COMMUNITYID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_communityid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3689">
+			<schemaSource>file:CloneCommunityVariants.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryVariantCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3684">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3692">
+		<name>QuerySiteCommunity</name>
+		<description>Query resource to get the Site Community relations for the supplied Community.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3603">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3599">
+				<PSXBackEndTable id="3598">
+					<alias>RXSITECOMMUNITY</alias>
+					<table>RXSITECOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3601" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunitySites/Site/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXSITECOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneCommunitySites/Site/SiteId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXSITECOMMUNITY</tableAlias>
+						<column>SITEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3600" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXSITECOMMUNITY</tableAlias>
+									<column>COMMUNITYID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_communityid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3691">
+			<schemaSource>file:CloneCommunitySites.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QuerySiteCommunity</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3684">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3694">
+		<name>QueryRoles</name>
+		<description>Query resource to get the Roles.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3609">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3605">
+				<PSXBackEndTable id="3604">
+					<alias>PSX_ROLES</alias>
+					<table>PSX_ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3607" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>QueryRoles/Role/RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>QueryRoles/Role/RoleName</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3606" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3693">
+			<schemaSource>file:QueryRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3684">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="3617" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="3618">
+		<providerType>SMTP</providerType>
+		<server>&lt;Unspecified&gt;</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="3622sizeheight">200</userProperty>
+	<userProperty name="pageDatatankSrcType3675">2</userProperty>
+	<userProperty name="pageDatatankSrcType3673">2</userProperty>
+	<userProperty name="3640readonly">false</userProperty>
+	<userProperty name="pageDatatankSrcType3671">2</userProperty>
+	<userProperty name="locationX3619">0</userProperty>
+	<userProperty name="pageDatatankFilePath3647">C:\CodeTemp\MartinCloningFiles\CloneCommunityWorkflows.dtd</userProperty>
+	<userProperty name="locationX3618">16</userProperty>
+	<userProperty name="locationX3617">16</userProperty>
+	<userProperty name="locationX3616">16</userProperty>
+	<userProperty name="3643readonly">false</userProperty>
+	<userProperty name="schemaSourceReadOnly3677">true</userProperty>
+	<userProperty name="3628locationy">20</userProperty>
+	<userProperty name="schemaSourceReadOnly3675">true</userProperty>
+	<userProperty name="3628locationx">20</userProperty>
+	<userProperty name="schemaSourceReadOnly3673">true</userProperty>
+	<userProperty name="schemaSourceReadOnly3671">true</userProperty>
+	<userProperty name="pageDatatankSrcType3669">2</userProperty>
+	<userProperty name="pageDatatankSrcType3667">2</userProperty>
+	<userProperty name="pageDatatankSrcType3665">2</userProperty>
+	<userProperty name="locationY3694">506</userProperty>
+	<userProperty name="pageDatatankFilePath3637">C:\CodeTemp\MartinCloningFiles\CloneCommunityVariants.dtd</userProperty>
+	<userProperty name="locationY3693">0</userProperty>
+	<userProperty name="locationY3692">441</userProperty>
+	<userProperty name="locationY3691">0</userProperty>
+	<userProperty name="locationY3690">319</userProperty>
+	<userProperty name="pageDatatankFilePath3631">C:\CodeTemp\MartinCloningFiles\CloneCommunityComponents.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly3669">true</userProperty>
+	<userProperty name="schemaSourceReadOnly3667">true</userProperty>
+	<userProperty name="schemaSourceReadOnly3665">true</userProperty>
+	<userProperty name="pageDatatankSrcType3659">2</userProperty>
+	<userProperty name="locationY3689">0</userProperty>
+	<userProperty name="locationY3688">217</userProperty>
+	<userProperty name="pageDatatankSrcType3653">2</userProperty>
+	<userProperty name="locationY3687">0</userProperty>
+	<userProperty name="locationY3686">113</userProperty>
+	<userProperty name="locationY3685">0</userProperty>
+	<userProperty name="locationY3684">266</userProperty>
+	<userProperty name="locationY3683">266</userProperty>
+	<userProperty name="locationY3682">266</userProperty>
+	<userProperty name="pageDatatankFilePath3625">C:\CodeTemp\MartinCloningFiles\CloneCommunityContentTypes.dtd</userProperty>
+	<userProperty name="locationY3681">266</userProperty>
+	<userProperty name="locationY3680">266</userProperty>
+	<userProperty name="3634readonly">false</userProperty>
+	<userProperty name="schemaSourceReadOnly3659">true</userProperty>
+	<userProperty name="schemaSourceReadOnly3653">true</userProperty>
+	<userProperty name="pageDatatankSrcType3647">2</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="3655sizewidth">120</userProperty>
+	<userProperty name="locationY3679">266</userProperty>
+	<userProperty name="locationY3678">28</userProperty>
+	<userProperty name="locationY3677">0</userProperty>
+	<userProperty name="locationY3676">547</userProperty>
+	<userProperty name="pageDatatankFilePath3619">C:\CodeTemp\MartinCloningFiles\CloneCommunityWorkflows.dtd</userProperty>
+	<userProperty name="locationY3675">0</userProperty>
+	<userProperty name="locationY3674">412</userProperty>
+	<userProperty name="locationY3673">0</userProperty>
+	<userProperty name="locationY3672">287</userProperty>
+	<userProperty name="locationY3671">0</userProperty>
+	<userProperty name="locationY3670">170</userProperty>
+	<userProperty name="schemaSourceReadOnly3647">true</userProperty>
+	<userProperty name="3649locationy">20</userProperty>
+	<userProperty name="pageDatatankSrcType3637">2</userProperty>
+	<userProperty name="3649locationx">20</userProperty>
+	<userProperty name="locationY3669">0</userProperty>
+	<userProperty name="locationY3668">53</userProperty>
+	<userProperty name="3628sizewidth">120</userProperty>
+	<userProperty name="locationY3667">0</userProperty>
+	<userProperty name="locationY3666">10</userProperty>
+	<userProperty name="pageDatatankSrcType3631">2</userProperty>
+	<userProperty name="locationY3665">0</userProperty>
+	<userProperty name="locationY3664">24</userProperty>
+	<userProperty name="locationY3663">24</userProperty>
+	<userProperty name="locationY3662">0</userProperty>
+	<userProperty name="locationY3660">10</userProperty>
+	<userProperty name="3649sizeheight">200</userProperty>
+	<userProperty name="schemaSourceReadOnly3637">true</userProperty>
+	<userProperty name="locationX3694">151</userProperty>
+	<userProperty name="locationX3693">350</userProperty>
+	<userProperty name="locationX3692">20</userProperty>
+	<userProperty name="schemaSourceReadOnly3631">true</userProperty>
+	<userProperty name="locationX3691">357</userProperty>
+	<userProperty name="locationX3690">-2</userProperty>
+	<userProperty name="pageDatatankSrcType3625">2</userProperty>
+	<userProperty name="locationY3659">0</userProperty>
+	<userProperty name="locationY3658">24</userProperty>
+	<userProperty name="3622locationy">20</userProperty>
+	<userProperty name="3640locationy">20</userProperty>
+	<userProperty name="locationY3657">24</userProperty>
+	<userProperty name="3622locationx">20</userProperty>
+	<userProperty name="3640locationx">20</userProperty>
+	<userProperty name="locationY3656">0</userProperty>
+	<userProperty name="locationY3654">10</userProperty>
+	<userProperty name="locationY3653">0</userProperty>
+	<userProperty name="locationY3652">24</userProperty>
+	<userProperty name="locationY3651">24</userProperty>
+	<userProperty name="locationY3650">0</userProperty>
+	<userProperty name="locationX3689">357</userProperty>
+	<userProperty name="locationX3688">-3</userProperty>
+	<userProperty name="locationX3687">357</userProperty>
+	<userProperty name="locationX3686">23</userProperty>
+	<userProperty name="schemaSourceReadOnly3625">true</userProperty>
+	<userProperty name="3628readonly">false</userProperty>
+	<userProperty name="locationX3685">357</userProperty>
+	<userProperty name="locationX3684">247</userProperty>
+	<userProperty name="locationX3683">247</userProperty>
+	<userProperty name="3628sizeheight">200</userProperty>
+	<userProperty name="locationX3682">247</userProperty>
+	<userProperty name="locationX3681">247</userProperty>
+	<userProperty name="locationX3680">247</userProperty>
+	<userProperty name="pageDatatankSrcType3619">2</userProperty>
+	<userProperty name="3655sizeheight">200</userProperty>
+	<userProperty name="locationY3648">10</userProperty>
+	<userProperty name="locationY3647">0</userProperty>
+	<userProperty name="locationY3646">24</userProperty>
+	<userProperty name="locationY3645">24</userProperty>
+	<userProperty name="locationY3644">0</userProperty>
+	<userProperty name="locationY3642">10</userProperty>
+	<userProperty name="3622readonly">false</userProperty>
+	<userProperty name="locationY3641">0</userProperty>
+	<userProperty name="3661sizeheight">200</userProperty>
+	<userProperty name="schemaSourceReadOnly3619">true</userProperty>
+	<userProperty name="locationX3679">247</userProperty>
+	<userProperty name="locationX3678">120</userProperty>
+	<userProperty name="3661readonly">false</userProperty>
+	<userProperty name="locationX3677">357</userProperty>
+	<userProperty name="locationX3676">363</userProperty>
+	<userProperty name="locationX3675">0</userProperty>
+	<userProperty name="locationX3674">361</userProperty>
+	<userProperty name="locationX3673">0</userProperty>
+	<userProperty name="locationX3672">356</userProperty>
+	<userProperty name="locationX3671">0</userProperty>
+	<userProperty name="locationX3670">358</userProperty>
+	<userProperty name="locationY3639">24</userProperty>
+	<userProperty name="locationY3638">24</userProperty>
+	<userProperty name="locationY3637">0</userProperty>
+	<userProperty name="locationY3636">10</userProperty>
+	<userProperty name="locationY3635">0</userProperty>
+	<userProperty name="locationY3633">24</userProperty>
+	<userProperty name="3634sizeheight">200</userProperty>
+	<userProperty name="locationY3632">24</userProperty>
+	<userProperty name="locationY3631">0</userProperty>
+	<userProperty name="locationY3630">10</userProperty>
+	<userProperty name="3661locationy">20</userProperty>
+	<userProperty name="3649sizewidth">120</userProperty>
+	<userProperty name="3661locationx">20</userProperty>
+	<userProperty name="locationX3669">0</userProperty>
+	<userProperty name="locationX3668">355</userProperty>
+	<userProperty name="locationX3667">0</userProperty>
+	<userProperty name="locationX3666">10</userProperty>
+	<userProperty name="locationX3665">357</userProperty>
+	<userProperty name="locationX3664">237</userProperty>
+	<userProperty name="pageDatatankFilePath3693">C:\CodeTemp\MartinCloningFiles\QueryRoles.dtd</userProperty>
+	<userProperty name="locationX3663">103</userProperty>
+	<userProperty name="locationX3662">0</userProperty>
+	<userProperty name="pageDatatankFilePath3691">C:\CodeTemp\MartinCloningFiles\CloneCommunitySites.dtd</userProperty>
+	<userProperty name="locationX3660">10</userProperty>
+	<userProperty name="locationY3629">0</userProperty>
+	<userProperty name="locationY3627">24</userProperty>
+	<userProperty name="locationY3626">24</userProperty>
+	<userProperty name="locationY3625">0</userProperty>
+	<userProperty name="locationY3624">10</userProperty>
+	<userProperty name="locationY3623">0</userProperty>
+	<userProperty name="locationY3621">24</userProperty>
+	<userProperty name="locationY3620">24</userProperty>
+	<userProperty name="3643locationy">20</userProperty>
+	<userProperty name="3634locationy">20</userProperty>
+	<userProperty name="pageDatatankFilePath3689">C:\CodeTemp\MartinCloningFiles\CloneCommunityVariants.dtd</userProperty>
+	<userProperty name="3643locationx">20</userProperty>
+	<userProperty name="3634locationx">20</userProperty>
+	<userProperty name="locationX3659">357</userProperty>
+	<userProperty name="locationX3658">237</userProperty>
+	<userProperty name="pageDatatankFilePath3687">C:\CodeTemp\MartinCloningFiles\CloneCommunityComponents.dtd</userProperty>
+	<userProperty name="locationX3657">103</userProperty>
+	<userProperty name="3640sizewidth">120</userProperty>
+	<userProperty name="3622sizewidth">120</userProperty>
+	<userProperty name="locationX3656">0</userProperty>
+	<userProperty name="pageDatatankFilePath3685">C:\CodeTemp\MartinCloningFiles\CloneCommunityContentTypes.dtd</userProperty>
+	<userProperty name="locationX3654">10</userProperty>
+	<userProperty name="locationX3653">357</userProperty>
+	<userProperty name="locationX3652">237</userProperty>
+	<userProperty name="3640sizeheight">200</userProperty>
+	<userProperty name="locationX3651">103</userProperty>
+	<userProperty name="3655readonly">false</userProperty>
+	<userProperty name="locationX3650">0</userProperty>
+	<userProperty name="locationY3619">0</userProperty>
+	<userProperty name="locationY3618">100</userProperty>
+	<userProperty name="locationY3617">55</userProperty>
+	<userProperty name="locationY3616">10</userProperty>
+	<userProperty name="locationX3648">10</userProperty>
+	<userProperty name="pageDatatankFilePath3677">C:\CodeTemp\MartinCloningFiles\CloneCommunityWorkflows.dtd</userProperty>
+	<userProperty name="locationX3647">357</userProperty>
+	<userProperty name="locationX3646">237</userProperty>
+	<userProperty name="pageDatatankFilePath3675">C:\CodeTemp\MartinCloningFiles\CloneCommunitySites.dtd</userProperty>
+	<userProperty name="locationX3645">103</userProperty>
+	<userProperty name="locationX3644">0</userProperty>
+	<userProperty name="pageDatatankFilePath3673">C:\CodeTemp\MartinCloningFiles\CloneCommunityVariants.dtd</userProperty>
+	<userProperty name="locationX3642">10</userProperty>
+	<userProperty name="pageDatatankFilePath3671">C:\CodeTemp\MartinCloningFiles\CloneCommunityComponents.dtd</userProperty>
+	<userProperty name="locationX3641">357</userProperty>
+	<userProperty name="pageDatatankSrcType3693">2</userProperty>
+	<userProperty name="pageDatatankFilePath3669">C:\CodeTemp\MartinCloningFiles\CloneCommunityContentTypes.dtd</userProperty>
+	<userProperty name="locationX3639">236</userProperty>
+	<userProperty name="pageDatatankSrcType3691">2</userProperty>
+	<userProperty name="locationX3638">169</userProperty>
+	<userProperty name="pageDatatankFilePath3667">C:\CodeTemp\MartinCloningFiles\CloneCommunityWorkflows.dtd</userProperty>
+	<userProperty name="locationX3637">0</userProperty>
+	<userProperty name="locationX3636">10</userProperty>
+	<userProperty name="pageDatatankFilePath3665">C:\CodeTemp\MartinCloningFiles\CloneCommunityVariants.dtd</userProperty>
+	<userProperty name="locationX3635">357</userProperty>
+	<userProperty name="locationX3633">236</userProperty>
+	<userProperty name="locationX3632">169</userProperty>
+	<userProperty name="locationX3631">0</userProperty>
+	<userProperty name="locationX3630">10</userProperty>
+	<userProperty name="schemaSourceReadOnly3693">true</userProperty>
+	<userProperty name="3643sizeheight">200</userProperty>
+	<userProperty name="schemaSourceReadOnly3691">true</userProperty>
+	<userProperty name="pageDatatankSrcType3689">2</userProperty>
+	<userProperty name="pageDatatankSrcType3687">2</userProperty>
+	<userProperty name="pageDatatankSrcType3685">2</userProperty>
+	<userProperty name="pageDatatankFilePath3659">C:\CodeTemp\MartinCloningFiles\CloneCommunityComponents.dtd</userProperty>
+	<userProperty name="locationX3629">357</userProperty>
+	<userProperty name="locationX3627">236</userProperty>
+	<userProperty name="locationX3626">169</userProperty>
+	<userProperty name="locationX3625">0</userProperty>
+	<userProperty name="pageDatatankFilePath3653">C:\CodeTemp\MartinCloningFiles\CloneCommunityContentTypes.dtd</userProperty>
+	<userProperty name="locationX3624">10</userProperty>
+	<userProperty name="locationX3623">357</userProperty>
+	<userProperty name="locationX3621">236</userProperty>
+	<userProperty name="locationX3620">169</userProperty>
+	<userProperty name="schemaSourceReadOnly3689">true</userProperty>
+	<userProperty name="3655locationy">20</userProperty>
+	<userProperty name="3655locationx">20</userProperty>
+	<userProperty name="schemaSourceReadOnly3687">true</userProperty>
+	<userProperty name="3643sizewidth">120</userProperty>
+	<userProperty name="3634sizewidth">120</userProperty>
+	<userProperty name="3661sizewidth">120</userProperty>
+	<userProperty name="schemaSourceReadOnly3685">true</userProperty>
+	<userProperty name="3649readonly">false</userProperty>
+	<userProperty name="pageDatatankSrcType3677">2</userProperty>
+</PSXApplication>

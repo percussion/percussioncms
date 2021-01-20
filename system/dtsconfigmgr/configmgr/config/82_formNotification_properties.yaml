@@ -1,0 +1,104 @@
+- Name: 82formaddress
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: update
+    Key: email.fromAddress
+    Value: noreply@percussion.marketing
+    Marker:
+    Placement:
+    Source: Deployment/Server/conf/perc/perc-email.properties
+- Name: 82portnumber
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: update
+    Key: email.portNumber
+    Value: "25"
+    Marker:
+    Placement:
+    Source: Deployment/Server/conf/perc/perc-email.properties
+- Name: 82bounceaddress
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: update
+    Key: email.bounceAddress
+    Value: noreply@percussion.marketing
+    Marker:
+    Placement:
+    Source: Deployment/Server/conf/perc/perc-email.properties
+- Name: 82username
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: remove
+    Key: email.userName
+    Value: 
+    Marker:
+    Placement:
+    Source: Deployment/Server/conf/perc/perc-email.properties
+- Name: 82tls
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: update
+    Key: email.TLS
+    Value: "false"
+    Marker:
+    Placement:
+    Source: Deployment/Server/conf/perc/perc-email.properties
+- Name: 82sslport
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: remove
+    Key: email.sslPort
+    Value:
+    Marker:
+    Placement:
+    Source: Deployment/Server/conf/perc/perc-email.properties
+- Name: 82hostname
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: update
+    Key: email.hostName
+    Value: mail.percussion.marketing
+    Marker:
+    Placement:
+    Source: Deployment/Server/conf/perc/perc-email.properties
+- Name: 82password
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: remove
+    Key: email.password
+    Value:
+    Marker:
+    Placement:
+    Source: Deployment/Server/conf/perc/perc-email.properties

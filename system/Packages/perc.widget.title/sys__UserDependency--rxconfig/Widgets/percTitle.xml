@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="Title"
+                 contenttype_name="percTitleAsset"
+                 category="content"
+                 description="Widget to enter the Page title"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/title/images/widgetTitle.png"
+                 preferred_editor_width="780"
+                 preferred_editor_height="302"
+                 create_shared_asset="false"
+                 is_editable_on_template="false"
+                 is_responsive="true"
+    />
+    <UserPref name="wrapper"
+              display_name="Choose format"
+              required="true"
+              datatype="enum" default_value="h1">
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+        <EnumValue value="paragraph" display_value="Paragraph" />
+        <EnumValue value="div" display_value="Div" />
+    </UserPref>
+    <CssPref name="rootclass"
+             display_name="CSS Root Class"
+             datatype="string" />
+
+
+    <Code type="jexl">
+        <![CDATA[
+    $wrapper = $perc.widget.item.properties.get('wrapper');
+    $rootclass= $perc.widget.item.cssProperties.get('rootclass');
+    $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null); 
+    if (!empty($rootclass))
+        $classAttribute = ' class="' + $rootclass + '"';
+		
+	$dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+    if ($dsUrl.indexOf("http://localhost") != -1 )
+	    $dsUrl = "";
+    $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}"); 
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[
+<div>  
+#loadRelatedWidgetContents()##
+#if( ! $perc.widgetContents.isEmpty() )##
+#set($node = $perc.widgetContents.get(0).node)##
+#end##
+#if(! $sys.assemblyItem.getNode().hasProperty("resource_link_title"))##
+#createEmptyWidgetContent("title-sample-content", "This title widget is showing sample content.")##
+#elseif ($assets.isEmpty())##
+<$!{wrapper}$!{classAttribute}>$tools.esc.html($!{perc.page.linkTitle})</$!{wrapper}> 
+#else##
+<$!{wrapper}$!{classAttribute}>$rx.pageutils.html($node,'rx:text')</$!{wrapper}>
+#end##  
+</div>
+    ]]>
+    </Content>
+</Widget>

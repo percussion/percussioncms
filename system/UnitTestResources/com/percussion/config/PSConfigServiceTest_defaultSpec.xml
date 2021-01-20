@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   When processing a business config (BC,) each property's name is normalized
+   by prepending the surrounding SolutionConfigurations@publisherPrefix + the 
+   surrounding solution's name, e.g. 
+   com.percussion.RSS.stateTaxRates. This name must be unique across all 
+   configurable properties.
+   
+   We support several types of data structure
+      simple - name-value
+      list of pairs - 0 or more pairs of data (map like)
+      list - 0 or more values of the same type
+      named group of properties (propertySet) (any of the above are allowed as children)
+      associations - e.g. ctype->template
+
+   Collections are generally managed as complete units in this release (with a
+   few, rare exceptions.)
+   
+   If a default value is provided, but you want to clear it, you must use the
+   element form. A missing attribute, or empty value is treated as no value and
+   the default is used. However, an empty value element is treated as empty.
+   
+   There are 2 files: the defaults are stored in 1 file and the overrides are
+   in a different file. The defaults are loaded first, then the BC configuration
+   is loaded and overwrites the defaults where values are provided. The 
+   SolutionConfigurations@type attribute specifies which type of file this is. 
+   
+   propertySet is a container for a set of properties that logically make up a
+   single unit.
+   
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="D:\dev\rx.dev\deployer\businessConfig.xsd"
+ -->
+<SolutionConfigurations publisherPrefix="com.percussion" publisherName="Percussion"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+   <SolutionConfig name="PSConfigServiceTest">
+      <property name="templateLabel" value="S - Callout1"/>
+   </SolutionConfig>
+</SolutionConfigurations>

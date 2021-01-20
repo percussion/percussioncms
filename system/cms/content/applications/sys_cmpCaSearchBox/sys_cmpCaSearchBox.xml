@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication id="405" active="no" hidden="no" enabled="yes" version="2.0">
+	<name>sys_cmpCaSearchBox</name>
+	<description/>
+	<requestRoot>sys_cmpCaSearchBox</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/chanak_996763088265/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20010802T103807625</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="67">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20020802T100808406</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>Anonymous</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="no" dataCreate="no" dataUpdate="no" dataDelete="no" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+	</PSXAcl>
+	<maxThreads>0</maxThreads>
+	<maxRequestTime>0</maxRequestTime>
+	<maxRequestsInQueue>0</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>0</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="1982">
+		<name>Dataset2696</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="1980">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="1975">
+				<PSXBackEndTable id="1974">
+					<alias>RXDUAL</alias>
+					<table>RXDUAL</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="1978" returnEmptyXml="no">
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>searchbox/userrolesurl</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../ui/userstatus.jsp</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>searchbox/contexturl</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_ComponentSupport/componentcontext.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>componentid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>componentid</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>searchbox/pagename</name>
+					</PSXXmlField>
+					<PSXHtmlParameter id="0">
+						<name>sys_pagename</name>
+					</PSXHtmlParameter>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>searchbox/contentlookupurl</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_searchSupport/contentlookup.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>searchbox/statelookupurl</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_searchSupport/stateslookup.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>searchbox/logincommunity</name>
+					</PSXXmlField>
+					<PSXUserContext id="0">
+						<name>User/SessionObject/sys_community</name>
+					</PSXUserContext>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>searchbox/communitycontentlookupurl</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_searchSupport/communitycontentlookup.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>searchbox/@xml:lang</name>
+					</PSXXmlField>
+					<PSXUserContext id="0">
+						<name>User/SessionObject/sys_lang</name>
+					</PSXUserContext>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="1976" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="1981">
+			<schemaSource>file:searchbox.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor id="0" directDataStream="no">
+			<requestPage>searchbox</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="1983">
+				<styleSheet>file:searchbox.xsl</styleSheet>
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+		<PSXResultPager id="1977">
+			<maxRowsPerPage>-1</maxRowsPerPage>
+			<maxPages>-1</maxPages>
+		</PSXResultPager>
+	</PSXDataSet>
+	<PSXLogger id="0" logErrors="no" logServerStartStop="no" logAppStartStop="no" logAppStatistics="no" logExecutionPlan="no" logBasicUserActivity="no" logDetailedUserActivity="no" logFullUserActivity="no" logMultipleHandlers="no"/>
+	<PSXTraceInfo id="0" traceEnabled="no" traceOutputColumnWidth="80" traceTimestampOnlyEnabled="no" traceBasicRequestInfo="no" traceInitHttpVar="no" traceFileInfo="no" traceAppHandlerProc="no" traceAppSecurity="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceMapper="no" traceSessionInfo="no" traceDbPool="no" traceExitProc="no" traceExitExec="no" tracePostExitXml="no" tracePostExitCgi="no" traceOutputConv="no" traceResultSet="no" traceConditionalEval="no"/>
+	<PSXErrorWebPages id="1972" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="1973">
+		<providerType>SMTP</providerType>
+		<server>JB</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="1974readonly">false</userProperty>
+	<userProperty name="locationY1979">0</userProperty>
+	<userProperty name="resultPageFilePath1983">C:\\searchbox.xsl</userProperty>
+	<userProperty name="locationY1978">24</userProperty>
+	<userProperty name="locationX1983">195</userProperty>
+	<userProperty name="locationY1977">24</userProperty>
+	<userProperty name="locationX1982">14</userProperty>
+	<userProperty name="1974locationy">20</userProperty>
+	<userProperty name="locationY1976">24</userProperty>
+	<userProperty name="locationX1981">347</userProperty>
+	<userProperty name="1974locationx">20</userProperty>
+	<userProperty name="locationY1975">0</userProperty>
+	<userProperty name="locationX1980">10</userProperty>
+	<userProperty name="locationY1973">100</userProperty>
+	<userProperty name="locationY1972">55</userProperty>
+	<userProperty name="locationY1971">10</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="pageDatatankSrcType1981">2</userProperty>
+	<userProperty name="pageDatatankFilePath1981">C:\rxi18n\sys_cmpCaSearchBox\searchbox.dtd</userProperty>
+	<userProperty name="locationX1979">347</userProperty>
+	<userProperty name="locationX1978">211</userProperty>
+	<userProperty name="locationX1977">144</userProperty>
+	<userProperty name="locationX1976">77</userProperty>
+	<userProperty name="1974sizeheight">200</userProperty>
+	<userProperty name="locationX1975">0</userProperty>
+	<userProperty name="locationX1973">16</userProperty>
+	<userProperty name="locationX1972">16</userProperty>
+	<userProperty name="1974sizewidth">120</userProperty>
+	<userProperty name="locationX1971">16</userProperty>
+	<userProperty name="schemaSourceReadOnly1981">true</userProperty>
+	<userProperty name="pageDatatankSrcType1979">2</userProperty>
+	<userProperty name="pageDatatankFilePath1979">C:\rxi18n\sys_cmpCaSearchBox\searchbox.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly1979">true</userProperty>
+	<userProperty name="locationY1983">24</userProperty>
+	<userProperty name="locationY1982">8</userProperty>
+	<userProperty name="locationY1981">0</userProperty>
+	<userProperty name="locationY1980">10</userProperty>
+</PSXApplication>

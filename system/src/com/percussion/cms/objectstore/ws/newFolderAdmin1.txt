@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <PSXFolder communityId="-1" name="New Folder" permissions="4" state="db_new">
+      <PSXLocator isPersisted="no" needGenerateId="yes">
+         <CONTENTID/>
+         <REVISIONID/>
+      </PSXLocator>
+      <Description/>
+      <Locale>en-us</Locale>
+      <PSXDbComponentList className="com.percussion.cms.objectstore.PSFolderProperty" ordered="no" state="db_new">
+         <PSXFolderProperty propName="sys_displayformat" state="db_new">
+            <PSXSimpleKey isPersisted="no" needGenerateId="yes">
+               <SYSID/>
+            </PSXSimpleKey>
+            <Value>0</Value>
+         </PSXFolderProperty>
+      </PSXDbComponentList>
+      <PSXObjectAcl className="com.percussion.cms.objectstore.PSObjectAclEntry" state="db_new">
+         <PSXObjectAclEntry permissions="7" state="db_new" type="0">
+            <PSXKey isPersisted="no" needGenerateId="yes">
+               <SYSID/>
+            </PSXKey>
+            <name>admin1</name>
+            <securityProviderInstance>rxmaster</securityProviderInstance>
+            <securityProviderType>128</securityProviderType>
+         </PSXObjectAclEntry>
+         <PSXObjectAclEntry permissions="1" state="db_new" type="2">
+            <PSXKey isPersisted="no" needGenerateId="yes">
+               <SYSID/>
+            </PSXKey>
+            <name>Everyone</name>
+         </PSXObjectAclEntry>
+      </PSXObjectAcl>
+   </PSXFolder>

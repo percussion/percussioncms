@@ -1,0 +1,144 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+#perc_pageEditor{
+    margin-top:1em;
+}
+
+#perc_pageEditor_menu div{
+    font-family: Arial;
+    font-size: 11px;
+    padding-right: 10px;
+    padding-left: 10px;
+    display:inline-block;
+    width:33%;
+}
+
+#perc-content, #perc-layout {
+    padding: 0;
+}
+/*
+#perc_pageEditor_content div{
+    height: 100%;
+    overflow:auto;
+}
+*/
+
+/* Region styles */
+.perc-region{ min-height: 100px; min-width:100px}
+.perc-widget{ min-height: 50px; width : 100%; position: relative; }
+.perc-region-visible-grid{ border: 1px dotted #000000; }
+.perc-widget-visible-grid{ border: 1px dashed blue; }
+div.perc-region-hover { border: thick dotted green; }
+.perc-region-active { border: thick dashed green; }
+div.perc-widget-hover { background-color: blue; }
+.perc-widget-active { background-color: yellow; }
+.perc-widget-menubar{ position: absolute; right: 0; top: 0; }
+.perc-widget-menubar ul{ }
+.perc-widget-menubar li{ font-family: Arial; font-size: 10px; display: inline; padding: 1px; }
+.perc-widget-menubar li a{ cursor: pointer; }
+
+
+.perc-page-name {
+    float : right;
+    position : relative;
+    margin-right : 10px;
+    margin-top : 4px;
+    font-size : 11px;
+    text-align:right;
+    overflow:hidden;
+    padding-right:30px;
+}
+
+
+.perc-page-name-label, .perc-page-name-text {
+    font-weight : normal;
+    color : #FFFFFF;
+    margin-right:4px;
+}
+
+.perc-page-name-name {
+    display: inline-block;
+    cursor:default;
+    padding-right:4px;
+    max-width:200px;
+}
+
+.perc-page-status {
+    float : right;
+    position : relative;
+    margin-right : 9px;
+    margin-top : 4px;
+    font-size : 11px;
+}
+
+.perc-page-status-label, .perc-page-status-status {
+    font-weight : normal;
+    color : #FFFFFF;
+}
+
+.perc-my-pages{
+    float: right;
+    position: relative;
+    margin-right: 10px;
+    margin-top: 0px;
+    font-size: 11px;
+    text-align: right;
+    overflow: hidden;
+}
+
+.perc-my-pages-action{
+    width:24px;
+    height:24px;
+    display:inline-block;
+
+}
+
+.perc-my-pages .perc-add-to-my-pages{
+    color: #FFFFFF;
+    background:#1F88B1;
+}
+.perc-my-pages:hover .perc-add-to-my-pages:hover{
+    color: #FFDF00;
+    background:#1F88B1;
+}
+.perc-my-pages .perc-remove-from-my-pages, .perc-my-pages:hover .perc-remove-from-my-pages:hover{
+    color: #FFDF00;
+    background:#1F88B1;
+}
+.perc-my-pages-error{
+    background-image: url("../images/images/star_red.png");
+}
+.perc-page-details{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    float:right;
+    background-color:#133c55;
+    color:#133c55;
+    margin:2px 8px 0px 20px;
+    position:relative;
+    padding: 4px 10px 3px 10px;
+    display:none;
+    font-family: 'Open Sans', sans-serif;
+}

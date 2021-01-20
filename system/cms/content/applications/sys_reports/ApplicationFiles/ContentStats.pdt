@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Content (Content_Id, Title, Community, Content_Type, Workflow, State, Creation_Date, Creator, Content_Checked_out_to, Last_Modifier, Current_State_Entry_Date, Last_Transition_Date, Aging_Date, Go_Live_Date, Expiry_Date, Current_Revision )>
+<!ELEMENT Current_Revision (#PCDATA)>
+<!ATTLIST  Current_Revision type CDATA #IMPLIED>
+<!ELEMENT Expiry_Date (#PCDATA)>
+<!ELEMENT Go_Live_Date (#PCDATA)>
+<!ELEMENT Aging_Date (#PCDATA)>
+<!ELEMENT Last_Transition_Date (#PCDATA)>
+<!ELEMENT Current_State_Entry_Date (#PCDATA)>
+<!ELEMENT Last_Modifier (#PCDATA)>
+<!ELEMENT Content_Checked_out_to (#PCDATA)>
+<!ELEMENT Creator (#PCDATA)>
+<!ELEMENT Creation_Date (#PCDATA)>
+<!ELEMENT State (#PCDATA)>
+<!ELEMENT Workflow (#PCDATA)>
+<!ELEMENT Content_Type (#PCDATA)>
+<!ELEMENT Community (#PCDATA)>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT Content_Id (#PCDATA)>
+<!ATTLIST  Content_Id type CDATA #IMPLIED>
+<!ELEMENT Content_Inventory_Details (Content* )>

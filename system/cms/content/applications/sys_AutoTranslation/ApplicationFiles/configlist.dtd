@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Config EMPTY>
+<!ATTLIST  Config communityid CDATA #IMPLIED>
+<!ATTLIST  Config workflowid CDATA #IMPLIED>
+<!ATTLIST  Config contenttypeid CDATA #IMPLIED>
+<!ATTLIST  Config locale CDATA #IMPLIED>
+<!ELEMENT configlist (Config* )>

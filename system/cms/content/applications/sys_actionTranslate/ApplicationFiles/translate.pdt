@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT translate (item*, logincommunity, localeurl, workflowlookupurl, communityworkflowlookupurl, sessionid )>
+<!ELEMENT sessionid (#PCDATA)>
+<!ELEMENT communityworkflowlookupurl (#PCDATA)>
+<!ELEMENT workflowlookupurl (#PCDATA)>
+<!ELEMENT localeurl (#PCDATA)>
+<!ELEMENT logincommunity (#PCDATA)>
+<!ELEMENT item (sys_contentid, sys_revision, itemlocale, relateditemlookupurl, contenteditorurl, contenttitle, checkoutuser, relatedchilditemlookupurl )>
+<!ELEMENT relatedchilditemlookupurl (#PCDATA)>
+<!ELEMENT checkoutuser (#PCDATA)>
+<!ELEMENT contenttitle (#PCDATA)>
+<!ELEMENT contenteditorurl (#PCDATA)>
+<!ELEMENT relateditemlookupurl (#PCDATA)>
+<!ELEMENT itemlocale (#PCDATA)>
+<!ELEMENT sys_revision (#PCDATA)>
+<!ELEMENT sys_contentid (#PCDATA)>
+<!ATTLIST  translate xml:lang CDATA #IMPLIED>

@@ -1,0 +1,88 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+body {
+	font-size : 11px;
+}
+#perc-gadget-comments-table-header
+{
+	background-color: #63bcdc;
+	color: #ffffff;
+	font-family: Verdana;
+	font-size: 11px;
+	font-weight: bold;
+	width: 100%;
+	padding: 7px 0 7px 7px;
+}
+#perc-comments-table-wrapper
+{
+	margin: 15px 0 15px 20px;
+}
+#perc-comments-table
+{
+	width: 100%;
+}
+#perc-comments-table .perc-comments-newcomments, #perc-comments-table .perc-comments-totalcomments, #perc-comments-table .perc-comments-linktext
+{
+	vertical-align: bottom;
+}
+
+.perc-comments-newCount
+{
+	font-weight: bold;
+}
+
+.perc-link {
+	font-family : Verdana;
+	font-size : 11px;
+	color : #0099CC;
+	cursor : pointer;
+}
+
+.perc-gadget-toolbar {
+	margin-bottom : 10px;
+}
+
+#perc-gadget-comments-default-moderation-dialog {
+	padding : 0px;
+}
+
+#perc-comments-table-wrapper div.perc-index-2 {
+	font-size:10px;
+}
+
+.perc-comments-commentsIcon {
+	width: 12px;
+	height: 13px;
+	display: inline-block;
+	background-image: url("/cm/gadgets/repository/perc_comments_gadget/images/commentsIcon.gif");
+	background-repeat:no-repeat;
+	background-position:0px 2px;
+}
+
+#perc-comments-table-wrapper .perc-simplemenu-menuitems div.perc-index-2 {
+	font-size:11px;
+}
+body * {
+	font-family: 'Open Sans', sans-serif;
+}

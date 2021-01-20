@@ -1,0 +1,24 @@
+/* Our own styles */
+
+.PsAaPage
+{
+    border: 1px dotted;
+    border-color: transparent;
+}
+.PsAaSlot
+{
+    border: 1px dotted;
+    border-color: transparent;
+}
+.PsAaSnippet
+{
+    border: 1px dotted;
+    border-color: transparent;
+    cursor: move;
+}
+.PsAaField
+{
+    border: 1px dotted;
+    border-color: transparent;
+}
+

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<info primitiveTypes="element">
+  <element name="book">
+  	<element name="title" property="title"/>
+  	<element name="pubdate" property="pubDate"/>
+  </element>
+</info>

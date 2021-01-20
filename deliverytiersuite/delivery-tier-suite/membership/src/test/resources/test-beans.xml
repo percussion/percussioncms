@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   <bean id="propertyPlaceholderProps"
+         class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
+      <property name="ignoreResourceNotFound" value="true" />
+      <property name="autoSecure" value="true" />
+      <property name="securedProperties">
+         <list>
+            <value>cacheMgr.password</value>
+            <value>db.password</value>
+         </list>
+      </property>
+      <property name="locations">
+         <!--
+            One or more locations of the property files. Properties with 
+            the same name override based on the order the file appears in the list last 
+            one defined wins
+         -->
+         <list>
+            <value>perc-datasources.properties</value>
+            <value>perc-membership-services.properties</value>
+         </list>
+      </property>
+   
+   
+      <!--
+         Local properties to default to if no file exists or the properties 
+         do not exist in the file DO NOT USE THESE FOR PRODUCTION, put them in the 
+         properties file where the password will be encrypted
+      -->
+      <property name="properties">
+         <props>
+		    <!-- default properties for database -->
+            <prop key="jdbcUrl">jdbc:derby:memory:percmembership;create=true</prop>
+            <prop key="jdbcDriver">org.apache.derby.jdbc.EmbeddedDriver</prop>
+            <prop key="maximumPoolSize">10</prop>
+			<prop key="db.username">test</prop>
+			<prop key="db.password">test</prop>
+            <prop key="db.schema">APP</prop>
+            <prop key="datasource">percDataSource</prop>
+            <prop key="hibernateProperties">percHibernateProperties</prop>
+			<prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
+			<prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
+            <prop key="hibernate.cache.use_second_level_cache">false</prop>
+            <prop key="hibernate.cache.use_query_cache">false</prop>
+            
+              <!-- default properties for caching manager -->
+            <prop key="cacheMgr.cacheManagerHost">https://localhost:8443</prop>
+            <prop key="cacheMgr.username">ps_manager</prop>
+            <prop key="cacheMgr.password">newpassword</prop>
+            <prop key="cacheMgr.cacheRegion">www.configure.me.com</prop>
+            <prop key="cacheMgr.interRequestWait">30</prop>
+            <prop key="cacheMgr.maxWait">360</prop>
+            <prop key="session.timeout.mins">5</prop>
+         
+         </props>
+      </property>
+   </bean>
+   
+   <!-- Email bean -->
+   <bean id="emailProperties"
+      class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+      <property name="properties">
+         <props>
+         <prop key="email.hostName">smtp.gmail.com</prop>
+         <prop key="email.portNumber">587</prop>
+         <prop key="email.userName">percdev</prop>
+         <prop key="email.password">pdevelopment</prop>
+         <prop key="email.TLS">true</prop>
+         <prop key="email.fromAddress">percdev@gmail.com</prop>
+         <prop key="email.fromName">Member Services</prop>
+         <!-- Add the sslPort property with proper port to enable ssl
+         <prop key="email.sslPort">465</prop>
+         -->
+         <prop key="email.bounceAddress">percdev@gmail.com</prop>
+         </props>
+      </property>
+   </bean>
+   
+   
+   <bean id="propertyConfigurer"
+         class="com.percussion.delivery.utils.spring.PSPropertyPlaceholderConfigurer">
+      <property name="properties" ref="propertyPlaceholderProps" />
+   </bean>
+
+   <import resource="perc-datasources.xml" />
+   <import resource="${perc.conf.dir.prefix:}${perc.conf.dir:}perc-datasources.xml" />
+
+   <!-- Hibernate SessionFactory -->
+   <bean id="membershipSessionFactory"
+         class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+      <property name="dataSource">
+         <ref bean="${datasource}" />
+      </property>
+      <property name="hibernateProperties">
+         <ref bean="${hibernateProperties}" />
+      </property>
+      <property name="configLocation">
+         <value>hibernate.cfg.xml</value>
+      </property>
+   </bean>
+   
+   <tx:annotation-driven transaction-manager="txManager"/>
+   
+   <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+      <property name="sessionFactory" ref="membershipSessionFactory" />
+   </bean>
+
+   <bean id="genericKeyDao"
+         class="com.percussion.generickey.utils.services.rdbms.impl.PSGenericKeyDao">
+      <property name="sessionFactory">
+         <ref bean="membershipSessionFactory" />
+      </property>      
+   </bean>
+   
+   <bean id="genericKeyService"
+         class="com.percussion.generickey.utils.services.impl.PSGenericKeyService"
+      autowire="constructor">     
+   </bean>   
+   
+   <bean id="genericKeyRestService"
+      class="com.percussion.generickey.utils.services.impl.PSGenericKeyRestService">
+      <constructor-arg ref="genericKeyService" />
+   </bean>
+   
+
+   <!-- Auth provider bean -->
+   <bean id="membershipAuthProvider"
+      class="com.percussion.membership.services.impl.PSMembershipAuthProvider"
+      autowire="constructor">
+   </bean>
+
+    <!-- Http client bean -->
+   <bean id="httpClient"
+      class="com.percussion.delivery.utils.security.PSHttpClient"
+      autowire="constructor">
+   </bean>
+   
+   <bean id="emailHelper" class="com.percussion.delivery.utils.PSEmailHelper" autowire="constructor">
+      <constructor-arg ref="emailProperties"/>
+   </bean>
+
+   <bean id="membershipDao"
+         class="com.percussion.membership.services.rdbms.impl.PSMembershipDao">
+      <property name="sessionFactory">
+         <ref bean="membershipSessionFactory" />
+      </property>      
+   </bean>
+
+
+   <bean id="membershipService"
+         class="com.percussion.membership.services.impl.PSMembershipService"
+      autowire="constructor">
+      <property name="authProvider">
+         <ref bean="membershipAuthProvider" />
+      </property>      
+      <property name="emailHelper">
+         <ref bean="emailHelper" />
+      </property>
+      <property name="sessionTimeoutMinutes">
+         <value>${session.timeout.mins}</value>
+      </property>  
+      <property name="client">
+         <ref bean="httpClient" />
+      </property>
+       <property name="genericKeyService">
+      	<ref bean="genericKeyService" />
+      </property>
+   </bean>   
+   
+   <bean id="membershipRestService"
+      class="com.percussion.membership.services.impl.PSMembershipRestService">
+      <constructor-arg ref="membershipService" />
+   </bean>
+   
+  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
+   	<constructor-arg index="0"><null/></constructor-arg>
+   	<constructor-arg index="1"><null/></constructor-arg>
+   </bean>
+
+</beans>

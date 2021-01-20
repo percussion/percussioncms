@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXServerConfiguration id="1">
+   <SecurityProviders>
+      <GroupProviders>
+         <PSXGroupProviderInstance classname="com.percussion.design.objectstore.PSJndiGroupProviderInstance" id="0" name="groupstatic" type="DirectoryConn">
+            <PSXJnidGroupProviderInstance>
+               <objectClasses>
+                  <objectClass memberattr="member" name="group" type="static"/>
+                  <objectClass memberattr="member" name="groupOfNames" type="static"/>
+                  <objectClass memberattr="uniquemember" name="groupOfUniqueNames" type="static"/>
+                  <objectClass memberattr="memberurl" name="groupOfUrls" type="dynamic"/>
+               </objectClasses>
+               <groupNodes>
+                  <groupNode>ou=groupstatic,ou=test,dc=percussion,dc=com</groupNode>
+               </groupNodes>
+            </PSXJnidGroupProviderInstance>
+         </PSXGroupProviderInstance>
+         <PSXGroupProviderInstance classname="com.percussion.design.objectstore.PSJndiGroupProviderInstance" id="0" name="groupdynamic" type="DirectoryConn">
+            <PSXJnidGroupProviderInstance>
+               <objectClasses>
+                  <objectClass memberattr="member" name="group" type="static"/>
+                  <objectClass memberattr="member" name="groupOfNames" type="static"/>
+                  <objectClass memberattr="uniquemember" name="groupOfUniqueNames" type="static"/>
+                  <objectClass memberattr="memberurl" name="groupOfUrls" type="dynamic"/>
+               </objectClasses>
+               <groupNodes>
+                  <groupNode>ou=groupdynamic,ou=test,dc=percussion,dc=com</groupNode>
+               </groupNodes>
+            </PSXJnidGroupProviderInstance>
+         </PSXGroupProviderInstance>
+         <PSXGroupProviderInstance classname="com.percussion.design.objectstore.PSJndiGroupProviderInstance" id="0" name="groupnested" type="DirectoryConn">
+            <PSXJnidGroupProviderInstance>
+               <objectClasses>
+                  <objectClass memberattr="member" name="group" type="static"/>
+                  <objectClass memberattr="member" name="groupOfNames" type="static"/>
+                  <objectClass memberattr="uniquemember" name="groupOfUniqueNames" type="static"/>
+                  <objectClass memberattr="memberurl" name="groupOfUrls" type="dynamic"/>
+               </objectClasses>
+               <groupNodes>
+                  <groupNode>ou=groupnested,ou=test,dc=percussion,dc=com</groupNode>
+               </groupNodes>
+            </PSXJnidGroupProviderInstance>
+         </PSXGroupProviderInstance>
+      </GroupProviders>
+   </SecurityProviders>
+</PSXServerConfiguration>

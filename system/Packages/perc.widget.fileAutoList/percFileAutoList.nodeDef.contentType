@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description/>
+    <hide-from-menu>false</hide-from-menu>
+    <id>338</id>
+    <internal-name>percFileAutoList</internal-name>
+    <label>percFileAutoList</label>
+    <mandatory>false</mandatory>
+    <name>rx:percFileAutoList</name>
+    <new-request>../psx_cepercFileAutoList/percFileAutoList.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercFileAutoList/percFileAutoList.html</query-request>
+    <raw-content-type>338</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids>
+      <string>0-23-6</string>
+      <string>0-23-5</string>
+      <string>0-23-4</string>
+      <string>0-23-7</string>
+    </workflow-ids>
+  </node-definition>

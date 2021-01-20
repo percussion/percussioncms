@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (sitedelete, sitename, siteid )>
+<!ELEMENT siteid (#PCDATA)>
+<!ELEMENT sitename (#PCDATA)>
+<!ELEMENT sitedelete (#PCDATA)>
+<!ELEMENT variantsite (item* )>

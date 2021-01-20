@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editlookupitem (dbactiontype*, categoryid*, lookupid*, lookuptype*, lookupname*, lookupvalue*, lookupsequence*, contenttypeurl*, contentlookupurl*, userstatusincludeurl* )>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT contenttypeurl (#PCDATA)>
+<!ELEMENT lookupsequence (#PCDATA)>
+<!ELEMENT lookupvalue (#PCDATA)>
+<!ELEMENT lookupname (#PCDATA)>
+<!ELEMENT lookuptype (#PCDATA)>
+<!ELEMENT lookupid (#PCDATA)>
+<!ELEMENT categoryid (#PCDATA)>
+<!ELEMENT dbactiontype (#PCDATA)>

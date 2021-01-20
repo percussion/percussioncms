@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+	<display-name>Rhythmyx</display-name>
+	<description>The Rhythmyx Server front end</description>
+	<context-param>
+		<param-name>RxRoot</param-name>
+		<param-value>/Rhythmyx</param-value>
+		<description>The Rhythmyx server root directory, defaults to "/Rhythmyx".</description>
+	</context-param>
+	<servlet>
+		<servlet-name>Rhythmyx</servlet-name>
+		<display-name>Rhythmyx Servlet Router</display-name>
+		<description>Rhythmyx Servlet Router</description>
+		<servlet-class>com.percussion.hooks.servlet.RhythmyxServlet</servlet-class>
+		<init-param>
+			<param-name>EnableSSO</param-name>
+			<param-value>true</param-value>
+			<description>Flag to use Single Sign On when communicating with the Rhythmyx server, defaults to "false".</description>
+		</init-param>
+		<init-param>
+			<param-name>UseSSL</param-name>
+			<param-value>false</param-value>
+			<description>Flag to use https when communicating with the Rhythmyx server, defaults to "false".</description>
+		</init-param>
+		<init-param>
+			<param-name>Host</param-name>
+			<param-value>localhost</param-value>
+			<description>The host name where Rhythmyx is installed, defaults to "localhost".</description>
+		</init-param>
+		<init-param>
+			<param-name>Port</param-name>
+			<param-value>9992</param-value>
+			<description>The port number where Rhythmyx servlet is installed, defaults to "9992".</description>
+		</init-param>
+		<init-param>
+			<param-name>authUserHeaderName</param-name>
+			<param-value>Auth_User</param-value>
+			<description>The name of the http header variable added to the request forwarded to the Rhythmyx server.</description>
+		</init-param>
+		<init-param>
+			<param-name>userRolesHeaderName</param-name>
+			<param-value>RxUserRoles</param-value>
+			<description>The name of the http header variable added to the request forwarded to the Rhythmyx server.</description>
+		</init-param>
+		<init-param>
+			<param-name>resolveUserRolesHeader</param-name>
+			<param-value>true</param-value>
+			<description>Flag indicate if the servlet needs to resolve the value of the userRolesHeaderName header. Default to true. false if always set empty value to the userRolesHeaderName header when it is  included in the request.</description>
+		</init-param>
+		<init-param>
+			<param-name>RxSoapContext</param-name>
+			<param-value/>
+			<description>The location mapping of the soap servlet context, defaults to "/RxServices".</description>
+		</init-param>
+		<init-param>
+			<param-name>RxSoapService</param-name>
+			<param-value/>
+			<description>The name of the soap message service, defaults to "messagerouter".</description>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Rhythmyx</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Define a Security Constraint on this Application -->
+	<!-- In "<auth-constraint>", define a list of roles with rights to access the Servlet - Roles need to exist in both the tomcat-users.xml file and Rhythmyx -->
+	<!-- In "<login-config>", define the Login Configuration for this Application -->
+	<!--
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Entire Application</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>			
+			<role-name>Admin</role-name>
+			<role-name>Author</role-name>
+			<role-name>Editor</role-name>
+		</auth-constraint>
+	</security-constraint>	
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>Rhythmyx Servlet</realm-name>
+	</login-config>
+	-->
+
+</web-app>

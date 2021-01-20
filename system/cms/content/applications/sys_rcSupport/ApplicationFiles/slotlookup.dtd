@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (display*, id* )>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT display (#PCDATA)>
+<!ELEMENT slotlookup (item* )>

@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Paul Howard (Percussion Software) -->
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/system" xmlns:sys="urn:www.percussion.com/6.0.0/system" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="../common.xsd"/>
+   <xsd:simpleType name="RelationshipCategory">
+      <xsd:annotation>
+         <xsd:documentation>An enumeration of all supported relationship categories.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="ActiveAssembly">
+            <xsd:annotation>
+               <xsd:documentation>Constant for Active Assembly category</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="Copy">
+            <xsd:annotation>
+               <xsd:documentation>Constant for Copy category</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="Promotable">
+            <xsd:annotation>
+               <xsd:documentation>Constant for Promotable category</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="Translation">
+            <xsd:annotation>
+               <xsd:documentation>Constant for Translation category</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="Folder">
+            <xsd:annotation>
+               <xsd:documentation>Constant for Folder category</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="Transition">
+      <xsd:annotation>
+         <xsd:documentation>An instance of a transition w/ its notifications.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="com:DesignObject">
+            <xsd:sequence>
+               <xsd:element name="Notifications" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Lists all notifications defined for this transition.</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="PSNotification" type="sys:PSNotification" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="label" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The display label for this transition.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="trigger" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The transition trigger expected for this transition.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="fromState" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the state from which this transition starts.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="toState" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the state to which this transition leads.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="transitionAction" type="xsd:string" use="optional">
+               <xsd:annotation>
+                  <xsd:documentation>The fulliy qualified name or the workflow action to execute with this transition.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="RelationshipConfigSummary">
+      <xsd:annotation>
+         <xsd:documentation>The main properties of a relationship type.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="com:DesignObject">
+            <xsd:attribute name="name" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The internal name of the relationship configuration.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="label" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The display label of the relationship configuration.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="category" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The relationship category.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="type" default="user">
+               <xsd:annotation>
+                  <xsd:documentation>The relationship type, system or user.</xsd:documentation>
+               </xsd:annotation>
+               <xsd:simpleType>
+                  <xsd:restriction base="xsd:string">
+                     <xsd:enumeration value="system"/>
+                     <xsd:enumeration value="user"/>
+                  </xsd:restriction>
+               </xsd:simpleType>
+            </xsd:attribute>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="PSAclImpl">
+      <xsd:annotation>
+         <xsd:documentation>A container for ACL entries.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Entries">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="PSAclEntryImpl" type="sys:PSAclEntryImpl" minOccurs="0" maxOccurs="unbounded"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+         <xsd:attribute name="id" type="com:Id" use="required"/>
+         <xsd:attribute name="objectId" type="com:Id" use="required"/>
+         <xsd:attribute name="objectType" type="xsd:int" use="required"/>
+         <xsd:attribute name="name" type="xsd:string"/>
+         <xsd:attribute name="description" type="xsd:string"/>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSAgingTransition" type="sys:PSAgingTransition">
+      <xsd:annotation>
+         <xsd:documentation>A special transition that is activated by the system at a specified time.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+   <xsd:complexType name="PSAgingTransition">
+      <xsd:complexContent>
+         <xsd:extension base="sys:Transition">
+            <xsd:attribute name="type" default="absolute">
+               <xsd:annotation>
+                  <xsd:documentation>The aging type, one of absolut, repeated or systemField.</xsd:documentation>
+               </xsd:annotation>
+               <xsd:simpleType>
+                  <xsd:restriction base="xsd:string">
+                     <xsd:enumeration value="absolute"/>
+                     <xsd:enumeration value="repeated"/>
+                     <xsd:enumeration value="systemField"/>
+                  </xsd:restriction>
+               </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="interval" type="xsd:long">
+               <xsd:annotation>
+                  <xsd:documentation>The aging interval time in minutes. Required for types absolut and repeated.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="systemField" type="xsd:string">
+               <xsd:annotation>
+                  <xsd:documentation>The system field from where to get the aging time, required if type is systemField.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="PSAssignedRole" type="sys:PSAssignedRole">
+      <xsd:annotation>
+         <xsd:documentation>A workflow role that has been assigned to a state.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+   <xsd:complexType name="PSAssignedRole">
+      <xsd:attribute name="id" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of the workflow role assigned.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The name of the assigned role.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="assignmentType" default="none">
+         <xsd:annotation>
+            <xsd:documentation>The assignment type for this role.</xsd:documentation>
+         </xsd:annotation>
+         <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="none"/>
+               <xsd:enumeration value="reader"/>
+               <xsd:enumeration value="assignee"/>
+            </xsd:restriction>
+         </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="adhocType" default="disabled">
+         <xsd:annotation>
+            <xsd:documentation>The adhoc assignment type.</xsd:documentation>
+         </xsd:annotation>
+         <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="disabled"/>
+               <xsd:enumeration value="enabled"/>
+               <xsd:enumeration value="anonymous"/>
+            </xsd:restriction>
+         </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="doNotify" type="xsd:boolean" default="true">
+         <xsd:annotation>
+            <xsd:documentation>Specifies whether to notify this assigned role or not.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="showInInbox" type="xsd:boolean" default="true">
+         <xsd:annotation>
+            <xsd:documentation>Specifies whether or not to show items in this state in the in-box.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="PSAuditTrail">
+      <xsd:annotation>
+         <xsd:documentation>A list of events which an item has gone through within a workflow.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Audits">
+               <xsd:annotation>
+                  <xsd:documentation>A list with all audits available for the specified item.</xsd:documentation>
+               </xsd:annotation>
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="PSAudit" type="sys:PSAudit" minOccurs="0" maxOccurs="unbounded"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+         <xsd:attribute name="id" type="com:Id">
+            <xsd:annotation>
+               <xsd:documentation>The item id does not include the revision. The revision of this id is -1.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSDependency">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Dependents">
+               <xsd:annotation>
+                  <xsd:documentation>A list with depenents. The list may contain uniquely identified dependents or dependents which just specify that there are one or more dependents of a specific type.</xsd:documentation>
+               </xsd:annotation>
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="PSDependent" type="sys:PSDependent" maxOccurs="unbounded"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+         <xsd:attribute name="id" type="com:Id" use="required"/>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSMimeContentAdapter">
+      <xsd:annotation>
+         <xsd:documentation>A wrapper for content that provides meta data about that content.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Content" type="xsd:anyType"/>
+         </xsd:sequence>
+         <xsd:attribute name="id" type="com:Id" use="required"/>
+         <xsd:attribute name="href" type="xsd:string" use="optional">
+            <xsd:annotation>
+               <xsd:documentation>The attachment reference to this content. If this is set, it contains the attachment reference that must be used by the client to retrive the content.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+               <xsd:documentation>A name for this content. Typically this is a file name but it may be an unstructured descriptive name if the content is not from a file.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="mimeType" type="xsd:string" default="application/octet-stream">
+            <xsd:annotation>
+               <xsd:documentation>The mime type of the content.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="contentLength" type="xsd:long" use="required">
+            <xsd:annotation>
+               <xsd:documentation>The length of the content, -1 if not known.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="characterEncoding" type="xsd:string">
+            <xsd:annotation>
+               <xsd:documentation>The standard IANA name for the character encoding of the content, may not be available, e.g. for binary data.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="transferEncoding" type="xsd:string">
+            <xsd:annotation>
+               <xsd:documentation>The transfer encoding of the content, e.g. binary, base64, etc., may not be available.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSNotification" type="sys:PSNotification">
+      <xsd:annotation>
+         <xsd:documentation>A defined usage of a workflow notification. </xsd:documentation>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:complexType name="PSNotification">
+      <xsd:sequence>
+         <xsd:element name="Recipients" minOccurs="0">
+            <xsd:annotation>
+               <xsd:documentation>Additional recipients.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="PSRecipient" type="sys:PSRecipient" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="CCRecipients" minOccurs="0">
+            <xsd:annotation>
+               <xsd:documentation>Additional CC recipients.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="PSRecipient" type="sys:PSRecipient" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of the notification definition used for the subject, body etc.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="stateRoleRecipientType" use="required">
+         <xsd:annotation>
+            <xsd:documentation>Defines which state recipients will be notified with this notification.</xsd:documentation>
+         </xsd:annotation>
+         <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="noStateRecipients"/>
+               <xsd:enumeration value="toStateRecipients"/>
+               <xsd:enumeration value="fromStateRecipients"/>
+               <xsd:enumeration value="toAndFromStateRecipients"/>
+            </xsd:restriction>
+         </xsd:simpleType>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="PSNotificationDef" type="sys:PSNotificationDef">
+      <xsd:annotation>
+         <xsd:documentation>A workflow notification definition.</xsd:documentation>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:complexType name="PSNotificationDef">
+      <xsd:attribute name="id" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of the referenced notification.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="subject" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The subject text for this notification.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="body" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The body text for this notification.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="description" type="xsd:string" use="optional">
+         <xsd:annotation>
+            <xsd:documentation>A description for this notification.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:simpleType name="PSRecipient">
+      <xsd:annotation>
+         <xsd:documentation>The recipients email address.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+   <xsd:element name="PSRelationship">
+      <xsd:annotation>
+         <xsd:documentation>A linkage between 2 content items. "Related content" is linked using an active assembly relationship.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:complexContent>
+            <xsd:extension base="com:Relationship"/>
+         </xsd:complexContent>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSRelationshipConfig">
+      <xsd:annotation>
+         <xsd:documentation>The definition of a relationship type.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:complexContent>
+            <xsd:extension base="sys:RelationshipConfigSummary">
+               <xsd:sequence>
+                  <xsd:element name="RelationshipConfig" type="xsd:anySimpleType">
+                     <xsd:annotation>
+                        <xsd:documentation>This is the XML representation of a PSRelationshipConfig</xsd:documentation>
+                     </xsd:annotation>
+                  </xsd:element>
+               </xsd:sequence>
+            </xsd:extension>
+         </xsd:complexContent>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSRelationshipFilter">
+      <xsd:annotation>
+         <xsd:documentation>Specifies all rules by which to filter relationship lookups for any relationship category. All specified rules will be AND'ed together except category, which will be OR'ed together with the relationship name and type before AND'ing with the other properties.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:complexContent>
+            <xsd:extension base="com:RelationshipFilter">
+               <xsd:sequence>
+                  <xsd:element name="Category" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>The name of the relationship category for which to filter the results. This will be OR'ed together with the relationship 
+								name and type before AND'ing with the other properties.</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                           <xsd:enumeration value="activeassembly"/>
+                           <xsd:enumeration value="newcopy"/>
+                           <xsd:enumeration value="promotableversion"/>
+                           <xsd:enumeration value="translation"/>
+                           <xsd:enumeration value="foldercontent"/>
+                        </xsd:restriction>
+                     </xsd:simpleType>
+                  </xsd:element>
+               </xsd:sequence>
+            </xsd:extension>
+         </xsd:complexContent>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSState" type="sys:PSState">
+      <xsd:annotation>
+         <xsd:documentation>A workflow is made up of states and transitions. The state controls access to content within it.</xsd:documentation>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:complexType name="PSState">
+      <xsd:complexContent>
+         <xsd:extension base="com:DesignObject">
+            <xsd:sequence>
+               <xsd:element name="Transitions" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="PSTransition" type="sys:PSTransition" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="AgingTransitions" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="PSAgingTransition" type="sys:PSAgingTransition" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="AssignedRoles" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="PSAssignedRole" type="sys:PSAssignedRole" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The name of this workflow state.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="sortOrder" type="xsd:int" default="0">
+               <xsd:annotation>
+                  <xsd:documentation>The state sort order.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="isPublishable" type="xsd:boolean" default="false">
+               <xsd:annotation>
+                  <xsd:documentation>Specifies whether content in this state is public or not.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="PSSharedProperty">
+      <xsd:complexType>
+         <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+               <xsd:documentation>The property name.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="value" type="xsd:string" use="required">
+            <xsd:annotation>
+               <xsd:documentation>The property value.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSTransition" type="sys:PSTransition">
+      <xsd:annotation>
+         <xsd:documentation>A transition is a path between 2 states that allows content to move between them.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+   <xsd:complexType name="PSTransition">
+      <xsd:complexContent>
+         <xsd:extension base="sys:Transition">
+            <xsd:sequence>
+               <xsd:element name="Roles" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="PSWorkflowRole" type="sys:PSWorkflowRole" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="comment" default="optional">
+               <xsd:annotation>
+                  <xsd:documentation>Defines whether a user must add some comment for a transition or not.</xsd:documentation>
+               </xsd:annotation>
+               <xsd:simpleType>
+                  <xsd:restriction base="xsd:string">
+                     <xsd:enumeration value="optional"/>
+                     <xsd:enumeration value="required"/>
+                     <xsd:enumeration value="doNotShow"/>
+                  </xsd:restriction>
+               </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="defaultTransition" type="xsd:boolean" default="false">
+               <xsd:annotation>
+                  <xsd:documentation>Is this a default transition or not?</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="approvals" type="xsd:int" default="1">
+               <xsd:annotation>
+                  <xsd:documentation>Specifies how many approvals are required to execute this transition.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="allowAllRoles" type="xsd:boolean" default="true">
+               <xsd:annotation>
+                  <xsd:documentation>Are all roles allowed to execute this transition or not?</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="PSWorkflow">
+      <xsd:annotation>
+         <xsd:documentation>An instance of a complete workflow definition.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:complexContent>
+            <xsd:extension base="com:DesignObject">
+               <xsd:sequence>
+                  <xsd:element name="States" minOccurs="0">
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="PSState" type="sys:PSState" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+                  <xsd:element name="Roles" minOccurs="0">
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="PSWorkflowRole" type="sys:PSWorkflowRole" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+                  <xsd:element name="Notifications" minOccurs="0">
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="PSNotificationDef" type="sys:PSNotificationDef" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+               </xsd:sequence>
+               <xsd:attribute name="name" type="xsd:string" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>The workflow name.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="administratorRole" type="xsd:string" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>The name of the role with administrator rights to this workflow.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="initialStateId" type="com:Id" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>The id of the workflow state into which each item will go first.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="typedId" type="com:Id" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>This id contains the workflow id and type information and should always be used except for search. For search use the id, which contains the same workflow id without the type information.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+            </xsd:extension>
+         </xsd:complexContent>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSWorkflowRole" type="sys:PSWorkflowRole">
+      <xsd:annotation>
+         <xsd:documentation>A workflow role is a role that has been assigned to a workflow, making available for use w/ states and transitions.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+
+   <xsd:complexType name="PSWorkflowRole">
+      <xsd:attribute name="id" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of the referenced role.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The name of the referenced role.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="description" type="xsd:string" use="optional">
+         <xsd:annotation>
+            <xsd:documentation>The description for the referenced role.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="PSAudit" type="sys:PSAudit">
+      <xsd:annotation>
+         <xsd:documentation>The information about a workflow event that has transpired.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+
+   <xsd:complexType name="PSAudit">
+      <xsd:attribute name="id" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The item id includes the revision for this audit.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="revision" type="xsd:int" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The revision of this audit.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="eventTime" type="xsd:dateTime" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The time when this workflow action happened.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="actor" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The actor who executed this workflow action.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="stateId" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of the state in which this workflow action ended.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="stateName" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The name of the state in which this workflow action ended.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="transitionId" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of the workflow transition used with this audit.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="transitionName" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The name orf the workflow transition used with this audit.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="transitionComment" type="xsd:string" use="optional">
+         <xsd:annotation>
+            <xsd:documentation>The comment supplied by the user for this workflow transition.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="publishable" type="xsd:boolean" use="required">
+         <xsd:annotation>
+            <xsd:documentation>Was the item publishable after this event.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="PSDependent" type="sys:PSDependent">
+      <xsd:annotation>
+         <xsd:documentation>A dependent may uniquely identify one dependent object or a group of dependent objects of the same type (id = -1).</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+   <xsd:complexType name="PSDependent">
+      <xsd:attribute name="id" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id which uniquely identifies the dependent object. This may be -1 to indicate that there is one or more dependent objects for the specified type.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="type" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The type of the depenent object.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="PSRelationshipConfigSummary" type="sys:RelationshipConfigSummary">
+      <xsd:annotation>
+         <xsd:documentation>The main properties of a relationship type.</xsd:documentation>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:element name="PSItemFilter">
+      <xsd:annotation>
+         <xsd:documentation>A container for rules that define what is allowed by a filter. Typically used to filter items for content lists and slots.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Rules">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="PSFilterRule" type="sys:PSFilterRule" minOccurs="0" maxOccurs="unbounded"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+         <xsd:attribute name="id" type="com:Id" use="required">
+            <xsd:annotation>
+               <xsd:documentation>The item filter identifier.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+               <xsd:documentation>The filter name.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="description" type="xsd:string"/>
+         <xsd:attribute name="legacyAuthtype" type="xsd:int">
+            <xsd:annotation>
+               <xsd:documentation>The authtype may be used to translate from an authtype filter to a new item filter.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="parentFilterId" type="com:Id">
+            <xsd:annotation>
+               <xsd:documentation>Specifies the parent filter. If defined then those rultes will be combined with the rultes of this for filtering.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSFilterRule" type="sys:PSFilterRule">
+      <xsd:annotation>
+         <xsd:documentation>A rule is an extension that implements the IPSItemFilter interface and some additional properties.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+   <xsd:complexType name="PSFilterRule">
+      <xsd:sequence>
+         <xsd:element name="Parameters">
+            <xsd:annotation>
+               <xsd:documentation>A list with all rules applied for this filter.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="PSFilterRuleParam" type="sys:PSFilterRuleParam" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>A name for this filter rule.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="PSFilterRuleParam">
+      <xsd:annotation>
+         <xsd:documentation>A single parameter for a PSFilterRule.</xsd:documentation>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:complexType name="PSFilterRuleParam">
+      <xsd:attribute name="name" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The name of the filter rule parameter.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="value" type="xsd:string">
+         <xsd:annotation>
+            <xsd:documentation>The filter rule parameter value.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="PSAccessLevelImpl" type="sys:PSAccessLevelImpl">
+      <xsd:annotation>
+         <xsd:documentation>Defines a permission. Each ACL entry has 0 or more permissions.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+   <xsd:complexType name="PSAccessLevelImpl">
+      <xsd:attribute name="id" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of this entry</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="aclEntryId" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of the acl entry for which this permission is defined.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="permission" type="xsd:int" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The actual permissions.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="PSAclEntryImpl" type="sys:PSAclEntryImpl">
+      <xsd:annotation>
+         <xsd:documentation>Defines an entry in an ACL. An entry is a name with a type, such as Joe/User.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+   <xsd:complexType name="PSAclEntryImpl">
+      <xsd:sequence>
+         <xsd:element name="Permissions">
+            <xsd:annotation>
+               <xsd:documentation>Lists all permissions allowed for this acl entry.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="PSAccessLevelImpl" type="sys:PSAccessLevelImpl" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of this entry</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="aclId" type="com:Id" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The id of the acl for which this entry is defined</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>The name of this acl entry.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="type" type="xsd:int" default="30">
+         <xsd:annotation>
+            <xsd:documentation>The acl entry type.</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+</xsd:schema>

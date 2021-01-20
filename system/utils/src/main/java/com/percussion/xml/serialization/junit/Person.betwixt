@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<info primitiveTypes="element">
+	<element name="person">
+		<element name="name" property="name"/>
+		<element name="address" property="address"/>
+  		<addDefaults/>
+  	</element>
+</info>

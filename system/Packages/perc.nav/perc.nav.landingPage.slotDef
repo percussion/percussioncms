@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>  <template-slot id="1">
+    <guid>0-5-510</guid>
+    <description>landing page for nav</description>
+    <finder-arguments/>
+    <finder-name>Java/global/percussion/slotcontentfinder/sys_RelationshipContentFinder</finder-name>
+    <label>Nav Landing Page</label>
+    <name>perc.nav.landingPage</name>
+    <relationship-name>ActiveAssembly</relationship-name>
+    <slot-type-associations>
+      <slot-type-association id="2">
+        <slotid>510</slotid>
+        <templateid>504</templateid>
+        <contenttypeid>310</contenttypeid>
+      </slot-type-association>
+      <slot-type-association id="3">
+        <slotid>510</slotid>
+        <templateid>504</templateid>
+        <contenttypeid>311</contenttypeid>
+      </slot-type-association>
+      <slot-type-association id="4">
+        <slotid>510</slotid>
+        <templateid>504</templateid>
+        <contenttypeid>306</contenttypeid>
+      </slot-type-association>
+      <slot-type-association id="5">
+        <slotid>510</slotid>
+        <templateid>504</templateid>
+        <contenttypeid>316</contenttypeid>
+      </slot-type-association>
+      <slot-type-association id="6">
+        <slotid>510</slotid>
+        <templateid>504</templateid>
+        <contenttypeid>303</contenttypeid>
+      </slot-type-association>
+      <slot-type-association id="7">
+        <slotid>510</slotid>
+        <templateid>526</templateid>
+        <contenttypeid>308</contenttypeid>
+      </slot-type-association>
+      <slot-type-association id="8">
+        <slotid>510</slotid>
+        <templateid>504</templateid>
+        <contenttypeid>312</contenttypeid>
+      </slot-type-association>
+      <slot-type-association id="9">
+        <slotid>510</slotid>
+        <templateid>504</templateid>
+        <contenttypeid>309</contenttypeid>
+      </slot-type-association>
+    </slot-type-associations>
+    <slottype>0</slottype>
+    <system-slot>false</system-slot>
+    <version>2</version>
+  </template-slot>

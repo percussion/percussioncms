@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT list (contentid, contenttitle, checkedoutby, contenttypeurl, varaints* )>
+<!ELEMENT varaints (variantid, varianttype, previewurl )>
+<!ELEMENT previewurl (#PCDATA)>
+<!ELEMENT varianttype (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>
+<!ELEMENT contenttypeurl (#PCDATA)>
+<!ELEMENT checkedoutby (#PCDATA)>
+<!ELEMENT contenttitle (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT editresultpage (list* )>

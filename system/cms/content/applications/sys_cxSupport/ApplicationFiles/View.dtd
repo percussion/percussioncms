@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT View EMPTY>
+<!ATTLIST  View type CDATA #REQUIRED>
+<!ATTLIST  View childrenurl CDATA #REQUIRED>
+<!ATTLIST  View sys_search CDATA #REQUIRED>
+<!ATTLIST  View name CDATA #REQUIRED>
+<!ATTLIST  View label CDATA #REQUIRED>
+<!ATTLIST  View sys_displayformat CDATA #REQUIRED>
+<!ELEMENT Views (View* )>

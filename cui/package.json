@@ -1,0 +1,27 @@
+{
+  "name": "cui",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "~4.17.1",
+    "extend": "*",
+    "jade": "~0.34.0",
+    "lodash": "~4.17.20",
+    "winston": "~0.7.3",
+    "winston-loggly": "~1.0.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-sass": "^0.7.3",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-develop": "~0.2.2",
+    "grunt-forever": "^0.4.4",
+    "grunt-jsdoc": "^0.5.4",
+    "grunt-wait": "^0.1.0",
+    "load-grunt-tasks": "~0.2.0",
+    "time-grunt": "~0.1.1"
+  }
+}

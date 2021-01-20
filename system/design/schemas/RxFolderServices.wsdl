@@ -1,0 +1,297 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Melissa Morin (Percussion Software) -->
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/folder/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://www.w3.org/2001/XMLSchema" xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:fp="urn:www.percussion.com/webservices/folder" xmlns:ns1="urn:www.percussion.com/webservices/common" targetNamespace="urn:www.percussion.com/webservices/folder/wsdl">
+   <import namespace="urn:www.percussion.com/webservices/header" location="sys_Header.xsd"/>
+   <import namespace="urn:www.percussion.com/webservices/folder" location="sys_FolderParameters.xsd"/>
+   <message name="header-request">
+      <part name="Authentication" element="hdr:Authentication"/>
+   </message>
+   <message name="header-response">
+      <part name="HeaderResponse" element="hdr:HeaderResponse"/>
+   </message>
+   <message name="createFolder-request">
+      <part name="parameters" element="fp:createFolder"/>
+   </message>
+   <message name="createFolder-response">
+      <part name="parameters" element="fp:CreateFolderResponse"/>
+   </message>
+   <message name="deleteFolder-request">
+      <part name="parameters" element="fp:deleteFolder"/>
+   </message>
+   <message name="deleteFolder-response">
+      <part name="parameters" element="fp:DeleteFolderResponse"/>
+   </message>
+   <message name="openFolder-request">
+      <part name="parameters" element="fp:openFolder"/>
+   </message>
+   <message name="openFolder-response">
+      <part name="parameters" element="fp:OpenFolderResponse"/>
+   </message>
+   <message name="updateFolder-request">
+      <part name="parameters" element="fp:updateFolder"/>
+   </message>
+   <message name="updateFolder-response">
+      <part name="parameters" element="fp:UpdateFolderResponse"/>
+   </message>
+   <message name="addFolderChildren-request">
+      <part name="parameters" element="fp:addFolderChildren"/>
+   </message>
+   <message name="addFolderChildren-response">
+      <part name="parameters" element="fp:AddFolderChildrenResponse"/>
+   </message>
+   <message name="copyFolderChildren-request">
+      <part name="parameters" element="fp:copyFolderChildren"/>
+   </message>
+   <message name="copyFolderChildren-response">
+      <part name="parameters" element="fp:CopyFolderChildrenResponse"/>
+   </message>
+   <message name="getFolderChildren-request">
+      <part name="parameters" element="fp:getFolderChildren"/>
+   </message>
+   <message name="getFolderChildren-response">
+      <part name="parameters" element="fp:GetFolderChildrenResponse"/>
+   </message>
+   <message name="moveFolderChildren-request">
+      <part name="parameters" element="fp:moveFolderChildren"/>
+   </message>
+   <message name="moveFolderChildren-response">
+      <part name="parameters" element="fp:MoveFolderChildrenResponse"/>
+   </message>
+   <message name="removeFolderChildren-request">
+      <part name="parameters" element="fp:removeFolderChildren"/>
+   </message>
+   <message name="removeFolderChildren-response">
+      <part name="parameters" element="fp:RemoveFolderChildrenResponse"/>
+   </message>
+   <message name="getParentFolder-request">
+      <part name="parameters" element="fp:getParentFolder"/>
+   </message>
+   <message name="getParentFolder-response">
+      <part name="parameters" element="fp:GetParentFolderResponse"/>
+   </message>
+   <message name="getFolderCommunities-request">
+      <part name="parameters" element="fp:getFolderCommunities"/>
+   </message>
+   <message name="getFolderCommunities-response">
+      <part name="parameters" element="fp:GetFolderCommunitiesResponse"/>
+   </message>
+   <message name="cloneSiteFolder-request">
+      <part name="parameters" element="fp:cloneSiteFolder"/>
+   </message>
+   <message name="cloneSiteFolder-response">
+      <part name="parameters" element="fp:CloneSiteFolderResponse"/>
+   </message>
+   <portType name="FolderPort">
+      <operation name="createFolder">
+         <input message="tns:createFolder-request"/>
+         <output message="tns:createFolder-response"/>
+      </operation>
+      <operation name="deleteFolder">
+         <input message="tns:deleteFolder-request"/>
+         <output message="tns:deleteFolder-response"/>
+      </operation>
+      <operation name="openFolder">
+         <input message="tns:openFolder-request"/>
+         <output message="tns:openFolder-response"/>
+      </operation>
+      <operation name="updateFolder">
+         <input message="tns:updateFolder-request"/>
+         <output message="tns:updateFolder-response"/>
+      </operation>
+      <operation name="addFolderChildren">
+         <input message="tns:addFolderChildren-request"/>
+         <output message="tns:addFolderChildren-response"/>
+      </operation>
+      <operation name="copyFolderChildren">
+         <input message="tns:copyFolderChildren-request"/>
+         <output message="tns:copyFolderChildren-response"/>
+      </operation>
+      <operation name="getParentFolder">
+         <input message="tns:getParentFolder-request"/>
+         <output message="tns:getParentFolder-response"/>
+      </operation>
+      <operation name="getFolderChildren">
+         <input message="tns:getFolderChildren-request"/>
+         <output message="tns:getFolderChildren-response"/>
+      </operation>
+      <operation name="moveFolderChildren">
+         <input message="tns:moveFolderChildren-request"/>
+         <output message="tns:moveFolderChildren-response"/>
+      </operation>
+      <operation name="removeFolderChildren">
+         <input message="tns:removeFolderChildren-request"/>
+         <output message="tns:removeFolderChildren-response"/>
+      </operation>
+      <operation name="getFolderCommunities">
+         <input message="tns:getFolderCommunities-request"/>
+         <output message="tns:getFolderCommunities-response"/>
+      </operation>
+      <operation name="cloneSiteFolder">
+         <input message="tns:cloneSiteFolder-request"/>
+         <output message="tns:cloneSiteFolder-response"/>
+      </operation>
+   </portType>
+   <binding name="FolderBinding" type="tns:FolderPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <operation name="createFolder">
+         <soap:operation soapAction="urn:#createFolder"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="deleteFolder">
+         <soap:operation soapAction="urn:#deleteFolder"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="openFolder">
+         <soap:operation soapAction="urn:#openFolder"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="updateFolder">
+         <soap:operation soapAction="urn:#updateFolder"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="addFolderChildren">
+         <soap:operation soapAction="urn:#addFolderChildren"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="copyFolderChildren">
+         <soap:operation soapAction="urn:#copyFolderChildren"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="getParentFolder">
+         <soap:operation soapAction="urn:#getParentFolder"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="getFolderChildren">
+         <soap:operation soapAction="urn:#getFolderChildren"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="moveFolderChildren">
+         <soap:operation soapAction="urn:#moveFolderChildren"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="removeFolderChildren">
+         <soap:operation soapAction="urn:#removeFolderChildren"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="getFolderCommunities">
+         <soap:operation soapAction="urn:#getFolderCommunities"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="cloneSiteFolder">
+         <soap:operation soapAction="urn:#cloneSiteFolder"/>
+         <input>
+            <soap:header message="tns:header-request" part="Authentication" use="literal"/>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+   </binding>
+   <service name="FolderServices">
+      <port name="FolderPort" binding="tns:FolderBinding">
+         <soap:address location="http://localhost:9980/RxServices/servlet/messagerouter"/>
+      </port>
+   </service>
+</definitions>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT rightframe (sys_contentid1, sys_contentid2, sys_revision1, sys_revision2, sys_variantid1, sys_variantid2, taburl, assemblyurl, blankpageurl, activeitem, variantlisturl1, variantlisturl2 )>
+<!ELEMENT variantlisturl2 (#PCDATA)>
+<!ELEMENT variantlisturl1 (#PCDATA)>
+<!ELEMENT activeitem (#PCDATA)>
+<!ELEMENT blankpageurl (#PCDATA)>
+<!ELEMENT assemblyurl (#PCDATA)>
+<!ELEMENT taburl (#PCDATA)>
+<!ELEMENT sys_variantid2 (#PCDATA)>
+<!ELEMENT sys_variantid1 (#PCDATA)>
+<!ELEMENT sys_revision2 (#PCDATA)>
+<!ELEMENT sys_revision1 (#PCDATA)>
+<!ELEMENT sys_contentid2 (#PCDATA)>
+<!ELEMENT sys_contentid1 (#PCDATA)>
+<!ATTLIST  rightframe xml:lang CDATA #IMPLIED>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="editiontask" context="global/percussion/task/" deprecated="no" handler="Java" name="perc_AntEditionTask" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">
+		perc.site = will be the site name.
+		</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="className">com.percussion.sitemanage.task.impl.PSAntEditionTask</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.rx.publisher.IPSEditionTask"/>
+      <PSXExtensionParamDef id="0">
+         <name>ant_file</name>
+         <dataType>java.lang.String</dataType>
+         <description>com.percussion.sitemanage.task.impl.PSAntEditionTask</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

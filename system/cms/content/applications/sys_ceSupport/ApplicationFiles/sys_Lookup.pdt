@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXEntry (PSXDisplayText, Value )>
+<!ELEMENT Value (#PCDATA)>
+<!ELEMENT PSXDisplayText (#PCDATA)>
+<!ATTLIST  PSXEntry sequence CDATA #IMPLIED>
+<!ATTLIST PSXEntry default (yes | no ) "no">
+<!ELEMENT sys_Lookup (PSXEntry* )>

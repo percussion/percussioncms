@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<DeliveryServicesContent>
+    <CommentService>
+        <Comments count="10" pagePath="/generic/comments/index">
+            <Comment>
+                <Title>Comment 1</Title>
+                <Email>Comment 1 - Email</Email>
+                <Body>Comment 1 - Body</Body>
+                <Username>Comment 1 - Username</Username>
+                <Url>Comment 1 - Url</Url>
+            </Comment>
+            <Comment>
+                <Title>Comment 2</Title>
+                <Email>Comment 2 - Email</Email>
+                <Body>Comment 2 - Body</Body>
+                <Username>Comment 2 - Username</Username>
+                <Url>Comment 2 - Url</Url>
+            </Comment>
+            <Comment>
+                <Title>Comment 3</Title>
+                <Email>Comment 3 - Email</Email>
+                <Body>Comment 3 - Body</Body>
+                <Username>Comment 3 - Username</Username>
+                <Url>Comment 3 - Url</Url>
+            </Comment>
+        </Comments>
+    </CommentService>
+    <MembershipService>
+        <Memberships>
+            <Membership>
+                <EmailAddress>user@percussion.com</EmailAddress>
+                <Password>password</Password>
+                <ConfirmationRequired>false</ConfirmationRequired>
+            </Membership>
+            <Membership>
+                <EmailAddress>email@server.com</EmailAddress>
+                <Password>pass123</Password>
+                <ConfirmationRequired>false</ConfirmationRequired>
+            </Membership>
+            <Membership>
+                <EmailAddress>account@email.com</EmailAddress>
+                <Password>percussion</Password>
+                <ConfirmationRequired>true</ConfirmationRequired>
+            </Membership>
+        </Memberships>
+    </MembershipService>
+</DeliveryServicesContent>

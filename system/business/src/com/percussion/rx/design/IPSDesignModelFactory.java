@@ -1,0 +1,50 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+package com.percussion.rx.design;
+
+import com.percussion.services.catalog.PSTypeEnum;
+
+/**
+ * Factory to provide the design model based on the type enum. The models for
+ * type enum are registered in design-beans.xml file and the beans are loaded at
+ * the time of server startup.
+ * 
+ * @author bjoginipally
+ * 
+ */
+public interface IPSDesignModelFactory
+{
+   /**
+    * Method to get the design object model for the supplied type enum. See
+    * {@link IPSDesignModel} for the supported methods on the returned design
+    * model.
+    * 
+    * @param type The type enum of the design object, must not be
+    * <code>null</code>.
+    * @return IPSDesignModel Object of the design model, never 
+    * <code>null</code>. Throws <code>RunTimeException</code> in case of any
+    * error and there is no bean corresponding to the supplied type enum.
+    */
+   public IPSDesignModel getDesignModel(PSTypeEnum type);
+}

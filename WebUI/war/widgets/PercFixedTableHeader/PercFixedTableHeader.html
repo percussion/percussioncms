@@ -1,0 +1,119 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<style>
+    #resizable
+    {
+        width : 500px;
+        height : 250px;
+        border : 1px black solid;
+        overflow : auto;
+    }
+    table td,     table th
+    {
+        border-left : grey 1px solid;
+    }
+</style>
+<link REL="StyleSheet" href="../../themes/base/jquery.ui.all.css" type="text/css">
+<script src="../../jslib/jquery.js"></script>
+<script src="../../jslib/jquery-ui.js"></script>
+<script src="PercFixedTableHeader.js"></script>
+<script>
+    $(function(){
+        var table  = $("#table");
+        var header = table.find("tr");
+//        /*
+        $("#resizable").resizable(
+        {
+            resize : function()
+            {
+    //            update.call(this);
+            }
+        });//.draggable();
+  //      */
+        var config = {resizable : $("#resizable")};
+//        var config = {};
+        $("#table").PercFixedTableHeader(config);
+    });
+</script>
+
+<div id="fixed-header-table">
+    <!--div>
+        <table id="fixed-header" width="100%" border="1">
+                <tr>
+                    <th>Header 1</th>
+                    <th>Header 2</th>
+                    <th>Header 3</th>
+                </tr>
+        </table>
+    </div-->
+    <div id="resizable">
+        <table id="table" width="100%">
+            <thead>
+                <tr>
+                    <th>Header 1</th>
+                    <th>Header 2</th>
+                    <th>Header 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Data1 1</td>
+                    <td>Data 12</td>
+                    <td>Data 13</td>
+                </tr>
+                <tr>
+                    <td>Data 21</td>
+                    <td>Data 22</td>
+                    <td>Data 23</td>
+                </tr>
+                <tr>
+                    <td>Data 31</td>
+                    <td>Data 32</td>
+                    <td>Data 33</td>
+                </tr>
+                <tr>
+                    <td>Data 41</td>
+                    <td>Data 42</td>
+                    <td>Data 43</td>
+                </tr>
+                <tr>
+                    <td>Data 51</td>
+                    <td>Data 52</td>
+                    <td>Data 53</td>
+                </tr>
+                <tr>
+                    <td>Data 61</td>
+                    <td>Data 62</td>
+                    <td>Data 63</td>
+                </tr>
+                <tr>
+                    <td>Data 71</td>
+                    <td>Data 72</td>
+                    <td>Data 73</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

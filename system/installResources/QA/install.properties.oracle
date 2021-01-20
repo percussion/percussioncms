@@ -1,0 +1,42 @@
+# Database info
+db.backend=ORACLE
+db.class=oracle.jdbc.OracleDriver
+db.driver=oracle\:thin
+db.pass=demo
+db.schema=RHYTHMYX
+db.server=@localhost\:1521\:orcl
+db.user=RHYTHMYX
+ds.name=RhythmyxData
+
+# Product info
+devtools=yes
+devtools.core=yes
+devtools.doc=yes
+ecc=yes
+fastforward=yes
+fastforward.apps=yes
+fastforward.content=yes
+repository=yes
+server=yes
+server.dbpublisher=no
+server.doc=yes
+
+# Install info
+install.type=new
+install.dir=C\:\\Rhythmyx
+
+# Port info
+port=9992
+port.naming=9993
+port.rmi=9994
+port.jrmp=9995
+port.pooled=9996
+port.jms=9997
+port.ajp=9998
+
+# Server info
+server.type=System Master
+
+# Do not modify
+DEVELOPMENT=yes
+RUN_LANGUAGE_TOOL=yes

@@ -1,0 +1,214 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/**
+ * 
+ */
+package com.percussion.membership.service.impl;
+
+import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
+import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
+import com.percussion.delivery.client.PSDeliveryClient;
+import com.percussion.delivery.data.PSDeliveryInfo;
+import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.delivery.service.PSDeliveryInfoServiceLocator;
+import com.percussion.membership.data.PSAccountSummary;
+import com.percussion.membership.data.PSUserGroup;
+import com.percussion.membership.data.PSUserSummaries;
+import com.percussion.membership.data.PSUserSummary;
+import com.percussion.membership.service.IPSMembershipService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.percussion.pubserver.IPSPubServerService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+/**
+ * @author JaySeletz
+ *
+ */
+@Path(IPSMembershipService.MEMBERSHIP)
+@Component("membershipService")
+@Lazy
+public class PSMembershipService implements IPSMembershipService
+{
+    @Autowired
+    @Lazy
+    private IPSPubServerService pubServerService;
+
+    @Override
+    @GET
+    @Path(ADMIN_USERS+"/"+"{site}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public PSUserSummaries getUsers(@PathParam("site") String site)
+    {
+        String adminURl= pubServerService.getDefaultAdminURL(site);
+        IPSDeliveryInfoService deliveryService  = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
+
+        //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP);
+        if (server == null)
+            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);        
+        
+        String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_USERS;
+        try
+        {
+            List<PSUserSummary> summaries = new ArrayList<PSUserSummary>();
+            
+            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+            JSONArray users = deliveryClient.getJsonArray(new PSDeliveryActionOptions(server, url));
+            for (int i = 0; i < users.size(); i++)
+            {
+                JSONObject userSum = users.getJSONObject(i);
+                PSUserSummary userSummary = new PSUserSummary();
+                userSummary.setEmail(userSum.getString("email"));
+                userSummary.setCreatedDate(userSum.getString("createdDate"));
+                userSummary.setStatus(userSum.getString("status"));
+                userSummary.setGroups(userSum.getString("groups"));
+                summaries.add(userSummary);
+            }
+            
+            return new PSUserSummaries(summaries);
+        }
+        catch (Exception e)
+        {
+            String urlStr = server.getUrl() + url;
+            log.warn("Error getting all users from the service: " + urlStr, e);
+            throw new WebApplicationException(e, Response.serverError().build());
+        }
+    }
+    
+    @Override
+    @PUT
+    @Path(ADMIN_ACCOUNT+"/"+"{site}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public PSUserSummaries changeStateAccount(PSAccountSummary account,@PathParam("site") String site)
+    {
+        String adminURl= pubServerService.getDefaultAdminURL(site);
+        IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
+        if (server == null)
+            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);        
+        
+        String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_ACCOUNT;
+        try
+        {            
+            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+            JSONObject accountJson = new JSONObject();
+            accountJson.put("email", account.getEmail());
+            accountJson.put("action", account.getAction());
+            deliveryClient.push(new PSDeliveryActionOptions(server, url, HttpMethodType.PUT, true), 
+                    accountJson.toString());
+            
+            return getUsers(site);
+        }
+        catch (Exception e)
+        {
+            String urlStr = server.getUrl() + url;
+            log.warn("Error getting all users from the service: " + urlStr, e);
+            throw new WebApplicationException(e, Response.serverError().build());
+        }
+    }
+    
+    @Override
+    @DELETE
+    @Path(ADMIN_ACCOUNT + "/{email:.*}"+"/"+"{site}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public PSUserSummaries deleteAccount(@PathParam("email") String email,@PathParam("site") String site)
+    {
+        String adminURl= pubServerService.getDefaultAdminURL(site);
+        IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
+        if (server == null)
+            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);        
+        
+        String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_ACCOUNT + "/" + email;
+        try
+        {            
+            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+            deliveryClient.push(new PSDeliveryActionOptions(server, url, HttpMethodType.DELETE, true), "");
+            
+            return getUsers(site);
+        }
+        catch (Exception e)
+        {
+            String urlStr = server.getUrl() + url;
+            log.warn("Error getting all users from the service: " + urlStr, e);
+            throw new WebApplicationException(e, Response.serverError().build());
+        }
+    }
+    
+    @Override
+    @PUT
+    @Path(ADMIN_USER_GROUP+"/"+"{site}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public PSUserSummaries updateGroupAccount(PSUserGroup userGroup,@PathParam("site") String site)
+    {
+        String adminURl= pubServerService.getDefaultAdminURL(site);
+        IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
+        if (server == null)
+            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);        
+        
+        String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_USER_GROUP+"/"+site;
+        try
+        {            
+            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+            JSONObject accountJson = new JSONObject();
+            accountJson.put("email", userGroup.getEmail());
+            accountJson.put("groups", userGroup.getGroups());
+            deliveryClient.push(new PSDeliveryActionOptions(server, url, HttpMethodType.PUT, true), 
+                    accountJson.toString());
+            
+            return getUsers(site);
+        }
+        catch (Exception e)
+        {
+            String urlStr = server.getUrl() + url;
+            log.warn("Error getting all users from the service: " + urlStr, e);
+            throw new WebApplicationException(e, Response.serverError().build());
+        }
+    }
+    
+    /**
+     * Logger for this service.
+     */
+    public static Log log = LogFactory.getLog(PSMembershipService.class);    
+
+}

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT pubhtmlpage (displaytitle*, authorname*, sys_AssemblerInfo*, bodycontent* )>
+<!ELEMENT bodycontent (#PCDATA)>
+<!ELEMENT sys_AssemblerInfo (#PCDATA)>
+<!ELEMENT authorname (#PCDATA)>
+<!ELEMENT displaytitle (#PCDATA)>

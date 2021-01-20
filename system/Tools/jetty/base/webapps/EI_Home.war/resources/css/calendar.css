@@ -1,0 +1,8 @@
+TABLE {border: 2px solid purple !important; 
+   margin: 5px !important; border-collapse: 
+   separate !important; border-spacing: 1px !important; 
+   empty-cells: show !important;}
+TH {border: 1px solid blue !important; 
+   padding: 3px !important;}
+TD {border: 1px solid red !important; 
+   padding: 3px !important;}

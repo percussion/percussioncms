@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<Resources>
+	<asset primary="true" id="page" contentType="percPage" legacyTemplate="perc.base.plain" />
+	
+	<!-- "pageXml" is used to render pages in XML, but is not used for expanding to additional template -->
+	<asset primary="false" id="pageXml" contentType="percPage" legacyTemplate="perc.pageXml" />
+	<!-- "pageDatabase" is used to render pages for database publishing, but is not used for expanding to additional template -->
+	<asset primary="false" id="pageDatabase" contentType="percPage" legacyTemplate="perc.pageDatabase" />
+	
+	<asset primary="true" id="imageMainBinary" contentType="percImageAsset" legacyTemplate="perc.imageMainBinary">
+		<linkAndLocations type="jexl">
+		<![CDATA[
+        $rx.resourceHelper.createDefaultLinkAndLocations($perc);
+		]]>
+		</linkAndLocations>	
+	</asset>
+	<asset primary="false" id="imageThumbBinary" contentType="percImageAsset" legacyTemplate="perc.imageThumbBinary">
+		<linkAndLocations type="jexl">
+		<![CDATA[
+		$locations = $rx.resourceHelper.createLinkAndLocations();
+		$fields = $perc.resourceInstance.item.fields;
+	    $filename = $fields['thumbprefix'] + $fields['sys_title']; 		
+		$locations.add($rx.resourceHelper.createLinkAndLocationForFileName($perc,$filename));
+		$locations;
+		]]>
+		</linkAndLocations>
+	</asset>
+    <asset primary="true" id="fileBinary" contentType="percFileAsset" legacyTemplate="perc.fileBinary">
+        <linkAndLocations type="jexl">
+        <![CDATA[
+        $rx.resourceHelper.createDefaultLinkAndLocations($perc);
+        ]]>
+        </linkAndLocations>    
+    </asset>
+    
+	<file id="jquery" path="/web_resources/cm/jslib/jquery.js" type="javascript"/>
+	<file id="perc_decoration_style" path="/cm/css/perc_decoration.css" type="css" context="PREVIEW" />	
+	<file id="jquery-ui" path="/web_resources/cm/jslib/jquery-ui.js" type="javascript">
+		<dependency refid="percSystem.jquery" />
+	</file>
+    <file id="jquery-cookie" path="/web_resources/cm/jslib/jquery.cookie.min.js" type="javascript">
+      <dependency refid="percSystem.jquery" />
+    </file>		
+	<file id="perc-jquery-ui-style" path="/web_resources/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" type="css">
+		<dependency refid="percSystem.perc_decoration_style" />
+	</file>
+	<file id="common_slim_js" path="/web_resources/cm/common/js/perc_common_ui_slim.js" type="javascript">
+		<dependency refid="percSystem.jquery"/>
+	</file>  
+	<file id="globalvariables_js"  path="/web_resources/cm/common/js/PercGlobalVariables.js"  type="javascript" >
+	    <dependency refid="percSystem.jquery"/>
+	</file>
+  
+</Resources>

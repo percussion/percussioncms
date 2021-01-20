@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="file:///C:/dev/main/system/webservices/design/rhythmyx.wsdl" filename="rhythmyx.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="file:///C:/dev/main/system/webservices/design/system/system.wsdl" filename="system.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/faults.xsd" filename="faults.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/ui/ui.xsd" filename="ui.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="file:///C:/dev/main/system/webservices/design/ui/ui.wsdl" filename="ui.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/assembly/assembly.xsd" filename="assembly.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="file:///C:/dev/main/system/webservices/design/assembly/assembly.wsdl" filename="assembly.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="file:///C:/dev/main/system/webservices/design/content/content.wsdl" filename="content.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/security/security.xsd" filename="security.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/ui/uiServices.xsd" filename="uiServices.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/assembly/assemblyServices.xsd" filename="assemblyServices.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/common.xsd" filename="common.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="file:///C:/dev/main/system/webservices/design/security/security.wsdl" filename="security.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/system/system.xsd" filename="system.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/security/securityServices.xsd" filename="securityServices.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/ContentEditorSharedDef.xsd" filename="ContentEditorSharedDef.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/system/systemServices.xsd" filename="systemServices.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/content/contentServices.xsd" filename="contentServices.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/ContentEditorSystemDef.xsd" filename="ContentEditorSystemDef.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/BasicObjects.xsd" filename="BasicObjects.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/ContentEditorLocalDef.xsd" filename="ContentEditorLocalDef.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="file:///C:/dev/main/system/webservices/design/content/content.xsd" filename="content.xsd" />
+  </Results>
+</DiscoveryClientResultsFile>

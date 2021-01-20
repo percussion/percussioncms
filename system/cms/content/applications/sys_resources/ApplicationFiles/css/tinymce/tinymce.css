@@ -1,0 +1,15 @@
+span.rx_inlinevariant:before
+{
+	content: url(../../images/inlinestart.png);
+}
+
+span.rx_inlinevariant:after
+{
+	content: url(../../images/inlineend.png);
+}
+
+div.rx_ephox_inlinevariant
+{
+	border: 1px gray solid;
+}
+

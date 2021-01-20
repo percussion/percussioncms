@@ -1,0 +1,101 @@
+<!--
+	Set of test extension calls used by the PSControlDependencyMapTest
+-->
+<PSXExtensionCallSet id="0">
+	<PSXExtensionCall id="1">
+		<name>Java/global/percussion/generic/sys_FileInfo</name>
+	</PSXExtensionCall>
+  <PSXExtensionCall id="2">
+     <name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text>calloutField1</text>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text>rxW2Ktidy.properties</text>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text>rxW2KserverPageTags.xml</text>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text/>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text/>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text>yes</text>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+  </PSXExtensionCall>
+    <PSXExtensionCall id="3">
+     <name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text>calloutField2</text>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text>rxW2Ktidy.properties</text>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text>rxW2KserverPageTags.xml</text>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text/>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text/>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+     <PSXExtensionParamValue id="0">
+        <value>
+           <PSXTextLiteral id="0">
+              <text>yes</text>
+           </PSXTextLiteral>
+        </value>
+     </PSXExtensionParamValue>
+  </PSXExtensionCall>
+	<PSXExtensionCall id="4">
+		<name>Java/global/percussion/generic/sys_DummyExit</name>
+	</PSXExtensionCall>
+</PSXExtensionCallSet>

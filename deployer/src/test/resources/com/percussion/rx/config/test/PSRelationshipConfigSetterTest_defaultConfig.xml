@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<SolutionConfigurations publisherPrefix="com.percussion" publisherName=" Percussion"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+	<SolutionConfig name="PSRelationshipConfigTest">
+		<propertySet name="deepCloning">
+			<property name="enabled" value="false"/>
+		</propertySet>
+		<propertySet name="shallowCloning">
+			<property name="enabled" value="false"/>
+		</propertySet>
+		<property name="fieldOverrides">
+			<propertySet>
+				<property name="fieldName" value="sys_title"/>
+				<property name="extension" value="Java/global/percussion/relationship/sys_CloneTitle"/>
+				<property name="extensionParams">
+					<pvalues>
+						<pvalue>Copy ($clone_count) of {0}</pvalue>
+						<pvalue>PSXContentItemStatus/CONTENTSTATUS.TITLE</pvalue>
+					</pvalues>
+				</property>
+			</propertySet>
+			<propertySet>
+				<property name="fieldName" value="sys_communityid"/>
+				<property name="extension" value="Java/global/percussion/generic/sys_OverrideLiteral"/>
+				<property name="extensionParams">
+					<pvalues>
+						<pvalue>PSXContentItemStatus/CONTENTSTATUS.COMMUNITYID</pvalue>
+						<pvalue>sys_communityid_override</pvalue>
+					</pvalues>
+				</property>
+			</propertySet>
+			<propertySet>
+				<property name="fieldName" value="sys_workflowid"/>
+				<property name="extension" value="Java/global/percussion/generic/sys_OverrideLiteral"/>
+				<property name="extensionParams">
+					<pvalues>
+						<pvalue>PSXContentItemStatus/WORKFLOWAPPS.WORKFLOWAPPID</pvalue>
+						<pvalue>sys_workflowid_override</pvalue>
+					</pvalues>
+				</property>
+			</propertySet>
+		</property>
+		<property name="effects"/>
+	</SolutionConfig>
+</SolutionConfigurations>

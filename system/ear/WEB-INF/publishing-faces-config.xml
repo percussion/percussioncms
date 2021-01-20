@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+	<navigation-rule>
+	   <navigation-case>
+	      <from-outcome>pub-design-site-views</from-outcome>
+	      <to-view-id>/ui/publishing/SiteList.jsp</to-view-id>
+         <redirect id="pub-design-site-views"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-design-site-editor</from-outcome>
+	      <to-view-id>/ui/publishing/SiteEditor.jsp</to-view-id>
+         <redirect id="pub-design-site-editor"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-design-site-root-browser</from-outcome>
+	      <to-view-id>/ui/publishing/SiteRootBrowser.jsp</to-view-id>
+         <redirect id="pub-design-site-root-browser"/>
+	   </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-design-item-browser</from-outcome>
+         <to-view-id>/ui/publishing/ItemBrowser.jsp</to-view-id>
+         <redirect id="pub-design-item-browser"/>
+      </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-design-edition-views</from-outcome>
+	      <to-view-id>/ui/publishing/EditionList.jsp</to-view-id>
+         <redirect id="pub-design-edition-views"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-design-editions-from-other-sites</from-outcome>
+	      <to-view-id>/ui/publishing/SelectEditionFromOtherSite.jsp</to-view-id>
+         <redirect id="pub-design-editions-from-other-sites"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-design-edition-editor</from-outcome>
+	      <to-view-id>/ui/publishing/EditionEditor.jsp</to-view-id>
+         <redirect id="pub-design-edition-editor"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-design-content-list-views</from-outcome>
+	      <to-view-id>/ui/publishing/ContentlistView.jsp</to-view-id>
+         <redirect id="pub-design-content-list-views"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-design-content-list-editor</from-outcome>
+	      <to-view-id>/ui/publishing/ContentlistEditor.jsp</to-view-id>
+         <redirect id="pub-design-content-list-editor"/>
+	   </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-design-context-views</from-outcome>
+         <to-view-id>/ui/publishing/ContextList.jsp</to-view-id>
+         <redirect id="pub-design-context-views"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-design-context-editor</from-outcome>
+         <to-view-id>/ui/publishing/ContextEditor.jsp</to-view-id>
+         <redirect id="pub-design-context-editor"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-design-deliverytypes-views</from-outcome>
+         <to-view-id>/ui/publishing/DeliveryTypeList.jsp</to-view-id>
+         <redirect id="pub-design-deliverytypes-views"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-design-delivery-type-editor</from-outcome>
+         <to-view-id>/ui/publishing/DeliveryTypeEditor.jsp</to-view-id>
+         <redirect id="pub-design-delivery-type-editor"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-design-location-scheme-editor</from-outcome>
+         <to-view-id>/ui/publishing/LocationSchemeEditor.jsp</to-view-id>
+         <redirect id="pub-design-location-scheme-editor"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-design-location-scheme-legacy-editor</from-outcome>
+         <to-view-id>/ui/publishing/LocationSchemeLegacyEditor.jsp</to-view-id>
+         <redirect id="pub-design-location-scheme-legacy-editor"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-design-location-scheme-param-editor</from-outcome>
+         <to-view-id>/ui/publishing/LocationSchemeParamEditor.jsp</to-view-id>
+      </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-runtime-status-view</from-outcome>
+	      <to-view-id>/ui/pubruntime/ActiveJobStatus.jsp</to-view-id>
+         <redirect id="pub-runtime-status-view"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-runtime-edition</from-outcome>
+	      <to-view-id>/ui/pubruntime/RuntimeEdition.jsp</to-view-id>
+         <redirect id="pub-runtime-edition"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-runtime-editionlist</from-outcome>
+	      <to-view-id>/ui/pubruntime/RuntimeEditionList.jsp</to-view-id>
+         <redirect id="pub-runtime-editionlist"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-runtime-all-logs</from-outcome>
+	      <to-view-id>/ui/pubruntime/AllPubLogs.jsp</to-view-id>
+         <redirect id="pub-runtime-all-logs"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>pub-runtime-site-logs</from-outcome>
+	      <to-view-id>/ui/pubruntime/SitePubLogs.jsp</to-view-id>
+         <redirect id="pub-runtime-site-logs"/>
+	   </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-runtime-job-log</from-outcome>
+         <to-view-id>/ui/pubruntime/JobPubLog.jsp</to-view-id>
+         <redirect id="pub-runtime-job-log"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-runtime-log-item</from-outcome>
+         <to-view-id>/ui/pubruntime/ItemPubLog.jsp</to-view-id>
+         <redirect id="pub-runtime-log-item"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-runtime-no-selection-warning</from-outcome>
+         <to-view-id>/ui/pubruntime/NoSelectionWarning.jsp</to-view-id>
+         <redirect id="pub-runtime-no-selection-warning"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>pub-runtime-error-message</from-outcome>
+         <to-view-id>/ui/pubruntime/ErrorMessage.jsp</to-view-id>
+         <redirect id="pub-runtime-error-message"/>
+      </navigation-case>      
+      <navigation-case>
+         <from-outcome>pub-runtime-delete-site-item-warn</from-outcome>
+         <to-view-id>/ui/pubruntime/DeleteSiteItemLogsWarning.jsp</to-view-id>
+         <redirect id="pub-runtime-delete-site-item-warn"/>
+      </navigation-case>
+      
+	   <navigation-case>
+	      <from-outcome>no-selection-warning</from-outcome>
+	      <to-view-id>/ui/publishing/NoSelectionWarning.jsp</to-view-id>
+	      <redirect id="no-selection-warning"/>
+	   </navigation-case>
+	   <navigation-case>
+	      <from-outcome>no-scheme-parameter-selection-warning</from-outcome>
+	      <to-view-id>/ui/publishing/NoSchemeParameterSelectionWarning.jsp</to-view-id>
+         <redirect id="no-scheme-parameter-selection-warning"/>
+	   </navigation-case>
+      <navigation-case>
+         <from-outcome>save-child-scheme-changes-warning</from-outcome>
+         <to-view-id>/ui/publishing/SaveChildSchemeChangesWarning.jsp</to-view-id>
+         <redirect id="save-child-scheme-changes-warning"/>
+      </navigation-case>
+      <navigation-case>
+		   <from-outcome>add-context-variable</from-outcome>
+         <to-view-id>/ui/publishing/AddContextVariable.jsp</to-view-id>
+         <redirect id="add-context-variable"/>
+      </navigation-case>
+      <navigation-case>
+      	<from-outcome>associate-content-list</from-outcome>
+			<to-view-id>/ui/publishing/AssociateContentlist.jsp</to-view-id>
+         <redirect id="associate-content-list"/>
+		</navigation-case>
+	</navigation-rule>
+
+   <navigation-rule>
+      <from-view-id>/ui/publishing/SaveChildSchemeChangesWarning.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>cancel</from-outcome>
+         <to-view-id>/ui/publishing/ContextList.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+
+
+   <navigation-rule>
+      <from-view-id>/ui/publishing/DeliveryTypeList.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>delete</from-outcome>
+         <to-view-id>/ui/publishing/RemoveConfirmation.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+	<navigation-rule>
+		<from-view-id>/ui/publishing/SiteList.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/ui/publishing/SiteEditor.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+		   <from-outcome>delete</from-outcome>
+			<to-view-id>/ui/publishing/RemoveConfirmation.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/ui/publishing/EditionList.jsp</from-view-id>
+		<navigation-case>
+			<from-action>edit</from-action>
+			<to-view-id>/ui/publishing/EditionEditor.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+		   <from-outcome>delete</from-outcome>
+			<to-view-id>/ui/publishing/RemoveConfirmation.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/ui/publishing/ContentlistView.jsp</from-view-id>
+		<navigation-case><from-outcome>edit</from-outcome>
+			<to-view-id>/ui/publishing/ContentlistEditor.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>delete</from-outcome>
+			<to-view-id>
+				/ui/publishing/RemoveConfirmation.jsp
+			</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/ui/publishing/SiteEditor.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>save</from-outcome>
+			<to-view-id>/ui/publishing/SiteList.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/ui/publishing/SiteList.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/ui/publishing/EditionEditor.jsp</from-view-id>
+		<navigation-case>
+			<from-action>save</from-action>
+			<to-view-id>/ui/publishing/EditionList.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>cancel</from-action>
+			<to-view-id>/ui/publishing/EditionList.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>
+			/ui/publishing/ContentlistEditor.jsp
+		</from-view-id>
+		<navigation-case><from-outcome>save</from-outcome>
+			
+			<to-view-id>/ui/publishing/ContentlistView.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case><from-outcome>cancel</from-outcome>
+			
+			<to-view-id>/ui/publishing/ContentlistView.jsp</to-view-id>
+		</navigation-case>
+		</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/ui/pubruntime/ItemPubLog.jsp</from-view-id>
+		<navigation-case><from-outcome>next</from-outcome>			
+			<to-view-id>/ui/pubruntime/ItemPubLog.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case><from-outcome>previous</from-outcome>
+			<to-view-id>/ui/pubruntime/ItemPubLog.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/ui/publishing/RemoveConfirmation.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>return-to-sites</from-outcome>
+			<to-view-id>/ui/publishing/SiteList.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>return-to-editions</from-outcome>
+			<to-view-id>/ui/publishing/EditionList.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>return-to-contentlists</from-outcome>
+			<to-view-id>/ui/publishing/ContentlistView.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+		   <from-outcome>return-to-contexts</from-outcome>
+		   <to-view-id>/ui/publishing/ContextList.jsp</to-view-id></navigation-case></navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/ui/publishing/AssociateContentlist.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>done</from-outcome>
+			<to-view-id>/ui/publishing/EditionEditor.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>filter</from-outcome>
+			<to-view-id>/ui/publishing/AssociateContentlist.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/ui/publishing/SelectEditionFromOtherSite.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/ui/publishing/EditionEditor.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>return-to-editions</from-outcome>
+			<to-view-id>/ui/publishing/EditionList.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/ui/publishing/AddContextVariable.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>done</from-outcome>
+			<to-view-id>/ui/publishing/SiteEditor.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+   <managed-bean>
+      <managed-bean-name>sys_design_navigation</managed-bean-name>
+      <managed-bean-class>
+         com.percussion.rx.publisher.jsf.beans.PSDesignNavigation
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>sys_runtime_navigation</managed-bean-name>
+      <managed-bean-class>
+         com.percussion.rx.publisher.jsf.beans.PSRuntimeNavigation
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>   
+   <managed-bean>
+      <managed-bean-name>sys_sitelist</managed-bean-name>
+      <managed-bean-class>
+         com.percussion.services.publisher.ui.PSSiteListSelect
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+      <managed-property>
+         <property-name>current</property-name>
+         <null-value />
+      </managed-property>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>sys_design_name_value_provider</managed-bean-name>
+      <managed-bean-class>
+         com.percussion.rx.jsf.PSCategoryNodesNameProvider
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+      <managed-property>
+         <property-name>navigation</property-name>
+         <value>#{sys_design_navigation}</value>
+      </managed-property>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>sys_design_unique_name_validator</managed-bean-name>
+      <managed-bean-class>
+         com.percussion.services.utils.jsf.validators.PSUniqueValidator
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+      <managed-property>
+         <property-name>valueProvider</property-name>
+         <value>#{sys_design_name_value_provider}</value>
+      </managed-property>
+   </managed-bean>
+   
+   <navigation-rule>
+      <from-view-id>/ui/publishing/ContextList.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>delete</from-outcome>
+         <to-view-id>/ui/publishing/RemoveConfirmation.jsp</to-view-id>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>edit</from-outcome>
+         <to-view-id>/ui/publishing/ContextEditor.jsp</to-view-id>
+      </navigation-case></navigation-rule>
+   <navigation-rule>
+      <from-view-id>/ui/publishing/ContextEditor.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>remove-scheme</from-outcome>
+         <to-view-id>/ui/publishing/RemoveLocationScheme.jsp</to-view-id>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>save</from-outcome>
+         <to-view-id>/ui/publishing/ContextList.jsp</to-view-id>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>cancel</from-outcome>
+         <to-view-id>/ui/publishing/ContextList.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+      <from-view-id>/ui/publishing/RemoveLocationScheme.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>done</from-outcome>
+         <to-view-id>/ui/publishing/ContextEditor.jsp</to-view-id>
+      </navigation-case>
+	</navigation-rule>
+   <navigation-rule>
+      <from-view-id>/ui/publishing/LocationSchemeEditor.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>done</from-outcome>
+         <to-view-id>/ui/publishing/ContextEditor.jsp</to-view-id>
+      </navigation-case>
+	</navigation-rule>
+   <navigation-rule>
+      <from-view-id>/ui/publishing/LocationSchemeLegacyEditor.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>done</from-outcome>
+         <to-view-id>/ui/publishing/ContextEditor.jsp</to-view-id>
+      </navigation-case>
+	</navigation-rule>
+   
+   <converter>
+      <converter-id>sys_normalize_path</converter-id>
+      <converter-class>
+         com.percussion.services.utils.jsf.PSNormalizePath
+      </converter-class>
+   </converter>
+   <managed-bean>
+      <managed-bean-name>sys_path_validator</managed-bean-name>
+      <managed-bean-class>
+         com.percussion.services.utils.jsf.validators.PSPathExists
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean></faces-config>

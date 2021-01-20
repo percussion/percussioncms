@@ -1,0 +1,247 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+#empty-list-error {
+    margin-top:100px;
+    text-align: center;
+}
+
+#spinner {
+    font-size: 10em;
+}
+
+.center {
+    text-align: center;
+    vertical-align: middle;
+}
+.content-list {
+    white-space: nowrap;
+    margin:0px 75px 0px 75px;
+}
+
+.content-list-item {
+    float: left;
+    color: #576071;
+    font-size:13px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.content-list-header-item {
+    color: #576071;
+    font-size: 14px;
+    font-weight: 600;
+    float: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.cm-grid {
+    line-height: 24px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.col-xs-4 {
+    width: 33.33333333%;
+}
+
+.col-xs-3 {
+    width: 25%;
+}
+
+.col-xs-2 {
+    width: 16.66666667%;
+}
+
+.col-xs-1 {
+    width: 8.33333333%;
+}
+
+.content-list-rollover-menu {
+    background-color: #E96E57;
+    margin-left: -60%;
+    z-index: 1000;
+    position: relative;
+    float: left;
+    width:60%;
+}
+
+.content-list-rollover-menu-option {
+    cursor:pointer;
+    float: left;
+    font-size: 14px;
+    font-weight:400;
+    color: #FFD2B5;
+    padding-left: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.content-list-rollover-menu-option:before {
+    content: ''; /* IE9 ellipsis fix */
+}
+
+.content-list-rollover-menu-option:hover {
+    float: left;
+    font-size: 14px;
+    font-weight:400;
+    color: #fff;
+    padding-left: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+#content-list-header {
+    box-sizing: border-box;
+    margin-right: 0px;
+    margin-left: 0px;
+    clear: left;
+}
+.row {
+    box-sizing: border-box;
+    margin-right: 0px;
+    margin-left: 0px;
+    clear: left;
+    border-top: 1px solid #BDC6D7;
+}
+
+.preview {
+    top: 12px;
+    max-height: 500px;
+    position: relative;
+    float: left;
+    clear: left;
+    margin-bottom: -100%;
+    margin-left: 15%;
+    width: 80%;
+    background: #E9F6FC;
+    z-index: 1000;
+    border: 1px solid #BDC6D7;
+}
+
+.preview-inverted {
+    top: 12px;
+    max-height: 500px;
+    position: relative;
+    float: left;
+    clear: left;
+    margin-top: -325px;
+    margin-left: 15%;
+    width: 80%;
+    background: #E9F6FC;
+    z-index: 1000;
+    border: 1px solid #BDC6D7;
+}
+
+.preview-thumbnail {
+    float: left;
+    list-style-type: none;
+    width:25%;
+    overflow:hidden;
+    padding-top:20px;
+    padding-left:10px;
+    padding-right:10px;
+    text-align:center;
+}
+
+.preview-image {
+    width: 100%;
+}
+
+.preview-data {
+    float: left;
+    list-style-type: none;
+    width:75%;
+}
+
+.preview-data-header {
+    width: 100%;
+    font-size: 16px;
+    color: #576071;
+    border-bottom: 1px solid #BDC6D7;
+    line-height: 24px;
+    padding-left: 10px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.col1 {
+    font-size: 13px;
+    color: #262626;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.col2 {
+    font-size: 13px;
+    color: #576071;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding-right: 2px;
+}
+
+.col-left {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    min-width:165px;
+    float:left;
+    padding-left: 0px;
+}
+
+.col-right {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding-left: 0px;
+}
+
+.icon {
+    padding-right:3px;
+}
+
+.ui-tooltip {
+    position: absolute;
+    z-index: 3000;
+    border: 1px solid #111;
+    background-color: #eee;
+    padding: 5px;
+    word-wrap: break-word;
+    max-width: 50%;
+    white-space:normal;
+}
+.preview-thumbnail i {
+    line-height:3;
+}
+.load-more{
+    text-align:center;
+}
+#show-more-results{
+    padding-top:20px;
+    text-align: center;
+    color:#17accc;
+    cursor:pointer;
+    border-top: 1px solid #BDC6D7;
+}
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

@@ -1,0 +1,57 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<tables>
+	<table name='CONTENTSTATUS'/>
+	<table name='CONTENTSTATUSHISTORY'/>
+	<table name='NEXTNUMBER'/>
+	<table name='PSX_FOLDER'/>
+	<table name='PSX_OBJECTACL'/>
+	<table name='PSX_OBJECTPROPERTIES'/>
+	<table name='PSX_OBJECTS'/>
+	<table name='PSX_PROPERTIES'/>
+	<table name='PSX_RELATIONSHIPPROPERTIES'/>
+	<table name='PSX_RELATIONSHIPS'/>
+	<table name="RXS_CT_AUTOINDEX" />
+	<table name="RXS_CT_BRIEF" />
+	<table name="RXS_CT_CALENDAR" />
+	<table name="RXS_CT_CATEGORIES" />
+	<table name="RXS_CT_CONTACTS" />
+	<table name="RXS_CT_EVENT" />
+	<table name="RXS_CT_EXTERNALLINK" />
+	<table name="RXS_CT_FILE" />
+	<table name="RXS_CT_GENERIC" />
+	<table name="RXS_CT_GENERICWORD" />
+	<table name="RXS_CT_HOLIDAY" />
+	<table name="RXS_CT_HOMEPAGE" />
+	<table name="RXS_CT_IMAGE" />
+	<table name="RXS_CT_NAVIGATIONIMAGETRIPLE" />
+	<table name="RXS_CT_NAVON" />
+	<table name="RXS_CT_NAVTREE" />
+	<table name="RXS_CT_PRESSRELEASE" />
+	<table name="RXS_CT_SHARED" />
+	<table name="RXS_CT_SHARED_CATEGORY_SET" />
+	<table name="RXS_CT_SHAREDBINARY" />
+	<table name="RXS_CT_SHAREDIMAGE" />	
+</tables>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="jexl" context="global/percussion/system/" deprecated="no" handler="Java" name="pageutils" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Jexl extensions for handling dispatched page and widget template</initParam>
+      <initParam name="com.percussion.extension.version">63</initParam>
+      <initParam name="className">com.percussion.pagemanagement.assembler.PSPageUtils</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSJexlExpression"/>
+      <suppliedResources/>
+      <Methods>
+         <PSExtensionMethod description="Gets the processed list of categories." name="getProcessedCategories" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="String of comma separated categories" name="categories" type="java.util.List"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Create a clone of the current assemblyItem if an id is passed the clone will be modified to that id." name="createCloneAssemblyItem" returntype="com.percussion.services.assembly.IPSAssemblyItem">
+            <Parameters>
+               <PSExtensionMethodParam description="e.g $sys.assemblyItem" name="item" type="com.percussion.services.assembly.IPSAssemblyItem"/>
+               <PSExtensionMethodParam description="a content id or guid to change the clone to" name="idObj" type="java.lang.Object"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a relative path to the reset page" name="getSiteResetPage" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The name of the site to load the reset page property" name="sitename" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a Link to an item" name="itemLink" returntype="com.percussion.pagemanagement.data.PSRenderLink">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="An asset or page." name="linkableItem" type="com.percussion.share.service.IPSLinkableItem"/>
+               <PSExtensionMethodParam description="the fully qualified resourceDefinitionId" name="resourceDefinitionId" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Find an item and return specified field values." name="findItemFieldValues" returntype="java.util.Map">
+            <Parameters>
+               <PSExtensionMethodParam description="the content type name of the item" name="type" type="java.lang.String"/>
+               <PSExtensionMethodParam description="A comma delimited list of fields to return" name="fields" type="java.lang.String"/>
+               <PSExtensionMethodParam description="The content id of the item to find" name="contentId" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Gets the processed list of blogs per month organized by year." name="getProcessedBlogs" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="assembly pages" name="assemblyPages" type="java.util.List"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Find a category node by the category path" name="getCategoryByPath" returntype="com.percussion.category.data.PSCategoryNode">
+            <Parameters>
+               <PSExtensionMethodParam description="the category path" name="categoryPath" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Gets the dependent content id of the specified link." name="getManagedLinkDependentId" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="the id of the link" name="linkId" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="find a workflow from ID" name="findWorkflow" returntype="com.percussion.services.workflow.data.PSWorkflow">
+            <Parameters>
+               <PSExtensionMethodParam description="the ID of the workflow" name="workflowId" type="java.lang.Integer"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a relative path to the reset request password page" name="getSiteResetRequestPasswordPage" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The name of the site to load the reset request password page property" name="sitename" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a list of javascript links" name="javascriptLinks" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="the parent (page/template) assembly item" name="item" type="com.percussion.services.assembly.IPSAssemblyItem"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Updates the managed links in the given source" name="updateManagedLinks" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="The source html in which the managed links needs to be updated." name="source" type="java.lang.String"/>
+               <PSExtensionMethodParam description="The serverId to determine whether it is a staging publishing or not." name="serverId" type="java.lang.Long"/>
+               <PSExtensionMethodParam description="The parentId for the item under management" name="parentId" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Returns the Major.Minor version string for the product." name="productVersion" returntype="java.lang.String">
+            <Parameters/>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Gets the blog post template id for the specified blog." name="getBlogPostTemplateId" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="the folder path of the blog" name="path" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Parse the metadata string into key/value pairs" name="parseSoProMetadata" returntype="java.util.Map">
+            <Parameters>
+               <PSExtensionMethodParam description="Metadata string" name="metadata" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a relative path to the registration confirmation page" name="getSiteRegistrationConfirmationPage" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The name of the site to load the registration confirmation page property" name="sitename" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Gets the items of a widget that are relate to the specified page and/or template.  If not found it will look for same widget on landing page and then ancestor landing pages" name="firstAncestorWidgetContents" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="the parent (page/template) assembly item" name="item" type="com.percussion.services.assembly.IPSAssemblyItem"/>
+               <PSExtensionMethodParam description="the widget or the widget ID" name="widget" type="java.lang.Object"/>
+               <PSExtensionMethodParam description="the fully qualified name of the content finder" name="finder" type="java.lang.String"/>
+               <PSExtensionMethodParam description="extra parameters to the process" name="params" type="java.util.Map"/>
+               <PSExtensionMethodParam description="Optional regionName to find widget" name="regionName" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Returns the category label path for the given category id path" name="getCategoryLabel" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The category id path, if not found returns the idpath" name="catPath" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+          <PSExtensionMethod description="Returns the Boolean.True if passed in item is recycled" name="isInRecycler" returntype="java.lang.Boolean">
+             <Parameters>
+                <PSExtensionMethodParam description="The item id" name="itemId" type="java.lang.String"/>
+             </Parameters>
+          </PSExtensionMethod>
+         <PSExtensionMethod description="Check canonical link" name="checkLinkCanonical" returntype="boolean">
+            <Parameters>
+               <PSExtensionMethodParam description="The source that may contain canonical link" name="souce" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="gets list of template names" name="templateNames" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="String of comma separated template ids" name="templateIds" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Gets the processed list of pages that have set supplied calendar." name="getPagesForCalendar" returntype="net.sf.json.JSONArray">
+            <Parameters>
+               <PSExtensionMethodParam description="The name of the calendar" name="calendarName" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Verify if the entered date format is correct or not for the SimpleDateFormat. If not system returns the defulat error format" name="parseDateFormat" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="Date Format entered by user" name="format" type="java.lang.String"/>
+               <PSExtensionMethodParam description="System Default format" name="defaultFormat" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Strip javascript" name="stripJavascripts" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The source that may contain javascript" name="souce" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Gets the processed list of tags." name="getProcessedTags" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="String of comma separated tags" name="tags" type="java.util.List"/>
+               <PSExtensionMethodParam description="either alpha and count, defaults to alpha and any value other than count is treated as alpha" name="sortOption" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a Link to a theme CSS file" name="themeLink" returntype="com.percussion.pagemanagement.data.PSRenderLink">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="theme name" name="theme" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a list of css links" name="cssLinks" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="the parent (page/template) assembly item" name="item" type="com.percussion.services.assembly.IPSAssemblyItem"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders the item path for the given link id" name="renderManagedItemPath" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="The id of the link that needs to be updated." name="linkId" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a Link to a folder" name="folderLink" returntype="com.percussion.pagemanagement.data.PSRenderLink">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="the fully qualified resourceDefinitionId" name="resourceDefinitionId" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Strip canonical link" name="stripLinkCanonical" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The source that may contain canonical link" name="souce" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Tries to generate an IPSGuid object from different object types" name="parseGuid" returntype="com.percussion.utils.guid.IPSGuid">
+            <Parameters>
+               <PSExtensionMethodParam description="The id to convert to a guid" name="id" type="java.lang.Object"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a Link of a landing page for the given navigation node." name="navLink" returntype="com.percussion.pagemanagement.data.PSRenderLink">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="A navigation node." name="navNode" type="javax.jcr.Node"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a relative path to the registration page" name="getSiteRegistrationPage" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The name of the site to load the registration page property" name="sitename" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a Link to the region's CSS file of a theme" name="themeRegionCssLink" returntype="com.percussion.pagemanagement.data.PSRenderLink">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="theme name" name="theme" type="java.lang.String"/>
+               <PSExtensionMethodParam description="is edit mode" name="isEdit" type="java.lang.Boolean"/>
+               <PSExtensionMethodParam description="edit type" name="editType" type="com.percussion.pagemanagement.assembler.PSAbstractAssemblyContext$EditType"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Find a list of WidgetInstances for an assemblyItem, will filter by regionName and/or widgetName if not null " name="findWidgetInstances" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="the PSAbstractMergedRegionTree to find from" name="regionTree" type="com.percussion.pagemanagement.assembler.PSAbstractMergedRegionTree"/>
+               <PSExtensionMethodParam description="The name of the region to filter by" name="regionName" type="java.lang.String"/>
+               <PSExtensionMethodParam description="The name of the widget to filter by" name="widgetName" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Get item's category json string value and preapre the information in a map and return." name="getCategoryDropDownValues" returntype="java.util.Map">
+            <Parameters>
+               <PSExtensionMethodParam description="the category drop down value that is to be displayed" name="fieldValue" type="java.lang.String"/>
+               <PSExtensionMethodParam description="the name of the category drop down field" name="fieldName" type="java.lang.String"/>
+               <PSExtensionMethodParam description="the name of the site" name="siteName" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a Link to a file" name="fileLink" returntype="com.percussion.pagemanagement.data.PSRenderLink">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="the fully qualified resourceDefinitionId" name="resourceDefinitionId" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Renders a relative path to the login page" name="getSiteLoginPage" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The name of the site to load the login page property" name="sitename" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Updates the managed links in the given source" name="updateManagedLinksInJSON" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="The link context. Use $perc.linkContext" name="linkContext" type="com.percussion.pagemanagement.data.PSRenderLinkContext"/>
+               <PSExtensionMethodParam description="The source JSON in which the managed links needs to be updated." name="source" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Returns region information about a page." name="getRegionTree" returntype="com.percussion.pagemanagement.assembler.PSAbstractMergedRegionTree">
+            <Parameters>
+               <PSExtensionMethodParam description="the parent (page/template) assembly item" name="item" type="com.percussion.services.assembly.IPSAssemblyItem"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Returns a license status object for the running server. May return null if the server is unlicenced." name="licenseStatus" returntype="com.percussion.licensemanagement.data.PSLicenseStatus">
+            <Parameters/>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Returns the detailed version string for the product." name="productVersionDetail" returntype="java.lang.String">
+            <Parameters/>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="parseHtmlFragment can be used to parse a fragment of HTML and return an Element that can be manipulated" name="parseHtmlFragment" returntype="org.jsoup.nodes.Element">
+            <Parameters>
+               <PSExtensionMethodParam description="An HTML fragment to parse." name="htmlFragment" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Get the Root Assembly Item,  e.g. the page being rendered" name="getRootAssemblyItem" returntype="com.percussion.services.assembly.IPSAssemblyItem">
+            <Parameters>
+               <PSExtensionMethodParam description="The current assemblyItem usually $sys.assemblyItem" name="asmItem" type="com.percussion.services.assembly.IPSAssemblyItem"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Gets the items of a widget that are relate to the specified page and/or template." name="widgetContents" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="the parent (page/template) assembly item" name="item" type="com.percussion.services.assembly.IPSAssemblyItem"/>
+               <PSExtensionMethodParam description="the widget or the widget ID" name="widget" type="java.lang.Object"/>
+               <PSExtensionMethodParam description="the fully qualified name of the content finder" name="finder" type="java.lang.String"/>
+               <PSExtensionMethodParam description="extra parameters to the process" name="params" type="java.util.Map"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Gets the tooltip of the specified widget." name="getWidgetTooltip" returntype="java.lang.String">
+            <Parameters>
+               <PSExtensionMethodParam description="the assembly (page/template) context" name="context" type="com.percussion.pagemanagement.assembler.PSAbstractAssemblyContext"/>
+               <PSExtensionMethodParam description="the widget instance" name="widget" type="com.percussion.pagemanagement.assembler.PSWidgetInstance"/>
+               <PSExtensionMethodParam description="the default tooltip" name="defaultTooltip" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Get a list of child categories from a root path, or top level categories if not specified" name="getCategoryNodes" returntype="java.util.List">
+            <Parameters>
+               <PSExtensionMethodParam description="Tne sitename of all sites if null or empty" name="siteName" type="java.lang.String"/>
+               <PSExtensionMethodParam description="The root path, can find by title or guid,  if relative path first match will be returned" name="rootPath" type="java.lang.String"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Validates that the path / url passed in resolves to a resource that has a 20X http status code." name="isLinkGood" returntype="boolean">
+            <Parameters>
+               <PSExtensionMethodParam description="Link (relative or absoulte to be checked." name="link" type="java.lang.String"/>
+               <PSExtensionMethodParam description="Publishing context name" name="context" type="java.lang.String"/>
+               <PSExtensionMethodParam description="Set to true to not cache this link. false to use caching.  By default all links are cached for 30 minutes." name="dontCache" type="boolean"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Get the page metadata map that a widget can add to." name="getMetadataMap" returntype="java.util.Map">
+            <Parameters>
+               <PSExtensionMethodParam description="The current assemblyItem usually $sys.assemblyItem" name="asmItem" type="java.lang.Object"/>
+            </Parameters>
+         </PSExtensionMethod>
+      </Methods>
+   </Extension>
+</Extensions>

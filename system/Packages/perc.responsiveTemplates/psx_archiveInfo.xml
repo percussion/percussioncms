@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveInfo archiveRef="perc.responsiveTemplates" category="USER" created="1382476154870" editable="true" serverName="dev-jb:9992" userName="Admin">
+   <PSXFormatVersion buildId="23" buildNumber="20131001" displayVersion="3.3.3" interfaceVersion="9" majorVersion="3" microVersion="3" minorVersion="3" optionalId="" versionString="INTERNAL"/>
+   <PSXDbmsInfo>
+      <datasource>RhythmyxData</datasource>
+      <driver>derby</driver>
+      <server>//localhost:1527/CMDB</server>
+      <database/>
+      <origin>CMDB</origin>
+      <userid>CMDB</userid>
+      <password>3tFdfowYl6ha8Mkis387Rw==</password>
+   </PSXDbmsInfo>
+   <PSXArchiveDetail>
+      <PSXExportDescriptor archiveType="normal">
+         <PSXDescriptor id="-2111214654934997232" name="perc.responsiveTemplates">
+            <Description/>
+            <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
+            <CmsVersion max="8.0.0" min="3.2.4"/>
+            <Version>1.1.1</Version>
+            <ImplConfigFile/>
+            <LocalConfigFile/>
+            <PKGDependencies/>
+         </PSXDescriptor>
+         <Packages>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="597" dependencyType="Shared" displayName="perc.resp.Banded" isAssociation="yes" isIncluded="yes" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                  <Dependencies>
+                     <PSXDeployableObject>
+                        <PSXDependency autoDep="no" autoExpand="yes" dependencyId="597" dependencyType="Local" displayName="perc.resp.Banded" isAssociation="no" isIncluded="yes" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <Dependencies>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="9205446771801587953" dependencyType="Local" displayName="temp" isAssociation="no" isIncluded="yes" objectType="AclDef" objectTypeName="Acl Definition" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                    <Dependencies>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1003" dependencyType="Shared" displayName="Corporate_Investments" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1003" dependencyType="Local" displayName="Corporate_Investments" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1004" dependencyType="Shared" displayName="Corporate_Investments_Admin" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1004" dependencyType="Local" displayName="Corporate_Investments_Admin" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="10" dependencyType="Shared" displayName="Default" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="10" dependencyType="Local" displayName="Default" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1002" dependencyType="Shared" displayName="Enterprise_Investments" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1002" dependencyType="Local" displayName="Enterprise_Investments" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1001" dependencyType="Shared" displayName="Enterprise_Investments_Admin" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1001" dependencyType="Local" displayName="Enterprise_Investments_Admin" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                    </Dependencies>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                           </Dependencies>
+                        </PSXDependency>
+                        <RequiredClasses/>
+                     </PSXDeployableObject>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="599" dependencyType="Shared" displayName="perc.resp.Basic" isAssociation="yes" isIncluded="yes" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                  <Dependencies>
+                     <PSXDeployableObject>
+                        <PSXDependency autoDep="no" autoExpand="yes" dependencyId="599" dependencyType="Local" displayName="perc.resp.Basic" isAssociation="no" isIncluded="yes" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <Dependencies>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="9205446771801587954" dependencyType="Local" displayName="temp" isAssociation="no" isIncluded="yes" objectType="AclDef" objectTypeName="Acl Definition" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                    <Dependencies>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1003" dependencyType="Shared" displayName="Corporate_Investments" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1003" dependencyType="Local" displayName="Corporate_Investments" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1004" dependencyType="Shared" displayName="Corporate_Investments_Admin" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1004" dependencyType="Local" displayName="Corporate_Investments_Admin" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="10" dependencyType="Shared" displayName="Default" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="10" dependencyType="Local" displayName="Default" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1002" dependencyType="Shared" displayName="Enterprise_Investments" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1002" dependencyType="Local" displayName="Enterprise_Investments" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1001" dependencyType="Shared" displayName="Enterprise_Investments_Admin" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1001" dependencyType="Local" displayName="Enterprise_Investments_Admin" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                    </Dependencies>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                           </Dependencies>
+                        </PSXDependency>
+                        <RequiredClasses/>
+                     </PSXDeployableObject>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="627" dependencyType="Shared" displayName="perc.resp.plain" isAssociation="yes" isIncluded="yes" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                  <Dependencies>
+                     <PSXDeployableObject>
+                        <PSXDependency autoDep="no" autoExpand="yes" dependencyId="627" dependencyType="Local" displayName="perc.resp.plain" isAssociation="no" isIncluded="yes" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <Dependencies>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="4472257021923557487" dependencyType="Local" displayName="temp" isAssociation="no" isIncluded="yes" objectType="AclDef" objectTypeName="Acl Definition" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                    <Dependencies/>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                           </Dependencies>
+                        </PSXDependency>
+                        <RequiredClasses/>
+                     </PSXDeployableObject>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_UserDependency" dependencyType="Shared" displayName="User Dependency" isAssociation="yes" isIncluded="yes" objectType="Custom" objectTypeName="Custom" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes">
+                  <Dependencies>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/foundation/css/foundation.min.css">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/foundation/css/foundation.min.css" dependencyType="User" displayName="foundation.min.css" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/foundation/js/foundation.min.js">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/foundation/js/foundation.min.js" dependencyType="User" displayName="foundation.min.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/foundation/css/normalize.css">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/foundation/css/normalize.css" dependencyType="User" displayName="normalize.css" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/images/TemplateImages/AnySite/perc.resp.Banded_Thumb.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/images/TemplateImages/AnySite/perc.resp.Banded_Thumb.png" dependencyType="User" displayName="perc.resp.Banded_Thumb.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/images/TemplateImages/AnySite/perc.resp.Basic_Thumb.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/images/TemplateImages/AnySite/perc.resp.Basic_Thumb.png" dependencyType="User" displayName="perc.resp.Basic_Thumb.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/images/TemplateImages/AnySite/perc.resp.plain_Thumb.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/images/TemplateImages/AnySite/perc.resp.plain_Thumb.png" dependencyType="User" displayName="perc.resp.plain_Thumb.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+         </Packages>
+         <ModifiedPackages/>
+         <MissingPackages/>
+      </PSXExportDescriptor>
+      <DbmsInfoMap>
+         <DbmsInfoMapping PkgKey="sys_Templates-599"/>
+         <DbmsInfoMapping PkgKey="sys_Templates-627"/>
+         <DbmsInfoMapping PkgKey="sys_Templates-597"/>
+         <DbmsInfoMapping PkgKey="Custom-sys_UserDependency"/>
+      </DbmsInfoMap>
+   </PSXArchiveDetail>
+</PSXArchiveInfo>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+ <WidgetPrefs title="Tags"
+              contenttype_name="percTagList"
+              category="blog,search"
+              description=" Displays a list of tags"
+              author="Percussion Software Inc"
+              thumbnail="/rx_resources/widgets/tagList/images/widgetIconLinkTagList.png"
+              preferred_editor_width="800"
+              preferred_editor_height="685"
+              is_responsive="true"/>
+ <Resource href="/perc-common-ui/js/perc_common_ui.js"
+           type="javascript"
+           placement="head" />
+ <UserPref name="tag_render_option"
+           display_name="Display format"
+           required="true"
+           default_value="list"
+           datatype="enum">
+  <EnumValue value="list" display_value="List" />
+  <EnumValue value="commaSeparated" display_value="Comma separated (wrap text)" />
+ </UserPref>
+ <UserPref name="tag_sort_option"
+           display_name="Sort method"
+           required="true"
+           default_value="alpha"
+           datatype="enum">
+  <EnumValue value="alpha" display_value="Alphabetic" />
+  <EnumValue value="count" display_value="Count of tags" />
+ </UserPref>
+ <CssPref name="rootclass"
+          display_name="CSS root class"
+          datatype="string" />
+ <CssPref name="summaryclass"
+          display_name="CSS page summary class"
+          datatype="string" />
+ <Code type="jexl">
+  <![CDATA[
+   $linkContext = $perc.linkContext;
+   $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+   $perc.setWidgetContents($assetItems);
+   $isEditMode = $perc.isEditMode() || $perc.isPreviewMode();
+   $tagRenderOption = $perc.widget.item.properties.get('tag_render_option');
+   $tagSortOption = $perc.widget.item.properties.get('tag_sort_option');
+   $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+   if (!empty($rootclass)) {
+      $rootclass = $rootclass + " ";
+   }
+   if ( ! $assetItems.isEmpty() ) {
+        $assetItem = $assetItems.get(0);
+        $params = $rx.string.stringToMap(null);
+        $params.put('query', ($assetItem.getNode().getProperty('query').String));
+		$finderName="Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
+        $relresults=  $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+        $processedTags = $rx.pageutils.getProcessedTags($relresults,$tagSortOption);
+        $title = $rx.pageutils.html($assetItem, 'displaytitle');
+		$rowtag = $tools.alternator.auto('perc-list-odd', 'perc-list-even');
+        ##Tag list query starts
+        ##Gets the individual field values
+        $titleContains = $assetItem.getNode().getProperty('title_contains').String;
+        $starDate = $assetItem.getNode().getProperty('start_date').String;
+        $endDate = $assetItem.getNode().getProperty('end_date').String;
+        $sitePath = $assetItem.getNode().getProperty('site_path').String;
+        $templatesList = $assetItem.getNode().getProperty('page_templates_list').String;
+		$tagPageResult = $assetItem.getNode().getProperty('tag_page_result').String;
+        ##Builds the criteria
+        $criteria = "[";
+        $criteria = $criteria + "&quot;type = 'page'&quot;";
+        $criteriaSep = ", ";
+        if ($titleContains != null && $titleContains != "")
+        {
+             $criteria = $criteria + $criteriaSep + "&quot;dcterms:title LIKE '%" + $titleContains +"%'&quot;";
+        }
+        if ($starDate != null && $starDate != ""){
+             $sd = $tools.date.toDate("MM/dd/yyyy",$starDate);
+             $criteria = $criteria +  $criteriaSep + "&quot;dcterms:created >= '" + $tools.date.format("yyyy-MM-dd'T'HH:mm:ss", $sd) + "'&quot;";
+        }
+        if ($endDate != null && $endDate != ""){
+             $ed = $tools.date.toDate("MM/dd/yyyy",$endDate);
+             $criteria = $criteria +  $criteriaSep +  "&quot;dcterms:created < '" + $tools.date.format("yyyy-MM-dd'T'HH:mm:ss", $ed) + "'&quot;";
+        }
+        if ($sitePath != null && $sitePath != "" && $sitePath != "//Sites")
+        {
+            $temppath = $sitePath.replace("//Sites/", "");
+            if($temppath.indexOf("/") > 0)
+            {
+                $temppaths = $temppath.split("/");
+                $criteria = $criteria  +  $criteriaSep +  "&quot;site = '" + $temppaths[0] + "'&quot;";
+                $folderpath = "";
+                $counter = 1;
+                while($counter < $temppaths.size())
+                {
+                    $folderpath = $folderpath + "/" + $temppaths[$counter];
+                    $counter = $counter + 1;
+                }
+                $criteria = $criteria  +  $criteriaSep +  "&quot;folder LIKE '" + $folderpath + "/%'&quot;";
+            }
+            else
+            {
+                $criteria = $criteria  +  $criteriaSep +  "&quot;site = '" + $temppath + "'&quot;";
+            }
+        }
+        if($templatesList != null && $templatesList != "")
+        {
+            $templateNameList = $rx.pageutils.templateNames($templatesList);
+            if($templateNameList.size() == 1)
+            {
+                $criteria = $criteria  +  $criteriaSep +  "&quot;dcterms:source = '" + $templateNameList.get(0).toString() + "'&quot;";
+            }
+            else if($templateNameList.size() > 1)
+            {
+                $inCl = "(";
+                $counter = 0;
+                $templNameArray = $templateNameList.toArray();
+
+                while($counter < $templNameArray.size())
+                {
+                    $inCl = $inCl + "'" + $templNameArray[$counter] + "'";
+                    if($counter != $templNameArray.size()-1)
+                        $inCl = $inCl + ", ";
+                    $counter = $counter + 1;
+                }
+                $inCl = $inCl + ")";
+                $criteria = $criteria  +  $criteriaSep +  "&quot;dcterms:source IN " + $inCl + "&quot;";
+            }
+        }
+
+        $criteria = $criteria + "]";
+
+        ##Build the query string for the delivery side tag list
+		##builds the order by clause
+
+        $dynamicListData = "{" + "&quot;criteria&quot;:" + $criteria;
+
+        $dynamicListData = $dynamicListData + ", &quot;tag_render_option&quot;:&quot;" +$tagRenderOption + "&quot;";
+
+		if(!empty($orderby))
+        {
+            $dynamicListData = $dynamicListData + ", &quot;orderBy&quot;:&quot;" + $tagSortOption + "&quot;";
+        }
+
+		$dynamicListData = $dynamicListData + ", &quot;tag_page_result&quot;:&quot;" +$tagPageResult + "&quot;";
+		$dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+
+        $dynamicListData = $dynamicListData + ", &quot;deliveryurl&quot;:&quot;" + $dsUrl + "&quot;";
+        $dynamicListData = $dynamicListData + ", &quot;isEditMode&quot;:&quot;" + $isEditMode + "&quot;";
+        $dynamicListData = $dynamicListData + "}";
+        ##Tag list query ends
+   }
+   else {
+      ;
+   }
+    ]]>
+ </Code>
+ <Content type="velocity">
+  <![CDATA[
+<div class="$!{rootclass} perc-tag-list" data-query="$!{dynamicListData}">
+##This is a hidden div that holds the structure of the list when the tag list output structure changes this hidden div and delivery side view
+##should be modified to match the new structure.
+<div style="display:none" class="perc-tag-list-structure">
+#if($rendering == "ordered")##
+<ol class="perc-list-main">##
+#else##
+<ul class="perc-list-main">##
+#end##
+<li class="perc-list-element">
+<a href="#"></a>
+</li>
+#if($rendering == "ordered")##
+</ol>##
+#else##
+</ul>##
+#end##
+</div>
+#if( ! $perc.widgetContents.isEmpty() )##
+#if ($title && $title.length() > 0)##
+<div class="perc-tag-title">$title</div>
+#end##
+#if($processedTags && $processedTags.size() > 0)##
+#if($rendering == "ordered")##
+<ol class="perc-list-main">##
+#else##
+#end##
+#if($tagRenderOption == "list")##
+<ul class="perc-list-main-container">##
+#foreach ($tag in $processedTags)##
+<li class="perc-tag-element $rowtag  perc-list-element">
+<a href="#">$tag.getFirst() ($tag.getSecond())</a>
+</li>
+#end##
+</ul>
+#else##
+<ul class="perc-comma-separated-main-container">##
+<li class="perc-comma-separated perc-tag-element $rowtag perc-list-element">
+#set($flag = false)##
+#set($separator = ",")##
+#foreach ($tag in $processedTags)##
+#if ($velocityCount == $processedTags.size())##
+#set($separator = "")##
+#end##
+#if($flag == false)##
+<a href="#">$tag.getFirst() ($tag.getSecond())$separator</a>
+#set($flag = true)##
+#else##
+<a href="#">$tag.getFirst() ($tag.getSecond())$separator</a>
+#end##
+#end##
+</li>
+</ul>
+#end##
+#if($rendering == "ordered")##
+</ol>##
+#else##
+</ul>##
+#end##
+#end##
+#elseif ($perc.isEditMode())##
+#createEmptyWidgetContent("taglist-sample-content", "This tag list widget is showing sample content.")##
+#end##
+</div>
+]]>
+ </Content>
+</Widget>

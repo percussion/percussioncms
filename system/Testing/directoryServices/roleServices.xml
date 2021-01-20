@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXServerConfiguration id="1">
+   <RoleServices>
+      <PSXRoleProvider name="Sun ONE - test/deep" type="directory">
+         <PSXReference name="Sun ONE - test/deep" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+      <PSXRoleProvider name="Sun ONE - test/multiple" type="directory">
+         <PSXReference name="Sun ONE - test/multiple" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+      <PSXRoleProvider name="Sun ONE - test/passwordfilter" type="directory">
+         <PSXReference name="Sun ONE - test/passwordfilter" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+      <PSXRoleProvider name="Sun ONE - test/backend" type="directory">
+         <PSXReference name="Sun ONE - test/backend" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+      <PSXRoleProvider name="Sun ONE - test/backendroleprovider" type="backend">
+         <PSXReference name="Sun ONE - test/shallow" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+      <PSXRoleProvider name="Sun ONE - test/shallow" type="both">
+         <PSXReference name="Sun ONE - test/shallow" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+      <PSXRoleProvider name="Sun ONE - test/performance" type="directory">
+         <PSXReference name="Sun ONE - test/performance" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+      <PSXRoleProvider name="Sun ONE - ui/bottomup/reference" type="directory">
+         <PSXReference name="Sun ONE - ui/bottomup/reference" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+      <PSXRoleProvider name="Sun ONE - ui/topdown/reference" type="both">
+         <PSXReference name="Sun ONE - ui/topdown/reference" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+   </RoleServices>
+</PSXServerConfiguration>

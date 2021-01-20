@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="WidgetContentFinder" context="global/percussion/widgetcontentfinder/" deprecated="no" handler="Java" name="perc_AutoWidgetContentFinder" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">The auto widget content finder allows a widget to be filled with items returned by a query</initParam>
+      <initParam name="com.percussion.extension.version">43</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.pagemanagement.assembler.impl.finder.PSAutoWidgetContentFinder</initParam>
+      <interface name="com.percussion.pagemanagement.assembler.IPSWidgetContentFinder"/>
+      <PSXExtensionParamDef id="0">
+         <name>query</name>
+         <dataType>java.lang.String</dataType>
+         <description>The JSR-170 query to be performed.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>max_results</name>
+         <dataType>java.lang.String</dataType>
+         <description>The maximum number of items to return for the widget, defaults to unlimited.</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

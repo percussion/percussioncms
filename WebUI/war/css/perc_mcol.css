@@ -1,0 +1,108 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/*
+  CSS Styles for Miller Column Widget
+
+  Layout for Miller Column:
+
+  +---------------------------------------------------------------+
+  | +-----------------+  +-----------------+          	          |
+  | |  [*] Item {2}   |  |                 |          	          |
+  | |                 |  |                 |          	          |
+  | |  ...            |  |       {1}       |          	{3}       |
+  | |                 |  |                 |          	          |
+  | |  ...            |  |                 |          	          |
+  | |                 |  |                 |          	          |
+  | |                 |  |                 |          	          |
+  | +-----------------+  +-----------------+          	          |
+  +---------------------------------------------------------------+
+
+  HTML Layout and classes:
+  top-level: <div class="mcol"/>
+  {1} A single directory: <td class="mcol-direc"> <div class="mcol-direc-wrapper" /> </td>
+  {2} A single item: <div class="mcol-listing mcol-clickable" /> if open, <div class="mcol-listing mcol-opened mcol-clickable" />
+  {3} The table which contains the individual directories. <table><tr><td class="mcol_direc" /> ... </tr></table>
+*/
+
+
+
+
+
+.perc_finder { overflow: hidden; width: 100%; position:relative; }
+.mcol { width: 100%; height: 100%; }
+.mcol table { border-collapse: collapse; }
+
+/* The end spacer allows the column to have empty space at the end. */
+.mcol-end-spacer div { width: 100px; }
+
+.mcol-direc {
+    overflow: hidden;
+}
+/* {1} */
+.mcol-direc-wrapper {
+    width: 190px;
+    vertical-align: top;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
+/* {2} */
+.mcol-listing { 
+  white-space: nowrap;
+  display: block; 
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 1px;
+  margin-right: 1px; 
+
+  -font-family: Verdana;
+  -color: #ffffff;
+  -color: yellow;
+  -font-weight: bold;
+  -font-size: 11px;
+
+}
+
+.mcol-opened { 
+  background-color: none; 
+
+  -color: #777777;
+  -color: yellow;
+
+  -font-family: Verdana; 
+  -font-size:11px;
+}
+.mcol-clickable { cursor: pointer; }
+
+/* Style to highlight elements as they are being dragged */
+.ui-draggable-dragging .mcol-clickable { background-color: none; font-size: 11px; color: #777777; font-family: Verdana; }
+
+.perc-finder-item-over{   
+   background-color: #caf589 !important;
+}

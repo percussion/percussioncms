@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<CM1DataDef xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="c:\dev\cmlite\dev\projects\sitemanage\src\test\java\com\percussion\content\CM1DataDef.xsd">
+    <SiteDefs>
+        <SiteDef name="Mysite6">
+            <HomePageTitle>Home page title</HomePageTitle>
+            <NavTitle>Nav title</NavTitle>
+            <TemplateDef name="site6Template1" baseTemplateName="perc.base.Box">
+                <!-- No child elements are currently supported for a template defined here -->
+            </TemplateDef>
+        </SiteDef>
+        <!--SiteDef name="Mysite7">
+            <HomePageTitle>Home page title</HomePageTitle>
+            <NavTitle>Nav title</NavTitle>
+            <TemplateDef name="site7Template1" baseTemplateName="perc.base.Box">
+                <BodyMarkup/>
+                <CssOverride/>
+                <AdditionalHeadContent/>
+                <AfterBodyStart/>
+                <BeforeBodyClose/>
+            </TemplateDef>
+        </SiteDef-->
+    </SiteDefs>
+    <TemplateDefs>
+        <TemplateDef name="sampleTpl" label="sampleTplLabel" baseTemplateName="perc.base.Box" siteName="Mysite6">
+            <BodyMarkup>Body Markup</BodyMarkup>
+            <CssOverride>css Override</CssOverride>
+            <AdditionalHeadContent>head</AdditionalHeadContent>
+            <AfterBodyStart>after</AfterBodyStart>
+            <BeforeBodyClose>before</BeforeBodyClose>
+            <Widget widgetName="percFlash" regionName="leftsidebar" sourceAssetName="/dodad/flashAsset"/>
+        </TemplateDef>
+        <!--TemplateDef name="sampleTpl2" label="sampleTpl2Label" baseTemplateName="perc.base.Box" siteName="Mysite7">
+            <BodyMarkup>Body Markup</BodyMarkup>
+            <CssOverride>css Override</CssOverride>
+            <AdditionalHeadContent>head</AdditionalHeadContent>
+            <AfterBodyStart>after</AfterBodyStart>
+            <BeforeBodyClose>before</BeforeBodyClose>
+        </TemplateDef-->
+    </TemplateDefs>
+    <SectionDefs parentPath="/Mysite6">
+        <SectionDef templateName="sampleTpl" name="Section One Title"/>
+    </SectionDefs>
+    <AssetFolder path="/whatsup"/>
+    <AssetFolder path="/dodad">
+        <AssetDef name="htmlAsset" contentType="percRawHtmlAsset">
+            <Field name="html">TestHTML</Field>
+        </AssetDef>
+<!-- -->
+        <AssetDef name="flashAsset" contentType="percFlashAsset">
+            <Field name="filename">tangramone.swf</Field>
+            <Field name="item_file_attachment" href="./tangramone.swf"/>
+            <Field name="item_file_attachment_filename">tangramone.swf</Field>
+            <Field name="item_file_attachment_ext">.swf</Field>
+            <Field name="item_file_attachment_type">application/x-shockwave-flash</Field>
+            <Field name="item_file_attachment_size">94661</Field>
+            <Field name="item_file_attachment_width">200</Field>
+            <Field name="item_file_attachment_height">100</Field>
+            <Field name="flashversion">10</Field>
+            <Field name="displaytitle">flash displaytitle</Field>
+        </AssetDef>
+
+        <AssetDef name="fileAsset" contentType="percFileAsset">
+            <Field name="item_file_attachment" href="./WP Technical Debt.pdf"/>
+            <Field name="item_file_attachment_filename">WP Technical Debt.pdf</Field>
+            <Field name="item_file_attachment_ext">pdf</Field>
+            <Field name="item_file_attachment_type">application/pdf</Field>
+            <Field name="item_file_attachment_size">98867</Field>
+            <Field name="displaytitle">file displaytitle</Field>
+        </AssetDef>
+    </AssetFolder>
+<!--  -->    
+    <AssetFolder path="/images">
+        <AssetDef name="testImage" contentType="percImageAsset" targetStateName="draft">
+            <Field name="img" href="./Homepage-Client-Logo-Box.jpg"/>
+            <Field name="img_filename">Homepage-Client-Logo-Box.jpg</Field>
+            <Field name="filename">Homepage-Client-Logo-Box.jpg</Field>
+            <Field name="img_ext">jpg</Field>
+            <Field name="img_type">image/jpg</Field>
+            <Field name="img_size">41359</Field>
+            <Field name="img_height">593</Field>
+            <Field name="img_width">185</Field>
+            <Field name="img2" href="./Homepage-Client-Logo-Box.jpg"/>
+            <Field name="img2_filename">Homepage-Client-Logo-Box.jpg</Field>
+            <Field name="img2_ext">jpg</Field>
+            <Field name="img2_type">image/jpg</Field>
+            <Field name="img2_size">41359</Field>
+            <Field name="img2_height">593</Field>
+            <Field name="img2_width">185</Field>
+            <!-- This field must be present to short-circuit the image processing extension.
+                The value is arbitrary, but must be unique among all similar ids on the system. -->
+            <Field name="img2_id">100</Field>
+            <Field name="resource_link_title">resource_link_title</Field>
+            <Field name="displaytitle">image displaytitle</Field>
+            <Field name="thumbprefix">th_</Field>
+        </AssetDef>
+    </AssetFolder>
+    <SiteFolder path="/Mysite6/samplepages">
+        <PageDef name="page1 defaults" templateName="sampleTpl"/>
+<!--  local content not supported yet 
+        <PageDef name="page with local asset" templateName="sampleTpl">
+            <Widget widgetName="percRawHtml" regionName="header" contentSource="local" >
+                <AssetDef name="htmlAsset" contentType="percRawHtmlAsset">
+                    <Field name="html">TestHTML in local content</Field>
+                </AssetDef>
+            </Widget>
+        </PageDef>
+-->
+        <PageDef name="page2" templateName="sampleTpl">
+            <LinkTitle>My page 2 link title</LinkTitle>
+            <PageTitle>My page 2 browser title</PageTitle>
+            <AdditionalHeadContent>head</AdditionalHeadContent>
+            <AfterBodyStart>after</AfterBodyStart>
+            <BeforeBodyClose>before</BeforeBodyClose>
+            <Widget widgetName="percRawHtml" regionName="header" sourceAssetName="/dodad/htmlAsset"/>
+            <Widget widgetName="percImage" regionName="rightsidebar" sourceAssetName="/images/testImage"/>
+            <Widget widgetName="percFlash" regionName="leftsidebar" sourceAssetName="/dodad/flashAsset"/>
+            <Widget widgetName="percFile" regionName="content" sourceAssetName="/dodad/fileAsset"/>
+        </PageDef>
+    </SiteFolder>
+    <SiteFolder path="/Mysite6/samplepages/empty"/>
+<!--
+    <AutoGen>
+        <Folders basePath="/Mysite6/generated" type="Sites" count="10" maxDepth="3" breadthFactor=".5"/>
+        <Folders basePath="/generated" type="Assets" count="0" maxDepth="3" breadthFactor=".5"/>
+        <Assets basePath="/generated" count="0" />
+        <Pages basePath="/Mysite6/generated" count="10" />
+    </AutoGen>
+-->
+</CM1DataDef>

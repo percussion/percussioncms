@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_buttonBluePlusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\buttonBluePlusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_buttonBluePlusOver-gif\buttonBluePlusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_widgetLinkCategoryListSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\widgetLinkCategoryListSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_widgetLinkCategoryListSampleBackground-png\widgetLinkCategoryListSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percCategoryList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Resources\percCategoryList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percCategoryList-xml\percCategoryList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_widgetIconLinkCategoryListOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\widgetIconLinkCategoryListOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_widgetIconLinkCategoryListOver-png\widgetIconLinkCategoryListOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_calendar-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\calendar.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_calendar-gif\calendar.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_buttonBlueMinus-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\buttonBlueMinus.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_buttonBlueMinus-gif\buttonBlueMinus.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_category_js_category-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\category\js\category.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_category_js_category-min-js\category.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsCategoryList.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\images\ContentTypeIcons\filetypeIconsCategoryList.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsCategoryList.png\filetypeIconsCategoryList.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_buttonBlueMinusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\buttonBlueMinusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_buttonBlueMinusOver-gif\buttonBlueMinusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_collapsable-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\collapsable.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_collapsable-gif\collapsable.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-353">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\percCategoryList.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-353\percCategoryList.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\percCategoryList.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-353\percCategoryList.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\percCategoryList.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-353\percCategoryList.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/categoryList/css/jquery.categoryList.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\jquery.categoryList.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\categoryList\css\jquery.categoryList.css\jquery.categoryList.css</ArchiveFile>
+         <OriginalFile>widgets\categoryList\css\jquery.categoryList.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_ButtonBrowse-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\ButtonBrowse.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_ButtonBrowse-png\ButtonBrowse.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_expandable-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\expandable.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_expandable-gif\expandable.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_buttonBluePlus-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\buttonBluePlus.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_buttonBluePlus-gif\buttonBluePlus.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_category_js_category-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\category\js\category.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_category_js_category-js\category.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/categoryListWidgetControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\categoryListWidgetControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\categoryListWidgetControl.xsl\categoryListWidgetControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\categoryListWidgetControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--7181341376548700097">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\percCategoryList.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--7181341376548700097\percCategoryList.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/categoryList/js/jquery.categoryList.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\jquery.categoryList.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\categoryList\js\jquery.categoryList.js\jquery.categoryList.js</ArchiveFile>
+         <OriginalFile>widgets\categoryList\js\jquery.categoryList.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/categoryList/js/categoryListWidget.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\categoryListWidget.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\categoryList\js\categoryListWidget.js\categoryListWidget.js</ArchiveFile>
+         <OriginalFile>widgets\categoryList\js\categoryListWidget.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_ButtonBrowseOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\ButtonBrowseOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_ButtonBrowseOver-png\ButtonBrowseOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_categoryList_images_widgetIconLinkCategoryList-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\categoryList\images\widgetIconLinkCategoryList.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_categoryList_images_widgetIconLinkCategoryList-png\widgetIconLinkCategoryList.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percCategoryList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Widgets\percCategoryList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percCategoryList-xml\percCategoryList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

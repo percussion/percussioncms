@@ -1,0 +1,1309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplication id="120" active="no" hidden="no" enabled="yes" version="2.0">
+	<name>sys_wfPreviewWorkflow</name>
+	<description/>
+	<requestRoot>sys_wfPreviewWorkflow</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/chanak_973610018484/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>OS:RammohanVangapalli</agent>
+			<description>Saved</description>
+			<time>20001122T130932125</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="35">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20020201T141255281</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>Anonymous</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="no" dataCreate="no" dataUpdate="no" dataDelete="no" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+	</PSXAcl>
+	<maxThreads>0</maxThreads>
+	<maxRequestTime>0</maxRequestTime>
+	<maxRequestsInQueue>0</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>0</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="1899">
+		<name>transitionslookup</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="2616">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="2612">
+				<PSXBackEndTable id="2611">
+					<alias>TRANSITIONS</alias>
+					<table>TRANSITIONS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="2614" returnEmptyXml="no">
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>transitionslookup/transition/@link</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_wfEditor/workflowtransitionedit.html</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>workflowid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>workflowid</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>stateid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>stateid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>transitionid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXBackEndColumn id="0">
+									<tableAlias>TRANSITIONS</tableAlias>
+									<column>TRANSITIONID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_componentname</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_componentname</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_isaging</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXBackEndColumn id="0">
+									<tableAlias>TRANSITIONS</tableAlias>
+									<column>TRANSITIONTYPE</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_pagename</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_pagename</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>transitionslookup/transition/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>transitionslookup/transition/@from</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONFROMSTATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>transitionslookup/transition/@to</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONTOSTATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>transitionslookup/transition/@trigger</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONACTIONTRIGGER</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>transitionslookup/transition/@label</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONLABEL</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>transitionslookup/transition/@type</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>transitionslookup/transition/description</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="2613" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>TRANSITIONS</tableAlias>
+									<column>WORKFLOWAPPID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>workflowid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>TRANSITIONS</tableAlias>
+									<column>TRANSITIONFROMSTATEID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>stateid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement>SELECT WORKFLOWAPPS.*, STATES.*, TRANSITIONS.* FROM WORKFLOWAPPS INNER JOIN ( STATES LEFT OUTER JOIN TRANSITIONS ON TRANSITIONS.TRANSITIONFROMSTATEID=STATES.STATEID AND TRANSITIONS.WORKFLOWAPPID=STATES.WORKFLOWAPPID ) ON WORKFLOWAPPS.WORKFLOWAPPID=STATES.WORKFLOWAPPID WHERE WORKFLOWAPPS.WORKFLOWAPPID= :"PSXParam/workflowid"</nativeStatement>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="1898">
+			<schemaSource>file:transitionslookup.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor id="0" directDataStream="no">
+			<requestPage>transitionslookup</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="1900">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="1904">
+		<name>Dataset684411</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="2624">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="2619">
+				<PSXBackEndTable id="2617">
+					<alias>WORKFLOWAPPS</alias>
+					<table>WORKFLOWAPPS</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="2618">
+					<alias>STATES</alias>
+					<table>STATES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndJoin id="0" joinType="inner">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>WORKFLOWAPPS</tableAlias>
+							<column>WORKFLOWAPPID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>STATES</tableAlias>
+							<column>WORKFLOWAPPID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="2622" returnEmptyXml="no">
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/description</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>WORKFLOWAPPS</tableAlias>
+						<column>WORKFLOWAPPDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>WORKFLOWAPPS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/@name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>WORKFLOWAPPS</tableAlias>
+						<column>WORKFLOWAPPNAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/@admin</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>WORKFLOWAPPS</tableAlias>
+						<column>ADMINISTRATOR</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/@initialstate</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>WORKFLOWAPPS</tableAlias>
+						<column>INITIALSTATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="2">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/states/state/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="2">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/states/state/@name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATENAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="2">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/states/state/description</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATEDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="2">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/states/state/@publishable</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>CONTENTVALID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="2">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/@link</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_wfEditor/workflowedit.html</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>workflowid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>workflowid</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_componentname</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_componentname</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_pagename</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_pagename</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="2">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/states/state/@link</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_wfEditor/workflowstateedit.html</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>workflowid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>workflowid</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>stateid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXBackEndColumn id="0">
+									<tableAlias>STATES</tableAlias>
+									<column>STATEID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_componentname</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_componentname</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_pagename</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_pagename</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="2">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/@linknewstate</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_wfEditor/workflowstateedit.html</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>workflowid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>workflowid</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_componentname</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_componentname</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_pagename</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_pagename</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="2">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/states/state/@linknewtransition</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_wfEditor/workflowtransitionedit.html</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>workflowid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>workflowid</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>stateid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXBackEndColumn id="0">
+									<tableAlias>STATES</tableAlias>
+									<column>STATEID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_componentname</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_componentname</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_isaging</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>0</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_pagename</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_pagename</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="2">
+					<PSXXmlField id="0">
+						<name>previewworkflow/workflow/states/state/@linknewagingtransition</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>../sys_wfEditor/workflowtransitionedit.html</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>workflowid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>workflowid</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>stateid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXBackEndColumn id="0">
+									<tableAlias>STATES</tableAlias>
+									<column>STATEID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_componentname</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_componentname</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_isaging</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>1</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_pagename</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>sys_pagename</name>
+								</PSXHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="2620" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>WORKFLOWAPPS</tableAlias>
+									<column>WORKFLOWAPPID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXHtmlParameter id="0">
+									<name>workflowid</name>
+								</PSXHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting>
+					<PSXSortedColumn id="0" isAscending="yes">
+						<PSXBackEndColumn id="0">
+							<tableAlias>STATES</tableAlias>
+							<column>SORTORDER</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</PSXSortedColumn>
+					<PSXSortedColumn id="0" isAscending="yes">
+						<PSXBackEndColumn id="0">
+							<tableAlias>STATES</tableAlias>
+							<column>STATEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</PSXSortedColumn>
+				</Sorting>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<InputDataExits>
+				<PSXExtensionCallSet id="1901">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/communities/sys_commAuthenticateUser</name>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</InputDataExits>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="1902">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/workflow/sys_wfPreviewWorkflow</name>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="1903">
+			<schemaSource>file:previewworkflow.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor id="0" directDataStream="no">
+			<requestPage>previewworkflow</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="1905">
+				<styleSheet>file:previewworkflow.xsl</styleSheet>
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+		<PSXResultPager id="2621">
+			<maxRowsPerPage>-1</maxRowsPerPage>
+			<maxPages>-1</maxPages>
+		</PSXResultPager>
+	</PSXDataSet>
+	<PSXLogger id="0" logErrors="no" logServerStartStop="no" logAppStartStop="no" logAppStatistics="no" logExecutionPlan="no" logBasicUserActivity="no" logDetailedUserActivity="no" logFullUserActivity="no" logMultipleHandlers="no"/>
+	<PSXTraceInfo id="0" traceEnabled="no" traceOutputColumnWidth="80" traceTimestampOnlyEnabled="no" traceBasicRequestInfo="yes" traceInitHttpVar="no" traceFileInfo="no" traceAppHandlerProc="yes" traceAppSecurity="yes" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceMapper="no" traceSessionInfo="no" traceDbPool="no" traceExitProc="no" traceExitExec="no" tracePostExitXml="no" tracePostExitCgi="no" traceOutputConv="no" traceResultSet="no" traceConditionalEval="no"/>
+	<PSXErrorWebPages id="1896" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="1897">
+		<providerType>SMTP</providerType>
+		<server>JB</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="pageDatatankSrcType1903">2</userProperty>
+	<userProperty name="locationY1902">22</userProperty>
+	<userProperty name="locationY1901">22</userProperty>
+	<userProperty name="locationY1900">34</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="pageDatatankFilePath1898">C:\\transitionslookup.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly1898">true</userProperty>
+	<userProperty name="locationX1905">177</userProperty>
+	<userProperty name="locationX1904">19</userProperty>
+	<userProperty name="locationY1899">25</userProperty>
+	<userProperty name="locationX1902">69</userProperty>
+	<userProperty name="pageDatatankSrcType1898">2</userProperty>
+	<userProperty name="locationY1897">100</userProperty>
+	<userProperty name="locationX1901">10</userProperty>
+	<userProperty name="locationY1896">55</userProperty>
+	<userProperty name="locationX1900">444</userProperty>
+	<userProperty name="locationY1895">10</userProperty>
+	<userProperty name="locationX1899">280</userProperty>
+	<userProperty name="locationX1897">16</userProperty>
+	<userProperty name="schemaSourceReadOnly1903">true</userProperty>
+	<userProperty name="pageDatatankFilePath1903">C:\Rhythmyx40\sys_wfPreviewWorkflow\previewworkflow.dtd</userProperty>
+	<userProperty name="locationX1896">16</userProperty>
+	<userProperty name="locationX1895">16</userProperty>
+	<userProperty name="resultPageFilePath1905">D:\Rhythmyx\test.xsl</userProperty>
+	<userProperty name="locationY1905">39</userProperty>
+	<userProperty name="locationY1904">29</userProperty>
+</PSXApplication>

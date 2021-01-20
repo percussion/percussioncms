@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXParam (#PCDATA)>
+<!ATTLIST  PSXParam description CDATA #REQUIRED>
+<!ATTLIST  PSXParam name CDATA #REQUIRED>
+<!ATTLIST  PSXParam paramid CDATA #REQUIRED>
+<!ELEMENT PSXParams (PSXParam+ )>
+<!ATTLIST  PSXParams paramsurl CDATA #REQUIRED>

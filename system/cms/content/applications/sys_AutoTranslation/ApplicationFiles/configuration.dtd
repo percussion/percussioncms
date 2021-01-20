@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT configuration (addconfigurl, componentname, pagename, relatedlinks, list* )>
+<!ELEMENT list (deleteconfigurl, editconfigurl, contenttypename, contenttypeid, localename, locale, contextname, context, communityname, communityid, workflowname, workflowid )>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT workflowname (#PCDATA)>
+<!ELEMENT communityid (#PCDATA)>
+<!ELEMENT communityname (#PCDATA)>
+<!ELEMENT context (#PCDATA)>
+<!ELEMENT contextname (#PCDATA)>
+<!ELEMENT locale (#PCDATA)>
+<!ELEMENT localename (#PCDATA)>
+<!ELEMENT contenttypeid (#PCDATA)>
+<!ELEMENT contenttypename (#PCDATA)>
+<!ELEMENT editconfigurl (#PCDATA)>
+<!ELEMENT deleteconfigurl (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT addconfigurl (#PCDATA)>

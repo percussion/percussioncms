@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+<wb-module deploy-name="Rhythmyx-Main">
+<wb-resource deploy-path="/" source-path="/agenthandler/src"/>
+<wb-resource deploy-path="/" source-path="/webservices/sample/loader/java/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/Converters/src"/>
+<wb-resource deploy-path="/" source-path="/webservices/test"/>
+<wb-resource deploy-path="/" source-path="/webservices/src"/>
+<wb-resource deploy-path="/" source-path="/webservices/generated"/>
+<wb-resource deploy-path="/" source-path="/controls/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/ephox/src"/>
+<wb-resource deploy-path="/" source-path="/Autotest/src"/>
+<wb-resource deploy-path="/" source-path="/FastForward/ManagedNav/Exits/Java/Src"/>
+<wb-resource deploy-path="/" source-path="/FastForward/SiteFolderPublishing/Exits/Java/Src"/>
+<wb-resource deploy-path="/" source-path="/FastForward/DefaultTemplate/Exits/Java/Src"/>
+<wb-resource deploy-path="/" source-path="/beans/src"/>
+<wb-resource deploy-path="/" source-path="/cms/dbpublisher/src"/>
+<wb-resource deploy-path="/" source-path="/cms/publisher/src"/>
+<wb-resource deploy-path="/" source-path="/cms/publisher/rxpubserver/webapps/admin/WEB-INF/classes"/>
+<wb-resource deploy-path="/" source-path="/ContentExplorer/src"/>
+<wb-resource deploy-path="/" source-path="/deploy/src"/>
+<wb-resource deploy-path="/" source-path="/Exits/Java/src"/>
+<wb-resource deploy-path="/" source-path="/htmlconverter/Src"/>
+<wb-resource deploy-path="/" source-path="/i18n/src"/>
+<wb-resource deploy-path="/" source-path="/integration/src"/>
+<wb-resource deploy-path="/" source-path="/loader/src"/>
+<wb-resource deploy-path="/" source-path="/misctools/src"/>
+<wb-resource deploy-path="/" source-path="/PSJniRegistry/src"/>
+<wb-resource deploy-path="/" source-path="/release/src"/>
+<wb-resource deploy-path="/" source-path="/rxfiletracker/src"/>
+<wb-resource deploy-path="/" source-path="/rxfiletracker/Exits/Java/src"/>
+<wb-resource deploy-path="/" source-path="/services/src"/>
+<wb-resource deploy-path="/" source-path="/utils/src"/>
+<wb-resource deploy-path="/" source-path="/servlet/src"/>
+<wb-resource deploy-path="/" source-path="/ServerUIComponents/src"/>
+<wb-resource deploy-path="/" source-path="/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/Ant/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/AutoBuild/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/Deployment/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/Help/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/HTMLparser/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/InlineLinkConverter/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/InstallerBot/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/InstallerBot/test"/>
+<wb-resource deploy-path="/" source-path="/Tools/JarSplitter/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/Poster/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/RxFix/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/Simple/src"/>
+<wb-resource deploy-path="/" source-path="/Tools/TableFactory/src"/>
+<wb-resource deploy-path="/" source-path="/uploader/src"/>
+<wb-resource deploy-path="/" source-path="/workflow/src"/>
+<wb-resource deploy-path="/" source-path="/Testing/Extensions/src"/>
+<wb-resource deploy-path="/" source-path="/Testing/src"/>
+<wb-resource deploy-path="/" source-path="/ear"/>
+<wb-resource deploy-path="/" source-path="/ear/jsps"/>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/java/myfaces-1.1.1/tomahawk.jar">
+<dependency-type>uses</dependency-type>
+</dependent-module>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/java/myfaces-1.1.1/myfaces-api.jar">
+<dependency-type>uses</dependency-type>
+</dependent-module>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/java/myfaces-1.1.1/myfaces-impl.jar">
+<dependency-type>uses</dependency-type>
+</dependent-module>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/java/myfaces-1.1.1/sandbox.jar">
+<dependency-type>uses</dependency-type>
+</dependent-module>
+</wb-module>
+</project-modules>

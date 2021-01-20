@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config >
+  <application>
+    <!-- Use the Trinidad RenderKit -->
+    <default-render-kit-id>
+      org.apache.myfaces.trinidad.core
+    </default-render-kit-id>
+  </application>      
+   <component>
+      <component-type>com.percussion.jsf.CascadeMenu</component-type>
+      <component-class>com.percussion.servlets.taglib.PSUICascadeMenu</component-class>
+   </component>
+   <component>
+      <component-type>com.percussion.jsf.MenuBar</component-type>
+      <component-class>com.percussion.servlets.taglib.PSUIMenuBar</component-class>
+   </component>
+   <component>
+      <component-type>com.percussion.jsf.MenuItem</component-type>
+      <component-class>com.percussion.servlets.taglib.PSUIMenuItem</component-class>
+   </component>   
+   <component>
+      <component-type>com.percussion.jsf.ProgressBar</component-type>
+      <component-class>com.percussion.servlets.taglib.PSUIProgressBar</component-class>
+   </component>   
+   <component>
+      <component-type>com.percussion.jsf.SpanId</component-type>
+      <component-class>com.percussion.servlets.taglib.PSUISpanId</component-class>
+   </component>
+
+   <!-- Validators -->   
+   <validator>
+      <validator-id>com.percussion.jsf.name</validator-id>
+      <validator-class>com.percussion.services.utils.jsf.validators.PSNameValidator</validator-class>
+   </validator>
+
+   <validator>
+      <validator-id>com.percussion.jsf.contentlist.url</validator-id>
+      <validator-class>com.percussion.services.publisher.ui.PSContentListUrlValidator</validator-class>
+   </validator>
+   
+   <!-- Converters -->
+   <converter>
+      <converter-for-class>java.lang.Enum</converter-for-class>
+      <converter-class>com.percussion.services.utils.jsf.PSEnumTypeConverter</converter-class>
+   </converter>
+</faces-config>
+

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Paul Howard (Percussion Software) -->
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/ui" xmlns:ui="urn:www.percussion.com/6.0.0/ui" xmlns:uis="urn:www.percussion.com/6.0.0/uiServices" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="../common.xsd"/>
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/uiServices" schemaLocation="uiServices.xsd"/>
+   <xsd:element name="LoadActionsRequest">
+      <xsd:annotation>
+         <xsd:documentation>Loads all menu actions for the supplied name in read-only mode.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the action to load, may be null or empty, asterisk wildcards are accepted. All actions are loaded if not supplied or empty.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadActionsResponse">
+      <xsd:annotation>
+         <xsd:documentation>The requested actions in read-only mode, ordered in alpha order by name.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="uis:PSAction" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded menu actions in read-only mode, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadDisplayFormatsRequest">
+      <xsd:annotation>
+         <xsd:documentation>Loads all display formats for the supplied name in read-only mode.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the display format to load, may be null or empty, asterisk wildcards are accepted. If not supplied or empty all display formats will be loaded.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadDisplayFormatsResponse">
+      <xsd:annotation>
+         <xsd:documentation>The requested display formats in read-only mode, ordered in alpha order by name.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="uis:PSDisplayFormat" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded display formats in read-only mode, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadSearchesRequest">
+      <xsd:annotation>
+         <xsd:documentation>Loads all searches for the supplied name in read-only mode.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the search to load, may be null or empty, asterisk wildcards are accepted. All searchs will be loaded if not supplied or empty.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadSearchesResponse">
+      <xsd:annotation>
+         <xsd:documentation>The requested searches in read-only mode, ordered in alpha order by name.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="uis:PSSearchDef" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded searches in read-only mode, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadViewsRequest">
+      <xsd:annotation>
+         <xsd:documentation>Loads all views for the supplied name in read-only mode.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the view to load, may be null or empty, asterisk wildcards are accepted. All views will be loaded if not supplied or empty.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadViewsResponse">
+      <xsd:annotation>
+         <xsd:documentation>The requested views in read-only mode, ordered in alpha order by name.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="uis:PSViewDef" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded view definitions in read-only 
+                     mode, never null, may be empty, ordered in alpha order 
+                     by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

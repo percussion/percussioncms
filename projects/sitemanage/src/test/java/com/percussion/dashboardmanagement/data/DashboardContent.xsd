@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Paul Howard (Percussion Software) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:element name="DashboardContent">
+        <xs:annotation>
+            <xs:documentation>Defines content that can be added into the Dashboard.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+            	<xs:element name="GadgetDef">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="UserPref" minOccurs="0" maxOccurs="unbounded">
+                            	<xs:complexType>
+                            		<xs:simpleContent>
+                            			<xs:extension base="xs:string">
+                            				<xs:attribute name="name" type="xs:string" use="required" />
+                            			</xs:extension>
+                            		</xs:simpleContent>
+                            	</xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="gadgetType" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The type of gadget. For example: perc_comments_gadget/perc_comments_gadget.xml, which represents a subpath relative to [CM1_ROOT]\AppServer\server\rx\deploy\cm.war\gadgets\repository. The value for this field consists in a subfolder ("perc_comments_gadget" in the example) and an XML file name. Note that if you provide only one value here, not a sub path like the example, the value is used internally as the subfolder and the XML file name.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="expanded" type="xs:boolean" use="optional" default="true">
+                            <xs:annotation>
+                                <xs:documentation>If the gadget is expanded or not. It's optional and defaults to true.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="column" type="xs:int" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The column where the gadget will be positioned.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <!-- xs:attribute name="row" type="xs:int" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>The row where the gadget will be positioned. It's optional, and if it's not provided, it defaults to the top row of the specified column.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute -->
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

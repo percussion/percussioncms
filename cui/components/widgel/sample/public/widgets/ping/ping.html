@@ -1,0 +1,6 @@
+<div class='widgel-ping'>
+    <div id='content' class='content center'>
+        Server says: <span class='result' data-bind='text: ping, visible: ready'/>
+    </div>
+    <pre data-bind='text: ko.toJSON($root, null, 2), visible: isDebug'/>
+</div>

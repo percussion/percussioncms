@@ -1,0 +1,175 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+package com.percussion.ant.install;
+
+
+import com.percussion.install.PSLogger;
+import org.apache.tools.ant.BuildException;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.SQLNonTransientConnectionException;
+import java.util.Properties;
+
+/***
+ * Provides an ant task to upgrade a derby database.  Expects to be able to start the derby database in
+ * embedded mode - single user
+ */
+public class PSUpgradeDerby extends PSAction {
+
+    private String targetVersion;
+
+    public String getTargetVersion() {
+        return targetVersion;
+    }
+
+    public void setTargetVersion(String targetVersion) {
+        this.targetVersion = targetVersion;
+    }
+
+    private String databasePath;
+
+    public String getDatabasePath() {
+        return databasePath;
+    }
+
+
+    public void setDatabasePath(String databasePath) {
+        this.databasePath = databasePath;
+    }
+
+    private String backupDirectory;
+
+    public String getBackupDirectory() {
+        return backupDirectory;
+    }
+
+    public void setBackupDirectory(String backupDirectory) {
+        this.backupDirectory = backupDirectory;
+    }
+
+    private String userName;
+    private String password;
+    private String schema;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
+    }
+
+
+    private static final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+
+    @Override
+    public void execute() throws BuildException {
+
+        if (!Files.exists(Paths.get(databasePath))) {
+            throw new BuildException("Database " + databasePath + " does not exist!");
+        }
+
+        if (!Files.exists(Paths.get(backupDirectory))) {
+            throw new BuildException("Backup directory does not exist!");
+        }
+
+        try {
+            Class.forName(driver).newInstance();
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            throw new BuildException("Unable to load embedded Derby driver");
+        }
+
+        //Connection properties
+        Properties props = new Properties();
+        props.setProperty("user", userName);
+        props.setProperty("password", password);
+        props.setProperty("upgrade", "true");
+        String connectionUrl = "jdbc:derby:" + databasePath;
+        Connection conn;
+        try {
+            conn = DriverManager.getConnection(connectionUrl, props);
+        } catch (SQLException e) {
+            throw new BuildException(e);
+        }
+
+        try {
+            DatabaseMetaData meta = conn.getMetaData();
+            PSLogger.logInfo("Derby database version: " + meta.getDatabaseProductVersion() + " detected...");
+            conn.close();
+            props.remove("upgrade");
+            props.putIfAbsent("shutdown", "true");
+            PSLogger.logInfo("Shutting down database :" + databasePath);
+            conn = DriverManager.getConnection(connectionUrl, props);
+            conn.close();
+
+        } catch (SQLNonTransientConnectionException e) {
+            PSLogger.logWarn("SQL State:" + e.getSQLState());
+            PSLogger.logWarn("SQL Error Code:" + e.getErrorCode());
+            if (e.getErrorCode() == 45000 && e.getSQLState().equals("08006")) {
+                PSLogger.logInfo("Database shutdown successfully.");
+            } else {
+                throw new BuildException(e);
+            }
+        } catch (SQLException e) {
+            PSLogger.logWarn("SQL State:" + e.getSQLState());
+            PSLogger.logWarn("SQL Error Code:" + e.getErrorCode());
+            if (e.getErrorCode() == 45000 && e.getSQLState().equals("08006")) {
+                PSLogger.logInfo("Database shutdown successfully.");
+            } else {
+                throw new BuildException(e);
+            }
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception e) {
+                //do nada}
+            }
+
+
+        }
+    }
+
+}

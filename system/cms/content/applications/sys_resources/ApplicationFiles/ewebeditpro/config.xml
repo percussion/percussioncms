@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+This is the default Rhythmyx configuration file to be used with sys_eWebEditPro.  
+It's a slightly modified version of the config.xml that ships with eWebEditPro so 
+that it now contains Rhythmyx specific functionality (do a search on rx_ to find below).
+-->
+<config product="eWebEditPro">
+	<!-- Valid positive values are:  yes, true, 1 -->
+	<!-- Valid negative values are:  no, false, 0 -->
+	<interface name="standard" allowCustomize="false">
+		<menu name="editbar" newRow="false" showButtonsCaptions="false" wrap="false">
+			<caption localeRef="mnuEdit"/>
+			<button command="cmdcut"/>
+			<button command="cmdcopy"/>
+			<button command="cmdpaste"/>
+			<button command="cmdpastetext"/>
+			<button command="cmdfindreplace"/>
+			<button command="cmdfindnext"/>
+			<button command="cmdprint"/>
+			<bar/>
+			<button command="cmdundo"/>
+			<button command="cmdredo"/>
+			<bar/>
+			<button command="cmdspellcheck"/>
+			<button command="cmdspellayt"/>
+			<bar/>
+			<button command="cmdunlink"/>
+			<bar/>
+			<button command="cmdhr"/>
+			<button command="cmdtable" popup="tablepopup"/>
+			<bar/>
+
+			<button command="rx_inlineweblink"/>
+			<button command="rx_inlinerxlink"/>
+			<button command="rx_inlinerximage"/>
+			<button command="rx_inlinerxvariant"/>
+			<button command="rx_wephelp"/>
+			<button command="rx_word"/>
+			<!-- <button command="cmdmsword"/> -->
+		</menu>
+		<menu name="viewasbar" newRow="false" showButtonsCaptions="false" wrap="false">
+			<caption localeRef="mnuViewAs"/>
+			<button command="cmdshowborders"/>
+			<button command="cmdshowdetails"/>
+			<bar/>
+			<button command="cmdviewaswysiwyg"/>
+			<button command="cmdviewashtml"/>
+		</menu>
+		<menu name="pformatbar" newRow="false" showButtonsCaptions="false" wrap="false">
+			<caption localeRef="mnuPFmt"/>
+			<button command="cmdnumbered"/>
+			<button command="cmdbullets"/>
+			<button command="cmdindentleft"/>
+			<button command="cmdindentright"/>
+			<bar/>
+			<button command="cmdleft"/>
+			<button command="cmdcenter"/>
+			<button command="cmdright"/>
+			<button command="cmdjustify"/>
+			<button command="rx_ektronhelplink"/>
+		</menu>
+		<menu name="formatbar" newRow="true" showButtonsCaptions="false" wrap="false">
+			<caption localeRef="mnuFmt"/>
+			<button command="cmdunstyle"/>
+			<button command="cmdselstyle"/>
+			<button command="cmdheaderlevel"/>
+			<button command="cmdfontname"/>
+			<button command="cmdfontsize"/>
+			<button command="cmdfontcolor"/>
+			<button command="cmdbackcolor"/>
+			<bar/>
+			<button command="cmdbold"/>
+			<button command="cmditalic"/>
+			<button command="cmdunderline"/>
+			<button command="cmdremoveformat"/>
+			<bar/>
+			<button command="cmdsup"/>
+			<button command="cmdsub"/>
+		</menu>
+		<menu name="specialcharsbar" newRow="false" showButtonsCaptions="false" wrap="true">
+			<caption localeRef="mnuSplChr"/>
+			<button command="cmdchr160"/>
+			<button command="cmdchr169"/>
+			<button command="cmdchr174"/>
+			<button command="jstm"/>
+			<button command="cmdextchars" popup="extcharspopup"/>
+			<button command="cmdchr"/>
+		</menu>
+		<menu name="formelementbar" newRow="true" showButtonsCaptions="false" wrap="false" visible="false">
+			<caption localeRef="frmElements" />
+			<button command="cmdformform" />
+			<bar />
+			<button command="cmdformbutton" />	
+			<button command="cmdformsubmit" />		
+			<button command="cmdformreset" />			
+			<bar />			
+			<button command="cmdformhidden" />
+			<button command="cmdformtext" />
+			<button command="cmdformpassword" />
+			<button command="cmdformtextarea" />
+			<bar />
+			<button command="cmdformradio" />
+			<button command="cmdformcheckbox" />
+			<button command="cmdformselect" />
+			<bar />			
+			<button command="cmdformfile" />			
+		</menu>
+		<menu name="tablebar" newRow="true" showButtonsCaptions="false" wrap="false" visible="false">
+			<caption localeRef="cmdTbl"/>
+			<button command="cmdinserttable"/>
+			<button command="cmdinsertrow"/>
+			<button command="cmdinsertcolumn"/>
+			<button command="cmdinsertcell"/>
+			<button command="cmddeleterows"/>
+			<button command="cmddeletecolumns"/>
+			<button command="cmddeletecells"/>
+			<button command="cmdmergecells"/>
+			<button command="cmdsplitcell"/>
+			<button command="cmdtableproperties"/>
+			<button command="cmdcellproperties"/>
+		</menu>
+		<popup name="tablepopup">
+			<button command="cmdinserttable"/>
+			<button command="cmdinsertrow"/>
+			<button command="cmdinsertcolumn"/>
+			<button command="cmdinsertcell"/>
+			<button command="cmddeleterows"/>
+			<button command="cmddeletecolumns"/>
+			<button command="cmddeletecells"/>
+			<button command="cmdmergecells"/>
+			<button command="cmdsplitcell"/>
+			<button command="cmdtableproperties"/>
+			<button command="cmdcellproperties"/>
+		</popup>
+		<menu name="posbar" newRow="false" showButtonsCaptions="false" wrap="false" visible="false">
+			<caption localeRef="mnuPos"/>
+			<button command="cmdabspos"/>
+			<button command="cmdlock"/>
+			<button command="cmdzfront"/>
+			<button command="cmdzback"/>
+			<button command="cmdzforward"/>
+			<button command="cmdzbackward"/>
+			<button command="cmdzabovetext"/>
+			<button command="cmdzbelowtext"/>
+		</menu>
+		<!-- 
+		<button command="cmdzorder" popup="zpopup"/>
+		<popup name="zpopup">
+			<button command="cmdzfront"/>
+			<button command="cmdzback"/>
+			<button command="cmdzforward"/>
+			<button command="cmdzbackward"/>
+			<button command="cmdzabovetext"/>
+			<button command="cmdzbelowtext"/>
+		</popup>
+		 -->
+		<menu name="dirbar" newRow="false" showButtonsCaptions="false" wrap="false" visible="false">
+			<caption localeRef="mnuDir"/>
+			<button command="cmdltrblk"/>
+			<button command="cmdrtlblk"/>
+			<button command="cmdltredit"/>
+			<button command="cmdrtledit"/>
+		</menu>
+		<button command="jshyperlink"/>
+		<button command="cmdmfuuploadall"/>
+		<button command="cmdopen"/>
+		<button command="cmdsaveas"/>
+		<button command="cmdstrike"/>
+		<button command="cmddelete"/>
+		<button command="cmdnojustify"/>
+		<button command="cmdselectall"/>
+		<button command="cmdselectnone"/>
+		<button command="cmdshowborders"/>
+		<button command="cmdshowdetails"/>
+		<button command="cmdviewasproperties"/>			
+		<button command="cmdprop"/>
+		<button command="cmdmfueditimage"/> <!-- only available if installed -->
+		<popup name="extcharspopup">
+			<button command="cmdchr149"/>
+			<button command="cmdchr150"/>
+			<button command="cmdchr151"/>
+			<button command="cmdchr134"/>
+			<button command="cmdchr135"/>
+			<button command="cmdchr131"/>
+			<button command="cmdchr133"/>
+			<button command="cmdchr137"/>
+			<button command="cmdchr128"/>
+			<button command="cmdchr130"/>
+			<button command="cmdchr132"/>
+			<button command="cmdchr145"/>
+			<button command="cmdchr146"/>
+			<button command="cmdchr147"/>
+			<button command="cmdchr148"/>
+			<button command="cmdchr139"/>
+			<button command="cmdchr155"/>
+			<button command="cmdchr156"/>
+			<button command="cmdchr140"/>
+			<button command="cmdchr154"/>
+			<button command="cmdchr138"/>
+			<button command="cmdchr158"/>
+			<button command="cmdchr142"/>
+			<button command="cmdchr159"/>
+		</popup>
+	</interface>
+	<features>
+		<!-- Possible command styles are:
+                Icon Button:   "default", "icon", not specified
+                Icon Toggle:   "toggle"
+                Text Listbox:  "list", "listbox"
+                Text Editbox:  "edit", "text"
+     	-->
+		<external>
+			<command name="jstm">
+				<caption localeRef="btnCapTM"/>
+				<tooltiptext localeRef="cmdTM"/>
+			</command>
+			<cmd name="jshyperlink" key="hyperlinkstar" ref="cmdNewHyp" />
+			<command name="jshyperlink" enabled="true">
+				<image src="[eWebEditProPath]/btnhy.gif"/>
+				<caption localeRef="cmdNewHyp"/>
+				<tooltiptext localeRef="cmdNewHyp"/>
+			</command>
+			<!-- Start Rhythmyx specific buttons -->
+			<command name="rx_inlineweblink" enabled="true">
+				<image src="/Rhythmyx/sys_resources/images/ewebeditpro/wlink.gif"/>
+				<caption localeRef="rx_cmdIinlineWebLink"/>
+				<tooltiptext localeRef="rx_cmdIinlineWebLink"/>
+			</command>
+			<command name="rx_inlinerxlink" enabled="true">
+				<image src="/Rhythmyx/sys_resources/images/ewebeditpro/slink.gif"/>
+				<caption localeRef="rx_cmdIinlineCmsLink"/>
+				<tooltiptext localeRef="rx_cmdIinlineCmsLink"/>
+			</command>
+			<command name="rx_inlinerximage" enabled="true">
+				<image src="/Rhythmyx/sys_resources/images/ewebeditpro/image.gif"/>
+				<caption localeRef="rx_cmdIinlineCmsImage"/>
+				<tooltiptext localeRef="rx_cmdIinlineCmsImage"/>
+			</command>
+			<command name="rx_inlinerxvariant" enabled="true">
+				<image src="/Rhythmyx/sys_resources/images/ewebeditpro/variant.gif"/>
+				<caption localeRef="rx_cmdIinlineCmsVariant"/>
+				<tooltiptext localeRef="rx_cmdIinlineCmsVariant"/>
+			</command>
+			<command name="rx_wephelp" enabled="true">
+				<image src="/Rhythmyx/sys_resources/images/ewebeditpro/rx_wep_help.gif"/>
+				<caption localeRef="rx_cmdwephelp"/>
+				<tooltiptext localeRef="rx_cmdwephelp"/>
+			</command>
+			<command name="rx_word" enabled="true">
+				<image src="/Rhythmyx/sys_resources/images/wordicon.gif"/>
+				<caption localeRef="rx_cmdword"/>
+				<tooltiptext localeRef="rx_cmdword"/>
+			</command>
+			<!-- End Rhythmyx specific gem: "buttons" buttongs -->
+			<!-- Place custom commands to be processed by JavaScript here. -->
+			<cmd name="rx_inlineweblink" key="key">Insert Rx Inline Web Link</cmd>
+			<cmd name="rx_inlinerxlink" key="key">Insert Rx Inline Rx Link</cmd>
+			<cmd name="rx_inlinerximage" key="key">Insert Rx Inline Rx Image</cmd>
+			<cmd name="rx_inlinerxvariant" key="key">Insert Rx Inline Rx Variant</cmd>
+			<cmd name="rx_wephelp" key="key">Web Edit Pro Help</cmd>
+			<cmd name="rx_word" key="key">Launch Word</cmd>
+
+			<cmd name="jsformform" key="form" ref="frmForm"/>
+			<cmd name="jsformbutton" key="bbtn" ref="frmBBtn"/>
+			<cmd name="jsformsubmit" key="sbtn" ref="frmSBtn"/>
+			<cmd name="jsformreset" key="rbtn" ref="frmRBtn"/>
+			<cmd name="jsformhidden" key="hiddenfld" ref="frmHiddenFld"/>
+			<cmd name="jsformtext" key="textfld" ref="frmTextFld"/>
+			<cmd name="jsformpassword" key="pwdfld" ref="frmPasswordFld"/>
+			<cmd name="jsformtextarea" key="textbox" ref="frmTextarea"/>
+			<cmd name="jsformradio" key="optionbox" ref="frmOptionBox"/>
+			<cmd name="jsformcheckbox" key="checkbox" ref="frmCheckbox"/>
+			<cmd name="jsformselect" key="droplist" ref="frmDropList"/>
+			<cmd name="jsformfile" key="fileup" ref="frmFormFile"/>
+			<command name="js508table">
+			    <image src="[eWebEditProPath]/btn508table.gif"/>
+				<caption localeRef="mnu508table"/>
+				<tooltiptext localeRef="mnu508table"/>
+		    </command>
+			<!-- Place custom commands to be processed by JavaScript here. -->
+		</external>
+		<!-- values for charencode: utf-8, binary, entityname, charref, special, latin -->
+		<clean charencode="charref" cr="cr" lf="lf" showonsize="5000" preferfonttag="false" reducetags="true" showdonemsg="true" prompt="true" hideobject="true" mswordfilter="true">
+			<remove>
+				<tagWoAttr>SPAN</tagWoAttr>
+			</remove>
+		</clean>
+		<formelements>
+			<cmd name="cmdformform" key="form" ref="frmForm" />
+			<cmd name="cmdformradio" key="optionbox" ref="frmOptionBox" />
+			<cmd name="cmdformcheckbox" key="checkbox" ref="frmCheckbox" />
+			<cmd name="cmdformbutton" key="bbtn" ref="frmBBtn" />
+			<cmd name="cmdformsubmit" key="sbtn" ref="frmSBtn" />
+			<cmd name="cmdformreset" key="rbtn" ref="frmRBtn" />
+			<cmd name="cmdformhidden" key="hiddenfld" ref="frmHiddenFld" />
+			<cmd name="cmdformtext" key="textfld" ref="frmTextFld" />
+			<cmd name="cmdformpassword" key="pwdfld" ref="frmPasswordFld" />
+			<cmd name="cmdformtextarea" key="textbox" ref="frmTextarea" />
+			<cmd name="cmdformfile" key="fileup" ref="frmFormFile" />
+			<cmd name="cmdformselect" key="droplist" ref="frmDropList" />
+		</formelements>
+		<!-- publish options are "cleanhtml" and "xhtml" -->
+		<standard mode="htmlbody" autoclean="true" publish="xhtml" publishinvalid="false" publishviewassource="true" continueparagraph="false">
+			<!-- equivClass options are "strict", "loose" and "all" -->
+			<style publishstyles="false" href="[eWebEditProPath]/ektnormal.css" equivClass="strict" wrapstylewithdiv="false" preservewordstyles="false" preservewordclasses="true">
+				
+			</style>			
+			<cmd name="cmdprint" key="print" ref="sPrint"/>
+			<cmd name="cmdbackcolor" key="bgcolor" ref="cmdBC"/>
+			<command name="cmdbackcolorvalue" style="list">
+				<caption localeRef="cmdBCVal"/>
+				<tooltiptext localeRef="cmdBCVal"/>
+				<selections name="backcolorlist">
+					<listchoice command="cmdbackcolor" localeRef="colorPal"/>
+					<listchoice data="-1" localeRef="sTransparent"/>
+					<listchoice data="#00FFFF" localeRef="colorAqua"/>
+					<listchoice data="#000000" localeRef="colorBlack"/>
+					<listchoice data="#0000FF" localeRef="colorBlue"/>
+					<listchoice data="#FF00FF" localeRef="colorFuchsia"/>
+					<listchoice data="#808080" localeRef="colorGray"/>
+					<listchoice data="#008000" localeRef="colorGreen"/>
+					<listchoice data="#00FF00" localeRef="colorLime"/>
+					<listchoice data="#800000" localeRef="colorMaroon"/>
+					<listchoice data="#000080" localeRef="colorNavy"/>
+					<listchoice data="#808000" localeRef="colorOlive"/>
+					<listchoice data="#800080" localeRef="colorPurple"/>
+					<listchoice data="#FF0000" localeRef="colorRed"/>
+					<listchoice data="#C0C0C0" localeRef="colorSilver"/>
+					<listchoice data="#008080" localeRef="colorTeal"/>
+					<listchoice data="#FFFF00" localeRef="colorYellow"/>
+					<listchoice data="#FFFFFF" localeRef="colorWhite"/>
+				</selections>
+			</command>
+			<cmd name="cmdfontcolor" key="fontcolor" ref="cmdFC" enabled="true"/>
+			<command name="cmdfontcolorvalue" style="list">
+				<caption localeRef="cmdFCVal"/>
+				<tooltiptext localeRef="cmdFCVal"/>
+				<selections name="fontcolorlist">
+					<listchoice command="cmdfontcolor" localeRef="colorPal"/>
+					<listchoice data="#00FFFF" localeRef="colorAqua"/>
+					<listchoice data="#000000" localeRef="colorBlack"/>
+					<listchoice data="#0000FF" localeRef="colorBlue"/>
+					<listchoice data="#FF00FF" localeRef="colorFuchsia"/>
+					<listchoice data="#808080" localeRef="colorGray"/>
+					<listchoice data="#008000" localeRef="colorGreen"/>
+					<listchoice data="#00FF00" localeRef="colorLime"/>
+					<listchoice data="#800000" localeRef="colorMaroon"/>
+					<listchoice data="#000080" localeRef="colorNavy"/>
+					<listchoice data="#808000" localeRef="colorOlive"/>
+					<listchoice data="#800080" localeRef="colorPurple"/>
+					<listchoice data="#FF0000" localeRef="colorRed"/>
+					<listchoice data="#C0C0C0" localeRef="colorSilver"/>
+					<listchoice data="#008080" localeRef="colorTeal"/>
+					<listchoice data="#FFFF00" localeRef="colorYellow"/>
+					<listchoice data="#FFFFFF" localeRef="colorWhite"/>
+				</selections>
+			</command>
+			<command name="cmdfontname" style="list" maxwidth="12" enabled="true">
+				<caption localeRef="cmdFNm"/>
+				<tooltiptext localeRef="cmdFNm"/>
+				<selections name="fontnamelist" sorted="true">
+					<listchoice>Arial, Helvetica</listchoice>
+					<listchoice>Comic Sans MS</listchoice>
+					<listchoice>Courier New, Courier</listchoice>
+					<listchoice>Symbol</listchoice>
+					<listchoice>Times New Roman, Times</listchoice>
+					<listchoice>Verdana, Helvetica</listchoice>
+				</selections>
+			</command>
+			<command name="cmdfontsize" style="list" maxwidth="6" enabled="true">
+				<caption localeRef="cmdFS"/>
+				<tooltiptext localeRef="cmdFS"/>
+				<!-- There can only be seven selections for sizes -->
+				<selections name="fontsizelist">
+					<listchoice command="cmdfontsize1" localeRef="mnuFS1"/>
+					<listchoice command="cmdfontsize2" localeRef="mnuFS2"/>
+					<listchoice command="cmdfontsize3" localeRef="mnuFS3"/>
+					<listchoice command="cmdfontsize4" localeRef="mnuFS4"/>
+					<listchoice command="cmdfontsize5" localeRef="mnuFS5"/>
+					<listchoice command="cmdfontsize6" localeRef="mnuFS6"/>
+					<listchoice command="cmdfontsize7" localeRef="mnuFS7"/>
+				</selections>
+			</command>
+			<command name="cmdselstyle" style="list">
+				<caption localeRef="cmdStyle"/>
+				<tooltiptext localeRef="cmdStyle"/>
+				<selections name="stylelist" sorted="true"/>
+			</command>
+			<cmd name="cmdunstyle" key="removestyle" ref="cmdUnSty"/>
+			<command name="cmdheaderlevel" style="list">
+				<caption localeRef="btnCapHdg"/>
+				<tooltiptext localeRef="cmdHdg"/>
+				<selections name="headinglist">
+					<listchoice command="cmdheadingstd" localeRef="txtHdgNorm"/>
+					<listchoice command="cmdheading1" localeRef="txtHdg1"/>
+					<listchoice command="cmdheading2" localeRef="txtHdg2"/>
+					<listchoice command="cmdheading3" localeRef="txtHdg3"/>
+					<listchoice command="cmdheading4" localeRef="txtHdg4"/>
+					<listchoice command="cmdheading5" localeRef="txtHdg5"/>
+					<listchoice command="cmdheading6" localeRef="txtHdg6"/>
+					<listchoice command="cmdaddress" localeRef="cmdAddr"/>
+				</selections>
+			</command>
+			<cmd name="cmdabout" key="about" ref="cmdAbt" enabled="true"/>
+			<cmd name="cmdopen" key="open" ref="cmdOpen"/>
+			<cmd name="cmdsaveas" key="save" ref="cmdSave"/>
+			<cmd name="cmdcut" key="cut" ref="cmdCut"/>
+			<cmd name="cmdcopy" key="copy" ref="cmdCp"/>
+			<cmd name="cmddelete" key="delete" ref="cmdDel"/>
+			<cmd name="cmdpaste" key="paste" ref="cmdPas"/>
+			<cmd name="cmdpastetext" key="pastetext" ref="cmdPasTxt"/>
+			<cmd name="cmdundo" key="undo" ref="cmdUndo"/>
+			<cmd name="cmdredo" key="redo" ref="cmdRedo"/>
+			<cmd name="cmdfind" key="find" ref="cmdFind"/>
+			<cmd name="cmdfindreplace" key="find" ref="cmdReplace"/>
+			<cmd name="cmdfindnext" key="findnext" ref="cmdFindNext"/>
+			<cmd name="cmdbold" key="bold" ref="cmdBold" style="toggle"/>
+			<cmd name="cmditalic" key="italic" ref="cmdItal" style="toggle"/>
+			<cmd name="cmdunderline" key="underline" ref="cmdUndln" style="toggle" enabled="true"/>
+			<cmd name="cmdremoveformat" key="plain" ref="sNormal"/>
+			<command name="cmdnumbered" style="toggle">
+				<image key="numbered"/>
+				<caption localeRef="btnCapNumL"/>
+				<tooltiptext localeRef="cmdNumL"/>
+			</command>
+			<command name="cmdbullets" style="toggle">
+				<image key="bullets"/>
+				<caption localeRef="btnCapBul"/>
+				<tooltiptext localeRef="cmdBul"/>
+			</command>
+			<command name="cmdindentleft">
+				<image key="indentleft"/>
+				<caption localeRef="btnCapIndl"/>
+				<tooltiptext localeRef="cmdIndl"/>
+			</command>
+			<command name="cmdindentright">
+				<image key="indentright"/>
+				<caption localeRef="btnCapIndr"/>
+				<tooltiptext localeRef="cmdIndr"/>
+			</command>
+			<command name="cmdleft" style="toggle">
+				<image key="left"/>
+				<caption localeRef="btnCapAL"/>
+				<tooltiptext localeRef="cmdAL"/>
+			</command>
+			<command name="cmdcenter" style="toggle">
+				<image key="center"/>
+				<caption localeRef="btnCapAC"/>
+				<tooltiptext localeRef="cmdAC"/>
+			</command>
+			<command name="cmdright" style="toggle">
+				<image key="right"/>
+				<caption localeRef="btnCapAR"/>
+				<tooltiptext localeRef="cmdAR"/>
+			</command>
+			<cmd name="cmdjustify" key="justify" ref="sJustify" style="toggle"/>
+			<cmd name="cmdnojustify" key="nojustify" ref="cmdANo" style="toggle"/>
+			<cmd name="cmdselectnone" key="selectnone" ref="cmdSelNo"/>
+			<cmd name="cmdselectall" key="selectall" ref="cmdSelA"/>
+			<cmd name="cmdbookmark" key="bookmark" ref="cmdBkm"/>
+			<command name="cmdhyperlink">
+				<image key="hyperlink"/>
+				<caption localeRef="cmdHyp"/>
+				<tooltiptext localeRef="cmdHyp"/>
+			</command>
+			<cmd name="cmdunlink" key="removelink" ref="cmdUnlnk"/>
+			<cmd name="cmdstrike" key="strikethrough" ref="cmdStrike" style="toggle"/>
+			<cmd name="cmdsub" key="subscript" ref="cmdSub" style="toggle"/>
+			<cmd name="cmdsup" key="superscript" ref="cmdSup" style="toggle"/>
+			<command name="cmdhr">
+				<image key="horzrule"/>
+				<caption localeRef="btnCapHR"/>
+				<tooltiptext localeRef="cmdHR"/>
+			</command>
+			<command name="cmdclean">
+				<image key="clean"/>
+				<caption localeRef="btnCapClean"/>
+				<tooltiptext localeRef="cmdClean"/>
+			</command>
+			<command name="cmdshowborders" style="toggle">
+				<image key="borders"/>
+				<caption localeRef="btnCapShBord"/>
+				<tooltiptext localeRef="cmdShBord"/>
+			</command>
+			<command name="cmdshowdetails" style="toggle">
+				<image key="glyphs"/>
+				<caption localeRef="btnCapGlyph"/>
+				<tooltiptext localeRef="cmdGlyph"/>
+			</command>
+			<cmd name="cmdprop" key="properties" ref="sProp"/>
+			<cmd name="cmdabspos" key="abspos" style="toggle" ref="cmdAbsPos"/>
+			<cmd name="cmdlock" key="lock" style="toggle" ref="sLock"/>
+			<cmd name="cmdzfront" key="front" ref="cmdZF"/>
+			<cmd name="cmdzback" key="back" ref="cmdZB"/>
+			<cmd name="cmdzforward" key="forward" ref="cmdZFw"/>
+			<cmd name="cmdzbackward" key="backward" ref="cmdZBw"/>
+			<cmd name="cmdzabovetext" key="abovetext" ref="cmdZAT"/>
+			<cmd name="cmdzbelowtext" key="belowtext" ref="cmdZBT"/>
+			<cmd name="cmdzorder" key="zordermenu" ref="sMove"/>
+			<cmd name="cmdltrblk" key="ltrblock" style="toggle" ref="cmdLRB"/>
+			<cmd name="cmdrtlblk" key="rtlblock" style="toggle" ref="cmdRLB"/>
+			<cmd name="cmdltredit" key="ltredit" style="toggle" ref="cmdLRE"/>
+			<cmd name="cmdrtledit" key="rtledit" style="toggle" ref="cmdRLE"/>
+			<command name="cmdchr160">
+				<caption localeRef="btnCapnbsp"/>
+				<tooltiptext localeRef="cmdnbsp"/>
+			</command>
+			<command name="cmdchr169">
+				<caption>&#169;</caption>
+				<tooltiptext localeRef="cmdC169"/>
+			</command>
+			<command name="cmdchr174">
+				<caption>&#174;</caption>
+				<tooltiptext localeRef="cmdC174"/>
+			</command>
+			<command name="cmdchr" style="list" maxwidth="16">
+				<caption localeRef="cmdMore"/>
+				<tooltiptext localeRef="cmdMore"/>
+				<selections name="chrlist">
+					<listchoice delimited="|">&#161;|&#162;|&#163;|&#164;|&#165;|&#166;</listchoice>
+					<listchoice delimited="|">&#167;|&#168;|&#169;|&#170;|&#171;|&#172;</listchoice>
+					<listchoice delimited="|">&#173;|&#174;|&#175;|&#176;|&#177;|&#178;</listchoice>
+					<listchoice delimited="|">&#179;|&#180;|&#181;|&#182;|&#183;|&#184;</listchoice>
+					<listchoice delimited="|">&#185;|&#186;|&#187;|&#188;|&#189;|&#190;</listchoice>
+					<listchoice delimited="|">&#191;|&#192;|&#193;|&#194;|&#195;|&#196;</listchoice>
+					<listchoice delimited="|">&#197;|&#198;|&#199;|&#200;|&#201;|&#202;</listchoice>
+					<listchoice delimited="|">&#203;|&#204;|&#205;|&#206;|&#207;|&#208;</listchoice>
+					<listchoice delimited="|">&#209;|&#210;|&#211;|&#212;|&#213;|&#214;</listchoice>
+					<listchoice delimited="|">&#215;|&#216;|&#217;|&#218;|&#219;|&#220;</listchoice>
+					<listchoice delimited="|">&#221;|&#222;|&#223;|&#224;|&#225;|&#226;</listchoice>
+					<listchoice delimited="|">&#227;|&#228;|&#229;|&#230;|&#231;|&#232;</listchoice>
+					<listchoice delimited="|">&#233;|&#234;|&#235;|&#236;|&#237;|&#238;</listchoice>
+					<listchoice delimited="|">&#239;|&#240;|&#241;|&#242;|&#243;|&#244;</listchoice>
+					<listchoice delimited="|">&#245;|&#246;|&#247;|&#248;|&#249;|&#250;</listchoice>
+					<listchoice delimited="|">&#251;|&#252;|&#253;|&#254;|&#255;</listchoice>
+				</selections>
+			</command>
+			<cmd name="cmdextchars" key="charsmenu" ref="cmdExtCh"/>
+			<cmd name="cmdchr128" key="euro"/>
+			<cmd name="cmdchr130" key="lsquor"/>
+			<cmd name="cmdchr131" key="fnof"/>
+			<cmd name="cmdchr132" key="ldquor"/>
+			<cmd name="cmdchr133" key="hellip"/>
+			<cmd name="cmdchr134" key="dagger"/>
+			<cmd name="cmdchr135" key="ddagger"/>
+			<cmd name="cmdchr137" key="permil"/>
+			<cmd name="cmdchr138" key="sscaron"/>
+			<cmd name="cmdchr139" key="lsaquo"/>
+			<cmd name="cmdchr140" key="oeoelig"/>
+			<cmd name="cmdchr142" key="zzcaron"/>
+			<cmd name="cmdchr145" key="lsquo"/>
+			<cmd name="cmdchr146" key="rsquo"/>
+			<cmd name="cmdchr147" key="ldquo"/>
+			<cmd name="cmdchr148" key="rdquo"/>			
+			<cmd name="cmdchr149" key="bull"/>
+			<cmd name="cmdchr150" key="ndash"/>
+			<cmd name="cmdchr151" key="mdash"/>
+			<cmd name="cmdchr153" key="trade"/>
+			<cmd name="cmdchr154" key="scaron"/>
+			<cmd name="cmdchr155" key="rsaquo"/>
+			<cmd name="cmdchr156" key="oelig"/>
+			<cmd name="cmdchr158" key="zcaron"/>
+			<cmd name="cmdchr159" key="yyuml"/>
+		</standard>
+		<!-- publish options are "cleanhtml" and "xhtml" -->
+		<!-- mode options are "body" and "whole" -->
+		<!-- view options are "wysiwyg" and "source" -->
+		<viewas view="wysiwyg" publish="xhtml" mode="body" unicode="false">
+			<cmd name="cmdviewaswysiwyg" key="page" ref="cmdVAW"/>
+			<cmd name="cmdviewashtml" key="pagetag" ref="cmdVAH"/>
+			<cmd name="cmdviewasproperties" key="viewprop" ref="cmdVAProp"/>			
+		</viewas>
+		<edithtml enabled="true"/>
+		<spellcheck langid="0" enabled="true" dictionary2="WinterTreeSC.CWinterTreeSC">
+			<spellayt autostart="false" markmisspelledsrc="[eWebEditProPath]/wavyred.gif" delay="20"/>
+			<spellingsuggestion enabled="true" max="4"/>
+			<cmd name="cmdspellayt" key="spellayt" ref="cmdSplayt" style="toggle"/>
+			<cmd name="cmdspellcheck" key="spellcheck" ref="cmdSplck"/>
+		</spellcheck>	
+		<msword enabled="true">
+			<cmd name="cmdmsword" key="msword" ref="cmdMSW" style="toggle"/>
+		</msword>	
+		<table enabled="true">
+			<cmd name="cmdtable" key="tablemenu" ref="cmdTbl"/>
+			<cmd name="cmdinserttable" key="instable" ref="mnuITbl"/>
+			<cmd name="cmdinsertrow" key="insrow" ref="mnuIRow"/>
+			<cmd name="cmdinsertcolumn" key="inscol" ref="mnuICol"/>
+			<cmd name="cmdinsertcell" key="inscell" ref="mnuICell"/>
+			<cmd name="cmddeleterows" key="delrow" ref="mnuDRow"/>
+			<cmd name="cmddeletecolumns" key="delcol" ref="mnuDCol"/>
+			<cmd name="cmddeletecells" key="delcell" ref="mnuDCell"/>
+			<cmd name="cmdmergecells" key="mergecell" ref="mnuMC"/>
+			<cmd name="cmdsplitcell" key="splitcell" ref="mnuSC"/>
+			<cmd name="cmdtableproperties" key="tableprop" ref="mnuTProp"/>
+			<cmd name="cmdcellproperties" key="cellprop" ref="mnuCProp"/>
+		</table>
+		<mediafiles>
+			<cmd name="cmdmfumedia" key="picture" ref="cmdPic" enabled="true" />
+			<cmd name="cmdmfuuploadall" key="upload" ref="cmdUpldFiles" enabled="true" />
+			<!-- The command below will only be enabled when the Ektron WebImageFX tool is installed. -->
+			<cmd name="cmdmfueditimage" key="freehand" ref="cmdImgEdit"/>
+			<!-- 0 is unlimited size -->
+			<maxsizek>0</maxsizek>
+			<validext>gif,jpg,png,jpeg,jpe,txt,doc</validext>
+			<mediaconfig enabled="true" allowedit="true" />
+			<!-- If this section is not defined it will default to FTP with no settings -->
+			<!-- The attribute 'type' values "ftp", "file", "post", and "none" are handled within the editor. -->
+			<!-- If a page is specified in the type attribute then it is used for GUI file selections. -->
+			<transport allowupload="true" type="post" xfer="binary" pasv="true">
+				<!-- autoupload defines the upload action when local files exist in the content. -->
+				<!-- If this section is not defined it will default to ASP,  -->
+				<!-- unless ASP is not available, then it defaults to FTP. -->
+				<!-- The attribute 'type' values "ftp" and "none" are handled within the editor. -->
+				<!-- If a page is specified in the type attribute then it is used to receive files -->
+				<!-- automatically sent up by the client.  (User intervention is always required.) -->
+				<!-- Set showlistonsave to false to skip the pending upload image list dialog when -->
+				<!-- collecting publish content.  This value is default to TRUE (show the image list dialog). -->
+				<autoupload type="[eWebEditProPath]/ewepreceive.asp" showlistonsave="false" />
+				<!-- Encrypt username and password using Ektron's encrypt.exe program. -->
+				<!-- Leave blank to force the user to enter the values. -->
+				<username encrypted="false"></username>
+				<password encrypted="false"></password>
+				<!-- Set to 0 for default port number -->
+				<port>0</port>
+				<!-- The domain to use for upload.  This is normally used by FTP. -->
+				<!-- Upload location is: [domain]+[xferdir]+[filename] -->
+				<!-- e.g., ftp.mydomain.com -->
+				<!-- If this is blank then the domain specified in xferdir is used. -->
+				<domain></domain>
+				<!-- The logical FTP/Web/other directory to transfer into. -->
+				<!-- (FTP upload directories normally do not match the corresponding web directory.) -->
+				<!-- svrlocaleref is the Localization for the FTP/Server folder displayed. -->
+				<!-- Its string value is in the locale files. -->
+				<xferdir src="[eWebEditProPath]/upload" svrlocaleref="xferDispName" />
+				<!-- The directory where a file is referenced by a browser once uploaded. -->
+				<!-- Referencing a file through HTTP is: [webroot]+[filename] -->
+				<!-- If webroot is blank then it defaults to xferdir value. -->
+				<webroot src="" />
+				<!-- Possible values for resolvepath are: full, host, local, given -->
+				<resolvemethod value="local" src="" resolve="true" allowoverride="true" />
+			</transport>
+			<imageedit>
+				<control src="[WebImageFXPath]/ImageEditConfig.xml" />
+			</imageedit>
+		</mediafiles>
+		
+	</features>
+</config>

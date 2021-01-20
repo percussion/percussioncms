@@ -1,0 +1,49 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=windows-1250">
+  <meta name="generator" content="PSPad editor, www.pspad.com">
+  <title></title>
+  <link rel="stylesheet" media="screen" type="text/css" href="../css/testsuite.css" />
+  <script src="../jslib/jquery-1.3.2.js"></script>
+  <script src="../jslib/jquery-ui-1.7.2.custom.js"></script>
+  <script src="../jslib/json.js"></script>
+  <script src="../plugins/perc_utils.js"></script>
+  <script>
+    function expand_down(){
+       $("#big").height( $("#big").height() * 2 );
+    }
+    function expand_left(){
+       $("#big").width( $("#big").width() * 2 );
+    }
+
+  </script>
+  </head>
+  <body>
+    <div id="big" style="background: goldenrod; border: 1px solid cyan; height: 100px; width: 100px">  <a id="down" href="#" onclick="expand_down()">vvvvv</a> or <a href="#" onclick="expand_left()">----></a> </div>
+  </body>
+</html>

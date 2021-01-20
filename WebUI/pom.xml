@@ -1,0 +1,1316 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.percussion</groupId>
+        <artifactId>core</artifactId>
+        <version>8.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>CMLite-WebUI</artifactId>
+    <packaging>war</packaging>
+
+    <properties>
+        <!-- Set to true to skip minification -->
+        <skip.minify>false</skip.minify>
+        <closure.level>WHITESPACE_ONLY</closure.level>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <!-- Set to true to skip minification -->
+                <skip.minify>false</skip.minify>
+                <closure.level>WHITESPACE_ONLY</closure.level>
+                <install.dir>C:\DevEnv\Installs\cm1\dev</install.dir>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <echo>Make sure that you are passing -Dinstall.dir=path/to/your/dev/install...</echo>
+                                        <echo>Refreshing dev install with updated JS...</echo>
+                                        <echo>Installing to ${install.dir}</echo>
+                                        <echo>Unzipping war....</echo>
+                                        <unzip src="${project.basedir}/target/CMLite-WebUI-8.0.0-SNAPSHOT.war" dest="${install.dir}/jetty/base/webapps/Rhythmyx" />
+                                        <echo>Copying common-ui files to web_resources...</echo>
+                                        <copy todir="${install.dir}/web_resources/cm/common/js" overwrite="true" force="true">
+                                            <fileset dir="${install.dir}/jetty/base/webapps/Rhythmyx/cm/common/js/" includes="**/*.js" />
+                                        </copy>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--  TODO: Weback
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.6</version>
+
+                        <executions>
+                            <execution>
+                                <id>install-node-and-npm</id>
+                                <goals><goal>install-node-and-npm</goal></goals>
+                                <phase>generate-resources</phase>
+                            </execution>
+
+                            <execution>
+                                <id>npm-install</id>
+                                <goals><goal>npm</goal></goals>
+                                <configuration>
+                                    <arguments>-prefix Vue-app/ install</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>webpack-build</id>
+                                <goals><goal>npm</goal></goals>
+                                <configuration>
+                                    <arguments>-prefix Vue-app/ run build-prod</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+
+                        <configuration>
+                            <nodeVersion>v8.11.1</nodeVersion>
+                            <npmVersion>5.6.0</npmVersion>
+                        </configuration>
+                    </plugin> -->
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+
+        <resources>
+            <resource>
+                <directory>src</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <fork>true</fork>
+                    <meminitial>1024m</meminitial>
+                    <maxmem>2024m</maxmem>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <!--<warSourceDirectory>war</warSourceDirectory>-->
+
+                    <webResources>
+                        <resource>
+                            <directory>war</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath>cm</targetPath>
+                            <!-- enable filtering -->
+                            <filtering>false</filtering>
+                            <excludes>
+                                <exclude>WEB-INF</exclude>
+                                <exclude>META-INF</exclude>
+                                <exclude>cssMin</exclude>
+                                <exclude>jslibMin</exclude>
+                            </excludes>
+                        </resource>
+                        <resource>
+                            <directory>../cui</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath>cm/cui</targetPath>
+                            <!-- enable filtering -->
+                            <filtering>false</filtering>
+                            <excludes>
+                                <exclude>**/components/jasmine/**</exclude>
+                                <exclude>**/components/jasmine-jquery/**</exclude>
+                                <exclude>**/test/**</exclude>
+                                <exclude>**/node_modules/**</exclude>
+                            </excludes>
+                        </resource>
+                        <resource>
+                            <directory>war/WEB-INF</directory>
+                            <targetPath>WEB-INF</targetPath>
+                            <filtering>false</filtering>
+                        </resource>
+                        <resource>
+                            <directory>war/META-INF</directory>
+                            <targetPath>META-INF</targetPath>
+                            <filtering>false</filtering>
+                        </resource>
+                        <resource>
+                            <directory>../projects/sitemanage/src/main/resources/Rhythmyx/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/spring/projects</directory>
+                            <filtering>false</filtering>
+                            <targetPath>WEB-INF/config/spring/projects</targetPath>
+                            <excludes>
+
+                            </excludes>
+                        </resource>
+                        <!--
+                          <resource>
+                            <directory>..\system\ear</directory>
+                             <filtering>false</filtering>
+                                           <excludes>
+                                           <exclude>..\system\ear\jsps</exclude>
+                                           <exclude>..\system\ear\jboss-4.0</exclude>
+                                             <exclude>..\system\ear\metadata</exclude>
+                                             <exclude>..\system\ear\config</exclude>
+
+                            </excludes>
+                          </resource>-->
+                        <resource>
+                            <directory>../system/ear/config</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath>WEB-INF/config</targetPath>
+                            <!-- enable filtering -->
+                            <filtering>false</filtering>
+                            <excludes>
+                                <exclude>**/trinidad/*</exclude>
+                                <exclude>**/hibernate/*</exclude>
+                            </excludes>
+                        </resource>
+                        <resource>
+                            <directory>../system/ear/config/hibernate</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath>WEB-INF/classes</targetPath>
+                            <!-- enable filtering -->
+                            <filtering>false</filtering>
+                        </resource>
+                        <resource>
+                            <directory>../system/ear/config/trinidad</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath>WEB-INF/trinidad</targetPath>
+                            <!-- enable filtering -->
+                            <filtering>false</filtering>
+                        </resource>
+
+                        <resource>
+                            <directory>../system/ear/metadata</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath>META-INF</targetPath>
+                            <!-- enable filtering -->
+                            <filtering>true</filtering>
+                            <excludes>
+
+                            </excludes>
+                        </resource>
+                        <resource>
+                            <directory>../system/ear/WEB-INF</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath>WEB-INF</targetPath>
+                            <!-- enable filtering -->
+                            <filtering>false</filtering>
+                            <excludes>
+
+                            </excludes>
+                        </resource>
+                        <resource>
+                            <directory>../system/ear/jsps</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath></targetPath>
+                            <!-- enable filtering -->
+                            <filtering>false</filtering>
+                            <excludes>
+
+                            </excludes>
+                        </resource>
+                    </webResources>
+                    <packagingExcludes>
+                        jsps,
+                        metadata,
+                        config,
+                        jboss-4.0,
+                        WEB-INF/lib/commons-logging-*.jar,
+                        WEB-INF/lib/log4j-*.jar,
+                        WEB-INF/lib/*slf4j*.jar,
+                        WEB-INF/lib/ehcache-core-*.jar,
+                        WEB-INF/lib/aspectjrt*.jar,
+                        WEB-INF/lib/jtidy-4aug2000r7-dev.jar,
+                        WEB-INF/lib/jstl-*.jar,
+                        WEB-INF/lib/cxf-rt-rs-service-description-swagger-ui-
+                        WEB-INF/lib/jaxrpc-api-*.jar,
+                        WEB-INF/lib/grib-*.jar,
+                        WEB-INF/lib/httpservices-*.jar,
+                        WEB-INF/lib/servlet-api-*.jar,
+                        WEB-INF/lib/jna-*.jar,
+                        WEB-INF/lib/net-cdf4-*.jar,
+                        %regex[WEB-INF/lib/commons-beanutils-core.*.jar,
+                        WEB-INF/lib/httpclient-osgi*.jar
+                    </packagingExcludes>
+                </configuration>
+
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>ant-package</id>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <target>
+
+                                <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="maven.plugin.classpath" />
+
+                                <echo>changing to read write ${project.build.directory}/${project.artifactId}-${project.version}</echo>
+
+                                <trycatch>
+                                    <try>
+                                        <!-- On nix based systems run chmod - will do nothing on Windows -->
+                                        <chmod dir="${project.build.directory}" includes="**/*" perm="ugo+rw"></chmod>
+                                        <!-- On Windows based systems run attrib - will do nothing on unix -->
+                                        <attrib readonly="false" verbose="true">
+                                            <fileset dir="${project.build.directory}" includes="**/*"/>
+                                        </attrib>
+                                    </try>
+
+                                    <catch>
+                                        <echo>Error while setting attributes.</echo>
+                                    </catch>
+                                </trycatch>
+
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant</artifactId>
+                        <version>${ant.version}</version>
+                    </dependency>
+                    <!-- https://mvnrepository.com/artifact/ant/ant-apache-oro old
+                        for perfoce tasks -->
+                    <dependency>
+                        <groupId>ant</groupId>
+                        <artifactId>ant-apache-oro</artifactId>
+                        <version>1.6.5</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant-jsch</artifactId>
+                        <version>${ant.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant-launcher</artifactId>
+                        <version>${ant.version}</version>
+                    </dependency>
+                    <!-- https://mvnrepository.com/artifact/org.apache.ant/ant-commons-logging -->
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant-commons-logging</artifactId>
+                        <version>${ant.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant-apache-regexp</artifactId>
+                        <version>${ant.version}</version>
+                    </dependency>
+                    <!-- https://mvnrepository.com/artifact/ant-contrib/ant-contrib -->
+                    <dependency>
+                        <groupId>ant-contrib</groupId>
+                        <artifactId>ant-contrib</artifactId>
+                        <version>1.0b3</version>
+                        <exclusions>
+                            <exclusion>
+                                <!-- old naming -->
+                                <groupId>ant</groupId>
+                                <artifactId>ant</artifactId>
+
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant-nodeps</artifactId>
+                        <version>1.8.1</version>
+                    </dependency>
+                </dependencies>
+
+            </plugin>
+            <!--      <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                    <executions>
+                      <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                          <goal>exec</goal>
+                        </goals>
+                      </execution>
+                    </executions>
+                    <configuration>
+                      <executable>attrib</executable>
+                      <workingDirectory>${project.build.directory}/${project.artifactId}-${project.version}</workingDirectory>
+                      <arguments>
+                        <argument>-r</argument>
+                        <argument>*</argument>
+                         <argument>/s</argument>
+                      </arguments>
+                    </configuration>
+                  </plugin>
+            -->
+           <!-- TODO: Figure out how to integrate  <plugin>
+                <groupId>com.jarslab.maven</groupId>
+                <artifactId>babel-maven-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>js-transpile</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>babel</goal>
+                        </goals>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <threads>4</threads>
+                            <babelSrc>${project.basedir}/target/classes/assets/jslib/babel.min.js</babelSrc>
+                            <sourceDir>${project.basedir}/target/classes/assets/</sourceDir>
+                            <targetDir>${project.basedir}/target/classes/assets/</targetDir>
+                            <jsSourceIncludes>
+                                <jsSourceInclude>src/*.js</jsSourceInclude>
+                            </jsSourceIncludes>
+                            <prefix>trans-</prefix>
+                            <presets>react,es2015</presets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin> -->
+            <plugin>
+                <groupId>com.samaxes.maven</groupId>
+                <artifactId>minify-maven-plugin</artifactId>
+                <version>1.7.6</version>
+                <executions>
+                    <execution>
+                        <id>min-common</id>
+                        <phase>prepare-package</phase>
+
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                        <configuration>
+                            <yuiDisableOptimizations>${skip.minify}</yuiDisableOptimizations>
+                            <yuiNoMunge>${skip.minify}</yuiNoMunge>
+                            <yuiPreserveSemicolons>true</yuiPreserveSemicolons>
+                            <skipMerge>false</skipMerge>
+                            <skipMinify>${skip.minify}</skipMinify>
+                            <closureCompilationLevel>${closure.level}</closureCompilationLevel>
+                            <closureCreateSourceMap>false</closureCreateSourceMap>
+                            <closureAngularPass>false</closureAngularPass>
+                            <closureLanguageOut>ECMASCRIPT6</closureLanguageOut>
+                            <verbose>true</verbose>
+                            <closureWarningLevels>
+                                <nonStandardJsDocs>OFF</nonStandardJsDocs>
+                            </closureWarningLevels>
+                            <charset>UTF-8</charset>
+                            <jsSourceDir>.</jsSourceDir>
+                            <cssSourceDir>.</cssSourceDir>
+                            <jsEngine>CLOSURE</jsEngine>
+                            <nosuffix>false</nosuffix>
+                            <webappSourceDir>${project.basedir}/war</webappSourceDir>
+                            <webappSourceDir>${project.basedir}/war</webappSourceDir>
+                            <webappTargetDir>${project.build.directory}/minify-common</webappTargetDir>
+                            <bundleConfiguration>${project.basedir}/src/minify/common-bundles.json</bundleConfiguration>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>min-common-minuet</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                        <configuration>
+                            <yuiDisableOptimizations>${skip.minify}</yuiDisableOptimizations>
+                            <yuiNoMunge>${skip.minify}</yuiNoMunge>
+                            <yuiPreserveSemicolons>true</yuiPreserveSemicolons>
+                            <skipMerge>false</skipMerge>
+                            <skipMinify>${skip.minify}</skipMinify>
+                            <closureCompilationLevel>${closure.level}</closureCompilationLevel>
+                            <closureCreateSourceMap>false</closureCreateSourceMap>
+                            <closureAngularPass>false</closureAngularPass>
+                            <closureLanguageOut>ECMASCRIPT6</closureLanguageOut>
+                            <verbose>true</verbose>
+                            <closureWarningLevels>
+                                <nonStandardJsDocs>OFF</nonStandardJsDocs>
+                            </closureWarningLevels>
+                            <charset>UTF-8</charset>
+                            <jsSourceDir>.</jsSourceDir>
+                            <cssSourceDir>.</cssSourceDir>
+                            <jsEngine>CLOSURE</jsEngine>
+                            <nosuffix>false</nosuffix>
+                            <webappSourceDir>${project.basedir}/war</webappSourceDir>
+                            <webappTargetDir>${project.build.directory}/minify-common</webappTargetDir>
+                            <bundleConfiguration>${project.basedir}/src/minify/common-minuet-bundles.json</bundleConfiguration>
+                        </configuration>
+
+                    </execution>
+                    <execution>
+                        <id>min-package</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <disableOptimizations>true</disableOptimizations>
+                            <yuiDisableOptimizations>${skip.minify}</yuiDisableOptimizations>
+                            <yuiNoMunge>${skip.minify}</yuiNoMunge>
+                            <yuiPreserveSemicolons>true</yuiPreserveSemicolons>
+                            <skipMerge>false</skipMerge>
+                            <skipMinify>${skip.minify}</skipMinify>
+                            <closureCompilationLevel>${closure.level}</closureCompilationLevel>
+                            <closureCreateSourceMap>false</closureCreateSourceMap>
+                            <closureAngularPass>false</closureAngularPass>
+                            <closureLanguageOut>ECMASCRIPT6</closureLanguageOut>
+                            <verbose>true</verbose>
+                            <closureWarningLevels>
+                                <nonStandardJsDocs>OFF</nonStandardJsDocs>
+                            </closureWarningLevels>
+                            <charset>UTF-8</charset>
+                            <jsSourceDir>.</jsSourceDir>
+                            <cssSourceDir>.</cssSourceDir>
+                            <jsEngine>CLOSURE</jsEngine>
+                            <nosuffix>false</nosuffix>
+                            <webappSourceDir>${project.basedir}/war</webappSourceDir>
+                            <webappTargetDir>${project.build.directory}/${project.build.finalName}/cm</webappTargetDir>
+                            <bundleConfiguration>${project.basedir}/src/minify/static-bundles.json</bundleConfiguration>
+                        </configuration>
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>common-ui</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <yuiDisableOptimizations>true</yuiDisableOptimizations>
+                            <yuiPreserveSemicolons>true</yuiPreserveSemicolons>
+                            <skipMinify>${skip.minify}</skipMinify>
+                            <skipMerge>false</skipMerge>
+                            <closureCompilationLevel>${closure.level}</closureCompilationLevel>
+                            <closureCreateSourceMap>false</closureCreateSourceMap>
+                            <closureLanguageIn>ECMASCRIPT8</closureLanguageIn>
+                            <closureLanguageOut>ECMASCRIPT8</closureLanguageOut>
+                            <verbose>true</verbose>
+                            <closureWarningLevels>
+                                <nonStandardJsDocs>OFF</nonStandardJsDocs>
+                            </closureWarningLevels>
+                            <charset>UTF-8</charset>
+                            <jsSourceDir>.</jsSourceDir>
+                            <cssSourceDir>.</cssSourceDir>
+                            <jsEngine>CLOSURE</jsEngine>
+                            <nosuffix>true</nosuffix>
+                            <webappSourceDir>${project.basedir}/war</webappSourceDir>
+                            <webappTargetDir>${project.build.directory}/${project.build.finalName}/cm/common/js</webappTargetDir>
+                            <bundleConfiguration>${project.basedir}/src/minify/common-ui-bundle.json</bundleConfiguration>
+                        </configuration>
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                    </execution>
+
+
+                </executions>
+
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>
+                                            exec-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.6.0,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>exec</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <dependencies>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>extensions-default-template</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>extensions-main</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>extensions-workflow</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>extensions-linkback</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>extensions-sfp</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>extensions-nav</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-tinymce</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-jetty-jars</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rxutils</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjrt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-beanutils</artifactId>
+                    <groupId>commons-beanutils</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>CMLite-PCM-PkgMgtUI</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-jetty-logging</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rest</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <exclusions>
+
+                <exclusion>
+                    <groupId>flexera.ia</groupId>
+                    <artifactId>IAClasses</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>sitemanage</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-beanutils</artifactId>
+                    <groupId>commons-beanutils</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jsoup</groupId>
+                    <artifactId>jsoup</artifactId>
+                </exclusion>
+            </exclusions>
+
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>shindig-uber</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>rome</groupId>
+                    <artifactId>modules</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>rome</groupId>
+                    <artifactId>rome</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.oauth.core</groupId>
+                    <artifactId>oauth</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>google-collections</artifactId>
+                    <groupId>com.google.collections</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>de.odysseus.juel</groupId>
+                    <artifactId>juel-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.oauth.core</groupId>
+                    <artifactId>oauth</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>google-collections</artifactId>
+                    <groupId>com.google.collections</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.googlecode.json-simple</groupId>
+                    <artifactId>json-simple</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.collections</groupId>
+                    <artifactId>google-collections</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject</groupId>
+                    <artifactId>guice</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject.extensions</groupId>
+                    <artifactId>guice-multibindings</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject.extensions</groupId>
+                    <artifactId>guice-jmx</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.shindig</groupId>
+                    <artifactId>shindig-common</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.shindig</groupId>
+                    <artifactId>shindig-gadgets</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.shindig</groupId>
+                    <artifactId>shindig-features</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.shindig</groupId>
+                    <artifactId>shindig-gadgets</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.shindig</groupId>
+                    <artifactId>shindig-social-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jsecurity</groupId>
+            <artifactId>jsecurity</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.oauth.core</groupId>
+            <artifactId>oauth</artifactId>
+            <version>20090531</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.myfaces.trinidad/trinidad-api -->
+        <dependency>
+            <groupId>org.apache.myfaces.trinidad</groupId>
+            <artifactId>trinidad-api</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.apache.myfaces.trinidad</groupId>
+            <artifactId>trinidad-impl</artifactId>
+
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.myfaces.tomahawk/tomahawk -->
+        <dependency>
+            <groupId>org.apache.myfaces.tomahawk</groupId>
+            <artifactId>tomahawk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>org.apache.cxf.rs.swagger.ui</artifactId>
+            <version>3.4.0-PATCHED</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-service-description-swagger</artifactId>
+
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jvnet.staxex</groupId>
+                    <artifactId>stax-ex</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.xml.soap</groupId>
+                    <artifactId>javax.xml.soap-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>swagger-ui</artifactId>
+            <version>2.2.10-1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.xbean</groupId>
+            <artifactId>xbean-spring</artifactId>
+            <version>4.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.7.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>activemq-protobuf</artifactId>
+                    <groupId>org.apache.activemq.protobuf</groupId>
+                </exclusion>
+            </exclusions>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+
+        </dependency>
+        <!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-struts</artifactId>
+            <version>${spring.version}</version> </dependency> -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-discovery</groupId>
+            <artifactId>commons-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcmail-jdk15to18</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpg-jdk15to18</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15to18</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15to18</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-ext-jdk15to18</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bctls-jdk15to18</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cactus</groupId>
+            <artifactId>cactus</artifactId>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>ant</artifactId>
+                    <groupId>ant</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>cargo</artifactId>
+                    <groupId>cargo</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjrt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jtidy</artifactId>
+                    <groupId>jtidy</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xmlParserAPIs</artifactId>
+                </exclusion>
+
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>CMLite-Main</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjrt</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>CMLight-Main-cactus-tests</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-shared-test-resources</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rxutils</artifactId>
+            <type>test-jar</type>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-beanutils</artifactId>
+                    <groupId>commons-beanutils</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>org.aspectj</artifactId>
+                    <groupId>aspectjrt</groupId>
+                </exclusion>
+            </exclusions>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+        </dependency>
+       <!--  <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-snowball</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-wordnet</artifactId>
+        </dependency>
+        -->
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>8.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>8.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>8.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+            <version>8.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queries</artifactId>
+            <version>8.7.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-test-framework -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-test-framework</artifactId>
+            <version>8.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-misc -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-misc</artifactId>
+            <version>8.7.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-suggest -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-suggest</artifactId>
+            <version>8.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.any23</groupId>
+            <artifactId>apache-any23-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-distribution</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-langdetect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>caja</groupId>
+            <artifactId>caja</artifactId>
+            <version>r3828</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+
+        </dependency>
+
+        <!-- Used by tika -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-client</artifactId>
+            <version>${cxf.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.18</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-1.2-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>javax.servlet.jsp.jstl-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>de.odysseus.juel</groupId>
+            <artifactId>juel-impl</artifactId>
+            <version>2.2.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>de.odysseus.juel</groupId>
+                    <artifactId>juel-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>

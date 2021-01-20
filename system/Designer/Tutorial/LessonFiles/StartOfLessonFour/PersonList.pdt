@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Person (Link*, EmployeeID*, Name*, Telephone* )>
+<!ELEMENT Telephone (#PCDATA)>
+<!ELEMENT Name (First*, Last* )>
+<!ELEMENT Last (#PCDATA)>
+<!ELEMENT First (#PCDATA)>
+<!ELEMENT EmployeeID (#PCDATA)>
+<!ELEMENT Link (#PCDATA)>
+<!ELEMENT PersonList (Person* )>

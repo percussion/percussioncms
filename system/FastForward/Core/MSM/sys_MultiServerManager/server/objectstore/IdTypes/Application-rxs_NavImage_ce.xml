@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplicationIDTypes>
+   <PSXDeployableObject>
+      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rxs_NavImage_ce" dependencyType="Local" displayName="rxs_NavImage_ce" isIncluded="yes" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+      <RequiredClasses/>
+   </PSXDeployableObject>
+   <PSXApplicationIDTypesResource resourceName="navigationimage (template)">
+      <PSXApplicationIDTypesElement elementName="InputDataExits">
+         <PSXApplicationIDTypeMapping type="sys_none" value="0">
+            <PSXAppExtensionParamIdContext index="0" paramName="compareTo">
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>0</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXAppExtensionCallIdContext extRef="Java/global/percussion/extensions/general/sys_NullIf" index="2"/>
+            </PSXAppExtensionParamIdContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+      <PSXApplicationIDTypesElement elementName="CEUIDefinition">
+         <PSXApplicationIDTypeMapping type="sys_none" value="50">
+            <PSXAppNamedItemIdContext name="maxlength" type="Param">
+               <PSXAppNamedItemIdContext name="sys_EditBox" type="Control">
+                  <PSXAppUISetIdContext>
+                     <PSXAppNamedItemIdContext name="inactiveimg_filename" type="DisplayMapping">
+                        <PSXAppDisplayMapperIdContext fieldSetRef="RXS_CT_NAVIGATIONIMAGETRIPLE" id="0"/>
+                     </PSXAppNamedItemIdContext>
+                  </PSXAppUISetIdContext>
+               </PSXAppNamedItemIdContext>
+            </PSXAppNamedItemIdContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="sys_none" value="50">
+            <PSXAppNamedItemIdContext name="maxlength" type="Param">
+               <PSXAppNamedItemIdContext name="sys_EditBox" type="Control">
+                  <PSXAppUISetIdContext>
+                     <PSXAppNamedItemIdContext name="inactiveimg_size" type="DisplayMapping">
+                        <PSXAppDisplayMapperIdContext fieldSetRef="RXS_CT_NAVIGATIONIMAGETRIPLE" id="0"/>
+                     </PSXAppNamedItemIdContext>
+                  </PSXAppUISetIdContext>
+               </PSXAppNamedItemIdContext>
+            </PSXAppNamedItemIdContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="sys_none" value="50">
+            <PSXAppNamedItemIdContext name="maxlength" type="Param">
+               <PSXAppNamedItemIdContext name="sys_EditBox" type="Control">
+                  <PSXAppUISetIdContext>
+                     <PSXAppNamedItemIdContext name="inactiveimg_type" type="DisplayMapping">
+                        <PSXAppDisplayMapperIdContext fieldSetRef="RXS_CT_NAVIGATIONIMAGETRIPLE" id="0"/>
+                     </PSXAppNamedItemIdContext>
+                  </PSXAppUISetIdContext>
+               </PSXAppNamedItemIdContext>
+            </PSXAppNamedItemIdContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+   </PSXApplicationIDTypesResource>
+</PSXApplicationIDTypes>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXRoleAttributeRelation (Role, Attribute )>
+<!ELEMENT Attribute (#PCDATA)>
+<!ELEMENT Role (#PCDATA)>
+<!ATTLIST  PSXRoleAttributeRelation id CDATA #REQUIRED>
+<!ATTLIST  PSXRoleAttributeRelation DbComponentId CDATA #REQUIRED>
+<!ELEMENT getRoleAttributeRelation (PSXRoleAttributeRelation* )>

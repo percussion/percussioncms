@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDefData appName="psx_cepercRedirect" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_cepercRedirect/percRedirect.html" id="394" label="Redirect" name="percRedirect" typeId="394">
+      <Description>Adds a client side redirect to a Page.</Description>
+   </PSXItemDefSummary>
+   <PSXContentEditor contentType="394" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
+      <PSXDataSet id="768">
+         <name>percRedirect</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_PERCREDIRECT" name="CT_PERCREDIRECT"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="CT_percRedirect" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="delayInSeconds" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCREDIRECT</tableAlias>
+                           <column>DELAYINSECONDS</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>0</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>delayInSeconds</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="enabled" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCREDIRECT</tableAlias>
+                           <column>ENABLED</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>3</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>yes</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>enabled</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="sys_contentpostdate" showInPreview="no" showInSummary="no" type="system">
+                     <DataType/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXConditional id="0">
+                                 <variable>
+                                    <PSXTextLiteral id="0">
+                                       <text>1</text>
+                                    </PSXTextLiteral>
+                                 </variable>
+                                 <operator>=</operator>
+                                 <value>
+                                    <PSXTextLiteral id="0">
+                                       <text>0</text>
+                                    </PSXTextLiteral>
+                                 </value>
+                                 <boolean>AND</boolean>
+                              </PSXConditional>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXSearchProperties defaultSearchLabel="Content post date" enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="targetUrl" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCREDIRECT</tableAlias>
+                           <column>TARGETURL</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>300</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>targetUrl</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_percRedirect" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef id="0" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentpostdate</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>targetUrl</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Target Url:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10009" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>300</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Target Url:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>delayInSeconds</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Delay In Seconds:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10010" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Delay In Seconds:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>enabled</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Enabled:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10017" name="sys_DropDownSingle"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Enabled:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="descending" type="local">
+                              <PSXEntry default="no" sequence="-1">
+                                 <PSXDisplayText>Yes</PSXDisplayText>
+                                 <Value>yes</Value>
+                              </PSXEntry>
+                              <PSXEntry default="no" sequence="-1">
+                                 <PSXDisplayText>No</PSXDisplayText>
+                                 <Value>no</Value>
+                              </PSXEntry>
+                              <DefaultSelected>
+                                 <PSXDefaultSelected type="sequence">1</PSXDefaultSelected>
+                              </DefaultSelected>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>percRedirect</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="4,5,6,7"/>
+   </PSXContentEditor>
+</ItemDefData>

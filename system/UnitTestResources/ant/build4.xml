@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!--
+   Runs all Junit tests using the following properties and references:
+      Properties:
+         classdir - the root directory from which to recursively search for 
+            Junit test classes.
+         junit.results.dir - the directory in which test results are to be
+            written as Xml files.
+      References:
+         junit.test.classpath - the classpath used to run the junit tests.
+   
+   Converts the junit.test.classpath ref to a property named filter.classpath, 
+      which may used by the custom filter represented by the filterFile entity.
+      
+   Will fail upon error if the property FAIL_ON_JUNIT_ERROR is set.   
+-->
+<project name="JunitTest" basedir="." default="runJunitTest">
+   
+	
+	
+	<target name="runJunitTest">
+      <pathconvert property="filter.classpath" refid="junit.test.classpath"/>
+      <junit printsummary="true" fork="yes" forkmode="once"
+            errorProperty="test.failed" failureProperty="test.failed">
+         <sysproperty key="rxdeploydir" value="${rxdeploydir}"/>
+         <sysproperty key="java.library.path" value="${toolsdir}/Eclipse"/>
+         <jvmarg value="-Xmx512m"/>
+      	 <jvmarg value="-XX:MaxPermSize=256m"/>
+         <classpath refid="junit.test.classpath"/>         
+         <formatter type="xml"/>
+         <batchtest todir="${junit.results.dir}">
+            <fileset dir="${classdir}">
+            <include name="com/percussion/utils/container/jetty/*Test.class"/>  
+            <include name="**/*Test.class"/>
+            </fileset>
+			</batchtest>
+      </junit>
+		
+		
+   	
+	  <!-- Set failure if previous results failed for when more then one set of tests is run -->
+	  <antcall target="setFailure" />
+	  <condition property="test.failed">
+		<available file="${junit.results.dir}/setFailed.txt" />
+      </condition>
+	  	  
+      <!-- save results of unit tests for the calling scripts -->
+      <echo file="${junit.results.dir}/testsFailed.txt" message="${test.failed}"/>
+
+      <condition property="fail.on.error" value="true">
+         <and>
+            <istrue value="${FAIL_ON_JUNIT_ERROR}"/>
+            <isset property="test.failed"/>
+         </and>
+      </condition>
+      <fail message="One or more JUnit tests failed.  Check the ${junit.results.dir} directory for details" 
+         if="fail.on.error"/>
+   </target>
+	
+	<target name="runJunit4Test">
+	  
+	      <junit printsummary="true" fork="yes" forkmode="once"
+	            errorProperty="test.failed" failureProperty="test.failed">
+	         <sysproperty key="rxdeploydir" value="${rxdeploydir}"/>
+	         <sysproperty key="java.library.path" value="${toolsdir}/Eclipse"/>
+	         <jvmarg value="-Xmx512m"/>
+	      	 <jvmarg value="-XX:MaxPermSize=256m"/>
+	         <classpath refid="junit.test.classpath"/>         
+	         <formatter type="xml"/>
+	         <batchtest todir="${junit4.results.dir}">
+	            <fileset dir="${classdir}">
+	            <include name="com/percussion/utils/container/*/*Test.class"/>  
+	            <include name="com/percussion/services/datasource/impl/*Test.class"/>  
+	            	
+	            </fileset>
+	         </batchtest>
+	      </junit>
+		</target>
+	
+	
+	<!-- Set file on failure -->
+   
+	<target name="setFailure" if="test.failed">
+		<echo file="${junit.results.dir}/setFailed.txt" message="Failed" />
+   </target>
+	
+</project>

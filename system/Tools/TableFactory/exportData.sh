@@ -1,0 +1,1 @@
+./JRE/bin/java -cp "./AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/*:./AppServer/server/rx/lib/*" com.percussion.tablefactory.tools.PSCatalogTableData -dbexport -dbprops ./rxconfig/Installer/rxrepository.properties -storagepath ./exporteddata

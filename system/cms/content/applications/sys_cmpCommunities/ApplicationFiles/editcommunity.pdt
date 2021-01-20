@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editcommunity (relatedlinks, pagename, componentname, communityname, communityid, communitydesc, cancelurl, rolecommlookupurl, wfcommlookupurl, ctypecommlookupurl, varcommlookupurl, compcommlookupurl )>
+<!ELEMENT compcommlookupurl (#PCDATA)>
+<!ELEMENT varcommlookupurl (#PCDATA)>
+<!ELEMENT ctypecommlookupurl (#PCDATA)>
+<!ELEMENT wfcommlookupurl (#PCDATA)>
+<!ELEMENT rolecommlookupurl (#PCDATA)>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT communitydesc (#PCDATA)>
+<!ELEMENT communityid (#PCDATA)>
+<!ELEMENT communityname (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

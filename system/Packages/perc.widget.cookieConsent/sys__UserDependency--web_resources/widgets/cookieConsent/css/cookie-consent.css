@@ -1,0 +1,84 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.perc-consent-btn {
+    min-width: 140px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    line-height: 36px;
+    padding: 0 16px;
+    border: none;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.perc-consent-window {
+    background-color: #001e69;
+    position: fixed;
+    color: white;
+    line-height: 1.5em;
+    display: flex;
+    flex-wrap: nowrap;
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 1s ease;
+    -webkit-transition: opacity 1s ease;
+}
+
+.perc-consent-window a {
+    color: white;
+}
+
+.perc-consent-bottom {
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.perc-consent-top {
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.perc-consent-window.perc-consent-banner {
+    align-items: center;
+    padding: 1em 1.8em;
+}
+
+.perc-consent-banner .perc-consent-msg {
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.perc-consent-window a:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.perc-policy-links  a{
+    margin-right: 10px;
+}

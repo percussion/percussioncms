@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" name="comments">
+  <Appenders>
+    <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${sys:catalina.base}/logs/comments.log"
+                 filePattern="logs/$${date:yyyy-MM}/comments-%d{MM-dd-yyyy}-%i.log.gz">
+      <PatternLayout>
+        <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [Thread: %t] %level [%c][%M] - %msg%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10 MB"/>
+      </Policies>
+    </RollingRandomAccessFile>
+  </Appenders>
+  <Loggers>
+    <Root level="error" includeLocation="true" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+    </Root>
+     <Logger name="com.percussion.delivery.comments" level="info" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+     <Logger name="com.percussion.delivery.likes" level="info" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+     
+     <!--
+      <Logger name="com.percussion.delivery.comments.services.PSCommentsRestService" level="info" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+     	 
+	 <Logger name="com.percussion.delivery.comments.services.PSCommentsRestService" level="debug" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.comments.services.PSCommentsRestService" level="error" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.comments.services.PSCommentsRestService" level="warn" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.likes.services.PSLikesRestService" level="info" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+     	 
+	 <Logger name="com.percussion.delivery.likes.services.PSLikesRestService" level="debug" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.likes.services.PSLikesRestService" level="error" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.likes.services.PSLikesRestService" level="warn" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+      -->
+     
+  </Loggers>
+</Configuration>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Erik Serating (Percussion Software) -->
+<!ELEMENT Action (PSXRole | PSXSubject | PSXAttribute | PSXRoleSubjectRelation | PSXRoleAttributeRelation | PSXSubjectAttributeRelation | PSXRoleSubjectAttributeRelation | PSXAttributeValue | WorkflowRoles | StateRoles | CommunityRoles)>
+<!ELEMENT CommunityRoles EMPTY>
+<!ATTLIST CommunityRoles
+   RoleId CDATA #REQUIRED
+>
+<!ELEMENT StateRoles EMPTY>
+<!ATTLIST StateRoles
+   RoleId CDATA #REQUIRED
+   WorkflowAppId CDATA #REQUIRED
+>
+<!ELEMENT WorkflowRoles EMPTY>
+<!ATTLIST WorkflowRoles
+   RoleId CDATA #REQUIRED
+   WorkflowAppId CDATA #REQUIRED
+>
+<!ELEMENT PSXAttributeValue (value, attributeId)>
+<!ELEMENT attributeId (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
+<!ATTLIST PSXAttributeValue
+   id CDATA #REQUIRED
+   DbComponentId CDATA #REQUIRED
+>
+<!ELEMENT PSXRoleSubjectAttributeRelation (Role, Subject, Attribute)>
+<!ATTLIST PSXRoleSubjectAttributeRelation
+   id CDATA #REQUIRED
+>
+<!ELEMENT PSXSubjectAttributeRelation (Subject, Attribute)>
+<!ATTLIST PSXSubjectAttributeRelation
+   id CDATA #REQUIRED
+>
+<!ELEMENT PSXRoleAttributeRelation (Role, Attribute)>
+<!ELEMENT Attribute (#PCDATA)>
+<!ATTLIST PSXRoleAttributeRelation
+   id CDATA #REQUIRED
+>
+<!ELEMENT PSXRoleSubjectRelation (Role, Subject)>
+<!ELEMENT Subject (#PCDATA)>
+<!ELEMENT Role (#PCDATA)>
+<!ATTLIST PSXRoleSubjectRelation
+   id CDATA #REQUIRED
+>
+<!ELEMENT PSXAttribute (#PCDATA)>
+<!ATTLIST PSXAttribute
+   id CDATA #REQUIRED
+   DbComponentId CDATA #REQUIRED
+   name CDATA #REQUIRED
+>
+<!ELEMENT PSXSubject (name, securityProviderType, securityProviderInstance)>
+<!ELEMENT securityProviderInstance (#PCDATA)>
+<!ELEMENT securityProviderType (#PCDATA)>
+<!ATTLIST PSXSubject
+   id CDATA #REQUIRED
+   DbComponentId CDATA #REQUIRED
+   type CDATA #REQUIRED
+>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT PSXRole (name)>
+<!ATTLIST PSXRole
+   id CDATA #REQUIRED
+   DbComponentId CDATA #REQUIRED
+>
+<!ATTLIST Action
+   texttype (INSERT | UPDATE | DELETE | UNKNOWN) #REQUIRED
+>
+<!ELEMENT UpdateRoleCfg (Action*)>

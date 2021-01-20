@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<web-app xmlns:j2ee="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi=
+  "http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=
+    "http://java.sun.com/xml/ns/j2ee 
+      http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+	<display-name>Rhythmyx Web Services</display-name>
+	<description>This web application contains the Rhythmyx client and publisher web services. In this
+		application are also the publisher component jars, as well as the Apache SOAP handler that
+		unpacks web service requests. Client WS requests are forwarded to the rhythmyx_url defined
+		below.</description>
+	<!-- Define the soap configuration file -->
+	<context-param>
+		<param-name>ConfigFile</param-name>
+		<param-value>/soap.xml</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>rpcrouter</servlet-name>
+		<display-name>Apache-SOAP RPC Router</display-name>
+		<description>no description</description>
+		<servlet-class>org.apache.soap.server.http.RPCRouterServlet</servlet-class>
+		<init-param>
+			<param-name>faultListener</param-name>
+			<param-value>org.apache.soap.server.DOMFaultListener</param-value>
+		</init-param>
+	</servlet>
+	<servlet>
+		<servlet-name>messagerouter</servlet-name>
+		<display-name>Apache-SOAP Message Router</display-name>
+		<servlet-class>org.apache.soap.server.http.MessageRouterServlet</servlet-class>
+		<init-param>
+			<param-name>faultListener</param-name>
+			<param-value>org.apache.soap.server.DOMFaultListener</param-value>
+		</init-param>
+		<init-param>
+			<!-- Rhythmyx  location, modify if not in the default location. -->
+			<param-name>rhythmyx_url</param-name>
+			<param-value>http://localhost:8080/Rhythmyx</param-value>
+		</init-param>
+		<init-param>
+			<!-- Time out (in milliseconds) for the communication with Rhythmyx. Defaults to 10 minutes if not specified -->
+			<param-name>timeout_to_rhythmyx</param-name>
+			<param-value>600000</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>rpcrouter</servlet-name>
+		<url-pattern>/servlet/rpcrouter</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>messagerouter</servlet-name>
+		<url-pattern>/servlet/messagerouter</url-pattern>
+	</servlet-mapping>
+</web-app>

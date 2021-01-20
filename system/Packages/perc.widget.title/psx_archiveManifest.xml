@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_title_images_widgetTitle-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\title\images\widgetTitle.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_title_images_widgetTitle-png\widgetTitle.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-355">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percTitleAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-355\percTitleAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percTitleAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-355\percTitleAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percTitleAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-355\percTitleAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_title_images_widgetTitleOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\title\images\widgetTitleOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_title_images_widgetTitleOver-png\widgetTitleOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_title_images_widgetTitleEmpty-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\title\images\widgetTitleEmpty.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_title_images_widgetTitleEmpty-png\widgetTitleEmpty.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percTitle-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rxconfig\Widgets\percTitle.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percTitle-xml\percTitle.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--5081574334170922937">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percTitleAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--5081574334170922937\percTitleAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/generic/FindPageLinkText">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\FindPageLinkText.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\generic\FindPageLinkText\FindPageLinkText.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

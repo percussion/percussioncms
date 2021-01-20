@@ -1,0 +1,162 @@
+/*==============================================================================
+
+	GRC multi-level script-free pure-CSS menuing system stylesheet.
+   This code is hereby placed into the public domain by its author
+   Steve Gibson. It may be freely used for any purpose whatsoever.
+
+	Computed Geometries:	with a default 12px font, 1.0em == 12px and
+	1px == 0.08333em.
+	Thus, our 98px wide Freeware & Research buttons are 8.166666em wide.
+
+	--
+	Substantial modifications at Percussion software for use in our pages.
+
+==============================================================================*/
+
+/* suppress our whole menu when not an interactive mode (when printing, etc.) */
+@media print, projection { .menu { display:none; } }
+
+ /*========================= TOP OF THE MENU CASCADE =========================*/
+
+.menu {
+	position:relative;        /* establish a menu-relative positioning context */
+	float:left;                                     /* play nicely with others */
+	margin:0;
+	margin-bottom: 5px;
+	padding:0;
+	border:0;
+	height:18px; 
+	width:100%;
+	border:1px outset gray;      
+	background: url(/Rhythmyx/sys_resources/images/aa/soriaBarBg.gif) repeat-x;
+	color: black;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;         /* this (and also below) sets the menu's font size */
+}
+
+.menu img {
+	vertical-align: top;      /* prevent images from being pushed down by text */
+}
+
+.menu ul {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	list-style-type:none;          /* we don't want to view the list as a list */
+	line-height:1.5em;           /* globally set the menu's item spacing. note */
+}                               /* this must be 1.0 or 1.5 or 2.0 for Mozilla */
+
+.menu ul li {
+	float:left;    /* this creates the side-by-side array of top-level buttons */
+	position:relative;    /* create local positioning contexts for each button */
+	margin:0;
+	font-size: 11px;
+	font-weight: bold;
+	padding-left: 2px;
+	padding-right: 5px;
+	margin-right: 1em;
+}
+
+/*======================== TOP LEVEL MENU DEFINITIONS ========================*/
+
+.menu ul li ul {
+	display:none;                  /* initially hide the entire list hierarchy */
+	padding: 1px;                               /* this is our box border width */
+	margin: 0px;
+}
+
+.menu ul li a {
+	display:block;
+	font-weight: bold;
+	text-decoration: none;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.menu ul li:hover a,
+.menu ul li.elemhover a,
+.menu ul li a:hover {                        /* selected top-level menu items */
+	display:block;
+	font-weight: bold;
+	text-decoration: none;
+	padding-left: 4px;
+	padding-right: 4px;
+	background-color: white;
+}
+
+/*======================== 2ND LEVEL MENU DEFINITIONS ========================*/
+
+.menu ul li ul li {
+	padding: 0px;                               /* this is our box border width */
+	margin: 0px;
+	width: 100%;
+}
+
+.menu ul li:hover ul,
+.menu ul li.elemhover ul,
+.menu ul li a:hover ul {                           /* 2nd level drop-down box */
+	display:block;
+	position:absolute;
+	margin: 0;
+	padding: 0;
+	top:18px;              /* place us just up underneath the top-level images */
+	left:-2px;       /* left-align our drop-down to the previous button border */
+	height:auto;      /* the drop-down height will be determiend by line count */
+	color:black;                        /* this sets the unselected-text color */ 
+	border: 1px solid black;
+	background-color: #BED7FF;
+	white-space: nowrap;
+}
+
+.menu ul li:hover ul li a,
+.menu ul li.elemhover ul li a,
+.menu ul li a:hover ul li a {                   /* 2nd level unselected items */
+	background-color: #BED7FF;
+	border: 0px;
+}
+
+.menu ul li:hover ul li:hover a,
+.menu ul li.elemhover ul li.elemhover a,
+.menu ul li a:hover ul li a:hover {                /* 2nd level selected item */
+	background:white;
+	border: 0px;
+}
+
+
+/*======================== 3RD LEVEL MENU DEFINITIONS ========================*/
+
+.menu ul li:hover ul li ul,
+.menu ul li.elemhover ul li ul,
+.menu ul li a:hover ul li a ul {             /* hide inactive 3rd-level menus */
+	visibility:hidden;
+}
+     
+.menu ul li:hover ul li:hover ul,
+.menu ul li.elemhover ul li.elemhover ul,
+.menu ul li a:hover ul li a:hover ul {             /* 3rd level drop-down box */
+	visibility:visible;
+	position:absolute;
+	margin-top:-1px;	      /* bring the top edge of the 3rd level menu up one */
+	top:0;
+	left:8.08333em;
+	width:14em;
+}
+
+.menu ul li:hover ul li:hover ul li a,
+.menu ul li.elemhover ul li.elemhover ul li a,
+.menu ul li a:hover ul li a:hover ul li a {     /* 3rd level unselected items */
+	width:14em;
+	background:#d8d8d8;
+}
+
+.menu ul li:hover ul li:hover ul li a:hover,
+.menu ul li.elemhover ul li.elemhover ul li a:hover,
+.menu ul li a:hover ul li a:hover ul li a:hover {    /* level3 selected items */
+	width:14em;
+	background:white;
+}
+
+#text {           /* the Mac's standard Safari browser will not see this code */
+	height:1.215em;#           /* ...  but every other browser will and should */
+} /* Safari barfs on the illegal pound sign (#) after the rule's property val */

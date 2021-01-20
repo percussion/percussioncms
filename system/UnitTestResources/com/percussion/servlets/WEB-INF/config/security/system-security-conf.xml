@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityConfiguration>
+   <!-- basic requests -->
+   <path authType="basic">/Design*</path>
+   <path authType="basic">/rxwebdav*</path>
+
+   <!-- anonymous requests -->
+   <path authType="anonymous">/rxlogin.jsp</path>
+   <path authType="anonymous">/rxlogout.jsp</path>
+   <path authType="anonymous">/sys_deploymentHandler</path>
+   <path authType="anonymous">/login</path>
+   <path authType="anonymous">/logout</path>
+   
+   <method authType="basic">PROPFIND</method>
+   <method authType="anonymous">PROPPATCH</method>   
+</securityConfiguration>

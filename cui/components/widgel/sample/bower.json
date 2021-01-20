@@ -1,0 +1,17 @@
+{
+  "name": "Widgel_Sample",
+  "version": "0.1.0",
+  "ignore": [
+    "node_modules",
+    "public/components",
+    "reports"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "jquery-ui": "~1.10.4",
+    "jasmine-jquery": "~2.0.2",
+    "widgel": "../",
+    "requirejs": "~2.1.14",
+    "requirejs-text": "latest"
+  }
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- THIS IS JUST A SAMPLE CATEGORY XML -->
+<CategoryTree title="Categories" sitename="xyz">
+    <Children title="Sample Category 1" showInPgMetaData="false" selectable="true" previousCategoryName="Sample Category 1" lastModifiedDate="2015-10-26T09:44:31.423" lastModifiedBy="Admin" initialViewCollapsed="true" id="1" deleted="false" creationDate="2015-10-07T07:15:00.000" createdBy="Shweta">
+        <Child title="Sample Sub Category 1 5" showInPgMetaData="false" selectable="true" previousCategoryName="Sample Sub Category 1 5" lastModifiedDate="2015-10-21T08:29:58.775" lastModifiedBy="Admin" initialViewCollapsed="true" id="94db2a3a-3f7b-3661-9374-1a1d191ac022" deleted="false" creationDate="2015-10-20T18:14:40.739" createdBy="Admin"/>
+        <Child title="Sample Sub Category 1 4" showInPgMetaData="true" selectable="false" previousCategoryName="Sample Sub Category 1 4" lastModifiedDate="2015-10-21T09:28:42.893" lastModifiedBy="Admin" initialViewCollapsed="true" id="8f8ee58a-6750-9550-e01e-66fffe1c2953" deleted="false" creationDate="2015-10-19T13:27:21.725" createdBy="Admin"/>
+        <Child title="Sample Sub Category 1 6" showInPgMetaData="true" selectable="true" initialViewCollapsed="true" id="cae3ffec-a4fd-f638-0138-42df2fd68cbb" deleted="false" creationDate="2015-10-21T13:55:28.409" createdBy="Admin"/>
+        <Child title="Sample Sub Category 1 1" showInPgMetaData="true" selectable="true" previousCategoryName="Sample Sub Category 1 1" lastModifiedDate="2015-10-22T07:42:03.770" lastModifiedBy="Admin" initialViewCollapsed="true" id="896f12b0-0b02-bef8-2709-7ea8a08a3d9a" deleted="false" creationDate="2015-10-19T10:36:49.467" createdBy="Admin">
+            <Child title="Sample Sub Sub Category 1 1 1" showInPgMetaData="true" selectable="true" initialViewCollapsed="true" id="30006578-c7da-4be4-351d-4026e7355ff7" deleted="false" creationDate="2015-10-20T10:51:36.109" createdBy="Admin">
+                <Child title="Sample Sub Sub Sub Category 1 1 1 1" showInPgMetaData="true" selectable="true" initialViewCollapsed="true" id="1e0e6010-de71-ba99-60fe-6645fe30bcb3" deleted="false" creationDate="2015-10-20T10:55:54.460" createdBy="Admin">
+                    <Child title="Sample sub 1 1 1 1 1" showInPgMetaData="true" selectable="true" initialViewCollapsed="true" id="e45828de-4dc9-438e-107e-44940caddbac" deleted="false" creationDate="2015-10-20T11:05:50.927" createdBy="Admin"/>
+                    <Child title="Sample Sub 1 1 1 1 2" showInPgMetaData="true" selectable="true" initialViewCollapsed="true" id="a93b7ff3-0f42-39af-6890-9ea5fcac9d67" deleted="false" creationDate="2015-10-21T09:47:34.666" createdBy="Admin"/>
+                </Child>
+            </Child>
+        </Child>
+        <Child title="Sample Sub Category 1 7" showInPgMetaData="false" selectable="true" initialViewCollapsed="true" id="7c2161a6-2c82-067c-e565-f0137c286618" deleted="false" creationDate="2015-10-22T08:29:40.558" createdBy="Admin">
+            <Child title="Sample Sub Sub Category 1 7 1" showInPgMetaData="true" selectable="false" initialViewCollapsed="true" id="79b6b46d-ba3c-670a-04b7-a7124d22d677" deleted="false" creationDate="2015-10-22T08:29:58.149" createdBy="Admin"/>
+        </Child>
+        <Child title="Sample Sub Category 1 2" showInPgMetaData="true" selectable="false" previousCategoryName="Sample Sub Category 1 2" lastModifiedDate="2015-10-23T17:06:43.420" lastModifiedBy="Admin" initialViewCollapsed="true" id="b530379e-1763-6105-2c6a-55379739335b" deleted="true" creationDate="2015-10-19T10:38:16.999" createdBy="Admin">
+            <Child title="Sample Sub Sub Category 1 2 1" showInPgMetaData="true" selectable="false" previousCategoryName="Sample Sub Sub Category 1 2 1" lastModifiedDate="2015-10-21T07:40:46.720" lastModifiedBy="Admin" initialViewCollapsed="true" id="4a1d23ae-db98-668a-5d84-279b18ce9319" deleted="true" creationDate="2015-10-21T07:40:17.569" createdBy="Admin"/>
+        </Child>
+        <Child title="Sample Sub Category 1 3" showInPgMetaData="true" selectable="false" previousCategoryName="Sample Sub Category 1 3" lastModifiedDate="2015-10-20T13:53:12.660" lastModifiedBy="Admin" initialViewCollapsed="true" id="755d51df-ff38-530b-cb54-6dfb81cce0f6" deleted="true" creationDate="2015-10-19T10:58:46.790" createdBy="Admin">
+            <Child title="Sample Sub Category 1 3 1" showInPgMetaData="false" selectable="false" initialViewCollapsed="true" id="9ec4bf0a-550e-5192-7e09-5727f9ebf757" deleted="true" creationDate="2015-10-22T09:13:46.375" createdBy="Admin"/>
+            <Child title="Sample Sub Category 1 3 2" showInPgMetaData="true" selectable="false" previousCategoryName="Sample Sun Category 1 3 2" lastModifiedDate="2015-10-23T17:07:33.850" lastModifiedBy="Admin" initialViewCollapsed="true" id="db683c50-477d-d22e-795c-ba76828c7f09" deleted="true" creationDate="2015-10-23T17:07:10.869" createdBy="Admin"/>
+        </Child>
+    </Children>
+    <Children title="Sample Category 2" showInPgMetaData="true" selectable="false" initialViewCollapsed="true" id="2" deleted="false" creationDate="2015-10-07T07:15:00.000" createdBy="Shweta">
+        <Child title="Sample Sub Category 2 3" showInPgMetaData="false" selectable="true" initialViewCollapsed="true" id="7c2718d7-2d15-eee2-3e33-f8ee65859fcd" deleted="false" creationDate="2015-10-20T13:53:25.249" createdBy="Admin"/>
+        <Child title="Sample Sub Category 2 1" showInPgMetaData="false" selectable="false" previousCategoryName="Sample Sub Category 2 1" lastModifiedDate="2015-10-23T12:19:13.602" lastModifiedBy="Admin" initialViewCollapsed="true" id="cb2d8686-5b6c-bd6e-622b-541cbdfbb08e" deleted="false" creationDate="2015-10-20T10:48:35.423" createdBy="Admin">
+            <Child title="Sample Sub Sub Category 2 1 1" showInPgMetaData="true" selectable="true" previousCategoryName="Sample Sub Sub Category 2 1" lastModifiedDate="2015-10-21T09:37:40.127" lastModifiedBy="Admin" initialViewCollapsed="true" id="b95fb50e-affd-0c58-466a-179b025db6d2" deleted="false" creationDate="2015-10-20T11:22:58.454" createdBy="Admin"/>
+            <Child title="Sample Sub Sub Category 2 1 2" showInPgMetaData="true" selectable="true" initialViewCollapsed="true" id="f300196e-686f-6226-d784-6061a7d89bb7" deleted="false" creationDate="2015-10-21T09:37:04.463" createdBy="Admin"/>
+        </Child>
+        <Child title="Sample Sub Category 2 4" showInPgMetaData="true" selectable="true" initialViewCollapsed="true" id="41e192d3-3951-57a1-eafc-05ea652f6175" deleted="false" creationDate="2015-10-20T18:16:14.164" createdBy="Admin">
+            <Child title="Sample Sub Category 2 4 1" showInPgMetaData="true" selectable="false" initialViewCollapsed="true" id="2d66aa97-90df-ed0f-2413-324c2cdbca01" deleted="false" creationDate="2015-10-20T18:21:53.513" createdBy="Admin">
+                <Child title="Sample Sub Category 2 4 1 2" showInPgMetaData="false" selectable="true" previousCategoryName="Sample Sub Category 2 4 2" lastModifiedDate="2015-10-23T12:27:39.565" lastModifiedBy="Admin" initialViewCollapsed="true" id="e0320f1a-2d5d-ff73-bc38-2071d64c4fd7" deleted="false" creationDate="2015-10-20T18:22:54.747" createdBy="Admin"/>
+            </Child>
+        </Child>
+        <Child title="Sample Sub Category 2 2" showInPgMetaData="true" selectable="true" initialViewCollapsed="true" id="ea957737-ae3f-a01c-9f31-1535e8786361" deleted="false" creationDate="2015-10-20T12:02:15.234" createdBy="Admin"/>
+        <Child title="Sample Sub Category 2 6" showInPgMetaData="true" selectable="true" initialViewCollapsed="true" id="9a9d5d63-029f-3149-ec64-5ba1a0eaf836" deleted="false" creationDate="2015-10-22T09:31:29.686" createdBy="Admin">
+            <Child title="Sample Sub Sub Category 2 6 1" showInPgMetaData="false" selectable="true" previousCategoryName="Sample Sub Sub Category 2 6 1" lastModifiedDate="2015-10-22T09:31:59.170" lastModifiedBy="Admin" initialViewCollapsed="true" id="3353bca8-21f7-9431-c709-12bae5f93791" deleted="false" creationDate="2015-10-22T09:31:43.770" createdBy="Admin"/>
+        </Child>
+        <Child title="Sample Sub Category 2 5" showInPgMetaData="true" selectable="false" initialViewCollapsed="true" id="f3ece2fe-b840-cf8a-1ca9-f4e7e484764c" deleted="true" creationDate="2015-10-22T07:42:28.230" createdBy="Admin"/>
+    </Children>
+</CategoryTree>

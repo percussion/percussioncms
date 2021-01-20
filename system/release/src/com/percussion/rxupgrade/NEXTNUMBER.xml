@@ -1,0 +1,66 @@
+   <!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<table name="NEXTNUMBER">
+      <row>
+         <column name="KEYNAME">variableid</column>
+         <column name="NEXTNR">300</column>
+      </row>
+      <row>
+         <column name="KEYNAME">contextid</column>
+         <column name="NEXTNR">300</column>
+      </row>
+      <row>
+         <column name="KEYNAME">schemeid</column>
+         <column name="NEXTNR">300</column>
+      </row>
+      <row>
+         <column name="KEYNAME">schemeparamid</column>
+         <column name="NEXTNR">300</column>
+      </row>
+		<row>
+			<column name="KEYNAME">componentid</column>
+			<column name="NEXTNR">1000</column>
+		</row>
+		<row>
+			<column name="KEYNAME">propertyid</column>
+			<column name="NEXTNR">1000</column>
+		</row>
+		<row>
+			<column name="KEYNAME">communityid</column>
+			<column name="NEXTNR">1000</column>
+		</row>
+		<row>
+			<column name="KEYNAME">PersistedProperty</column>
+			<column name="NEXTNR">1000</column>
+		</row>
+      <row>
+         <column name="KEYNAME">Attribute</column>
+         <column name="NEXTNR">1000</column>
+      </row>
+      <row>
+         <column name="KEYNAME">AttributeValue</column>
+         <column name="NEXTNR">1000</column>
+      </row>
+	</table>

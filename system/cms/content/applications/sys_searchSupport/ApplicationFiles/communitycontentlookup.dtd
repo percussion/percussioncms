@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT community (name, id, contenttype* )>
+<!ELEMENT contenttype (name, id, displayname )>
+<!ELEMENT displayname (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT communitycontentlookup (community* )>

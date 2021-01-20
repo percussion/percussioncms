@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuration file to override the settings for processing global templates -->
+<GlobalTemplateHandlerConfig>
+   <!-- Name of the global template application where the source HTML files for global templates are put via Workbench -->
+   <Option name="GlobalTemplateApp">rxs_GlobalTemplates</Option>
+   <!-- Option to indicate the handler to touch (reset the last modified date) of all variant XSL stylesheet so that the XSL processor would not use the cached ones. Allowed values are [yes]/[true] or [no]/[false]. Default is [yes]/[true] -->
+   <Option name="TouchVariants">yes</Option>
+   <!-- Name of the log file to write the processing log. Default is [globaltemplates.log] -->
+   <Option name="LogFile">globaltemplates.log</Option>
+   <!-- Whether to clean the global template application folder before processing. Allowed values are [yes]/[true] or [no]/[false]. Default is [yes]/[true] -->
+   <Option name="CleanAppFolder">yes</Option>
+</GlobalTemplateHandlerConfig>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_gadgetConfigGoogle-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\images\gadgetConfigGoogle.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_gadgetConfigGoogle-png\gadgetConfigGoogle.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonConnectInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\images\buttonConnectInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonConnectInactive-png\buttonConnectInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonConnect-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\images\buttonConnect.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonConnect-png\buttonConnect.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonConnectOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\images\buttonConnectOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonConnectOver-png\buttonConnectOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonSaveInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\images\buttonSaveInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonSaveInactive-png\buttonSaveInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_perc__google__setup__gadget-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\perc_google_setup_gadget.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_perc__google__setup__gadget-xml\perc_google_setup_gadget.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonSave-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\images\buttonSave.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonSave-png\buttonSave.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonCancelOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\images\buttonCancelOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonCancelOver-gif\buttonCancelOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonSaveOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\images\buttonSaveOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonSaveOver-png\buttonSaveOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonCancel-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_google_setup_gadget\images\buttonCancel.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__google__setup__gadget_images_buttonCancel-gif\buttonCancel.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

@@ -1,0 +1,27 @@
+<xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+		<title>psx-displaytitle</title>
+	</head>
+	<body>
+		<div>
+			<!-- begin XSL -->
+			<xsl:variable name="related">
+				<xsl:copy-of select="document(/*/@AutoRelatedContentURL)/*/RelatedContent/*" />
+			</xsl:variable>
+			<!-- end XSL -->
+			<!-- start slot -->
+			<table border="0" cellspacing="0" cellpadding="0">
+				<!-- start snippet wrapper -->
+				<tr>
+					<td width="100%" align="left">
+						<span psxeditslot="no" slotname="System">Related Links here</span>
+					</td>
+				</tr>
+				<!-- end snippet wrapper -->
+			</table>
+			<!-- end slot -->
+		</div>
+	</body>
+</html>

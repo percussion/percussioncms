@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT menuitem (displaytext, description, url, userrolesurl, contexturl, componentname, childitem* )>
+<!ELEMENT childitem EMPTY>
+<!ATTLIST  childitem id CDATA #IMPLIED>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT contexturl (#PCDATA)>
+<!ELEMENT userrolesurl (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT displaytext (#PCDATA)>
+<!ATTLIST  menuitem id CDATA #IMPLIED>
+<!ATTLIST  menuitem name CDATA #IMPLIED>

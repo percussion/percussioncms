@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="contentassembler" context="global/percussion/contentassembler/" deprecated="no" handler="Java" name="perc_ResourceAssemblyLocation" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Builds a delivery location by evaluating a jexl expression</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="className">com.percussion.pagemanagement.assembler.impl.PSResourceAssemblyLocation</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSAssemblyLocation"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

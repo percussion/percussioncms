@@ -1,0 +1,142 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="Tomcat 5.0 Netbuild" default="build" basedir=".">
+
+
+  <!-- ===================== Initialize Property Values =================== -->
+
+  <!-- See "build.properties.sample" in the top level directory for all     -->
+  <!-- property values you must customize for successful building!!!        -->
+  <property file="${user.home}/build.properties"/>
+  <property file="build.properties"/>
+  <property file="build.properties.default"/>
+
+  <!-- Project Properties -->
+  <property name="name"                  value="Apache Tomcat" />
+  <property name="year"                  value="2003" />
+  <property name="version"               value="5.0" />
+  <property name="project"               value="jakarta-tomcat" />
+  <property name="final.name"            value="${project}-${version}" />
+  <property name="final-src.name"        value="${project}-${version}-src" />
+
+  <!-- CVSROOT -->
+  <property name="cvsroot" 
+           value=":pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+
+  <!-- Subprojects -->
+  <property name="api.project"           value="jakarta-servletapi-5" />
+  <property name="tomcat.project"        value="jakarta-tomcat-5" />
+  <property name="catalina.project"      value="jakarta-tomcat-catalina" />
+  <property name="jtc.project"           value="jakarta-tomcat-connectors" />
+  <property name="jasper.project"        value="jakarta-tomcat-jasper" />
+
+  <!-- Dependent projects -->
+  <property name="commons-daemon.project"  value="jakarta-commons/daemon" />
+
+  <!-- Source dependencies -->
+  <property name="api.home"
+           value="${basedir}/${api.project}"/>
+  <property name="catalina.home" 
+           value="${basedir}/${catalina.project}"/>
+  <property name="jasper.home"
+           value="${basedir}/${jasper.project}/jasper2"/>
+  <property name="jtc.home"
+           value="${basedir}/${jtc.project}"/>
+  <property name="tomcat.home"
+           value="${basedir}/${tomcat.project}"/>
+
+  <target name="build" depends="check.source,check.source.depends,get.source,get.source.depends"
+   description="Builds all components">
+
+    <ant dir="${tomcat.home}" target="download" />
+    <ant dir="${tomcat.home}" target="deploy" />
+
+  </target>
+
+  <target name="checkout"
+          description="Update or checkout required sources from CVS">
+
+    <echo level="info"
+        message="If the checkout fails, run `cvs -d ${cvsroot} login` and try again. The password for the anonymous CVS access is `anoncvs`" />
+
+    <cvs cvsroot="${cvsroot}" quiet="true"
+         command="checkout -P ${tomcat.project}" 
+         dest="${basedir}" compression="true" />
+    <cvs cvsroot="${cvsroot}" quiet="true"
+         command="checkout -P ${catalina.project}" 
+         dest="${basedir}" compression="true" />
+    <cvs cvsroot="${cvsroot}" quiet="true"
+         command="checkout -P ${jasper.project}" 
+         dest="${basedir}" compression="true" />
+    <cvs cvsroot="${cvsroot}" quiet="true"
+         command="checkout -P ${jtc.project}" 
+         dest="${basedir}" compression="true" />
+    <cvs cvsroot="${cvsroot}" quiet="true"
+         command="checkout -P ${api.project}" 
+         dest="${basedir}" compression="true" />
+
+  </target>
+
+  <target name="checkout.depends"
+          description="Update or checkout dependent sources from CVS">
+
+    <cvs cvsroot="${cvsroot}" quiet="true"
+         command="checkout -P jakarta-commons/LICENSE" 
+         dest="${basedir}" compression="true" />
+    <cvs cvsroot="${cvsroot}" quiet="true"
+         command="checkout -P ${commons-daemon.project}" 
+         dest="${basedir}" compression="true" />
+
+  </target>
+
+  <!-- *************** UTILITY TARGETS *************** -->
+
+  <target name="check.source">
+
+    <available property="source.exists"
+                   file="${basedir}/${tomcat.project}" type="dir" />
+
+  </target>
+
+  <target name="check.source.depends">
+
+    <available property="source.depends.exists" 
+                   file="${basedir}/${commons-daemon.project}" type="dir" />
+
+  </target>
+
+  <target name="get.source" unless="source.exists">
+
+    <antcall target="checkout" />
+
+  </target>
+
+  <target name="get.source.depends" unless="source.depends.exists">
+
+    <antcall target="checkout.depends" />
+
+  </target>
+
+</project>

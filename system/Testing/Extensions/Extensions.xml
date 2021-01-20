@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Extensions.xml 1.12 2002/04/18 21:07:52Z martingenhart Exp $ -->
+<PSXExtensionHandlerConfiguration handlerName="Java">
+   <Extension name="makeCERequests" context="rxTest/" handler="Java" categorystring="" deprecated="no">
+      <initParam name="com.percussion.user.description">Makes an internal request to specified content editor resource. Supports only &#39;edit&#39;, &#39;preview&#39; and &#39;modify&#39; commands only. Expects the input document to the request
+has the following format.
+&lt;!ELEMENT ContentEditorItem(PSXParam+)&gt;
+&lt;!-- The format of resource is &#39;appName/ceDataSetName&#39; --&gt;
+&lt;!ATTLIST ContentEditorItem
+	Resource CDATA #REQUIRED&gt;
+&lt;!ELEMENT PSXParam(Value+)&gt;
+&lt;!ATTLIST PSXParam
+	Name CDATA #REQUIRED&gt;
+&lt;!ELEMENT Value(#PCDATA&gt;
+
+Expects the minimum parameters required for content editor request, otherwise throws exception.
+Returns the result document  with item content inserted or updated or queried.
+
+&lt;ContentEditorItem Resource=&#39;appName/ceDataSetName&#39;&gt;
+&lt;/ContentEditorItem&gt;</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="className">com.percussion.extensions.testing.PSMakeCERequest</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <resource href="file:classes/"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PSMakeCERequest.class" href="file:classes/com/percussion/extensions/testing/PSMakeCERequest.class"/>
+   </Extension>
+   <Extension name="exerciseRequestParameters" context="rxTest/" handler="Java" categorystring="" deprecated="no">
+      <initParam name="com.percussion.user.description">Exit to use the methods added/modified for modifying the request parameters through request context interface. This is set on 'RequestParameters' test application to test the methods which is used by autotest script 'TestRequestParameters.xml'</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.extensions.testing.PSExerciseRequestParameters</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <resource href="file:classes/"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PSExerciseRequestParameters.class" href="file:classes/com/percussion/extensions/testing/PSExerciseRequestParameters.class"/>
+   </Extension>
+   <Extension name="TestMakeInternalRequest" context="rxTest/" handler="Java" deprecated="no">
+      <initParam name="com.percussion.user.description">A post-exit to test internal request handler lookups and context cloning.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.extensions.testing.TestMakeInternalRequest</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>internalRequestPath</name>
+         <dataType>String</dataType>
+         <description>(required)  Specifies the application and page of the dataset to which the internal request is to be made.</description>
+      </PSXExtensionParamDef>
+      <resource href="file:classes"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/TestMakeInternalRequest.class" href="file:classes/com/percussion/extensions/testing/TestMakeInternalRequest.class"/>
+   </Extension>
+   <Extension name="TestDatabasePublisher" context="rxTest/" handler="Java" deprecated="no">
+      <initParam name="com.percussion.user.description">A post-exit used to test the database publisher.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.extensions.testing.DatabasePublisherTestPostExit</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <resource href="file:classes"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/DatabasePublisherTestPostExit.class" href="file:classes/com/percussion/extensions/testing/DatabasePublisherTestPostExit.class"/>
+   </Extension>
+   <Extension name="sortDocData" context="rxTest/" handler="Java">
+      <initParam name="com.percussion.user.description">Sorts the data based on the fields given for sorting. The sort fields should be equal to data fields or subset of them.
+The fields should be separated by &quot;,&quot;</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.extensions.testing.PSSortDocData</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>mapper_fields</name>
+         <dataType>String</dataType>
+         <description>Display fields</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>sort_fields</name>
+         <dataType>String</dataType>
+         <description>Display fields in the order of sorting</description>
+      </PSXExtensionParamDef>
+      <resource href="file:classes/"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PSSortDocData.class" href="file:classes/com/percussion/extensions/testing/PSSortDocData.class"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PSSortDocData$DataComparator.class" href="file:classes/com/percussion/extensions/testing/PSSortDocData$DataComparator.class"/>
+   </Extension>
+   <Extension name="exerciseRequestContext" context="rxTest/" handler="Java">
+      <initParam name="com.percussion.user.description">Performs tests against the new methods in IPSRequestContext.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.extensions.testing.PSExerciseRequestContext</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <resource href="file:classes/"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PSExerciseRequestContext.class" href="file:classes/com/percussion/extensions/testing/PSExerciseRequestContext.class"/>
+   </Extension>
+   <Extension name="RxFilterTest" context="rxTest/" handler="Java">
+      <initParam name="com.percussion.user.description"/>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">BEProviderTestFilter</initParam>
+      <resource href="file:classes/"/>
+      <interface name="com.percussion.security.IPSPasswordFilter"/>
+      <suppliedResource deployName="classes/BEProviderTestFilter.class" href="file:../beprovider/BEProviderTestFilter.class"/>
+   </Extension>
+   <Extension name="myXmlDoc" context="rxTest/" handler="Java">
+      <initParam name="com.percussion.user.description">My xml document - return it</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.extensions.testing.MyXmlDocExitHandler</initParam>
+      <resource href="file:classes/"/>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/MyXmlDocExitHandler.class" href="file:classes/com/percussion/extensions/testing/MyXmlDocExitHandler.class"/>
+   </Extension>
+   <Extension name="upperCaseHtmlValues" context="rxTest/" handler="Java">
+      <initParam name="com.percussion.user.description">cast html parameters to uppercase</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.extensions.testing.HtmlParamUpperCaseExitHandler</initParam>
+      <resource href="file:classes/"/>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/HtmlParamUpperCaseExitHandler.class" href="file:classes/com/percussion/extensions/testing/HtmlParamUpperCaseExitHandler.class"/>
+   </Extension>
+   <Extension name="PermissionTester" context="rxTest/" handler="Java">
+      <initParam name="com.percussion.user.description">Test writing to disk &amp; other restricted operations - checks security</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.extensions.testing.PermissionsTestExitHandler</initParam>
+      <resource href="file:classes/"/>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <interface name="com.percussion.extension.IPSUdfProcessor"/>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PermissionsTestExitHandler.class" href="file:classes/com/percussion/extensions/testing/PermissionsTestExitHandler.class"/>
+   </Extension>
+   <Extension name="tempFileWriter" context="rxTest/" handler="Java">
+      <initParam name="com.percussion.user.description">Test writing to disk &amp; other restricted operations - checks security</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.extensions.testing.TempFileWriterExtension</initParam>
+      <resource href="file:classes/"/>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <interface name="com.percussion.extension.IPSUdfProcessor"/>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/TempFileWriterExtension.class" href="file:classes/com/percussion/extensions/testing/TempFileWriterExtension.class"/>
+   </Extension>
+   <Extension name="TracingTestPostProcExit" context="rxtest/" handler="Java">
+      <initParam name="com.percussion.user.description">exit to test tracing of exit processing and execution</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.extensions.testing.TracingTestPostProcExit</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <resource href="file:classes"/>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/TracingTestPostProcExit.class" href="file:classes/com/percussion/extensions/testing/TracingTestPostProcExit.class"/>
+      <PSXExtensionParamDef id="0">
+         <name>nodeName</name>
+         <dataType>java.lang.String</dataType>
+         <description>name of node to add to xml</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>nodeValue</name>
+         <dataType>java.lang.String</dataType>
+         <description>value of node to add to xml</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>cgiVarName</name>
+         <dataType>java.lang.String</dataType>
+         <description>name of cgi variable to add to request</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>cgiVarValue</name>
+         <dataType>java.lang.String</dataType>
+         <description>value of cgi variable to add to request</description>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="TracingTestPreProcExit" context="rxtest/" handler="Java">
+      <initParam name="com.percussion.user.description">Exit to test tracing exit processing and exection</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.extensions.testing.TracingTestPreProcExit</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <resource href="file:classes"/>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/TracingTestPreProcExit.class" href="file:classes/com/percussion/extensions/testing/TracingTestPreProcExit.class"/>
+      <PSXExtensionParamDef id="0">
+         <name>paramName</name>
+         <dataType>java.lang.String</dataType>
+         <description>name of parameter to add to xml</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>paramValue</name>
+         <dataType>java.lang.String</dataType>
+         <description>value of parameter to add to xml</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>cgiName</name>
+         <dataType>java.lang.String</dataType>
+         <description>name of cgi variable to add to the request</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>cgiValue</name>
+         <dataType>java.lang.String</dataType>
+         <description>value of cgi variable to add to the request</description>
+      </PSXExtensionParamDef>
+   </Extension>
+   <!-- The following are app specific UDFs needed by the test applications. -->
+   <Extension name="udf_GetHour" context="application/ext963361893296/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_GetHour</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return d.getHours();</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>d</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362211578/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362211578/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362211578/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>var</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362192406/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362192406/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362192406/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362183875/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362183875/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362183875/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362202218/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362202218/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362202218/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362188171/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362188171/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362188171/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362207000/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362207000/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362207000/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_GetHour" context="application/ext963361889609/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_GetHour</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return d.getHours();</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>d</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_Plus10" context="application/ext963362235546/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_Plus10</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval + 10;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_500" context="application/ext963362235546/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_500</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return 500;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+   </Extension>
+   <Extension name="udf_GetHour" context="application/ext963361646093/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_GetHour</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return d.getHours();</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>d</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362216109/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362216109/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362216109/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362225562/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362225562/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362225562/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_GetHour" context="application/ext963361649687/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_GetHour</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return d.getHours();</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>d</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_Plus10" context="application/ext963362247984/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_Plus10</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval + 10;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_500" context="application/ext963362247984/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_500</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return 500;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362230453/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362230453/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362230453/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_500" context="application/ext963362240281/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_500</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return 500;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+   </Extension>
+   <Extension name="udf_Plus10" context="application/ext963362240281/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_Plus10</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval + 10;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362179546/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362179546/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362179546/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362220796/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362220796/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362220796/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963361496937/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughDate" context="application/ext963362197312/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughDate</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Date</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughNumber" context="application/ext963362197312/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughNumber</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>Number</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="udf_PassThroughString" context="application/ext963362197312/" handler="JavaScript">
+      <initParam name="com.percussion.user.oldName">udf_PassThroughString</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.user.description">execute JavaScript code</initParam>
+      <initParam name="com.percussion.extension.factoryClassName">com.percussion.extension.PSExtensionDefFactory</initParam>
+      <initParam name="scriptBody">return inval;</initParam>
+      <interface name="com.percussion.extension.IPSUDFProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>inval</name>
+         <dataType>String</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension categorystring="testing" context="testing/" deprecated="no" handler="Java" name="tst_directoryServicePerformance" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Tests the directory service performance.</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.extensions.testing.PSDirectoryServicePerformance</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <resource href="file:classes/"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PSDirectoryServicePerformance.class" href="file:classes/com/percussion/extensions/testing/PSDirectoryServicePerformance.class"/>
+   </Extension>
+   <Extension categorystring="testing" context="testing/" deprecated="no" handler="Java" name="tst_authenticateResult" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description"/>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.extensions.testing.PSAuthenticateResult</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <resource href="file:classes/"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PSAuthenticateResult.class" href="file:classes/com/percussion/extensions/testing/PSAuthenticateResult.class"/>
+   </Extension>
+   <Extension categorystring="testing" context="testing/" deprecated="no" handler="Java" name="tst_passwordFilter" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">This password filter simply adds the string 'admin' to the received password.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.filter.PSPasswordFilter</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.security.IPSPasswordFilter"/>
+      <resource href="file:classes/"/>
+      <suppliedResource deployName="classes/com/percussion/filter/PSPasswordFilter.class" href="file:classes/com/percussion/filter/PSPasswordFilter.class"/>
+   </Extension>
+   <Extension categorystring="testing" context="testing/" deprecated="no" handler="Java" name="tst_directoryServicesPublicAPI" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Test the public directory service functionality.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.extensions.testing.PSDirectoryServicesPublicAPI</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <resource href="file:classes/"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PSDirectoryServicesPublicAPI.class" href="file:classes/com/percussion/extensions/testing/PSDirectoryServicesPublicAPI.class"/>
+   </Extension>
+   <Extension categorystring="testing" context="testing/" deprecated="no" handler="Java" name="tst_verifyDirectoryServiceUITest" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Verifies the directory service UI test according to the HTML parameters tst_method and tst_directoryservicename. For tst_method the values 'validateExisting' and 'notExisting' are supported.</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="className">com.percussion.extensions.testing.PSVerifyDirectoryServiceUITest</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <resource href="file:classes/"/>
+      <suppliedResource deployName="classes/com/percussion/extensions/testing/PSVerifyDirectoryServiceUITest.class" href="file:classes/com/percussion/extensions/testing/PSVerifyDirectoryServiceUITest.class"/>
+   </Extension>
+</PSXExtensionHandlerConfiguration>

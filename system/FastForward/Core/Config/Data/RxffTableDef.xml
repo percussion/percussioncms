@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<tables>
+	<table name="RXS_CT_AUTOINDEX">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="QUERY">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>2100</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_BRIEF">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="PLACEHOLDER">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_CALENDAR">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="CALENDAR_START">
+				<jdbctype>TIMESTAMP</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="QUERY">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>255</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_CONTACTS">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="FIRSTNAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>100</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="MIDDLENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>100</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="LASTNAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>100</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ADDRESS1">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>200</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ADDRESS2">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>200</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="CITY">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>200</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="STATE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>100</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ZIPCODE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>10</size>
+				<allowsnull>yes</allowsnull>
+			</column>			
+			<column name="COUNTRY">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>100</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="EMAIL">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>200</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="PHONE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="FAX">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="CELLPHONE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="DEPT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>255</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_EVENT">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="EVENT_START">
+				<jdbctype>TIMESTAMP</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="EVENT_END">
+				<jdbctype>TIMESTAMP</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="EVENT_LOCATION">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>1000</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="EVENT_TYPE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>255</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_EXTERNALLINK">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="URL">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>2048</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_FILE">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="FILE_CATEGORY">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_GENERIC">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="PLACEHOLDER">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>1</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="PUSAGE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>1</size>
+				<allowsnull>yes</allowsnull>
+			</column>			
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_GENERICWORD">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="AUTHORNAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>100</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ENCODING">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="KEYWORDS">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>255</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="BODYSOURCE">
+				<jdbctype>BLOB</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="WORD_FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="BODYML">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="VARIANT">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_HOLIDAY">
+		<row>
+			<column name="HOLIDAYID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="DAY">
+				<jdbctype>TIMESTAMP</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="NAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>200</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>HOLIDAYID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_HOMEPAGE">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="PLACEHOLDER">
+				<jdbctype>CHAR</jdbctype>
+				<size>1</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_IMAGE">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="IMG_CATEGORY">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="AUTO_FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_NAVIGATIONIMAGETRIPLE">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="ACTIVEIMG">
+				<jdbctype>BLOB</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ACTIVEIMG_FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ACTIVEIMG_SIZE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ACTIVEIMG_EXT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ACTIVEIMG_TYPE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ACTIVEIMG_HEIGHT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ACTIVEIMG_WIDTH">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ROLLOVERIMG">
+				<jdbctype>BLOB</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ROLLOVERIMG_FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ROLLOVERIMG_SIZE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ROLLOVERIMG_EXT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ROLLOVERIMG_TYPE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ROLLOVERIMG_HEIGHT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ROLLOVERIMG_WIDTH">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="INACTIVEIMG">
+				<jdbctype>BLOB</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="INACTIVEIMG_FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="INACTIVEIMG_SIZE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="INACTIVEIMG_EXT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="INACTIVEIMG_TYPE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="INACTIVEIMG_HEIGHT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="INACTIVEIMG_WIDTH">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="SELECTOR">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_NAVON">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="NO_PROPAGATE">
+				<jdbctype>CHAR</jdbctype>
+				<size>1</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="NO_SELECTOR">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="NO_VARIABLE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_NAVTREE">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="NT_THEME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="NT_PROPAGATE">
+				<jdbctype>CHAR</jdbctype>
+				<size>1</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="NO_SELECTOR">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="NO_VARIABLE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_PRESSRELEASE">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="INCLUDEHOME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="PR_TYPE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>255</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="PR_SUMMARY">
+				<jdbctype>CLOB</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_SHARED">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>512</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="DISPLAYTITLE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>512</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="KEYWORDS">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>1024</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="DESCRIPTION">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>1024</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="CALLOUT">
+				<jdbctype>CLOB</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="BODY">
+				<jdbctype>CLOB</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="DEFAULT_VARIANTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="WEBDAVOWNER">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>255</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_SHAREDBINARY">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="ITEM">
+				<jdbctype>BLOB</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ITEM_FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>512</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ITEM_SIZE">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ITEM_TYPE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>256</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ITEM_EXT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="RXS_CT_SHAREDIMAGE">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="IMG1">
+				<jdbctype>BLOB</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="IMG1_FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>512</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="IMG1_SIZE">
+				<jdbctype>DECIMAL</jdbctype>
+				<size>10</size>
+				<allowsnull>yes</allowsnull>
+				<scale>0</scale>
+			</column>
+			<column name="IMG1_TYPE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>256</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="IMG1_EXT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="IMG1_HEIGHT">
+				<jdbctype>DECIMAL</jdbctype>
+				<size>10</size>
+				<allowsnull>yes</allowsnull>
+				<scale>0</scale>
+			</column>
+			<column name="IMG1_WIDTH">
+				<jdbctype>DECIMAL</jdbctype>
+				<size>10</size>
+				<allowsnull>yes</allowsnull>
+				<scale>0</scale>
+			</column>
+			<column name="IMG_ALT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>512</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="IMG2">
+				<jdbctype>BLOB</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="IMG2_FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>512</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="IMG2_SIZE">
+				<jdbctype>DECIMAL</jdbctype>
+				<size>10</size>
+				<allowsnull>yes</allowsnull>
+				<scale>0</scale>
+			</column>
+			<column name="IMG2_TYPE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>256</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="IMG2_EXT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="IMG2_HEIGHT">
+				<jdbctype>DECIMAL</jdbctype>
+				<size>10</size>
+				<allowsnull>yes</allowsnull>
+				<scale>0</scale>
+			</column>
+			<column name="IMG2_WIDTH">
+				<jdbctype>DECIMAL</jdbctype>
+				<size>10</size>
+				<allowsnull>yes</allowsnull>
+				<scale>0</scale>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+</tables>

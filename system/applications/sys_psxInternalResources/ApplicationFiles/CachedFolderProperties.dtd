@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT CachedFolderProperty (#PCDATA)>
+<!ATTLIST  CachedFolderProperty propertyValue CDATA #IMPLIED>
+<!ATTLIST  CachedFolderProperty propertyName CDATA #IMPLIED>
+<!ATTLIST  CachedFolderProperty contentid CDATA #REQUIRED>
+<!ELEMENT CachedFolderProperties (CachedFolderProperty* )>

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT searchbox (userrolesurl, contexturl, pagename, contentlookupurl, statelookupurl, logincommunity, communitycontentlookupurl )>
+<!ELEMENT communitycontentlookupurl (#PCDATA)>
+<!ELEMENT logincommunity (#PCDATA)>
+<!ELEMENT statelookupurl (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT contexturl (#PCDATA)>
+<!ELEMENT userrolesurl (#PCDATA)>
+<!ATTLIST  searchbox xml:lang CDATA #IMPLIED>

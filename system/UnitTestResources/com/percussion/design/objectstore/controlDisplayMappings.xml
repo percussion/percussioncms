@@ -1,0 +1,53 @@
+<!--
+	Set of test display mappings used by the PSControlDependencyMapTest
+-->
+<PSXDisplayMapper fieldSetRef="test" id="0">
+	<PSXDisplayMapping>
+	   <FieldRef>fileField1</FieldRef>
+	   <PSXUISet>
+	      <Label>
+	         <PSXDisplayText>fileField1:</PSXDisplayText>
+	      </Label>
+	      <PSXControlRef id="1" name="sys_File"/>
+	      <ErrorLabel>
+	         <PSXDisplayText>fileField1:</PSXDisplayText>
+	      </ErrorLabel>
+	   </PSXUISet>
+	</PSXDisplayMapping>
+	<PSXDisplayMapping>
+	   <FieldRef>fileField2</FieldRef>
+	   <PSXUISet>
+	      <Label>
+	         <PSXDisplayText>fileField2:</PSXDisplayText>
+	      </Label>
+	      <PSXControlRef id="2" name="sys_File"/>
+	      <ErrorLabel>
+	         <PSXDisplayText>fileField2:</PSXDisplayText>
+	      </ErrorLabel>
+	   </PSXUISet>
+	</PSXDisplayMapping>	
+    <PSXDisplayMapping>
+       <FieldRef>calloutField1</FieldRef>
+       <PSXUISet>
+          <Label>
+             <PSXDisplayText>calloutField1:</PSXDisplayText>
+          </Label>
+          <PSXControlRef id="3" name="sys_EditLive"/>
+          <ErrorLabel>
+             <PSXDisplayText>calloutField1:</PSXDisplayText>
+          </ErrorLabel>
+       </PSXUISet>
+    </PSXDisplayMapping>
+    <PSXDisplayMapping>
+       <FieldRef>calloutField2</FieldRef>
+       <PSXUISet>
+          <Label>
+             <PSXDisplayText>calloutField2:</PSXDisplayText>
+          </Label>
+          <PSXControlRef id="4" name="sys_EditLive"/>
+          <ErrorLabel>
+             <PSXDisplayText>calloutField2:</PSXDisplayText>
+          </ErrorLabel>
+       </PSXUISet>
+    </PSXDisplayMapping>	
+</PSXDisplayMapper>

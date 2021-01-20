@@ -1,0 +1,2528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tables>
+   <table name="CONTENTTYPES" onCreateOnly="no">
+      <row action="i">
+         <column name="CONTENTTYPEID">1</column>
+         <column name="CONTENTTYPENEWREQUEST">../rx_ceArticle/article.html</column>
+         <column name="CONTENTTYPEQUERYREQUEST">../rx_ceArticle/article.html</column>
+         <column name="CONTENTTYPENAME">Article</column>
+         <column name="CONTENTTYPEDESC">Used for long, free-form text content items.</column>
+         <column name="CONTENTTYPEUPDATEREQUEST"/>
+         <column name="HIDEFROMMENU">0</column>
+         <column name="OBJECTTYPE">1</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">2</column>
+         <column name="CONTENTTYPENEWREQUEST">../rx_ceArticleWord/articleword.html</column>
+         <column name="CONTENTTYPEQUERYREQUEST">../rx_ceArticleWord/articleword.html</column>
+         <column name="CONTENTTYPENAME">Article Word</column>
+         <column name="CONTENTTYPEDESC">Used for long, free-form text content items that use Microsoft Word2000 as the editing tool.</column>
+         <column name="CONTENTTYPEUPDATEREQUEST"/>
+         <column name="HIDEFROMMENU">0</column>
+         <column name="OBJECTTYPE">1</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">3</column>
+         <column name="CONTENTTYPENEWREQUEST">../rx_ceBrief/brief.html</column>
+         <column name="CONTENTTYPEQUERYREQUEST">../rx_ceBrief/brief.html</column>
+         <column name="CONTENTTYPENAME">Brief</column>
+         <column name="CONTENTTYPEDESC">Used for short content items intended to be used ONLY as part of another content item.</column>
+         <column name="CONTENTTYPEUPDATEREQUEST"/>
+         <column name="HIDEFROMMENU">0</column>
+         <column name="OBJECTTYPE">1</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="CONTENTTYPENEWREQUEST">../rx_ceImage/image.html</column>
+         <column name="CONTENTTYPEQUERYREQUEST">../rx_ceImage/image.html</column>
+         <column name="CONTENTTYPENAME">Image</column>
+         <column name="CONTENTTYPEDESC">Used to create and maintain image content items, such as .gif, .jpg, and other graphic formats.</column>
+         <column name="CONTENTTYPEUPDATEREQUEST"/>
+         <column name="HIDEFROMMENU">0</column>
+         <column name="OBJECTTYPE">1</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">5</column>
+         <column name="CONTENTTYPENEWREQUEST">../rx_ceFile/file.html</column>
+         <column name="CONTENTTYPEQUERYREQUEST">../rx_ceFile/file.html</column>
+         <column name="CONTENTTYPENAME">File</column>
+         <column name="CONTENTTYPEDESC">Used to create and maintain downloadable content items, such as .pdf or .exe files.</column>
+         <column name="CONTENTTYPEUPDATEREQUEST"/>
+         <column name="HIDEFROMMENU">0</column>
+         <column name="OBJECTTYPE">1</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">6</column>
+         <column name="CONTENTTYPENEWREQUEST">../rx_ceIndex/index.html</column>
+         <column name="CONTENTTYPEQUERYREQUEST">../rx_ceIndex/index.html</column>
+         <column name="CONTENTTYPENAME">Index</column>
+         <column name="CONTENTTYPEDESC">Allows users to explicitly select a group of other content items that go together to define the final published output.</column>
+         <column name="CONTENTTYPEUPDATEREQUEST"/>
+         <column name="HIDEFROMMENU">0</column>
+         <column name="OBJECTTYPE">1</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">7</column>
+         <column name="CONTENTTYPENEWREQUEST">../rx_ceExternalURL/externalurl.html</column>
+         <column name="CONTENTTYPEQUERYREQUEST">../rx_ceExternalURL/externalurl.html</column>
+         <column name="CONTENTTYPENAME">External URL</column>
+         <column name="CONTENTTYPEDESC">Used to create URL content items that link to pages outside of your content management system.</column>
+         <column name="CONTENTTYPEUPDATEREQUEST"/>
+         <column name="HIDEFROMMENU">0</column>
+         <column name="OBJECTTYPE">1</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">8</column>
+         <column name="CONTENTTYPENEWREQUEST">../rx_ceIndexAutomated/indexautomated.html</column>
+         <column name="CONTENTTYPEQUERYREQUEST">../rx_ceIndexAutomated/indexautomated.html</column>
+         <column name="CONTENTTYPENAME">IndexAutomated</column>
+         <column name="CONTENTTYPEDESC">Allows users to implicitly define an index through a set of parameters which are used by Rhythmyx to automatically generate the actual index for output.</column>
+         <column name="CONTENTTYPEUPDATEREQUEST"/>
+         <column name="HIDEFROMMENU">0</column>
+         <column name="OBJECTTYPE">1</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">9</column>
+         <column name="CONTENTTYPENEWREQUEST">../rx_cePage/page.html</column>
+         <column name="CONTENTTYPEQUERYREQUEST">../rx_cePage/page.html</column>
+         <column name="CONTENTTYPENAME">Page</column>
+         <column name="CONTENTTYPEDESC">This is the default content type used by content connector.</column>
+         <column name="CONTENTTYPEUPDATEREQUEST"/>
+         <column name="HIDEFROMMENU">0</column>
+         <column name="OBJECTTYPE">1</column>
+      </row>
+   </table>
+   <table name="PSX_TEMPLATE" onCreateOnly="no">
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">1</column>
+         <column name="NAME">Published HTML Page</column>
+         <column name="STYLESHEETNAME">pubhtmlpage.xsl</column>
+         <column name="ASSEMBLYURL">../casArticle/casArticle.html</column>
+         <column name="OUTPUTFORMAT">1</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Page Variant for the Article Content Type</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">3</column>
+         <column name="NAME">Title and Abstract Link</column>
+         <column name="STYLESHEETNAME">TitleAbs.xsl</column>
+         <column name="ASSEMBLYURL">../casArticle/casArticle_Snip.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Article Content Type to create link from Title and Abstract to Article Page</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">4</column>
+         <column name="NAME">Title Only Link</column>
+         <column name="STYLESHEETNAME">TitleOnly.xsl</column>
+         <column name="ASSEMBLYURL">../casArticle/casArticle_Snip.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Article Content Type to create link from Title to Article Page</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">7</column>
+         <column name="NAME">Abstract Body</column>
+         <column name="STYLESHEETNAME">abstractbody.xsl</column>
+         <column name="ASSEMBLYURL">../casBrief/casBrief_Snip.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Brief content type to generate snippet of Brief body</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">8</column>
+         <column name="NAME">File Link</column>
+         <column name="STYLESHEETNAME">fileUpload.xsl</column>
+         <column name="ASSEMBLYURL">../casFile/fileSnippet.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant to generate link from File Name to file</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">9</column>
+         <column name="NAME">File Binary</column>
+         <column name="STYLESHEETNAME"/>
+         <column name="ASSEMBLYURL">../casFile/filebinary</column>
+         <column name="OUTPUTFORMAT">1</column>
+         <column name="AATYPE">2</column>
+         <column name="DESCRIPTION">Snippet Variant to generate link from Binary File Name to binary file</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">11</column>
+         <column name="NAME">Related Items Snippet</column>
+         <column name="STYLESHEETNAME">RelatedItems.xsl</column>
+         <column name="ASSEMBLYURL">../casIndex/Index.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Index Snippet Variant to generate link to Related Content Item</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">12</column>
+         <column name="NAME">Home Page</column>
+         <column name="STYLESHEETNAME">homepage.xsl</column>
+         <column name="ASSEMBLYURL">../casIndex/Index.html</column>
+         <column name="OUTPUTFORMAT">1</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Index Page Variant to generate Home Page</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">13</column>
+         <column name="NAME">External Link Normal Link</column>
+         <column name="STYLESHEETNAME">external.xsl</column>
+         <column name="ASSEMBLYURL">../casExternal/external.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant to generate link to external URL</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">16</column>
+         <column name="NAME">Thumb to Image</column>
+         <column name="STYLESHEETNAME">thumtoimage.xsl</column>
+         <column name="ASSEMBLYURL">../casImage/thumtoimage.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant to generate link from thumbnail image to full-sized image</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">17</column>
+         <column name="NAME">Image Link</column>
+         <column name="STYLESHEETNAME">image.xsl</column>
+         <column name="ASSEMBLYURL">../casImage/image.html</column>
+         <column name="OUTPUTFORMAT">1</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant to link to image from Image Content Item title</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">18</column>
+         <column name="NAME">Thumbnail Only</column>
+         <column name="STYLESHEETNAME"/>
+         <column name="ASSEMBLYURL">../casImage/binarythum</column>
+         <column name="OUTPUTFORMAT">1</column>
+         <column name="AATYPE">2</column>
+         <column name="DESCRIPTION">Snippet Variant to retrieve thumnbnail image file</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">19</column>
+         <column name="NAME">Full Image</column>
+         <column name="STYLESHEETNAME"/>
+         <column name="ASSEMBLYURL">../casImage/binaryimage</column>
+         <column name="OUTPUTFORMAT">1</column>
+         <column name="AATYPE">2</column>
+         <column name="DESCRIPTION">Snippet Variant to retrieve full-sized image file</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">20</column>
+         <column name="NAME">Sidebar Automated</column>
+         <column name="STYLESHEETNAME">sidebarauto.xsl</column>
+         <column name="ASSEMBLYURL">../casIndexAutomated/IndexAutomated.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">1</column>
+         <column name="DESCRIPTION">Automated Index snippet variant to generate sidebar navigation bar</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">21</column>
+         <column name="NAME">Thumb Title Image</column>
+         <column name="STYLESHEETNAME">thumbtitleimage.xsl</column>
+         <column name="ASSEMBLYURL">../casImage/thumtoimage.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant to link to Image from Thumbnail and Image Content item title</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">22</column>
+         <column name="NAME">Title Only Link</column>
+         <column name="STYLESHEETNAME">titlelink.xsl</column>
+         <column name="ASSEMBLYURL">../casImage/thumtoimage.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant to link to thumbnail image from Image Content item title</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">23</column>
+         <column name="NAME">Sidebar Manual Index</column>
+         <column name="STYLESHEETNAME">sidebar.xsl</column>
+         <column name="ASSEMBLYURL">../casIndex/Index.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Manual index Snippet Variant to generate sidebar navigation bar</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">25</column>
+         <column name="NAME">Published HTML Page</column>
+         <column name="STYLESHEETNAME">pubhtmlpage.xsl</column>
+         <column name="ASSEMBLYURL">../casArticleWord/pubhtmlpage.html</column>
+         <column name="OUTPUTFORMAT">1</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Page Variant for the Word Article Content Type</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">26</column>
+         <column name="NAME">Title and Abstract Link</column>
+         <column name="STYLESHEETNAME">TitleAbs.xsl</column>
+         <column name="ASSEMBLYURL">../casArticleWord/casArticleWord_Snip.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Word Article Content Type to create link from Title and Abstract to Article Page</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">27</column>
+         <column name="NAME">Article Inline Link</column>
+         <column name="STYLESHEETNAME">InlineLink.xsl</column>
+         <column name="ASSEMBLYURL">../casArticle/InlineLink.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Article Content Type to create inline link.</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">28</column>
+         <column name="NAME">Article Word Inline Link</column>
+         <column name="STYLESHEETNAME">InlineLink.xsl</column>
+         <column name="ASSEMBLYURL">../casArticleWord/InlineLink.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Word Article Content Type to create inline link.</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">29</column>
+         <column name="NAME">Image Inline Link</column>
+         <column name="STYLESHEETNAME">InlineLink.xsl</column>
+         <column name="ASSEMBLYURL">../casImage/InlineLink.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Image Content Type to create inline link.</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">30</column>
+         <column name="NAME">File Inline Link</column>
+         <column name="STYLESHEETNAME">InlineLink.xsl</column>
+         <column name="ASSEMBLYURL">../casFile/InlineLink.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for File Content Type to create inline link.</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">31</column>
+         <column name="NAME">Index Inline Link</column>
+         <column name="STYLESHEETNAME">InlineLink.xsl</column>
+         <column name="ASSEMBLYURL">../casIndex/InlineLink.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Index Content Type to create inline link.</column>
+      </row>
+      <row action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">32</column>
+         <column name="NAME">Inline Full Image</column>
+         <column name="STYLESHEETNAME">InlineFullImage.xsl</column>
+         <column name="ASSEMBLYURL">../casImage/InlineFullImage.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Image Content Type to create full inline image.</column>
+      </row>
+      <row action="i">
+         <column name="TEMPLATE_ID">33</column>
+         <column name="NAME">Inline Thumbnail Image</column>
+         <column name="STYLESHEETNAME">InlineThumbnailImage.xsl</column>
+         <column name="ASSEMBLYURL">../casImage/InlineThumbnailImage.html</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Snippet Variant for Image Content Type to create thumbnail inline image.</column>
+      </row>
+      <row onTableCreateOnly="no" action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">36</column>
+         <column name="NAME">BEA 8.1 Portal Article Content</column>
+         <column name="STYLESHEETNAME">default.xsl</column>
+         <column name="ASSEMBLYURL">../rx_casPortalContent/bea_article.xml</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Content variant that packages up a specified article variant for the BEA8 portal</column>
+      </row>
+      <row onTableCreateOnly="no" action="i">
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">37</column>
+         <column name="NAME">RX Portal Article Content</column>
+         <column name="STYLESHEETNAME">default.xsl</column>
+         <column name="ASSEMBLYURL">../rx_casPortalContent/article.xml</column>
+         <column name="OUTPUTFORMAT">2</column>
+         <column name="AATYPE">0</column>
+         <column name="DESCRIPTION">Content variant that packages up a specified article variant for the RX portal</column>
+      </row>
+   </table>
+      <table name="PSX_CONTENTTYPE_TEMPLATE" onCreateOnly="no">
+      <row action="i">
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">1</column>
+         <column name="TEMPLATE_TYPE_ID">4</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">3</column>
+         <column name="TEMPLATE_TYPE_ID">5</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">4</column>
+         <column name="TEMPLATE_TYPE_ID">6</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">3</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">7</column>
+			<column name="TEMPLATE_TYPE_ID">7</column>
+      </row>
+     	<row action="i">
+         <column name="CONTENTTYPEID">5</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">8</column>
+			<column name="TEMPLATE_TYPE_ID">8</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">5</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">9</column>
+         <column name="TEMPLATE_TYPE_ID">9</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">6</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">11</column>
+         <column name="TEMPLATE_TYPE_ID">11</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">6</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">12</column>
+         <column name="TEMPLATE_TYPE_ID">12</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">7</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">13</column>
+         <column name="TEMPLATE_TYPE_ID">13</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">16</column>
+         <column name="TEMPLATE_TYPE_ID">16</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">17</column>
+         <column name="TEMPLATE_TYPE_ID">17</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">18</column>
+         <column name="TEMPLATE_TYPE_ID">18</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">19</column>
+			<column name="TEMPLATE_TYPE_ID">19</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">8</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">20</column>
+         <column name="TEMPLATE_TYPE_ID">20</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">21</column>
+         <column name="TEMPLATE_TYPE_ID">21</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">22</column>
+         <column name="TEMPLATE_TYPE_ID">22</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">6</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">23</column>
+         <column name="TEMPLATE_TYPE_ID">23</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">2</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">25</column>
+         <column name="TEMPLATE_TYPE_ID">25</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">2</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">26</column>
+         <column name="TEMPLATE_TYPE_ID">26</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">27</column>
+         <column name="TEMPLATE_TYPE_ID">27</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">2</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">28</column>
+         <column name="TEMPLATE_TYPE_ID">28</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">29</column>
+         <column name="TEMPLATE_TYPE_ID">29</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">5</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">30</column>
+         <column name="TEMPLATE_TYPE_ID">30</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">6</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">31</column>
+         <column name="TEMPLATE_TYPE_ID">31</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">32</column>
+         <column name="TEMPLATE_TYPE_ID">32</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">33</column>
+         <column name="TEMPLATE_TYPE_ID">33</column>
+      </row>
+      <row onTableCreateOnly="no" action="i">
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">36</column>
+         <column name="TEMPLATE_TYPE_ID">36</column>
+      </row>
+      <row onTableCreateOnly="no" action="i">
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VERSION">0</column>
+         <column name="TEMPLATE_ID">37</column>
+         <column name="TEMPLATE_TYPE_ID">37</column>
+      </row>
+   </table>
+   <table name="ROLES" onCreateOnly="no">
+      <row action="i">
+         <column name="ROLEID">1</column>
+         <column name="ROLENAME">Admin</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">2</column>
+         <column name="ROLENAME">Editor</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">3</column>
+         <column name="ROLENAME">QA</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">4</column>
+         <column name="ROLENAME">Author</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">5</column>
+         <column name="ROLENAME">Admin</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">6</column>
+         <column name="ROLENAME">Editor</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">7</column>
+         <column name="ROLENAME">QA</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">8</column>
+         <column name="ROLENAME">Author</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">9</column>
+         <column name="ROLENAME">Admin</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">10</column>
+         <column name="ROLENAME">Author</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">11</column>
+         <column name="ROLENAME">QA</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">12</column>
+         <column name="ROLENAME">Artist</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">13</column>
+         <column name="ROLENAME">Editor</column>
+         <column name="ROLEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+      </row>
+   </table>
+   <table name="RXCONTENTLIST" onCreateOnly="no">
+      <row action="i">
+         <column name="CONTENTLISTID">1</column>
+         <column name="NAME">Articles</column>
+         <column name="DESCRIPTION">Content list for Articles</column>
+         <column name="URL">/Rhythmyx/rx_pubContentLists/contentlist_article.xml</column>
+         <column name="EDITIONTYPE">2</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTLISTID">2</column>
+         <column name="NAME">Images</column>
+         <column name="DESCRIPTION">Content list for Images</column>
+         <column name="URL">/Rhythmyx/rx_pubContentLists/contentlist_generic.xml?sys_contenttypeid=4&amp;sys_variantid=19</column>
+         <column name="EDITIONTYPE">2</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTLISTID">3</column>
+         <column name="NAME">Thumbnail Images</column>
+         <column name="DESCRIPTION">Content list for Thumbnail Images</column>
+         <column name="URL">/Rhythmyx/rx_pubContentLists/contentlist_generic.xml?sys_contenttypeid=4&amp;sys_variantid=18</column>
+         <column name="EDITIONTYPE">2</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTLISTID">4</column>
+         <column name="NAME">Index Pages</column>
+         <column name="DESCRIPTION">Content list for Index Pages</column>
+         <column name="URL">/Rhythmyx/rx_pubContentLists/contentlist_generic.xml?sys_contenttypeid=6&amp;sys_variantid=12</column>
+         <column name="EDITIONTYPE">2</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTLISTID">5</column>
+         <column name="NAME">File</column>
+         <column name="DESCRIPTION">Content list for Binary Files</column>
+         <column name="URL">/Rhythmyx/rx_pubContentLists/contentlist_generic.xml?sys_contenttypeid=5&amp;sys_variantid=9</column>
+         <column name="EDITIONTYPE">2</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTLISTID">6</column>
+         <column name="NAME">Automated Index Pages</column>
+         <column name="DESCRIPTION">Content list for Automated Index Pages</column>
+         <column name="URL">/Rhythmyx/rx_pubContentLists/contentlist_generic.xml?sys_contenttypeid=6&amp;sys_variantid=12</column>
+         <column name="EDITIONTYPE">2</column>
+      </row>
+      <row action="i">
+         <column name="CONTENTLISTID">7</column>
+         <column name="NAME">Pages</column>
+         <column name="DESCRIPTION">Content list for Pages</column>
+         <column name="URL">/Rhythmyx/rx_pubContentLists/contentlist_generic.xml?sys_contenttypeid=5&amp;sys_variantid=9</column>
+         <column name="EDITIONTYPE">2</column>
+      </row>
+   </table>
+   <table name="RXEDITION" onCreateOnly="no">
+      <row action="i">
+         <column name="EDITIONID">1</column>
+         <column name="DISPLAYTITLE">Sample Edition</column>
+         <column name="EDITIONCOMMENT">Sample Edition</column>
+         <column name="EDITIONTYPE">2</column>
+         <column name="DESTSITE">1</column>
+         <column name="SRCSITE"/>
+         <column name="PRIORITY"/>
+      </row>
+   </table>
+   <table name="RXEDITIONCLIST" onCreateOnly="no">
+      <row action="i">
+         <column name="EDITIONCLISTID">1</column>
+         <column name="EDITIONID">1</column>
+         <column name="CONTENTLISTID">1</column>
+         <column name="SEQUENCE">1</column>
+         <column name="AUTHTYPE">1</column>
+         <column name="CONTEXT">1</column>
+      </row>
+   </table>
+   <table name="RXLOOKUP" onCreateOnly="no">
+      <row action="i">
+         <column name="LOOKUPID">136</column>
+         <column name="LOOKUPTYPE">1</column>
+         <column name="LOOKUPVALUE">17</column>
+         <column name="LOOKUPDISPLAY">Automated Index Queries</column>
+         <column name="LOOKUPSEQUENCE">1</column>
+         <column name="DESCRIPTION">Automated Index Query Lookups</column>
+      </row>
+      <row action="i">
+         <column name="LOOKUPID">137</column>
+         <column name="LOOKUPTYPE">17</column>
+         <column name="LOOKUPVALUE">allvariants.xml?sys_variantid=3</column>
+         <column name="LOOKUPDISPLAY">All Articles</column>
+         <column name="LOOKUPSEQUENCE">1</column>
+         <column name="DESCRIPTION">All Articles Automated Index</column>
+      </row>
+      <row action="i">
+         <column name="LOOKUPID">138</column>
+         <column name="LOOKUPTYPE">17</column>
+         <column name="LOOKUPVALUE">allvariants.xml?sys_variantid=7</column>
+         <column name="LOOKUPDISPLAY">All Briefs</column>
+         <column name="LOOKUPSEQUENCE">2</column>
+         <column name="DESCRIPTION">All Briefs Automated Index</column>
+      </row>
+   </table>
+   <table name="RXPUBLISHER" onCreateOnly="no">
+      <row action="i">
+         <column name="PUBLISHERID">1</column>
+         <column name="NAME">Sample Publisher</column>
+         <column name="DESCRIPTION">Sample Publisher</column>
+         <column name="IPADDRESS">127.0.0.1</column>
+         <column name="PORT">9980</column>
+         <column name="USERID">admin1</column>
+         <column name="PASSWORD">ZGVtbw==</column>
+         <column name="STATE">1</column>
+      </row>
+   </table>
+   <table name="RXPUBLISHERCONFIG" onCreateOnly="no">
+      <row action="i">
+         <column name="PUBLISHERID">1</column>
+         <column name="PARAMNAME">ftp</column>
+         <column name="PARAMVALUE">com.percussion.publisher.client.PSFtpPublisherHandler</column>
+         <column name="PARAMDESC">test ftp</column>
+         <column name="TYPE">0</column>
+      </row>
+      <row action="i">
+         <column name="PUBLISHERID">1</column>
+         <column name="PARAMNAME">filesystem</column>
+         <column name="PARAMVALUE">com.percussion.publisher.client.PSFilePublisherHandler</column>
+         <column name="PARAMDESC">test filesystem</column>
+         <column name="TYPE">0</column>
+      </row>
+      <row action="i">
+         <column name="PUBLISHERID">1</column>
+         <column name="PARAMNAME">debug</column>
+         <column name="PARAMVALUE">true</column>
+         <column name="PARAMDESC">test debug</column>
+         <column name="TYPE">0</column>
+      </row>
+      <row action="i">
+         <column name="PUBLISHERID">1</column>
+         <column name="PARAMNAME">statusurl</column>
+         <column name="PARAMVALUE">/Rhythmyx/sys_pubSupport/pubstatus.xml</column>
+         <column name="PARAMDESC">test statusurl</column>
+         <column name="TYPE">0</column>
+      </row>
+   </table>
+   <table name="RXSITES" onCreateOnly="no">
+      <row action="i">
+         <column name="SITEID">1</column>
+         <column name="SITENAME">Sample Site</column>
+         <column name="SITEDESC">Sample Site</column>
+         <column name="BASEURL">http://127.0.0.1:9980/xroads</column>
+         <column name="ROOT">../webapps</column>
+         <column name="LASTPUBDATE"/>
+         <column name="LASTJOBID"/>
+         <column name="PUBLISHERID">1</column>
+         <column name="IPADDRESS"/>
+         <column name="PORT"/>
+         <column name="USERID"/>
+         <column name="PASSWORD"/>
+         <column name="STATE">1</column>
+         <column name="HOMEPAGEURL"/>
+      </row>
+   </table>
+   <table name="RXSLOTCONTENT" onCreateOnly="no">
+      <row action="i">
+         <column name="SLOTID">3</column>
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VARIANTID">3</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">4</column>
+         <column name="CONTENTTYPEID">7</column>
+         <column name="VARIANTID">13</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">1</column>
+         <column name="CONTENTTYPEID">3</column>
+         <column name="VARIANTID">7</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">5</column>
+         <column name="CONTENTTYPEID">6</column>
+         <column name="VARIANTID">11</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">4</column>
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VARIANTID">3</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">3</column>
+         <column name="CONTENTTYPEID">3</column>
+         <column name="VARIANTID">7</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">5</column>
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VARIANTID">3</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">5</column>
+         <column name="CONTENTTYPEID">3</column>
+         <column name="VARIANTID">7</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">1</column>
+         <column name="CONTENTTYPEID">7</column>
+         <column name="VARIANTID">13</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">1</column>
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VARIANTID">3</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">1</column>
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VARIANTID">4</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">6</column>
+         <column name="CONTENTTYPEID">6</column>
+         <column name="VARIANTID">23</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">5</column>
+         <column name="CONTENTTYPEID">7</column>
+         <column name="VARIANTID">13</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">6</column>
+         <column name="CONTENTTYPEID">8</column>
+         <column name="VARIANTID">20</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">3</column>
+         <column name="CONTENTTYPEID">2</column>
+         <column name="VARIANTID">26</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">2</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VARIANTID">16</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">2</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VARIANTID">21</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">2</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VARIANTID">22</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">103</column>
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VARIANTID">1</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">103</column>
+         <column name="CONTENTTYPEID">2</column>
+         <column name="VARIANTID">25</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">103</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VARIANTID">19</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">103</column>
+         <column name="CONTENTTYPEID">5</column>
+         <column name="VARIANTID">9</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">103</column>
+         <column name="CONTENTTYPEID">6</column>
+         <column name="VARIANTID">12</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">104</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VARIANTID">18</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">104</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VARIANTID">19</column>
+      </row>
+      <row onTableCreateOnly="no" action="d">
+         <column name="SLOTID">105</column>
+         <column name="CONTENTTYPEID">9</column>
+         <column name="VARIANTID">12</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">105</column>
+         <column name="CONTENTTYPEID">1</column>
+         <column name="VARIANTID">27</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">105</column>
+         <column name="CONTENTTYPEID">2</column>
+         <column name="VARIANTID">28</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">105</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VARIANTID">29</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">105</column>
+         <column name="CONTENTTYPEID">5</column>
+         <column name="VARIANTID">30</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">105</column>
+         <column name="CONTENTTYPEID">6</column>
+         <column name="VARIANTID">31</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">105</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VARIANTID">32</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">105</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="VARIANTID">33</column>
+      </row>
+   </table>
+   <table name="RXSLOTTYPE" onCreateOnly="no">
+      <row action="i">
+         <column name="SLOTID">1</column>
+         <column name="SLOTNAME">Related Content</column>
+         <column name="SLOTDESC">Right of Page</column>
+         <column name="SYSTEMSLOT">0</column>
+         <column name="SLOTTYPE">0</column>
+         <column name="RELATIONSHIPNAME">Active Assembly</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">2</column>
+         <column name="SLOTNAME">Related Image</column>
+         <column name="SLOTDESC">Slot for an Image</column>
+         <column name="SYSTEMSLOT">0</column>
+         <column name="SLOTTYPE">0</column>
+         <column name="RELATIONSHIPNAME">Active Assembly</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">3</column>
+         <column name="SLOTNAME">Related Articles</column>
+         <column name="SLOTDESC">right column, top, related content</column>
+         <column name="SYSTEMSLOT">0</column>
+         <column name="SLOTTYPE">0</column>
+         <column name="RELATIONSHIPNAME">Active Assembly</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">4</column>
+         <column name="SLOTNAME">Hot Articles</column>
+         <column name="SLOTDESC">right column bottom</column>
+         <column name="SYSTEMSLOT">0</column>
+         <column name="SLOTTYPE">0</column>
+         <column name="RELATIONSHIPNAME">Active Assembly</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">5</column>
+         <column name="SLOTNAME">Related Links</column>
+         <column name="SLOTDESC">Side</column>
+         <column name="SYSTEMSLOT">0</column>
+         <column name="SLOTTYPE">0</column>
+         <column name="RELATIONSHIPNAME">Active Assembly</column>
+      </row>
+      <row action="i">
+         <column name="SLOTID">6</column>
+         <column name="SLOTNAME">Sidebar Index</column>
+         <column name="SLOTDESC">Sidebar slot that holds and index or autoindex</column>
+         <column name="SYSTEMSLOT">0</column>
+         <column name="SLOTTYPE">0</column>
+         <column name="RELATIONSHIPNAME">Active Assembly</column>
+      </row>
+   </table>
+   <table name="RXVARIANTSLOTTYPE" onCreateOnly="no">
+      <row action="i">
+         <column name="VARIANTID">1</column>
+         <column name="SLOTID">2</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">1</column>
+         <column name="SLOTID">3</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">1</column>
+         <column name="SLOTID">4</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">12</column>
+         <column name="SLOTID">3</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">12</column>
+         <column name="SLOTID">5</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">11</column>
+         <column name="SLOTID">3</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">11</column>
+         <column name="SLOTID">5</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">25</column>
+         <column name="SLOTID">2</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">25</column>
+         <column name="SLOTID">3</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">25</column>
+         <column name="SLOTID">4</column>
+      </row>
+   </table>
+   <table name="STATEROLES" onCreateOnly="no">
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="ROLEID">1</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="ROLEID">2</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="ROLEID">4</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="ROLEID">5</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="ROLEID">6</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="ROLEID">9</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="ROLEID">12</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="ROLEID">13</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">2</column>
+         <column name="ROLEID">1</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">2</column>
+         <column name="ROLEID">2</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">2</column>
+         <column name="ROLEID">5</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">2</column>
+         <column name="ROLEID">7</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">2</column>
+         <column name="ROLEID">9</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">2</column>
+         <column name="ROLEID">12</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">3</column>
+         <column name="ROLEID">1</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">3</column>
+         <column name="ROLEID">3</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">3</column>
+         <column name="ROLEID">5</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">y</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">3</column>
+         <column name="ROLEID">6</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">3</column>
+         <column name="ROLEID">9</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">3</column>
+         <column name="ROLEID">13</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">4</column>
+         <column name="ROLEID">1</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">4</column>
+         <column name="ROLEID">2</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">4</column>
+         <column name="ROLEID">5</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">4</column>
+         <column name="ROLEID">6</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">4</column>
+         <column name="ROLEID">9</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">4</column>
+         <column name="ROLEID">11</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="ROLEID">1</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="ROLEID">2</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="ROLEID">4</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="ROLEID">5</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="ROLEID">6</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="ROLEID">9</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="ROLEID">13</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">6</column>
+         <column name="ROLEID">1</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">6</column>
+         <column name="ROLEID">2</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">6</column>
+         <column name="ROLEID">9</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">6</column>
+         <column name="ROLEID">13</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">7</column>
+         <column name="ROLEID">9</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">7</column>
+         <column name="ROLEID">13</column>
+         <column name="ASSIGNMENTTYPE">3</column>
+         <column name="ADHOCTYPE">0</column>
+         <column name="ISNOTIFYON">n</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SHOWININBOX">y</column>
+      </row>
+   </table>
+   <table name="STATES" onCreateOnly="no">
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="STATENAME">Draft</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC">document creation</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SORTORDER">1</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="STATENAME">Draft</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SORTORDER">1</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">1</column>
+         <column name="STATENAME">Request</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SORTORDER">1</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">2</column>
+         <column name="STATENAME">Approval</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC">Editor Approves</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SORTORDER">2</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">2</column>
+         <column name="STATENAME">QA</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SORTORDER">2</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">2</column>
+         <column name="STATENAME">Artwork</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SORTORDER">2</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">3</column>
+         <column name="STATENAME">QA</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SORTORDER">3</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">3</column>
+         <column name="STATENAME">Public</column>
+         <column name="CONTENTVALID">y</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SORTORDER">3</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">3</column>
+         <column name="STATENAME">Approval</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SORTORDER">4</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">4</column>
+         <column name="STATENAME">Public</column>
+         <column name="CONTENTVALID">y</column>
+         <column name="STATEDESC">documents on the web site</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SORTORDER">4</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">4</column>
+         <column name="STATENAME">Archived</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SORTORDER">4</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">4</column>
+         <column name="STATENAME">QA</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SORTORDER">3</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="STATENAME">Archived</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC">documents archived</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SORTORDER">5</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="STATENAME">Quick Edit</column>
+         <column name="CONTENTVALID">i</column>
+         <column name="STATEDESC">State used to fix small issues in public items.</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="SORTORDER">5</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">5</column>
+         <column name="STATENAME">Public</column>
+         <column name="CONTENTVALID">y</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SORTORDER">5</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">6</column>
+         <column name="STATENAME">Quick Edit</column>
+         <column name="CONTENTVALID">i</column>
+         <column name="STATEDESC">State used to fix small issues in public items.</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="SORTORDER">6</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">6</column>
+         <column name="STATENAME">Archived</column>
+         <column name="CONTENTVALID">n</column>
+         <column name="STATEDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SORTORDER">6</column>
+      </row>
+      <row action="i">
+         <column name="STATEID">7</column>
+         <column name="STATENAME">Quick Edit</column>
+         <column name="CONTENTVALID">i</column>
+         <column name="STATEDESC">State used to fix small issues in public items.</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="SORTORDER">7</column>
+      </row>
+   </table>
+   <table name="TRANSITIONS" onCreateOnly="no">
+      <row action="i">
+         <column name="TRANSITIONID">1</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Submit</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">1</column>
+         <column name="TRANSITIONTOSTATEID">2</column>
+         <column name="TRANSITIONACTIONTRIGGER">Submit</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">2</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Reject</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">2</column>
+         <column name="TRANSITIONTOSTATEID">1</column>
+         <column name="TRANSITIONACTIONTRIGGER">Reject</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">3</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Approve</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">2</column>
+         <column name="TRANSITIONTOSTATEID">3</column>
+         <column name="TRANSITIONACTIONTRIGGER">Approve</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC">Submit for approval</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">4</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Reject</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">3</column>
+         <column name="TRANSITIONTOSTATEID">2</column>
+         <column name="TRANSITIONACTIONTRIGGER">Reject</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">5</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Approve</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">3</column>
+         <column name="TRANSITIONTOSTATEID">4</column>
+         <column name="TRANSITIONACTIONTRIGGER">Approve</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">6</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Unpublish</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">4</column>
+         <column name="TRANSITIONTOSTATEID">5</column>
+         <column name="TRANSITIONACTIONTRIGGER">Unpublish</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/sys_TouchParentItems</column>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">y</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">7</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Retrieve</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">5</column>
+         <column name="TRANSITIONTOSTATEID">1</column>
+         <column name="TRANSITIONACTIONTRIGGER">Retrieve</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">8</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Ignore Publish</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">4</column>
+         <column name="TRANSITIONTOSTATEID">6</column>
+         <column name="TRANSITIONACTIONTRIGGER">Quick Edit</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC">Transit to quick edit state.</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/sys_TouchParentItems</column>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">9</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Publish</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">6</column>
+         <column name="TRANSITIONTOSTATEID">4</column>
+         <column name="TRANSITIONACTIONTRIGGER">Quick Edit Publish</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC">Republish from quick edit.</column>
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">10</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Approve</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">2</column>
+         <column name="TRANSITIONTOSTATEID">3</column>
+         <column name="TRANSITIONACTIONTRIGGER">Approve</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">11</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Archive</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">3</column>
+         <column name="TRANSITIONTOSTATEID">4</column>
+         <column name="TRANSITIONACTIONTRIGGER">Archive</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/sys_TouchParentItems</column>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">y</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">12</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Retrieve</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">4</column>
+         <column name="TRANSITIONTOSTATEID">1</column>
+         <column name="TRANSITIONACTIONTRIGGER">Retrieve</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">13</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Submit</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">1</column>
+         <column name="TRANSITIONTOSTATEID">2</column>
+         <column name="TRANSITIONACTIONTRIGGER">SubmitToQA</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">13</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Submit</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">1</column>
+         <column name="TRANSITIONTOSTATEID">2</column>
+         <column name="TRANSITIONACTIONTRIGGER">Submit</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">14</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Art Attached</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">2</column>
+         <column name="TRANSITIONTOSTATEID">3</column>
+         <column name="TRANSITIONACTIONTRIGGER">Attached</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">14</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Reject</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">2</column>
+         <column name="TRANSITIONTOSTATEID">1</column>
+         <column name="TRANSITIONACTIONTRIGGER">Reject</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">15</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Publish</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">5</column>
+         <column name="TRANSITIONTOSTATEID">3</column>
+         <column name="TRANSITIONACTIONTRIGGER">Quick Edit Publish</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC">Republish from quick edit.</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">15</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Reject</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">3</column>
+         <column name="TRANSITIONTOSTATEID">2</column>
+         <column name="TRANSITIONACTIONTRIGGER">Reject</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">16</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Ignore Publish</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">3</column>
+         <column name="TRANSITIONTOSTATEID">5</column>
+         <column name="TRANSITIONACTIONTRIGGER">Quick Edit</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC">Transit to quick edit state.</column>
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/sys_TouchParentItems</column>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">16</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Approve</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">3</column>
+         <column name="TRANSITIONTOSTATEID">4</column>
+         <column name="TRANSITIONACTIONTRIGGER">Approve</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">17</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Reject</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">4</column>
+         <column name="TRANSITIONTOSTATEID">3</column>
+         <column name="TRANSITIONACTIONTRIGGER">Reject</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">18</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Approve</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">4</column>
+         <column name="TRANSITIONTOSTATEID">5</column>
+         <column name="TRANSITIONACTIONTRIGGER">Approve</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">19</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Unpublish</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">5</column>
+         <column name="TRANSITIONTOSTATEID">6</column>
+         <column name="TRANSITIONACTIONTRIGGER">Unpublish</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/sys_TouchParentItems</column>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">y</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">20</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Retrieve</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">6</column>
+         <column name="TRANSITIONTOSTATEID">3</column>
+         <column name="TRANSITIONACTIONTRIGGER">Retrieve</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC"/>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">21</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Publish</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">7</column>
+         <column name="TRANSITIONTOSTATEID">5</column>
+         <column name="TRANSITIONACTIONTRIGGER">Quick Edit Publish</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC">Republish from quick edit.</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS"/>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="i">
+         <column name="TRANSITIONID">22</column>
+         <column name="TRANSITIONTYPE">0</column>
+         <column name="TRANSITIONLABEL">Ignore Publish</column>
+         <column name="TRANSITIONPROMPT"/>
+         <column name="TRANSITIONFROMSTATEID">5</column>
+         <column name="TRANSITIONTOSTATEID">7</column>
+         <column name="TRANSITIONACTIONTRIGGER">Quick Edit</column>
+         <column name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column name="TRANSITIONDESC">Transit to quick edit state.</column>
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/sys_TouchParentItems</column>
+         <column name="TRANSITIONROLES"/>
+         <column name="TRANSITIONCOMMENTREQUIRED"/>
+         <column name="DEFAULTTRANSITION">n</column>
+      </row>
+   </table>
+   <table name="WORKFLOWAPPS" onCreateOnly="no">
+      <row action="i">
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="WORKFLOWAPPNAME">Article</column>
+         <column name="ADMINISTRATOR">Admin</column>
+         <column name="INITIALSTATEID">1</column>
+         <column name="WORKFLOWAPPDESC">Basic Article Workflow</column>
+      </row>
+      <row action="i">
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="WORKFLOWAPPNAME">Index</column>
+         <column name="ADMINISTRATOR">Admin</column>
+         <column name="INITIALSTATEID">1</column>
+         <column name="WORKFLOWAPPDESC">Index Pages and Briefs</column>
+      </row>
+      <row action="i">
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="WORKFLOWAPPNAME">Images</column>
+         <column name="ADMINISTRATOR">Admin</column>
+         <column name="INITIALSTATEID">1</column>
+         <column name="WORKFLOWAPPDESC">Image Workflow</column>
+      </row>
+   </table>
+   <table name="PSX_ATTRIBUTE_NAMES" onCreateOnly="no">
+      <row action="i">
+         <column name="ID">2</column>
+         <column name="NAME">sys_defaultCommunity</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">sys_defaultcommunity</column>
+      </row>
+      <row action="i">
+         <column name="ID">3</column>
+         <column name="NAME">sys_defaultCommunity</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">sys_defaultcommunity</column>
+      </row>
+      <row action="i">
+         <column name="ID">4</column>
+         <column name="NAME">sys_defaultCommunity</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">sys_defaultcommunity</column>
+      </row>
+      <row action="i">
+         <column name="ID">5</column>
+         <column name="NAME">sys_defaultCommunity</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">sys_defaultcommunity</column>
+      </row>
+      <row action="i">
+         <column name="ID">6</column>
+         <column name="NAME">sys_defaultCommunity</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">sys_defaultcommunity</column>
+      </row>
+   </table>
+   <table name="PSX_ATTRIBUTE_VALUES" onCreateOnly="no">
+      <row action="i">
+         <column name="ID">2</column>
+         <column name="ATTRIBUTEID">2</column>
+         <column name="VALUE">Default</column>
+         <column name="COMPONENTID">0</column>
+      </row>
+      <row action="i">
+         <column name="ID">3</column>
+         <column name="ATTRIBUTEID">3</column>
+         <column name="VALUE">Default</column>
+         <column name="COMPONENTID">0</column>
+      </row>
+      <row action="i">
+         <column name="ID">4</column>
+         <column name="ATTRIBUTEID">4</column>
+         <column name="VALUE">Default</column>
+         <column name="COMPONENTID">0</column>
+      </row>
+      <row action="i">
+         <column name="ID">5</column>
+         <column name="ATTRIBUTEID">5</column>
+         <column name="VALUE">Default</column>
+         <column name="COMPONENTID">0</column>
+      </row>
+      <row action="i">
+         <column name="ID">6</column>
+         <column name="ATTRIBUTEID">6</column>
+         <column name="VALUE">Default</column>
+         <column name="COMPONENTID">0</column>
+      </row>
+   </table>
+   <table name="PSX_ROLE_ATTRIBUTES" onCreateOnly="no">
+      <row action="i">
+         <column name="ROLEID">6</column>
+         <column name="ATTRIBUTEID">2</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">2</column>
+         <column name="ATTRIBUTEID">3</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">5</column>
+         <column name="ATTRIBUTEID">4</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">4</column>
+         <column name="ATTRIBUTEID">5</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">3</column>
+         <column name="ATTRIBUTEID">6</column>
+      </row>
+   </table>
+   <table name="PSX_ROLE_SUBJECTS" onCreateOnly="no">
+      <row action="i">
+         <column name="ROLEID">2</column>
+         <column name="SUBJECTID">3</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">2</column>
+         <column name="SUBJECTID">4</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">3</column>
+         <column name="SUBJECTID">5</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">3</column>
+         <column name="SUBJECTID">6</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">4</column>
+         <column name="SUBJECTID">7</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">4</column>
+         <column name="SUBJECTID">8</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">5</column>
+         <column name="SUBJECTID">9</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">5</column>
+         <column name="SUBJECTID">10</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">6</column>
+         <column name="SUBJECTID">11</column>
+      </row>
+      <row action="i">
+         <column name="ROLEID">6</column>
+         <column name="SUBJECTID">12</column>
+      </row>
+   </table>
+   <table name="PSX_ROLES" onCreateOnly="no">
+      <row action="i">
+         <column name="ID">2</column>
+         <column name="NAME">Author</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">author</column>
+      </row>
+      <row action="i">
+         <column name="ID">3</column>
+         <column name="NAME">QA</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">qa</column>
+      </row>
+      <row action="i">
+         <column name="ID">4</column>
+         <column name="NAME">Editor</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">editor</column>
+      </row>
+      <row action="i">
+         <column name="ID">5</column>
+         <column name="NAME">Designer</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">designer</column>
+      </row>
+      <row action="i">
+         <column name="ID">6</column>
+         <column name="NAME">Artist</column>
+         <column name="COMPONENTID">0</column>
+         <column name="NORMALNAME">artist</column>
+      </row>
+   </table>
+   <table name="RXASSEMBLERPROPERTIES" onCreateOnly="no">
+      <row action="i">
+         <column name="SITEID">0</column>
+         <column name="CONTEXTID">0</column>
+         <column name="PROPERTYID">1</column>
+         <column name="PROPERTYNAME">rxcss</column>
+         <column name="PROPERTYVALUE">../web_resources/xroads/resources/css</column>
+      </row>
+      <row action="i">
+         <column name="SITEID">0</column>
+         <column name="CONTEXTID">0</column>
+         <column name="PROPERTYID">2</column>
+         <column name="PROPERTYNAME">rxjavascript</column>
+         <column name="PROPERTYVALUE">../web_resources/xroads/resources/js</column>
+      </row>
+      <row action="i">
+         <column name="SITEID">0</column>
+         <column name="CONTEXTID">0</column>
+         <column name="PROPERTYID">3</column>
+         <column name="PROPERTYNAME">rximage</column>
+         <column name="PROPERTYVALUE">../web_resources/xroads/resources/images</column>
+      </row>
+      <row action="i">
+         <column name="SITEID">0</column>
+         <column name="CONTEXTID">0</column>
+         <column name="PROPERTYID">4</column>
+         <column name="PROPERTYNAME">rxflash</column>
+         <column name="PROPERTYVALUE">../web_resources/xroads/resources/images/fla</column>
+      </row>
+      <row action="i">
+         <column name="SITEID">1</column>
+         <column name="CONTEXTID">1</column>
+         <column name="PROPERTYID">5</column>
+         <column name="PROPERTYNAME">rxcss</column>
+         <column name="PROPERTYVALUE">/xroads/resources/css</column>
+      </row>
+      <row action="i">
+         <column name="SITEID">1</column>
+         <column name="CONTEXTID">1</column>
+         <column name="PROPERTYID">6</column>
+         <column name="PROPERTYNAME">rxjavascript</column>
+         <column name="PROPERTYVALUE">/xroads/resources/js</column>
+      </row>
+      <row action="i">
+         <column name="SITEID">1</column>
+         <column name="CONTEXTID">1</column>
+         <column name="PROPERTYID">7</column>
+         <column name="PROPERTYNAME">rximage</column>
+         <column name="PROPERTYVALUE">/xroads/resources/images</column>
+      </row>
+      <row action="i">
+         <column name="SITEID">1</column>
+         <column name="CONTEXTID">1</column>
+         <column name="PROPERTYID">8</column>
+         <column name="PROPERTYNAME">rxflash</column>
+         <column name="PROPERTYVALUE">/xroads/resources/images/fla</column>
+      </row>
+   </table>
+   <table name="RXLOCATIONSCHEME" onCreateOnly="no">
+      <row action="i">
+         <column name="SCHEMEID">1</column>
+         <column name="SCHEMENAME">Article</column>
+         <column name="DESCRIPTION">Article scheme</column>
+         <column name="VARIANTID">1</column>
+         <column name="CONTENTTYPEID">1</column>
+         <column name="CONTEXTID">1</column>
+         <column name="GENERATOR">Java/global/percussion/contentassembler/sys_casConcatAssemblyLocation</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEID">4</column>
+         <column name="SCHEMENAME">File</column>
+         <column name="DESCRIPTION">File scheme</column>
+         <column name="VARIANTID">9</column>
+         <column name="CONTENTTYPEID">5</column>
+         <column name="CONTEXTID">1</column>
+         <column name="GENERATOR">Java/global/percussion/contentassembler/sys_casConcatAssemblyLocation</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEID">5</column>
+         <column name="SCHEMENAME">Image Link</column>
+         <column name="DESCRIPTION">Image Link scheme</column>
+         <column name="VARIANTID">17</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="CONTEXTID">1</column>
+         <column name="GENERATOR">Java/global/percussion/contentassembler/sys_casConcatAssemblyLocation</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEID">3</column>
+         <column name="SCHEMENAME">Image Thumbnail</column>
+         <column name="DESCRIPTION">Image Thumbnail scheme</column>
+         <column name="VARIANTID">18</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="CONTEXTID">1</column>
+         <column name="GENERATOR">Java/global/percussion/contentassembler/sys_casConcatAssemblyLocation</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEID">6</column>
+         <column name="SCHEMENAME">Image Full</column>
+         <column name="DESCRIPTION">Image Full scheme</column>
+         <column name="VARIANTID">19</column>
+         <column name="CONTENTTYPEID">4</column>
+         <column name="CONTEXTID">1</column>
+         <column name="GENERATOR">Java/global/percussion/contentassembler/sys_casConcatAssemblyLocation</column>
+      </row>
+   </table>
+   <table name="RXLOCATIONSCHEMEPARAMS" onCreateOnly="no">
+      <row action="i">
+         <column name="SCHEMEPARAMID">1</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">1</column>
+         <column name="SEQUENCE">0</column>
+         <column name="TYPE">String</column>
+         <column name="NAME">root</column>
+         <column name="VALUE">/xroads/articles/art</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">2</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">1</column>
+         <column name="SEQUENCE">1</column>
+         <column name="TYPE">BackendColumn</column>
+         <column name="NAME">middle</column>
+         <column name="VALUE">Contentstatus.contentid</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">3</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">1</column>
+         <column name="SEQUENCE">2</column>
+         <column name="TYPE">String</column>
+         <column name="NAME">file</column>
+         <column name="VALUE">.html</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">8</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">4</column>
+         <column name="SEQUENCE">0</column>
+         <column name="TYPE">String</column>
+         <column name="NAME">root</column>
+         <column name="VALUE">/xroads/downloads/file</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">9</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">4</column>
+         <column name="SEQUENCE">1</column>
+         <column name="TYPE">BackendColumn</column>
+         <column name="NAME">mid1</column>
+         <column name="VALUE">ContentStatus.contentid</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">7</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">3</column>
+         <column name="SEQUENCE">3</column>
+         <column name="TYPE">BackendColumn</column>
+         <column name="NAME">suffix</column>
+         <column name="VALUE">RXIMAGE.THUMEXTENSION</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">11</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">5</column>
+         <column name="SEQUENCE">0</column>
+         <column name="TYPE">String</column>
+         <column name="NAME">root</column>
+         <column name="VALUE">/xroads/images/img</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">12</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">5</column>
+         <column name="SEQUENCE">1</column>
+         <column name="TYPE">BackendColumn</column>
+         <column name="NAME">id</column>
+         <column name="VALUE">ContentStatus.contentid</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">13</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">5</column>
+         <column name="SEQUENCE">2</column>
+         <column name="TYPE">String</column>
+         <column name="NAME">mid2</column>
+         <column name="VALUE">.html</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">14</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">6</column>
+         <column name="SEQUENCE">0</column>
+         <column name="TYPE">String</column>
+         <column name="NAME">root</column>
+         <column name="VALUE">/xroads/images/img</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">4</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">3</column>
+         <column name="SEQUENCE">0</column>
+         <column name="TYPE">String</column>
+         <column name="NAME">root</column>
+         <column name="VALUE">/xroads/images/img</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">5</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">3</column>
+         <column name="SEQUENCE">1</column>
+         <column name="TYPE">BackendColumn</column>
+         <column name="NAME">id</column>
+         <column name="VALUE">ContentStatus.contentid</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">6</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">3</column>
+         <column name="SEQUENCE">2</column>
+         <column name="TYPE">String</column>
+         <column name="NAME">tn</column>
+         <column name="VALUE">_tn</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">10</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">4</column>
+         <column name="SEQUENCE">2</column>
+         <column name="TYPE">BackendColumn</column>
+         <column name="NAME">suffix</column>
+         <column name="VALUE">RXFILE.FILEEXTENSION</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">15</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">6</column>
+         <column name="SEQUENCE">1</column>
+         <column name="TYPE">BackendColumn</column>
+         <column name="NAME">id</column>
+         <column name="VALUE">ContentStatus.contentid</column>
+      </row>
+      <row action="i">
+         <column name="SCHEMEPARAMID">16</column>
+         <column name="CONTEXTID">1</column>
+         <column name="SCHEMEID">6</column>
+         <column name="SEQUENCE">2</column>
+         <column name="TYPE">BackendColumn</column>
+         <column name="NAME">suffix</column>
+         <column name="VALUE">RXIMAGE.IMGEXTENSION</column>
+      </row>
+   </table>
+   <table name="RXSITECOMMUNITY" onCreateOnly="no">
+      <row action="i">
+         <column name="SITEID">1</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+   </table>
+   <table name="RXVARIANTCOMMUNITY" onCreateOnly="no">
+      <row action="i">
+         <column name="VARIANTID">1</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">3</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">4</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">7</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">8</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">9</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">11</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">12</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">13</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">16</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">17</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">18</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">19</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">20</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">21</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">22</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">23</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">25</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">26</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">27</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">28</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">29</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">30</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">31</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">32</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="VARIANTID">33</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row onTableCreateOnly="no" action="d">
+         <column name="VARIANTID">34</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row onTableCreateOnly="no" action="d">
+         <column name="VARIANTID">35</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+   </table>
+   <table name="RXWORKFLOWCOMMUNITY" onCreateOnly="no">
+      <row action="i">
+         <column name="WORKFLOWAPPID">1</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="WORKFLOWAPPID">2</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+      <row action="i">
+         <column name="WORKFLOWAPPID">3</column>
+         <column name="COMMUNITYID">10</column>
+      </row>
+   </table>
+</tables>

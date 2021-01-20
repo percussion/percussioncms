@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_stylesheets_controls_resourceAutoListWidgetControl-xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\stylesheets\controls\resourceAutoListWidgetControl.xsl</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_stylesheets_controls_resourceAutoListWidgetControl-xsl\resourceAutoListWidgetControl.xsl</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-338">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percFileAutoList.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-338\percFileAutoList.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percFileAutoList.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-338\percFileAutoList.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percFileAutoList.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-338\percFileAutoList.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_js_jquery-resourceAutoList-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\js\jquery.resourceAutoList.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_js_jquery-resourceAutoList-js\jquery.resourceAutoList.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_calendar-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\images\calendar.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_calendar-gif\calendar.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_ButtonBrowse-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\images\ButtonBrowse.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_ButtonBrowse-png\ButtonBrowse.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_collapsable-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\images\collapsable.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_collapsable-gif\collapsable.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percResourceAutoListControl/css/jquery.resourceAutoList.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\jquery.resourceAutoList.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percResourceAutoListControl\css\jquery.resourceAutoList.css\jquery.resourceAutoList.css</ArchiveFile>
+         <OriginalFile>controls\percResourceAutoListControl\css\jquery.resourceAutoList.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_fileAutoList_images_widgetIconFileAutoList-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\fileAutoList\images\widgetIconFileAutoList.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_fileAutoList_images_widgetIconFileAutoList-png\widgetIconFileAutoList.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percResourceAutoListControl/js/jquery.resourceAutoList.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\jquery.resourceAutoList.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percResourceAutoListControl\js\jquery.resourceAutoList.js\jquery.resourceAutoList.js</ArchiveFile>
+         <OriginalFile>controls\percResourceAutoListControl\js\jquery.resourceAutoList.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_buttonBluePlus-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\images\buttonBluePlus.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_buttonBluePlus-gif\buttonBluePlus.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsFileAutoList.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\images\ContentTypeIcons\filetypeIconsFileAutoList.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsFileAutoList.png\filetypeIconsFileAutoList.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/resourceAutoListWidgetControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\resourceAutoListWidgetControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\resourceAutoListWidgetControl.xsl\resourceAutoListWidgetControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\resourceAutoListWidgetControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_buttonBlueMinusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\images\buttonBlueMinusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_buttonBlueMinusOver-gif\buttonBlueMinusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_buttonBluePlusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\images\buttonBluePlusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_buttonBluePlusOver-gif\buttonBluePlusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_fileAutoList_images_widgetIconFileAutoListOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\fileAutoList\images\widgetIconFileAutoListOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_fileAutoList_images_widgetIconFileAutoListOver-png\widgetIconFileAutoListOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percFileAutoList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percFileAutoList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percFileAutoList-xml\percFileAutoList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_css_jquery-resourceAutoList-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\css\jquery.resourceAutoList.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_css_jquery-resourceAutoList-css\jquery.resourceAutoList.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_buttonBlueMinus-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\images\buttonBlueMinus.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_buttonBlueMinus-gif\buttonBlueMinus.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_fileAutoList_images_widgetFileAutoListSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\fileAutoList\images\widgetFileAutoListSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_fileAutoList_images_widgetFileAutoListSampleBackground-png\widgetFileAutoListSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_expandable-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\images\expandable.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_expandable-gif\expandable.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percFileAutoList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Resources\percFileAutoList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percFileAutoList-xml\percFileAutoList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--4510160340238991289">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percFileAutoList.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--4510160340238991289\percFileAutoList.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_ButtonBrowseOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\controls\percResourceAutoListControl\images\ButtonBrowseOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_controls_percResourceAutoListControl_images_ButtonBrowseOver-png\ButtonBrowseOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

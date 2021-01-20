@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+    <ModulePrefs title="Welcome" category="content" description="This gadget provides an introduction to Percussion CMS with links to documentation, the forum, and support." thumbnail="images/gadgetIconWelcome.png" height="320">
+        <Require feature="perc_core"/>
+        <Require feature="perc_jquery_ui"/>
+    </ModulePrefs>
+    <Content type="html">
+        <![CDATA[
+      <style type="text/css">
+        .perc-gadget-welcome-link, .perc-gadget-welcome-link:hover .perc-gadget-welcome-link:visited{
+           color: #000000 !important;
+           font-weight: bold;
+           text-decoration: none;
+           padding-top: 5px;
+        }
+        .perc-gadget-welcome-link-desc, #perc_linkback_moreinfo_link{
+           font-size: 10px;
+           font-weight: normal;
+           font-family: 'Open Sans', sans-serif;
+        }
+		.perc-gadget-welcome-link-desc{
+           color: #777777;
+		}
+		#perc_linkback_moreinfo_link{
+			cursor:pointer;
+		}
+    body * {
+      font-family: 'Open Sans', sans-serif;
+    }
+
+       </style>
+
+	   <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+	   <script src="/cm/gadgets/repository/cm1_welcome_gadget/PercWelcomeGadget.js"></script>
+
+	   <div class="perc-gadget perc-welcome-gadget">
+          <a href="https://www.percussion.com/products/cm1/overview" target="_blank"><img src="/cm/gadgets/repository/cm1_welcome_gadget/Welcome-Image.jpg" style="border: none"/></a><br/>
+          <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
+          <a class="perc-gadget-welcome-link" href="https://help.percussion.com" target="_blank">Documentation</a><br/>
+          <span class="perc-gadget-welcome-link-desc">All the basics on creating and maintaining your website(s) with Percussion CMS.</span><br/>
+          <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
+          <a class="perc-gadget-welcome-link" href="https://community.percussion.com" target="_blank">Percussion Community</a><br/>
+          <span class="perc-gadget-welcome-link-desc">Ask questions and discuss ideas with fellow Percussion CMS users.</span><br/>
+          <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
+		  <div id="perc-bookmark-container">
+			  <div class="perc-gadget-welcome-link">Add Percussion Linkback</div>
+			  <span class="perc-gadget-welcome-link-desc">Percussion Linkback provides quick access from your website back to Percussion CMS to facilitate quick edits and easy navigation. When viewing a page on your website, click the Percussion Linkback bookmark, and you will be brought to the corresponding page in CMS for you to edit.</span><br/><br/>
+			  <!-- Leave the styles on book mark link inline as the same code gets invoked from main window also.-->
+			  <span class="perc-gadget-welcome-link-desc">Drag this button <a id="perc_linkback_anchor" style="appearance: button;-moz-appearance: button;-webkit-appearance: button;text-decoration: none; font: menu; color: ButtonText;display: inline-block; padding: 2px 8px; background: ButtonFace; color: ButtonText;border-style: solid; border-width: 2px; border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;" href="javascript:alert('Please wait for the bookmarklet to be generated before adding to your bookmarks bar.')">PercussionCMS</a> to your bookmarks bar.</span><br/>
+			  <div id="perc_linkback_moreinfo_text" style="display:none; margin-top:10px;">
+				<div>If your browser bookmarks bar is not shown</div>
+				<div style="padding-left:20px;">in Chrome, press Ctrl+Shift+B keyboard shortcut (Command+Shift+B for Mac users)</div>
+				<div style="padding-left:20px;">in Firefox, right-click on empty section of the Tab Strip and check Bookmarks Toolbar in the pop-up menu</div>
+				<div style="padding-left:20px;">in Safari, press Command+Shift+B keyboard shortcut</div>
+				<div style="padding-left:20px;">in IE 8, right-click on empty section of the Tab Strip and check Favorites bar in the pop-up menu, then right click on Percussion button, and select "Add to favorites...".</div>
+			  </div>
+		  </div>
+          <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
+       </div>
+
+     ]]>
+    </Content>
+</Module>

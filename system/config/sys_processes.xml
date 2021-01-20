@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Sample Configuration for command:
+
+$USER_INSTALL_DIR$\bin\config_system.exe -rw_path $USER_INSTALL_DIR$
+-port $CDV_PORT_NUMBER_1$ -admin_port $CDV_PORT_NUMBER_2$
+-www_path $USER_WEB_SERVER_DOC_ROOT_DIR$
+-cgi_path $USER_WEB_SERVER_CGI_DIR$ -rdbms $RDBMS_TYPE_INT_VAL$ -quiet
+-->
+
+<Processes>
+   <PSXProcess name="config_system" type="com.percussion.process.PSSimpleProcess">
+      <PSXProcessDef os="win">
+         <dir resolver="com.percussion.process.PSEnvironmentResolver" value = "$USER_INSTALL_DIR$\bin"/>
+         <executable value = "config_system.exe"/>
+         <params>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-rw_path $USER_INSTALL_DIR$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-port $CDV_PORT_NUMBER_1$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-admin_port $CDV_PORT_NUMBER_2$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-www_path $USER_WEB_SERVER_DOC_ROOT_DIR$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-cgi_path $USER_WEB_SERVER_CGI_DIR$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="rdbms $RDBMS_TYPE_INT_VAL$"/>
+            <PSXParam value="-quiet"/>
+         </params>
+         <env>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" name ="EXEC_INET_PORT" value="$CDV_PORT_NUMBER_1$"/>
+         </env>
+      </PSXProcessDef>
+      <PSXProcessDef os="solaris, linux">
+         <dir resolver="com.percussion.process.PSEnvironmentResolver" value = "$USER_INSTALL_DIR$/bin"/>
+         <executable value = "config_system.bin"/>
+         <params>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-rw_path $USER_INSTALL_DIR$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-port $CDV_PORT_NUMBER_1$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-admin_port $CDV_PORT_NUMBER_2$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-www_path $USER_WEB_SERVER_DOC_ROOT_DIR$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="-cgi_path $USER_WEB_SERVER_CGI_DIR$"/>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" value="rdbms $RDBMS_TYPE_INT_VAL$"/>
+            <PSXParam value="-quiet"/>
+         </params>
+         <env>
+            <PSXParam resolver="com.percussion.process.PSEnvironmentResolver" name ="EXEC_INET_PORT" value="$CDV_PORT_NUMBER_1$"/>
+         </env>
+      </PSXProcessDef>
+   </PSXProcess>
+</Processes>

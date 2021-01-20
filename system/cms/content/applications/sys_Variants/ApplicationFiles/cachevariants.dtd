@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT contentvariant EMPTY>
+<!ATTLIST contentvariant 
+   variantid CDATA #REQUIRED
+   assemblyurl CDATA #REQUIRED
+>
+<!ELEMENT cachevariants (contentvariant* )>

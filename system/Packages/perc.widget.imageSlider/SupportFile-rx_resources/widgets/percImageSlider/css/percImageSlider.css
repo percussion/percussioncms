@@ -1,0 +1,244 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.percImageSlider-empty-style
+{
+    height: 100px;
+    background: transparent url(/Rhythmyx/rx_resources/widgets/percImageSlider/images/percImageSliderPlaceholder.png) no-repeat scroll center center;
+    filter: alpha(opacity=50);
+    opacity: .50;
+}
+
+.perc-move-button-container {
+    padding-left: 10px;
+    padding-bottom: 7px;
+    width: 80px;
+}
+
+.perc-move-button {
+    cursor: pointer;
+    margin: 3px;
+    width: 30px;
+    border-radius: 5px;
+    float: left;
+    text-align: center;
+    height: 25px;
+    padding-top: 5px;
+    background-color: #133c55;
+    color: #ffffff;
+    border: 1px solid #133c55;
+}
+
+.perc-move-button:hover {
+    background-color: #ffffff;
+    color: #133c55;
+}
+
+.perc-table {
+    align: left;
+    width: 100%;
+}
+
+.perc-image-size-text {
+    font-size: 9px !important;
+}
+
+.perc-content-image-thumbnail {
+    color: #444444;
+}
+
+.perc-thumbnail-td {
+    max-width: 50px !important;
+    padding-right: 15px;
+}
+.perc-thumbnail-td img {
+    max-width: 50px !important;
+}
+
+.perc-image-size-td {
+    width: 50px;
+    padding-right: 15px;
+}
+
+.perc-slider-image-link-setting-select {
+    height:27px;
+    margin-bottom: 6px
+}
+
+.perc-slider-image-caption-td {
+    align: left;
+    width: 15% !important;
+}
+
+.perc-slider-image-caption {
+    margin-right: 10px;
+    width: 90%;
+}
+
+.perc-slider-image-caption-2 {
+    margin-right: 10px;
+    width: 90%;
+}
+
+.image-caption-overlay-divider {
+    display: inline-block;
+}
+
+.perc-slider-image-path {
+    margin-right: 10px;
+    width: 60%;
+}
+
+.perc-slider-image-link {
+    margin-right: 10px;
+    width: 60%;
+}
+
+.perc-select-button {
+    align: right;
+    margin-right: 10px;
+}
+
+.perc-input-header {
+    align: left;
+    font-weight: bold;
+    padding-right: 15px;
+    font-size: 12px;
+}
+
+.fa {
+    font-size: 20px;
+}
+
+.perc-toggle-help {
+    color: #007;
+    cursor: pointer;
+    padding-right: 8px;
+}
+
+.perc-toggle-help:hover {
+    color: #00f;
+}
+
+.perc-table-remove {
+    color: #700;
+    cursor: pointer;
+}
+
+.perc-table-remove:hover {
+    color: #f00;
+}
+
+.perc-table-up, .table-down {
+    color: #007;
+    cursor: pointer;
+}
+
+.perc-table-up:hover, .table-down:hover {
+    color: #00f;
+}
+
+.perc-table-add {
+    color: #070;
+    cursor: pointer;
+    left: 0;
+    padding-bottom: 25px;
+    position: relative;
+    top: 8px;
+}
+
+.perc-table-add:hover {
+    color: #0b0;
+}
+
+.hide {
+    display: none!important;
+}
+
+input#perc-image-slider-browse-button {
+    font-family: FontAwesome !important;
+    height: 25px;
+}
+
+.perc-input-slider-warning {
+    -moz-box-shadow:    inset 0 0 10px #ed911a;
+    -webkit-box-shadow: inset 0 0 10px #ed911a;
+    box-shadow:        inset 0 0 10px #ed911a;
+}
+
+.perc-input-slider-error {
+    -moz-box-shadow:    inset 0 0 10px #ff0000;
+    -webkit-box-shadow: inset 0 0 10px #ff0000;
+    box-shadow:        inset 0 0 10px #ff0000;
+}
+
+/* This class ensures there is no padding between input field and browse button */
+input.perc-slider-image-path, input.perc-slider-image-link {
+    margin-right: 0;
+}
+
+input#perc-image-slider-browse-button {
+    margin-left: 0px;
+}
+
+input.perc-slider-image-caption-2 {
+    margin-right: 15px;
+}
+
+td.perc-input-header.perc-slider-image-preview-td {
+    width: 46px !important;
+}
+
+table {
+    background-color: transparent;
+    border-collapse: collapse;
+    border-color: grey;
+    border-spacing: 0;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+body {
+    background-color: #fff;
+    color: #333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+}
+
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    border-top: 1px solid #ddd;
+    line-height: 1.42857143;
+    padding: 8px;
+    vertical-align: top;
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.perc-create-new-button {
+    display:none !important;
+}

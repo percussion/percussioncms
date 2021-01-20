@@ -1,0 +1,87 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.perc-cookie-consent-table, .perc-cookie-consent-site-table {
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.perc-cookie-button-site {
+    background: none;
+    color: #428bca;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer !important;
+}
+
+.export-button a,a:visited {
+    color: #428bca;
+}
+
+.perc-cookie-consent-table, .perc-cookie-consent-site-table thead th {
+    cursor: pointer;
+    color: #6C717C;
+}
+
+.cookie-consent-content .dataTables_wrapper {
+    height: initial;
+}
+
+.cookie-consent-site-stats .dataTables_wrapper {
+    height: initial;
+}
+
+#site-name-section {
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 3px;
+    background: #E6E6E9;
+    border: 1px solid black;
+}
+
+#perc-cookie-back-button {
+    float: initial;
+    margin-top: initial;
+}
+
+.advanced {
+    margin-top: 13px;
+}
+
+.cookie-consent-advanced {
+    margin-top: 10px;
+}
+
+.cookie-consent-delete-btn {
+    margin-top: 10px;
+}
+
+.mmlib_table {
+    margin-bottom: 10px;
+}
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

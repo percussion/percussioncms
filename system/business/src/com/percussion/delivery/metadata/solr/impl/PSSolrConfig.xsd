@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Ben Chen (Percussion Software) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:element name="SolrConfig">
+        <xs:annotation>
+            <xs:documentation>Comment describing your root element</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="SolrServer" type="SolrServer" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="SolrServer">
+        <xs:complexContent>
+            <xs:extension base="PSAbstractDataObject">
+                <xs:sequence>
+                    <xs:element name="serverType" type="xs:string"
+                        minOccurs="0" maxOccurs="1" />
+                    <xs:element name="solrHost" type="xs:string" />
+                    <xs:element name="defaultCollection" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="serverCloudType" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="saslContextName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="maxErrors" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="cleanAllOnFullPublish" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="metadataMap">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="entry"
+                                    type="SolrMetaMapEntry"
+                                    minOccurs="0" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                   <xs:element name="enabledSites">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="site"
+                                    type="xs:string"
+                                    minOccurs="0" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SolrMetaMapEntry">
+        
+        <xs:attribute name="key" type="xs:string"></xs:attribute>
+        <xs:attribute name="value" type="xs:string"></xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="PSAbstractDataObject"/>
+
+    <xs:complexType name="SiteRootEntry">
+
+        <xs:attribute name="siteName" type="xs:string"></xs:attribute>
+        <xs:attribute name="sitePrefix" type="xs:string"></xs:attribute>
+    </xs:complexType>
+</xs:schema>
+

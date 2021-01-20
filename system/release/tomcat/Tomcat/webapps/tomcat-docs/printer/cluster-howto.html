@@ -1,0 +1,278 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<html><head><META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container - Clustering/Session Replication HOW-TO</title><meta value="Filip Hanik" name="author"><meta value="fhanik@apache.org" name="email"></head><body vlink="#525D76" alink="#525D76" link="#525D76" text="#000000" bgcolor="#ffffff"><table cellspacing="4" width="100%" border="0"><!--PAGE HEADER--><tr><td colspan="2"><!--JAKARTA LOGO--><a href="http://jakarta.apache.org/"><img border="0" alt="The Jakarta Project" align="left" src="./../images/jakarta-logo.gif"></a><!--PROJECT LOGO--><a href="http://jakarta.apache.org/tomcat/"><img border="0" alt="
+      The Apache Jakarta Tomcat Servlet/JSP Container
+    " align="right" src="./../images/tomcat.gif"></a></td></tr><!--HEADER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><tr><!--RIGHT SIDE MAIN BODY--><td align="left" valign="top" width="80%"><table cellspacing="4" width="100%" border="0"><tr><td valign="top" align="left"><h1>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container</h1><h2>Clustering/Session Replication HOW-TO</h2></td><td nowrap="true" valign="top" align="right"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Quick Start"><strong>Quick Start</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>To run session replication in your Tomcat 5 container, the following steps
+should be completed:</p>
+<ul>
+<li>All your session attributes must implement <code>java.io.Serializable</code></li>
+<li>Uncomment the <code>Cluster</code> element in server.xml</li>
+<li>Uncomment the <code>Valve(ReplicationValve)</code> element in server.xml</li>
+<li>If your Tomcat instances are running on the same machine, make sure the <code>tcpListenPort</code>
+    attribute is unique for each instance.</li>
+<li>Make sure your <code>web.xml</code> has the <code>&lt;distributable/&gt;</code> element</li>
+</ul>
+<p>Load balancing can be achieved through many techniques, as seen in the
+<a href="balancer-howto.html">Load Balancing</a> chapter.</p>
+<p>Note: Remember that your session state is tracked by a cookie, so your URL must look the same from the out
+   side otherwise, a new session will be created.</p>
+<p>Note: Clustering support currently requires the JDK version 1.4 or later.</p>
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Overview"><strong>Overview</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>To enable session replication in Tomcat, three different paths can be followed to achieve the exact same thing:</p>
+<ol>
+  <li>Using session persistence, and saving the session to a shared file system (PersistenceManager)</li>
+  <li>Using session persistence, and saving the session to a shared database (JDBCManager)</li>
+  <li>Using in-memory-replication, using the SimpleTcpCluster that ships with Tomcat 5 (server/lib/catalina-cluster.jar)</li>
+</ol>
+
+<p>In this release of session replication, Tomcat performs an all-to-all replication of session state.
+
+   This is an algorithm that is only efficient when the clusters are small. For large clusters, the next
+   release will support a primary-secondary session replication where the session will only be stored at one
+   or maybe two backup servers.
+   In order to keep the network traffic down in an all-to-all environment, you can split your cluster
+   into smaller groups. This can be easily achieved by using different multicast addresses for the different groups.
+   A very simple setup would look like this:
+   </p>
+
+<div align="left"><table border="0" cellpadding="0" cellspacing="4"><tr><td height="1" width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr><tr><td width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" bgcolor="#ffffff"><pre>
+        DNS Round Robin
+               |
+         Load Balancer
+          /           \
+      Cluster1      Cluster2
+      /     \        /     \
+  Tomcat1 Tomcat2  Tomcat3 Tomcat4
+</pre></td><td width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr><tr><td height="1" width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr></table></div>
+
+<p>What is important to mention here, is that session replication is only the beginning of clustering.
+   Another popular concept used to implement clusters is farming, ie, you deploy your apps only to one
+   server, and the cluster will distribute the deployments across the entire cluster.
+   This is all capabilities that can go into the next release.</p>
+<p>In the next section will go deeper into how session replication works and how to configure it.</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="How it Works"><strong>How it Works</strong></a></font></td></tr><tr><td><blockquote>
+<p>To make it easy to understand how clustering works, I'm gonna take you through a series of scenarios.
+   In the scenario I only plan to use two tomcat instances <code>TomcatA</code> and <code>TomcatB</code>.
+   We will cover the following sequence of events:</p>
+
+<ol>
+<li><code>TomcatA</code> starts up</li>
+<li><code>TomcatB</code> starts up</li>
+<li><code>TomcatA</code> receives a request, a session <code>S1</code> is created.</li>
+<li><code>TomcatA</code> crashes</li>
+<li><code>TomcatB</code> receives a request for session <code>S1</code></li>
+<li><code>TomcatA</code> starts up</li>
+<li><code>TomcatA</code> receives a request, invalidate is called on the session (<code>S1</code>)</li>
+<li><code>TomcatB</code> receives a request, for a new session (<code>S2</code>)</li>
+<li><code>TomcatA</code> The session <code>S2</code> expires due to inactivity.</li>
+</ol>
+
+<p>Ok, now that we have a good sequence, I will take you through exactly what happens in the session repliction code</p>
+
+<ol>
+<li><b><code>TomcatA</code> starts up</b>
+    <p>
+        Tomcat starts up using the standard start up sequence. When the Host object is created, a cluster object is associated with it.
+        When the contexts are parsed, if the distributable element is in place in web.xml
+        Tomcat asks the Cluster class (in this case <code>SimpleTcpCluster</code>) to create a manager
+        for the replicated context. So with clustering enabled, distributable set in web.xml
+        Tomcat will create a <code>SimpleTcpReplicationManager</code> for that context instead of a <code>StandardManager</code>.
+        The cluster class will start up a membership service (multicast) and a replication service (tcp unicast).
+        More on the architecture further down in this document.
+    </p><p></p>
+</li>
+<li><b><code>TomcatB</code> starts up</b>
+    <p>
+        When TomcatB starts up, it follows the same sequence as TomcatA did with one exception.
+        The cluster is started and will establish a membership (TomcatA,TomcatB).
+        TomcatB will now request the session state from a server that already exists in the cluster,
+        in this case TomcatA. TomcatA responds to the request, and before TomcatB starts listening
+        for HTTP requests, the state has been transferred from TomcatA to TomcatB.
+        In case TomcatA doesn't respond, TomcatB will time out after 60 seconds, and issue a log
+        entry. The session state gets transferred for each web application that has distributable in
+        its web.xml. Note: To use session replication efficiently, all your tomcat instances should be
+        configured the same.
+    </p><p></p>
+</li>
+<li><B><code>TomcatA</code> receives a request, a session <code>S1</code> is created.</B>
+    <p>
+        The request coming in to TomcatA is treated exactly the same way as without session replication.
+        The action happens when the request is completed, the <code>ReplicationValve</code> will intercept
+        the request before the response is returned to the user.
+        At this point it finds that the session has been modified, and it uses TCP to replicata the
+        session to TomcatB. Once the serialized data has been handed off to the operating systems TCP logic,
+        the request returns to the user, back through the valve pipeline.
+        For each request the entire session is replicated, this allows code that modifies attributes
+        in the session without calling setAttribute or removeAttribute to be replicated.
+        a useDirtyFlag configuration parameter can be used to optimize the number of times
+        a session is replicated.
+    </p><p></p>
+
+</li>
+<li><b><code>TomcatA</code> crashes</b>
+    <p>
+        When TomcatA crashes, TomcatB receives a notification that TomcatA has dropped out
+        of the cluster. TomcatB removes TomcatA from its membership list, and TomcatA will no longer
+        be notified of any changes that occurs in TomcatB.
+        The load balancer will redirect the requests from TomcatA to TomcatB and all the sessions
+        are current.
+    </p><p></p>
+</li>
+<li><b><code>TomcatB</code> receives a request for session <code>S1</code></b>
+    <p>Nothing exciting, TomcatB will process the request as any other request.
+    </p><p></p>
+</li>
+<li><b><code>TomcatA</code> starts up</b>
+    <p>Upon start up, before TomcatA starts taking new request and making itself
+    available to it will follow the start up sequence described above 1) 2).
+    It will join the cluster, contact TomcatB for the current state of all the sessions.
+    And once it receives the session state, it finishes loading and opens its HTTP/mod_jk ports.
+    So no requests will make it to TomcatA until it has received the session state from TomcatB.
+    </p><p></p>
+</li>
+<li><b><code>TomcatA</code> receives a request, invalidate is called on the session (<code>S1</code>)</b>
+    <p>The invalidate is call is intercepted, and the session is queued with invalidated sessions.
+        When the request is complete, instead of sending out the session that has changed, it sends out
+        an "expire" message to TomcatB and TomcatB will invalidate the session as well.
+    </p><p></p>
+
+</li>
+<li><b><code>TomcatB</code> receives a request, for a new session (<code>S2</code>)</b>
+    <p>Same scenario as in step 3)
+    </p><p></p>
+
+
+</li>
+<li><code>TomcatA</code> The session <code>S2</code> expires due to inactivity.
+    <p>The invalidate is call is intercepted the same was as when a session is invalidated by the user,
+       and the session is queued with invalidated sessions.
+       At this point, the invalidet session will not be replicated across until
+       another request comes through the system and checks the invalid queue.
+    </p><p></p>
+</li>
+</ol>
+
+<p>Phuuuhh! :)</p>
+
+<p><b>Membership</b>
+    Clustering membership is established using very simple multicast pings.
+    Each Tomcat instance will periodically send out a multicast ping,
+    in the ping message the instance will broad cast its IP and TCP listen port
+    for replication.
+    If an instance has not received such a ping within a given timeframe, the
+    member is considered dead. Very simple, and very effective!
+    Of course, you need to enable multicasting on your system.
+</p>
+
+<p><b>TCP Replication</b>
+    Once a multicast ping has been received, the member is added to the cluster
+    Upon the next replication request, the sending instance will use the host and
+    port info and establish a TCP socket. Using this socket it sends over the serialized data.
+    The reason I choose TCP sockets is because it has built in flow control and guaranteed delivery.
+    So I know, when I send some data, it will make it there :)
+</p>
+
+<p><b>Distributed locking and pages using frames</b>
+    Tomcat does not keep session instances in sync across the cluster.
+    The implementation of such logic would be to much overhead and cause all
+    kinds of problems. If your client accesses the same session
+    simultanously using multiple requests, then the last request
+    will override the other sessions in the cluster.
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Cluster Architecture"><strong>Cluster Architecture</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>Component Levels:
+<div align="left"><table border="0" cellpadding="0" cellspacing="4"><tr><td height="1" width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr><tr><td width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" bgcolor="#ffffff"><pre>
+        Server
+          |
+        Service
+          |
+        Engine
+       /     \
+   Cluster ReplicationValve
+      |
+   Manager
+      |
+  Session
+</pre></td><td width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr><tr><td height="1" width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td><td height="1" width="1" bgcolor="#023264"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr></table></div></p>
+
+
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Cluster Configuration"><strong>Cluster Configuration</strong></a></font></td></tr><tr><td><blockquote>
+<p>The cluster configuration is described in the sample server.xml file.
+What is worth to mention is that the attributes starting with mcastXXX
+are for the membership multicast ping, and the attributes starting with tcpXXX
+are for the actual TCP replication.
+</p>
+<p>
+    The membership is established by all the tomcat instances are sending broadcast messages
+    on the same multicast IP and port.
+    The TCP listen port, is the port where the session replication is received from other members.
+</p>
+<p>
+    The replication valve is used to find out when the request has been completed and initiate the
+    replication.
+</p>
+<p>
+    One of the most important performance considerations is the synchronous (pooled or not pooled) versus asynchronous replication
+    mode. In a synchronous replication mode the request doesn't return until the replicated session has been
+    sent over the wire and reinstantiated on all the other cluster nodes.
+    There are two settings for synchronous replication. Pooled or not pooled.
+    Not pooled (ie replicationMode="synchronous") means that all the replication request are sent over a single
+    socket.
+    Using synchronous mode potentially becomes a bottleneck,
+    You can overcome this bottleneck by setting replicationMode="pooled".
+    What is recommended here is to increase the number of threads that handle
+    incoming replication request. This is the tcpThreadCount property in the cluster
+    section of server.xml. The pooled setting means that we are using multiple sockets, hence increases the performance.
+    Asynchronous replication, should be used if you have sticky sessions until fail over, then
+    your replicated data is not time crucial, but the request time is, at this time leave the tcpThreadCount to
+    be number-of-nodes-1.
+    During async replication, the request is returned before the data has been replicated. async replication yields shorter
+    request times, and synchronous replication guarantees the session to be replicated before the request returns.
+</p>
+<p>
+    The parameter "replicationMode" has three different settings: "pooled", "synchronous" and "asynchronous"
+</p>
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="FAQ"><strong>FAQ</strong></a></font></td></tr><tr><td><blockquote>
+<p>To be completed once I receive questions about session replication:</p>
+<ol>
+<li>Q: What happens when I pull the network cord?<p></p>
+
+    A: Well, the other members will remove the instance from the cluster,
+       but when you insert the cable again, the Tomcat instance might have completely flipped out.
+       This is because the OS might start going 100% CPU when a multicast message is sent.
+       There has not yet been a good solution for this, I will let you know when I have come up with one.
+  </li>
+
+</ol>
+</blockquote></td></tr></table></td></tr><!--FOOTER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><!--PAGE FOOTER--><tr><td colspan="2"><div align="center"><font size="-1" color="#525D76"><em>
+        Copyright &copy; 1999-2004, Apache Software Foundation
+        </em></font></div></td></tr></table></body></html>

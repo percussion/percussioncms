@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
+	<xsl:template match="/">
+		<xsl:apply-templates select="/*" mode="copy"/>
+	</xsl:template>
+	<xsl:template match="ActionList" mode="copy">
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates select="*" mode="copy">
+            <xsl:sort select="@label"/>
+         </xsl:apply-templates>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="*" mode="copy">
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates select="*" mode="copy"/>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="Props" mode="copy">
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:for-each select="*">
+				<Prop>
+					<xsl:attribute name="propid">0</xsl:attribute>
+					<xsl:attribute name="name"><xsl:value-of select="name()"/></xsl:attribute>
+					<xsl:value-of select="."/>
+				</Prop>
+			</xsl:for-each>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="Params" mode="copy">
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:for-each select="*">
+				<Param>
+					<xsl:attribute name="paramid">0</xsl:attribute>
+					<xsl:attribute name="name"><xsl:value-of select="name()"/></xsl:attribute>
+					<xsl:value-of select="."/>
+				</Param>
+			</xsl:for-each>
+		</xsl:copy>
+	</xsl:template>
+</xsl:stylesheet>

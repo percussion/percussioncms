@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="532" startPriority="0" version="2.0">
+	<name>sys_psxCataloger</name>
+	<description>This app is used by the server for resources that query the db for object lists needed by cms system.</description>
+	<requestRoot>sys_psxCataloger</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_paul_1030126617640/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20020823T142407343</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="20">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050118T130406343</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>Anonymous</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="no" dataDelete="no" dataQuery="no" dataUpdate="no" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+	</PSXAcl>
+	<maxThreads>-1</maxThreads>
+	<maxRequestTime>-1</maxRequestTime>
+	<maxRequestsInQueue>-1</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>1</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="8716">
+		<name>communityWorkflows</name>
+		<description>This resource gets a list of workflows for a given community and returns them in an xml document w/ the workflow name and id. It is expected the community id is in the session.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="8696">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="8691">
+				<PSXBackEndTable id="8688">
+					<alias>RXWORKFLOWCOMMUNITY</alias>
+					<table>RXWORKFLOWCOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="8689">
+					<alias>RXCOMMUNITY</alias>
+					<table>RXCOMMUNITY</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="8690">
+					<alias>WORKFLOWAPPS</alias>
+					<table>WORKFLOWAPPS</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndJoin id="0" joinType="inner">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+							<column>WORKFLOWAPPID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>WORKFLOWAPPS</tableAlias>
+							<column>WORKFLOWAPPID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+				<PSXBackEndJoin id="0" joinType="inner">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+							<column>COMMUNITYID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>RXCOMMUNITY</tableAlias>
+							<column>COMMUNITYID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="8694" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CommunityWorkflows/@communityid</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXXmlField id="0">
+						<name>CommunityWorkflows/@communityName</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMMUNITY</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="3" id="0">
+					<PSXXmlField id="0">
+						<name>CommunityWorkflows/Workflow/@workflowid</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="4" id="0">
+					<PSXXmlField id="0">
+						<name>CommunityWorkflows/Workflow</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>WORKFLOWAPPS</tableAlias>
+						<column>WORKFLOWAPPNAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="8692" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+									<column>COMMUNITYID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXUserContext id="0">
+									<name>User/SessionObject/sys_community</name>
+								</PSXUserContext>
+							</value>
+							<boolean>OR</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting>
+					<PSXSortedColumn id="0" isAscending="yes">
+						<PSXBackEndColumn id="0">
+							<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+							<column>WORKFLOWAPPID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</PSXSortedColumn>
+					<PSXSortedColumn id="0" isAscending="yes">
+						<PSXBackEndColumn id="0">
+							<tableAlias>RXWORKFLOWCOMMUNITY</tableAlias>
+							<column>COMMUNITYID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</PSXSortedColumn>
+				</Sorting>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<InputDataExits>
+				<PSXExtensionCallSet id="8714">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/communities/sys_commAuthenticateUser</name>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</InputDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="8715">
+			<schemaSource>file:_RXWORKFLOWCOMMUNITY.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>communityWorkflows</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="8719">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+		<PSXResultPager id="8693">
+			<maxRowsPerPage>-1</maxRowsPerPage>
+			<maxPages>-1</maxPages>
+			<maxPageLinks>10</maxPageLinks>
+		</PSXResultPager>
+	</PSXDataSet>
+	<PSXDataSet id="8722">
+		<name>Dataset6925</name>
+		<description>Catalogs all global template names.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="8687">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="8683">
+				<PSXBackEndTable id="8682">
+					<alias>RXDUAL</alias>
+					<table>RXDUAL</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="8685" returnEmptyXml="no">
+				<PSXDataMapping groupId="0" id="0">
+					<PSXXmlField id="0">
+						<name>rx55ff_RXDUAL/RXDUALSet/RXDUAL/GB</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXDUAL</tableAlias>
+						<column>GB</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="8684" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="8720">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/fastforward/sys_catalogGlobalTemplates</name>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="8721">
+			<schemaSource>file:rx55ff_RXDUAL.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getGlobalTemplates</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="8719">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="8724">
+		<name>Dataset8612</name>
+		<description>Catalogs all site definition names.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="8681">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="8676">
+				<PSXBackEndTable id="8675">
+					<alias>RXSITES</alias>
+					<table>RXSITES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="8679" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>Sites/Site/@name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXSITES</tableAlias>
+						<column>SITENAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="8677" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting>
+					<PSXSortedColumn id="0" isAscending="yes">
+						<PSXBackEndColumn id="0">
+							<tableAlias>RXSITES</tableAlias>
+							<column>SITEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</PSXSortedColumn>
+				</Sorting>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="8723">
+			<schemaSource>file:Sites.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getSites</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="8719">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+		<PSXResultPager id="8678">
+			<maxRowsPerPage>-1</maxRowsPerPage>
+			<maxPages>-1</maxPages>
+			<maxPageLinks>10</maxPageLinks>
+		</PSXResultPager>
+	</PSXDataSet>
+	<PSXLogger id="0" logAppStartStop="yes" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="yes" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="8712" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="8713">
+		<providerType>SMTP</providerType>
+		<server>&lt;Unspecified&gt;</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="locationY8721">0</userProperty>
+	<userProperty name="locationY8720">22</userProperty>
+	<userProperty name="locationX8724">60</userProperty>
+	<userProperty name="locationY8719">161</userProperty>
+	<userProperty name="locationY8718">161</userProperty>
+	<userProperty name="locationX8723">357</userProperty>
+	<userProperty name="locationY8717">161</userProperty>
+	<userProperty name="locationX8722">40</userProperty>
+	<userProperty name="locationY8716">24</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="locationX8721">333</userProperty>
+	<userProperty name="locationY8715">0</userProperty>
+	<userProperty name="locationX8720">66</userProperty>
+	<userProperty name="locationY8714">22</userProperty>
+	<userProperty name="locationY8713">100</userProperty>
+	<userProperty name="locationY8712">55</userProperty>
+	<userProperty name="locationY8711">10</userProperty>
+	<userProperty name="pageDatatankSrcType8723">2</userProperty>
+	<userProperty name="pageDatatankSrcType8721">3</userProperty>
+	<userProperty name="pageDatatankFilePath8723">D:\rx\specs\centaur\Sites.dtd</userProperty>
+	<userProperty name="locationX8719">292</userProperty>
+	<userProperty name="locationX8718">292</userProperty>
+	<userProperty name="locationX8717">292</userProperty>
+	<userProperty name="locationX8716">38</userProperty>
+	<userProperty name="locationX8715">357</userProperty>
+	<userProperty name="locationX8714">22</userProperty>
+	<userProperty name="locationX8713">16</userProperty>
+	<userProperty name="schemaSourceReadOnly8723">true</userProperty>
+	<userProperty name="locationX8712">16</userProperty>
+	<userProperty name="locationX8711">16</userProperty>
+	<userProperty name="schemaSourceReadOnly8721">true</userProperty>
+	<userProperty name="pageDatatankSrcType8715">3</userProperty>
+	<userProperty name="schemaSourceReadOnly8715">true</userProperty>
+	<userProperty name="locationY8724">280</userProperty>
+	<userProperty name="locationY8723">0</userProperty>
+	<userProperty name="locationY8722">155</userProperty>
+</PSXApplication>

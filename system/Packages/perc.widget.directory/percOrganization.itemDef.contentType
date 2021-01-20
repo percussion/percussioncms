@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDefData appName="psx_cepercOrganization" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_cepercOrganization/percOrganization.html" id="370" label="percOrganization" name="percOrganization" typeId="370"/>
+   <PSXContentEditor contentType="370" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
+      <PSXDataSet id="768">
+         <name>percOrganization</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <ResultDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="0">
+                     <name>Java/global/percussion/content/sys_manageLinksPostProcessor</name>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </ResultDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_PERCORGANIZATION" name="CT_PERCORGANIZATION"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_contentpostdate</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="CT_PERCORGANIZATION" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgAddress1" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGADDRESS1</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgAddress2" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGADDRESS2</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgCity" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGCITY</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgCountry" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGCOUNTRY</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgEmail" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGEMAIL</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgFax" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGFAX</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgLogo" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGLOGO</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldOutputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnEdit</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>orgLogo</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>orgLogo_linkId</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXFieldTranslation>
+                        </FieldOutputTranslation>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgLogo_linkId" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGLOGO_LINKID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnUpdate</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>orgLogo</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>orgLogo_linkId</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgName" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGNAME</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>orgName</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgPage" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGPAGE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                        <FieldOutputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnEdit</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>orgPage</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>orgPage_linkId</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldOutputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgPageExt" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGPAGEEXTERNAL</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgPage_linkId" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGPAGE_LINKID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnUpdate</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>orgPage</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>orgPage_linkId</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                        <FieldOutputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldOutputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgPhone" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGPHONE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgPostCode" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGZIP</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="orgState" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>ORGSTATE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="parentOrganization" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCORGANIZATION</tableAlias>
+                           <column>PARENTORGANIZATION</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>#</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_PERCORGANIZATION" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Name:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="0" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgName</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Name:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1000" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Name:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>parentOrganization</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Parent Organization:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10004" name="percAssetFinderControl">
+                              <PSXParam name="content_type">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>percOrganization</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                              <PSXParam name="field_to_display">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>orgName</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>ParentOrganization:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgAddress1</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Address:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1001" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Address:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgAddress2</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Address 2:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1002" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Address 2:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgCity</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization City:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1003" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization City:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgState</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization State / Province:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1004" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization State:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgPostCode</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Zip/Post Code:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1005" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Zip Code:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgCountry</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Country</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10026" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Country</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgPhone</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Phone Number:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10107" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Phone Number:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgFax</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Fax Number:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10108" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Fax Number:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgEmail</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Email Address:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10109" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Email Address:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgLogo</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Logo:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1006" name="sys_ImagePath"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Logo:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgLogo_linkId</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>orgLogo_linkId:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1007" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>orgLogo_linkId:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgPage</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Main Page</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10022" name="sys_PagePath">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>1000</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Main Page</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgPage_linkId</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>OrgPage_linkId:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10025" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>OrgPage_linkId:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>orgPageExt</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Organization Website (External URL only):</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10027" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>1000</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Organization Website (External URL only):</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>percOrganization</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations>
+         <PSXConditionalExit maxErrorsToStop="10">
+            <PSXExtensionCallSet id="0">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/content/sys_managedItemPathPreProcessor</name>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </PSXConditionalExit>
+      </PSXInputTranslations>
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="4,5,6,7"/>
+   </PSXContentEditor>
+</ItemDefData>

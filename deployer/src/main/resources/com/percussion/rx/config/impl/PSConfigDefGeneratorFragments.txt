@@ -1,0 +1,384 @@
+###############################################################################
+# This config definition fragments for the various designer objects.
+# Used by the config def generator to assemble a config def shell based on
+# the elements in the descriptor.
+#
+# Each fragment must have a @@@@STARTFRAGMENT NAME  line preceeding it and have 
+# a @@@@ENDFRAGMENT line denoting the fragment end.
+#
+#  Lines starting with the # character will be considered comments
+###############################################################################
+@@@@STARTFRAGMENT XMLHEAD
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
+   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+      
+   <!--
+   This file contains bean entries for each object included in your package. 
+
+   Remove <bean> entries for objects that you don't want to expose for configuration.
+   Remove properties that you don't want to expose within each bean.
+   
+   The last part of each variable name should be set to a string that matches 
+   the business purpose of that property (sometimes the sample name may be OK.)
+   
+   You may also want to change how certain properties are exposed.
+   -->
+@@@@ENDFRAGMENT
+@@@@STARTFRAGMENT SLOT
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="type" value="SLOT"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSSimplePropertySetter">
+            <property name="properties">
+               <map>
+                  <entry key="label" value="${publisherPrefix.solutionName.Label}"/>
+                  <entry key="finderArguments">
+                     <map>
+                        <!-- these are the args for the standard finder, you may need to change
+                        these if you are using a different finder -->
+                        <entry key="max_results" value="${publisherPrefix.solutionName.objName.MaxEntries}"/>
+                        <entry key="order_by" value="${publisherPrefix.solutionName.objName.EntryOrder}"/>
+                     </map>
+                  </entry>
+                  <entry key="contentTypeTemplatePairs" value="${publisherPrefix.solutionName.objName.AllowedSnippets}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+@@@@ENDFRAGMENT
+@@@@STARTFRAGMENT TEMPLATE
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="type" value="TEMPLATE"/>
+      <property name="propertySetters">
+         <!-- Note the custom setter rather than the simple setter. This is required to 
+         set the global template name or bindings. Most, if not all custom setters
+         extend the simple setter, so the properties can be grouped together in
+         one map. -->
+         <bean class="com.percussion.rx.config.impl.PSTemplateSetter">
+            <property name="properties">
+               <map>
+                  <entry key="label" value="${publisherPrefix.solutionName.objName.Label}"/>
+                  <entry key="mimeType" value="${publisherPrefix.solutionName.objName.MimeType}"/>
+                  <entry key="charset" value="${publisherPrefix.solutionName.objName.PageEncoding}"/>
+                  <entry key="locationPrefix" value="${publisherPrefix.solutionName.objName.PagePubPrefix}"/>
+                  <entry key="locationSuffix" value="${publisherPrefix.solutionName.objName.PagePubSuffix}"/>
+                  <entry key="publishWhen" value="${publisherPrefix.solutionName.objName.PagePublishWhen}"/>
+                  <entry key="globalTemplateUsage" value="${publisherPrefix.solutionName.objName.PageGlobalTemplateUsage}"/>
+                  <entry key="globalTemplate" value="${publisherPrefix.solutionName.objName.PageGlobalTemplateName}"/>
+                  <entry key="bindings">
+                     <map>
+                        <!-- this is a sample entry for a binding, replace with your actual bindings or remove it -->
+                        <entry key="$sample1" value="${publisherPrefix.solutionName.objName.Sample}"/>
+                        <entry key="$sample2" value="blah blah ${publisherPrefix.solutionName.objName.Sample} blah blah"/>
+                        <!-- This entry is optional. If not present, any new bindings 
+                        will be added to the end of the list, in arbitrary order.
+                        If this entry is present, the order it specifies will be 
+                        honored. Any entries not in the list will be appended in
+                        arbitrary order. -->
+                        <entry key="binding_sequence">
+                           <list>
+                              <value>$sample2</value>
+                              <value>$existingVariable</value>
+                              <value>$sample1</value>
+                           </list>
+                        </entry>
+                     </map>
+                  </entry>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+@@@@ENDFRAGMENT
+@@@@STARTFRAGMENT NODEDEF
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="type" value="NODEDEF"/>
+      <property name="propertySetters">
+         <list>
+            <bean class="com.percussion.rx.config.impl.PSContentTypeSetter">
+               <property name="properties">
+                  <map>
+                     <entry key="defaultWorkflow" value="${publisherPrefix.solutionName.objName.DefaultWorkflowName}"/>
+                     <entry key="iconValue" value="${publisherPrefix.solutionName.objName.Icon}"/>
+                     <!-- add shared or system fields or update fields already in the ctype -->
+                     <entry key="fields" value="${publisherPrefix.solutionName.objName.AdditionalFields"/>
+                     <!-- property names for managing the associations -->
+                     <entry key="templates" value="${publisherPrefix.solutionName.objName.AllowedTemplates}"/>
+                     <entry key="workflows" value="${publisherPrefix.solutionName.objName.AllowedWorkflows}"/>
+                  </map>
+               </property>
+            </bean>
+            <!-- Set the properties for a specific field. -->
+            <bean class="com.percussion.rx.config.impl.PSContentTypeFieldSetter">
+               <property name="fieldName" value="sampleField"/>
+               <!-- this technique allows me to control what is exposed as configurable.
+               Instead, I could reference a propertySet in the local config and
+               document the prop names as those noted below as keys. -->
+               <property name="properties">
+                  <map>
+                     <!-- the required prop is only allowed for local fields -->
+                     <!--entry key="required" value="${publisherPrefix.solutionName.objName.sampleField.required}"/-->
+                     <!-- give full control of the control params to the WM -->
+                     <entry key="controlParameters" value="${publisherPrefix.solutionName.objName.sampleField.controlParams}"/>
+                     <entry key="default" value="${publisherPrefix.solutionName.objName.sampleField.defaultValue}"/>
+                     <entry key="label" value="${publisherPrefix.solutionName.objName.sampleField.Label}"/>
+                     <entry key="showInPreview" value="${publisherPrefix.solutionName.objName.sampleField.showInPreview}"/>
+                     <entry key="userSearchable" value="${publisherPrefix.solutionName.objName.sampleField.userSearchable}"/>
+                  </map>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+@@@@ENDFRAGMENT
+@@@@STARTFRAGMENT KEYWORD_DEF
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="type" value="KEYWORD_DEF"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSKeywordSetter">
+            <property name="properties">
+               <map>
+                  <entry key="choicePairs" value="${publisherPrefix.solutionName.objName.Choices}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+@@@@ENDFRAGMENT
+@@@@STARTFRAGMENT EDITION
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="type" value="EDITION"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSEditionSetter">
+            <property name="properties">
+               <map>
+                  <entry key="priority" value="${publisherPrefix.solutionName.objName.Priority}"/>
+                  <entry key="preTasks" value="${publisherPrefix.solutionName.objName.PreEditionTasks}"/>
+                  <entry key="postTasks" value="${publisherPrefix.solutionName.objName.PostEditionTasks}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+@@@@ENDFRAGMENT
+@@@@STARTFRAGMENT CONTENT_LIST
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="type" value="CONTENT_LIST"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSContentListSetter">
+            <property name="properties">
+               <map>
+                  <entry key="deliveryType" value="${publisherPrefix.solutionName.objName.DeliveryType}"/>
+                  <entry key="generatorParams">
+                     <!-- sample param for the sys_SearchGenerator -->
+                     <map>
+                        <entry key="query" value="select rx:sys_contentid, rx:sys_folderid from rx:rffautoindex,rx:rffbrief,rx:rffcalendar,rx:rffcontacts,rx:rffevent,rx:rffexternallink,rx:rffgenericword,rx:rffgeneric,rx:rffhome,rx:rffpressrelease where jcr:path like '${publisherPrefix.solutionName.objName.SiteRoot}%'"/>
+                     </map>
+                  </entry>
+                  <entry key="expanderParams">
+                     <!-- sample param for the sys_SiteTemplateExpander -->
+                     <map>
+                        <entry key="default_template" value="${publisherPrefix.solutionName.objName.TemplateExpanderDefaultTemplateName}"/>
+                     </map>
+                  </entry>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+ @@@@ENDFRAGMENT
+ @@@@STARTFRAGMENT ACTION
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="type" value="ACTION"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSActionSetter">
+            <property name="properties">
+               <map>
+                  <entry key="label" value="${publisherPrefix.solutionName.objName.Label}"/>
+                  <!-- probably not exposed, generally -->
+                  <entry key="url" value="${publisherPrefix.solutionName.objName.URL}"/>
+                  <entry key="urlParams">
+                     <!-- Sample params - like other collections, all params must be supplied, they replace current settings -->
+                     <map>
+                        <entry key="sys_contentid" value="$sys_contentid"/>
+                        <entry key="sys_relationshiptype" value="${publisherPrefix.solutionName.objName.RelationshipType}"/>
+                        <entry key="sys_revision" value="$sys_revision"/>
+                     </map>
+                  </entry>
+                  <entry key="visibility">
+                     <!-- each visibility context is optional, the value should be a List of
+                  strings appropriate for the context. The action will be HIDDEN in the
+                  supplied contexts. The supported contexts and their allowed values are
+                  (all case-insensitive):
+                     Assignment Types
+                        none
+                        reader
+                        assignee
+                        admin
+                     Checkout Status
+                        checked in
+                        checked out
+                        checked out by me
+                     Content Types
+                        [content type names]
+                     Folder Security
+                        read
+                        write
+                     Locales
+                        [locale names]
+                     Object Types
+                        folder
+                        item
+                     Publishable
+                        archive
+                        ignore
+                        publish
+                        unpublish
+                     Roles
+                        [role names]
+                     Workflow
+                        [workflow names]
+                     -->
+                     <map>
+                        <entry key="contentTypes" value="${publisherPrefix.solutionName.objName.HiddenFromCTypes}"/>
+                     </map>
+                  </entry>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+@@@@ENDFRAGMENT 
+@@@@STARTFRAGMENT SITE
+   <!-- A separate bean is used to configure site / template visibility. -->
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSSiteConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSSiteSetter">
+            <property name="properties">
+               <map>
+                  <entry key="siteFolderPath" value="${publisherPrefix.solutionName.objName.CmsPath}"/>
+                  <entry key="publishedPath" value="${publisherPrefix.solutionName.objName.PublishedPath}"/>
+                  <entry key="publishedUrl" value="${publisherPrefix.solutionName.objName.PublishedUrl}"/>
+                  <entry key="globalTemplate" value="${publisherPrefix.solutionName.objName.GlobalTemplateName}"/>
+                  <entry key="unpublishFlags" value="${publisherPrefix.solutionName.objName.UnpublishFlags}"/>
+                  <entry key="allowedNamespaces" value="${publisherPrefix.solutionName.objName.AllowedNamespaces}"/>
+                  <entry key="navTheme" value="${publisherPrefix.solutionName.objName.NavTheme}"/>
+                  <entry key="ftpAddress" value="${publisherPrefix.solutionName.objName.ftp.Address}"/>
+                  <entry key="ftpPort" value="${publisherPrefix.solutionName.objName.ftp.Port}"/>
+                  <entry key="ftpUser" value="${publisherPrefix.solutionName.objName.ftp.User}"/>
+                  <entry key="ftpPassword" value="${publisherPrefix.solutionName.objName.ftp.Password}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+ 
+   <!-- Site variables - these have special handling - if a site name or a  list of site 
+   names is provided, then the properties are added only to those site(s).  -->
+   <bean id="siteVariables" class="com.percussion.rx.config.impl.PSSiteConfigHandler">
+      <property name="names" value="${publisherPrefix.solutionName.siteNames}"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSSiteSetter">
+            <property name="properties">
+               <map>
+                  <entry key="variables" value="${publisherPrefix.solutionName.SiteVariables}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+   
+   <!-- Site / Template visibility - these have special handling - if a site name or a  list of site 
+   names is provided, then the properties are applied / processed to those site(s).  -->
+   <bean id="siteVariables" class="com.percussion.rx.config.impl.PSSiteConfigHandler">
+      <property name="names" value="${publisherPrefix.solutionName.siteNames}"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSSiteTemplateVisibilitySetter">
+            <property name="properties">
+               <map>
+                  <entry key="templateVisibility" value="${publisherPrefix.solutionName.Visibility}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>   
+@@@@ENDFRAGMENT
+@@@@STARTFRAGMENT CONTEXT
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="type" value="CONTEXT"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSContextSetter">
+            <property name="properties">
+               <map>
+                  <entry key="defaultLocationScheme" value="${publisherPrefix.solutionName.objName.DefaultLocationScheme}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+@@@@ENDFRAGMENT
+@@@@STARTFRAGMENT LOCATION_SCHEME
+   <bean id="${objName}" class="com.percussion.rx.config.impl.PSLocationSchemeConfigHandler">
+      <property name="name" value="${objName}"/>
+      <property name="contexts" value="${contextNames}"/>
+      <property name="contentType" value="${contentTypeName}"/>
+      <property name="template" value="${templateName}"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSContextSetter">
+            <property name="properties">
+               <map>
+                  <entry key="description"  value="${publisherPrefix.solutionName.objName.Description}"/>
+                  <entry key="expression"  value="${publisherPrefix.solutionName.objName.Expression}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+@@@@ENDFRAGMENT
+@@@@STARTFRAGMENT RELATIONSHIP_CONFIGNAME
+	<bean id="${objName}"
+		class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+		<property name="name" value="${objName}" />
+		<property name="type" value="RELATIONSHIP_CONFIGNAME" />
+		<property name="propertySetters">
+			<list>
+				<bean
+					class="com.percussion.rx.config.impl.PSRelationshipConfigSetter">
+					<property name="properties">
+						<map>
+							<entry key="deepCloning"
+								value="${publisherPrefix.solutionName.objName.deepCloning}" />
+							<entry key="shallowCloning"
+								value="${publisherPrefix.solutionName.objName.shallowCloning}" />
+							<entry key="fieldOverrides"
+								value="${publisherPrefix.solutionName.objName.fieldOverrides}" />
+						</map>
+					</property>
+				</bean>
+				<bean
+					class="com.percussion.rx.config.impl.PSRelationshipConfigEffectSetter">
+					<property name="properties">
+						<map>
+							<entry key="effects"
+								value="${publisherPrefix.solutionName.objName.effects}" />
+						</map>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+@@@@ENDFRAGMENT
+ 

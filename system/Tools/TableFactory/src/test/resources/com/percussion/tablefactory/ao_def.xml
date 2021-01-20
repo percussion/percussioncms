@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tables>
+	<table allowSchemaChanges="y" alter="n" create="y" delolddata="n"
+		isView="n" name="AO_EDITORIAL">
+		<row>
+			<column action="c" limitSizeForIndex="n" name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n" name="DM_ID">
+				<jdbctype>INTEGER</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="DM_VERSION">
+				<jdbctype>INTEGER</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="DATE_WRITTEN">
+				<jdbctype>TIMESTAMP</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n" name="FULL_TEXT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>2000</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="DEFAULT_LANGUAGE">
+				<jdbctype>INTEGER</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="FULL_ARTICLE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="EDITORIAL_TYPE">
+				<jdbctype>INTEGER</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="BODYSOURCE">
+				<jdbctype>LONGVARBINARY</jdbctype>
+				<size>5000</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="BODYSOURCE_ENCODING">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="BODYSOURCE_FILENAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column action="c" limitSizeForIndex="n"
+				name="BODYCONTENT">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>4000</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey action="c">
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+</tables>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityConfiguration forceSecureLogin="yes">
+   <!-- basic requests -->
+   <path authType="basic">basic1</path>
+   <path authType="basic">basic2</path>
+   
+   <!-- anonymous methods -->
+   <method authType="anonymous">PROPFIND</method>
+</securityConfiguration>

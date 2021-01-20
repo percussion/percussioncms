@@ -1,0 +1,135 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<div id="search" class="search" data-bind="visible: isSearchVisible()">
+    <div id="keyword-filter" class="search-filter">
+    	<div class="search-filter-error" data-bind="slideVisible: invalidSearch()">
+            Search criteria is required
+        </div>
+        <div class="search-filter-title">
+            Keyword:
+        </div>
+        <div id="keyword-input" class="search-input">
+            <input data-bind="value: keyword" type="text" name="keyword" class="styled-input">
+            </input>
+        </div>
+    </div>
+    <div id="advanced-search-filters" class="advanced-search-filters" data-bind="slideVisible: isAdvancedSearch()">
+        <div id="file-name-filter" class="search-filter">
+            <div class="search-filter-title">
+                File Name:
+            </div>
+            <div id="file-name-input" class="search-input">
+                <input data-bind="value: fileName" type="text" name="filename" class="styled-input">
+                </input>
+            </div>
+        </div>
+        <div id="last-modified-filter" class="search-filter">
+            <div class="search-filter-title">
+                Last Modified by:
+            </div>
+            <div id="last-modified-input" class="search-input">
+                <input data-bind="value: lastModified" type="text" name="lastmodified" class="styled-input">
+                </input>
+            </div>
+        </div>
+        <div id="workflow-filter" class="search-filter">
+            <div class="search-filter-title">
+                Workflow:
+            </div>
+            <div id="workflow-select" class="search-select">
+                <select class="styled-select" data-bind="options: workflows, optionsText: function(workflow) {return workflow.name;}, value: workflow, optionsCaption: 'All'">
+                </select>
+            </div>
+        </div>
+        <div id="status-filter" class="search-filter">
+            <div class="search-filter-title">
+                Status:
+            </div>
+            <div id="status-select" class="search-select">
+                <select class="styled-select" data-bind="disable: !enableStatusSelect(), options: statuses, optionsText: function(status) {return status.name;}, value: status, optionsCaption: statusCaption()">
+                </select>
+            </div>
+        </div>
+        <div id="type-filter" class="search-filter">
+            <div class="search-filter-title">
+                Type:
+            </div>
+            <div class="type-filter-options">
+                <div class="type-filter">
+                    <input type="radio" name="radiog_dark1" id="all-type-radio" class="type-checkbox" value="All" data-bind="checked: selectedTypeFilter">
+                    <label for="all-type-radio" class="type-labelradio radGroup4">
+                        All
+                    </label>
+                </div>
+                <div class="type-filter">
+                    <input type="radio" name="radiog_dark1" id="page-type-radio" class="type-checkbox" value="Pages" data-bind="checked: selectedTypeFilter">
+                    <label for="page-type-radio" class="type-labelradio radGroup4">
+                        Pages
+                    </label>
+                </div>
+                <div class="type-filter">
+                    <input type="radio" name="radiog_dark1" id="asset-type-radio" class="type-checkbox" value="Assets" data-bind="checked: selectedTypeFilter">
+                    <label for="asset-type-radio" class="type-labelradio radGroup4">
+                        Assets
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="page-filters" class="expanded-type-filters" data-bind="slideVisible: selectedTypeFilter() == 'Pages'">
+            <div id="site-filter" class="search-filter">
+                <div class="search-filter-title">
+                    Site:
+                </div>
+                <div id="site-select" class="search-select">
+                    <select class="styled-select" data-bind="options: sites, optionsText: function(site) {return site.name;}, value: site, optionsCaption: 'All'">
+                    </select>
+                </div>
+            </div>
+            <div id="template-filter" class="search-filter">
+                <div class="search-filter-title">
+                    Template:
+                </div>
+                <div id="template-select" class="search-select">
+                    <select class="styled-select" data-bind="disable: !enableTemplateSelect(), options: templates, optionsText: function(template) {return template.name;}, value: template, optionsCaption: templateCaption()">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="asset-filters" class="expanded-type-filters" data-bind="slideVisible: selectedTypeFilter() == 'Assets'">
+            <div id="asset-type" class="search-filter">
+                <div class="search-filter-title">
+                    Asset Type:
+                </div>
+                <div id="asset-type-select" class="search-select">
+                    <select class="styled-select" data-bind="options: assetTypes, optionsText: function(assetType) {return assetType.name;}, value: assetType, optionsCaption: 'All'">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="advanced-toggle" class="advanced-toggle">
+        <p data-bind="click: function(){return isAdvancedSearch(true);}, visible: !isAdvancedSearch()">Advanced Search</p>
+    </div>
+</div>

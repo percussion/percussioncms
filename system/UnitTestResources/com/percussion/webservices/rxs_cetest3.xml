@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+<!DOCTYPE PSXContentEditor SYSTEM "/Rhythmyx/DTD/sys_ContentEditorLocalDef.dtd">
+-->
+<PSXContentEditor contentType="0" enableRelatedContent="yes" objectType="1" workflowId="5">
+   <PSXDataSet id="768">
+      <name>TestWebservices</name>
+      <description>default template</description>
+      <transactionType>none</transactionType>
+      <PSXContentEditorPipe id="0">
+         <name>cePipe</name>
+         <description>This is the ContentEditorLocaDef for Default ContentType</description>
+         <PSXContainerLocator>
+            <PSXTableSet>
+               <PSXTableLocator>
+                  <PSXBackEndCredential id="0">
+                     <alias>Cred1</alias>
+                     <comment/>
+                     <datasource/>
+                  </PSXBackEndCredential>
+               </PSXTableLocator>
+               <PSXTableRef alias="CT_TESTWEBSERVICES" name="CT_TESTWEBSERVICES"/>
+               <PSXTableRef alias="CT_TESTWEBSERVICES_CHILD_1" name="CT_TESTWEBSERVICES_CHILD_1"/>
+               <PSXTableRef alias="CT_TESTWEBSERVICES_CHILD_3" name="CT_TESTWEBSERVICES_CHILD_3"/>
+               <PSXTableRef alias="CT_TESTWEBSERVICES_CHILD_2" name="CT_TESTWEBSERVICES_CHILD_2"/>
+            </PSXTableSet>
+         </PSXContainerLocator>
+         <PSXContentEditorMapper>
+            <SystemFieldExcludes>
+               <FieldRef>sys_pathname</FieldRef>
+               <FieldRef>sys_reminderdate</FieldRef>
+               <FieldRef>sys_contentexpirydate</FieldRef>
+               <FieldRef>sys_pubdate</FieldRef>
+               <FieldRef>sys_suffix</FieldRef>
+            </SystemFieldExcludes>
+            <PSXFieldSet name="CT_TestWebservices" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+               <PSXFieldSet name="child_1" repeatability="zeroOrMore" supportsSequencing="yes" type="complexChild" userSearchable="yes">
+                  <PSXField forceBinary="no" modificationType="user" name="field_13" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_TESTWEBSERVICES_CHILD_1</tableAlias>
+                           <column>FIELD_13</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>datetime</DataType>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" modificationType="user" name="field_11" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_TESTWEBSERVICES_CHILD_1</tableAlias>
+                           <column>FIELD_11</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" modificationType="user" name="field_12" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_TESTWEBSERVICES_CHILD_1</tableAlias>
+                           <column>FIELD_12</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                       <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" modificationType="user" name="field_14" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_TESTWEBSERVICES_CHILD_1</tableAlias>
+                           <column>FIELD_14</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>binary</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXFieldSet name="child_3" repeatability="zeroOrMore" supportsSequencing="yes" type="complexChild" userSearchable="yes">
+                  <PSXField forceBinary="no" modificationType="user" name="field_31" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_TESTWEBSERVICES_CHILD_3</tableAlias>
+                           <column>FIELD_31</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXField forceBinary="no" modificationType="user" name="field_2" showInPreview="yes" showInSummary="yes" type="local">
+                  <DataLocator>
+                     <PSXBackEndColumn id="0">
+                        <tableAlias>CT_TESTWEBSERVICES</tableAlias>
+                        <column>FIELD_2</column>
+                        <columnAlias/>
+                     </PSXBackEndColumn>
+                  </DataLocator>
+                  <DataType>binary</DataType>
+                  <DataFormat>max</DataFormat>
+                  <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                  <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+               </PSXField>
+               <PSXField forceBinary="no" modificationType="user" name="field_1" showInPreview="yes" showInSummary="yes" type="local">
+                  <DataLocator>
+                     <PSXBackEndColumn id="0">
+                        <tableAlias>CT_TESTWEBSERVICES</tableAlias>
+                        <column>FIELD_1</column>
+                        <columnAlias/>
+                     </PSXBackEndColumn>
+                  </DataLocator>
+                  <DataType>integer</DataType>
+                  <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                  <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+               </PSXField>
+               <PSXFieldSet name="child_2" repeatability="zeroOrMore" supportsSequencing="yes" type="complexChild" userSearchable="yes">
+                  <PSXField forceBinary="no" modificationType="user" name="field_21" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_TESTWEBSERVICES_CHILD_2</tableAlias>
+                           <column>FIELD_21</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+            </PSXFieldSet>
+            <PSXUIDefinition>
+               <PSXDisplayMapper fieldSetRef="CT_TestWebservices" id="0">
+                  <PSXDisplayMapping>
+                     <FieldRef>sys_title</FieldRef>
+                     <PSXUISet/>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>sys_communityid</FieldRef>
+                     <PSXUISet/>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>sys_lang</FieldRef>
+                     <PSXUISet/>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>sys_currentview</FieldRef>
+                     <PSXUISet/>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>sys_workflowid</FieldRef>
+                     <PSXUISet/>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>sys_hibernateVersion</FieldRef>
+                     <PSXUISet/>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>sys_contentstartdate</FieldRef>
+                     <PSXUISet/>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>field_1</FieldRef>
+                     <PSXUISet>
+                        <Label>
+                           <PSXDisplayText>Field_1:</PSXDisplayText>
+                        </Label>
+                        <PSXControlRef id="0" name="sys_EditBox"/>
+                        <ErrorLabel>
+                           <PSXDisplayText>Field_1:</PSXDisplayText>
+                        </ErrorLabel>
+                     </PSXUISet>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>field_2</FieldRef>
+                     <PSXUISet>
+                        <Label>
+                           <PSXDisplayText>Field_2:</PSXDisplayText>
+                        </Label>
+                        <PSXControlRef id="0" name="sys_File"/>
+                        <ErrorLabel>
+                           <PSXDisplayText>Field_2:</PSXDisplayText>
+                        </ErrorLabel>
+                     </PSXUISet>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>child_1</FieldRef>
+                     <PSXUISet>
+                        <Label>
+                           <PSXDisplayText>Child_1:</PSXDisplayText>
+                        </Label>
+                        <PSXControlRef id="0" name="sys_Table"/>
+                        <ErrorLabel>
+                           <PSXDisplayText>Child_1:</PSXDisplayText>
+                        </ErrorLabel>
+                     </PSXUISet>
+                     <PSXDisplayMapper fieldSetRef="child_1" id="1">
+                        <PSXDisplayMapping>
+                           <FieldRef>field_11</FieldRef>
+                           <PSXUISet>
+                              <Label>
+                                 <PSXDisplayText>Field_11:</PSXDisplayText>
+                              </Label>
+                              <PSXControlRef id="0" name="sys_EditBox"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText>Field_11:</PSXDisplayText>
+                              </ErrorLabel>
+                           </PSXUISet>
+                        </PSXDisplayMapping>
+                        <PSXDisplayMapping>
+                           <FieldRef>field_12</FieldRef>
+                           <PSXUISet>
+                              <Label>
+                                 <PSXDisplayText>Field_12:</PSXDisplayText>
+                              </Label>
+                              <PSXControlRef id="0" name="sys_EditBox"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText>Field_12:</PSXDisplayText>
+                              </ErrorLabel>
+                           </PSXUISet>
+                        </PSXDisplayMapping>
+                        <PSXDisplayMapping>
+                           <FieldRef>field_13</FieldRef>
+                           <PSXUISet>
+                              <Label>
+                                 <PSXDisplayText>Field_13:</PSXDisplayText>
+                              </Label>
+                              <PSXControlRef id="0" name="sys_CalendarSimple"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText>Field_13:</PSXDisplayText>
+                              </ErrorLabel>
+                           </PSXUISet>
+                        </PSXDisplayMapping>
+                        <PSXDisplayMapping>
+                           <FieldRef>field_14</FieldRef>
+                           <PSXUISet>
+                              <Label>
+                                 <PSXDisplayText>Field_14:</PSXDisplayText>
+                              </Label>
+                              <PSXControlRef id="0" name="sys_File"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText>Field_14:</PSXDisplayText>
+                              </ErrorLabel>
+                           </PSXUISet>
+                        </PSXDisplayMapping>
+                     </PSXDisplayMapper>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>child_2</FieldRef>
+                     <PSXUISet>
+                        <Label>
+                           <PSXDisplayText>Child_2:</PSXDisplayText>
+                        </Label>
+                        <PSXControlRef id="0" name="sys_Table"/>
+                        <ErrorLabel>
+                           <PSXDisplayText>Child_2:</PSXDisplayText>
+                        </ErrorLabel>
+                     </PSXUISet>
+                     <PSXDisplayMapper fieldSetRef="child_2" id="2">
+                        <PSXDisplayMapping>
+                           <FieldRef>field_21</FieldRef>
+                           <PSXUISet>
+                              <Label>
+                                 <PSXDisplayText>Field_21:</PSXDisplayText>
+                              </Label>
+                              <PSXControlRef id="0" name="sys_EditBox"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText>Field_21:</PSXDisplayText>
+                              </ErrorLabel>
+                           </PSXUISet>
+                        </PSXDisplayMapping>
+                     </PSXDisplayMapper>
+                  </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>child_3</FieldRef>
+                     <PSXUISet>
+                        <Label>
+                           <PSXDisplayText>Child_3:</PSXDisplayText>
+                        </Label>
+                        <PSXControlRef id="0" name="sys_Table"/>
+                        <ErrorLabel>
+                           <PSXDisplayText>Child_3:</PSXDisplayText>
+                        </ErrorLabel>
+                     </PSXUISet>
+                     <PSXDisplayMapper fieldSetRef="child_3" id="3">
+                        <PSXDisplayMapping>
+                           <FieldRef>field_31</FieldRef>
+                           <PSXUISet>
+                              <Label>
+                                 <PSXDisplayText>Field_31:</PSXDisplayText>
+                              </Label>
+                              <PSXControlRef id="0" name="sys_EditBox"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText>Field_31:</PSXDisplayText>
+                              </ErrorLabel>
+                           </PSXUISet>
+                        </PSXDisplayMapping>
+                     </PSXDisplayMapper>
+                  </PSXDisplayMapping>
+               </PSXDisplayMapper>
+            </PSXUIDefinition>
+         </PSXContentEditorMapper>
+      </PSXContentEditorPipe>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>TestWebservices</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+   </PSXDataSet>
+   <PSXValidationRules maxErrorsToStop="10"/>
+   <PSXInputTranslations/>
+   <PSXOutputTranslations/>
+   <PSXWorkflowInfo type="inclusionary" values="4,5"/>
+</PSXContentEditor>

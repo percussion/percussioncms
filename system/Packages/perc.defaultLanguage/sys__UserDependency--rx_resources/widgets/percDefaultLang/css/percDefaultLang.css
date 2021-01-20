@@ -1,0 +1,101 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+ .perc-default-lang-editor {
+  position: relative;
+}
+.fa {
+  font-size: 20px;
+}
+
+.perc-toggle-help {
+  color: #007;
+  cursor: pointer;
+  padding-right: 8px;
+}
+
+.perc-toggle-help:hover {
+  color: #00f;
+}
+
+.perc-table-remove {
+  color: #700;
+  cursor: pointer;
+}
+.perc-table-remove:hover {
+  color: #f00;
+}
+
+.perc-table-up, .table-down {
+  color: #007;
+  cursor: pointer;
+}
+.perc-table-up:hover, .table-down:hover {
+  color: #00f;
+}
+
+.perc-table-add {
+  color: #070;
+  cursor: pointer;
+  position: relative;
+  top: 8px;
+  left: 0;
+  padding-bottom: 8px;
+}
+.perc-table-add:hover {
+  color: #0b0;
+}
+.hide {
+    display: none!important;
+}
+table{
+    border-collapse: collapse;
+    border-color: grey;
+    width: 100%;
+    margin-bottom: 20px;
+    max-width: 100%;
+    background-color: transparent;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+th {
+    text-align: left;
+}
+.perc-lang-list, .perc-country-list, .perc-site-list {
+    max-width: 200px;
+}

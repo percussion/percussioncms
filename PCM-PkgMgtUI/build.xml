@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="project" default="compile" basedir=".">
+    <description>
+     Compiles the gwt project and syncs the I18n interface with the
+    	 matching properties file.
+    </description>
+	 <!-- Pull in the environment variables -->
+	 <property environment="env" />
+	 <property name="thirdparty.tools.base" location="${env.THIRD_PARTY_TOOLS_BASE}" />
+	 <property name="gwt.dir" location="${thirdparty.tools.base}/gwt-2.8.2"/>
+	 <property name="smartgwt.dir" location="${thirdparty.tools.base}/smartgwt-1.0b2"/>
+	
+	<!-- Define the ant extension classpath -->
+	 <path id="class.path">
+	    <pathelement location="${gwt.dir}/gwt-dev.jar"/>
+	 	<pathelement location="${gwt.dir}/gwt-user.jar"/>
+	    <pathelement location="${gwt.dir}/validation-api-1.0.0.GA.jar"/>
+	 	<pathelement location="${smartgwt.dir}/smartgwt.jar"/>
+	 	<pathelement location="bin"/>
+	 	<pathelement location="src"/>
+	 </path>
+  
+	 <!-- compile the gwt project -->
+    <target name="compile" depends="clean,I18nSync">
+    	<java classpathref="class.path" fork="true"
+    	      classname="com.google.gwt.dev.Compiler">
+    		   <jvmarg line="-Xmx256M"/> 
+    	      <arg line="-war www/"/>
+    		  <!--<arg line="-logLevel DEBUG"/>-->
+    	      <arg line="com.percussion.gwt.pkgmgtui.PkgMgtUI"/>
+    	</java> 
+    </target>
+
+    <!-- syncs the I18n interface with the matching properties file -->
+    <target name="I18nSync">
+    	<java classpathref="class.path" fork="true"
+    	    	      classname="com.google.gwt.i18n.tools.I18NSync">
+    	    		   <jvmarg line="-Xmx256M"/> 
+    	    	      <arg line="-out src/"/>
+    	    	      <arg line="com.percussion.gwt.pkgmgtui.client.IPSMessages"/>
+    		         <arg line="-createMessages"/>
+    	    	</java> 
+    </target>
+	
+	 <target name="clean">
+	 	<delete dir="${basedir}/www/com.percussion.gwt.pkgmgtui.PkgMgtUI"/>
+	 </target>
+
+	
+	<target name="gwtc" depends="compile" description="GWT compile to JavaScript (production mode)">
+	    <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler" maxmemory="512m">
+	      <classpath>
+	        <pathelement location="src"/>
+	        <path refid="project.class.path"/>
+	      </classpath>
+	      <arg line="-war"/>
+	      <arg value="war"/>
+	      <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+	      <arg line="${gwt.args}"/>
+	      <arg value="com.google.gwt.sample.hello.Hello"/>
+	    </java>
+	  </target>
+
+	  <target name="devmode" depends="compile" description="Run development mode (pass -Dgwt.args=-nosuperDevMode to fallback to classic DevMode)">
+	    <java failonerror="true" fork="true" classname="com.google.gwt.dev.DevMode" maxmemory="1g">
+	      <classpath>
+	        <pathelement location="src"/>
+	        <path refid="class.path"/>
+	        <pathelement location="${gwt.dir}/gwt-codeserver.jar"/>
+	      </classpath>
+	      <arg value="-startupUrl"/>
+	      <arg value="com.percussion.gwt.pkgmgtui.PkgMgtUI/PkgMgtUI.html"/>
+	      <!-- Additional arguments like -style PRETTY, -logLevel DEBUG or -nosuperDevMode -->
+	      <!--
+	      <arg line="${gwt.args}"/>
+	         -->
+	      <arg value="com.percussion.gwt.pkgmgtui.PkgMgtUI"/>
+	      <arg value="com.percussion.gwt.pkgmgtui.PkgMgtUI"/>
+	   
+	    </java>
+	  </target>
+<!--
+	  <target name="eclipse.generate" depends="libs" description="Generate eclipse project">
+	    <java failonerror="true" fork="true" classname="com.google.gwt.user.tools.WebAppCreator">
+	      <classpath>
+	        <path refid="project.class.path"/>
+	      </classpath>
+	      <arg value="-XonlyEclipse"/>
+	      <arg value="-ignore"/>
+	      <arg value="com.google.gwt.sample.hello.Hello"/>
+	    </java>
+	  </target>
+    -->
+</project>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CT_PERCORGANIZATION">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGNAME">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGADDRESS1">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGADDRESS2">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGCITY">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGSTATE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGZIP">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGLOGO">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGLOGO_LINKID">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGPAGE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGPAGE_LINKID">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGCOUNTRY">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGPAGEEXTERNAL">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGPHONE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGFAX">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ORGEMAIL">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PARENTORGANIZATION">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+   </row>
+</table>

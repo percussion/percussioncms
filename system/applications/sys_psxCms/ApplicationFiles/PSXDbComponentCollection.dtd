@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXKey (MODEID, UICONTEXTID, ACTIONID )>
+<!ELEMENT ACTIONID (#PCDATA)>
+<!ELEMENT UICONTEXTID (#PCDATA)>
+<!ELEMENT MODEID (#PCDATA)>
+<!ELEMENT PSXMenuModeContextMapping (PSXKey )>
+<!ATTLIST  PSXMenuModeContextMapping modeId CDATA #REQUIRED>
+<!ATTLIST  PSXMenuModeContextMapping state CDATA #REQUIRED>
+<!ATTLIST  PSXMenuModeContextMapping uiContextId CDATA #REQUIRED>
+<!ELEMENT PSXDbComponentCollection (PSXMenuModeContextMapping+ )>
+<!ATTLIST  PSXDbComponentCollection className CDATA #IMPLIED>
+<!ATTLIST  PSXDbComponentCollection ordered CDATA #REQUIRED>
+<!ATTLIST  PSXDbComponentCollection state CDATA #REQUIRED>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<info primitiveTypes="element">
+  <element name="assembly-template">
+    <element name="bindings">
+       <element name="binding" property="bindings" updater="addBinding" forceAccessible="true"/>
+    </element>
+    <element name="template-slot-ids">
+       <element name="template-slot-id" property="templateSlotIds" class="java.lang.Long" updater="addTemplateSlotId" forceAccessible="true"/>
+    </element>    
+   <addDefaults/>
+  </element>
+</info>

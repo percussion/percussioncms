@@ -1,0 +1,27 @@
+.mceItemFlash, .mceItemShockWave, .mceItemQuickTime, .mceItemWindowsMedia, .mceItemRealMedia {
+    background: transparent url(/cm/images/images/objectPlaceholderAsset.png) no-repeat scroll center center;
+    border : 1px solid #858690; 
+}
+
+img.perc-notpubliclink {
+	border: 5px dashed orange;
+	opacity: .40;
+}
+
+.perc-brokenlink:after {
+	content: "";
+    display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 1px;
+	background-image: url(/cm/images/images/brokenlink.png);
+}
+
+.perc-notpubliclink:after {
+	content: "";
+    display: inline-block;
+	width: 18px;
+	height: 16px;
+	margin-left: 1px;
+	background-image: url(/cm/images/images/iconAlert.gif);
+}

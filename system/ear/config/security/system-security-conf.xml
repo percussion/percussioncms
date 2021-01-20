@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<securityConfiguration>
+   <!-- basic requests -->
+   <path authType="basic">/Design*</path>
+   <path authType="basic">/rxwebdav*</path>
+   <path authType="basic">/sys_webServicesHandler</path> <!-- legacy WS -->
+   <path authType="basic">/sys_reports/*</path>
+   <path authType="basic">/rx_reports/*</path>
+   <path authType="basic">/content/*</path>
+
+   <!-- form requests -->
+   <path authType="form">/sys_resources/ui/*</path>
+
+
+   <!-- anonymous requests -->
+   <path authType="anonymous">/v8/security/session</path>
+   <path authType="anonymous">/v8/system/sites</path>
+   <path authType="anonymous">/tmx/tmx.jsp</path>
+   <path authType="anonymous">/cm/cui/components/*</path>
+   <path authType="anonymous">/rxlogin.jsp</path>
+   <path authType="anonymous">/sessionstatus.jsp</path>
+   <path authType="anonymous">/rxlogin.jsp</path>
+   <path authType="anonymous">/rxlogout.jsp</path>
+   <path authType="anonymous">/rxloggingout.jsp</path>
+   <path authType="anonymous">/ui/error.jsp</path>
+   <path authType="anonymous">/sys_deploymentHandler</path>
+   <path authType="anonymous">/sys_deployerHandler</path>
+   <path authType="anonymous">/login</path>
+   <path authType="anonymous">/logout</path>
+   <path authType="anonymous">/ServletRedirector</path> <!-- testing -->
+   <path authType="anonymous">/sys_resources/*</path>
+   <path authType="anonymous">/rx_resources/*</path>
+   <path authType="anonymous">/sys_psxAnonymousCataloger/*</path> <!-- Rx FE servlet -->
+   <path authType="anonymous">/sys_pubHandler/*</path>
+   <path authType="anonymous">/DTD/*</path>
+   <path authType="anonymous">/services/maintenance/manager/status/*</path>
+   <path authType="anonymous">/unsupportedWarning.jsp</path>
+   <path authType="anonymous">/dce/*</path>
+   <!-- webservices -->
+   <path authType="anonymous">/servlet/AxisServlet</path>
+   <path authType="anonymous">/servlet/AdminServlet</path>
+   <path authType="anonymous">/webservices*</path>
+   <path authType="anonymous">/designwebservices*</path>
+
+   <!-- webdav methods -->
+   <method authType="anonymous">PROPFIND</method>
+   <method authType="anonymous">PROPPATCH</method>
+</securityConfiguration>

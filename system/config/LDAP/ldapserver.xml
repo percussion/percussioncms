@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<LdapConfig>
+	<!-- Example configuration for Active Directory. -->
+	<!--
+	<LdapServer>
+		<host>ADServer</host>
+		<port>389</port>
+		<user>CN=Administrator,CN=Users,DC=org,DC=perc,DC=edu</user>
+		<password>password</password>
+		<catalog>shallow</catalog>
+		<objectAttributeName>samaccountname</objectAttributeName>
+		<emailAttributeName>emailaddress</emailAttributeName>
+		<organizationalUnit>CN=Users,DC=org,DC=perc,DC=edu</organizationalUnit>
+		<secure>false</secure>
+	</LdapServer>
+	-->
+	<!-- Example configuration for Sun ONE Directory Server -->
+	<!--
+	<LdapServer>
+		<host>SunOneServer</host>
+		<port>390</port>
+		<user>cn=Directory Manager</user>
+		<password>password</password>
+		<catalog>deep</catalog>
+		<objectAttributeName>cn</objectAttributeName>
+		<emailAttributeName>emailaddress</emailAttributeName>
+		<organizationalUnit>ou=Users,dc=percussion.com,dc=com</organizationalUnit>
+		<secure>false</secure>
+	</LdapServer>
+	-->
+</LdapConfig>

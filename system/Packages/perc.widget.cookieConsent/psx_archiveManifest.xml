@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCookieConsent_images_cookieConsentSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>c:\DevEnv\Installs\dev\rx_resources\widgets\percCookieConsent\images\cookieConsentSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCookieConsent_images_cookieConsentSampleBackground-png\cookieConsentSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--7827384722215927727">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\CHRISW~1\AppData\Local\Temp\percCookieConsent.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--7827384722215927727\percCookieConsent.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_cookieConsent_js_cookie--consent-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>c:\DevEnv\Installs\dev\web_resources\widgets\cookieConsent\js\cookie-consent.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_cookieConsent_js_cookie--consent-js\cookie-consent.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCookieConsent_images_percCookieConsentIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>c:\DevEnv\Installs\dev\rx_resources\widgets\percCookieConsent\images\percCookieConsentIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCookieConsent_images_percCookieConsentIcon-png\percCookieConsentIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percCookieConsent-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>c:\DevEnv\Installs\dev\rxconfig\Widgets\percCookieConsent.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percCookieConsent-xml\percCookieConsent.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_cookieConsent_css_cookie--consent-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>c:\DevEnv\Installs\dev\web_resources\widgets\cookieConsent\css\cookie-consent.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_cookieConsent_css_cookie--consent-css\cookie-consent.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percCookieConsent-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>c:\DevEnv\Installs\dev\rxconfig\Resources\percCookieConsent.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percCookieConsent-xml\percCookieConsent.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-402">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\CHRISW~1\AppData\Local\Temp\percCookieConsent.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-402\percCookieConsent.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\CHRISW~1\AppData\Local\Temp\percCookieConsent.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-402\percCookieConsent.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\CHRISW~1\AppData\Local\Temp\percCookieConsent.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-402\percCookieConsent.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCookieConsent_images_cookieConsentPreviewBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>c:\DevEnv\Installs\dev\rx_resources\widgets\percCookieConsent\images\cookieConsentPreviewBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCookieConsent_images_cookieConsentPreviewBackground-png\cookieConsentPreviewBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

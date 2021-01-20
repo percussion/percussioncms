@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/assemblyDesign" xmlns:asmd="urn:www.percussion.com/6.0.0/assemblyDesign" xmlns:asms="urn:www.percussion.com/6.0.0/assemblyServices" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="../common.xsd"/>
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/assemblyServices" schemaLocation="assemblyServices.xsd"/>
+   <xsd:element name="CreateSlotsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>The names for the new template slots, not null or empty. The names must be unique across all defined template slots in the system, names are compared case-insensitive and cannot contain spaces.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateSlotsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="asms:PSTemplateSlot" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The new template slot initialized with the supplied 
+                     parameters. The user must call SaveSlots for the 
+                     returned object to persist the definition.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindSlotsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the template slot to find, wildcards are accepted. All template slots will be returned if not supplied or empty.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="AssociatedTemplateId" type="com:Id" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The template id for which to filter the returned results, may be null to ignore this filter. If supplied, only slots that have this template as an allowed template will be returned.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindSlotsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all objects summaries of type PSTemplateSlot 
+                     found for the supplied name, never null, may be empty, 
+                     ordered in alpha order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadSlotsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array of template slot ids to be loaded, not null or 
+                     empty, must be ids of existing template slots.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     True to lock the found results for edit, false to return 
+                     them read-only.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadSlotsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="asms:PSTemplateSlot" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded template slots in the requested 
+                     mode in the same order as requested, never null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveSlotsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="asms:PSTemplateSlot" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all template slots to be saved to the 
+                     repository. New template slots will be inserted, existing 
+                     template slots are updated.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.
+</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeleteSlotsRequest">
+      <xsd:annotation>
+         <xsd:documentation>Deletes the template slots for all supplied ids. Deletes cannot be reverted. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. Also deletes the template-slot associations, and in order to do this must temporarily lock all templates that contain the supplied slots. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>An array with ids of all template slots to be deleted from the repository, not null or empty. We ignore cases where the object for a supplied id does not exist.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignored. If dependency checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that the client can deal with it appropriately.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateAssemblyTemplatesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>The names for the new assembly templates, not null or empty. The names must be unique across all defined assembly templates in the system, names are compared case-insensitive and cannot contain spaces.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateAssemblyTemplatesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="asms:PSAssemblyTemplate" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The new assembly template initialized with the supplied 
+                     parameters and default values. The user must call 
+                     SaveAssemblyTemplates for the returned object to persist 
+                     the definition.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindAssemblyTemplatesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the assembly template to find,
+ wildcards are accepted. All assembly templates will be returned if not supplied or empty.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="ContentType" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the content type for which to find the assembly templates, wildcards are accepted. All assembly templates will be returned if not supplied or empty.
+</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="OutputFormats" type="asms:OutputFormatType" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>A list with output formats for which to filter the response.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="TemplateType" type="asms:TemplateType" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The template type for which to filter the response.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Assembler" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The fully qualyfied assembler name for which to filter the response, asterisk wildcards are supported.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="LegacyFilter" type="xsd:boolean" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>A flag to specify whether to filter all results for legacy or non-legacy templates. If true only legacy type templates are returned, if false only non-legacy type templates are returned, if not supplied the filter is ignored.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="GlobalFilter" type="xsd:boolean" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>A flag to specify whether to filter all results for global or non-global templates. If true only global type templates are returned, if false only non-global type templates are returned, if not supplied the filter is ignored.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindAssemblyTemplatesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all object summaries of type 
+                     PSAssemblyTemplate found for the supplied parameters, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadAssemblyTemplatesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array of assembly template ids to be loaded, not null 
+                     or empty, must be ids of existing assembly templates.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     True to lock the found results for edit, false to return 
+                     them read-only.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadAssemblyTemplatesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="asms:PSAssemblyTemplate" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded assembly templates in the 
+                     requested mode in the same order as requested, never 
+                     null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveAssemblyTemplatesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="asms:PSAssemblyTemplate" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all assembly templates to be saved to the 
+                     repository. New assembly templates will be inserted, 
+                     existing assembly templates are updated.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeleteAssemblyTemplatesRequest">
+      <xsd:annotation>
+         <xsd:documentation>Deletes the assembly templates for all supplied ids. Deletes cannot be reverted. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. The caller must have write privileges on the object. Content type associations are successfully deleted before the object is deleted. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>An array with ids of all assembly templates to be deleted from the repository, not null or empty. We ignore cases where the object for a supplied id does not exist.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignored. If dependency checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that the client can deal with it appropriately.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

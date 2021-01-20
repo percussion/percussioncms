@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.percussion.deliverytier</groupId>
+    <artifactId>delivery-tier-suite</artifactId>
+    <version>8.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <properties>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <!-- Used to locate the profile specific configuration file. -->
+        <build.profile.id>dev</build.profile.id>
+        <jacoco.it.execution.data.file>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.execution.data.file>
+        <jacoco.ut.execution.data.file>${project.build.directory}/coverage-reports/jacoco-ut.exec</jacoco.ut.execution.data.file>
+        <jdk.version>1.8</jdk.version>
+        <java.source.version>1.8</java.source.version>
+        <maven.version>[3.6.0,)</maven.version>
+        <maven.toolchains.plugin.version>3.0.0</maven.toolchains.plugin.version>
+        <versions.maven.plugin.version>2.7</versions.maven.plugin.version>
+        <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
+        <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
+        <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
+        <maven.bundle.plugin.version>4.2.1</maven.bundle.plugin.version>
+        <duplicate.finder.maven.plugin.version>1.4.0</duplicate.finder.maven.plugin.version>
+        <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
+        <maven.assembly.plugin.version>3.2.0</maven.assembly.plugin.version>
+        <gwt.maven.plugin.version>2.8.2</gwt.maven.plugin.version>
+        <build.helper.maven.plugin.version>3.0.0</build.helper.maven.plugin.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
+        <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
+        <spotbugs.plugin.version>4.0.0-SNAPSHOT</spotbugs.plugin.version>
+        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
+        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
+        <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
+        <maven.failsafe.plugin.version>3.0.0-M4</maven.failsafe.plugin.version>
+        <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
+        <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
+        <maven.execmaven.plugin.version>1.6.0</maven.execmaven.plugin.version>
+        <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
+        <maven.pmd.plugin.version>3.13.0</maven.pmd.plugin.version>
+        <maven.jxr.plugin.version>3.0.0</maven.jxr.plugin.version>
+        <plexus.component.metadata.version>2.1.0</plexus.component.metadata.version>
+        <jetty.maven.plugin.version>9.4.26.v20200117</jetty.maven.plugin.version>
+        <lifecycle.mapping.plugin>1.0.0</lifecycle.mapping.plugin>
+        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
+        <java.version>1.8.0</java.version>
+        <!-- Only unit tests are run by default. -->
+        <skip.integration.tests>true</skip.integration.tests>
+        <skip.unit.tests>false</skip.unit.tests>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.version>5.2.6.RELEASE</spring.version>
+        <spring.security.version>5.3.3.RELEASE</spring.security.version>
+        <cxf.version>3.3.5</cxf.version>
+        <servlet.spec>3.1.0</servlet.spec>
+        <hibernate.version>5.4.20.Final</hibernate.version>
+        <lucene.version>2.2.0</lucene.version>
+        <!-- <myfaces.version>2.2.12</myfaces.version> -->
+        <myfaces.version>1.1.5</myfaces.version>
+        <poi.version>3.17</poi.version>
+        <esapi.version>2.2.0.0-RC2</esapi.version>
+        <esapi.encoder.version>1.2.2</esapi.encoder.version>
+        <ant.version>1.10.6</ant.version>
+        <!-- Fix issues with owl requring guice dependencies in 2.1 -->
+        <shindig.version>1.1-BETA5-incubating</shindig.version>
+        <any23.version>2.2</any23.version>
+        <owl.version>5.1.3</owl.version>
+        <awssdk.version>1.11.731</awssdk.version>
+        <bc.version>1.64</bc.version>
+        <jackson.version>2.10.1</jackson.version>
+        <jsoup.version>1.11.3</jsoup.version>
+        <json.version>1.1.4</json.version>
+        <junit.version>4.12</junit.version>
+        <cactus.version>13-1.7.1</cactus.version>
+        <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
+        <cactus.contextURL>http://localhost:9992/Rhythmyx</cactus.contextURL>
+        <jetty.version>9.4.26.v20200117</jetty.version>
+        <trinidad.version>1.0.2</trinidad.version>
+        <derby.version>10.14.2.0</derby.version>
+        <oracle.version>12.1.0.1</oracle.version>
+        <jrds.version>1.3.1</jrds.version>
+        <install.jre.version>8.222.10.1</install.jre.version>
+        <axis.version>1.4.1</axis.version>
+        <httpcomponents.version>4.5.8</httpcomponents.version>
+        <log4j2.version>2.13.2</log4j2.version>
+        <tika.version>1.17</tika.version>
+        <xmpbox.version>2.0.17</xmpbox.version>
+        <jbig2.version>3.0.2</jbig2.version>
+        <pdfbox.version>2.0.17</pdfbox.version>
+        <sqlite.version>3.28.0</sqlite.version>
+        <swagger.version>1.5.23</swagger.version>
+		 <commons.validator.version>1.7</commons.validator.version>
+        <commons.compress.version>1.18</commons.compress.version>
+        <solr.version>8.3.0</solr.version>
+        <nettyall.version>4.1.45.Final</nettyall.version>
+        <commons-email.version>1.5</commons-email.version>
+        <tinymce.version>4.9.10</tinymce.version>
+        <jfx.version>11.0.2</jfx.version>
+        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
+        <tomcat.version>9.0.37</tomcat.version>
+        <install.jre.version>8.222.10.1</install.jre.version>
+        <derby.version>10.14.2.0</derby.version>
+        <jtds.version>1.3.1</jtds.version>
+        <mariadb.version>2.6.0</mariadb.version>
+        <oracle.version>12.1.0.1</oracle.version>
+        <sqlserver.version>8.2.1.jre8</sqlserver.version>
+        <slf4j.version>1.7.28</slf4j.version>
+		 <hikari.version>3.4.5</hikari.version>
+        <hikaricp.version>3.4.5</hikaricp.version>
+        <jersey.version>2.31</jersey.version>
+        <jaxrs.version>2.1.1</jaxrs.version>
+       <junit.version>4.12</junit.version>
+        <jsoup.version>1.11.3</jsoup.version>
+        <rome.version>1.5.0</rome.version>
+        <javax.annotation.version>1.3.2</javax.annotation.version>
+        <commons.logging.version>1.2</commons.logging.version>
+        <commons.io.version>2.7</commons.io.version>
+        <commons.lang.version>2.6</commons.lang.version>
+        <commons.lang3.version>3.11</commons.lang3.version>
+        <jaxb.api.version>2.3.1</jaxb.api.version>
+        <xml.apis.version>1.4.01</xml.apis.version>
+        <xerces.version>2.12.0</xerces.version>
+        <guava.version>24.1.1-jre</guava.version>
+        <bc.version>1.64</bc.version>
+        <servlet.api.version>3.1.0</servlet.api.version>
+    </properties>
+    <profiles>
+        <profile>
+            <id>all-tests</id>
+            <properties>
+                <build.profile.id>all-tests</build.profile.id>
+                <!-- All tests are run. -->
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>false</skip.unit.tests>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <!-- Used to locate the profile specific configuration file. -->
+                <build.profile.id>integration-test</build.profile.id>
+                <!-- Only integration tests are run. -->
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
+    </profiles>
+    <description>
+        The top level pom for constructing the DTS, this pom will go out and build each of the individual projects.
+    </description>
+    <modules>
+        <module>DTS-shared-dependencies</module>
+        <module>tomcat-common</module>
+        <module>common</module>
+        <module>caching</module>
+        <module>comments</module>
+        <module>feeds</module>
+        <module>forms</module>
+        <module>integrations</module>
+        <module>membership</module>
+        <module>metadata</module>
+        <module>polls</module>
+        <module>secure-membership</module>
+        <module>delivery-tier-distribution</module>
+    </modules>
+
+
+    <repositories>
+        <repository>
+            <id>perc-java-repo</id>
+            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+
+    </repositories>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>${maven.enforcer.plugin.version}</version>
+            <executions>
+                <execution>
+                    <id>enforce</id>
+                    <configuration>
+                        <rules>
+                            <requirePluginVersions>
+                                <message>Best Practice is to always define plugin versions!</message>
+                            </requirePluginVersions>
+                            <requireJavaVersion>
+                                <version>${java.version}</version>
+                            </requireJavaVersion>
+                            <requireMavenVersion>
+                                <version>${maven.version}</version>
+                            </requireMavenVersion>
+                            <requireUpperBoundDeps>
+                                <excludes/>
+                            </requireUpperBoundDeps>
+                            <dependencyConvergence/>
+                            <banDuplicatePomDependencyVersions/>
+                        </rules>
+                        <fail>false</fail>
+                    </configuration>
+                    <goals>
+                        <goal>enforce</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-toolchains-plugin</artifactId>
+            <version>${maven.toolchains.plugin.version}</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>toolchain</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <toolchains>
+               <!--     <jdk>
+                        <version>8</version>
+                        <vendor>amazon</vendor>
+                    </jdk>
+                    -->
+                </toolchains>
+            </configuration>
+        </plugin>
+        <!-- <plugin> <groupId>org.owasp</groupId> <artifactId>dependency-check-maven</artifactId>
+            <version>3.1.2</version> <executions> <execution> <goals> <goal>check</goal>
+            </goals> </execution> </executions> </plugin> -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+                <execution>
+                    <id>analyze</id>
+                    <goals>
+                        <goal>analyze-only</goal>
+                    </goals>
+                    <configuration>
+                        <failOnWarning>false</failOnWarning>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.7.5.201505241946</version>
+            <executions>
+                <!--
+                    Prepares the property pointing to the JaCoCo runtime agent which
+                    is passed as VM argument when Maven the Surefire plugin is executed.
+                -->
+                <execution>
+                    <id>pre-unit-test</id>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                    <configuration>
+                        <!-- Sets the path to the file which contains the execution data. -->
+                        <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                        <!--
+                            Sets the name of the property containing the settings
+                            for JaCoCo runtime agent.
+                        -->
+                        <propertyName>surefireArgLine</propertyName>
+                    </configuration>
+                </execution>
+                <!--
+                    Ensures that the code coverage report for unit tests is created after
+                    unit tests have been run.
+                -->
+                <execution>
+                    <id>post-unit-test</id>
+                    <phase>test</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                    <configuration>
+                        <!-- Sets the path to the file which contains the execution data. -->
+                        <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                        <!-- Sets the output directory for the code coverage report. -->
+                        <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <!-- Used for Unit Tests -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.21.0</version>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.maven.surefire</groupId>
+                    <artifactId>common-junit48</artifactId>
+                    <version>2.12</version>
+                </dependency>
+            </dependencies>
+            <configuration>
+                <skipTests>${skip.unit.tests}</skipTests>
+                <!--suppress UnresolvedMavenProperty -->
+                <argLine>${surefireArgLine}</argLine>
+                <systemProperties>
+                    <property>
+                        <name>cactus.contextURL</name>
+                        <value>http://localhost:9992/Rhythmyx/</value>
+                    </property>
+                </systemProperties>
+                <excludedGroups>com.percussion.utils.testing.IntegrationTest</excludedGroups>
+                <testFailureIgnore>true</testFailureIgnore>
+            </configuration>
+        </plugin>
+        <!-- Used for integration tests -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.18.1</version>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.maven.surefire</groupId>
+                    <artifactId>common-junit48</artifactId>
+                    <version>2.12</version>
+                </dependency>
+            </dependencies>
+            <executions>
+                <!--
+                    Ensures that both integration-test and verify goals of the Failsafe Maven
+                    plugin are executed.
+                -->
+                <execution>
+                    <id>integration-tests</id>
+                    <goals>
+                        <goal>integration-test</goal>
+                        <goal>verify</goal>
+                    </goals>
+                    <configuration>
+                        <!-- Sets the VM argument line used when integration tests are run. -->
+                        <argLine>${failsafeArgLine}</argLine>
+
+                        <!--
+                            Skips integration tests if the value of skip.integration.tests property
+                            is true
+                        -->
+                        <skipTests>${skip.integration.tests}</skipTests>
+                        <testFailureIgnore>true</testFailureIgnore>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.0.0-M1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <fork>true</fork>
+                    <debug>true</debug>
+                    <debuglevel>lines,vars,source</debuglevel>
+                    <meminitial>1024m</meminitial>
+                    <maxmem>2024m</maxmem>
+                </configuration>
+            </plugin>
+
+            <!--This plugin's configuration is used to store Eclipse
+                m2e settings only. It has no influence on the Maven build itself. -->
+            <plugin>
+                <groupId>org.eclipse.m2e</groupId>
+                <artifactId>lifecycle-mapping</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <lifecycleMappingMetadata>
+                        <pluginExecutions>
+                            <pluginExecution>
+                                <pluginExecutionFilter>
+                                    <groupId>
+                                        org.apache.maven.plugins
+                                    </groupId>
+                                    <artifactId>
+                                        maven-clean-plugin
+                                    </artifactId>
+                                    <version>3.1.0</version>
+                                    <goals>
+                                        <goal>clean</goal>
+                                    </goals>
+                                </pluginExecutionFilter>
+                                <action>
+                                    <ignore>true</ignore>
+                                </action>
+                            </pluginExecution>
+                        </pluginExecutions>
+                    </lifecycleMappingMetadata>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.11-SNAPSHOT</version>
+
+                <configuration>
+
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <stopPort>8005</stopPort>
+                    <stopKey>STOP</stopKey>
+                    <contextPath>/</contextPath>
+
+                </configuration>
+
+                <!--   <executions>
+
+             <execution>
+                   <id>start-jetty</id>
+                   <phase>pre-integration-test</phase>
+                   <goals>
+                     <goal>stop</goal>
+                     <goal>run-exploded</goal>
+                   </goals>
+                   <configuration>
+                     <scanIntervalSeconds>0</scanIntervalSeconds>
+                     <daemon>true</daemon>
+                   </configuration>
+                 </execution>
+                 <execution>
+                   <id>stop-jetty</id>
+                   <phase>post-integration-test</phase>
+                   <goals>
+                     <goal>stop</goal>
+                   </goals>
+                 </execution>
+               </executions>
+         -->
+
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.eclipse.jetty.toolchain</groupId>
+                        <artifactId>jetty-assembly-descriptors</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+            </plugin>
+            <!-- Reporting Plugins Can't define dependencies so
+                    are listed here -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${maven.pmd.plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.percussion</groupId>
+                        <artifactId>build-tools</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!--  Enable at build time once rules are stable -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven.checkstyle.plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>false</failsOnError>
+                    <linkXRef>true</linkXRef>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.percussion</groupId>
+                        <artifactId>build-tools</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.percussion</groupId>
+                        <artifactId>build-tools</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.basepom.maven</groupId>
+                <artifactId>duplicate-finder-maven-plugin</artifactId>
+                <version>1.3.0</version>
+                <!--
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                -->
+                <configuration>
+                    <printEqualFiles>false</printEqualFiles>
+                    <failBuildInCaseOfDifferentContentConflict>false</failBuildInCaseOfDifferentContentConflict>
+                    <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>
+                    <failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
+                    <checkCompileClasspath>true</checkCompileClasspath>
+                    <checkRuntimeClasspath>true</checkRuntimeClasspath>
+                    <checkTestClasspath>true</checkTestClasspath>
+                    <skip>false</skip>
+                    <quiet>false</quiet>
+                    <preferLocal>true</preferLocal>
+                    <useResultFile>true</useResultFile>
+                    <resultFileMinClasspathCount>2</resultFileMinClasspathCount>
+                    <resultFile>${project.build.directory}/duplicate-finder-result.xml</resultFile>
+
+                    <!-- Version 1.1.1+ -->
+                    <includeBootClasspath>false</includeBootClasspath>
+                    <bootClasspathProperty>sun.boot.class.path</bootClasspathProperty>
+                    <useDefaultResourceIgnoreList>true</useDefaultResourceIgnoreList>
+                    <!-- Version 1.1.1+ -->
+
+                    <!-- Version 1.2.0+ -->
+                    <includePomProjects>false</includePomProjects>
+                    <!-- Version 1.2.0+ -->
+
+                    <!-- Version 1.2.1+ -->
+                    <useDefaultResourceIgnoreList>true</useDefaultResourceIgnoreList>
+                    <!-- Version 1.2.1+ -->
+                </configuration>
+
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+</build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>perc-java-repo</id>
+            <name>Perc Plugin Repository</name>
+            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                   <!-- <argLine>-Xmx1356m</argLine>-->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${maven.site.plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>

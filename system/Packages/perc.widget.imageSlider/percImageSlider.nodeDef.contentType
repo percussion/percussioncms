@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description/>
+    <hide-from-menu>false</hide-from-menu>
+    <id>390</id>
+    <internal-name>percImageSlider</internal-name>
+    <label>percImageSlider</label>
+    <mandatory>false</mandatory>
+    <name>rx:percImageSlider</name>
+    <new-request>../psx_cepercImageSlider/percImageSlider.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercImageSlider/percImageSlider.html</query-request>
+    <raw-content-type>390</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids>
+      <string>0-23-7</string>
+      <string>0-23-5</string>
+      <string>0-23-6</string>
+      <string>0-23-4</string>
+    </workflow-ids>
+  </node-definition>

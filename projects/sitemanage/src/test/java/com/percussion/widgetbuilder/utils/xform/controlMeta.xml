@@ -1,0 +1,141 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<controls xmlns:psxctl="URN:percussion.com/control" >
+   <psxctl:ControlMeta name="sys_tinymce" dimension="single" choiceset="none">
+      <psxctl:Description>A simple WYSIWYG</psxctl:Description>
+      <psxctl:ParamList>
+         <psxctl:Param name="id" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+         </psxctl:Param>
+         <psxctl:Param name="class" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+            <psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="style" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+         </psxctl:Param>
+         <psxctl:Param name="width" datatype="Number" paramtype="generic">
+            <psxctl:Description>This parameter specifies the number of visible text lines. The default value is 4.</psxctl:Description>
+            <psxctl:DefaultValue>540</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="height" datatype="Number" paramtype="generic">
+            <psxctl:Description>This parameter specifies the visible width in average character widths. The default value is 80.</psxctl:Description>
+            <psxctl:DefaultValue>370</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="tabindex" datatype="Number" paramtype="generic">
+            <psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+         </psxctl:Param>
+         <psxctl:Param name="dlg_width" datatype="Number" paramtype="generic">
+            <psxctl:Description>This parameter specifies the width of the dialog box that is opened during field editing in Active Assembly.</psxctl:Description>
+            <psxctl:DefaultValue>620</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="dlg_height" datatype="Number" paramtype="generic">
+            <psxctl:Description>This parameter specifies the height of the dialog box that is opened during field editing in Active Assembly.</psxctl:Description>
+            <psxctl:DefaultValue>240</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="aarenderer" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter specifies whether the field editing in Active Assembly takes place in a modal dialog or in a popup. Applicable values are MODAL, POPUP and INPLACE_TEXT, any other value is treated as POPUP. The recommended values are MODAL and POPUP.</psxctl:Description>
+            <psxctl:DefaultValue>MODAL</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
+            <psxctl:Description>tinymce config file</psxctl:Description>
+            <psxctl:DefaultValue>../sys_resources/tinymce/config/default_config.json</psxctl:DefaultValue>
+         </psxctl:Param>
+      </psxctl:ParamList>
+            <psxctl:Dependencies>
+            <psxctl:Dependency status="setupOptional" occurrence="multiple">
+                <psxctl:Default>
+                    <PSXExtensionCall id="0">
+                        <name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+                        <PSXExtensionParamValue id="0">
+                            <value>
+                                <PSXTextLiteral id="0">
+                                    <text>$(fieldName)</text>
+                                </PSXTextLiteral>
+                            </value>
+                        </PSXExtensionParamValue>
+                        <PSXExtensionParamValue id="0">
+                            <value>
+                                <PSXTextLiteral id="0">
+                                    <text>rxW2Ktidy.properties</text>
+                                </PSXTextLiteral>
+                            </value>
+                        </PSXExtensionParamValue>
+                        <PSXExtensionParamValue id="0">
+                            <value>
+                                <PSXTextLiteral id="0">
+                                    <text>rxW2KserverPageTags.xml</text>
+                                </PSXTextLiteral>
+                            </value>
+                        </PSXExtensionParamValue>
+                        <PSXExtensionParamValue id="0">
+                            <value>
+                                <PSXTextLiteral id="0">
+                                    <text/>
+                                </PSXTextLiteral>
+                            </value>
+                        </PSXExtensionParamValue>
+                        <PSXExtensionParamValue id="0">
+                            <value>
+                                <PSXTextLiteral id="0">
+                                    <text/>
+                                </PSXTextLiteral>
+                            </value>
+                        </PSXExtensionParamValue>
+                        <PSXExtensionParamValue id="0">
+                            <value>
+                                <PSXTextLiteral id="0">
+                                    <text>yes</text>
+                                </PSXTextLiteral>
+                            </value>
+                        </PSXExtensionParamValue>
+                    </PSXExtensionCall>
+                </psxctl:Default>
+            </psxctl:Dependency>
+        </psxctl:Dependencies>
+         <psxctl:AssociatedFileList>
+             <psxctl:FileDescriptor name="timepicker.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>../sys_resources/js/jquery/timepicker/js/timepicker.js</psxctl:FileLocation>
+                <psxctl:Timestamp/>
+             </psxctl:FileDescriptor>
+             <psxctl:FileDescriptor name="jquery.tinymce.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>../sys_resources/tinymce/js/tinymce/tinymce.min.js</psxctl:FileLocation>
+                <psxctl:Timestamp/>
+             </psxctl:FileDescriptor>
+              <psxctl:FileDescriptor name="jquery.tinymce.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>../sys_resources/tinymce/js/PercCustomStylesService.js</psxctl:FileLocation>
+                <psxctl:Timestamp/>
+             </psxctl:FileDescriptor>
+             <psxctl:FileDescriptor name="jspellSettings.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>../../jspellEvolution/jspellSettings.js</psxctl:FileLocation>
+                <psxctl:Timestamp/>
+             </psxctl:FileDescriptor>
+             <psxctl:FileDescriptor name="jspellEvolution.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>../../jspellEvolution/jspellEvolution.js</psxctl:FileLocation>
+                <psxctl:Timestamp/>
+             </psxctl:FileDescriptor>
+         </psxctl:AssociatedFileList>
+   </psxctl:ControlMeta>
+</controls>   

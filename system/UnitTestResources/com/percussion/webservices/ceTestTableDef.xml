@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DTD in Tools/TableFactory/dtd/tabledef.dtd -->
+<tables>
+   <table name="RXS_TEST1">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="DUMMY">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>
+   <table name="RXS_TEST2">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <size/>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="DUMMY">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>   
+   <table name="CT_TESTWEBSERVICES">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="FIELD_1">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="FIELD_2">
+				<jdbctype>BLOB</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+      </primarykey>
+   </table>   
+   <table name="CT_TESTWEBSERVICES_CHILD_1">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="SYSID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="SORTRANK">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FIELD_11">
+            <jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FIELD_12">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FIELD_13">
+            <jdbctype>TIMESTAMP</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+			<column name="FIELD_14">
+				<jdbctype>BLOB</jdbctype>
+				<allowsnull>yes</allowsnull>
+			</column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+         <name>SYSID</name>
+      </primarykey>
+   </table>   
+   <table name="CT_TESTWEBSERVICES_CHILD_2">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="SYSID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="SORTRANK">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FIELD_21">
+            <jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+         <name>SYSID</name>
+      </primarykey>
+   </table>   
+   <table name="CT_TESTWEBSERVICES_CHILD_3">
+      <row>
+         <column name="CONTENTID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="REVISIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="SYSID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column name="SORTRANK">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column name="FIELD_31">
+            <jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey>
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+         <name>SYSID</name>
+      </primarykey>
+   </table>   
+</tables>

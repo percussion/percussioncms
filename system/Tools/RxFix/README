@@ -1,0 +1,112 @@
+Warnings
+--------
+
+This tool has been tested against Oracle and SqlServer installations.
+It has not yet been tested (but should work) against DB2 installations.
+Please use caution.
+
+As a matter of prudence, it is recommended that you back up your database
+before running this tool. While some changes made by the tool are reversible,
+some are not.
+
+Introduction
+------------
+
+RxFix provides a set of database cleanup modules to repair your 
+Rhythmyx database. At this time the following modules are implemented:
+
+1) Next number cleanup
+2) Content status history cleanup
+3) Inline relationship cleanup
+4) Locates all orphaned folders, renames them to append the contentid 
+   to avoid conflicts and then links to the system folder "Folders". 
+   This fix needs a server restart.
+5) Locates invalid folders (that do not have entries in PSX_FOLDER table) 
+   and cleans up other related tables to make the system functional.
+
+It should be noted that for the content status history cleanup, only
+certain records can be restored. If other information is missing, it
+is irretrievable:
+
+1) Items that are in a public state will have a new history record 
+inserted for their current revision. 
+
+2) Items that are revision locked are assumed to have gone public. If 
+this assumption is incorrect, you should contact Percussion Technical
+Support. Such items will have a public history record for revision 1
+created if it is missing
+
+3) Items that have a current revision greater than 1 are assumed to have
+gone public at revision 1, and a public history record for revision 1
+will be created if it is missing. If this assumption is incorrect, you 
+should contact Percussion Technical Support.
+
+4) Item revisions without revision records for earlier revisions than
+their tip revision will have those created
+
+Running
+-------
+
+To run RxFix, you must either have a java executable on your path, or
+use a full pathname to access the java executable in your Rhythmyx
+directory. To run the utility in the same directory you've unziped the
+tool into:
+
+java -jar rxfix.jar <rhythmyxrootdirectory> [-gui] [-preview] [-list]
+
+Adding the -preview flag will allow you to see what the tool will do, 
+without having changes made to your installation. Using the -list flag
+will show the current list of fixes in the tool.
+
+The -gui flag will bring the tool up in gui mode. This is only supported
+on Windows at this time. In gui mode the directory may be omitted and supplied
+in the GUI.
+
+The tool will output its actions to the console, and will also record 
+them in a file in the current directory, rxfix.log. This file will not
+be overwritten on each run; instead it will be appended to. The log 
+entries include the date to allow you to see what was run when.
+
+Understanding the Output and Caveats
+------------------------------------
+
+The output from the tool is logged in sections. Each fix module is run,
+and each attempts to summarize what it has done, or would do if in 
+preview mode. 
+
+The next number fixups cause records to be updated as if each record
+represents the next number to be allocated for the related table. This 
+sometimes means that numbers are incremented that do not need to be. 
+However, there is no programmatic way to know what values in the NEXTNUMBER
+table are actually treated as the last number allocated versus the next
+number to be allocated. Thus we do the safe thing, which is to increment
+if there is a question. In the case where the calculated maximum value for
+the related table's primary key is equal to the current next number, we
+update quietly since this is most likely not an error.
+
+The content status history module has some limitations. It cannot recreate 
+all missing history information since the only place that information is
+recorded is in the CONTENTSTATUSHISTORY table. What it does instead is to
+create a workable history so that publishing and other Rhythmyx functions
+are able to perform their duties correctly. 
+
+05/27/04 [WARN ] PSFixContentStatusHistory - The following items had new public state records created for their currentrevision:
+
+Items listed here are complete from a public version point of view, and
+aside from the caveats already mentioned, may be missing earlier 
+public revisions.
+
+05/27/04 [WARN ] PSFixContentStatusHistory - The following items had new public state records created for revision 1:
+
+These items may have had later public revisions. It is important for you
+to examine these items to see if they require further hand fixes. Note 
+also the limitation already mentioned that certain assumptions are being
+made - contact Percussion Technical Support if these assumptions are not
+correct for your installation.
+
+05/27/04 [WARN ] PSFixContentStatusHistory - The following items had new revision records created:
+
+These fill in records are simply placeholders to allow you to manipulate
+earlier versions of a content item.
+
+

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT extagingstatetransitions (transitionid, label, prompt, description, trigger, tostate, approvals, link, deletelink, newlink, componentname )>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT newlink (#PCDATA)>
+<!ELEMENT deletelink (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT approvals (#PCDATA)>
+<!ELEMENT tostate (#PCDATA)>
+<!ELEMENT trigger (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT prompt (#PCDATA)>
+<!ELEMENT label (#PCDATA)>
+<!ELEMENT transitionid (#PCDATA)>

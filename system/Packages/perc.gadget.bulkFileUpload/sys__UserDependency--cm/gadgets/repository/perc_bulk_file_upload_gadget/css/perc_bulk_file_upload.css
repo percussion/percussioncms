@@ -1,0 +1,343 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.bar {
+}
+.perc-gadget{
+    width: 100%;
+    color: #000000;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    overflow:auto;
+    height:100%;
+}
+#perc-bulk-upload-buttons{
+    position: relative;
+    float: left;
+    width: 300px;
+    margin-top: 10px;
+}
+#perc-bulk-start-upload{
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonUpload.png");
+    float: left;
+    height:29px;
+    width:100px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+#perc-bulk-start-upload.perc-inactive{
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonUploadInactive.png");
+    cursor: default;
+}
+#perc-bulk-asset-type, #perc-html-selector{
+    color: #000000;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    width: 224px;
+}
+#perc-html-include-innerhtml, #perc-html-include-outerhtml{
+    color: #000000;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+#perc-bulk-cancel-upload{
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonCancel.png");
+    float: left;
+    height:29px;
+    width:100px;
+    cursor: pointer;
+}
+#perc-bulk-cancel-upload.perc-inactive{
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonCancelInactive.png");
+    cursor: default;
+}
+#perc-bulk-uploadUploader{
+    float:left;
+    width: 100px;
+}
+#perc-bulk-clear-all{
+    float:left;
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonClearAll.png");
+    height:29px;
+    width:126px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+#perc-bulk-clear-all.perc-inactive{
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonClearAllInactive.png");
+    cursor: default;
+}
+#perc-bulk-target-tree{
+    background-color:#F5F5F5;
+    border:1px solid #c0c0c0;
+    height:200px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: scroll;
+    width: 380px;
+}
+#perc-bulk-target-tree a:active {
+    color: #0099cc !important;
+}
+#perc-bulk-details-section{
+    min-height: 225px;
+}
+#perc-bulk-fileQueue{
+    overflow-y: auto;
+    min-height: 225px;
+}
+.perc-bulk-collapse{
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonBlueMinus.png");
+    width: 16px;
+    height: 16px;
+    border: none;
+    float: left;
+}
+.perc-bulk-expand{
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonBluePlus.png");
+    width: 16px;
+    height: 16px;
+    border: none;
+    float: left;
+}
+#perc-bulk-target-folder-label, #perc-bulk-details-label{
+    padding-left: 5px;
+}
+.perc-label{
+    font-weight: bold;
+    padding-right: 2px;
+}
+.perc-approval-label-disabled{
+    padding-right: 10px;
+    color: #CCC;
+}
+.ui-dynatree-title{
+    color: #0099cc;
+    background-color: #ffffff !important;
+}
+.ui-dynatree-title[title="Assets"]{
+    background-color: #ffffff !important;
+    color: #0099cc !important;
+}
+#ui-dynatree-id--Assets{
+    background-color:#ffffff !important;
+}
+.perc-folder-selector-container{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    color:#0099CC;
+    font-weight:normal;
+    padding:0px;
+    white-space:nowrap;
+    margin-top:0px;
+    background-color:none;
+}
+#perc-folder-selector{
+    float:left;
+    height:254px;
+    background-color:#F5F5F6;
+    margin-top:4px;
+    margin-right:30px;
+}
+.perc-folder-selected-item{
+    background-color:#CAF589 !important;
+}
+.ui-dynatree-folder{
+    background-color:#ffffff;
+    padding:2px;
+    padding-left:8px;
+    display:block;
+    border-bottom:2px solid #E6E6E9;
+}
+div.ui-dynatree-container{
+    background-color:#E6E6E9;
+}
+.ui-dynatree-exp-el span.ui-dynatree-expander, .ui-dynatree-exp-edl span.ui-dynatree-expander {
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/collapsable.gif") !important;
+}
+.ui-dynatree-exp-cl span.ui-dynatree-expander, span.ui-dynatree-expander {
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/expandable.gif") !important;
+}
+div.ui-dynatree-container a:focus, span.uidyantree-focused a:link{
+    background-color:#F5F5F6;
+}
+span.ui-dynatree-active, span.ui-dynatree-active a {
+    background-color:#CAF589 !important;
+    color:#0099CC !important;
+}
+.ui-dynatree-exp-e span.ui-dynatree-expander, .ui-dynatree-exp-ed span.ui-dynatree-expander{
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/collapsable.gif") !important;
+}
+.ui-dynatree-exp-cdl span.ui-dynatree-expander {
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/expandable.gif") !important;
+}
+.ui-dynatree-exp-cd span.ui-dynatree-expander {
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/expandable.gif") !important;
+}
+span.ui-dynatree-expanded a, span.ui-dynatree-active a , span.ui-dynatree-folder a, span.ui-dynatree-has-children a,span.ui-dynatree-has-children a {
+    color:#0099CC;
+    background-color:#F5F5F6;
+    text-decoration:none;
+}
+span.ui-dynatree-vline {
+    background-image:none !important;
+}
+#perc-imageautolist-detail td{
+    vertical-align:top;
+}
+.ui-dynatree-folder img {
+    display:none;
+}
+span.ui-dynatree-empty, span.ui-dynatree-vline, span.ui-dynatree-connector, span.ui-dynatree-expander, span.ui-dynatree-icon, span.ui-dynatree-checkbox, span.ui-dynatree-radio {
+    background-position:left center;
+    background-repeat:no-repeat;
+    display:inline-block;
+    height:11px;
+    vertical-align:middle;
+    width:13px;
+}
+span.ui-dynatree-document a, span.ui-dynatree-folder a{
+    padding-left:0px;
+}
+#perc-need-flash {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+}
+#perc-need-flash span {
+    font-weight: bold;
+}
+#perc-need-flash a, #perc-need-flash a:hover, #perc-need-flash a:visited {
+    color: #0099cc;
+    text-decoration: none;
+}
+#perc-need-flash a:hover {
+    text-decoration: underline;
+}
+#perc-bulk-uploadUploader{
+    background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonAddFile.png");
+    background-repeat:no-repeat;
+    background-position: -1px 0px;
+}
+#perc-finder-tree {
+    background-image: url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/finderTreeBackground.jpg");
+    background-repeat: repeat;
+    display: inline-block;
+    min-width: 100%;
+}
+#perc-finder-tree ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+#perc-finder-tree ul li {
+    line-height: 22px;
+    list-style-type: none;
+}
+.dynatree-folder img {
+    display: none;
+}
+#perc-finder-tree * {
+    font-weight: normal;
+    white-space: nowrap;
+}
+span.dynatree-expanded a, span.dynatree-active a, span.dynatree-folder a, span.dynatree-has-children a, span.dynatree-has-children a {
+    color: #0099CC;
+    text-decoration: none;
+}
+span.perc-hide-node-expander span.dynatree-expander {
+    visibility:hidden;
+}
+span.dynatree-node a {
+    display: inline-block;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+.dynatree-exp-el span.dynatree-expander, .dynatree-exp-edl span.dynatree-expander {
+    background-position: 3px 9px;
+}
+span.dynatree-empty, span.dynatree-vline, span.dynatree-connector, span.dynatree-expander, span.dynatree-icon, span.dynatree-checkbox, span.dynatree-radio, span.dynatree-drag-helper-img, #dynatree-drop-marker {
+    /*background-image: url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/expandable.gif");
+    */
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    vertical-align: top;
+    width: 16px;
+    background-position: 3px 9px;
+}
+.dynatree-exp-el span.dynatree-expander, .dynatree-exp-edl span.dynatree-expander, .dynatree-exp-e span.dynatree-expander, .dynatree-exp-ed span.dynatree-expander {
+    background-image: url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/collapsable.gif");
+    background-position: 3px 9px;
+}
+.dynatree-exp-cl span.dynatree-expander, .dynatree-exp-c span.dynatree-expander, .dynatree-exp-cd span.dynatree-expander, .dynatree-exp-cdl span.dynatree-expander{
+    background-image: url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/expandable.gif");
+    background-position: 3px 9px;
+}
+span.dynatree-active, span.dynatree-active a {
+    background-color: #CAF589 !important;
+    border:none;
+    color: #0099CC !important;
+}
+#perc-finder-tree .dynatree-node {
+    display:block;
+    height:23px;
+}
+#perc-bulk-approve-onupload {
+    vertical-align:middle;
+    margin-right: 10px;
+}
+#perc-bulk-approve-onupload-label {
+    vertical-align:middle;
+}
+.perc-row {
+    margin-left: -15px;
+    margin-bottom: 10px;
+}
+#perc-global-progress {
+    display: none;
+    margin-top: 10px;
+}
+.perc-button {
+    background-color: #005e86;
+    color: white;
+}
+#perc-added-files {
+    font-size: 11px;
+}
+.btn:hover {
+    color: white;
+    background-color: #5bc0de !important;
+}
+legend {
+    font-size: 11px !important;
+    margin-bottom: 0 !important;
+}
+.progress-bar {
+    background-color: #5bc0de !important;
+}
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

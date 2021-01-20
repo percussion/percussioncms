@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT comparetab (sys_contentid1, sys_contentid2, sys_revisionid1, sys_revisionid2, sys_variantid1, sys_variantid2, activeitem )>
+<!ELEMENT activeitem (#PCDATA)>
+<!ELEMENT sys_variantid2 (#PCDATA)>
+<!ELEMENT sys_variantid1 (#PCDATA)>
+<!ELEMENT sys_revisionid2 (#PCDATA)>
+<!ELEMENT sys_revisionid1 (#PCDATA)>
+<!ELEMENT sys_contentid2 (#PCDATA)>
+<!ELEMENT sys_contentid1 (#PCDATA)>
+<!ATTLIST  comparetab xml:lang CDATA #IMPLIED>

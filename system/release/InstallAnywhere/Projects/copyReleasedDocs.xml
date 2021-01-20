@@ -1,0 +1,132 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="copyReleasedDocs" basedir="../../../../" default="verifyConditions">
+
+   <property name="projects.dir" location="."/>
+   <property name="designerdir" value="${basedir}/designer"/>
+   <property name="systemdir" value="${basedir}/system"/>
+   <property name="tools.dir" location="${systemdir}/Tools"/>
+   <property name="ant.lib.dir" location="${tools.dir}/Ant/lib"/>
+   <property name="released.docs.dir" location="${systemdir}/Released Documents"/>
+   <property name="setup.dir" location="${systemdir}/release/setup"/>
+   <property name="docs.root.dir" value="//hades/public/documentation/Released Documents/Rhythmyx"/>
+   <property name="wb.helpplugin" value="com.percussion.doc.workbench"/>
+   <property name="pi.helpplugin" value="com.percussion.doc.packageinstaller"/>
+   <property name="pb.helpplugin" value="com.percussion.doc.packagebuilder"/>
+   <property name="wb.helpplugin.dir" value="${released.docs.dir}/${wb.helpplugin}"/>
+   <property name="DEBUG" value="false"/>
+   <property name="outputdir" value="${systemdir}/build" />
+   <property name="tempdir" value="${outputdir}/temp" />
+   <property name="helphintsdir" value="${tempdir}/helphints"/>
+   <property name="helphintsresourcesdir" value="${helphintsdir}/HelpResources"/>
+   	
+   	<!-- Define the ant extension classpath -->
+	<path id="antExt.class.path">
+	   <pathelement location="${ant.lib.dir}/psantextensions.jar"/>
+	   <pathelement location="${ant.lib.dir}/p4.jar"/>
+	   <pathelement location="${tools.dir}/Jericho-html/jericho-html-1.2.jar"/>
+	</path>
+	
+	<!-- Set the custom task defs -->
+	<taskdef name="psgetreleasedocspath"
+	         classname="com.percussion.ant.PSGetReleaseDocumentsPath"
+	         classpathref="antExt.class.path"/>
+	<taskdef name="pssyncfiles"
+	         classname="com.percussion.ant.PSSyncFiles"
+	         classpathref="antExt.class.path"/>    
+	<taskdef name="psmakehelphints" 
+	         classname="com.percussion.ant.PSMakeHelpHints"
+	         classpathref="antExt.class.path"/>
+	
+	
+	<!-- Check the Properties (especially "NO_DOCS") -->
+	<target name="verifyConditions">
+	                                 
+	   <condition property="DO.COPY">
+              <or>
+                 <not>
+                    <isset property="NO_DOCS"/>
+                 </not>  
+                 <equals arg1="${NO_DOCS}" arg2="false"/>
+              </or>
+	   </condition>
+	  
+	   <antcall target="main"/>
+    
+	</target>
+
+	<!-- The main processing target -->
+	<target name="main" if="DO.COPY">
+	   <!-- Get the Released Documents Path (stored on network)-->
+	   <loadproperties srcfile="${systemdir}/VersionControl/Version.properties"/>
+	   <psgetreleasedocspath rootdir="${docs.root.dir}"
+	                       major="${majorVersion}"
+	                       minor="${minorVersion}"
+	                       micro="${microVersion}"
+	                       property="rel.docs.path"/>
+          
+	   <condition property="NO.DOCS">
+	      <not>
+	         <available file="${rel.docs.path}" type="dir"/>
+	      </not>
+	   </condition>
+	   <fail if="NO.DOCS">Error! Released Documents do not exist for this version [${majorVersion}.${minorVersion}.${microVersion}].</fail>
+          
+	   <antcall target="makehelphints"/>
+	   <antcall target="copyDocs"/>
+	   <antcall target="createHelpPlugin"/>
+	</target>
+
+	<!-- Copy the documents to the appropriate location -->
+	<target name="copyDocs" if="DO.COPY">	   
+	   <echo>Using docs at: ${rel.docs.path}\online</echo>
+	   <mkdir dir="${released.docs.dir}"/>
+	   <pssyncfiles fromdir="${rel.docs.path}/online" todir="${released.docs.dir}"/>
+	                        
+	   <echo>Using docs at: ${rel.docs.path}\printable</echo>
+	   <mkdir dir="${setup.dir}/docs"/>
+	   <pssyncfiles fromdir="${rel.docs.path}/printable" todir="${setup.dir}/docs"/>
+	</target> 
+	
+	<!-- Create the Eclipse Help Plugins -->
+	<target name="createHelpPlugin" if="DO.COPY" >
+	   <echo>Creating workbench help plugin</echo>
+	   <mkdir dir="${systemdir}/eclipse"/>
+	   <zip destfile="${systemdir}/eclipse/RhythmyxWorkbenchHelp.zip" basedir="${released.docs.dir}" includes="${wb.helpplugin}/**"/>
+	   <zip destfile="${systemdir}/eclipse/PackageInstallerHelp.zip" basedir="${released.docs.dir}" includes="${pi.helpplugin}/**"/>
+	   <zip destfile="${systemdir}/eclipse/PackageBuilderHelp.zip" basedir="${released.docs.dir}" includes="${pb.helpplugin}/**"/>
+	</target>
+	
+	<!-- Create the workbench help hint files -->
+	<target name="makehelphints" if="DO.COPY" >
+	   <property name="helpmappings"
+	             value="${designerdir}/ui/default-config/rxconfig/Workbench/WorkbenchHelpMappings.properties"/>
+	   <mkdir dir="${helphintsdir}"/>
+	   <mkdir dir="${helphintsresourcesdir}"/>			
+	   <psmakehelphints helpmappings="${helpmappings}"
+	      helppath="${rel.docs.path}/online/com.percussion.doc.workbench"
+	      target="${helphintsdir}/PSXEditorHelpHints.xml"/>
+	</target>
+</project>

@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<PSXRelationshipSet>
+  <PSXRelationship config="Active Assembly" id="1">
+   <Owner>
+      <PSXLocator>
+         <CONTENTID>4</CONTENTID>
+         <REVISIONID>1</REVISIONID>
+      </PSXLocator>
+   </Owner>
+   <Dependent communityid="1002" objecttype="1">
+      <PSXLocator>
+         <CONTENTID>5</CONTENTID>
+         <REVISIONID>-1</REVISIONID>
+      </PSXLocator>
+   </Dependent>
+   <PSXPropertySet>
+      <PSXProperty name="sys_variantid">
+         <Value>100</Value>
+      </PSXProperty>
+   </PSXPropertySet>
+  </PSXRelationship>
+  <PSXRelationship config="Active Assembly" id="2">
+   <Owner>
+      <PSXLocator>
+         <CONTENTID>2</CONTENTID>
+         <REVISIONID>1</REVISIONID>
+      </PSXLocator>
+   </Owner>
+   <Dependent communityid="1002" objecttype="1">
+      <PSXLocator>
+         <CONTENTID>4</CONTENTID>
+         <REVISIONID>-1</REVISIONID>
+      </PSXLocator>
+   </Dependent>
+   <PSXPropertySet>
+      <PSXProperty name="sys_variantid">
+         <Value>100</Value>
+      </PSXProperty>
+   </PSXPropertySet>
+  </PSXRelationship>
+  <PSXRelationship config="Active Assembly" id="3">
+   <Owner>
+      <PSXLocator>
+         <CONTENTID>1</CONTENTID>
+         <REVISIONID>1</REVISIONID>
+      </PSXLocator>
+   </Owner>
+   <Dependent communityid="1002" objecttype="1">
+      <PSXLocator>
+         <CONTENTID>2</CONTENTID>
+         <REVISIONID>-1</REVISIONID>
+      </PSXLocator>
+   </Dependent>
+   <PSXPropertySet>
+      <PSXProperty name="sys_variantid">
+         <Value>100</Value>
+      </PSXProperty>
+   </PSXPropertySet>
+  </PSXRelationship>
+  <PSXRelationship config="Active Assembly" id="4">
+   <Owner>
+      <PSXLocator>
+         <CONTENTID>3</CONTENTID>
+         <REVISIONID>1</REVISIONID>
+      </PSXLocator>
+   </Owner>
+   <Dependent communityid="1002" objecttype="1">
+      <PSXLocator>
+         <CONTENTID>6</CONTENTID>
+         <REVISIONID>-1</REVISIONID>
+      </PSXLocator>
+   </Dependent>
+   <PSXPropertySet>
+      <PSXProperty name="sys_variantid">
+         <Value>100</Value>
+      </PSXProperty>
+   </PSXPropertySet>
+  </PSXRelationship>
+  <PSXRelationship config="Active Assembly" id="5">
+   <Owner>
+      <PSXLocator>
+         <CONTENTID>1</CONTENTID>
+         <REVISIONID>1</REVISIONID>
+      </PSXLocator>
+   </Owner>
+   <Dependent communityid="1002" objecttype="1">
+      <PSXLocator>
+         <CONTENTID>3</CONTENTID>
+         <REVISIONID>-1</REVISIONID>
+      </PSXLocator>
+   </Dependent>
+   <PSXPropertySet>
+      <PSXProperty name="sys_variantid">
+         <Value>100</Value>
+      </PSXProperty>
+   </PSXPropertySet>
+  </PSXRelationship>
+  <PSXRelationship config="Active Assembly" id="6">
+   <Owner>
+      <PSXLocator>
+         <CONTENTID>3</CONTENTID>
+         <REVISIONID>1</REVISIONID>
+      </PSXLocator>
+   </Owner>
+   <Dependent communityid="1002" objecttype="1">
+      <PSXLocator>
+         <CONTENTID>7</CONTENTID>
+         <REVISIONID>-1</REVISIONID>
+      </PSXLocator>
+   </Dependent>
+   <PSXPropertySet>
+      <PSXProperty name="sys_variantid">
+         <Value>100</Value>
+      </PSXProperty>
+   </PSXPropertySet>
+  </PSXRelationship>
+  <PSXRelationship config="Active Assembly" id="7">
+   <Owner>
+      <PSXLocator>
+         <CONTENTID>7</CONTENTID>
+         <REVISIONID>1</REVISIONID>
+      </PSXLocator>
+   </Owner>
+   <Dependent communityid="1002" objecttype="1">
+      <PSXLocator>
+         <CONTENTID>1</CONTENTID>
+         <REVISIONID>-1</REVISIONID>
+      </PSXLocator>
+   </Dependent>
+   <PSXPropertySet>
+      <PSXProperty name="sys_variantid">
+         <Value>100</Value>
+      </PSXProperty>
+   </PSXPropertySet>
+  </PSXRelationship>
+</PSXRelationshipSet>
+
+

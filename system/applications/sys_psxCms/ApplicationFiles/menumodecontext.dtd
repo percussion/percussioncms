@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXMenuContext (PSXKey, Description )>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT UICONTEXTID (#PCDATA)>
+<!ELEMENT PSXKey (UICONTEXTID )>
+<!ATTLIST  PSXMenuContext displayName CDATA #REQUIRED>
+<!ATTLIST  PSXMenuContext name CDATA #REQUIRED>
+<!ATTLIST  PSXMenuContext state CDATA #REQUIRED>
+<!ELEMENT MenuContexts (PSXMenuContext* )>

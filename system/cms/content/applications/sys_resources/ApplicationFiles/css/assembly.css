@@ -1,0 +1,14 @@
+div { border-width: 2; border-color: black; border-style: solid; padding: 2px }
+div div { margin-left: 50px; margin-top: 10px; margin-bottom: 10px;
+	margin-right: 10px; padding: 5px; border-width: thin;
+	border-color: blue; border-style: solid }
+
+.var { font-weight: bold; font-family: monospace }
+.value { font-size: smaller; display: block; font-family: sans-serif;
+	padding-left: 25px }
+.slot { font-style: italic; text-decoration: underline }
+.heading { font-weight: bold; display: block }
+.node { font-weight: bold; display: inline }
+
+.toggle { font-weight: bold; font-family: sans-serif; border: solid black 1px; 
+	padding-right: 2px; padding-left: 2px; background-color: rgb(240 240 240) }

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [calendar - Version 1.1]      
+   
+-->
+<Widget>
+   <WidgetPrefs title="Calendar"
+        contenttype_name="percCalendarAsset"
+        description="Promote date driven events by displaying a calendar"
+        category="Other"
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/calendar/images/calendarIcon.png"
+        preferred_editor_width="800"
+        preferred_editor_height="425"
+        is_responsive="false"/> 
+
+    <UserPref name="perc_calendar_view" 
+      display_name="Choose calendar view"
+      default_value="full"
+      datatype="enum">
+      <EnumValue value="full" display_value="Full calendar" /> 
+      <EnumValue value="mini" display_value="Mini calendar" /> 
+    </UserPref>
+    
+    <UserPref name="perc_calendar_type" 
+      display_name="Calendar type"
+      default_value="month"
+      datatype="enum">
+      <EnumValue value="agendaDay" display_value="Day" /> 
+      <EnumValue value="agendaWeek" display_value="Week" /> 
+      <EnumValue value="month" display_value="Month" />
+    </UserPref>
+  
+    <UserPref name="perc_show_page_summary"
+      display_name="Show summary"
+      default_value="false"
+      datatype="bool" />
+    
+    <UserPref name="perc_start_day" 
+      display_name="Start week with"
+      default_value="Day_0"
+      datatype="enum">
+      <EnumValue value="Day_0" display_value="Sunday" /> 
+      <EnumValue value="Day_1" display_value="Monday" />
+      <EnumValue value="Day_2" display_value="Tuesday" /> 
+      <EnumValue value="Day_3" display_value="Wednesday" /> 
+      <EnumValue value="Day_4" display_value="Thursday" /> 
+      <EnumValue value="Day_5" display_value="Friday" /> 
+      <EnumValue value="Day_6" display_value="Saturday" /> 
+    </UserPref>
+    
+    <UserPref name="perc_time_format" 
+      display_name="Time format"
+      default_value="ampm"
+      datatype="enum">
+      <EnumValue value="ampm" display_value="12 hour" /> 
+      <EnumValue value="military" display_value="24 hour" />
+    </UserPref>
+  
+    <CssPref name="rootclass"
+      display_name="CSS root class" 
+      datatype="string" />
+    <Code type="jexl">
+    <!-- This section is used to set up data that will be used in the content section -->
+    <![CDATA[
+        ##Widget properties
+        $widgetProps = $perc.widget.item.properties;
+        $perc_calendar_view = $widgetProps.get("perc_calendar_view");
+        $perc_calendar_type = $widgetProps.get("perc_calendar_type");
+        $perc_show_page_summary = $widgetProps.get("perc_show_page_summary");
+        $perc_start_day_number = $widgetProps.get("perc_start_day").replace("Day_","");
+
+        $perc_time_format = $widgetProps.get("perc_time_format");
+        if($perc_time_format == "ampm")
+            $perc_time_format = "hh:mmt";
+        else
+            $perc_time_format = "HH:mm";
+
+        $pagesInCal = "[]";
+        $calTitle = "";
+        $calStartDate = "";
+        $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+        $id = "";
+        $perc.setWidgetContents($assetItems);
+        if ( ! $assetItems.isEmpty() ) {
+            $assetItem = $assetItems.get(0);
+            $id = $assetItem.id;
+            $calTitle = $assetItem.getNode().getProperty("calendar_title").String;
+            $calName = $assetItem.getNode().getProperty("sys_title").String;
+            $fullCalendarPage = $assetItem.getNode().getProperty("full_calendar_page").String;
+            $calStartDate = $assetItem.getNode().getProperty("calendar_start_date").String;
+            $pagesInCal = $rx.pageutils.getPagesForCalendar($calName).toString();            
+        }
+       $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+       if(empty($rootclass)){ 
+            $rootclass = "";
+       }
+	   
+	    $dsUrl = $rx.pageutils.getDeliveryServer();
+
+        $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}"); 
+    ]]>
+    </Code>
+    <Content type="velocity">
+    <!-- This section defines the rendered content -->
+    <![CDATA[
+       <div class="$!{rootclass} perc-calendar" data="$!dynamicListData">
+          #if( ! $perc.widgetContents.isEmpty() )
+                #if($perc_calendar_view == "full")##
+                    <div class ="perc-full-calendar" id="perc-full-calendar-$id"></div> 
+                    <script>
+                    window.addEventListener('DOMContentLoaded', function() { 
+                        var urlParams = jQuery.deparam.querystring();
+                        var calDefView = urlParams.startDate?'agendaDay':'$perc_calendar_type';
+                        jQuery("#perc-full-calendar-$id").fullCalendar({
+                            header: {
+                                left: 'title',
+                                center: 'prev,next today',
+                                right: 'month,agendaWeek,agendaDay'
+                            },
+                            firstDay: $perc_start_day_number,
+                            timeFormat: '$perc_time_format',
+                            defaultView: calDefView,                            
+                            editable: false,
+                            events: function(start, end, callback)
+                                    {   
+                                        #if($perc.isEditMode() || $perc.isPreviewMode())
+                                            callback($pagesInCal);
+                                        #else
+                                            /* 
+                                             * get the results from delivery tier service and return
+                                             * below we are looking to restrict the amount of information
+                                             * pulled back from the DTS.  The dates are found and used to
+                                             * restrict to the current selected month in the calendar.
+                                             */
+                                            var startMonth = start.getMonth()+1 < 10 ? '0' + (start.getMonth()+1) : start.getMonth()+1;
+                                            var endMonth = end.getMonth()+1 < 10 ? '0' + (end.getMonth()+1) : end.getMonth()+1;
+                                            var startDay = start.getDate() < 10 ? '0' + start.getDate() : start.getDate();
+                                            var endDay = end.getDate() < 10 ? '0' + end.getDate() : end.getDate();
+                                            var startValue = start.getFullYear() + '-' + startMonth + '-' + startDay;
+                                            var endValue = end.getFullYear() + '-' + endMonth + '-' + endDay;
+                                            var serviceUrl = "/perc-metadata-services/metadata/dated/get";
+                                            var dataObj = {"criteria":["type = 'page'", "perc:calendar = '$calName'", "perc:start_date >= '" + startValue + "'","perc:start_date <= '" + endValue + "'"]}
+                                            // here the last value condition perc:start_Date < is present to prevent duplicate events from populating between first call and second
+                                            var dataObj2 = {"criteria":["type = 'page'", "perc:calendar = '$calName'", "perc:end_date >= '" + startValue + "'", "perc:start_date < '" + startValue + "'"]}
+                                            
+                                            /*
+                                             * Here we make two calls to the metadata service as a workaround as the backend currently doesn't support OR operations.
+                                             * @param endOfCall here the function is called twice, when endOfCall is true the callback populates the page with the calendar events
+                                             * @param firstEvents passes the results from the first metadata call to the second call.
+                                             */
+                                            var makeApiCall = function(dataObj, endOfCall, firstEvents) {
+                                                var deferred = jQuery.Deferred();
+                                                jQuery.PercServiceUtils.makeXdmJsonRequest(null,serviceUrl,jQuery.PercServiceUtils.TYPE_POST,function(status, results)
+                                                {
+                                                    if(status == jQuery.PercServiceUtils.STATUS_SUCCESS) {
+                                                        if(endOfCall){
+                                                            if(typeof(firstEvents) === "undefined"){
+									                            firstEvents = [];
+								                            }
+                                                            callback(firstEvents.concat(jQuery.PercServiceUtils.toJSON(results.data).events));
+                                                        }
+
+                                                        else
+                                                            deferred.resolve(jQuery.PercServiceUtils.toJSON(results.data).events);
+                                                    }
+                                                    else {
+                                                        deferred.resolve([]);
+                                                    }
+                                                }, dataObj);
+                                                return deferred.promise();
+                                            }
+                                            jQuery.when( makeApiCall(dataObj, false, []) ).then(function(events) {
+                                                makeApiCall(dataObj2, true, events);
+                                            });
+                                        #end	
+                                    },
+                            dayClick: function(date, allDay, jsEvent, view) {
+                              if(typeof(percCalenderDayClick) === typeof(Function)){
+                                // if you need to bind to the dayClick even, define a function with a definition that 
+                                // looks like function percCalenderDayClick(div_id, object,date,allDay,jsEvent,view)
+                                percCalenderDayClick("#perc-full-calendar-$id",$(this),date,allDay,jsEvent,view);
+                              }
+                            },
+                            eventRender: function(event, element) {
+                                #if($perc_show_page_summary) 
+                                    event['allDay'] = false;
+                                    if(event.summary !='' && event.summary != null && event.summary != 'undefined') {
+                                        element.qtip({
+                                            content: event.summary,
+                                            style: { 
+                                                    name: 'light', // Inherit from preset style,
+                                                    tip: true
+                                                },
+                                            position: {
+                                                    corner: {
+                                                            tooltip: 'bottomMiddle', // Use the corner...
+                                                            target: 'topMiddle' // ...and opposite corner
+                                                    }
+                                            }     
+                                        });
+                                    }
+                                #end
+                            }
+                        });
+                        var startDate = new Date();
+                        if(urlParams.startDate)
+                        {
+                            var temp = urlParams.startDate.split(",");
+                            startDate = new Date(parseInt(temp[2], 10),parseInt(temp[0], 10)-1,parseInt(temp[1], 10));
+                        }
+                        else if('$calStartDate' != '')
+                        {
+                            var startDateTemp = '$calStartDate'.replace("00:00:00.0", '').split('-');
+                            startDate = new Date(parseInt(startDateTemp[0], 10), parseInt(startDateTemp[1],10)-1, parseInt(startDateTemp[2], 10))
+                        }
+                        jQuery('.perc-full-calendar').fullCalendar('gotoDate', startDate);
+                        });
+                    </script>
+                #else##
+                    <div class="perc-mini-calendar" id="perc-mini-calendar-$id"></div>
+                    <script>
+                    window.addEventListener('DOMContentLoaded', function() { 
+                        $(document).ready(function() {
+                            tempDateArray = [];
+                            dateWithData = [];
+                            #if($perc.isEditMode() || $perc.isPreviewMode())
+                               tempDateArray = $pagesInCal; 
+                               
+                               // prepare a temp array of dates which has event associated with it                            
+                               for (var i = 0; i < tempDateArray.length; i++) {            
+                                   dateWithData.push(tempDateArray[i].start);                                                             
+                               }                                                                         
+                               $("#perc-mini-calendar-$id").datepicker({
+                                   beforeShowDay: highlightDays,
+                                   onSelect: function(dateText, inst) {
+                                       #if($perc.isEditMode() || $perc.isPreviewMode())
+                                           return;
+                                       #else
+                                           clickedDate = dateText.replace(/\//g, ',');
+                                           var fullCalendarPage = '$fullCalendarPage';
+                                           window.location.href =  fullCalendarPage + "?startDate=" + clickedDate;
+                                       #end    
+                                   }
+                               });
+                                    
+                            #else
+                                //get the results from delivery tier service and return
+                                var serviceUrl = "/perc-metadata-services/metadata/dated/get";
+                                var dataObj = {"criteria":["type = 'page'", "perc:calendar = '$calName'"]}
+                                jQuery.PercServiceUtils.makeXdmJsonRequest(null,serviceUrl,jQuery.PercServiceUtils.TYPE_POST,function(status, results)
+                                {
+                                    if(status == jQuery.PercServiceUtils.STATUS_SUCCESS){
+                                        tempDateArray = results.data.events;
+
+                                     // prepare a temp array of dates which has event associated with it                            
+                                     for (var i = 0; i < tempDateArray.length; i++) {            
+                                         dateWithData.push(tempDateArray[i].start);                                                             
+                                     }                                                                         
+
+                                     $("#perc-mini-calendar-$id").datepicker({
+                                         beforeShowDay: highlightDays,
+                                         onSelect: function(dateText, inst) {
+                                             #if($perc.isEditMode() || $perc.isPreviewMode())
+                                                 return;
+                                             #else
+                                                 clickedDate = dateText.replace(/\//g, ',');
+                                                 var fullCalendarPage = '$fullCalendarPage';
+                                                 window.location.href =  fullCalendarPage + "?startDate=" + clickedDate;
+                                             #end    
+                                         }
+                                     });
+                                    }
+                                    else{
+                                      tempDateArray = callback([]);
+                                    }
+                                }, dataObj);
+                            #end
+
+                        
+                            //Higlight the date in mini-calendar which has event associated with it.
+                            function highlightDays(date) {                               
+                                for (var i = 0; i < dateWithData.length; i++) {
+                                    if (new Date(dateWithData[i]).toString().substring(0, 15) == date.toString().substring(0, 15)) {
+                                        return [true, 'highlight'];
+                                    }
+                                  }
+                                  return [true, ''];
+                            }
+                      });
+                        });
+                    </script>
+                #end##                
+ 
+          #elseif ($perc.isEditMode())
+              #createEmptyWidgetContent("calendar-sample-content", "This Calendar widget is showing sample content.")
+          #end
+       </div>
+    ]]>
+    </Content>
+</Widget>

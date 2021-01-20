@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<wsdl:definitions name="ui" targetNamespace="urn:www.percussion.com/6.0.0/ui" xmlns:ui="urn:www.percussion.com/6.0.0/ui" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/faults" schemaLocation="../faults.xsd">
+         </xsd:import>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/ui" schemaLocation="ui.xsd">
+         </xsd:import>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="AuthenticationHeader">
+      <wsdl:part name="Session" element="com:PSAuthenticationHeader"/>
+   </wsdl:message>
+   <wsdl:message name="LoadActionsRequest">
+      <wsdl:part name="LoadActionsRequest" element="ui:LoadActionsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadActionsResponse">
+      <wsdl:part name="LoadActionsResponse" element="ui:LoadActionsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadDisplayFormatsRequest">
+      <wsdl:part name="LoadDisplayFormatsRequest" element="ui:LoadDisplayFormatsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadDisplayFormatsResponse">
+      <wsdl:part name="LoadDisplayFormatsResponse" element="ui:LoadDisplayFormatsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadSearchesRequest">
+      <wsdl:part name="LoadSearchesRequest" element="ui:LoadSearchesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadSearchesResponse">
+      <wsdl:part name="LoadSearchesResponse" element="ui:LoadSearchesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadViewsRequest">
+      <wsdl:part name="LoadViewsRequest" element="ui:LoadViewsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadViewsResponse">
+      <wsdl:part name="LoadViewsResponse" element="ui:LoadViewsResponse"/>
+   </wsdl:message>
+   <!--
+      Fault messages
+    -->
+   <wsdl:message name="InvalidSessionFaultMessage">
+      <wsdl:part name="fault" element="flt:PSInvalidSessionFault"/>
+   </wsdl:message>
+   <wsdl:message name="NotAuthorizedFaultMessage">
+      <wsdl:part name="fault" element="flt:PSNotAuthorizedFault"/>
+   </wsdl:message>
+   <wsdl:portType name="ui">
+      <wsdl:operation name="LoadActions">
+         <wsdl:input message="ui:LoadActionsRequest"/>
+         <wsdl:output message="ui:LoadActionsResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="ui:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="ui:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadDisplayFormats">
+         <wsdl:input message="ui:LoadDisplayFormatsRequest"/>
+         <wsdl:output message="ui:LoadDisplayFormatsResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="ui:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="ui:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadSearches">
+         <wsdl:input message="ui:LoadSearchesRequest"/>
+         <wsdl:output message="ui:LoadSearchesResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="ui:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="ui:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadViews">
+         <wsdl:input message="ui:LoadViewsRequest"/>
+         <wsdl:output message="ui:LoadViewsResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="ui:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="ui:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="uiSOAP" type="ui:ui">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="LoadActions">
+         <soap:operation soapAction="urn:LoadActions"/>
+         <wsdl:input>
+            <soap:header message="ui:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="LoadActionsRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadDisplayFormats">
+         <soap:operation soapAction="urn:LoadDisplayFormats"/>
+         <wsdl:input>
+            <soap:header message="ui:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="LoadDisplayFormatsRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadSearches">
+         <soap:operation soapAction="urn:LoadSearches"/>
+         <wsdl:input>
+            <soap:header message="ui:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="LoadSearchesRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadViews">
+         <soap:operation soapAction="urn:LoadViews"/>
+         <wsdl:input>
+            <soap:header message="ui:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="LoadViewsRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

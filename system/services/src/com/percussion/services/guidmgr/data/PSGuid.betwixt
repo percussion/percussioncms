@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<info primitiveTypes="attribute">
+  <element name="guid">
+  		<attribute name="host-id" property="hostId" forceAccessible="true"/>
+  		<attribute name="type" property="type" forceAccessible="true"/>
+  		<attribute name="uuid" property="UUID" forceAccessible="true"/>  		  		
+  </element>
+</info>

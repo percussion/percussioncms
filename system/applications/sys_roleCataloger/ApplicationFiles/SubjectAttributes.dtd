@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Value (#PCDATA)>
+<!ELEMENT Attribute (Value* )>
+<!ATTLIST  Attribute context CDATA #IMPLIED>
+<!ATTLIST  Attribute name CDATA #REQUIRED>
+<!ELEMENT Subject (Attribute* )>
+<!ATTLIST  Subject spName CDATA #REQUIRED>
+<!ATTLIST Subject type (person | group ) "person">
+<!ATTLIST  Subject name CDATA #REQUIRED>
+<!ELEMENT Subjects (Subject* )>

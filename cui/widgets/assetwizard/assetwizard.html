@@ -1,0 +1,77 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<div class="asset-wizard" data-bind="visible: isAssetWizardVisible()">
+   <div class="control-container">
+        <div class="asset-type-control">
+            <div class="form-title">* Choose an Asset Type:</div>
+            <div class="wizard-form-error" data-bind="slideVisible: invalidAssetTypeSelected()">Asset Type selection is required</div>
+            <div class="filter-select">
+                <div class="recent-items-filter">
+                    <input type="radio" name="radiog_dark3" id="radio11" class="asset-type-checkbox" value="Recent" data-bind="checked: selectedAssetTypeFilter" checked="checked">
+                    <label for="radio11" class="asset-type-labelradio radGroup5">Recent asset types</label>
+                </div>
+                <div class="all-items-filter">
+                    <input type="radio" name="radiog_dark3" id="radio12" class="asset-type-checkbox" value="All" data-bind="checked: selectedAssetTypeFilter">
+                    <label for="radio12" class="asset-type-labelradio radGroup5">All asset types</label>
+                </div>
+            </div>
+            
+        	<div class="asset-type-gallery">
+        		<div class="empty-recent-folders" data-bind="visible: emptyRecentAssetTypes()">No recent asset types</div>
+                <span data-bind="foreach: assetTypes">
+	                <div class="asset-type" data-bind="click: function(assetType) { $root.assetType(assetType.id) }, css: {'selected-asset-type': $root.assetType() ? $root.assetType() == id : false}, attr: {id: id}">
+	                    <img data-bind="attr: {src: icon, alt: name}"/>
+	                    <div class="asset-type-description" data-bind="text: name, attr:{title:name}"></div>
+	                </div>
+				</span>
+            </div>
+        </div>
+        <div class="asset-folder-control">
+            <div class="form-title">* Choose a target location (folder):</div>
+            <div class="wizard-form-error" data-bind="slideVisible: invalidAssetFolderSelected()">Target location selection is required</div>
+            <div class="wizard-form-error" data-bind="slideVisible: assetRootSelected()">Please select a subfolder</div>
+            <div class="filter-select">
+                <div class="recent-items-filter">
+                    <input type="radio" name="radiog_dark4" id="radio13" class="folder-checkbox" value="Recent" data-bind="checked: selectedAssetFolderFilter" checked="checked">
+                    <label for="radio13" class="folder-labelradio radGroup6">Recent folders</label>
+                </div>
+                <div class="all-items-filter">
+                    <input type="radio" name="radiog_dark4" id="radio14" class="folder-checkbox" value="All" data-bind="checked: selectedAssetFolderFilter">
+                    <label for="radio14" class="folder-labelradio radGroup6">All folders</label>
+                </div>
+            </div>
+			<div class="recent-folder-list" data-bind="visible: recentFoldersSelected()">
+				<div class="empty-recent-folders" data-bind="visible: emptyRecentAssetFolders()">No recent asset folders</div>
+				<span data-bind="foreach: assetFolders">
+	                <div class="folder" data-bind="click: function(folder) { $root.assetFolder(folder.path) }, css: {'selected-folder': $root.assetFolder() == path}, attr: {title: path}">
+	                    <img src="/Rhythmyx/sys_resources/images/finderFolder.png" class="folder-icon"><div class="folder-name" data-bind="text: name"></div>
+	                </div>
+				</span>
+            </div>
+			<div id="asset-folder-tree" class="folder-tree" data-bind="visible: allFoldersSelected()">
+            </div>
+        </div>
+    </div>
+</div>

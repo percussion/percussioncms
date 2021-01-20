@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication id="545" active="no" hidden="no" enabled="yes" version="2.0">
+	<name>sys_psxAnonymousCataloger</name>
+	<description>This application provides catalogers that can be
+         accessed anonymous.</description>
+	<requestRoot>sys_psxAnonymousCataloger</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_winkelried_1044485059531/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20030205T175034875</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="4">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20030206T140211421</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Anonymous</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="yes" dataCreate="no" dataUpdate="no" dataDelete="no" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="yes" dataCreate="no" dataUpdate="no" dataDelete="no" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="yes" dataCreate="no" dataUpdate="no" dataDelete="no" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+	</PSXAcl>
+	<maxThreads>-1</maxThreads>
+	<maxRequestTime>-1</maxRequestTime>
+	<maxRequestsInQueue>-1</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>1</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="4073">
+		<name>Dataset3964</name>
+		<description>Returns all roles specified in Rhythmyx.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="4055">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="4050">
+				<PSXBackEndTable id="4049">
+					<alias>PSX_ROLES</alias>
+					<table>PSX_ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="4053" returnEmptyXml="yes">
+				<PSXDataMapping id="0" groupId="1">
+					<PSXXmlField id="0">
+						<name>Roles/Role/@name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="4051" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting>
+					<PSXSortedColumn id="0" isAscending="yes">
+						<PSXBackEndColumn id="0">
+							<tableAlias>PSX_ROLES</tableAlias>
+							<column>NAME</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</PSXSortedColumn>
+				</Sorting>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="4072">
+			<schemaSource>file:roles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor id="0" directDataStream="no">
+			<requestPage>getRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="4074">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+		<PSXResultPager id="4052">
+			<maxRowsPerPage>-1</maxRowsPerPage>
+			<maxPages>-1</maxPages>
+			<maxPageLinks>10</maxPageLinks>
+		</PSXResultPager>
+	</PSXDataSet>
+	<PSXLogger id="0" logErrors="no" logServerStartStop="no" logAppStartStop="yes" logAppStatistics="no" logExecutionPlan="no" logBasicUserActivity="no" logDetailedUserActivity="no" logFullUserActivity="no" logMultipleHandlers="no"/>
+	<PSXTraceInfo id="0" traceEnabled="no" traceOutputColumnWidth="80" traceTimestampOnlyEnabled="no" traceBasicRequestInfo="no" traceInitHttpVar="no" traceFileInfo="no" traceAppHandlerProc="no" traceAppSecurity="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceMapper="no" traceSessionInfo="no" traceDbPool="no" traceExitProc="no" traceExitExec="no" tracePostExitXml="no" tracePostExitCgi="no" traceOutputConv="no" traceResultSet="no" traceConditionalEval="no"/>
+	<PSXErrorWebPages id="4070" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="4071">
+		<providerType>SMTP</providerType>
+		<server>&lt;Unspecified&gt;</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="locationY4074">23</userProperty>
+	<userProperty name="locationY4073">17</userProperty>
+	<userProperty name="locationX4074">162</userProperty>
+	<userProperty name="locationY4072">0</userProperty>
+	<userProperty name="locationX4073">24</userProperty>
+	<userProperty name="locationY4069">10</userProperty>
+	<userProperty name="locationY4071">100</userProperty>
+	<userProperty name="locationY4070">55</userProperty>
+	<userProperty name="locationX4072">364</userProperty>
+	<userProperty name="locationX4071">16</userProperty>
+	<userProperty name="locationX4069">16</userProperty>
+	<userProperty name="locationX4070">16</userProperty>
+	<userProperty name="schemaSourceReadOnly4072">true</userProperty>
+	<userProperty name="pageDatatankSrcType4072">2</userProperty>
+	<userProperty name="resultPageFilePath4074">C:\Rhythmyx\rx45_20020801\sys_roleCataloger\roles.dtd</userProperty>
+	<userProperty name="pageDatatankFilePath4072">C:\Rhythmyx\rx45_20020801\sys_roleCataloger\roles.dtd</userProperty>
+</PSXApplication>

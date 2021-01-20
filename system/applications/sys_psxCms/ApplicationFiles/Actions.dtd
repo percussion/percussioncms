@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXAction (PSXSimpleKey, Description?, PSXActionProperties?, PSXActionParameters?, PSXActionVisibilityContexts?, PSXDbComponentCollection?, PSXChildActions? )>
+<!ELEMENT PSXChildActions (PSXMenuChild+ )>
+<!ATTLIST  PSXChildActions state CDATA #REQUIRED>
+<!ATTLIST PSXChildActions ordered (yes | no ) "no">
+<!ATTLIST  PSXChildActions className CDATA #REQUIRED>
+<!ELEMENT PSXDbComponentCollection (PSXMenuModeContextMapping+, PSXMenuChild+ )>
+<!ELEMENT PSXMenuChild (PSXKey )>
+<!ATTLIST  PSXMenuChild state CDATA #REQUIRED>
+<!ATTLIST  PSXMenuChild childId CDATA #REQUIRED>
+<!ELEMENT PSXMenuModeContextMapping (PSXKey )>
+<!ATTLIST  PSXMenuModeContextMapping state CDATA #REQUIRED>
+<!ATTLIST  PSXMenuModeContextMapping uiContextId CDATA #REQUIRED>
+<!ATTLIST  PSXMenuModeContextMapping modeId CDATA #REQUIRED>
+<!ATTLIST  PSXDbComponentCollection state CDATA #REQUIRED>
+<!ATTLIST PSXDbComponentCollection ordered (yes | no ) "no">
+<!ATTLIST  PSXDbComponentCollection className CDATA #REQUIRED>
+<!ELEMENT PSXVisibilityContextEntry (PSXKey, Value )>
+<!ATTLIST  PSXVisibilityContextEntry state CDATA #REQUIRED>
+<!ATTLIST  PSXVisibilityContextEntry propName CDATA #REQUIRED>
+<!ATTLIST  PSXVisibilityContextEntry keyControl CDATA #REQUIRED>
+<!ELEMENT PSXActionVisibilityContext (PSXVisibilityContextEntry+ )>
+<!ATTLIST  PSXActionVisibilityContext state CDATA #REQUIRED>
+<!ATTLIST  PSXActionVisibilityContext propName CDATA #REQUIRED>
+<!ATTLIST  PSXActionVisibilityContext ordered CDATA #REQUIRED>
+<!ATTLIST  PSXActionVisibilityContext className CDATA #REQUIRED>
+<!ELEMENT PSXActionVisibilityContexts (PSXActionVisibilityContext )>
+<!ATTLIST  PSXActionVisibilityContexts state CDATA #REQUIRED>
+<!ATTLIST  PSXActionVisibilityContexts ordered CDATA #REQUIRED>
+<!ATTLIST  PSXActionVisibilityContexts className CDATA #REQUIRED>
+<!ELEMENT PSXActionParameter (PSXKey, Value )>
+<!ATTLIST  PSXActionParameter state CDATA #REQUIRED>
+<!ATTLIST  PSXActionParameter propName CDATA #REQUIRED>
+<!ATTLIST  PSXActionParameter keyControl CDATA #REQUIRED>
+<!ELEMENT PSXActionParameters (PSXActionParameter )>
+<!ATTLIST  PSXActionParameters state CDATA #REQUIRED>
+<!ATTLIST  PSXActionParameters ordered CDATA #REQUIRED>
+<!ATTLIST  PSXActionParameters className CDATA #REQUIRED>
+<!ELEMENT PSXActionProperty (PSXKey, Value )>
+<!ELEMENT Value (#PCDATA)>
+<!ELEMENT PSXKey (PROPNAME?, PARAMNAME?, VISIBILITYCONTEXT?, VALUE?, MODEID?, UICONTEXTID?, CHILDACTIONID?, ACTIONID )>
+<!ELEMENT CHILDACTIONID (#PCDATA)>
+<!ELEMENT UICONTEXTID (#PCDATA)>
+<!ELEMENT MODEID (#PCDATA)>
+<!ELEMENT VALUE (#PCDATA)>
+<!ELEMENT VISIBILITYCONTEXT (#PCDATA)>
+<!ELEMENT PARAMNAME (#PCDATA)>
+<!ELEMENT PROPNAME (#PCDATA)>
+<!ATTLIST  PSXActionProperty state CDATA #REQUIRED>
+<!ATTLIST  PSXActionProperty propName CDATA #REQUIRED>
+<!ATTLIST  PSXActionProperty keyControl CDATA #REQUIRED>
+<!ELEMENT PSXActionProperties (PSXActionProperty+ )>
+<!ATTLIST  PSXActionProperties state CDATA #REQUIRED>
+<!ATTLIST  PSXActionProperties ordered CDATA #REQUIRED>
+<!ATTLIST  PSXActionProperties className CDATA #REQUIRED>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT ACTIONID (#PCDATA)>
+<!ELEMENT PSXSimpleKey (ACTIONID )>
+<!ATTLIST  PSXAction version CDATA #REQUIRED>
+<!ATTLIST  PSXAction url CDATA #REQUIRED>
+<!ATTLIST  PSXAction type CDATA #REQUIRED>
+<!ATTLIST  PSXAction state CDATA #REQUIRED>
+<!ATTLIST  PSXAction sortrank CDATA #REQUIRED>
+<!ATTLIST  PSXAction name CDATA #REQUIRED>
+<!ATTLIST  PSXAction label CDATA #REQUIRED>
+<!ATTLIST  PSXAction handler CDATA #REQUIRED>
+<!ELEMENT Actions (PSXAction* )>

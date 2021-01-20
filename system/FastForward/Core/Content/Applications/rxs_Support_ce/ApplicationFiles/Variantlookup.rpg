@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (value*, display*, contenttypeid*, stylesheetname*, assemblyurl* )>
+<!ELEMENT assemblyurl (#PCDATA)>
+<!ELEMENT stylesheetname (#PCDATA)>
+<!ELEMENT contenttypeid (#PCDATA)>
+<!ELEMENT display (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
+<!ELEMENT Variantlookup (item* )>

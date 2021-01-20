@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT CopyVariant (componentname, pagename, relatedlinks, contenttype* )>
+<!ELEMENT contenttype (name, id, variant* )>
+<!ELEMENT variant (name, id, updatelink )>
+<!ELEMENT updatelink (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>

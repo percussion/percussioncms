@@ -1,0 +1,11 @@
+version: 2
+updates:
+  #keep maven dependencies up to date
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "submodules"
+    directory: "/"
+    schedule:
+      interval: "daily"

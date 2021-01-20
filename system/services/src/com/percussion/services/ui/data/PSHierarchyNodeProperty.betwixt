@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<info primitiveTypes="element">
+   <element">
+       <element name="parentGuid" property="parentId" class="com.percussion.services.guidmgr.data.PSGuid"/>
+       <addDefaults/>
+   </element>
+</info>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<info primitiveTypes="element">
+  <element>
+    <element name="slotid" property="slotId"/>
+    <element name="templateid" property="templateId"/>
+    <element name="contenttypeid" property="contentTypeId"/>
+  </element>
+</info>

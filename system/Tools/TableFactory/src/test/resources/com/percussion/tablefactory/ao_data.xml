@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tables>
+	<table name="AO_EDITORIAL" onCreateOnly="no">
+		<row action="r" onTableCreateOnly="no">
+			<column encoding="text" name="CONTENTID">528</column>
+			<column encoding="text" name="REVISIONID">1</column>
+			<column encoding="text" name="DM_ID" />
+			<column encoding="text" name="DM_VERSION" />
+			<column encoding="text" name="DATE_WRITTEN">
+				2005-05-18 00:00:00.0
+			</column>
+			<column encoding="text" name="FULL_TEXT">
+				&lt;div class="rxbodyfield"
+				xmlns:o="urn:www.microsoft.com/office"
+				xmlns:st1="urn:www.microsoft.com/smarttags"
+				xmlns:w="urn:www.microsoft.com/word"
+				xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;TEST -
+				Editorial&lt;/p&gt;&lt;/div&gt;
+			</column>
+			<column encoding="text" name="DEFAULT_LANGUAGE">338</column>
+			<column encoding="text" name="FULL_ARTICLE">
+				Detail Text
+			</column>
+			<column encoding="text" name="EDITORIAL_TYPE">524</column>
+			<column encoding="text" name="BODYSOURCE" />
+			<column encoding="text" name="BODYSOURCE_ENCODING" />
+			<column encoding="text" name="BODYSOURCE_FILENAME" />
+			<column encoding="text" name="BODYCONTENT" />
+		</row>
+		<row action="r" onTableCreateOnly="no">
+			<column encoding="text" name="CONTENTID">528</column>
+			<column encoding="text" name="REVISIONID">2</column>
+			<column encoding="text" name="DM_ID" />
+			<column encoding="text" name="DM_VERSION" />
+			<column encoding="text" name="DATE_WRITTEN">
+				2005-05-18 00:00:00.0
+			</column>
+			<column encoding="text" name="FULL_TEXT">
+				&lt;div class="rxbodyfield"
+				xmlns:o="urn:www.microsoft.com/office"
+				xmlns:st1="urn:www.microsoft.com/smarttags"
+				xmlns:w="urn:www.microsoft.com/word"
+				xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;TEST -
+				Editorial&lt;/p&gt;&lt;/div&gt;
+			</column>
+			<column encoding="text" name="DEFAULT_LANGUAGE">338</column>
+			<column encoding="text" name="FULL_ARTICLE">
+				Detail Text
+			</column>
+			<column encoding="text" name="EDITORIAL_TYPE">524</column>
+			<column encoding="text" name="BODYSOURCE" />
+			<column encoding="text" name="BODYSOURCE_ENCODING" />
+			<column encoding="text" name="BODYSOURCE_FILENAME" />
+			<column encoding="text" name="BODYCONTENT" />
+		</row>
+		<row action="r" onTableCreateOnly="no">
+			<column encoding="text" name="CONTENTID">529</column>
+			<column encoding="text" name="REVISIONID">1</column>
+			<column encoding="text" name="DM_ID" />
+			<column encoding="text" name="DM_VERSION" />
+			<column encoding="text" name="DATE_WRITTEN">
+				2005-05-17 00:00:00.0
+			</column>
+			<column encoding="text" name="FULL_TEXT">
+				&lt;div class="rxbodyfield"
+				xmlns:o="urn:www.microsoft.com/office"
+				xmlns:st1="urn:www.microsoft.com/smarttags"
+				xmlns:w="urn:www.microsoft.com/word"
+				xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;TEST -
+				Editorial1&lt;/p&gt;&lt;/div&gt;
+			</column>
+			<column encoding="text" name="DEFAULT_LANGUAGE">338</column>
+			<column encoding="text" name="FULL_ARTICLE">
+				Detail Text
+			</column>
+			<column encoding="text" name="EDITORIAL_TYPE">524</column>
+			<column encoding="text" name="BODYSOURCE" />
+			<column encoding="text" name="BODYSOURCE_ENCODING" />
+			<column encoding="text" name="BODYSOURCE_FILENAME" />
+			<column encoding="text" name="BODYCONTENT" />
+		</row>
+		<row action="r" onTableCreateOnly="no">
+			<column encoding="text" name="CONTENTID">529</column>
+			<column encoding="text" name="REVISIONID">2</column>
+			<column encoding="text" name="DM_ID" />
+			<column encoding="text" name="DM_VERSION" />
+			<column encoding="text" name="DATE_WRITTEN">
+				2005-05-17 00:00:00.0
+			</column>
+			<column encoding="text" name="FULL_TEXT">
+				&lt;div class="rxbodyfield"
+				xmlns:o="urn:www.microsoft.com/office"
+				xmlns:st1="urn:www.microsoft.com/smarttags"
+				xmlns:w="urn:www.microsoft.com/word"
+				xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;TEST -
+				Editorial1&lt;/p&gt;&lt;/div&gt;
+			</column>
+			<column encoding="text" name="DEFAULT_LANGUAGE">338</column>
+			<column encoding="text" name="FULL_ARTICLE">
+				Detail Text
+			</column>
+			<column encoding="text" name="EDITORIAL_TYPE">524</column>
+			<column encoding="text" name="BODYSOURCE" />
+			<column encoding="text" name="BODYSOURCE_ENCODING" />
+			<column encoding="text" name="BODYSOURCE_FILENAME" />
+			<column encoding="text" name="BODYCONTENT" />
+		</row>
+		<row action="r" onTableCreateOnly="no">
+			<column encoding="text" name="CONTENTID">530</column>
+			<column encoding="text" name="REVISIONID">1</column>
+			<column encoding="text" name="DM_ID" />
+			<column encoding="text" name="DM_VERSION" />
+			<column encoding="text" name="DATE_WRITTEN">
+				2005-05-17 00:00:00.0
+			</column>
+			<column encoding="text" name="FULL_TEXT">
+				&lt;div class="rxbodyfield"
+				xmlns:o="urn:www.microsoft.com/office"
+				xmlns:st1="urn:www.microsoft.com/smarttags"
+				xmlns:w="urn:www.microsoft.com/word"
+				xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;Test -
+				Editorial - Phil&lt;/p&gt;&lt;/div&gt;
+			</column>
+			<column encoding="text" name="DEFAULT_LANGUAGE">338</column>
+			<column encoding="text" name="FULL_ARTICLE">
+				Detail Text
+			</column>
+			<column encoding="text" name="EDITORIAL_TYPE">524</column>
+			<column encoding="text" name="BODYSOURCE" />
+			<column encoding="text" name="BODYSOURCE_ENCODING" />
+			<column encoding="text" name="BODYSOURCE_FILENAME" />
+			<column encoding="text" name="BODYCONTENT" />
+		</row>
+		<row action="r" onTableCreateOnly="no">
+			<column encoding="text" name="CONTENTID">531</column>
+			<column encoding="text" name="REVISIONID">1</column>
+			<column encoding="text" name="DM_ID" />
+			<column encoding="text" name="DM_VERSION" />
+			<column encoding="text" name="DATE_WRITTEN">
+				2005-05-17 00:00:00.0
+			</column>
+			<column encoding="text" name="FULL_TEXT">
+				&lt;div class="rxbodyfield"
+				xmlns:o="urn:www.microsoft.com/office"
+				xmlns:st1="urn:www.microsoft.com/smarttags"
+				xmlns:w="urn:www.microsoft.com/word"
+				xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;Test -
+				Editorial - Mike&lt;/p&gt;&lt;/div&gt;
+			</column>
+			<column encoding="text" name="DEFAULT_LANGUAGE">338</column>
+			<column encoding="text" name="FULL_ARTICLE">
+				Detail Text
+			</column>
+			<column encoding="text" name="EDITORIAL_TYPE">524</column>
+			<column encoding="text" name="BODYSOURCE" />
+			<column encoding="text" name="BODYSOURCE_ENCODING" />
+			<column encoding="text" name="BODYSOURCE_FILENAME" />
+			<column encoding="text" name="BODYCONTENT" />
+		</row>
+		<row action="r" onTableCreateOnly="no">
+			<column encoding="text" name="CONTENTID">532</column>
+			<column encoding="text" name="REVISIONID">1</column>
+			<column encoding="text" name="DM_ID" />
+			<column encoding="text" name="DM_VERSION" />
+			<column encoding="text" name="DATE_WRITTEN">
+				2005-05-17 00:00:00.0
+			</column>
+			<column encoding="text" name="FULL_TEXT">
+				&lt;div class="rxbodyfield"
+				xmlns:o="urn:www.microsoft.com/office"
+				xmlns:st1="urn:www.microsoft.com/smarttags"
+				xmlns:w="urn:www.microsoft.com/word"
+				xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;Test -
+				Editorial - AO&lt;/p&gt;&lt;/div&gt;
+			</column>
+			<column encoding="text" name="DEFAULT_LANGUAGE">338</column>
+			<column encoding="text" name="FULL_ARTICLE">
+				Detail Text
+			</column>
+			<column encoding="text" name="EDITORIAL_TYPE">524</column>
+			<column encoding="text" name="BODYSOURCE" />
+			<column encoding="text" name="BODYSOURCE_ENCODING" />
+			<column encoding="text" name="BODYSOURCE_FILENAME" />
+			<column encoding="text" name="BODYCONTENT" />
+		</row> 	
+	</table>
+</tables>

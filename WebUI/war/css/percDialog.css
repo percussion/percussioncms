@@ -1,0 +1,202 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.perc-dialog .ui-dialog-content {
+    /* background-color: #E6E6E9; */
+}
+
+.perc-dialog .ui-widget-header {
+    background: none repeat scroll 0 0 transparent;
+}
+.perc-dialog .ui-layout-pane {
+    background-color: #E6E6E9;
+}
+.perc-dialog .ui-dialog-content {
+    /* background-color: #E6E6E9; */
+    /* color: #000000; */
+    font-family: 'Open Sans', sans-serif;
+    /* font-size: 11px; */
+    font-weight: normal;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span {
+    display: none;
+    margin: 1px;
+}
+
+.ui-dialog-titlebar-resize {
+    position: absolute;
+    right: .3em;
+    top: 50%;
+    width: 19px;
+    margin: -10px 0 0 0;
+    padding: 1px;
+    height: 18px;
+}
+
+
+.ui-dialog-titlebar {
+    background: none repeat scroll 0 0 #FFFFFF;
+    height: 30px;
+    padding-top: 20px;
+}
+.perc-dialog label {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+.perc-dialog-corner-all {
+}
+.perc-dialog .ui-dialog-buttonpane {
+    border-width: 0;
+    height: 60px;
+    margin: 0;
+    padding: 0;
+}
+.ui-dialog-content a {
+    color: blue;
+    text-decoration: underline;
+}
+.perc-dialog .perc_field_error {
+    color: red;
+    margin-bottom: 10px;
+}
+.perc-dialog textarea.perc_field_error {
+    color: #000000;
+}
+.perc-dialog input {
+    width: 330px;
+}
+.perc-dialog .browse-input {
+    width: 240px;
+}
+.perc-dialog select {
+    width: 200px;
+}
+.perc-dialog textarea {
+    height: 35px;
+    overflow: auto;
+    width: 330px;
+}
+.perc-dialog textarea.tempmeta {
+    height: 150px;
+    overflow: auto;
+    width: 725px;
+}
+.perc-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close {
+    display: none;
+}
+
+.perc-dialog .ui-dialog-titlebar #ui-dialog-title-1, .perc-dialog .ui-dialog-titlebar .ui-dialog-title {
+    color: #252739;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+}
+.perc-dialog .ui-dialog-titlebar {
+    height: 30px;
+    padding-top: 14px;
+}
+
+.perc-dialog .ui-dialog-title {
+    margin: 0;
+}
+.perc-dialog .perc_dialog_label {
+    color: #000000;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+.perc-edit-button {
+}
+.perc-edit-button:hover {
+}
+.perc-edit-button.ui-state-disabled:hover {
+}
+.perc-dialog .perc-buttons {
+    float: right;
+}
+
+.perc-dialog #perc_wizard_finish {
+}
+.perc-dialog #perc_wizard_finish:hover {
+}
+.perc-dialog #perc_wizard_back {
+}
+.perc-dialog #perc_wizard_back:hover {
+
+}
+.perc-dialog #perc_wizard_next {
+}
+.perc-dialog #perc_wizard_next:hover {
+}
+.perc-dialog #perc_wizard_cancel{
+
+}
+#perc-editor-page-dirty .ui-dialog-content {
+    padding: 31px 35px 34px;
+}
+#perc-editor-page-dirty .ui-dialog-buttonpane div {
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+#perc-template-metadata-dialog.perc-dialog .ui-dialog-content {
+    padding-bottom: 0;
+    padding-top: 14px;
+}
+
+.perc-dialog .perc-show-again {
+    float: left;
+    font-size: 8pt;
+    margin-left: 10px;
+    margin-top: 12px;
+    width: 300px;
+}
+
+.perc-dialog .perc-show-again input {
+    width:auto;
+    vertical-align: middle;
+}
+
+.perc-dialog .perc-show-again label {
+    vertical-align: middle;
+    margin-left: 3px;
+}
+
+.perc-template-thumbnail{
+    width: 100%;
+}
+
+span.ui-button-text {
+    background-color: #133c55;
+    color: #FFF;
+}
+
+#perc-session-timeout-content p {
+    padding: 10px 10px 10px;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+}

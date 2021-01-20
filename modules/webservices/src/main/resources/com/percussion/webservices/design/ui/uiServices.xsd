@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Paul Howard (Percussion Software) -->
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/uiServices" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:uis="urn:www.percussion.com/6.0.0/uiServices" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="../common.xsd"/>
+   <xsd:simpleType name="ActionType">
+      <xsd:annotation>
+         <xsd:documentation>The menu action type enumeration.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="item"/>
+         <xsd:enumeration value="cascading"/>
+         <xsd:enumeration value="dynamic"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="NodeType">
+      <xsd:annotation>
+         <xsd:documentation>The node type enumeration.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="folder"/>
+         <xsd:enumeration value="placeholder"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="RefreshType">
+      <xsd:annotation>
+         <xsd:documentation>The refresh type enumeration.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="none"/>
+         <xsd:enumeration value="selected"/>
+         <xsd:enumeration value="parent"/>
+         <xsd:enumeration value="root"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="SearchView">
+      <xsd:annotation>
+         <xsd:documentation>Contains those properties that are common to both searches and views.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="com:DesignObject">
+            <xsd:sequence>
+               <xsd:element name="Communities" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>A list of communities that the search or view are visible to.</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="CommunityRef" type="uis:CommunityRef" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="SearchFields" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>A list with all search fields.</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="SearchField" type="uis:SearchField" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="Properties" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>All specified search properties.</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="Property" type="uis:Property" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the search or view.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="label" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The display label for the search or view.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="caseSensitive" type="xsd:boolean" default="false">
+               <xsd:annotation>
+                  <xsd:documentation>Specifies whether this sarch or view is case sensitive.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="itemLimit" type="xsd:int" default="-1">
+               <xsd:annotation>
+                  <xsd:documentation>The number of items to be returned for the search or view result, -1 if unlimited.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="parentCategory" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The parent category.</xsd:documentation>
+               </xsd:annotation>
+               <xsd:simpleType>
+                  <xsd:restriction base="xsd:string">
+                     <xsd:enumeration value="allContent"/>
+                     <xsd:enumeration value="communityContent"/>
+                     <xsd:enumeration value="myContent"/>
+                     <xsd:enumeration value="otherContent"/>
+                  </xsd:restriction>
+               </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="displayFormatId" type="com:Id" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The id of the display format used to display search or view results.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="displayFormatName" type="xsd:string" use="required">
+               <xsd:annotation>
+                  <xsd:documentation>The name of the display format used to display search or view results.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="url" type="xsd:string">
+               <xsd:annotation>
+                  <xsd:documentation>The search application url used for legacy searches.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:attribute>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="PSAction">
+      <xsd:annotation>
+         <xsd:documentation>An instance of a action definition. Actions define commands that can be executed from the Content Explorer.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:complexContent>
+            <xsd:extension base="com:DesignObject">
+               <xsd:sequence>
+                  <xsd:element name="Target" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>The name of the target to which to go after the action was executed.</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:simpleContent>
+                           <xsd:extension base="xsd:string">
+                              <xsd:attribute name="style" type="xsd:string">
+                                 <xsd:annotation>
+                                    <xsd:documentation>The target window style.</xsd:documentation>
+                                 </xsd:annotation>
+                              </xsd:attribute>
+                           </xsd:extension>
+                        </xsd:simpleContent>
+                     </xsd:complexType>
+                  </xsd:element>
+                  <xsd:element name="Command" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>The command used to process this action.</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="Parameters" minOccurs="0">
+                              <xsd:annotation>
+                                 <xsd:documentation>The URL parameters</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:complexType>
+                                 <xsd:sequence>
+                                    <xsd:element name="Parameter" maxOccurs="unbounded">
+                                       <xsd:complexType>
+                                          <xsd:simpleContent>
+                                             <xsd:extension base="xsd:string">
+                                                <xsd:attribute name="name" type="xsd:string" use="required">
+                                                   <xsd:annotation>
+                                                      <xsd:documentation>The parameter name.</xsd:documentation>
+                                                   </xsd:annotation>
+                                                </xsd:attribute>
+                                             </xsd:extension>
+                                          </xsd:simpleContent>
+                                       </xsd:complexType>
+                                    </xsd:element>
+                                 </xsd:sequence>
+                              </xsd:complexType>
+                           </xsd:element>
+                        </xsd:sequence>
+                        <xsd:attribute name="url" type="xsd:string" use="required">
+                           <xsd:annotation>
+                              <xsd:documentation>The URL which processes this command.</xsd:documentation>
+                           </xsd:annotation>
+                        </xsd:attribute>
+                     </xsd:complexType>
+                  </xsd:element>
+                  <xsd:element name="Usage" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>A list with all used contexts. Describes for which UI contexts this action is used.</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="Used" maxOccurs="unbounded">
+                              <xsd:complexType>
+                                 <xsd:attribute name="userInterfaceName" type="xsd:string">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The name of the user interface ein which this is used.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="userInterfaceId" type="com:Id">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The id of the user interface ein which this is used.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="contextName" type="xsd:string">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The name of the context in which this is used.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="contextId" type="com:Id">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The id of the context in which this is used.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                              </xsd:complexType>
+                           </xsd:element>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+                  <xsd:element name="Visibilities" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>A list with all visible contexts</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="Context" maxOccurs="unbounded">
+                              <xsd:complexType>
+                                 <xsd:attribute name="name" type="xsd:string">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The name of the context in which this is visible.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="value" type="xsd:string"/>
+                              </xsd:complexType>
+                           </xsd:element>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+                  <xsd:element name="Children" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>Cascading action menus may have children.</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="ChildAction" maxOccurs="unbounded">
+                              <xsd:complexType>
+                                 <xsd:attribute name="name" type="xsd:string">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The child action name.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="id" type="com:Id">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The child action identifier.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                              </xsd:complexType>
+                           </xsd:element>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+                  <xsd:element name="Properties" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>A list with all additional action menu properties.</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="Property" type="uis:Property" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+               </xsd:sequence>
+               <xsd:attribute name="name" type="xsd:string" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>The action menu name is used internally and must be unique across all menu actions defined in the system.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="label" type="xsd:string" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>The display name presented to the user.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="tooltip" type="xsd:string" use="optional">
+                  <xsd:annotation>
+                     <xsd:documentation>The tooltip shown in user interfaces.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="iconPath" type="xsd:string" use="optional">
+                  <xsd:annotation>
+                     <xsd:documentation>The path to the icon displayed for this menu action.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="type" type="uis:ActionType" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>The menu type.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="sortRank" type="xsd:nonNegativeInteger" default="0"/>
+               <xsd:attribute name="acceleratorKey" type="xsd:string"/>
+               <xsd:attribute name="mnemonicKey" type="xsd:string"/>
+               <xsd:attribute name="launchNewWindow" type="xsd:boolean" default="false"/>
+               <xsd:attribute name="clientAction" type="xsd:boolean" default="true"/>
+               <xsd:attribute name="supportsMultiSelect" type="xsd:boolean" default="false"/>
+               <xsd:attribute name="refreshHint" type="uis:RefreshType" default="none"/>
+            </xsd:extension>
+         </xsd:complexContent>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSDisplayFormat">
+      <xsd:annotation>
+         <xsd:documentation>An instance of a display format definition. Display formats define a set of columns to be displayed when rendering items/folders to a user.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:complexContent>
+            <xsd:extension base="com:DesignObject">
+               <xsd:sequence>
+                  <xsd:element name="Columns">
+                     <xsd:annotation>
+                        <xsd:documentation>A list of all columns shown for this display format.</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="Column" maxOccurs="unbounded">
+                              <xsd:complexType>
+                                 <xsd:attribute name="name" type="xsd:string" use="required">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The column name.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="label" type="xsd:string" use="required">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The column display label.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="description" type="xsd:string" use="optional"/>
+                                 <xsd:attribute name="category" type="xsd:boolean" default="false">
+                                    <xsd:annotation>
+                                       <xsd:documentation>Defines whether this is a category or not.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="defaultSortColumn" type="xsd:boolean" default="false">
+                                    <xsd:annotation>
+                                       <xsd:documentation>Is this a default sort column?</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="renderType" default="text">
+                                    <xsd:annotation>
+                                       <xsd:documentation>An enumeration as what this coulm is rendered.</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                       <xsd:restriction base="xsd:string">
+                                          <xsd:enumeration value="text"/>
+                                          <xsd:enumeration value="image"/>
+                                          <xsd:enumeration value="date"/>
+                                          <xsd:enumeration value="number"/>
+                                       </xsd:restriction>
+                                    </xsd:simpleType>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="sortOrder" default="ascending">
+                                    <xsd:annotation>
+                                       <xsd:documentation>An enumeration with sorting options.</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                       <xsd:restriction base="xsd:string">
+                                          <xsd:enumeration value="ascending"/>
+                                          <xsd:enumeration value="descending"/>
+                                       </xsd:restriction>
+                                    </xsd:simpleType>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="sequence" type="xsd:unsignedInt" default="0">
+                                    <xsd:annotation>
+                                       <xsd:documentation/>
+                                       <xsd:documentation>The 0 based sequence in which to display this column.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                                 <xsd:attribute name="width" type="xsd:int" default="-1">
+                                    <xsd:annotation>
+                                       <xsd:documentation>The display width of this column, -1 to use the default.</xsd:documentation>
+                                    </xsd:annotation>
+                                 </xsd:attribute>
+                              </xsd:complexType>
+                           </xsd:element>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+                  <xsd:element name="Communities" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>A list of allowed communities</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="CommunityRef" type="uis:CommunityRef" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+                  <xsd:element name="Properties" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>Additional display format properties.</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="Property" type="uis:Property" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+               </xsd:sequence>
+               <xsd:attribute name="name" type="xsd:string" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>The name of this display format.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="label" type="xsd:string" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>The display label of this display format.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+            </xsd:extension>
+         </xsd:complexContent>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSHierarchyNode">
+      <xsd:annotation>
+         <xsd:documentation>Only used by the workbench.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Properties" minOccurs="0">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="Property" maxOccurs="unbounded">
+                        <xsd:complexType>
+                           <xsd:attribute name="parentId" type="com:Id"/>
+                           <xsd:attribute name="name" type="xsd:string" use="required"/>
+                           <xsd:attribute name="value" type="xsd:string"/>
+                        </xsd:complexType>
+                     </xsd:element>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+         <xsd:attribute name="id" type="com:Id">
+            <xsd:annotation>
+               <xsd:documentation>The identifier of this hierarchy nodes.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="parentId" type="com:Id">
+            <xsd:annotation>
+               <xsd:documentation>The identifier of the parent of this hierarchy nodes.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="type" type="uis:NodeType" use="required">
+            <xsd:annotation>
+               <xsd:documentation>The hierarchy node type.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+               <xsd:documentation>The hierarchy node name.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSSearchDef">
+      <xsd:annotation>
+         <xsd:documentation>An instance of a search definition. A search defines which fields can have values submitted when performing a search.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:complexContent>
+            <xsd:extension base="uis:SearchView">
+               <xsd:attribute name="type" default="standardSearch">
+                  <xsd:annotation>
+                     <xsd:documentation>The search type enumeration.</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="standardSearch"/>
+                        <xsd:enumeration value="customSearch"/>
+                        <xsd:enumeration value="userSearch"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:attribute>
+               <xsd:attribute name="userCustomizable" type="xsd:boolean" default="false">
+                  <xsd:annotation>
+                     <xsd:documentation>Is this search customizable by the user?</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+               <xsd:attribute name="visibleUser" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>User name that the search is visible to. It is null or empty if the search is visible to a list of communities.</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+            </xsd:extension>
+         </xsd:complexContent>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="PSViewDef">
+      <xsd:annotation>
+         <xsd:documentation>An instance of a view definition. Views are basically searches with pre-defined parameter values.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:complexContent>
+            <xsd:extension base="uis:SearchView">
+               <xsd:attribute name="type" default="standardView">
+                  <xsd:annotation>
+                     <xsd:documentation>The view type enumeration.</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="standardView"/>
+                        <xsd:enumeration value="customView"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:attribute>
+            </xsd:extension>
+         </xsd:complexContent>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SearchField" type="uis:SearchField">
+      <xsd:annotation>
+         <xsd:documentation>Part of a search or view definition that defines one field that can have a value specified as criteria for the search.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+    <xsd:complexType name="SearchField">
+        <xsd:sequence>
+            <xsd:element name="Values" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Value" type="xsd:string" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation>The name of the search field.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="label" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>The display name of the search field.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="description" type="xsd:string"/>
+        <xsd:attribute name="type" default="text">
+            <xsd:annotation>
+                <xsd:documentation>The search field type enumeration.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="text"/>
+                    <xsd:enumeration value="number"/>
+                    <xsd:enumeration value="date"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="operator" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>The operator used for this search field.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="externalOperator" type="xsd:boolean" default="false">
+            <xsd:annotation>
+                <xsd:documentation>Is this an external search operator?</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="position" type="xsd:unsignedInt" default="0">
+            <xsd:annotation>
+                <xsd:documentation>The position of this field in the search.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="mnemonic" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>The mnemonic used for this search in user interfaces.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+   <xsd:element name="Property" type="uis:Property">
+      <xsd:annotation>
+         <xsd:documentation>An arbitrary name/value pairing.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+    <xsd:complexType name="Property">
+        <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation>The property name.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="value" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>The property value.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+   <xsd:element name="CommunityRef" type="uis:CommunityRef">
+      <xsd:annotation>
+         <xsd:documentation>An identifier for a community that contains the name and id.</xsd:documentation>
+      </xsd:annotation>
+
+   </xsd:element>
+    <xsd:complexType name="CommunityRef">
+        <xsd:attribute name="id" type="com:Id" use="required">
+            <xsd:annotation>
+                <xsd:documentation>The id of the community which this references.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="name" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>The name of the community which this references.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+</xsd:schema>

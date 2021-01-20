@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="Big5"?><html>
+	<head>
+		<title>Yahoo! Chinese</title>
+		<META CONTENT="text/html; charset=big5" HTTP-EQUIV="content-type"/>
+		<LINK HREF="/css/b5style.css" REL="stylesheet" TYPE="text/css"/>
+	</head>
+	<body bgcolor="white">
+		<center>
+			<form action="http://chinese.search.yahoo.com/search/big5">
+				<map name="m">
+					<area HREF="http://chinese.finance.yahoo.com" coords="20,0,58,55"/>
+					<area HREF="http://messenger.yahoo.com/intl/b5/" coords="87,0,126,55"/>
+					<area HREF="http://chinese.mail.yahoo.com" coords="157,0,193,55"/>
+					<area coords="476,0,514,55" href="/new/"/>
+					<area HREF="http://chinese.my.yahoo.com" coords="545,0,583,55"/>
+					<area coords="615,0,652,55" href="http://help.yahoo.com/help/b5/"/>
+				</map>
+				<img alt="image" border="0" height="60" src="http://us.i1.yimg.com/us.yimg.com/i/b5/m5v4.gif" usemap="#m" width="670"/>
+				<br/>
+				<table border="0" cellPadding="5" cellSpacing="0" width="670">
+					<tr>
+						<td align="center" class="stitle" nowrap="nowrap" width="205">
+							<a href="/home/?http://chinese.astrology.yahoo.com/">Yahoo!星相命理<br/>瞧瞧今天運氣如何?</a>
+						</td>
+						<td align="center">
+							<a href="http://rd.yahoo.com/M=95164.1760236.3281753.34481/D=big5/S=8954826:N/A=380596/?http://chinese.chat.yahoo.com/" target="_top">
+								<img alt="" border="0" height="33" src="http://sg.yimg.com/i/sg/adv/anchor_chinese/b5hm-vchat.gif" width="230"/>
+							</a>
+						</td>
+						<td align="center" class="stitle" nowrap="nowrap" width="205">
+							<a href="http://rd.yahoo.com/M=95164.1760238.3281754.309625/D=big5/S=8954826:NE/A=305605/R=0/*http://chinese.finance.yahoo.com/">
+								<b>詳盡股市報導<br/>雅虎財經 </b>
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" colspan="3">
+							<INPUT name="p" size="18"/>
+							<INPUT type="submit" value="檢 索"/>
+							<br/>
+							<div class="sbody">網站範圍:<input checked="checked" name="u" type="radio" value="b"/>繁體中文<input name="u" type="radio" value="B"/>所有中文</div>
+						</td>
+					</tr>
+				</table>
+				<table border="0" cellpadding="3" cellspacing="0">
+					<tr>
+						<td align="center" class="sbody" nowrap="nowrap">
+							<b>社群: </b>
+							<a href="/home/?http://chinese.clubs.yahoo.com">俱樂部</a>&#160;-&#160;<a href="/home/?http://chinese.chat.yahoo.com">聊天室</a>&#160;-&#160;<a class="sbold" href="/home/?http://chinese.messages.yahoo.com">留言板</a>&#160;-&#160;<a class="esbody" href="/home/?http://messenger.yahoo.com/intl/b5">Messenger即時通</a>&#160;-&#160;<a href="/home/?http://chinese.greetings.yahoo.com">網上傳情</a>&#160;-&#160;<a href="/home/?http://chinese.invites.yahoo.com">邀請</a>
+							<br/>
+							<b>工具: </b>
+							<a href="/home/?http://chinese.my.yahoo.com">My Yahoo!</a>&#160;-&#160;<a class="esbold" href="/home/?http://chinese.mail.yahoo.com">E-mail</a>&#160;-&#160;<a href="/home/?http://chinese.address.yahoo.com">通訊錄</a>&#160;-&#160;<a href="/home/?http://chinese.calendar.yahoo.com">行事曆</a>&#160;-&#160;<a href="/home/?http://chinese.notepad.yahoo.com">筆記簿</a>&#160;-&#160;<a class="sbody" href="/home/?http://chinese.photos.yahoo.com/">相簿</a>&#160;-&#160;<a class="sbody" href="/home/?http://chinese.briefcase.yahoo.com/">公事包</a>&#160;-&#160;<a href="/home/?http://chinese.maps.yahoo.com">美加地圖</a>&#160;-&#160;<a href="/dictionary/">字典</a>
+							<br/>
+							<b>資訊: </b>
+							<a class="sbold" href="/home/?http://chinese.news.yahoo.com">新聞</a>&#160;-&#160;<a href="/home/?http://chinese.news.yahoo.com/fc/">焦點新聞</a>&#160;-&#160;<a class="sbold" href="/home/?http://chinese.finance.yahoo.com/">財經</a>&#160;-&#160;<a href="/home/?http://chinese.yahoo.com/lottery/">樂透開獎</a>&#160;-&#160;<a href="/home/?http://chinese.astrology.yahoo.com/">星相命理</a>&#160;-&#160;<a href="/home/?http://chinese.weather.yahoo.com">天氣</a>&#160;-&#160;<a href="/docs/info/openings.html">雅虎徵才中</a>
+						</td>
+					</tr>
+				</table>
+				<table border="0" cellpadding="5" cellspacing="0" width="670">
+					<tr valign="top">
+						<td align="center">
+							<table bgcolor="3366cc" border="0" cellspacing="0" width="100%">
+								<tr>
+									<td>
+										<table bgcolor="white" border="0" cellpadding="2" cellspacing="0" width="100%">
+											<tr>
+												<td align="center" class="bold">雅虎熱門精選</td>
+											</tr>
+											<tr>
+												<td align="center">
+													<table border="0" cellspacing="0" width="100%">
+														<tr valign="top">
+															<td class="sbold" nowrap="nowrap">熱門球賽</td>
+															<td class="sbold" nowrap="nowrap">網上傳情</td>
+															<td class="sbold" nowrap="nowrap">財經訊息</td>
+															<td class="sbold" nowrap="nowrap">最新天下事</td>
+														</tr>
+														<tr valign="top">
+															<td class="sbody" width="25%">
+‧ <a href="/home/?http://chinese.news.yahoo.com/fc/cnnba.html">NBA季賽</a>
+																<br/>
+‧ <a href="/home/?http://chinese.news.yahoo.com/fc/cnsoccer.html">世足賽</a>
+																<br/>
+‧ <a href="/home/?http://chinese.news.yahoo.com/fc/cnsport.html">冬季奧運</a>
+															</td>
+															<td class="sbody" width="25%">
+‧ <a href="/home/?http://chinese.greetings.yahoo.com/browse/_Any_Occasion/Sheng_Xiao/">十二生肖卡</a>
+																<br/>
+‧ <a href="/home/?http://chinese.greetings.yahoo.com/browse/_Events_and_Occasions/__Birthdays/">生日快樂</a>
+																<br/>
+‧ <a href="/home/?http://chinese.greetings.yahoo.com/browse/_Holidays/_Chinese_New_Year/">馬年行大運</a>
+															</td>
+															<td class="sbody" width="25%">
+‧ <a href="/home/?http://chinese.finance.yahoo.com/q?s=^DJI+^IXIC+^SPC&amp;d=e&amp;m=w">ECN即時報價</a>
+																<br/>
+‧ <a href="/home/?http://chinese.finance.yahoo.com/mo">市場總覽</a>
+																<br/>
+‧ <a href="/home/?http://chinese.biz.yahoo.com/">美股新聞評論</a>
+															</td>
+															<td class="sbody" width="25%">
+‧ <a href="/home/?http://chinese.news.yahoo.com/fc/">焦點報導</a>
+																<br/>
+‧ <a href="/home/?http://chinese.news.yahoo.com/">新聞總覽</a>
+																<br/>
+‧ <a href="/home/?http://chinese.weather.yahoo.com/">氣象報告</a>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+							<table border="0" cellpadding="5" cellspacing="0" width="100%">
+								<tr valign="top">
+									<td class="sbody" nowrap="nowrap">
+										<a class="stitle" href="/Arts_and_Humanities/">藝術與人文</a>
+										<br/>
+										<a href="/Arts_and_Humanities/Humanities/Literature/">文學</a>,
+<a href="/Arts_and_Humanities/Visual_Arts/Painting/">繪畫</a>,
+<a href="/Arts_and_Humanities/Performing_Arts/">表演藝術</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Business_and_Economy/">商業與經濟</a>
+										<br/>
+										<a href="/Business_and_Economy/Companies/">公司</a>,
+<a href="/Business_and_Economy/Finance_and_Investment/">金融與投資</a>,
+<a href="/Business_and_Economy/Employment/">就業</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Computers_and_Internet/">電腦與網際網路</a>
+										<br/>
+										<a href="/Computers_and_Internet/Internet/">網際網路</a>,
+<a href="/Computers_and_Internet/Internet/World_Wide_Web/Chat/">聊天室</a>,
+<a href="/Computers_and_Internet/Software/">軟體</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Education/">教育</a>
+										<br/>
+										<a href="/Education/Higher_Education/Colleges_and_Universities/">大專院校</a>,
+<a href="/Education/Primary_and_Secondary/">中小學</a>,
+<a href="/Education/Study_Abroad/">留學</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Entertainment/">娛樂</a>
+										<br/>
+										<a href="/Entertainment/Cool_Links/">酷站</a>,
+<a href="/Entertainment/Music/">音樂</a>,
+<a href="/Entertainment/Movies_and_Films/">電影</a>,
+<a href="/Entertainment/Photos/">明星照片</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Government/">政府與政治</a>
+										<br/>
+										<a href="/Government/Countries_and_Regions/">各地政府</a>,
+<a href="/Government/Law/">法律</a>,
+<a href="/Government/Military/">軍事</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Health/">健康與醫藥</a>
+										<br/>
+										<a href="/Health/Medicine/">醫學</a>,
+<a href="/Health/Diseases_and_Conditions/">疾病與症狀</a>,
+<a href="/Health/Traditional_Medicine/Chinese/">中國醫藥</a>...
+</td>
+									<td class="sbody" nowrap="nowrap">
+										<a class="stitle" href="/News_and_Media/">新聞與媒體</a>
+										<br/>
+										<a href="/News_and_Media/Internet_Broadcasting/Radio/">網路廣播</a>,
+<a href="/News_and_Media/Magazines/">雜誌</a>,
+<a href="/News_and_Media/Newspapers/">報紙</a>,
+<a href="/News_and_Media/Television/">電視</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Recreation_and_Life/">休閒與生活</a>
+										<br/>
+										<a href="/Recreation_and_Life/Sports/">體育運動</a>,
+<a href="/Recreation_and_Life/Life_Information/">生活資訊</a>,
+<a href="/Recreation_and_Life/Games/">遊戲</a>,
+<a href="/Recreation_and_Life/Travel/">旅遊</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Reference/">參考資料</a>
+										<br/>
+										<a href="/Reference/Libraries/">圖書館</a>,
+<a href="/Reference/Dictionaries/">字典與辭典</a>,
+<a href="/Reference/Phone_Numbers_and_Addresses/">電話號碼</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Regional/">區域</a>
+										<br/>
+										<a href="/Regional/Countries_and_Regions/Mainland_China/">中國大陸</a>,
+<a href="/Regional/Countries_and_Regions/Taiwan/">台灣</a>,
+<a href="/Regional/Countries_and_Regions/Hong_Kong/">香港</a>,
+<a href="/Regional/Countries_and_Regions/United_States/">美國</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Science/">科學</a>
+										<br/>
+										<a href="/Science/Biology/">生物學</a>,
+<a href="/Science/Engineering/">工程學</a>,
+<a href="/Science/Alternative/">另類科學</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Social_Science/">社會科學</a>
+										<br/>
+										<a href="/Social_Science/Anthropology_and_Archaeology/">人類學</a>,
+<a href="/Social_Science/Sociology/">社會學</a>,
+<a href="/Social_Science/Economics/">經濟學</a>...
+<br/>
+										<br/>
+										<a class="stitle" href="/Society_and_Culture/">社會與文化</a>
+										<br/>
+										<a href="/Society_and_Culture/People/Personal_Home_Pages/">個人網頁</a>,
+<a href="/Society_and_Culture/Food_and_Drink/">飲食</a>,
+<a href="/Society_and_Culture/Religion_and_Spirituality/Faiths_and_Practices/">宗教信仰</a>...
+</td>
+								</tr>
+							</table>
+							<a href="http://rd.yahoo.com/M=186022.1854304.3359486.1778473/D=big5/S=8954826:PB/A=947023/R=0/*http://shop.store.yahoo.com/cgi-bin/clink?compaq2+shopping:dmad/M=186022.1854304.3359486.1778473/D=big5/S=8954826:PB/A=947023/R=1/1015260654+http://us.rmi.yahoo.com/rmi/http://www.compaq.com/rmi-unframed-url/http://www.Compaq.com" target="_top">
+								<img alt="" border="0" height="30" src="http://sg.yimg.com/i/sg/adv/compaq/powered_by_button_red_trans12_21jan02.gif" width="95"/>
+							</a>
+						</td>
+						<td align="right" width="1%">
+							<table bgcolor="3366cc" border="0" cellpadding="1" cellspacing="0" width="185">
+								<tr>
+									<td>
+										<table bgcolor="ffffff" border="0" cellpadding="3" cellspacing="0" width="100%">
+											<tr bgcolor="e0d0b0">
+												<td align="center" class="stitle" colspan="2">焦點新聞</td>
+											</tr>
+											<tr>
+												<td align="right" valign="top">‧</td>
+												<td class="sbody">
+													<a href="http://chinese.news.yahoo.com/fc/hkindia.html">印度宗教衝突已造成400多人喪生</a>
+												</td>
+											</tr>
+											<tr>
+												<td align="right" valign="top">‧</td>
+												<td class="sbody">
+													<a href="http://chinese.news.yahoo.com/fc/cnisrael.html">巴人槍手突襲以軍 七人死亡</a>
+												</td>
+											</tr>
+											<tr>
+												<td align="right" valign="top">‧</td>
+												<td class="sbody">
+													<a href="http://chinese.news.yahoo.com/fc/cnnba.html">NBA激戰連場</a>
+												</td>
+											</tr>
+											<tr>
+												<td align="right" valign="top">‧</td>
+												<td class="sbody">
+													<a href="http://chinese.news.yahoo.com/fc/hkent3.html">羅兆輝驚爆香港演藝圈秘聞</a>
+												</td>
+											</tr>
+											<tr>
+												<td align="right" class="sbody" colspan="2">
+													<a href="http://chinese.news.yahoo.com">其他新聞...</a>
+												</td>
+											</tr>
+											<tr bgcolor="e0d0b0">
+												<td align="center" class="stitle" colspan="2">雅虎精選</td>
+											</tr>
+											<tr valign="top">
+												<td width="1%">·</td>
+												<td class="sbody">雅虎BBS<font color="red">HOT</font>話題: <A HREF="/home/?http://chinese.messages.yahoo.com/bbs?action=topics&amp;board=1647205983&amp;sid=1647205983&amp;type=r">兩性關係</A>、<a href="/home/?http://chinese.messages.yahoo.com/bbs?action=topics&amp;board=1647205821&amp;sid=1647205821&amp;type=r">超幽默笑話</a>、<a href="home/?http://chinese.messages.yahoo.com/bbs?action=topics&amp;board=1647205824&amp;sid=1647205824&amp;type=r">電影大家談</a>
+												</td>
+											</tr>
+											<tr valign="top">
+												<td width="1%">·</td>
+												<td class="sbody">
+													<a href="/home/?http://chinese.calendar.yahoo.com/">Yahoo! 行事曆</a>，讓你生活充實有效率!</td>
+											</tr>
+											<tr valign="top">
+												<td width="1%">·</td>
+												<td class="sbody">天天是好日? 快到<a href="/home/?http://chinese.astrology.yahoo.com/">星相命理</a>瞧瞧!</td>
+											</tr>
+											<tr valign="top">
+												<td width="1%">·</td>
+												<td class="sbody">好想和朋友說說話? 用<a href="/home/?http://messenger.yahoo.com/intl/b5/">即時通</a>展開<a href="http://chinese.conversations.yahoo.com/">即時對話</a>吧!</td>
+											</tr>
+											<tr valign="top">
+												<td width="1%">·</td>
+												<td class="sbody">有了<a href="/home/?http://chinese.maps.yahoo.com/">Yahoo!地圖</a>，美加走透透，不用擔心迷路!</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<hr noshade="noshade" size="1" width="660"/>
+				<table border="0" cellpadding="2" cellspacing="0">
+					<tr>
+						<td class="sbold">世界雅虎</td>
+					</tr>
+					<tr vAlign="top">
+						<td class="sbody">亞太：<A href="http://cn.yahoo.com">中國</A> - <A href="http://hk.yahoo.com">香港</A> - <A href="http://tw.yahoo.com">台灣</A> - <A href="http://asia.yahoo.com">亞洲</A> - <A href="http://sg.yahoo.com">新加坡</A> - <A href="http://in.yahoo.com">印度</A> - <A href="http://docs.yahoo.com/docs/info/bridge.html">日本</A> - <A href="http://docs.yahoo.com/docs/info/kbridge.html">韓國</A> - <A href="http://au.yahoo.com">澳紐</A>
+						</td>
+					</tr>
+					<tr vAlign="top">
+						<td class="sbody">美洲：<A href="http://www.yahoo.com/">Yahoo! </A>- <A href="http://ca.yahoo.com">加拿大</A> - <A href="http://br.yahoo.com">巴西</A> - <A href="http://mx.yahoo.com">墨西哥</A> - <A href="http://espanol.yahoo.com">西班牙文</A> - <a href="http://ar.yahoo.com">阿根廷</a>
+						</td>
+					</tr>
+					<tr vAlign="top">
+						<td class="sbody">歐洲：<A href="http://uk.yahoo.com">英國、愛爾蘭</A> - <A href="http://fr.yahoo.com">法國</A> - <A href="http://de.yahoo.com">德國</A> - <A href="http://it.yahoo.com">義大利</A> - <A href="http://dk.yahoo.com">丹麥</A> - <A href="http://no.yahoo.com">挪威</A> - <A href="http://se.yahoo.com">瑞典</A> - <A href="http://es.yahoo.com">西班牙</A>
+						</td>
+					</tr>
+				</table>
+				<hr noshade="noshade" size="1" width="660"/>
+				<table border="0" cellpadding="3" cellspacing="0" width="640">
+					<tr>
+						<td align="center" class="sbody">
+							<a href="http://chinese.yahoo.com/docs/info/suggest.html">免費登錄網站</a> - <a href="http://privacy.yahoo.com/privacy/b5">隱私權政策</a> - <a href="/info/utos.html">服務條款</a> - <a href="http://help.yahoo.com/help/b5/">說明</a> - <a href="http://chinese.yahoo.com/docs/sales/index.html">廣告指南</a> - <a href="/docs/info/openings.html">雅虎徵才中</a> - <a href="/docs/info/download.html">
+								<img align="absmiddle" alt="Download Chinese" border="0" height="15" src="http://us.i1.yimg.com/us.yimg.com/i/cn/sm_dl.gif" width="83"/>
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="sbody">Copyright ?2002 Yahoo! Inc. 版權所有 不得轉載</td>
+					</tr>
+				</table>
+			</form>
+		</center>
+	</body>
+</html>

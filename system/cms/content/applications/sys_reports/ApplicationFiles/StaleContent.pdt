@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Content (Content_Id, Title, Untouched_Days, Community, Content_Type, State, Untouched_Days, Last_Modified_Date, Checked_out_User, Creator )>
+<!ELEMENT Creator (#PCDATA)>
+<!ELEMENT Checked_out_User (#PCDATA)>
+<!ELEMENT Last_Modified_Date (#PCDATA)>
+<!ELEMENT State (#PCDATA)>
+<!ELEMENT Content_Type (#PCDATA)>
+<!ELEMENT Community (#PCDATA)>
+<!ELEMENT Untouched_Days (#PCDATA)>
+<!ATTLIST  Untouched_Days type CDATA #IMPLIED>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT Content_Id (#PCDATA)>
+<!ATTLIST  Content_Id type CDATA #IMPLIED>
+<!ELEMENT Stale_Content (Content* )>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>Login Asset for Content configuration.</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>367</id>
+    <internal-name>percLoginAsset</internal-name>
+    <label>Login</label>
+    <mandatory>false</mandatory>
+    <name>rx:percLoginAsset</name>
+    <new-request>../psx_cepercLoginAsset/percLoginAsset.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercLoginAsset/percLoginAsset.html</query-request>
+    <raw-content-type>367</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

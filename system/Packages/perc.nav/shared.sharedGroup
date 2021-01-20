@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXSharedFieldGroup filename="rxs_ct_shared.xml" name="shared">
+   <PSXContainerLocator>
+      <PSXTableSet>
+         <PSXTableLocator>
+            <PSXBackEndCredential id="0">
+               <alias>systemCredential</alias>
+               <comment/>
+               <datasource/>
+            </PSXBackEndCredential>
+         </PSXTableLocator>
+         <PSXTableRef alias="RXS_CT_SHARED" name="RXS_CT_SHARED"/>
+      </PSXTableSet>
+   </PSXContainerLocator>
+   <PSXFieldSet name="shared" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+      <PSXField export="yes" forceBinary="no" modificationType="user" name="body" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RXS_CT_SHARED</tableAlias>
+               <column>BODY</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>max</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="no" name="allowActiveTags">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="cleanupNamespaces">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="mayContainIDs">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="mayHaveInlineLinks">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="yes" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" forceBinary="no" modificationType="user" name="callout" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RXS_CT_SHARED</tableAlias>
+               <column>CALLOUT</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>max</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="no" name="allowActiveTags">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="cleanupNamespaces">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="mayContainIDs">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="mayHaveInlineLinks">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="yes" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="description" showInPreview="yes" showInSummary="yes" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RXS_CT_SHARED</tableAlias>
+               <column>DESCRIPTION</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>1024</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="displaytitle" showInPreview="yes" showInSummary="yes" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RXS_CT_SHARED</tableAlias>
+               <column>DISPLAYTITLE</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>512</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+         <FieldRules>
+            <PSXFieldValidationRules maxErrorsToStop="10" name="isValidSysDisplayTitle">
+               <PSXRule boolean="and">
+                  <PSXConditional id="1">
+                     <variable>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>displaytitle</name>
+                        </PSXSingleHtmlParameter>
+                     </variable>
+                     <operator>IS NOT NULL</operator>
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXRule>
+               <PSXApplyWhen ifFieldEmpty="yes"/>
+               <ErrorMessage>
+                  <PSXDisplayText>DisplayTitle field cannot be empty</PSXDisplayText>
+               </ErrorMessage>
+            </PSXFieldValidationRules>
+         </FieldRules>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="filename" showInPreview="yes" showInSummary="yes" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RXS_CT_SHARED</tableAlias>
+               <column>FILENAME</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>512</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <FieldRules>
+            <PSXVisibilityRules dataHiding="xsl">
+               <PSXRule boolean="and">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXTextLiteral id="0">
+                           <text>1</text>
+                        </PSXTextLiteral>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>2</text>
+                        </PSXTextLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXRule>
+            </PSXVisibilityRules>
+         </FieldRules>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="keywords" showInPreview="yes" showInSummary="yes" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RXS_CT_SHARED</tableAlias>
+               <column>KEYWORDS</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>1024</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="webdavowner" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RXS_CT_SHARED</tableAlias>
+               <column>WEBDAVOWNER</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>255</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <FieldRules>
+            <PSXVisibilityRules dataHiding="xsl">
+               <PSXRule boolean="and">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXTextLiteral id="0">
+                           <text>1</text>
+                        </PSXTextLiteral>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>2</text>
+                        </PSXTextLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXRule>
+            </PSXVisibilityRules>
+         </FieldRules>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+      </PSXField>
+   </PSXFieldSet>
+   <PSXUIDefinition>
+      <PSXDisplayMapper fieldSetRef="shared" id="5">
+         <PSXDisplayMapping>
+            <FieldRef>filename</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>File Name:</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="12" name="sys_EditBox"/>
+               <ErrorLabel>
+                  <PSXDisplayText>File Name:</PSXDisplayText>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>displaytitle</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>Title:</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="13" name="sys_EditBox"/>
+               <ErrorLabel>
+                  <PSXDisplayText>Title:</PSXDisplayText>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>keywords</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>Keywords:</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="15" name="sys_TextArea"/>
+               <ErrorLabel>
+                  <PSXDisplayText>Keywords:</PSXDisplayText>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>description</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>Description:</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="17" name="sys_TextArea"/>
+               <ErrorLabel>
+                  <PSXDisplayText>Description:</PSXDisplayText>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>callout</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>Callout:</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="19" name="sys_EditLive"/>
+               <ErrorLabel>
+                  <PSXDisplayText>Callout:</PSXDisplayText>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>body</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>Body:</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="24" name="sys_EditLive"/>
+               <ErrorLabel>
+                  <PSXDisplayText>Body:</PSXDisplayText>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>webdavowner</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>WebDAV Owner:</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="17" name="sys_TextArea"/>
+            </PSXUISet>
+         </PSXDisplayMapping>
+      </PSXDisplayMapper>
+   </PSXUIDefinition>
+   <PSXValidationRules maxErrorsToStop="10"/>
+   <PSXInputTranslations/>
+   <PSXOutputTranslations/>
+</PSXSharedFieldGroup>

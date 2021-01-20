@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Variant (DisplayName, AssemblyUrl, StylesheetName )>
+<!ELEMENT StylesheetName (#PCDATA)>
+<!ELEMENT AssemblyUrl (#PCDATA)>
+<!ELEMENT DisplayName (#PCDATA)>
+<!ATTLIST  Variant variantId CDATA #REQUIRED>
+<!ELEMENT VariantList (Variant* )>

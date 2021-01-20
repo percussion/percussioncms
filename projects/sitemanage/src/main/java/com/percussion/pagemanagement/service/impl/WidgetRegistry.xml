@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--Widget grouping XML-->
+<widgets>
+    <group name="Percussion">
+        <widget name="Archives"/>
+        <widget name="Auto List"/>
+        <widget name="Blog List"/>
+        <widget name="Blog Post"/>
+        <widget name="Breadcrumb"/>
+        <widget name="Calendar 2.0"/>
+        <widget name="Categories"/>
+        <widget name="Comments"/>
+        <widget name="Comments Form"/>
+        <widget name="Cookie Consent"/>
+        <widget name="Event"/>
+        <widget name="File"/>
+        <widget name="File Auto List"/>
+        <widget name="Form"/>
+        <widget name="HTML"/>
+        <widget name="Iframe"/>
+        <widget name="Image"/>
+        <widget name="Image Auto List"/>
+        <widget name="Image Slider"/>
+        <widget name="jQuery Widget"/>
+        <widget name="jQuery UI Widget"/>
+        <widget name="Like"/>
+        <widget name="Login"/>
+        <widget name="Navigation"/>
+        <widget name="Page Auto List"/>
+        <widget name="Polls"/>
+        <widget name="Registration"/>
+        <widget name="Rich Text"/>
+        <widget name="RSS"/>
+        <widget name="Result"/>
+        <widget name="Secure Login"/>
+        <widget name="Social Buttons"/>
+        <widget name="Twitter Summary Cards"/>
+        <widget name="Facebook Open Graph"/>
+        <widget name="Simple Text"/>
+        <widget name="Tags"/>
+        <widget name="Title"/>
+        <widget name="Local Language"/>
+        <widget name="Default Language"/>
+        <widget name="Department"/>
+        <widget name="Directory"/>
+        <widget name="Organization"/>
+        <widget name="Person"/>
+        <widget name="Most Read Blog Posts"/>
+        <widget name="Redirect"/>
+    </group>
+    <group name="Community">
+        <widget name="Evergage Beacon"/>
+        <widget name="EMS Event List"/>
+    </group>
+    <group name="Deprecated">
+        <widget name="Share This"/>
+        <widget name="Calendar"/>
+        <widget name="Flash"/>
+    </group>
+</widgets>

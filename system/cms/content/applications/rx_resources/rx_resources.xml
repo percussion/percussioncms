@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<PSXApplication id="8" active="no" enabled="yes" version="2.0">
+  <name>rx_resources</name>
+  <description/>
+  <requestRoot>rx_resources</requestRoot>
+  <defaultRequestPage/>
+  <PSXRevisionHistory>
+    <PSXRevisionEntry majorVersion="1" minorVersion="0">
+      <agent>OS:RammohanVangapalli</agent>
+      <description>Saved</description>
+      <time>20001130T170633062</time>
+    </PSXRevisionEntry>
+    <PSXRevisionEntry majorVersion="1" minorVersion="1">
+      <agent>OS:RammohanVangapalli</agent>
+      <description>Saved</description>
+      <time>20001130T170633312</time>
+    </PSXRevisionEntry>
+    <PSXRevisionEntry majorVersion="1" minorVersion="2">
+      <agent>OS:RammohanVangapalli</agent>
+      <description>Saved</description>
+      <time>20001130T170710140</time>
+    </PSXRevisionEntry>
+  </PSXRevisionHistory>
+  <PSXAcl id="0">
+    <PSXAclEntry id="0" type="user">
+      <name>Default</name>
+      <securityProviderType>Any</securityProviderType>
+      <securityProviderInstance></securityProviderInstance>
+      <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+    </PSXAclEntry>
+    <PSXAclEntry id="0" type="user">
+      <name>Anonymous</name>
+      <securityProviderType>Any</securityProviderType>
+      <securityProviderInstance></securityProviderInstance>
+      <applicationAccessLevel dataQuery="yes" dataCreate="no" dataUpdate="no" dataDelete="no" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+    </PSXAclEntry>
+    <PSXAclEntry id="0" type="role">
+      <name>Admin</name>
+      <securityProviderType>Any</securityProviderType>
+      <securityProviderInstance></securityProviderInstance>
+      <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+    </PSXAclEntry>
+    <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+  </PSXAcl>
+  <maxThreads>0</maxThreads>
+  <maxRequestTime>0</maxRequestTime>
+  <maxRequestsInQueue>0</maxRequestsInQueue>
+  <userSessionEnabled>no</userSessionEnabled>
+  <userSessionTimeout>0</userSessionTimeout>
+  <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+  <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+  <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+  <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+  <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+  <PSXLogger id="0" logErrors="no" logServerStartStop="no" logAppStartStop="no" logAppStatistics="no" logExecutionPlan="no" logBasicUserActivity="no" logDetailedUserActivity="no" logFullUserActivity="no" logMultipleHandlers="no"/>
+  <PSXErrorWebPages id="249" returnHtml="yes"/>
+  <backEndLoginPassthru>no</backEndLoginPassthru>
+  <PSXNotifier id="250">
+    <providerType>SMTP</providerType>
+    <server>rxmaster</server>
+    <from/>
+  </PSXNotifier>
+  <userProperty name="savedFromWorkbench">Yes</userProperty>
+  <userProperty name="locationX250">11</userProperty>
+  <userProperty name="locationY250">100</userProperty>
+  <userProperty name="locationX249">11</userProperty>
+  <userProperty name="locationX248">11</userProperty>
+  <userProperty name="locationY249">55</userProperty>
+  <userProperty name="locationY248">10</userProperty>
+</PSXApplication>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT casavesearch (componentname, pagename, savesearchurl, userrolesurl )>
+<!ELEMENT userrolesurl (#PCDATA)>
+<!ELEMENT savesearchurl (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ATTLIST  casavesearch xml:lang CDATA #IMPLIED>

@@ -1,0 +1,1033 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXExportDescriptor archiveType="normal">
+   <PSXDescriptor name="FF5_Publish_66">
+      <Description>MSM Archive for Publish Objects</Description>
+   </PSXDescriptor>
+   <Packages>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="Context" objectTypeName="Context" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Local" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="321" dependencyType="Shared" displayName="CI_Home" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="545" dependencyType="Shared" displayName="rffPgCiHome" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="320" dependencyType="Shared" displayName="EI_Home" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="530" dependencyType="Shared" displayName="rffPgEiHome" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="315" dependencyType="Shared" displayName="Generic" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="505" dependencyType="Shared" displayName="rffPgEiGeneric" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="326" dependencyType="Shared" displayName="InactiveNavImage" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="517" dependencyType="Shared" displayName="rffBnInactiveImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="313" dependencyType="Shared" displayName="rffNavImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="325" dependencyType="Shared" displayName="RolloverNavImage" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="515" dependencyType="Shared" displayName="rffBnRolloverImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="313" dependencyType="Shared" displayName="rffNavImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7008019964183445506" dependencyType="Shared" displayName="public" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7008019964183445506" dependencyType="Local" displayName="public" isIncluded="yes" objectType="FilterDef" objectTypeName="Filter Definition" supportsIdMapping="no" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies/>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="325" dependencyType="Shared" displayName="rffCiFullBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="325" dependencyType="Local" displayName="rffCiFullBinary" isIncluded="yes" objectType="ContentListDef" objectTypeName="Content List Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7008019964183445506" dependencyType="Shared" displayName="public" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="319" dependencyType="Shared" displayName="rffCiFullNonBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="319" dependencyType="Local" displayName="rffCiFullNonBinary" isIncluded="yes" objectType="ContentListDef" objectTypeName="Content List Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7008019964183445506" dependencyType="Shared" displayName="public" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="326" dependencyType="Shared" displayName="rffCiIncremental" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="326" dependencyType="Local" displayName="rffCiIncremental" isIncluded="yes" objectType="ContentListDef" objectTypeName="Content List Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7008019964183445506" dependencyType="Shared" displayName="public" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="328" dependencyType="Shared" displayName="rffCiPublishNow" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="328" dependencyType="Local" displayName="rffCiPublishNow" isIncluded="yes" objectType="ContentListDef" objectTypeName="Content List Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="8033059470386921473" dependencyType="Shared" displayName="sitefolder" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="Corporate_Investments" isIncluded="yes" objectType="Site" objectTypeName="Site" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Local" displayName="Corporate_Investments" isIncluded="yes" objectType="SiteDef" objectTypeName="Site Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="CI_Full" isIncluded="yes" objectType="EditionDef" objectTypeName="Edition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="Publish" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                       <Dependencies>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="318" dependencyType="Shared" displayName="CI_Home" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                <Dependencies>
+                                                   <PSXDeployableElement>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <Description/>
+                                                   </PSXDeployableElement>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="545" dependencyType="Shared" displayName="rffPgCiHome" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                </Dependencies>
+                                             </PSXDependency>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="317" dependencyType="Shared" displayName="EI_Home" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                <Dependencies>
+                                                   <PSXDeployableElement>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <Description/>
+                                                   </PSXDeployableElement>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="530" dependencyType="Shared" displayName="rffPgEiHome" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                </Dependencies>
+                                             </PSXDependency>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="314" dependencyType="Shared" displayName="Generic" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                <Dependencies>
+                                                   <PSXDeployableElement>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <Description/>
+                                                   </PSXDeployableElement>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="505" dependencyType="Shared" displayName="rffPgEiGeneric" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                </Dependencies>
+                                             </PSXDependency>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="324" dependencyType="Shared" displayName="InactiveNavImage" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                <Dependencies>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="517" dependencyType="Shared" displayName="rffBnInactiveImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                   <PSXDeployableElement>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="313" dependencyType="Shared" displayName="rffNavImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <Description/>
+                                                   </PSXDeployableElement>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                </Dependencies>
+                                             </PSXDependency>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="323" dependencyType="Shared" displayName="RolloverNavImage" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                <Dependencies>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="515" dependencyType="Shared" displayName="rffBnRolloverImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                   <PSXDeployableElement>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="313" dependencyType="Shared" displayName="rffNavImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                                      <Description/>
+                                                   </PSXDeployableElement>
+                                                   <PSXDeployableObject>
+                                                      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="Java/global/percussion/contentassembler/sys_JexlAssemblyLocation" dependencyType="System" displayName="sys_JexlAssemblyLocation" isIncluded="no" objectType="Extension" objectTypeName="Extension" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                                      <RequiredClasses/>
+                                                   </PSXDeployableObject>
+                                                </Dependencies>
+                                             </PSXDependency>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                       </Dependencies>
+                                    </PSXDependency>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="325" dependencyType="Shared" displayName="rffCiFullBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="319" dependencyType="Shared" displayName="rffCiFullNonBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="309" dependencyType="Shared" displayName="CI_Full_NonBinary" isIncluded="yes" objectType="EditionDef" objectTypeName="Edition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="Publish" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                       <Dependencies>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="318" dependencyType="Shared" displayName="CI_Home" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="317" dependencyType="Shared" displayName="EI_Home" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="314" dependencyType="Shared" displayName="Generic" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="324" dependencyType="Shared" displayName="InactiveNavImage" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="323" dependencyType="Shared" displayName="RolloverNavImage" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                       </Dependencies>
+                                    </PSXDependency>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="319" dependencyType="Shared" displayName="rffCiFullNonBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="308" dependencyType="Shared" displayName="CI_Incremental" isIncluded="yes" objectType="EditionDef" objectTypeName="Edition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="Publish" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="326" dependencyType="Shared" displayName="rffCiIncremental" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="CI_Publish_Now" isIncluded="yes" objectType="EditionDef" objectTypeName="Edition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="Publish" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="328" dependencyType="Shared" displayName="rffCiPublishNow" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="0" dependencyType="Shared" displayName="Preview" isIncluded="no" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="516" dependencyType="Shared" displayName="rffBnActiveImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="533" dependencyType="Shared" displayName="rffBnBinary" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="506" dependencyType="Shared" displayName="rffBnImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="517" dependencyType="Shared" displayName="rffBnInactiveImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="515" dependencyType="Shared" displayName="rffBnRolloverImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="541" dependencyType="Shared" displayName="rffGtCorporateInvestmentsCommon" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="529" dependencyType="Shared" displayName="rffPgCalendarMonth" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="549" dependencyType="Shared" displayName="rffPgCiEvent" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="543" dependencyType="Shared" displayName="rffPgCiGeneric" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="548" dependencyType="Shared" displayName="rffPgCiGenericWord" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="545" dependencyType="Shared" displayName="rffPgCiHome" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="546" dependencyType="Shared" displayName="rffPgCiPressRelease" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="528" dependencyType="Shared" displayName="rffSnAutoBulletList" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="527" dependencyType="Shared" displayName="rffSnAutoList" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="532" dependencyType="Shared" displayName="rffSnBulletedTitleList" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="501" dependencyType="Shared" displayName="rffSnCallout" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="540" dependencyType="Shared" displayName="rffSnCiNavBottom" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="536" dependencyType="Shared" displayName="rffSnCiNavBreadcrumbs" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="553" dependencyType="Shared" displayName="rffSnCiNavHomeImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="535" dependencyType="Shared" displayName="rffSnCiNavTop" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="512" dependencyType="Shared" displayName="rffSnDateAndTitleLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="524" dependencyType="Shared" displayName="rffSnDateRange" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="534" dependencyType="Shared" displayName="rffSnFlash" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="514" dependencyType="Shared" displayName="rffSnHome" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="521" dependencyType="Shared" displayName="rffSnImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="522" dependencyType="Shared" displayName="rffSnImageAndTitle" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="502" dependencyType="Shared" displayName="rffSnImageLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="526" dependencyType="Shared" displayName="rffSnLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Shared" displayName="rffSnNameAndAddress" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="519" dependencyType="Shared" displayName="rffSnNameAndEmail" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="551" dependencyType="Shared" displayName="rffSnNavHomeImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="550" dependencyType="Shared" displayName="rffSnNavImageLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="544" dependencyType="Shared" displayName="rffSnNavonLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="508" dependencyType="Shared" displayName="rffSnNavPreload" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="542" dependencyType="Shared" displayName="rffSnNavTopDescendant" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="537" dependencyType="Shared" displayName="rffSnTitleCalloutAndMoreLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="503" dependencyType="Shared" displayName="rffSnTitleCalloutLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="520" dependencyType="Shared" displayName="rffSnTitleLinkAndIcon" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="523" dependencyType="Shared" displayName="rffSnTitleWithDate" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="3772753221890605110" dependencyType="Local" displayName="x303" isIncluded="yes" objectType="AclDef" objectTypeName="Acl Definition" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1003" dependencyType="Shared" displayName="Corporate_Investments" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1004" dependencyType="Shared" displayName="Corporate_Investments_Admin" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="39759470036779009" dependencyType="Shared" displayName="unpublish" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="39759470036779009" dependencyType="Local" displayName="unpublish" isIncluded="yes" objectType="FilterDef" objectTypeName="Filter Definition" supportsIdMapping="no" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies/>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffEiFullBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Local" displayName="rffEiFullBinary" isIncluded="yes" objectType="ContentListDef" objectTypeName="Content List Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7008019964183445506" dependencyType="Shared" displayName="public" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffEiFullNonBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Local" displayName="rffEiFullNonBinary" isIncluded="yes" objectType="ContentListDef" objectTypeName="Content List Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7008019964183445506" dependencyType="Shared" displayName="public" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="323" dependencyType="Shared" displayName="rffEiIncremental" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="323" dependencyType="Local" displayName="rffEiIncremental" isIncluded="yes" objectType="ContentListDef" objectTypeName="Content List Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7008019964183445506" dependencyType="Shared" displayName="public" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Enterprise_Investments" isIncluded="yes" objectType="Site" objectTypeName="Site" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Local" displayName="Enterprise_Investments" isIncluded="yes" objectType="SiteDef" objectTypeName="Site Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="EI_Full" isIncluded="yes" objectType="EditionDef" objectTypeName="Edition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="Publish" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                       <Dependencies>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="318" dependencyType="Shared" displayName="CI_Home" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="317" dependencyType="Shared" displayName="EI_Home" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="314" dependencyType="Shared" displayName="Generic" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="324" dependencyType="Shared" displayName="InactiveNavImage" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                          <PSXDeployableObject>
+                                             <PSXDependency autoDep="no" autoExpand="yes" dependencyId="323" dependencyType="Shared" displayName="RolloverNavImage" isIncluded="yes" objectType="LocationSchemeDef" objectTypeName="Location Scheme" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                             <RequiredClasses/>
+                                          </PSXDeployableObject>
+                                       </Dependencies>
+                                    </PSXDependency>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffEiFullBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffEiFullNonBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="EI_Full_NonBinary" isIncluded="yes" objectType="EditionDef" objectTypeName="Edition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="Publish" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffEiFullNonBinary" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="302" dependencyType="Shared" displayName="EI_Incremental" isIncluded="yes" objectType="EditionDef" objectTypeName="Edition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="Publish" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="323" dependencyType="Shared" displayName="rffEiIncremental" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="EI_Publish_Now" isIncluded="yes" objectType="EditionDef" objectTypeName="Edition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="Publish" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="327" dependencyType="Shared" displayName="rffEiPublishNow" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableObject>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <RequiredClasses/>
+                                 </PSXDeployableObject>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="0" dependencyType="Shared" displayName="Preview" isIncluded="no" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="516" dependencyType="Shared" displayName="rffBnActiveImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="533" dependencyType="Shared" displayName="rffBnBinary" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="506" dependencyType="Shared" displayName="rffBnImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="517" dependencyType="Shared" displayName="rffBnInactiveImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="515" dependencyType="Shared" displayName="rffBnRolloverImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="555" dependencyType="Shared" displayName="rffDsEIGenericSelector" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="500" dependencyType="Shared" displayName="rffGtEnterpriseInvestmentsCommon" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="529" dependencyType="Shared" displayName="rffPgCalendarMonth" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="525" dependencyType="Shared" displayName="rffPgEiEvent" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="505" dependencyType="Shared" displayName="rffPgEiGeneric" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="554" dependencyType="Shared" displayName="rffPgEiGenericCategoryPage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="530" dependencyType="Shared" displayName="rffPgEiHome" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="513" dependencyType="Shared" displayName="rffPgEiPressRelease" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="528" dependencyType="Shared" displayName="rffSnAutoBulletList" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="527" dependencyType="Shared" displayName="rffSnAutoList" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="532" dependencyType="Shared" displayName="rffSnBulletedTitleList" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="501" dependencyType="Shared" displayName="rffSnCallout" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="512" dependencyType="Shared" displayName="rffSnDateAndTitleLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="524" dependencyType="Shared" displayName="rffSnDateRange" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="510" dependencyType="Shared" displayName="rffSnEiNavBottom" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="511" dependencyType="Shared" displayName="rffSnEiNavBreadcrumbs" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="509" dependencyType="Shared" displayName="rffSnEiNavLeft" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="507" dependencyType="Shared" displayName="rffSnEiNavTop" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="534" dependencyType="Shared" displayName="rffSnFlash" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="514" dependencyType="Shared" displayName="rffSnHome" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="521" dependencyType="Shared" displayName="rffSnImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="522" dependencyType="Shared" displayName="rffSnImageAndTitle" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="502" dependencyType="Shared" displayName="rffSnImageLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="526" dependencyType="Shared" displayName="rffSnLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Shared" displayName="rffSnNameAndAddress" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="519" dependencyType="Shared" displayName="rffSnNameAndEmail" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="551" dependencyType="Shared" displayName="rffSnNavHomeImage" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="550" dependencyType="Shared" displayName="rffSnNavImageLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="544" dependencyType="Shared" displayName="rffSnNavonLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="508" dependencyType="Shared" displayName="rffSnNavPreload" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="542" dependencyType="Shared" displayName="rffSnNavTopDescendant" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="537" dependencyType="Shared" displayName="rffSnTitleCalloutAndMoreLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="503" dependencyType="Shared" displayName="rffSnTitleCalloutLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="520" dependencyType="Shared" displayName="rffSnTitleLinkAndIcon" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="523" dependencyType="Shared" displayName="rffSnTitleWithDate" isIncluded="no" objectType="TemplateDef" objectTypeName="Template Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="Site_Folder_Assembly" isIncluded="yes" objectType="ContextDef" objectTypeName="Context Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="3772753221890605109" dependencyType="Local" displayName="x301" isIncluded="yes" objectType="AclDef" objectTypeName="Acl Definition" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1002" dependencyType="Shared" displayName="Enterprise_Investments" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                                 <PSXDeployableElement>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1001" dependencyType="Shared" displayName="Enterprise_Investments_Admin" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                    <Description/>
+                                 </PSXDeployableElement>
+                              </Dependencies>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="8033059470386921473" dependencyType="Shared" displayName="sitefolder" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="8033059470386921473" dependencyType="Local" displayName="sitefolder" isIncluded="yes" objectType="FilterDef" objectTypeName="Filter Definition" supportsIdMapping="no" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7008019964183445506" dependencyType="Shared" displayName="public" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="327" dependencyType="Shared" displayName="rffEiPublishNow" isIncluded="yes" objectType="ContentList" objectTypeName="Content List" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="327" dependencyType="Local" displayName="rffEiPublishNow" isIncluded="yes" objectType="ContentListDef" objectTypeName="Content List Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="8033059470386921473" dependencyType="Shared" displayName="sitefolder" isIncluded="yes" objectType="Filter" objectTypeName="Filter" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+   </Packages>
+   <ModifiedPackages/>
+   <MissingPackages/>
+</PSXExportDescriptor>

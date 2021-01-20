@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityConfiguration>
+   <path authType="form">form1</path>
+   <path authType="basic"></path>
+</securityConfiguration>

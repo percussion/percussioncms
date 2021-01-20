@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<SolutionConfigurations publisherPrefix="com.percussion" publisherName="Percussion" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+   <SolutionConfig name="RSS">
+
+<!---  ========================================
+        Site        "Corporate_Investments"      
+        =========================================
+-->
+		<!--  Various properties for the "SiteVaraibleSetter" -->
+
+		<property name="names">
+			<pvalues>
+				<pvalue>Corporate_Investments</pvalue>
+				<pvalue>Site_Created_By_UnitTest</pvalue>
+			</pvalues>
+		</property>		
+      
+      <property name="siteVariables_All"> 
+         <propertySet>
+		      <property name="name"  value="added_sitevar"/>
+		      <property name="context"  value="Site_Folder_Assembly"/>
+		      <property name="value"  value="Added Value"/>
+         </propertySet>
+         <propertySet>
+		      <property name="name"  value="added_sitevar2"/>
+		      <property name="context"  value="Site_Folder_Assembly"/>
+		      <property name="value"  value="Added Value"/>
+         </propertySet>
+      </property>
+
+   </SolutionConfig>
+</SolutionConfigurations>

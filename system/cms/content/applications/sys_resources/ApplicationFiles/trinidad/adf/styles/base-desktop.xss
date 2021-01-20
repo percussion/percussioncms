@@ -1,0 +1,4346 @@
+<?xml version="1.0"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+	   
+-->
+
+<!--
+  base-desktop.xss defines all of the base styles for the Simple skins
+-->
+
+<!-- DO NOT CHANGE THE DOCUMENT VERSION FROM ${trinidad-version} -->
+<styleSheetDocument xmlns="http://myfaces.apache.org/uix/style"
+                    documentVersion="${trinidad-version}"
+                    version="2.0">
+
+<!-- 
+
+  Please Note:  We are in the processing of reviewing the set of
+  style classes/named styles that are exposed to customizers.  Thus,
+  this style sheet document is temporarily divided into
+  two sections.  
+
+  The first section contains style definitions that 
+  have been reviewed and have been determined to be suitable for
+  use by customizers.
+
+  The second section contains style definitions that are required
+  by the Minimal or Simple Look And Feel implementations, but have
+  not yet been reviewed - and thus could potentially be changed or
+  moved back down into the MLAF/SLAF style sheets.
+
+  Please keep this in mind when adding new style definitions.
+
+-->
+
+<styleSheet>
+
+  <!--
+
+    Section 1: Publically supported styles.   The styles defined in
+    this section have been reviewed and are considered suitable for use
+    by customizers.
+
+  -->
+
+  <!-- 
+    Global font named styles
+  -->
+
+  <!-- The default font family -->
+  <style name="AFDefaultFontFamily">
+    <property name="font-family">Arial,Helvetica,Geneva,sans-serif</property>
+  </style>
+
+  <!-- The default font -->
+  <style name="AFDefaultFont">
+    <includeStyle name="AFDefaultFontFamily"/>
+    <property name="font-size">10pt</property>
+    <property name="font-weight">normal</property>
+  </style>
+
+  <!-- The default bold font -->
+  <style name="AFDefaultBoldFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-weight">bold</property>
+  </style>
+
+  <!-- A very small font -->
+  <style name="AFVerySmallFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">-2pt</property>
+  </style>
+
+  <!-- A small font -->
+  <style name="AFSmallFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">-1pt</property>
+  </style>
+
+  <!-- A medium font - just slightly bigger than default -->
+  <style name="AFMediumFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">+1pt</property>
+  </style>
+
+  <!-- A large font -->
+  <style name="AFLargeFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">+3pt</property>
+  </style>
+
+  <!-- A very large font -->
+  <style name="AFVeryLargeFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">+6pt</property>
+  </style>
+
+  <!-- 
+    Global background color named styles
+  -->
+
+  <!-- AFDarkBackground defines the primary color in the
+       core (green) color ramp. -->
+  <style name="AFDarkBackground">
+    <property name="background-color">#669966</property> 
+  </style>
+
+  <!-- AFVeryDarkBackground is the darkest color in the 
+       core (green) color ramp. -->
+  <style name="AFVeryDarkBackground">
+    <includeStyle name="AFDarkBackground"/>
+    <property name="background-color">-#333333</property>
+  </style>
+
+  <!-- AFMediumBackground is the middle color in the 
+       core (green) color ramp. -->
+  <style name="AFMediumBackground">
+    <includeStyle name="AFDarkBackground"/>
+    <property name="background-color">+#333333</property>
+  </style>
+
+  <!-- AFLightBackground is the lightest color in the 
+       core (green) color ramp. -->
+  <style name="AFLightBackground">
+    <includeStyle name="AFDarkBackground"/>
+    <property name="background-color">+#666666</property>
+  </style>
+
+  <!-- AFDarkAccentBackground defines the primary color in the 
+       accent (grey) color ramp.  -->
+  <style name="AFDarkAccentBackground">
+    <property name="background-color">#CCCCCC</property>
+  </style>
+
+  <!-- AFVeryDarkAccentBackground is the darkest color in the accent (grey)
+       color ramp. -->
+  <style name="AFVeryDarkAccentBackground">
+    <includeStyle name="AFDarkAccentBackground"/>
+    <property name="background-color">-#333333</property>
+  </style>
+
+  <!-- AFMediumAccentBackground is the middle color in the accent (grey)
+       color ramp.  -->
+  <style name="AFMediumAccentBackground">
+    <includeStyle name="AFDarkAccentBackground"/>
+    <property name="background-color">+#333300</property>
+  </style>
+
+  <!-- AFLightAccentBackground is the lightest color in the accent (grey)
+       color ramp. -->
+  <style name="AFLightAccentBackground">
+    <includeStyle name="AFDarkAccentBackground"/>
+    <property name="background-color">+#1D1C1C</property>
+    <!--property name="background-color">#E9E8E8</property-->
+  </style>
+
+  <!-- AFTextBackground is the (white) background color used for
+       most text -->
+  <style name="AFTextBackground">
+    <property name="background-color">#ffffff</property>
+  </style>
+
+  <!-- 
+    Global foreground color named styles
+  -->
+
+  <!-- AFVeryDarkForeground is the darkest foreground color in the core (green)
+       color ramp -->
+  <style name="AFVeryDarkForeground">
+    <includeProperty name="AFVeryDarkBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+
+  <!-- AFDarkForeground is the primary foreground color in the core (green)
+       color ramp -->
+  <style name="AFDarkForeground">
+    <includeProperty name="AFDarkBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- AFMediumForeground is the middle foreground color in the core (green)
+       color ramp -->
+  <style name="AFMediumForeground">
+    <includeProperty name="AFMediumBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- AFLightForeground is the lightest foreground color in the core (green)
+       color ramp -->
+  <style name="AFLightForeground">
+    <includeProperty name="AFLightBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- AFVeryDarkAccentForeground is the darkest foreground color in the
+       accent (grey) color ramp -->
+  <style name="AFVeryDarkAccentForeground">
+    <includeProperty name="AFVeryDarkAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- AFDarkAccentForeground is the primary foreground color in the
+       accent (grey) color ramp -->
+  <style name="AFDarkAccentForeground">
+    <includeProperty name="AFDarkAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- AFMediumAccentForeground is the middle foreground color in the
+       accent (grey) color ramp -->
+  <style name="AFMediumAccentForeground">
+    <includeProperty name="AFMediumAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- AFLightAccentForeground is the lightest foreground color in the
+       accent (grey) color ramp -->
+  <style name="AFLightAccentForeground">
+    <includeProperty name="AFLightAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- AFTextForeground is the (black) foreground color used for almost
+       all text -->
+  <style name="AFTextForeground">
+    <property name="color">#000000</property>
+  </style>
+
+
+  <!-- AFSelectedTextForeground is the (white) foreground color used for
+       "selected" text - text which is typically drawn on a dark
+       background -->
+  <style name="AFSelectedTextForeground">
+    <includeProperty name="AFTextBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- Style for error text -->
+  <style name="AFErrorTextForeground">
+    <property name="color">#cc0000</property>
+  </style>
+
+  <!-- Link colors -->
+  <style name="AFLinkForeground">
+    <includeProperty name="AFDarkBackground" 
+                     propertyName="background-color" 
+                     localPropertyName="color" />
+    <property name="color">-#666633</property>
+  </style>
+
+  <style name="AFActiveLinkForeground">
+    <includeStyle name="AFLinkForeground"/>
+    <property name="color">+#003333</property>
+  </style>
+
+  <style name="AFVisitedLinkForeground">
+    <includeStyle name="AFLinkForeground"/>
+    <property name="color">+#333333</property>
+  </style>
+
+  <style name="AFDisabledLinkForeground">
+    <includeStyle name="AFLinkForeground"/>
+    <property name="color">+#666666</property>
+  </style>
+
+  <!-- 
+    Border named sytles
+  -->
+
+  <style name="AFDarkBorder">
+    <includeProperty name="AFDarkBackground"
+                     propertyName="background-color"
+                     localPropertyName="border-color"/>
+  </style>    
+
+  <style name="AFVeryDarkBorder">
+    <includeProperty name="AFVeryDarkBackground"
+                     propertyName="background-color"
+                     localPropertyName="border-color"/>
+  </style>     
+
+  <style name="AFMediumBorder">
+    <includeProperty name="AFMediumBackground"
+                     propertyName="background-color"
+                     localPropertyName="border-color"/>
+  </style>    
+
+  <style name="AFLightBorder">
+    <includeProperty name="AFLightBackground"
+                     propertyName="background-color"
+                     localPropertyName="border-color"/>
+  </style>  
+
+  <style name="AFDarkAccentBorder">
+    <includeProperty name="AFDarkAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="border-color"/>
+  </style>
+
+  <style name="AFVeryDarkAccentBorder">
+    <includeProperty name="AFVeryDarkAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="border-color"/>
+  </style>
+
+  <style name="AFMediumAccentBorder">
+    <includeProperty name="AFMediumAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="border-color"/>
+  </style>
+
+  <style name="AFLightAccentBorder">
+    <includeProperty name="AFLightAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="border-color"/>
+  </style>
+
+  <!--
+    Alignment named styles
+  -->
+
+  <style name="AFStartTextAlign">
+    <property name="text-align">left</property>
+  </style>
+
+  <style name="AFEndTextAlign">
+    <property name="text-align">right</property>
+  </style>
+
+  <style name="AFFloatStart">
+    <property name="float">left</property>    
+  </style>
+  
+  <style name="AFFloatEnd">
+    <property name="float">right</property>    
+  </style>
+  
+  <!-- TODO New for Fusion Doc -->
+  <style name="AFEndPadding">
+  	<property name="padding">0px 8px 0px 0px</property>
+  </style> 
+
+  <style name="AFStartPadding">
+  	<property name="padding">0px 0px 0px 8px</property>
+  </style>
+
+  <!-- Additional named styles for alignment;  not strictly necessary,
+       since these aren't actually ever overridden, but it
+       does make alignment in our XSS more obvious -->
+  <style name="AFLeftTextAlign">
+    <property name="text-align">left</property>
+  </style>
+
+  <style name="AFRightTextAlign">
+    <property name="text-align">right</property>
+  </style>
+
+  <style name="AFCenterTextAlign">
+    <property name="text-align">center</property>
+  </style>
+
+  <!--
+    Global text style classes. These are available to the application
+    developer to use on outputText and outputFormatted.
+  -->
+  <style selector=".AFInstructionText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+
+  <style selector=".AFInstructionTextDisabled">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="MediumExtraAccentForeground"/>
+  </style>
+  
+  <style selector=".AFDataText">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+  
+  <style selector=".AFDataTextDisabled">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="MediumExtraAccentForeground"/>
+  </style>
+  
+  <style selector=".AFDataNumber">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFTextForeground"/>
+    <includeStyle name="AFRightTextAlign"/>
+  </style>
+  
+  <style selector=".AFDataNumberDisabled">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="MediumExtraAccentForeground"/>
+    <includeStyle name="AFRightTextAlign"/>
+  </style>  
+  <!-- also used in our select components and the composites that use these,
+       like shuttle and chooseDate. -->
+  <style selector=".AFFieldText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+  
+  <style selector=".AFFieldTextDisabled">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="MediumExtraAccentForeground"/>
+  </style>
+
+  <style selector=".AFFieldNumber">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFRightTextAlign"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+
+  <style selector=".AFFieldNumberDisabled">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFRightTextAlign"/>
+    <includeStyle name="MediumExtraAccentForeground"/>
+  </style>
+  
+  <!-- TODO Doc changes:
+  .AFLabelText - 
+    if you skinned this, rename to .AFLabel:alias 
+    or include .AFLabelText in .AFLabel:alias 
+  .AFLabelCell -
+    if you skinned this, put these changes in .AFLabel:alias or include 
+    .AFLabelCell in .AFLabel:alias
+  -->
+  <!-- until I sync up server-side components, use this -->
+  <!-- TODO get rid of this when server-side components have the same styles! -->
+  <style selector=".AFLabelText">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector=".AFLabelCell">
+    <includeStyle name="AFEndPadding"/>   
+  </style>  
+  
+  <!-- This allows server-side labels to have the same color -->
+  <style name="AFLabelTextForeground">
+    <includeStyle name="AFTextForeground"/>
+  </style>
+  <style name="AFLabelTextForegroundDisabled">
+    <includeStyle name="AFTextForeground"/>
+  </style>
+
+  <style name="AFLabel">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFEndTextAlign"/>
+    <includeStyle name="AFLabelTextForeground"/>
+    <property name="font-weight">normal</property>
+    <includeStyle name="AFEndPadding"/>   
+  </style>
+  
+  <!-- This is a convenience for people that want all disabled labels to look the same -->
+
+  <style name="AFLabelDisabled">
+    <includeStyle name="AFLabelTextForegroundDisabled"/>
+  </style>
+
+  <!-- 
+    Global Icon Styles
+  -->
+  <style selector=".AFErrorIconStyle">
+    <includeStyle name="AFErrorTextForeground"/>
+    <property name="font-family">monospace</property>
+    <property name="font-weight">bold</property>
+  </style>
+
+  <style selector=".AFInfoIconStyle">
+    <includeStyle name="AFDarkForeground"/>
+    <property name="font-family">monospace</property>
+    <property name="font-weight">bold</property>
+  </style>
+
+  <style selector=".AFWarningIconStyle">
+    <includeStyle name="AFDarkForeground"/>
+    <property name="font-family">monospace</property>
+    <property name="font-weight">bold</property>
+  </style>
+
+  <style selector=".AFRequiredIconStyle">
+    <includeStyle name="AFDarkForeground"/>
+    <!-- This style is only applied to the required icon ('*'),
+         so we don't have to worry about picking a font that
+         can be used for non-English text -->
+    <property name="font-family">Courier,sans-serif</property>
+  </style>
+
+  <style selector=".AFQuickSelectIconStyle">
+    <includeStyle name="AFDarkForeground"/>
+    <property name="font-family">monospace</property>
+    <property name="font-weight">bold</property>
+  </style>
+
+
+  <style selector=".AFQuickSelectDisabledIconStyle">
+    <includeStyle name="MediumExtraAccentForeground"/>
+    <property name="font-family">monospace</property>
+    <property name="font-weight">bold</property>
+  </style>
+
+  <!--
+     Global Link Styles
+
+     Note: Keep these near the top so that .OraLink gets a
+     2 character alias.
+  -->
+
+  <style selector=".OraLink:link">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector=".OraLink:active">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFActiveLinkForeground"/>
+  </style>
+
+  <style selector=".OraLink:visited">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFVisitedLinkForeground"/>   
+  </style>  
+
+  <style selector=".OraLinkDisabled">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+  
+
+  <style selector="af|outputText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>  
+  
+
+  <style selector="af|outputFormatted">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+  
+  <!-- outputDocument selectors -->
+  <!-- TODO: Document those selectors -->
+  
+  <style selector="af|outputDocument">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+  
+  <style selector="af|outputDocument::title">
+    <includeStyle name="AFLargeFont"/>
+    <includeStyle name="AFHeaderText"/>
+    <property name="padding">0px</property>
+    <property name="margin">0px</property>
+  </style>
+  
+  <style selector="af|outputDocument::paragraph">
+    <property name="text-align">justify</property>
+    <property name="padding">0px</property>
+    <property name="margin">0px</property>
+  </style>
+  
+  <style selector="af|outputDocument::separator">
+    <property name="text-align">center</property>
+    <property name="padding">0px</property>
+    <property name="margin">0px</property>
+  </style>
+  
+  <!-- form control styles -->
+  <style selector="af|outputLabel">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector="af|inputChoice::label">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector="af|inputFile::label">
+    <includeStyle name="AFLabel"/>
+  </style>  
+  <style selector="af|inputNumberSpinbox::label">
+    <includeStyle name="AFLabel"/>
+  </style>   
+  <style selector="af|inputText::label">
+    <includeStyle name="AFLabel"/>
+  </style>  
+  <style selector="af|selectBooleanCheckbox::label">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector="af|selectBooleanRadio::label">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector="af|inputColor::label">
+    <includeStyle name="AFLabel"/>
+  </style>   
+  <style selector="af|inputDate::label">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector="af|inputListOfValues::label">
+    <includeStyle name="AFLabel"/>
+  </style>  
+  <style selector="af|selectManyCheckbox::label">
+    <includeStyle name="AFLabel"/>
+  </style> 
+  <style selector="af|selectManyListbox::label">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector="af|selectOneChoice::label">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector="af|selectOneListbox::label">
+    <includeStyle name="AFLabel"/>
+  </style> 
+  <style selector="af|selectOneRadio::label">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector="af|panelLabelAndMessage::label">
+    <includeStyle name="AFLabel"/>
+  </style>
+
+  <style selector="af|panelTip">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <style selector="af|panelTip::label">
+    <includeStyle name="AFDefaultBoldFont"/>
+  </style>
+
+  <style selector="af|panelTip::content">
+  </style>
+  
+  <!-- Required label selectors -->
+  
+  <!-- Main required label alias -->
+  <style name="AFRequiredLabel">
+  </style>
+  
+  <!-- Per component selectors -->
+  <style selector="af|inputColor:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|inputDate:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|inputFile:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|inputListOfValues:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|inputNumberSpinbox:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|inputText:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|selectBooleanCheckbox:required::label">  
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|selectBooleanRadio:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|selectManyCheckbox:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|selectManyListbox:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|selectOneChoice:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|selectOneListbox:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  <style selector="af|selectOneRadio:required::label">
+    <includeStyle name="AFRequiredLabel"/>
+  </style>
+  
+  <style selector="af|inputChoice:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>
+  <style selector="af|inputNumberSpinbox:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>  
+  <style selector="af|inputText:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>  
+  <style selector="af|selectBooleanCheckbox:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>
+  <style selector="af|selectBooleanRadio:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>
+  <style selector="af|inputColor:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>  
+  <style selector="af|inputDate:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>
+  <style selector="af|inputListOfValues:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>  
+  <style selector="af|selectManyCheckbox:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style> 
+  <style selector="af|selectManyListbox:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>
+  <style selector="af|selectOneChoice:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>
+  <style selector="af|selectOneListbox:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style> 
+  <style selector="af|selectOneRadio:disabled::label">
+    <includeStyle name="AFLabelDisabled"/>
+  </style>  
+
+  <style selector="af|inputChoice::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>
+  <style selector="af|inputChoice::content-input">
+    <includeStyle selector="af|inputChoice::content"/>
+  </style>  
+  <style selector="af|inputText::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>   
+  <style selector="af|inputNumberSpinbox::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>
+  <style selector="af|inputNumberSpinbox::increment-cell">
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFVeryDarkAccentBorder"/>
+    <property name="border-width">1px</property>
+    <property name="border-style">solid</property>
+    <property name="width">11px</property>
+    <property name="height">8px</property>
+  </style>
+  <style selector="af|inputNumberSpinbox::decrement-cell">
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFVeryDarkAccentBorder"/>
+    <property name="border-width">1px</property>
+    <property name="border-style">solid</property>
+    <property name="width">11px</property>
+    <property name="height">8px</property>
+  </style>
+  <style selector="af|inputNumberSpinbox::spinbox-cell">
+    <property name="padding-left">1px</property>
+  </style>
+  <style selector="af|inputText::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>
+  <style selector="af|inputColor::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>  
+  <style selector="af|inputDate::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>
+  <style selector="af|inputListOfValues::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>  
+  <style selector="af|selectManyCheckbox::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style> 
+  <style selector="af|selectManyListbox::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>
+  <style selector="af|selectOneChoice::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>
+  <style selector="af|selectOneListbox::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>
+  <style selector="af|selectOneRadio::content">
+    <includeStyle name="AFFormControlContent"/>
+  </style>
+  
+  <!-- Required content selectors -->
+  
+  <!-- Main required content alias -->
+  <style name="AFRequiredContent">
+  </style>
+  
+  <!-- Per component selectors -->
+  <style selector="af|inputColor:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|inputDate:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|inputFile:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|inputListOfValues:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|inputNumberSpinbox:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|inputText:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|selectBooleanCheckbox:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|selectBooleanRadio:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|selectManyCheckbox:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|selectManyListbox:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|selectOneChoice:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|selectOneListbox:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  <style selector="af|selectOneRadio:required::content">
+    <includeStyle name="AFRequiredContent"/>
+  </style>
+  
+  <!-- place-holder. No need to style this for base -->
+  <style selector="af|selectOneRadio::item-text">
+  </style>
+  <style selector="af|selectManyCheckbox::item-text">
+  </style>
+  
+  <!-- inputText's marker style classes that will style the content piece -->
+  <!-- when the user says styleClass="AFFieldNumberMarker", for example -->
+  <style selector="af|inputText.AFFieldTextMarker::content">
+    <includeStyle selector=".AFFieldText"/>
+  </style> 
+  <style selector="af|inputText:disabled.AFFieldTextMarker::content">
+    <includeStyle selector=".AFFieldText"/>
+  </style>   
+  <style selector="af|inputText.AFFieldNumberMarker::content">
+    <includeStyle selector=".AFFieldNumber"/>
+  </style> 
+  <style selector="af|inputText:disabled.AFFieldNumberMarker::content">
+    <includeStyle selector=".AFFieldNumberDisabled"/>
+  </style> 
+  <style selector="af|inputText.AFFieldTextLTRMarker::content">
+    <includeStyle selector=".AFFieldTextLTR"/>
+  </style> 
+  <style selector="af|inputText:disabled.AFFieldTextLTRMarker::content">
+    <includeStyle selector=".AFFieldTextLTRDisabled"/>
+  </style> 
+  <style selector="af|inputText.AFPhoneFieldTextMarker::content">
+    <includeStyle selector=".AFPhoneFieldText"/>
+  </style> 
+  <style selector="af|inputText:disabled.AFPhoneFieldTextMarker::content">
+    <includeStyle selector=".AFPhoneFieldTextDisabled"/>
+  </style>
+  <style selector="af|inputText.AFPostalCodeFieldTextMarker::content">
+    <includeStyle selector=".AFPostalCodeFieldText"/>
+  </style> 
+  <style selector="af|inputText:disabled.AFPostalCodeFieldTextMarker::content">
+    <includeStyle selector=".AFPostalCodeFieldTextDisabled"/>
+  </style>   
+  <style selector="af|inputText.AFAddressFieldTextMarker::content">
+    <includeStyle selector=".AFAddressFieldText"/>
+  </style> 
+  <style selector="af|inputText:disabled.AFAddressFieldTextMarker::content">
+    <includeStyle selector=".AFAddressFieldTextDisabled"/>
+  </style> 
+  <!-- inputChoices's marker style classes that will style the content piece -->
+  <!-- when the user says styleClass="AFFieldNumberMarker", for example -->
+  <style selector="af|inputChoice.AFFieldTextMarker::content-input">
+    <includeStyle selector=".AFFieldText"/>
+  </style> 
+  <style selector="af|inputChoice:disabled.AFFieldTextMarker::content-input">
+    <includeStyle selector=".AFFieldText"/>
+  </style>   
+  <style selector="af|inputChoice.AFFieldNumberMarker::content-input">
+    <includeStyle selector=".AFFieldNumber"/>
+  </style> 
+  <style selector="af|inputChoice:disabled.AFFieldNumberMarker::content-input">
+    <includeStyle selector=".AFFieldNumberDisabled"/>
+  </style> 
+  <style selector="af|inputChoice.AFFieldTextLTRMarker::content-input">
+    <includeStyle selector=".AFFieldTextLTR"/>
+  </style> 
+  <style selector="af|inputChoice:disabled.AFFieldTextLTRMarker::content-input">
+    <includeStyle selector=".AFFieldTextLTRDisabled"/>
+  </style> 
+  <style selector="af|inputChoice.AFPhoneFieldTextMarker::content-input">
+    <includeStyle selector=".AFPhoneFieldText"/>
+  </style> 
+  <style selector="af|inputChoice:disabled.AFPhoneFieldTextMarker::content-input">
+    <includeStyle selector=".AFPhoneFieldTextDisabled"/>
+  </style>
+  <style selector="af|inputChoice.AFPostalCodeFieldTextMarker::content-input">
+    <includeStyle selector=".AFPostalCodeFieldText"/>
+  </style> 
+  <style selector="af|inputChoice:disabled.AFPostalCodeFieldTextMarker::content-input">
+    <includeStyle selector=".AFPostalCodeFieldTextDisabled"/>
+  </style>   
+  <style selector="af|inputChoice.AFAddressFieldTextMarker::content-input">
+    <includeStyle selector=".AFAddressFieldText"/>
+  </style> 
+  <style selector="af|inputChoice:disabled.AFAddressFieldTextMarker::content-input">
+    <includeStyle selector=".AFAddressFieldTextDisabled"/>
+  </style> 
+  <!-- inputNumberSpinbox's marker style classes that will style the content piece -->
+  <!-- when the user says styleClass="AFFieldNumberMarker", for example -->
+  <style selector="af|inputNumberSpinbox.AFFieldTextMarker::content">
+    <includeStyle selector=".AFFieldText"/>
+  </style> 
+  <style selector="af|inputNumberSpinbox:disabled.AFFieldTextMarker::content">
+    <includeStyle selector=".AFFieldText"/>
+  </style>   
+  <style selector="af|inputNumberSpinbox.AFFieldNumberMarker::content">
+    <includeStyle selector=".AFFieldNumber"/>
+  </style> 
+  <style selector="af|inputNumberSpinbox:disabled.AFFieldNumberMarker::content">
+    <includeStyle selector=".AFFieldNumberDisabled"/>
+  </style> 
+  <style selector="af|inputNumberSpinbox.AFFieldTextLTRMarker::content">
+    <includeStyle selector=".AFFieldTextLTR"/>
+  </style> 
+  <style selector="af|inputNumberSpinbox:disabled.AFFieldTextLTRMarker::content">
+    <includeStyle selector=".AFFieldTextLTRDisabled"/>
+  </style>
+  
+<!-- use this to style all required icons the same -->
+<!-- .AFRequiredIconStyle:alias This is NOT the same as the selector 
+.AFRequiredIconStyle that we have in server-side components. That is a selector, this is an alias -->
+  <style name="AFRequiredIconStyle">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  <!-- required icon -->
+  <style selector="af|outputLabel::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style>
+  <style selector="af|inputChoice::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style>
+  <style selector="af|inputNumberSpinbox::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style>  
+  <style selector="af|inputText::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style>
+  <style selector="af|selectBooleanCheckbox::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style>
+  <style selector="af|selectBooleanRadio::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style>
+  <style selector="af|inputDate::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style> 
+  <style selector="af|selectManyCheckbox::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style> 
+  <style selector="af|selectManyListbox::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style>
+  <style selector="af|selectOneChoice::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style>
+  <style selector="af|selectOneListbox::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style> 
+  <style selector="af|selectOneRadio::required-icon-style">
+    <includeStyle name="AFRequiredIconStyle"/>
+  </style>
+ 
+  <!-- required group icon. TODO Doc only when we have the requiredGroup attribute --> 
+  <style name="AFRequiredGroupIconStyle">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+  
+  <style selector="af|outputLabel::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style>
+  <style selector="af|inputChoice::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style>
+  <style selector="af|inputNumberSpinbox::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style>  
+  <style selector="af|inputText::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style>
+  <style selector="af|selectBooleanCheckbox::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style>
+  <style selector="af|selectBooleanRadio::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style>
+  <style selector="af|inputDate::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style> 
+  <style selector="af|selectManyCheckbox::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style> 
+  <style selector="af|selectManyListbox::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style>
+  <style selector="af|selectOneChoice::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style>
+  <style selector="af|selectOneListbox::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style> 
+  <style selector="af|selectOneRadio::group-icon-style">
+    <includeStyle name="AFRequiredGroupIconStyle"/>
+  </style>  
+  <!-- menuList styles
+  -->
+  <style selector="af|menuList::selected">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFLightBackground"/>
+  </style>
+
+  <style selector="af|menuList">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  <!-- 
+    tr:menuChoice Styles
+  -->
+
+  <style selector="af|menuChoice::label">
+    <includeStyle name="AFVerySmallFont"/>
+  </style>
+
+  <!--
+    Body Styles
+  -->
+
+  <style selector="BODY">
+    <includeStyle name="AFTextBackground"/>
+    <includeStyle name="AFDefaultFontFamily"/>
+  </style>
+
+  <!-- form controls -->
+  <!-- alias for the content of the form controls -->
+  <!-- 10.1.3 uses AFFieldText, so this is a good way to keep old skins working -->
+  <!-- otherwise I could include the same styles that AFFieldText includes -->
+  <style name="AFFormControlContent">
+    <includeStyle selector=".AFFieldText"/>
+  </style>
+  
+  
+  <!-- menuPath alias names -->
+  <!-- use the alias names  when you want to customize -->
+  <!-- one style and affect more than one -->
+  <!-- e.g., both af|menuPath and af|treeTable::path include the -->
+  <!-- AFPath style -->
+  <!-- this way if you want to change the style for af|menuPath and -->
+  <!-- af|treeTable::path to the same, the most convenient way -->
+  <!-- is to change the AFPath -->
+  <style name="AFPath">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+    
+  <style name="AFPathStep">
+    <includeStyle name="AFLinkForeground"/>
+    <includeProperty name="SmallLinkFont" propertyName="font-size"/>
+  </style>
+  
+  <style name="AFPathSelectedStep">
+    <includeStyle name="AFTextForeground"/>
+  </style> 
+   
+  
+  <!--
+    tr:treeTable menuPath  styles
+  -->
+  <style selector="af|treeTable::path">
+    <includeStyle name="AFPath"/>
+  </style>
+
+  <style selector="af|treeTable::path-step">
+    <includeStyle name="AFPathStep"/>
+  </style>
+
+  <style selector="af|treeTable::path-selected-step">
+    <includeStyle name="AFPathStep"/>
+    <includeStyle name="AFPathSelectedStep"/>
+  </style>
+  
+  <!--
+    tr:menuPath Styles
+    @todo What calls MenuPathRenderer?
+  -->
+
+  <style selector="af|menuPath">
+    <includeStyle name="AFPath"/>
+  </style>
+
+  <style selector="af|menuPath::step">
+    <includeStyle name="AFPathStep"/>
+  </style>
+
+  <style selector="af|menuPath::selected-step">
+    <includeStyle name="AFPathSelectedStep"/>
+    <includeStyle selector="af|menuPath::step"/>
+  </style>
+
+  <!--
+    tr:panelList Styles
+  -->
+  <!--style selector=".OraBulletedList A">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector=".OraBulletedList UL">
+    <property name="margin-top">4px</property>
+    <property name="margin-bottom">4px</property>
+  </style-->
+
+  <style selector="af|panelList::link">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector="af|panelList::unordered-list">
+    <property name="margin-top">4px</property>
+    <property name="margin-bottom">4px</property>
+  </style>
+  <!--
+    Button Styles
+  -->
+
+  <style selector="button">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  <!-- 
+    ColorField styles 
+  -->
+  <style selector="af|inputColor::swatch-overlay">
+    <property name="position">relative</property>
+    <property name="left">-7px</property>
+    <property name="top">5px</property>
+  </style>
+
+  <!-- navigationLevel styles -->
+  <style selector="af|navigationPane::bar">
+    <property name="background-color">#EFEFEF</property>
+    <property name="padding-left">6px</property>
+    <property name="padding-right">6px</property>
+  </style>
+  <style selector="af|navigationPane::bar-active-disabled">
+    <property name="cursor">default</property>
+  </style>
+  <style selector="af|navigationPane::bar-active-enabled">
+    <property name="cursor">pointer</property>
+  </style>
+  <style selector="af|navigationPane::bar-inactive-disabled">
+    <property name="cursor">default</property>
+  </style>
+  <style selector="af|navigationPane::bar-inactive-enabled">
+    <property name="cursor">pointer</property>
+  </style>
+  <style selector="af|navigationPane::bar-active-enabled af|navigationPane::bar-content">
+    <includeStyle name="AFTextForeground"/>
+  </style>
+  <style selector="af|navigationPane::bar-inactive-enabled af|navigationPane::bar-content">
+    <includeStyle name="AFTextForeground"/>  
+  </style>
+  <style selector="af|navigationPane::bar-active-enabled af|navigationPane::bar-content a">
+    <includeStyle name="AFTextForeground"/>  
+  </style>
+  <style selector="af|navigationPane::bar-inactive-enabled af|navigationPane::bar-content a">
+    <includeStyle name="AFTextForeground"/>
+  </style>
+  <style selector="af|navigationPane::bar-active-enabled af|navigationPane::bar-content a:hover">
+    <property name="text-decoration">underline</property>
+  </style>
+  <style selector="af|navigationPane::bar-inactive-enabled af|navigationPane::bar-content a:hover">
+    <property name="text-decoration">underline</property>
+  </style>
+  <style selector="af|navigationPane::bar-active-disabled af|navigationPane::bar-content">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::bar-inactive-disabled af|navigationPane::bar-content">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::bar-active-disabled af|navigationPane::bar-content a">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::bar-inactive-disabled af|navigationPane::bar-content a">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::bar-active-enabled af|navigationPane::bar-content">
+    <property name="font-weight">bold</property>
+  </style>
+  <style selector="af|navigationPane::bar-active-disabled af|navigationPane::bar-content">
+    <property name="font-weight">bold</property>
+  </style>
+  <style selector="af|navigationPane::bar-content">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="padding-top">3px</property>
+    <property name="padding-bottom">3px</property>
+  </style>
+  <style selector="af|navigationPane::bar-content a">
+    <property name="text-decoration">none</property>
+  </style>
+  <style selector="af|navigationPane::bar-separator">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="padding-left">6px</property>
+    <property name="padding-right">6px</property>
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::buttons-active-disabled">
+    <property name="cursor">default</property>
+  </style>
+  <style selector="af|navigationPane::buttons-active-enabled">
+    <property name="cursor">pointer</property>
+  </style>
+  <style selector="af|navigationPane::buttons-inactive-disabled">
+    <property name="cursor">default</property>
+  </style>
+  <style selector="af|navigationPane::buttons-inactive-enabled">
+    <property name="cursor">pointer</property>
+  </style>
+  <style selector="af|navigationPane::buttons-active-enabled af|navigationPane::buttons-content a:hover">
+    <property name="text-decoration">underline</property>
+  </style>
+  <style selector="af|navigationPane::buttons-inactive-enabled af|navigationPane::buttons-content a:hover">
+    <property name="text-decoration">underline</property>
+  </style>
+  <style selector="af|navigationPane::buttons-active-disabled af|navigationPane::buttons-content">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::buttons-inactive-disabled af|navigationPane::buttons-content">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::buttons-active-disabled af|navigationPane::buttons-content a">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::buttons-inactive-disabled af|navigationPane::buttons-content a">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::buttons-active-enabled af|navigationPane::buttons-content">
+    <property name="font-weight">bold</property>
+  </style>
+  <style selector="af|navigationPane::buttons-active-disabled af|navigationPane::buttons-content">
+    <property name="font-weight">bold</property>
+  </style>
+  <style selector="af|navigationPane::buttons-content">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="padding-top">3px</property>
+    <property name="padding-bottom">3px</property>
+  </style>
+  <style selector="af|navigationPane::buttons-content a">
+    <property name="text-decoration">none</property>
+  </style>
+  <style selector="af|navigationPane::buttons-separator">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="padding-left">6px</property>
+    <property name="padding-right">6px</property>
+  </style>
+  <style selector="af|navigationPane::choice-label">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+  <style selector="af|navigationPane::choice-options">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+  <style selector="af|navigationPane::choice-button">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+  <style selector="af|navigationPane::list-active-disabled">
+    <property name="cursor">default</property>
+  </style>
+  <style selector="af|navigationPane::list-active-enabled">
+    <property name="cursor">pointer</property>
+  </style>
+  <style selector="af|navigationPane::list-inactive-disabled">
+    <property name="cursor">default</property>
+  </style>
+  <style selector="af|navigationPane::list-inactive-enabled">
+    <property name="cursor">pointer</property>
+  </style>
+  <style selector="af|navigationPane::list-active-enabled af|navigationPane::list-content a:hover">
+    <property name="text-decoration">underline</property>
+  </style>
+  <style selector="af|navigationPane::list-inactive-enabled af|navigationPane::list-content a:hover">
+    <property name="text-decoration">underline</property>
+  </style>
+  <style selector="af|navigationPane::list-active-disabled af|navigationPane::list-content">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::list-inactive-disabled af|navigationPane::list-content">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::list-active-disabled af|navigationPane::list-content a">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::list-inactive-disabled af|navigationPane::list-content a">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::list-active-enabled af|navigationPane::list-content">
+    <property name="font-weight">bold</property>
+  </style>
+  <style selector="af|navigationPane::list-active-disabled af|navigationPane::list-content">
+    <property name="font-weight">bold</property>
+  </style>
+  <style selector="af|navigationPane::list-content">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="padding-top">3px</property>
+    <property name="padding-bottom">3px</property>
+  </style>
+  <style selector="af|navigationPane::list-content a">
+    <property name="text-decoration">none</property>
+  </style>
+  <style selector="af|navigationPane::list-bullet">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="vertical-align">middle</property>
+    <property name="width">17px</property>
+    <property name="background-image">url('/adf/images/list-bullet.gif')</property>
+    <property name="background-position">center</property>
+    <property name="background-repeat">no-repeat</property>
+  </style>
+  <style selector="af|navigationPane::tabs">
+    <property name="height">26px</property>
+    <property name="overflow">hidden</property>
+  </style>
+  <style name=".p_AFOverlappingTabTopHeight">
+    <property name="height">22px</property>
+  </style> 
+  <style name=".p_AFOverlappingTabBottomHeight">
+    <property name="height">4px</property>
+  </style> 
+  <style selector="af|navigationPane::tabs-active">
+    <property name="cursor">pointer</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive">
+    <property name="cursor">pointer</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active:disabled">
+    <property name="cursor">default</property>
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive:disabled">
+    <property name="cursor">default</property>
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::tabs-start">
+    <includeStyle name=".p_AFOverlappingTabTopHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-start-join">
+    <includeStyle name=".p_AFOverlappingTabTopHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-start-join-from-active">
+    <includeStyle name=".p_AFOverlappingTabTopHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-start-join-from-inactive">
+    <includeStyle name=".p_AFOverlappingTabTopHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-mid">
+    <includeStyle name=".p_AFOverlappingTabTopHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-end-join-to-inactive">
+    <includeStyle name=".p_AFOverlappingTabTopHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-end">
+    <includeStyle name=".p_AFOverlappingTabTopHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-start">
+    <includeStyle name=".p_AFOverlappingTabBottomHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-start-content">
+    <includeStyle name=".p_AFOverlappingTabBottomHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-mid">
+    <includeStyle name=".p_AFOverlappingTabBottomHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-mid-content">
+    <includeStyle name=".p_AFOverlappingTabBottomHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-end">
+    <includeStyle name=".p_AFOverlappingTabBottomHeight"/>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-end-content">
+    <includeStyle name=".p_AFOverlappingTabBottomHeight"/>
+  </style>
+  <!-- =-= mcc TODO the following tab styles need corresponding RTL versions, images too -->
+  <!-- =-= aew TODO the following tab styles should all be transferred out of base-desktop.xss and into another style sheet! base-desktop.xss should only have primitive styles -->
+  <style selector="af|navigationPane::tabs-start">
+    <property name="width">26px</property>
+    <property name="background-position">top right</property>
+  </style>
+  <style selector="af|navigationPane::tabs-start-join">
+    <property name="width">26px</property>
+    <property name="background-position">top right</property>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-start">
+    <property name="background-repeat">repeat-x</property>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-start-content">
+    <property name="width">17px</property>
+    <property name="background-repeat">no-repeat</property>
+  </style>
+  <style selector="af|navigationPane::tabs-start-join-from-active">
+    <property name="width">14px</property>
+    <property name="background-repeat">no-repeat</property>
+  </style>
+  <style selector="af|navigationPane::tabs-start-join-from-inactive">
+    <property name="width">14px</property>
+    <property name="background-repeat">no-repeat</property>
+  </style>
+  <style selector="af|navigationPane::tabs-end-join-to-inactive">
+    <property name="width">12px</property>
+    <property name="background-repeat">no-repeat</property>
+  </style>
+  <style selector="af|navigationPane::tabs-mid">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="padding-left">3px</property>
+    <includeStyle name="AFTextForeground"/>
+    <property name="white-space">nowrap</property>
+  </style>
+  <style selector="af|navigationPane::tabs-mid A">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFTextForeground"/>
+    <property name="text-decoration">none</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active:disabled af|navigationPane::tabs-mid">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive:disabled af|navigationPane::tabs-mid">
+    <property name="color">gray</property>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-mid">
+    <property name="background-repeat">repeat-x</property>
+  </style>
+  <style selector="af|navigationPane::tabs-end">
+    <property name="width">15px</property>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-end">
+    <property name="background-repeat">repeat-x</property>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-end-join">
+    <property name="background-repeat">repeat-x</property>
+  </style>
+  <style selector="af|navigationPane::tabs-bottom-end-content">
+    <property name="width">100%</property>
+    <property name="background-repeat">no-repeat</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-start">
+    <property name="background-image">url('/adf/images/tab3-start-selected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-start-join">
+    <property name="background-image">url('/adf/images/tab3-start-join-selected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-start-join">
+    <property name="background-image">url('/adf/images/tab3-start-join-selected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-bottom-start">
+    <property name="background-image">url('/adf/images/tab3-bot-mid-selected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-bottom-start-content">
+    <property name="background-image">url('/adf/images/tab3-bot-start-selected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-mid">
+    <property name="background-image">url('/adf/images/tab3-mid-selected.gif')</property>
+    <property name="font-weight">bold</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-mid A">
+    <property name="font-weight">bold</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-bottom-mid">
+    <property name="background-image">url('/adf/images/tab3-bot-mid-selected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-end-join-to-inactive">
+    <property name="background-image">url('/adf/images/tab3-end-join-selected-to-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-end">
+    <property name="background-image">url('/adf/images/tab3-end-selected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-bottom-end">
+    <property name="background-image">url('/adf/images/tab3-bot-mid-selected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-bottom-end-join">
+    <property name="background-image">url('/adf/images/tab3-bot-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-active af|navigationPane::tabs-bottom-end-content">
+    <property name="background-image">url('/adf/images/tab3-bot-end-selected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-start">
+    <property name="background-image">url('/adf/images/tab3-start-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-bottom-start">
+    <property name="background-image">url('/adf/images/tab3-bot-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-bottom-start-content">
+    <property name="background-image">none</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-start-join-from-active">
+    <property name="background-image">url('/adf/images/tab3-start-join-selected-to-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-start-join-from-inactive">
+    <property name="background-image">url('/adf/images/tab3-start-join-deselected-to-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-mid">
+    <property name="background-image">url('/adf/images/tab3-mid-deselected.gif')</property>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-mid A">
+    <includeStyle name="AFTextForeground"/>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-bottom-mid">
+    <property name="background-image">url('/adf/images/tab3-bot-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-end-join-to-inactive">
+    <property name="background-image">url('/adf/images/tab3-end-join-deselected-to-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-end">
+    <property name="background-image">url('/adf/images/tab3-end-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-bottom-end">
+    <property name="background-image">url('/adf/images/tab3-bot-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-bottom-end-join">
+    <property name="background-image">url('/adf/images/tab3-bot-deselected.gif')</property>
+  </style>
+  <style selector="af|navigationPane::tabs-inactive af|navigationPane::tabs-bottom-end-content">
+    <property name="background-image">none</property>
+  </style>
+  <!-- =-= mcc TODO Doc the navigationLevel style classes -->
+
+  <style selector="af|breadCrumbs">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  <!-- panelForm styles -->
+  <style selector="af|panelFormLayout::column">
+    <property name="vertical-align">top</property>
+  </style>
+  <style selector="af|panelFormLayout::separator">
+    <property name="background-color">gray</property>
+    <property name="height">1px</property>
+    <property name="font-size">1px</property>
+    <property name="margin-top">3px</property>
+    <property name="margin-bottom">3px</property>
+  </style>
+  <style selector="af|panelFormLayout::cell">
+    <property name="padding">0px</property>
+  </style>
+  <style selector="af|panelFormLayout::label-cell">
+    <includeStyle name="AFLabel"/>
+  </style>
+  <style selector="af|panelFormLayout::label-stacked-cell">
+    <includeStyle selector="af|panelFormLayout::cell"/>
+    <property name="text-align">left</property>
+  </style>
+  <style selector="af|panelFormLayout::content-cell">
+    <includeStyle selector="af|panelFormLayout::cell"/>
+  </style>
+  <style selector="af|panelFormLayout::message-cell">
+    <includeStyle selector="af|panelFormLayout::cell"/>
+  </style> 
+   <!--
+      panelBox Styles
+  
+      Note: panelBox use one of two different style strategies,
+      depending on whether a header is present.  If the panelBox
+      has a header, then three style classes are used:
+  
+      1. The outer container is labeled with one of the 
+         af|panelBox[Background] style classes.
+  
+      2. The portion of the content container which contains the header
+         is labeled with the af|panelBox::header style class.
+  
+      3. The portion of the panelBox which contains the body
+         is labeled with the af|panelBox::body style class.
+  
+      This allows styles to be applied to the header or body selectively
+      based on the background color by using contextual selectors like:
+  
+      af|panelBox::dark af|panelBox::body { Dark body colors }
+      af|panelBox::light af|panelBox::body { Light body colors }
+  
+      Content containers which contain content but do not have a header only 
+      have two style classes:
+  
+      1. The outer container is labeled with one of the 
+         af|panelBox::content[Background] style classes, ie.
+         af|panelBox::content-dark instead of af|panelBox::dark.
+  
+      2. The portion of the content container which contains the body
+         is labeled with the af|panelBox::body style class.
+  
+      af|panelBox::header is not used for these content containers.
+  
+    -->
+    <!--AFPanelBox: used in af|panelBox::transparent, af|panelBox::light, 
+    af|panelBox::medium, and af|panelBox::dark 
+    -->
+    <style name="AFPanelBox">
+    </style>
+    <!-- when there is a header, the outer container contains on of the
+      af|panelBox::[background] styles
+    -->
+    <style selector="af|panelBox::transparent">
+      <includeStyle name="AFPanelBox"/>
+    </style>
+
+    <style selector="af|panelBox::light">
+      <includeStyle name="AFPanelBox"/>
+    </style>
+   
+    <style selector="af|panelBox::medium">
+      <includeStyle name="AFPanelBox"/>
+    </style>
+    
+    <style selector="af|panelBox::dark">
+      <includeStyle name="AFPanelBox"/>
+    </style>
+    
+  <!-- since we render in standards mode, images don't take up the entire 
+       table cell unless we use vertical-align:bottom.
+       We don't publish these obviously, cuz they expose the html -->
+    <style selector="af|panelBox::transparent img">
+      <property name="vertical-align">bottom</property>
+    </style> 
+    <style selector="af|panelBox::light img">
+      <property name="vertical-align">bottom</property>
+    </style>  
+    <style selector="af|panelBox::medium img">
+      <property name="vertical-align">bottom</property>
+    </style>  
+    <style selector="af|panelBox::dark img">
+      <property name="vertical-align">bottom</property>
+    </style>
+    
+    <!-- panelBox's frame selectors. No frame by default -->
+    <style selector="af|panelBox::top-start">
+    </style>
+    <style selector="af|panelBox::top">
+    </style>
+    <style selector="af|panelBox::top-end">
+    </style>
+    <style selector="af|panelBox::start">
+    </style>
+    <style selector="af|panelBox::end">
+    </style>
+    <style selector="af|panelBox::bottom-start">
+    </style>
+    <style selector="af|panelBox::bottom">
+    </style>
+    <style selector="af|panelBox::bottom-end">
+    </style>
+    
+    <!-- panelBox's body selectors -->
+    <style selector="af|panelBox::body">
+    </style>
+    
+    <style selector="af|panelBox::transparent af|panelBox::body">
+    </style>
+    
+    <style selector="af|panelBox::light af|panelBox::body">
+      <includeStyle name="AFBoxBackground"/>
+    </style>
+   
+    <style selector="af|panelBox::medium af|panelBox::body">
+      <includeStyle name="AFPanelBoxMediumBackground"/>
+    </style>
+    
+    <style selector="af|panelBox::dark af|panelBox::body">
+      <includeStyle name="AFPanelBoxDarkBackground"/>
+    </style>
+      
+    <!-- panelBox's header selector -->
+    <style selector="af|panelBox::header">
+    </style>
+    
+    <style selector="af|panelBox::light af|panelBox::header">
+      <includeStyle name="AFMediumBackground"/>
+      <includeStyle name="TextForegroundDarkBackground"/>
+    </style>
+    
+    <!-- panelBox's content selector -->
+    <style selector="af|panelBox::content">
+    </style>
+
+  <!-- AFBoxBackground: used in AFShuttleBoxBackground and 
+      <style selector="af|panelBox::light af|panelBox::body"> and
+          <style selector="af|panelBox::content-light af|panelBox::body">
+  -->
+        
+    <style name="AFPanelBoxBody">
+    </style>
+      
+    <style name="AFBoxBackground">
+         <includeStyle name="AFLightAccentBackground"/>
+    </style>
+    
+    <style name="AFShuttleBoxBackground">
+         <includeStyle name="AFBoxBackground"/>
+    </style>
+    
+    <style name="AFPanelBoxMediumBackground">
+      <includeStyle name="AFMediumAccentBackground"/>
+    </style>
+  
+    <style name="AFPanelBoxDarkBackground">
+      <includeStyle name="AFDarkAccentBackground"/>
+    </style>
+  
+    
+    <!-- Named style which is included by all of the
+         af|panelBox::content[Background] style classes
+         and AFShuttleBoxContent-->
+    <style name="AFBoxContent">
+      <includeStyle name="AFDefaultFont"/>
+    </style>
+    
+    <style name="AFShuttleBoxContent">
+      <includeStyle name="AFBoxContent"/>
+    </style>
+    
+  
+    <!-- These styles are only used by panelBox which
+         do not have headers (and shuttle's box)-->  
+    <style selector="af|panelBox::content-transparent">
+      <includeStyle name="AFBoxContent"/>
+    </style> 
+    
+    <style selector="af|panelBox::content-light">
+      <includeStyle name="AFBoxContent"/>
+    </style>  
+    
+    <style selector="af|selectManyShuttle::box-content">
+      <includeStyle name="AFShuttleBoxContent"/>
+    </style> 
+  
+    <style selector="af|selectOrderShuttle::box-content">
+      <includeStyle name="AFShuttleBoxContent"/>
+    </style>
+  <!-- since we render in standards mode, images don't take up the entire 
+       table cell unless we use vertical-align:bottom.-->   
+    <style selector="af|selectManyShuttle::box-content img">
+      <property name="vertical-align">bottom</property>
+    </style> 
+    <style selector="af|selectOrderShuttle::box-content img">
+      <property name="vertical-align">bottom</property>
+    </style>  
+  
+    <style selector="af|panelBox::content-medium">
+      <includeStyle name="AFBoxContent"/>
+    </style> 
+    
+    
+    <style selector="af|panelBox::content-dark">
+      <includeStyle name="AFBoxContent"/>
+    </style> 
+    
+    <!-- since we render in standards mode, images don't take up the entire 
+         table cell unless we use vertical-align:bottom.
+         We don't publish these obviously, cuz they expose the html -->
+    <style selector="af|panelBox::content-transparent img">
+      <property name="vertical-align">bottom</property>
+    </style> 
+    <style selector="af|panelBox::content-light img">
+      <property name="vertical-align">bottom</property>
+    </style>  
+    <style selector="af|panelBox::content-medium img">
+      <property name="vertical-align">bottom</property>
+    </style>  
+    <style selector="af|panelBox::content-dark img">
+      <property name="vertical-align">bottom</property>
+    </style>        
+    
+    <!-- Named style for all panelBox bodies for 
+         panelBox which do not have headers -->
+    
+    <style name="AFBoxContentBody">
+    </style>
+  
+    <style name="AFShuttleBoxContentBody">
+      <includeStyle name="AFBoxContentBody"/>
+    </style>
+    
+    <style selector="af|panelBox::content-transparent af|panelBox::body">
+      <includeStyle name="AFBoxContentBody"/>
+    </style>
+    
+     
+    <style selector="af|panelBox::content-light af|panelBox::body">
+      <includeStyle name="AFBoxBackground"/>
+      <includeStyle name="AFBoxContentBody"/>
+    </style>
+    
+    <style selector="af|selectManyShuttle::box-content af|selectManyShuttle::box-body">
+      <includeStyle name="AFShuttleBoxBackground"/>
+      <includeStyle name="AFShuttleBoxContentBody"/>
+    </style>
+    
+    <style selector="af|selectOrderShuttle::box-content af|selectOrderShuttle::box-body">
+      <includeStyle name="AFShuttleBoxBackground"/>
+      <includeStyle name="AFShuttleBoxContentBody"/>
+    </style>
+    
+    <style selector="af|panelBox::content-medium af|panelBox::body">
+      <includeStyle name="AFPanelBoxMediumBackground"/>
+      <includeStyle name="AFBoxContentBody"/>
+    </style>
+    
+    
+    <style selector="af|panelBox::content-dark af|panelBox::body">
+      <includeStyle name="AFPanelBoxDarkBackground"/>
+      <includeStyle name="AFBoxContentBody"/>
+    </style>
+    
+ 
+  <!--
+    Footer Styles
+  -->
+
+  <style name="AFFooterMessageText">
+    <includeStyle name="AFVerySmallFont"/>
+    <includeStyle name="AFTextForeground"/>
+    <property name="white-space">nowrap</property>
+  </style>
+
+  <style name="AFFooterMessageLink">
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector="af|panelPage::copyright">
+    <includeStyle name="AFFooterMessageText"/>
+  </style>
+
+  <style selector="af|panelPage::copyright-link">
+    <includeStyle name="AFFooterMessageLink"/>
+  </style>
+
+  <style selector="af|panelPage::privacy">
+    <includeStyle name="AFFooterMessageText"/>
+  </style>
+
+  <style selector="af|panelPage::privacy-link">
+    <includeStyle name="AFFooterMessageLink"/>
+  </style>
+
+  <style selector="af|panelPage::about">
+    <includeStyle name="AFFooterMessageText"/>
+  </style>
+
+  <style selector="af|panelPage::about-link">
+    <includeStyle name="AFFooterMessageLink"/>
+  </style>
+
+  <!--
+    tr:panelPopup Styles
+  -->
+
+  <style selector="af|panelPopup::link">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector="af|panelPopup::trigger">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLinkForeground"/>
+    <property name="text-decoration">none</property>
+    <property name="white-space">nowrap</property>
+  </style>
+
+  <style selector="af|panelPopup::container">
+    <includeStyle name="AFVeryDarkBorder"/>
+    <property name="border">1px solid</property>
+    <property name="background-color">white</property>
+  </style>
+
+  <style selector="af|panelPopup::title-bar">
+    <includeStyle name="AFDarkAccentBackground"/>
+    <includeStyle name="AFVeryDarkBorder"/>
+    <property name="border-bottom">1px solid</property>
+    <property name="padding">2px 2px 2px 2px</property>
+  </style>
+
+  <style selector="af|panelPopup::title-text">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFMediumFont"/>
+  </style>
+
+  <style selector="af|panelPopup::close-icon">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFMediumFont"/>
+    <property name="text-align">right</property>
+  </style>
+
+  <style selector="af|panelPopup::content">
+    <includeStyle name="AFLightAccentBackground"/>
+    <property name="border">0px</property>
+  </style>
+
+  <!--
+     tr:menuButtons Styles
+   -->
+   <!-- this style is included in all three styles below -->
+   <style name="AFMenuButtons">
+      <includeStyle name="AFDefaultFont"/>
+   </style>
+   
+   <style selector="af|menuButtons::text">
+     <includeStyle name="AFLinkForeground"/>
+     <includeStyle name="AFMenuButtons"/>
+   </style>
+
+   <style selector="af|menuButtons::icon-style">
+   </style>
+  
+   <style selector="af|menuButtons::text-selected">
+     <includeStyle name="AFDarkForeground"/>
+     <includeStyle name="AFMenuButtons"/>  
+   </style>
+   
+   <style selector="af|menuButtons::text-disabled">
+     <includeStyle name="AFVeryDarkAccentForeground"/>
+     <includeStyle name="AFMenuButtons"/>
+   </style>
+
+
+  <!-- 
+    menuBar Styles
+  -->
+
+  <style selector="af|menuBar">
+    <includeStyle name="AFDarkBackground"/>
+    <includeStyle name="TextForegroundDarkBackground"/>
+    <includeStyle name="AFDefaultFont"/>
+    <property name="min-height">4px</property>
+  </style>
+  
+  <!-- since we render in standards mode, images don't take up the entire 
+       table cell unless we use vertical-align:bottom.-->
+  <style selector="af|menuBar img">
+    <property name="vertical-align">bottom</property>
+  </style>
+
+  <style name="AFMenuBarItem">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  
+  <style selector="af|menuBar::enabled">
+    <includeStyle name="AFMenuBarItem"/>
+  </style>
+
+  <style selector="af|menuBar::selected">
+    <includeStyle name="AFMenuBarItem"/>
+  </style>
+
+  <style name="AFMenuBarLink">
+    <includeStyle name="TextForegroundDarkBackground"/>
+  </style>
+  
+  <style selector="af|menuBar::enabled-link">
+    <includeStyle name="AFMenuBarLink"/>
+  </style>
+
+  <style selector="af|menuBar::selected-link">
+    <includeStyle name="AFMenuBarLink"/>
+  </style>
+
+  <style selector="af|menuBar::separator">
+    <includeStyle name="TextForegroundDarkBackground"/>
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  <!-- 
+    HGrid styles 
+  -->
+  <style selector="af|treeTable::expansion">
+    <includeStyle name="AFDarkForeground"/>
+
+    <!-- Shift icon over to the start of the cell as
+         described in bug 2296869. -->
+    <property name="position">absolute</property>
+    <property name="top">0px</property>
+    <property name="left">-18px</property>
+  </style>
+
+  <style selector="af|treeTable::focus">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkForeground"/>
+    <property name="font-family">monospace</property>
+  </style>
+
+  <style selector="af|treeTable::locator">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFVeryDarkAccentForeground"/>
+    <property name="font-family">monospace</property>
+  </style>  
+   <!-- 
+      showOnePanel Styles
+    -->
+  
+    <style selector="af|showOnePanel::container">  
+      <includeStyle name="AFVeryDarkAccentBorder"/>
+      <property name="border-width">0px 1px 1px 1px</property>
+      <property name="border-style">solid</property>
+    </style>
+  
+    <style name="AFShowOnePanelHeaderBase">
+      <includeStyle name="AFVeryDarkAccentBorder"/>
+      <property name="height">21px</property>
+      <property name="text-decoration">none</property>
+      <property name="white-space">nowrap</property>    
+      <property name="padding-right">5px</property>
+      <property name="border-style">solid</property>
+    </style>
+  
+    <style selector="af|showOnePanel::header-collapsed">
+      <includeStyle name="AFShowOnePanelHeaderBase"/>
+      <property name="border-width">1px 0px 0px 0px</property>
+      <property name="border-style">solid</property>
+      <property name="cursor">pointer</property>
+      <property name="padding-left">5px</property>
+    </style>
+  
+    <style selector="af|showOnePanel::header-expanded">
+      <includeStyle name="AFShowOnePanelHeaderBase"/>
+      <property name="border-width">1px 0px 1px 0px</property>
+      <property name="padding-left">2px</property>
+    </style>
+  
+    <style selector="af|showOnePanel::header-disabled">
+      <includeStyle name="AFShowOnePanelHeaderBase"/>
+      <property name="border-width">1px 0px 0px 0px</property>
+      <property name="padding-left">18px</property>
+    </style>
+  
+    <style selector="af|showOnePanel::content">
+      <property name="vertical-align">top</property>
+      <property name="margin">5px</property>
+    </style>
+  
+    <style selector="af|showOnePanel::title-link">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="background">transparent</property>
+      <property name="color">#669966</property>
+      <property name="display">block</property>
+      <property name="padding-top">2px</property>
+      <property name="text-decoration">none</property>
+    </style>
+  
+    <style selector="af|showOnePanel::title-disabled-link">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="color">#999999</property>
+      <property name="display">block</property>
+      <property name="padding-top">2px</property>
+      <property name="text-decoration">none</property>
+    </style>
+
+  <!-- 
+    Header styles. panelHeader, showDetailHeader, messages header.
+  -->
+  
+  <style name="AFHeaderText">
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+  
+  <style selector=".AFHeaderLevelOne">
+    <includeStyle name="AFLargeFont"/>
+    <includeStyle name="AFHeaderText"/>
+  </style>
+  
+  <style selector=".AFHeaderLevelTwo">
+    <includeStyle name="AFMediumFont"/>
+    <includeStyle name="AFHeaderText"/>
+  </style> 
+  
+  <style selector=".AFHeaderLevelThreePlus">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFHeaderText"/>
+  </style>  
+  
+  <style selector="af|panelHeader::level-one">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+  </style>
+  
+  <style selector="af|panelHeader::level-two">
+    <includeStyle selector=".AFHeaderLevelTwo"/>
+  </style>  
+
+  <style selector="af|panelHeader::level-three">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>
+
+  </style>  
+
+  <style selector="af|panelHeader::level-four">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>
+  </style>  
+
+  <style selector="af|panelHeader::level-five">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>
+  </style>  
+  
+  <style selector="af|panelHeader::level-six">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>
+
+  </style>
+  
+  <style selector="af|showDetailHeader::level-one">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+  </style>
+
+  <style selector="af|showDetailHeader::level-two">
+    <includeStyle selector=".AFHeaderLevelTwo"/>
+  </style>
+
+  <style selector="af|showDetailHeader::level-three">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>
+  </style>  
+
+  <style selector="af|showDetailHeader::level-four">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>
+  </style>  
+
+  <style selector="af|showDetailHeader::level-five">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>
+  </style>  
+  
+  <style selector="af|showDetailHeader::level-six">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>
+  </style>  
+
+  <style selector="af|panelHeader::error">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+    <includeStyle name="AFErrorTextForeground"/>
+  </style>
+  
+  <style selector="af|messages::error">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+    <includeStyle name="AFErrorTextForeground"/>
+  </style> 
+  
+  <style selector="af|messages::header">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+  </style>
+  
+
+  
+  <!--
+    tr:messages Styles
+  -->
+
+  <style selector="af|messages">
+    <includeStyle name="AFDefaultFont"/>
+    <!--includeStyle name="AFMediumAccentBackground"/-->
+    <includeStyle name="AFVeryDarkForeground"/>
+    <property name="width">100%</property>  
+  </style>
+  <!-- since we render in standards mode, images don't take up the entire 
+       table cell unless we use vertical-align:bottom.-->  
+  <style selector="af|messages img">
+    <property name="vertical-align">bottom</property>  
+  </style>
+
+  <!--style selector=".p_OraMessageBoxMessage"-->
+  <style selector="af|messages::message-text">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkForeground"/>
+    <includeStyle name="MessageBoxMargin"/>
+  </style>  
+  
+  <!--
+    panelSideBar styles
+  -->
+
+  <style selector="af|panelSideBar">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFVeryDarkForeground"/>
+    <includeStyle name="AFVeryDarkAccentBorder"/>
+  </style>
+  
+  <!-- put the background color on the td -->
+  <style selector="af|panelSideBar::body">
+    <includeStyle name="AFLightAccentBackground"/>
+  </style>
+  
+  <!--
+    SortableHeader styles
+  -->
+  <style selector=".AFSortableHeaderSortIcon">
+    <includeStyle name="AFSmallFont"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+
+  <!-- 
+    MenuTabs Styles
+  -->
+
+
+  <style selector="af|menuTabs">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+  <!-- since we render in standards mode, images don't take up the entire 
+       table cell unless we use vertical-align:bottom.-->
+  <style selector="af|menuTabs img">
+    <property name="vertical-align">bottom</property>
+  </style>
+  
+  <!-- this style is included in enabled, selected, and disabled styles-->
+  <style name="AFTabBarItem">
+  </style>
+  
+  <!-- this style is included in enabled-link and selected-link styles -->
+  <style name="AFTabBarLink">
+  </style>
+
+  <style selector="af|menuTabs::enabled">
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFTabBarItem"/>   
+  </style>
+
+  <style selector="af|menuTabs::selected">
+    <includeStyle name="AFDarkBackground"/>
+    <includeStyle name="AFTabBarItem"/>   
+   </style>
+
+  <style selector="af|menuTabs::disabled">
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFVeryDarkAccentForeground"/>
+    <includeStyle name="AFTabBarItem"/>
+  </style>
+
+  <style selector="af|menuTabs::enabled-link">
+    <includeStyle name="AFTabBarLink"/>
+    <includeStyle name="AFVeryDarkForeground"/>
+  </style>
+
+  <style selector="af|menuTabs::selected-link">
+    <includeStyle name="AFTabBarLink"/>
+    <includeStyle name="AFLightForeground"/>
+  </style>
+
+  <!-- 
+     By default we don't want any space between tabs, so we 
+     set the af|menuTabs::separator's width to 0px
+  -->
+
+  <style selector="af|menuTabs::separator">
+    <property name="width">0px</property>
+  </style>
+
+  <!--
+    Table Styles
+  -->
+
+  <!-- Rendering on table which contains the actual content -
+       everything between the top/bottom control bars -->
+  <style selector="af|table::content">
+    <property name="border-collapse">collapse</property>
+  </style> 
+  
+  <style selector="af|treeTable::content">
+    <property name="border-collapse">collapse</property>
+  </style>
+  
+  <!-- Contains top navigation bar of table -->
+  <style selector="af|table::control-bar-top">
+    <includeStyle name="AFTableCellDataBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle selector=".OraTableBorder1101"/>
+    <property name="padding">1px 2px</property> 
+  </style>
+
+  <!-- Contains bottom navigation bar of table-->
+  <style selector="af|table::control-bar-bottom">
+    <includeStyle name="AFTableCellDataBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle selector=".OraTableBorder0111"/>
+    <property name="padding">1px 2px</property> 
+  </style>  
+  
+  <!-- Contains top navigation bar of treeTable -->
+  <style selector="af|treeTable::control-bar-top">
+    <includeStyle name="AFTableCellDataBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle selector=".OraTableBorder1101"/>
+    <property name="padding">1px 2px</property> 
+  </style>
+
+  <!-- Contains bottom navigation bar of treeTable-->
+  <style selector="af|treeTable::control-bar-bottom">
+    <includeStyle name="AFTableCellDataBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle selector=".OraTableBorder0111"/>
+    <property name="padding">1px 2px</property> 
+  </style> 
+  
+  <!-- Contains Select All | Select None links -->
+  <style selector="af|table::sub-control-bar">
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle selector=".OraTableBorder1101"/>
+    <property name="padding">1px 2px</property> 
+  </style>
+  
+  <!-- Contains Select All | Select None links -->
+  <style selector="af|treeTable::sub-control-bar">
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle selector=".OraTableBorder1101"/>
+    <property name="padding">1px 2px</property> 
+  </style>
+  
+  <!-- table data cell styles -->
+  <style name="AFTableCellDataText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+
+  <style name="AFTableCellDataBackgroundColor">    
+    <includeStyle name="AFLightAccentBackground"/>
+  </style>  
+
+  <style name="AFTableCellDataBandedBackgroundColor">    
+    <!-- Table cell background color shouldn't vary with text background -->
+    <property name="background-color">#ffffff</property>
+  </style> 
+  
+  <style name="AFTableCellDataBorderColor">    
+    <includeStyle name="AFVeryDarkAccentBorder"/>
+  </style>    
+  
+  <style name="AFTableCellDataVerticalAlign">
+      <property name="vertical-align">baseline</property>
+  </style>
+  
+  <style selector="af|commandButton">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  <style selector="af|goButton">
+    <!-- make commandButton primary -->
+    <includeStyle selector="af|commandButton"/>
+  </style>
+
+  <style selector="af|resetButton">
+    <!-- make commandButton primary -->
+    <includeStyle selector="af|commandButton"/>
+  </style>
+
+  <style selector="af|column::cell-text">
+    <includeStyle name="AFTableCellDataText"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+    <includeStyle name="AFTableCellDataBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+  </style>
+  
+  <style selector="af|column::cell-text-band">
+    <includeStyle name="AFTableCellDataText"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+    <includeStyle name="AFTableCellDataBandedBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+  </style>
+
+  <style selector="af|column::cell-number">
+    <includeStyle name="AFTableCellDataText"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+    <includeStyle name="AFTableCellDataBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle name="AFRightTextAlign"/>
+    <property name="padding-right">2px</property>
+  </style>
+
+  <style selector="af|column::cell-number-band">
+    <includeStyle name="AFTableCellDataText"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+    <includeStyle name="AFTableCellDataBandedBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle name="AFRightTextAlign"/>
+    <property name="padding-right">2px</property>
+  </style>
+  
+  <style selector="af|column::cell-icon-format">
+    <includeStyle name="AFTableCellDataText"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+    <includeStyle name="AFTableCellDataBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle name="AFCenterTextAlign"/>
+  </style>
+  <style selector="af|tableSelectOne::cell-icon-format">
+    <includeStyle selector="af|column::cell-icon-format"/>
+  </style>
+  <style selector="af|tableSelectMany::cell-icon-format">
+    <includeStyle selector="af|column::cell-icon-format"/>
+  </style>  
+
+  <style selector="af|column::cell-icon-format-band">
+    <includeStyle name="AFTableCellDataText"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+    <includeStyle name="AFTableCellDataBandedBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle name="AFCenterTextAlign"/>
+  </style>
+
+  <style selector="af|tableSelectOne::cell-icon-format-band">
+    <includeStyle selector="af|column::cell-icon-format-band"/>
+  </style>
+  <style selector="af|tableSelectMany::cell-icon-format-band">
+    <includeStyle selector="af|column::cell-icon-format-band"/>
+  </style>
+  
+  <style selector="af|column::header-text">
+    <includeStyle name="TableCellHeaderBorderColor"/>
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFStartTextAlign"/>
+    <includeStyle name="AFDarkAccentBackground"/>
+    <includeStyle name="AFDarkForeground"/>
+    <property name="vertical-align">bottom</property>
+  </style>
+
+  <style selector="af|column::header-number">
+    <includeStyle selector="af|column::header-text"/>
+    <includeStyle name="AFRightTextAlign"/>
+  </style>
+
+  <style selector="af|column::header-icon-format">
+    <includeStyle selector="af|column::header-text"/>
+    <includeStyle name="AFCenterTextAlign"/>
+  </style>
+
+  <style selector="af|column::row-header-text">
+    <includeStyle name="TableCellHeaderBorderColor"/>
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFEndTextAlign"/>
+    <includeStyle name="AFDarkAccentBackground"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <style selector="af|table::detail">
+    <includeStyle name="AFTableCellDataText"/>
+    <!-- Table cell background color shouldn't vary with text background -->
+    <property name="background-color">#ffffff</property>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+  </style>
+
+  <style selector="af|table::column-footer">
+    <includeStyle name="TableCellHeaderBorderColor"/>
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFStartTextAlign"/>
+    <includeStyle name="AFDarkAccentBackground"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <!-- for totalRow button and text -->
+  <!-- jmw are we still using the TotalRow renderer that uses this style? -->
+  <style selector=".OraTableTotal">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFEndTextAlign"/>
+    <includeStyle name="AFDarkAccentBackground"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <!-- for cells containing a total -->
+  <style selector="af|column::total-number">
+    <includeStyle name="TableCellHeaderBorderColor"/>
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFRightTextAlign"/>
+    <includeStyle name="AFDarkAccentBackground"/>
+    <includeStyle name="AFTextForeground"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+  </style>
+
+  <!-- for cells containing a total -->
+  <style selector="af|column::total-text">
+    <includeStyle name="TableCellHeaderBorderColor"/>
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFStartTextAlign"/>
+    <includeStyle name="AFDarkAccentBackground"/>
+    <includeStyle name="AFTextForeground"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+  </style>
+
+  <style selector="af|column::sortable-header-text">
+    <includeStyle selector="af|column::header-text"/>
+    <property name="cursor">pointer</property>
+    <property name="border-width">2px</property>
+    <property name="border-style">outset</property>
+  </style>
+
+  <style selector="af|column::sortable-header-number">
+    <includeStyle selector="af|column::sortable-header-text"/>
+    <includeStyle name="AFRightTextAlign"/>
+  </style>
+
+  <style selector="af|column::sortable-header-icon-format">
+    <includeStyle selector="af|column::sortable-header-text"/>
+    <includeStyle name="AFCenterTextAlign"/>
+  </style>
+
+  <!--
+    Train Styles
+  -->
+  
+  <!-- Aliases -->
+  <style name="AFTrainContent"/>
+  <style name="AFTrainIconCell"/>
+  <style name="AFTrainJoin"/>
+  
+  <!-- Selectors -->
+  <style selector="af|train"/>
+  
+  <!-- Station selectors -->
+  <style selector="af|train::stop">
+  </style>
+  
+  <style selector="af|train::stop-icon-cell">
+    <includeStyle name="AFTrainIconCell"/>
+  </style>
+  
+  <style selector="af|train::stop-content">
+    <includeStyle name="AFTrainContent"/>
+  </style>
+  
+  <style selector="af|train::stop:selected">  
+    <includeStyle name="AFDarkForeground"/>
+    <property name="font-weight">bold</property>
+  </style>
+  
+  <style selector="af|train::stop:visited">  
+    <includeStyle name="DarkExtraAccentForeground"/>
+  </style>
+
+  <style selector="af|train::stop:disabled">
+    <includeStyle name="MediumExtraAccentForeground"/>
+  </style>
+  
+  <style selector="af|train::stop:unvisited">
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+  
+  <style selector="af|train::overflow-start">
+  </style>
+  
+  <style selector="af|train::overflow-start-icon-cell">
+    <includeStyle name="AFTrainIconCell"/>
+  </style>
+  
+  <style selector="af|train::overflow-start-content">
+    <includeStyle name="AFTrainContent"/>
+  </style>
+  
+  <style selector="af|train::overflow-end">
+  </style>
+  
+  <style selector="af|train::overflow-end-icon-cell">
+    <includeStyle name="AFTrainIconCell"/>
+  </style>
+
+  <style selector="af|train::overflow-end-content">
+    <includeStyle name="AFTrainContent"/>
+  </style>
+  
+  <style selector="af|train::parent-start">
+  </style>
+  
+  <style selector="af|train::parent-start-icon-cell">
+    <includeStyle name="AFTrainIconCell"/>
+  </style>
+  
+  <style selector="af|train::parent-start-content">
+    <includeStyle name="AFTrainContent"/>
+  </style>
+  
+  <style selector="af|train::parent-end">
+  </style>
+  
+  <style selector="af|train::parent-end-icon-cell">
+    <includeStyle name="AFTrainIconCell"/>
+  </style>
+
+  <style selector="af|train::parent-end-content">
+    <includeStyle name="AFTrainContent"/>
+  </style>
+  
+  <style selector="af|train::link">
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector="af|train::stop:disabled af|train::link">
+    <includeStyle name="AFDisabledLinkForeground"/>
+  </style>
+
+  <style selector="af|train::stop:visited af|train::link">
+    <includeStyle name="AFDarkForeground"/>
+    <includeStyle name="DarkExtraAccentForeground"/>
+  </style>
+
+  <style selector="af|train::join">
+    <includeStyle name="AFTrainJoin"/>
+  </style>
+
+  <style selector="af|train::join-overflow">
+    <includeStyle name="AFTrainJoin"/>
+  </style>
+
+  <style selector="af|train::join-parent">
+    <includeStyle name="AFTrainJoin"/>
+  </style>
+
+  <!--
+
+    Section 2: Private styles.   The styles defined in this section need
+    to be reviewed to determine whether they should be exposed to 
+    customizers.
+
+  -->
+
+  <!--
+    Private Font Styles:  These styles should probably be made public.
+  -->
+
+  <!-- A very small font for text which appears within a link -->
+  <style name="VerySmallLinkFont">
+    <includeStyle name="AFVerySmallFont"/>
+  </style>
+
+  <!-- A small font for text which appears within a link -->
+  <style name="SmallLinkFont">
+    <includeStyle name="AFSmallFont"/>
+  </style>
+
+
+  <!--
+    Private Color Styles:  Most of these styles should probably
+    just be documented and made public.
+  -->
+
+  <!-- The "extra" accent ramp is a gray color ramp used in various places
+       to provide shading.  VeryDarkExtraAccentBackground is the darkest
+       color in this color ramp. -->
+  <style name="VeryDarkExtraAccentBackground">
+    <property name="background-color">#333333</property>
+  </style>
+
+  <!-- The "extra" accent ramp is a gray color ramp used in various places
+       to provide shading.  DarkExtraAccentBackground is the primary
+       color in this color ramp. -->  
+  <style name="DarkExtraAccentBackground">
+    <property name="background-color">#666666</property>
+  </style>
+
+  <!-- The "extra" accent ramp is a gray color ramp used in various places
+       to provide shading.  MediumExtraAccentBackground is the middle
+       color in this color ramp. -->
+  <style name="MediumExtraAccentBackground">
+    <property name="background-color">#999999</property>
+  </style>
+
+  <!-- The "extra" accent ramp is a gray color ramp used in various places
+       to provide shading.  LightExtraAccentBackground is the lightest
+       color in this color ramp. -->
+  <style name="LightExtraAccentBackground">
+    <property name="background-color">#cccccc</property>
+  </style>
+
+  <!-- VeryDarkExtraAccentForeground is the darkest foreground color in the
+       extra accent (gray) color ramp -->
+  <style name="VeryDarkExtraAccentForeground">
+    <includeProperty name="VeryDarkExtraAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- DarkExtraAccentForeground is the primary foreground color in the
+       extra accent (gray) color ramp -->
+  <style name="DarkExtraAccentForeground">
+    <includeProperty name="DarkExtraAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- MediumExtraAccentForeground is the middle foreground color in the
+       extra accent (gray) color ramp -->
+  <style name="MediumExtraAccentForeground">
+    <includeProperty name="MediumExtraAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <!-- LightExtraAccentForeground is the lightest foreground color in the
+       extra accent (gray) color ramp -->
+  <style name="LightExtraAccentForeground">
+    <includeProperty name="LightExtraAccentBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+
+  <style name="TextForegroundDarkBackground">
+    <includeProperty name="AFTextBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+<!-- we took these out of the xsd, so they are no longer options for the styleClass.
+     we probably should delete these, but they may come in handy for skinning at some
+     pt. -->
+  <style selector=".OraBGColorVeryDark">
+    <includeStyle name="AFVeryDarkBackground"/>
+  </style>
+
+  <style selector=".OraBGColorDark">
+    <includeStyle name="AFDarkBackground"/>
+   </style>
+
+  <style selector=".OraBGColorMedium">
+    <includeStyle name="AFMediumBackground"/>
+  </style>
+
+  <style selector=".OraBGColorLight">
+    <includeStyle name="AFLightBackground"/>
+  </style>
+
+  <style selector=".OraBGGrayVeryDark">
+    <includeStyle name="VeryDarkExtraAccentBackground"/>
+  </style>
+
+  <style selector=".OraBGGrayDark">
+    <includeStyle name="DarkExtraAccentBackground"/>
+  </style>
+
+  <style selector=".OraBGGrayMedium">
+    <includeStyle name="MediumExtraAccentBackground"/>
+  </style>
+
+  <style selector=".OraBGGrayLight">
+    <includeStyle name="LightExtraAccentBackground"/>
+  </style>
+
+  <style selector=".OraBGAccentVeryDark">
+    <includeStyle name="AFVeryDarkAccentBackground"/>
+  </style>
+
+  <style selector=".OraBGAccentDark">
+    <includeStyle name="AFDarkAccentBackground"/>
+  </style>
+
+  <style selector=".OraBGAccentMedium">
+    <includeStyle name="AFMediumAccentBackground"/>
+  </style>
+
+  <style selector=".OraBGAccentLight">
+    <includeStyle name="AFLightAccentBackground"/>
+  </style>
+
+  <!-- 
+    Private BIDI Styles:  Not sure if these are generally useful, but
+    if so, these could be made public.
+  --> 
+
+  <style name="LTROverride">
+  </style>
+
+  <!-- 
+    Private Text Styles
+  -->
+
+  <!-- Implementation detail of styleUsage="inContextBranding" -->
+  <style selector=".p_InContextBrandingText">
+      <includeStyle name="AFDefaultFont"/>
+      <includeStyle name="AFVeryDarkAccentForeground"/>
+  </style> 
+
+  <!-- Implementation detail of styleUsage="pageStamp" -->
+  <style selector=".OraPageStampText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <!-- Don't think we use this one? -->
+  <style selector=".OraPageStampLabel">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <!-- Should probably be public -->
+  <style selector=".OraInlineInfoText">
+    <includeStyle name="AFVerySmallFont"/>
+    <includeStyle name="AFDarkForeground"/>
+    <includeStyle selector=".p_OraDisplayBlock"/>
+  </style>
+
+  <!-- Should probably be public -->
+  <style selector=".OraTextInline">
+    <includeStyle name="AFVerySmallFont"/>
+    <includeStyle name="AFMediumForeground"/>
+  </style>
+
+  <!-- used only in oracle.desktop messageBox -->
+  <style selector=".OraMessageBoxErrorText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFErrorTextForeground"/>
+  </style>
+  
+  <!-- will be included in the property inspector for styleClass attribute -->
+  <style selector=".AFErrorText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFErrorTextForeground"/>
+  </style>
+
+  <!-- Should probably be public -->
+  <style selector=".OraErrorNameText">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFErrorTextForeground"/>
+  </style>
+
+  <!-- Should probably be public -->
+  <style selector=".OraInlineErrorText">
+    <includeStyle name="AFVerySmallFont"/>
+    <includeStyle name="AFErrorTextForeground"/>
+  </style>
+
+  <!-- Should probably be public -->
+  <style selector=".OraGlobalPageTitle">
+    <includeStyle name="AFLargeFont"/>
+    <includeStyle name="AFSelectedTextForeground"/>
+    <property name="font-weight">bold</property>
+  </style>
+
+  <!-- Should probably be public -->
+  <style selector=".OraLinkText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <!-- Should probably be public -->
+  <style selector=".OraVLinkText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFVisitedLinkForeground"/>
+  </style>
+
+  <!-- Should probably be public -->
+  <style selector=".OraALinkText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFActiveLinkForeground"/>
+  </style>
+
+  
+  <style selector=".AFFieldTextLTR">
+    <includeStyle selector=".AFFieldText"/>
+    <includeStyle name="LTROverride"/>
+  </style>
+
+  <style selector=".AFFieldTextLTRDisabled">
+    <includeStyle selector=".AFFieldTextDisabled"/>
+    <includeStyle name="LTROverride"/>
+  </style>
+  
+  <style selector=".AFPhoneFieldText">
+    <includeStyle selector=".AFFieldTextLTR"/>
+  </style>
+  
+  <style selector=".AFPhoneFieldTextDisabled">
+    <includeStyle selector=".AFFieldTextLTRDisabled"/>
+  </style>
+
+  <style selector=".AFPostalCodeFieldText">
+    <includeStyle selector=".AFFieldTextLTR"/>
+  </style>
+
+  <style selector=".AFPostalCodeFieldTextDisabled">
+    <includeStyle selector=".AFFieldTextLTRDisabled"/>
+  </style>
+  
+  <style selector=".AFAddressFieldText">
+    <includeStyle selector=".AFFieldTextLTR"/>
+  </style>
+  
+  <style selector=".AFAddressFieldTextDisabled">
+    <includeStyle selector=".AFFieldTextLTRDisabled"/>
+  </style>
+
+  <!-- Underline the access key for buttons, labels -->
+  <style selector=".AFAccessKeyStyle">
+  <property name="text-decoration">underline</property>
+  </style>
+ 
+  <!-- Bold the access key for links -->
+  <style selector=".AFLinkAccessKeyStyle">
+  <property name="font-weight">bold</property>
+  </style>
+
+  <!-- 
+    Private Utility Styles:  Again, if any of these are useful
+    to customizers, they should be documented and made public.
+  -->
+
+  <style name="NoTextAlign">
+    <property name="text-align"></property>
+  </style>
+
+  <!-- Need to come up with a disabled link style strategy that 
+       doesn't rely on private styles -->
+   <style selector=".p_OraDisabled">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  <!-- Need to come up with a selected link style strategy that
+       doesn't rely on private styles -->
+  <style selector=".p_OraSelected">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFLightBackground"/>
+    <property name="text-decoration">none</property>
+  </style>
+
+  <!-- This style should never be exposed.  Implementation detail only -->
+  <style selector=".p_OraHiddenLabel">
+    <property name="position">absolute</property>
+    <property name="top">-999px</property>
+    <property name="left">0px</property>
+  </style>
+
+  <!--
+    Private ColorField Styles:  These styles need to be reviewed/renamed
+    if they need to be exposed.
+  -->
+
+  <style selector=".p_OraColorFieldSwatch">
+    <property name="border-style">solid</property>
+    <property name="border-width">1px</property>
+    <includeProperty name="AFTextForeground"
+                     propertyName="color"
+                     localPropertyName="border-color"/>
+  </style>
+
+  <style selector=".p_OraColorPalette">
+    <includeProperty name="AFTextForeground"
+                     propertyName="color"
+                     localPropertyName="background-color"/>
+  </style>
+
+  <style selector=".p_OraColorPaletteEmptyCell">
+    <includeStyle name="AFTextBackground"/>
+  </style>
+
+  <!--
+   Date Picker   Styles 
+  -->
+
+  <style name="AFDatePickerNavLink">
+    <property name="text-decoration">none</property>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+    
+  <style name="AFDatePickerTitle">
+    <includeStyle name="AFLargeFont"/>
+    <includeStyle name="AFCenterTextAlign"/>
+    <includeStyle name="AFTextBackground"/>
+    <includeStyle name="AFDarkForeground"/>
+    <property name="padding">2px</property>
+  </style>
+
+  <style name="AFDatePickerHeader">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFCenterTextAlign"/>
+    <includeStyle name="AFDarkForeground"/>
+    <property name="padding">2px</property>
+  </style>
+
+  <style name="AFDatePickerContent">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFCenterTextAlign"/>
+    <includeStyle name="MediumExtraAccentForeground"/>
+    <property name="text-decoration">none</property>
+
+    <includeProperty name="AFDatePickerHeader"
+                     propertyName="background-color"
+                     localPropertyName="border-color"/>
+    <property name="border-width">1px</property>
+    <property name="border-style">solid</property>
+    <property name="padding">2px</property>
+  </style>
+
+
+  <style name="AFDatePickerSelected">
+    <property name="font-weight">bold</property>
+  </style>
+
+  <style name="AFDatePickerContentLink">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFCenterTextAlign"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+
+<!--
+  Date Picker Styles.
+-->
+
+  <style selector="af|inputDate::nav-link">
+    <includeStyle name="AFDatePickerNavLink"/>
+  </style>
+    
+  <style selector="af|inputDate::title">
+    <includeStyle name="AFDatePickerTitle"/>
+  </style>
+
+  <style selector="af|inputDate::header">
+    <includeStyle name="AFDatePickerHeader"/>
+  </style>
+
+  <style selector="af|inputDate::selected">
+    <includeStyle name="AFDatePickerSelected"/>
+  </style>
+
+  <style selector="af|inputDate::content-link">
+    <includeStyle name="AFDatePickerContentLink"/>
+  </style>
+
+  <style selector="af|chooseDate::nav-link">
+    <includeStyle name="AFDatePickerNavLink"/>
+  </style>
+    
+  <style selector="af|chooseDate::title">
+    <includeStyle name="AFDatePickerTitle"/>
+  </style>
+
+  <style selector="af|chooseDate::header">
+    <includeStyle name="AFDatePickerHeader"/>
+  </style>
+
+  <style selector="af|chooseDate::content">
+    <includeStyle name="AFDatePickerContent"/>
+  </style>
+
+
+  <style selector="af|chooseDate::selected">
+    <includeStyle name="AFDatePickerSelected"/>
+  </style>
+
+  <style selector="af|chooseDate::content-link">
+    <includeStyle name="AFDatePickerContentLink"/>
+  </style>
+
+  <style selector="af|statusIndicator"/>
+
+  <!-- 
+    Private ContentFooter Styles:  Not sure whether any of these
+    styles need to be exposed, but if so, they need to be renamed
+    accordingly (no "p_" prefix).
+  -->
+
+  <style selector=".p_OraContentFooterRule">
+    <includeStyle name="AFDarkForeground"/>
+  </style>    
+
+  <style selector=".p_OraContentFooterStart">
+    <includeStyle name="AFFloatStart"/> 
+  </style>    
+
+  <style selector=".p_OraContentFooterChildren">
+    <includeStyle name="AFFloatEnd"/> 
+  </style>    
+    
+  <style selector=".p_OraContentFooterBottom">
+    <property name="clear">both</property>
+    <property name="margin-bottom">5px</property>
+  </style>  
+
+
+  <!-- 
+    Private Footer Styles: Again, if these styles are useful
+    to customizers, they'll need to be renamed.
+  -->
+  
+  <style selector=".p_OraFooter">
+    <property name="text-align">center</property>
+  </style>  
+
+  <style selector=".p_OraFooterBottom">
+    <property name="padding-top">5px</property>
+  </style> 
+ 
+  <style selector=".p_OraHeaderNest">
+    <property name="margin">5px 0px 0px 12px</property>
+  </style>
+
+  <!-- 
+    Private HGrid Styles: Need to review hGrid/table styles before
+    they are exposed to customizers.
+  -->
+
+  <style selector=".OraHGridLocatorHeader">
+    <includeStyle name="TableCellHeaderBorderColor"/>
+    <includeStyle name="AFLightAccentBackground"/>
+  </style>
+
+  <style selector=".OraHGridNavRowActiveLink">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+ 
+  <style selector=".OraHGridNavRowInactiveLink">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFVeryDarkAccentForeground"/>
+  </style>
+
+
+  <!--
+    Private HideShow Styles
+  -->
+
+  <!-- 
+    This is a private style that is used by the 
+    base.desktop implementation of the hideShowDisclosed
+    and hideShowUndisclosed icons.  Note that this style
+    attempts to turn off the link's text decoaration, but
+    this doesn't actually work on Mozilla.  The problem is
+    that this style is not actually rendered on a link, but
+    on a span within a link.  IE seems to honor the span's text 
+    decoration style in this case but Mozilla seems to require
+    that the text decoration be specified at the link level.
+
+    We need to re-design the way hideShow renders its icon/prompt
+    to work around this problem.  At that point, it might be
+    possible to remove this style altogether - or rename this
+    style and make it public.  In the meantime, customizers
+    are discouraged from depending on this style.
+  -->
+  <style selector=".p_OraHideShowDisclosedSymbol">
+    <includeStyle name="AFDarkForeground"/>
+    <property name="text-decoration">none</property>
+  </style>
+
+  <!--
+    Private MessageBox Styles:  These styles need to be reviewed before
+    they can be exposed to customizers.
+  -->
+
+  <style name="MessageBoxMargin">
+    <property name="margin">0px 0px 0px 0px</property>
+    <property name="padding">5px 30px 5px 30px</property>
+  </style>
+  
+  <!--style selector=".OraMessageBoxList"-->
+  <style selector="af|messages::list">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkForeground"/>
+    <includeStyle name="MessageBoxMargin"/>
+  </style>
+
+	<!-- List with only one entry -->
+  <style selector="af|messages::list-single">
+    <property name="list-style-type">none</property>
+  </style>
+
+  <style selector="af|singleStepButtonBar"/>
+
+  <style selector="af|singleStepButtonBar::label">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <!-- 
+    Private NavigationBar Styles: These styles should probably be
+    public, but should they be renamed "OraNavigationBar..." first
+    to follow our Ora<Component Name> naming convention?
+  -->
+
+  <style selector=".OraNavBarActiveLink">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector=".OraNavBarInactiveLink">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFVeryDarkAccentForeground"/>
+  </style>
+
+  <style selector=".OraNavBarViewOnly">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <!-- 
+    Private PageLayout Styles: These styles clearly need to be
+    reviewed and renamed before they can be exposed.
+  -->
+
+  <style selector=".p_OraQuickSearchBox">
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFDarkAccentBorder"/>
+    <property name="border-style">solid</property>
+    <property name="padding">0pt 5pt 5pt 5pt</property>
+    <property name="border-width">0px 0px 1px 1px</property>
+  </style>
+
+  <style selector=".p_OraGlobalQuick">
+    <includeStyle name="AFDarkAccentBorder"/>
+    <property name="border-style">solid</property>
+    <property name="border-width">0px 0px 0px 1px</property>
+  </style>
+
+  <!-- 
+    Private Processing Styles:  Needs review and rename before
+    epxosing to customizers. =-=jmw I'm fine with keeping this private for now.
+  -->
+  <style selector=".p_OraProcessingStatus">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFDarkForeground"/>
+    <includeStyle name="AFMediumBorder"/>
+    <property name="border-style">solid</property>
+    <property name="border-width">1px</property>
+  </style>
+
+  <!--
+    Private ProductBranding Styles:  Needs review and rename before
+    exposing to customizers.
+  -->
+
+  <style selector=".p_OraProductBrandingText">
+    <property name="position">relative</property>
+    <property name="font-family">Garamond, Times, Times New Roman, Serif</property>
+    <property name="font-weight">normal</property>
+    <property name="font-size">24pt</property>
+    <property name="line-height">28.8pt</property>
+    <property name="top">-4.8pt</property>
+    <includeProperty name="AFDarkBackground"
+                     propertyName="background-color"
+                     localPropertyName="color"/>
+  </style>
+  
+  <!-- private style for ProductBranding component compact text -->
+  <style selector=".p_OraProductBrandingCompactText">
+      <includeStyle name="AFDarkForeground"/>
+      <property name="margin-bottom">0px</property>
+      <property name="margin-top">0px</property>
+      <property name="font-weight">normal</property>
+      <includeStyle name="AFLargeFont"/>
+      <property name="font-weight">bold</property>
+  </style>
+
+  <!-- 
+    Private Shuttle Styles:  These styles might very well be exposed -
+    just need to be reviewed first to make sure they are useful.
+  -->
+
+  <style selector=".OraShuttleHeader">
+    <includeStyle name="AFSmallFont"/>
+    <property name="font-weight">bold</property>
+    <includeStyle name="AFDarkForeground"/>
+    <property name="padding">0px 0px 0px 18px</property>
+  </style>
+
+  <style selector=".OraShuttleLinkText">
+    <includeStyle name="SmallLinkFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <!--
+    Private SideBar Styles
+  -->
+
+  <!-- Expose this so custmozers can control sideBar min width? -->
+  <style selector=".p_OraSideBarMinWidth">
+    <property name="width">140px</property>
+  </style>  
+
+  <!-- 
+    Private StyledList Styles:  We really need to clean up our
+    styledList/styledItem style strategy so that these components
+    can be better customized.
+  -->
+
+  <style selector=".OraNav3Selected">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFLightBackground"/>
+  </style>
+
+  <style selector=".OraNav3">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  <style name="list">
+    <property name="list-style-position">inside</property> 
+    <property name="padding">0px</property>
+    <property name="margin">0px</property>
+  </style>
+
+  <style name="nestedList">    
+    <property name="padding">0pt 0pt 0pt 10pt</property>
+  </style>
+
+  <style selector=".OraStyledList">
+    <includeStyle name="list"/>
+  </style>  
+  
+  <style selector=".OraStyledList .OraStyledList">
+    <includeStyle name="nestedList"/>
+  </style>
+
+  
+  <!-- 
+    Private SubTabBar Styles: Before we make these styles public,
+    we need to re-evaluate the use of the private p_OraDisabled style - 
+    and possibly consider splitting .OraSubTab into 
+    OraSubTabBarEnabled/OraSubTabBarDisabled/OraSubTabBarSelected
+    style classes - like tabBar and globalHeader.
+  -->
+
+  <style name="AFPanelTabbed">  
+  </style>
+
+
+  <style selector="af|panelTabbed::orientation-top">
+    <includeStyle name="AFPanelTabbed"/>
+  </style>
+
+  <style selector="af|panelTabbed::orientation-bottom">
+    <includeStyle name="AFPanelTabbed"/>
+  </style>  
+  
+  <style selector="af|panelTabbed::tab">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="padding">0px 8px</property>  
+  </style>
+
+  <style selector="af|panelTabbed::tab-link">
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector="af|panelTabbed::tab .p_OraDisabled">
+    <includeStyle name="AFVeryDarkAccentForeground"/>
+  </style>
+ 
+  <style selector="af|panelTabbed::tab-selected">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <property name="padding">0px 8px</property>  
+  </style>
+
+  <style selector="af|panelTabbed::tab-selected-link">
+    <includeStyle name="AFDarkForeground"/>
+    <property name="text-decoration">none</property>
+  </style>
+  
+  <style selector="af|panelTabbed::cell-start">
+    <property name="width">0%</property>
+  </style>
+
+  <style selector="af|panelTabbed::cell-end">
+    <property name="width">100%</property>
+  </style>  
+  <!-- 
+    Private Table Styles: These styles can probably just be made public,
+    but before we do that we should review to make sure that we are
+    happy with the current set of styles.
+  -->
+
+  <!-- table borders -->
+  <style selector=".OraTableBorder0001">
+    <property name="border-style">solid</property>
+    <property name="border-width">0px 0px 0px 1px</property>
+  </style>
+
+  <style selector=".OraTableBorder0010">
+    <property name="border-style">solid</property>
+    <property name="border-width">0px 0px 1px</property>
+  </style>
+
+  <style selector=".OraTableBorder0011">
+    <property name="border-style">solid</property>
+    <property name="border-width">0px 0px 1px 1px</property>
+  </style>
+
+  <style selector=".OraTableBorder0100">
+    <property name="border-style">solid</property>
+    <property name="border-width">0px 1px 0px 0px</property>
+  </style>
+  
+  <style selector=".OraTableBorder0101">
+    <property name="border-style">solid</property>
+    <property name="border-width">0px 1px</property>
+  </style>
+  
+  <style selector=".OraTableBorder0110">
+    <property name="border-style">solid</property>
+    <property name="border-width">0px 1px 1px 0px</property>
+  </style>  
+  
+  <style selector=".OraTableBorder0111">
+    <property name="border-style">solid</property>
+    <property name="border-width">0px 1px 1px</property>
+  </style>  
+  
+  <style selector=".OraTableBorder1000">
+    <property name="border-style">solid</property>
+    <property name="border-width">1px 0px 0px</property>
+  </style>  
+  
+  <style selector=".OraTableBorder1001">
+    <property name="border-style">solid</property>
+    <property name="border-width">1px 0px 0px 1px</property>
+  </style>  
+  
+  <style selector=".OraTableBorder1010">
+    <property name="border-style">solid</property>
+    <property name="border-width">1px 0px</property>
+  </style>  
+  
+  <style selector=".OraTableBorder1011">
+    <property name="border-style">solid</property>
+    <property name="border-width">1px 0px 1px 1px</property>
+  </style>  
+  
+  <style selector=".OraTableBorder1100">
+    <property name="border-style">solid</property>
+    <property name="border-width">1px 1px 0px 0px</property>
+  </style>  
+  
+  <style selector=".OraTableBorder1101">
+    <property name="border-style">solid</property>
+    <property name="border-width">1px 1px 0px</property>
+  </style>  
+  
+  <style selector=".OraTableBorder1110">
+    <property name="border-style">solid</property>
+    <property name="border-width">1px 1px 1px 0px</property>
+  </style>  
+  
+  <style selector=".OraTableBorder1111">
+    <property name="border-style">solid</property>
+    <property name="border-width">1px</property>
+  </style>    
+  
+  <style selector=".OraTableControlBarText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkForeground"/>
+    <property name="font-weight">bold</property>
+  </style>
+
+  <!-- Table title is deprecated - don't expose this style -->  
+  <style selector=".OraTableTitle">
+    <includeStyle name="AFLargeFont"/>
+    <includeStyle name="AFTextBackground"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <!-- Only used on Netscape 4? -->
+  <style selector=".OraTable">
+    <includeStyle name="AFVeryDarkAccentBackground"/>
+  </style>
+
+  <!-- This is actually used by a wide range of style classes,
+       not just headers.  Might want to refactor - keep this
+       private till then -->
+  <style name="TableCellHeaderBorderColor">    
+    <includeStyle name="AFVeryDarkAccentBorder"/>
+  </style>
+
+
+
+  <!-- Couldn't find any code that uses the CellSelect style -->
+  <style selector=".OraTableCellSelect">
+    <includeStyle name="AFTableCellDataText"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+    <includeStyle name="AFTableCellDataBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle name="AFCenterTextAlign"/>
+  </style>
+
+  <!-- Couldn't find any code that uses the CellSelect style -->
+  <style selector=".OraTableCellSelectBand">
+    <includeStyle name="AFTableCellDataText"/>
+    <includeStyle name="AFTableCellDataVerticalAlign"/>
+    <includeStyle name="AFTableCellDataBandedBackgroundColor"/>
+    <includeStyle name="AFTableCellDataBorderColor"/>
+    <includeStyle name="AFCenterTextAlign"/>
+  </style>
+
+
+
+  <!-- 
+    Private Tip Styles: These can probably be made public.
+  -->
+
+
+  <!-- 
+    Private Tree Styles:  These styles need to be renamed (no "p_") 
+    if they are going to be exposed to customizers.
+  -->
+
+  <style selector=".p_OraTreeDisclosedSymbol">
+    <includeStyle name="AFDarkForeground"/>
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFEndTextAlign"/>
+  </style>
+
+  <style name="TreeDisclosedSymbol">
+    <property name="text-decoration">none</property>  
+    <includeStyle name="AFDarkForeground"/>
+  </style>  
+  
+  <style selector=".p_OraTreeDisclosedSymbol A:link">
+    <includeStyle name="TreeDisclosedSymbol"/>
+  </style>
+
+  <style selector=".p_OraTreeDisclosedSymbol A:active">
+    <includeStyle name="TreeDisclosedSymbol"/>
+  </style>
+
+  <style selector=".p_OraTreeDisclosedSymbol A:visited">
+    <includeStyle name="TreeDisclosedSymbol"/>
+  </style>
+
+  <style selector=".p_OraTreeIcon">
+    <property name="vertical-align">top</property>
+  </style>
+
+  <style selector=".p_OraTreeNodeAdjust">
+    <property name="padding-bottom">2px</property>
+  </style>
+
+  <style selector=".p_OraTreeRow">
+    <includeStyle name="AFDefaultFont"/>
+  </style>
+
+  <style selector=".p_OraTreeRow A:link">
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector=".p_OraTreeRow A:active">
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector=".p_OraTreeRow A:visited">
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <style selector=".p_OraTreeRowSelected">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+  
+  <style name="TreeRowSelected">
+    <property name="text-decoration">none</property>
+    <includeStyle name="AFDarkForeground"/>
+  </style>
+
+  <style selector=".p_OraTreeRowSelected A:link">
+    <includeStyle name="TreeRowSelected"/>
+  </style>
+
+  <style selector=".p_OraTreeRowSelected A:active">
+    <includeStyle name="TreeRowSelected"/>
+  </style>
+
+  <style selector=".p_OraTreeRowSelected A:visited">
+    <includeStyle name="TreeRowSelected"/>
+  </style>
+
+  
+  <!-- 
+    Chart Styles 
+  -->
+  <style selector="af|chart">
+    <!-- default width and height for chart -->
+    <property name="width">400px</property>
+    <property name="height">300px</property>
+    <property name="background-color">white</property>
+  </style>
+
+  <!--
+       The following set of styles define server-side styles used by
+       the UIX.  These styles affect the appearance of images such as buttons 
+       and tab bars which are dynamically generated.  They are named styles, 
+       as these styles should not appear in the generated CSS files.
+
+       Note that since these styles apply to images generated
+       by on the server, modifying these styles can result in
+       additional image generation.  So, these styles should only be
+       modified if the server-side environment has been configured to
+       support image generation.  That is, these styles should not be
+       modified unless the JSP/Servlet has access to an X server and
+       the necessary fonts have been installed.
+  -->
+
+  <!-- This named style defines the font families to use when generating
+       images on the server-side.  Note, the UIX will try to locate fonts 
+       for any of the families listed here, so the list should contain 
+       valid font family names for the server environment. -->
+  <style name="DefaultServerFontFamily">
+    <property name="font-family">Albany WT J,Dialog</property>
+  </style>
+
+  <!-- A named style for the default server-side font definition -->
+  <style name="DefaultServerFont">
+    <includeStyle name="DefaultServerFontFamily"/>
+    <property name="font-size">13pt</property>
+    <property name="text-antialias">true</property>
+  </style>
+
+  <style selector=".p_OraOnePixelLine">
+    <includeStyle name="AFDarkAccentBackground"/>
+    <property name="font-size">0pt</property>
+    <property name="overflow">hidden</property>
+    <property name="height">1px</property>
+    <property name="width">100%</property>
+  </style>
+  
+   <!--Used for images in standards mode -->
+  <style selector=".p_OraDisplayBlock">
+    <property name="display">block</property>
+  </style>
+  
+  <style selector=".p_OraHideSkipNaviText">
+    <property name="font-size">1pt</property>
+    <property name="margin-top">0px</property>
+    <property name="margin-left">-999px</property>
+  </style>
+  
+  <!-- Portlet styles -->
+  <style selector=".PortletBodyColor">
+    <includeStyle name="AFBoxBackground"/>
+    <includeStyle name="AFPanelBoxBody"/>  
+  </style>
+  
+  <style selector=".PortletHeaderColor">
+    <includeStyle selector="af|panelBox::header"/>
+  </style>
+  
+  <style selector=".PortletHeaderLink">
+    <includeStyle name="AFSelectedTextForeground"/>
+    <property name="text-decoration">none</property>
+  </style>
+  
+  <style selector=".PortletHeaderStyle"> 
+  </style>
+  
+  <style selector=".PortletHeaderText">
+    <includeStyle selector=".AFHeaderLevelOne"/>  
+  </style>
+  
+  <style selector=".PortletHeading1">
+    <includeStyle selector=".AFHeaderLevelOne"/>  
+  </style>
+  
+  <style selector=".PortletHeading2">
+    <includeStyle selector=".AFHeaderLevelTwo"/>  
+  </style>  
+  
+  <style selector=".PortletHeading3">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>  
+  </style> 
+  
+  <style selector=".PortletHeading4">
+    <includeStyle selector=".AFHeaderLevelThreePlus"/>  
+  </style>
+  
+  <style selector=".PortletSubHeaderColor">
+    <includeStyle name="AFBoxBackground"/>
+    <includeStyle name="AFPanelBoxBody"/>
+  </style>
+  
+  <style selector=".PortletSubHeaderLink">
+    <includeStyle name="AFSelectedTextForeground"/>
+    <property name="text-decoration">none</property>
+  </style> 
+  
+  
+  <style selector=".PortletSubHeaderText">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+  </style> 
+  
+  <style selector=".PortletText1">
+    <includeStyle selector=".AFInstructionText"/>
+  </style>   
+  
+  <style selector=".PortletText2">
+    <includeStyle selector=".AFInstructionText"/>
+  </style> 
+  
+  <style selector=".PortletText3">
+    <includeStyle selector=".AFInstructionText"/>
+  </style>   
+  
+  <style selector=".PortletText4">
+    <includeStyle selector=".AFInstructionText"/>
+  </style>
+  
+  <style selector=".portlet-font">
+    <includeStyle name="AFVerySmallFont"/>
+  </style>   
+  
+  <style selector=".portlet-font-dim">
+    <includeStyle selector=".AFFieldTextDisabled"/>
+  </style> 
+  
+  <style selector=".portlet-msg-info">
+    <includeStyle selector="af|messages::message-text"/>
+  </style>
+  
+  <style selector=".portlet-msg-error">
+    <includeStyle selector="af|messages::error"/>
+  </style>  
+  
+  <style selector=".portlet-section-header">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+  </style>    
+  
+  <style selector=".portlet-section-body">
+    <includeStyle selector="BODY"/>
+  </style>   
+  
+  <style selector=".portlet-section-alternate">
+    <includeStyle selector="af|column::cell-text-band"/>
+  </style> 
+  
+  <style selector=".portlet-section-selected">
+    <includeStyle selector="af|column::cell-text"/>
+  </style> 
+  
+  <style selector=".portlet-section-subheader">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+  </style>
+  
+  <style selector=".portlet-section-footer">
+    <includeStyle selector="af|table::column-footer"/>
+  </style> 
+  
+  <style selector=".portlet-section-text">
+    <includeStyle selector="af|column::cell-icon-format"/>
+  </style>
+  
+  <style selector=".portlet-table-header">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+  </style> 
+  
+  <!-- TODO: AdamWiner: This can't be correct -->
+  <style selector=".portlet-table-body">
+    <includeStyle selector="BODY"/>
+  </style>  
+  
+  <style selector=".portlet-table-alternate">
+    <includeStyle selector="af|column::cell-text-band"/>
+  </style>  
+  
+  <style selector=".portlet-table-selected">
+    <includeStyle selector="af|column::cell-text"/>
+  </style>
+  
+  <style selector=".portlet-table-subheader">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+  </style>   
+  
+  <style selector=".portlet-table-subheader">
+    <includeStyle selector=".AFHeaderLevelOne"/>
+  </style>  
+  
+  
+  <style selector=".portlet-table-footer">
+    <includeStyle selector="af|table::column-footer"/>
+  </style>  
+  
+  <style selector=".portlet-table-text">
+    <includeStyle selector="af|column::cell-icon-format"/>
+  </style>  
+  
+  <style selector=".portlet-form-label">
+    <includeStyle name="AFLabel"/>
+  </style>
+  
+  <style selector=".portlet-form-input-field">
+    <includeStyle selector="af|inputText::content"/>  
+  </style>   
+  
+  <style selector=".portlet-form-button">
+    <includeStyle name="AFDefaultFont"/>
+  </style>   
+  
+  <style selector=".portlet-icon-label">
+    <includeStyle name="AFLabel"/>
+  </style>  
+  
+  <style selector=".portlet-dlg-icon-label">
+    <includeStyle name="AFLabel"/>
+  </style>
+  
+  <style selector=".portlet-form-field-label">
+    <includeStyle name="AFLabel"/>
+  </style>   
+  
+  <style selector=".portlet-form-field">
+    <includeStyle selector=".AFInstructionText"/>
+  </style>
+  
+</styleSheet>
+
+<!--
+  This style sheet resets the server font family for ISO Latin 1 Locales.
+  For most locales, we are forced to use the Albany fonts with antialising
+  enabled due to the poor job that Java2D (pre-JDK 1.4) does rasterizing
+  true type fonts.  For Latin 1 languages, we avoid antialiasing by using
+  native fonts (and thus use the native rasterizer instead of the Java2D
+  rasterizer).  The assumption here is that the Dialog font defines all
+  of the glyphs needed to render Latin 1 text.  If this is not the case
+  on some particular platform, then this style sheet should be removed,
+  in which case antialiased Albany text will be rendered for all languages.
+
+  For now, we only use Dialog for English - other locales can be added
+  here as desired.
+-->
+<styleSheet locales="en">
+
+  <!-- Use native fonts -->
+  <style name="DefaultServerFontFamily">
+    <property name="font-family">Dialog</property>
+  </style>
+
+
+  <style name="DefaultServerFont">
+    <!-- Turn off antialiasing -->
+    <property name="text-antialias">false</property>
+
+    <!-- We can also use a slightly smaller font, since non-antialiased
+         text is legible at smaller font sizes -->
+    <property name="font-size">-1pt</property>
+  </style>
+
+</styleSheet>
+
+<styleSheet direction="rtl">
+
+  <style name="LTROverride">
+    <property name="unicode-bidi">bidi-override</property>
+    <property name="direction">ltr</property>
+    <property name="text-align">right</property>
+  </style>
+
+   <style selector="af|inputNumberSpinbox::spinbox-cell">
+    <property name="padding-right">1px</property>
+  </style>
+  <style selector="af|inputColor::swatch-overlay">
+    <property name="position">relative</property>
+    <property name="right">-7px</property>
+    <property name="top">5px</property>
+  </style>
+  
+  <style selector="af|inputColor::swatch-overlay">
+    <property name="position">relative</property>
+    <property name="right">-7px</property>
+    <property name="top">5px</property>
+  </style>
+
+  <!-- Disable absolute position of treeTable expansion icon -->
+  <style selector="af|treeTable::expansion">
+    <property name="position"/>
+    <property name="top"/>
+    <property name="left"/>
+  </style>
+
+  <!-- Adjust positioning of colorField swatch overlay icon -->
+  <style selector=".OraColorFieldSwatchOverlayIcon">
+    <!-- Unset left property - use right positioning instead -->
+    <property name="left"/>
+    <property name="right">-7px</property>
+    <property name="top">5px</property>
+  </style>
+
+  <style name="MessageBoxMargin">
+    <property name="margin-left"/>
+    <property name="margin-right">25px</property>
+  </style>
+
+  <style selector=".OraShuttleHeader">
+    <property name="padding">0px 18px 0px 0px</property>
+  </style>
+
+  <style selector=".p_OraQuickSearchBox">
+    <property name="border-width">0px 1px 1px 0px</property>
+  </style>
+
+  <style selector=".p_OraGlobalQuick">
+    <property name="border-width">0px 1px 0px 0px</property>
+  </style>
+
+  <style name="AFStartTextAlign">
+    <property name="text-align">right</property>
+  </style>
+
+  <style name="AFEndTextAlign">
+    <property name="text-align">left</property>
+  </style>
+  
+  <style name="AFFloatStart">
+    <property name="float">right</property>    
+  </style>
+  
+  <style name="AFFloatEnd">
+    <property name="float">left</property>    
+  </style>
+  
+  <style name="AFEndPadding">
+  	<property name="padding">0px 0px 0px 8px</property>
+  </style>
+  
+  <style name="AFStartPadding">
+  	<property name="padding">0px 8px 0px 0px</property>
+  </style>
+  
+  <style name="nestedList">    
+    <property name="padding">0pt 10pt 0pt 0pt</property>
+  </style>
+
+  <style selector="af|messages::list">
+    <property name="margin">5px 25px 0px 0px </property>
+  </style>
+
+  <style selector=".p_OraHeaderImage">
+    <property name="margin">0pt 0pt 0pt 2pt</property>
+  </style>
+  
+</styleSheet>
+
+<styleSheet browsers="ie">
+  
+  <style selector="body">
+    <property name="margin-top">8px</property>
+  </style>
+
+  <style selector=".p_OraNav2">
+    <includeStyle name="AFMediumBorder"/>  
+  </style>
+
+  <style selector=".p_OraHideSkipNaviText">
+    <property name="font-size">0pt</property>
+    <property name="margin-top">0px</property>
+    <property name="margin-left">-999px</property>
+  </style>
+  
+  <style name="ShowDetailFrameMenuItemBase">
+    <property name="width">100%</property>
+  </style>
+
+  <style selector="af|navigationPane">
+    <property name="height">25px</property>
+  </style>
+</styleSheet>
+
+<!-- Use "relative" font sizes on Windows IE -->
+<styleSheet platforms="windows ppc" browsers="ie" versions="6" mode="quirks">
+
+  <!-- Override the default font sizes to use "scalable" size units -->
+  <!-- The default font -->
+  <style name="AFDefaultFont">
+    <property name="font-size">x-small</property>
+  </style>
+
+  <!-- A very small font -->
+  <style name="AFVerySmallFont">
+    <property name="font-size">67%</property>
+  </style>
+
+  <!-- Very small font for text links.  The VerySmallLinkFont needs to use
+       a larger font size than the AFVerySmallFont style, because the
+       percentage size is resolved relative to the link's font size (10pt),
+       instead of relative to the browser's default font size (12pt) -->
+  <style name="VerySmallLinkFont">
+    <property name="font-size">80%</property>
+  </style>
+
+  <!-- A small font -->
+  <style name="AFSmallFont">
+    <property name="font-size">75%</property>
+  </style>
+
+  <!-- Small font for text links.  The SmallLinkFont needs to use
+       a larger font size than the AFSmallFont style, because the
+       percentage size is resolved relative to the link's font size (10pt),
+       instead of relative to the browser's default font size (12pt) -->
+  <style name="SmallLinkFont">
+    <property name="font-size">90%</property>
+  </style>
+
+  <!-- A medium font - just slightly bigger than default -->
+  <style name="AFMediumFont">
+    <property name="font-size">92%</property>
+  </style>
+
+  <!-- A large font -->
+  <style name="AFLargeFont">
+    <property name="font-size">small</property>
+  </style>
+
+  <!-- A very large font -->
+  <style name="AFVeryLargeFont">
+    <property name="font-size">133%</property>
+  </style>
+
+  <style selector=".p_OraHeaderNest">
+    <property name="margin">5px 0px 0px 0px</property>
+    <property name="width">97%</property>
+    <property name="clear">both</property>
+    <includeStyle name="AFFloatEnd"/>
+  </style>  
+
+  <style selector="af|column::sortable-header-text">
+    <!-- Use IE's proprietary hand cursor -->
+    <property name="cursor">hand</property>
+  </style>
+
+</styleSheet>
+
+<styleSheet browsers="webkit">
+  <style selector=".p_OraHideSkipNaviText">
+    <property name="font-size">1pt</property>
+    <property name="margin-top">0px</property>
+    <property name="margin-left">-999px</property>
+    <property name="position">absolute</property>
+  </style>
+</styleSheet>  
+  
+<styleSheet platforms="ppc" browsers="ie" versions="6" mode="standards">
+
+  <!-- Override the default font sizes to use "scalable" size units -->
+  <!-- The default font -->
+  <style name="AFDefaultFont">
+    <property name="font-size">small</property>
+  </style>
+
+  <!-- A very small font -->
+  <style name="AFVerySmallFont">
+    <property name="font-size">67%</property>
+  </style>
+
+  <!-- Very small font for text links.  The VerySmallLinkFont needs to use
+       a larger font size than the AFVerySmallFont style, because the
+       percentage size is resolved relative to the link's font size (10pt),
+       instead of relative to the browser's default font size (12pt) -->
+  <style name="VerySmallLinkFont">
+    <property name="font-size">80%</property>
+  </style>
+
+  <!-- A small font -->
+  <style name="AFSmallFont">
+    <property name="font-size">75%</property>
+  </style>
+
+  <!-- Small font for text links.  The SmallLinkFont needs to use
+       a larger font size than the AFSmallFont style, because the
+       percentage size is resolved relative to the link's font size (10pt),
+       instead of relative to the browser's default font size (12pt) -->
+  <style name="SmallLinkFont">
+    <property name="font-size">90%</property>
+  </style>
+
+  <!-- A medium font - just slightly bigger than default -->
+  <style name="AFMediumFont">
+    <property name="font-size">92%</property>
+  </style>
+
+  <!-- A large font -->
+  <style name="AFLargeFont">
+    <property name="font-size">medium</property>
+  </style>
+
+  <!-- A very large font -->
+  <style name="AFVeryLargeFont">
+    <property name="font-size">133%</property>
+  </style>
+
+  <style selector=".p_OraHeaderNest">
+    <property name="margin">5px 0px 0px 0px</property>
+    <property name="width">97%</property>
+    <property name="clear">both</property>
+    <includeStyle name="AFFloatEnd"/>
+  </style>  
+
+  <style selector="af|column::sortable-header-text">
+    <!-- Use IE's proprietary hand cursor -->
+    <property name="cursor">hand</property>
+  </style>
+
+</styleSheet>
+
+<styleSheet platforms="windows ppc" browsers="ie" versions="4 5">
+
+  <!-- Override the default font sizes to use "scalable" size units -->
+  <!-- The default font -->
+  <style name="AFDefaultFont">
+    <property name="font-size">x-small</property>
+  </style>
+
+  <!-- A very small font -->
+  <style name="AFVerySmallFont">
+    <property name="font-size">67%</property>
+  </style>
+
+  <!-- Very small font for text links.  The VerySmallLinkFont needs to use
+       a larger font size than the AFVerySmallFont style, because the
+       percentage size is resolved relative to the link's font size (10pt),
+       instead of relative to the browser's default font size (12pt) -->
+  <style name="VerySmallLinkFont">
+    <property name="font-size">80%</property>
+  </style>
+
+  <!-- A small font -->
+  <style name="AFSmallFont">
+    <property name="font-size">75%</property>
+  </style>
+
+  <!-- Small font for text links.  The SmallLinkFont needs to use
+       a larger font size than the AFSmallFont style, because the
+       percentage size is resolved relative to the link's font size (10pt),
+       instead of relative to the browser's default font size (12pt) -->
+  <style name="SmallLinkFont">
+    <property name="font-size">90%</property>
+  </style>
+
+  <!-- A medium font - just slightly bigger than default -->
+  <style name="AFMediumFont">
+    <property name="font-size">92%</property>
+  </style>
+
+  <!-- A large font -->
+  <style name="AFLargeFont">
+    <property name="font-size">small</property>
+  </style>
+
+  <!-- A very large font -->
+  <style name="AFVeryLargeFont">
+    <property name="font-size">133%</property>
+  </style>
+
+  <style selector=".p_OraHeaderNest">
+    <property name="margin">5px 0px 0px 0px</property>
+    <property name="width">97%</property>
+    <property name="clear">both</property>
+    <includeStyle name="AFFloatEnd"/>
+  </style>  
+
+  <style selector="af|column::sortable-header-text">
+    <!-- Use IE's proprietary hand cursor -->
+    <property name="cursor">hand</property>
+  </style>
+
+</styleSheet>
+
+<!-- The base derivation for ICE-based browsers -->
+<styleSheet browsers="ice">
+
+  <style name="list">
+    <!-- ice doesn't seem to respect list-style-position,
+         so adding padding as workaround -->
+    <property name="padding">0px 0px 0px 12px</property>
+  </style>
+</styleSheet>
+
+<!-- The base derivation for Gecko-based browsers -->
+<styleSheet browsers="gecko">
+
+  <!-- Dunno why, but Gecko makes asterisks look very thin -->
+  <style selector=".AFRequiredIconStyle">
+    <property name="font-weight">bold</property>
+  </style>
+
+  <style selector=".p_OraContentFooterRule">
+    <includeStyle name="AFDarkBackground"/>
+  </style>    
+
+  <style selector="af|column::sortable-header-text">
+     <property name="border-style">inset</property>
+  </style>
+
+  <style selector="af|inputDate::content">
+    <property name="line-height">1.8</property>
+  </style>
+  
+  <style selector="af|menuButtons::icon-style">
+    <property name="vertical-align">bottom</property>
+  </style>
+  
+  <style selector=".p_OraHideSkipNaviText">
+    <property name="font-size">0pt</property>
+    <property name="margin-top">0px</property>
+    <property name="margin-left">0px</property>
+  </style>
+
+
+</styleSheet>
+
+<styleSheet platforms="macos" browsers="ie" versions="5">
+  <!-- Override on mac as it doesn't show up.-->
+  <style name="MediumExtraAccentForeground">
+    <property name="color"/>
+  </style>
+
+  <style selector="af|selectinputDate::content">
+    <property name="line-height">1.8</property>
+  </style>
+
+  <!-- Style for alignment in table cells -->
+  <style name="AFTableCellDataVerticalAlign">
+    <property name="vertical-align"/>
+  </style>
+
+
+</styleSheet>
+
+<!-- CJK style sheet for all -->
+<styleSheet locales="ja zh ko">
+
+  <!--
+    We don't specify a font family for CJK languages, since most browsers
+    (Netscape, ICE, IE) seem to have problems displaying CJK text with
+    our default font-family list (Arial, Helvetica, etc...).  We're better 
+    off letting the font-family default.  (However - that just causes
+    still more problems on Windows Netscape 4 - so we've got more overrides
+    below for that specific case.
+  -->
+  <style name="AFDefaultFontFamily">
+    <property name="font-family"/>
+  </style>
+
+  <!-- In order for CJK glyphs rendered on the server to be
+       appear readable, we need to crank up the font size and
+       turn on antialiasing -->
+  <style name="DefaultServerFont">
+    <property name="font-size">+1pt</property>
+    <property name="text-antialias">true</property>
+  </style>
+
+</styleSheet>
+
+<!-- Style sheet just for Japanese-specific styles -->
+<styleSheet locales="ja">
+
+  <style name="DefaultServerFontFamily">
+    <property name="font-family">Albany WT J, Dialog</property>
+  </style>
+
+</styleSheet>
+
+<!-- Style sheet just for Korean-specific styles -->
+<styleSheet locales="ko">
+
+  <style name="DefaultServerFontFamily">
+    <property name="font-family">Albany WT K, Dialog</property>
+  </style>
+
+</styleSheet>
+
+<!-- Style sheet just for Traditional Chinese specific styles -->
+<styleSheet locales="zh_TW">
+
+  <style name="DefaultServerFontFamily">
+    <property name="font-family">Albany WT TC, Dialog</property>
+  </style>
+
+</styleSheet>
+
+<!-- Style sheet just for Simplified Chinese specific styles -->
+<styleSheet locales="zh_CN">
+
+  <style name="DefaultServerFontFamily">
+    <property name="font-family">Albany WT SC, Dialog</property>
+  </style>
+
+</styleSheet>
+
+<!-- Bug 1687431:  Netscape 4 does a very, very poor job dealing
+    with Unicode characters outside the range of the default font.
+    Consequently, on Windows only for the CJK languages, set
+    the default font explicitly to the default Windows font -->
+<styleSheet locales="ja" browsers="netscape" platforms="windows">
+  <style name="AFDefaultFontFamily">
+    <property name="font-family">MS Gothic</property>
+  </style>
+</styleSheet>
+
+<styleSheet locales="zh_CN" browsers="netscape" platforms="windows">
+  <style name="AFDefaultFontFamily">
+    <property name="font-family">MingLiU</property>
+  </style>
+</styleSheet>
+
+<styleSheet locales="zh_TW" browsers="netscape" platforms="windows">
+  <style name="AFDefaultFontFamily">
+    <property name="font-family">SimHei</property>
+  </style>
+</styleSheet>
+
+<styleSheet locales="ko" browsers="netscape" platforms="windows">
+  <style name="AFDefaultFontFamily">
+    <property name="font-family">Gulim</property>
+  </style>
+</styleSheet>
+
+
+<!-- But: in CJK, IE is having some bad problems with sizing lists
+  and choices correctly - this is bug 2440402.  For the two styles
+  that are relevant here, work around the problem using size 100%.  That's
+  not perfect, since it'll make these resolve relative to their
+  container, but it seems to work well in practice. -->
+<styleSheet platforms="windows ppc" browsers="ie" locales="ja zh ko">
+  <style selector=".AFFieldText">
+    <property name="font-size">100%</property>
+  </style>
+
+  <style selector=".AFFieldTextDisabled">
+    <property name="font-size">100%</property>
+  </style>
+</styleSheet>
+
+
+<!-- And on Thai Gecko - see bug 3897341 - bump the font size up -->
+<styleSheet platforms="windows linux" browsers="gecko" locales="th">
+  <style name="AFDefaultFontFamily">
+    <property name="font-family">Browallia New,Arial,Helvetica,Geneva,sans-serif</property>
+    <property name="font-size">16pt</property>
+  </style>
+  
+  <style name="AFDefaultFont">
+    <includeStyle name="AFDefaultFontFamily"/>
+  </style>
+</styleSheet>
+
+</styleSheetDocument>

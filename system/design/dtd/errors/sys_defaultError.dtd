@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   A collection of error message.
+   
+   port - the rhythmyx port used to lookup resources.
+   root - the rhythmyx root used to lookup resources.
+   protocol - the protocol of the request(http or https)
+   host - the host address
+   rxroot - a convenient variable builds Rhythmyx root from above params
+   class - the name of the class producing this error document.
+-->
+<!ELEMENT PSXLogErrorSet (Error*)>
+<!ATTLIST PSXLogErrorSet
+	port CDATA #REQUIRED
+   	root CDATA #REQUIRED
+	protocol	 CDATA #REQUIRED
+	host CDATA #REQUIRED
+	rxroot	 CDATA #REQUIRED
+	class CDATA #REQUIRED
+>
+<!--
+   An error message.
+   
+   id - a message id. Is unique within this document.
+-->
+<!ELEMENT Error (#PCDATA)>
+<!ATTLIST Error
+	id CDATA #REQUIRED
+>

@@ -1,0 +1,146 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="install" default="install" >
+
+    <property name="install.dir" value="${basedir}/target"/>
+    <property name="configdir" location="${install.dir}/rxconfig"/>
+    <property name="install.I18n" location="${configdir}/I18n"/>
+    <property name="install.rxlt" location="${install.dir}/rxlt"/>
+
+    <property name="sfp.exits.source" location="${install.dir}/SiteFolderPublishing/Exits"/>
+    <property name="nav.exits.source" location="${install.dir}/ManagedNav/Exits"/>
+    <property name="default_template.exits.source" location="${install.dir}/DefaultTemplate/Exits"/>
+
+
+    <path id="ant.deps">
+        <!--
+        <fileset dir="C:\DevEnv\dev\system\Tools\Ant\target">
+            <include name="perc-ant-8.0.0-SNAPSHOT.jar" />
+        </fileset>-->
+    </path>
+
+    <taskdef resource="com/percussion/ant/antlib.xml" loaderref="perc.loader"/>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" loaderref="perc.loader"/>
+
+
+    <!-- We are running with all classes of perc-ant jar on system classloader.  We want
+     to use customer drivers in preference to embedded but system classloader cannot see the new ant classloader
+     We set parent first to use added jars in preference, but if class in perc-ant is referenced it cannot see the driver
+     again.  We therefore need to add again the jar again to load it in the same classloader as the drivers.
+     Probably a startup performance penalty here especially if the uber jar is including unnecessary 3rd party dependencies
+     and classes but worth it for the consistency -->
+
+    <classloader classpathref="ant.deps"  parentfirst="false" name="perc.loader"/>
+
+    <!--==========================================================-->
+    <!-- PSLanguageTool                                           -->
+    <!--                                                          -->
+    <!-- Launches the Rhythmyx language Tool using the given      -->
+    <!-- classpath.                                               -->
+    <!--==========================================================-->
+    <macrodef name="PSLanguageTool">
+        <attribute name="classpath"/>
+        <sequential>
+            <echo>Running Rhythmyx Language Tool...</echo>
+            <!-- A Timeout is needed here because rxlt is not closing all of its descriptors (files) which makes the process hang for linux and ant 1.7 -->
+            <java classname="com.percussion.i18n.rxlt.PSRxltMain" dir="${install.rxlt}" fork="true" maxmemory="1024m" classpathref="@{classpath}" timeout="${install.languageToolTimeOut}">
+                <arg value="-R${install.dir}"/>
+                <arg value="-NOUI"/>
+            </java>
+        </sequential>
+    </macrodef>
+
+
+
+
+    <echo>*********** Setting classloader for Install Extensions *******************</echo>
+
+    <PSAction rootDir="${install.dir}" refreshProperty="${REFRESH_PROP_NAME}"/>
+
+    <target name="install">
+
+
+        <!--==========================================================-->
+        <!-- PSInstallExtensions                                      -->
+        <!--                                                          -->
+        <!-- Copies source extension files from srcDir to destDir,    -->
+        <!-- then installs/updates the extensions.  Note that destDir -->
+        <!-- is assumed to be relative to the Rhythmyx root directory -->
+        <!-- and extXml is the Extensions.xml source file for this    -->
+        <!-- group of extensions.  In REFRESH mode, extensions        -->
+        <!-- will only be updated if necessary.                       -->
+        <!--==========================================================-->
+        <macrodef name="PSInstallExtensions">
+            <attribute name="srcDir" default=""/>
+            <attribute name="destDir" default=""/>
+            <attribute name="extXml" default=""/>
+            <sequential>
+                <if>
+                    <isSet property="${REFRESH_PROP_NAME}"/>
+                    <then>
+                        <uptodate property="EXTS.ARE.UPTODATE" targetfile="${exts.store}/@{destDir}-ext.xml" srcfile="@{extXml}" />
+                    </then>
+                </if>
+                <if>
+                    <not>
+                        <isSet property="EXTS.ARE.UPTODATE"/>
+                    </not>
+                    <then>
+                        <mkdir dir="${exts.store}"/>
+                        <copy file="@{extXml}" tofile="${exts.store}/@{destDir}-ext.xml"/>
+                        <mkdir dir="${install.dir}/@{destDir}"/>
+                        <PSCopy todir="${install.dir}/@{destDir}">
+                            <fileset dir="@{srcDir}"/>
+                        </PSCopy>
+                        <PSExtensions installLocation="@{destDir}"/>
+                    </then>
+                    <else>
+                        <echo>@{destDir} extensions are up to date, skipping...</echo>
+                    </else>
+                </if>
+            </sequential>
+        </macrodef>
+
+        <!-- Exits -->
+        <PSInstallExtensions srcDir="${basedir}/../../system/Exits" destDir="Exits" extXml="${basedir}/../../system/Exits/Java/Extensions.xml"/>
+
+        <!-- Workflow Exits -->
+        <PSInstallExtensions srcDir="${basedir}/../../system/workflow/Exits" destDir="WorkflowExits" extXml="${basedir}/../../system/workflow/Exits/Java/Extensions.xml"/>
+
+        <!-- Publisher Exits -->
+        <!--<PSInstallExtensions srcDir="${basedir}/../../system/cms/publisher/Exits" destDir="PublisherExits" extXml="${basedir}/../../system/cms/publisher/Exits/Java/Extensions.xml"/>
+-->
+
+        <PSInstallExtensions srcDir="${sfp.exits.source}" destDir="SiteFolderPublishinExits" extXml="${sfp.exits.source}/Java/Extensions.xml"/>
+
+        <PSInstallExtensions srcDir="${nav.exits.source}" destDir="ManagedNavExits" extXml="${nav.exits.source}/Java/Extensions.xml"/>
+        <PSInstallExtensions srcDir="${default_template.exits.source}" destDir="ManagedNavExits" extXml="${default_template.exits.source}/Java/Extensions.xml"/>
+
+
+
+    </target>
+
+</project>

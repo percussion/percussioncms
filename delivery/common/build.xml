@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- ======================================================================
+     Dec 28, 2010                                                        
+
+     [perc-delivery-common]    
+     Build file for the Delivery Project common files
+                   
+     paulhoward           
+     ====================================================================== -->
+<project name="perc-delivery-common" default="default" basedir=".">
+	<description>
+       Build file for the Delivery Project common javascript files
+    </description>
+	<!-- Define Properties -->
+	<property environment="my_env"/>
+    <property name="product.version" value="1.0" />
+    <property name="thirdparty.dir" value="${my_env.THIRD_PARTY_TOOLS_BASE}" />
+    <property name="ant.lib.dir" value="${thirdparty.dir}/apache-ant-1.6-custom/lib" />
+    <property name="DEBUG" value="on"/>
+	<property name="build.dir" location="${basedir}/build"/>
+	<property name="buildzip.dir" location="${basedir}/build/perc-common-ui"/>
+	<property name="dist.dir" location="${basedir}/build/dist"/>
+	<property name="dist.dir" location="${build.dir}/dist"/>
+	<property name="resources.dir" location="${build.dir}/resources"/>
+	<property name="vendor" value="Percussion Software"/>
+	<property name="version" value="1.0.0" />
+    <property name="webui.dir" value="${build.dir}/../../../WebUI" />
+    <property name="version.control.dir" value="${basedir}/versionControl"/>
+    
+    <!-- Define the ant extension classpath -->
+    <path id="antExt.class.path">
+       <pathelement location="${ant.lib.dir}/psantextensions.jar" />
+       <pathelement location="${ant.lib.dir}/p4.jar" />
+       <pathelement location="${ant.lib.dir}/ant-contrib-0.6.jar" />
+    </path>	
+    <taskdef name="p4openfile" classname="com.percussion.ant.PSP4OpenFileForEdit" classpathref="antExt.class.path" />
+    <taskdef name="p4submitchange" classname="com.percussion.ant.PSP4SubmitChange" classpathref="antExt.class.path" />
+     	
+
+
+    <!-- Property is.external is passed in for build system builds -->
+    <condition property="is.internal">
+       <not>
+          <isset property="is.external" />
+       </not>
+    </condition>
+	
+
+	<!-- ================================= 
+          target: default              
+         ================================= -->
+	<target name="default" depends="clean, internalBuildNumber, externalBuildNumber, minify, zip">
+
+	</target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: internalBuildNumber                     
+         - - - - - - - - - - - - - - - - - -->
+    <target name="internalBuildNumber" if="is.internal">
+       <buildnumber file="${basedir}/versionControl/localBuildNumber" />
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: externalBuildNumber                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="externalBuildNumber" if="is.external">
+       <p4openfile env="${version.control.dir}/perforce.properties" property="change.list.number" path="${version.control.dir}/buildNumber" description="Created by build system." lock="true" />
+       <buildnumber file="${version.control.dir}/buildNumber" />
+       <p4submitchange env="${version.control.dir}/perforce.properties" change="${change.list.number}" />
+    </target>	
+
+	<!-- - - - - - - - - - - - - - - - - - 
+	      target: clean                      
+	     - - - - - - - - - - - - - - - - - -->
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
+	
+    <!-- - - - - - - - - - - - - - - - - - 
+	      target: Concatinate and minify the javascript
+	     - - - - - - - - - - - - - - - - - -->
+    <target name="minify">
+        <property name="compressor.jar"
+                  location="${thirdparty.dir}/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar" />
+        <echo>${thirdparty.dir}</echo>
+        <path id="task.classpath">
+            <pathelement location="${thirdparty.dir}/yui-compressor-ant-task-0.4/bin/yui-compressor-ant-task-0.4.jar" />
+            <pathelement location="${compressor.jar}" />
+        </path>
+
+        <!-- yui-compressor task definition -->
+        <taskdef name="yui-compressor" classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
+            <classpath refid="task.classpath" />
+        </taskdef>
+
+        <macrodef name="yui-compress">
+            <attribute name="in" />
+            <attribute name="out" />
+            <sequential>
+                <echo>Compressing file @{in} with YUI Compressor</echo>
+                <java fork="true" failonerror="true" maxmemory="256m" jar="${compressor.jar}">
+              		<arg value="--charset=utf-8" />
+                	<arg value="-o" />
+                    <arg value="@{out}" />
+                	<arg value="--preserve-semi" />
+                	<arg value="--nomunge" />
+                	<arg value="--disable-optimizations" />
+                	<arg value="@{in}" />
+                </java>
+            </sequential>
+        </macrodef>
+    	
+        <!-- Concatenate "perc_common_ui_slim.packed.js -->
+         <echo>Concatenating file perc_common_ui_slim.packed.js</echo> 	
+         <concat destfile="${buildzip.dir}/js/perc_common_ui_slim.uncompressed.js" force="yes" encoding="UTF-8" eol="lf">
+            <!-- Pulled in dependencies -->
+         	<!-- <fileset dir="${basedir}/cors" includes="json2.js" />
+         	<fileset dir="${basedir}/cors" includes="easyXDM.js" /> -->
+            <fileset dir="${webui.dir}/war/jslib" includes="jquery.jsonp-2.1.4.js" />
+           	<fileset dir="${webui.dir}/war/services" includes="PercServiceUtils.js" />
+         </concat>
+           	
+        <!-- Concatenate "perc_common_ui.packed.js" JavaScript -->
+        <echo>Concatenating file perc_common_ui.uncompressed.js</echo> 	
+        <!-- explicitly order js concat because ordering matters here -->            
+        <concat destfile="${buildzip.dir}/js/perc_common_ui.uncompressed.js" force="yes" encoding="UTF-8" eol="lf">
+            <!-- Pulled in dependencies -->
+            <fileset dir="${webui.dir}/war/jslib" includes="simpledateformat.js" />
+            <fileset dir="${webui.dir}/war/jslib" includes="jquery.timeago.js" />
+        	<fileset dir="${webui.dir}/war/jslib" includes="moment-with-locales.js" />
+        	<fileset dir="${webui.dir}/war/jslib" includes="moment-jdateformatparser.js" />
+            <fileset dir="${webui.dir}/war/jslib" includes="jquery.bbq.js" />			
+            <fileset dir="${webui.dir}/war/jslib" includes="jquery.jfeed.js" />
+            
+            <!-- local project files -->
+        	<fileset dir="${basedir}/js/plugins">
+				<include name="PercResultsPaging.js" />
+			</fileset>
+            <fileset dir="${basedir}/js/services">
+				<include name="PercPageListService.js" />
+				<include name="PercBlogListService.js" />
+				<include name="PercLikedService.js" />
+                <include name="PercTagListService.js" />
+                <include name="PercCategoryListService.js" />
+                <include name="PercResultService.js" />
+            	<include name="PercArchiveListService.js" />
+                <include name="PercBlogPostService.js" />
+            	<include name="PercCookieConsentService.js" />
+                <include name="PercRssService.js" />
+            	<include name="PercMembershipService.js" />
+                <include name="PercMostReadBlogPostsService.js" />
+			</fileset>
+        	<fileset dir="${basedir}/js/views">
+				<include name="PercPageListView.js" />
+				<include name="PercBlogListView.js" />
+                <include name="PercMostReadBlogPostsView.js" />
+				<include name="PercLikedView.js" />
+				<include name="PercCommentsView.js" />
+                <include name="PercTagListView.js" />
+                <include name="PercCategoryListView.js" />
+        		<include name="PercArchiveListView.js" />
+                <include name="PercResultView.js" />
+                <include name="PercBlogPostView.js" />
+                <include name="PercShareThisView.js" />
+                <include name="PercRssView.js" />
+                <include name="PercRegistrationView.js" />
+        		<include name="PercLoginView.js" />
+        		<include name="PercSecureLoginView.js" />
+        		<include name="PercProtectedRegion.js" />
+			</fileset>
+        </concat>
+    	
+                	
+    	<!-- Compress perc_common_ui.js -->
+        <echo>Compressing file perc_common_ui.js</echo>
+    	
+    	 <yui-compress in="${buildzip.dir}/js/perc_common_ui.uncompressed.js"
+    	                      out="${buildzip.dir}/js/perc_common_ui.js" />
+    	<echo>Compressing file perc_common_ui_slim.js</echo>
+    	<yui-compress in="${buildzip.dir}/js/perc_common_ui_slim.uncompressed.js"
+    	    	                      out="${buildzip.dir}/js/perc_common_ui_slim.js" />
+    	
+        <!-- compress easyXDM.min.js -->
+        <echo>Compressing easyXDM.min.js</echo>
+        <yui-compress in="${basedir}/cors/easyXDM.js"
+                            out="${basedir}/cors/easyXDM.min.js" />
+    </target>
+	
+    <!-- Zip up  perc-common-ui -->
+    <target name="zip">
+    	  <echo>Zipping  perc-common-ui.zip</echo>
+    	  <mkdir dir="${dist.dir}"/>
+    	  <zip destfile="${dist.dir}/perc-common-ui.zip">
+    	    <zipfileset dir="${buildzip.dir}" prefix="perc-common-ui"/>
+    	  	<zipfileset dir="${basedir}/WEB-INF" prefix="perc-common-ui/WEB-INF"/>	    	  	
+    	  	<zipfileset dir="${basedir}/cors" prefix="perc-common-ui/cors"/>
+    	  </zip>    
+	</target>
+</project>

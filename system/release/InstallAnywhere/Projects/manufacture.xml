@@ -1,0 +1,327 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="manufacture" default="manufacture" basedir=".">
+   <description>
+	The Rhythmyx installanywhere manufacture process
+   </description>
+   <!-- set global properties for this build -->
+   <property environment="env"/>
+   <property name="rxroot.dir" location="../../.."/>
+   <property name="release.dir" location="${rxroot.dir}/release"/>
+   <property name="tools.dir" location="${rxroot.dir}/Tools"/>
+   <property name="webservices.loader.dir" location="${rxroot.dir}/webservices/sample/loader"/>
+   <property name="ia.dir" location="${env.IA_HOME}"/>
+   <property name="ia.vms.dir" location="${ia.dir}/resource/installer_vms"/>
+   <property name="ia.projects.dir" location="${release.dir}/InstallAnywhere/Projects"/>
+   <property name="DEBUG" value=""/>
+   <property name="JVM_BUNDLE_VERSION" value="1.5.0_12"/>
+   <property name="LOG4J_VERSION" value="1.2.14"/>
+   <property name="thirdpartytools.dir" value="${env.THIRD_PARTY_TOOLS_BASE}"/>
+   <property name="sdk71.signtool" value="C:\Program Files\Microsoft SDKs\windows\v7.1\Bin\signtool.exe"/>
+    <property name="sdk81.signtool" value="C:\Program Files (x86)\Windows Kits\8.1\bin\x64\signtool.exe"/>
+    <available file="${sdk81.signtool}" property="signtool.path" value="${sdk81.signtool}"/>
+    <available file="${sdk71.signtool}" property="signtool.path" value="${sdk71.signtool}"/>
+
+
+    <path id="ia.classpath">
+        <pathelement location="${tools.dir}/InstallAnywhere/iaant.jar"/>
+   </path>
+   
+   <!-- Define InstallAnywhere project build task -->
+   <taskdef name="buildInstaller" classname="com.zerog.ia.integration.ant.InstallAnywhereAntTask">
+     <classpath>
+         <path refid="ia.classpath"/>
+     </classpath>
+   </taskdef>
+      
+   <target name="init" depends="clean">
+	    <tstamp/>          
+	  	<mkdir dir="${release.dir}/setup"/>
+	    <mkdir dir="${release.dir}/setup/linux"/>
+	    <mkdir dir="${release.dir}/setup/windows"/>
+	    <mkdir dir="${release.dir}/setup/resource"/>
+	    <mkdir dir="${release.dir}/setup/docs"/>
+	    <mkdir dir="${webservices.loader.dir}/java/lib"/>
+		<property environment="env"/>
+		<property name="rxroot.dir" location="../../.."/>
+		<property name="release.dir" location="${rxroot.dir}/release"/>
+		<property name="tools.dir" location="${rxroot.dir}/Tools"/>
+		<property name="webservices.loader.dir" location="${rxroot.dir}/webservices/sample/loader"/>
+		<property name="ia.dir" location="${env.IA_HOME}"/>
+		<property name="ia.vms.dir" location="${ia.dir}/resource/installer_vms"/>
+		<property name="ia.projects.dir" location="${release.dir}/InstallAnywhere/Projects"/>
+		<property name="DEBUG" value=""/>
+		<property name="JVM_BUNDLE_VERSION" value="1.5.0_12"/>
+		<property name="LOG4J_VERSION" value="1.2.14"/>
+		<property name="thirdpartytools.dir" value="${env.THIRD_PARTY_TOOLS_BASE}"/>
+   </target>
+   
+   <target name="clean">
+      <property name="output.dir" value="_Build_Output"/>
+      <delete dir="${release.dir}/setup"/>
+      <delete dir="${ia.projects.dir}/setup/setup${output.dir}"/>
+      <delete dir="${ia.projects.dir}/devtools/devtools${output.dir}"/>
+      <delete dir="${ia.projects.dir}/configuration/brand${output.dir}"/>
+      <delete dir="${webservices.loader.dir}/java/webservices"/>
+      <delete dir="${webservices.loader.dir}/java/build"/>
+      <delete dir="${webservices.loader.dir}/java/lib"/>
+   </target>
+   
+   <target name="manufacture" depends="init">
+	<!-- Copy required jars from third party tools -->
+       <copy todir="${rxroot.dir}/build/dist/Tools/jaxb" overwrite="true">
+	      <fileset dir="${thirdpartytools.dir}/jaxb-2.1.9/lib">
+	         <include name="jaxb-api.jar"/>
+	      </fileset>
+      </copy>
+      <!-- Prepare for install -->
+      <antcall target="prepareForInstall" inheritall="true"/>
+
+      <!-- Build source tree zip files for devtools, ecc, doc -->
+      <ant antfile="${rxroot.dir}/buildResources/buildSourceTree.xml" target="buildDevToolsSource" inheritall="false"/>
+      <ant antfile="${rxroot.dir}/buildResources/buildDTSSourceTree.xml" inheritall="false"/>
+
+      <!-- Invoke the InstallAnywhere project builds for brander, devtools, ecc -->  
+      <antcall target="manufacture_brander"/>
+	  <antcall target="manufacture_devtools"/>
+      <antcall target="manufacture_dts"/>
+                    
+      <!-- Build source tree zip file for setup installer -->
+      <ant antfile="${rxroot.dir}/buildResources/buildSourceTree.xml" target="buildServerSource" inheritall="false"/>
+     
+      <!-- Invoke the InstallAnywhere project build for setup -->
+      <antcall target="manufacture_setup"/>
+            
+      <!-- Copy source files for distribution -->
+      <ant antfile="copySrcFiles.xml" inheritall="false"/>
+      <!-- Copy all setup files and organize into 3 CD folders -->
+      <ant antfile="copySetupFiles.xml" inheritall="false"/>
+   
+   </target>
+    
+   <target name="buildLoader">
+        <!-- Copy required jars -->
+        <copy todir="${webservices.loader.dir}/java/lib" overwrite="true">
+	   <fileset dir="${tools.dir}/mail">
+	      <include name="*.jar"/>
+	   </fileset>
+	   <fileset dir="${tools.dir}/axis">
+	      <include name="*.jar"/>
+	   </fileset>
+        </copy>
+        <!-- Generate source files -->
+        <ant antfile="${webservices.loader.dir}/java/build.xml" target="wsdl2java_6" inheritall="false"/>
+        <!-- Build webservices sample loader classes -->
+        <ant antfile="${webservices.loader.dir}/java/build.xml" inheritall="false"/>
+   </target>
+   
+   	<!-- Checks the operating system -->
+    <target name="checkos">
+        <condition property="isWindows">
+                <os family="windows" />
+        </condition>
+
+        <condition property="isLinux">
+                <os family="unix" />
+        </condition>
+    </target>
+    
+   	<target name="pkgBuildWindows" if="isWindows">
+	     <echo>Executing pkgBuild.bat PKGBUILDALL</echo>
+		<exec dir="${rxroot.dir}" executable="pkgBuild.bat" failonerror="true">
+	        <arg value="PKGBUILDALL"/>
+	     </exec>
+	</target>
+	
+	<target name="pkgBuildLinux" if="isLinux">
+		<echo>Executing pkgBuild.sh PKGBUILDALL</echo>
+		<exec dir="${rxroot.dir}" executable="./pkgBuild.sh" failonerror="true">
+			<arg value="PKGBUILDALL" /> 
+		</exec>	
+	</target>
+   
+   
+   <target name="prepareForInstall" depends="checkos">
+     <!-- Copy and convert unix shell scripts -->
+     <copyShellScripts/>
+     <!-- Copy word files -->
+     <!-- Note: not sure this step is still needed -->
+     <copy todir="${rxroot.dir}/cms/content/applications/rx_resources/ApplicationFiles/word"
+           overwrite="true">
+       <fileset dir="${rxroot.dir}/cms/content/applications/sys_resources/ApplicationFiles/word">
+         <include name="rxworddocx.cab"/>
+       </fileset>
+     </copy>
+     <copy todir="${rxroot.dir}/cms/content/applications/Editors/rx_ceArticleWord/ApplicationFiles"
+           overwrite="true">
+       <fileset dir="${rxroot.dir}/cms/content/applications/sys_resources/ApplicationFiles/word">
+         <include name="rxwordsample.dot"/>
+       </fileset>
+     </copy>
+     <!-- Build workbench plugins -->
+     <ant antfile="${rxroot.dir}/build.xml" target="makeplugins" inheritall="false"/>
+     <!-- Build tomcat scripts -->
+     <ant antfile="buildtomcatscripts.xml" inheritall="false"/>
+     <!-- Build samples -->
+     <ant antfile="buildSamples.xml" inheritall="false"/>
+    
+   	<!-- Build webservices sample loader 
+     <antcall target="buildLoader"/>
+     -->
+    
+   	<!-- Run rxAppsCopy using the with FastForward option-->
+     <ant antfile="${rxroot.dir}/rxAppsCopy.xml" inheritall="false">
+       <property name="WITHFF" value="true"/>
+     </ant>
+     <!-- Copy tools jars -->
+     <copyToolsJars/>
+     <!-- Copy Third Party Tools -->
+     <copyThirdPartyTools/>
+     <!-- Prepare spellcheck -->
+     <prepareSpellcheck/>
+  
+   	
+	 <!-- Prepare package files for distribution -->
+      <echo>Preparing Packages</echo>
+      <antcall target="pkgBuildWindows" />
+      <antcall target="pkgBuildLinux" />
+  </target>
+   
+   <target name="manufacture_brander">
+        <iaProjectLauncher projectfile="${ia.projects.dir}/configuration/brand.iap_xml"/>
+   	   	<signexe file="${ia.projects.dir}/configuration/brand_Build_Output/Web_Installers/InstData/Windows/VM/RxBrander.exe" />
+   </target>
+   
+   <target name="manufacture_setup">
+        <iaProjectLauncher projectfile="${ia.projects.dir}/setup/setup.iap_xml"/>
+   		<signexe file="${ia.projects.dir}\setup\setup_Build_Output\Web_Installers\InstData\Windows32\VM\Setup.exe" />
+        <signexe file="${ia.projects.dir}\setup\setup_Build_Output\Web_Installers\InstData\Windows64\VM\Setup.exe" />
+   </target>
+	
+   <target name="manufacture_devtools">
+        <iaProjectLauncher projectfile="${ia.projects.dir}/devtools/devtools.iap_xml" buildWebInstaller="true"/>
+   		<signexe file="${ia.projects.dir}\devtools\devtools_Build_Output\Web_Installers\InstData\Windows\VM\cm1SDKSetup.exe" />
+   </target>
+        
+	<target name="manufacture_dts">
+		<iaProjectLauncher projectfile="${ia.projects.dir}/dts/dts.iap_xml" buildWebInstaller="true"/>
+		<signexe file="${ia.projects.dir}\dts\setup_Build_Output\Web_Installers\InstData\Windows32\VM\SetupDTS.exe" />
+		<signexe file="${ia.projects.dir}\dts\setup_Build_Output\Web_Installers\InstData\Windows64\VM\SetupDTS.exe" />
+	</target>
+	        
+   <!--- DEFINE MACRO DEFS -->
+   <macrodef name="copyShellScripts">
+      <sequential>
+         <copy todir="${release.dir}/setup/linux">
+         <fileset dir="${release.dir}/ShellScripts"/>
+         </copy>
+      <ant antfile="${basedir}/convertUnixFiles.xml" inheritall="false"/>
+     </sequential> 
+   </macrodef>
+   
+   <macrodef name="prepareSpellcheck">
+      <sequential>
+         <property name="spellcheck.dir"
+                   value="${rxroot.dir}/cms/content/applications/sys_resources/ApplicationFiles/spellcheck"/>
+         <delete dir="${spellcheck.dir}"/>
+         <mkdir dir="${spellcheck.dir}"/>
+         <copy todir="${spellcheck.dir}">
+            <fileset dir="${rxroot.dir}/Tools/SpellCheck">
+               <include name="ssce.jar"/>
+               <include name="lib/spell.jar"/>
+               <include name="*.tlx"/>
+               <include name="*.clx"/>
+            </fileset>
+         </copy>          
+      </sequential>
+   </macrodef>
+   
+   <macrodef name="copyToolsJars">
+         <sequential>
+            <echo>Copying tools jars</echo>
+            <copy file="${tools.dir}/log4j/log4j-${LOG4J_VERSION}.jar"
+   	       tofile="${tools.dir}/log4j/log4j.jar" overwrite="true"/>
+   	 </sequential>
+   </macrodef>
+	
+	   <macrodef name="copyThirdPartyTools">
+	         <sequential>
+	            <echo>Copying Third Party Tools Tools</echo>
+	            <copy todir="${rxroot.dir}/build/dist/Tools/thirdpartytools">
+	                 <fileset dir="${thirdpartytools.dir}/miglayout-3.6.3/lib">
+	                    <include name="miglayout-3.6.3-swing.jar"/>
+	                 </fileset>
+		             <fileset dir="${thirdpartytools.dir}/substance-5.1/lib">
+		                <include name="substance.jar"/>
+		             </fileset>
+                     <fileset dir="${thirdpartytools.dir}/guava-r07">
+		                <include name="guava-r07.jar"/>
+		             </fileset>
+	            </copy>
+	   	 </sequential>
+	   </macrodef>
+   
+   <macrodef name="iaProjectLauncher">
+      <attribute name="projectfile" default="UNKNOWN"/>
+      <attribute name="buildUnix" default="true"/>
+      <attribute name="buildWebInstaller" default="false"/>
+      <sequential>
+         <echo/>
+         <echo>++++++ Starting manufacture of @{projectfile} ++++++</echo>
+         <buildInstaller IAlocation="${ia.dir}" IAProjectFile="@{projectfile}"
+           failonerror="true"
+           BuildLinuxWithVM="@{buildUnix}"
+           BuildLinuxWithoutVM="false"
+           BuildSolarisWithVM="false"
+           BuildSolarisWithoutVM="false"
+           BuildWindowsWithVM="true"
+           BuildWindowsWithoutVM="false"
+           BuildWebInstaller="@{buildWebInstaller}"/>
+	 <echo>====== Ending manufacture of @{projectfile} ======</echo>
+         <echo/>      
+      </sequential>
+   </macrodef>
+
+	<macrodef name="signexe">
+	   <attribute name="file"/>
+	   <sequential>
+	   		<echo>Signing executable @{file}</echo>
+          <exec dir="${rxroot.dir}" executable="${signtool.path}" failonerror="true">
+              <arg value="sign"/>
+              <arg value="/a"/>
+              <arg value="/n"/>
+              <arg value="PERCUSSION SOFTWARE"/>
+              <arg value="/fd"/>
+              <arg value="sha256"/>
+              <arg value="/tr"/>
+              <arg value="http://sha256timestamp.ws.symantec.com/sha256/timestamp"/>
+              <arg value="/v"/>
+              <arg value="@{file}"/>
+		</exec>
+	   	<echo>Signing @{file} done</echo>
+	   </sequential>
+	</macrodef>
+ 
+</project>

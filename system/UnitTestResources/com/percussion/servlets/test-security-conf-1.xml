@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityConfiguration>
+   <!-- basic requests -->
+   <path authType="basic">basic1</path>
+   <path authType="basic">basic2</path>
+
+   <!-- anonymous requests -->
+   <path authType="anonymous">anon1</path>
+   <path authType="anonymous">anon2</path>
+   
+   <!-- basic methods -->
+   <method authType="basic">PROPFIND</method>
+   <method authType="basic">PROPPATCH</method>   
+</securityConfiguration>

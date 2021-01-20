@@ -1,0 +1,1224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXContentEditorSharedDef>
+   <PSXSharedFieldGroup filename="rxs_ct_shared.xml" name="shared">
+      <PSXContainerLocator>
+         <PSXTableSet>
+            <PSXTableLocator>
+               <PSXBackEndCredential id="0">
+                  <alias>systemCredential</alias>
+                  <comment/>
+                  <datasource/>
+               </PSXBackEndCredential>
+            </PSXTableLocator>
+            <PSXTableRef alias="RXS_CT_SHARED" name="RXS_CT_SHARED"/>
+         </PSXTableSet>
+      </PSXContainerLocator>
+      <PSXFieldSet name="shared" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+         <PSXField forceBinary="no" modificationType="user" name="body" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>BODY</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>max</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="no" name="allowActiveTags">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">yes</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="cleanupNamespaces">
+                  <Value type="Boolean">yes</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="mayContainIDs">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="mayHaveInlineLinks">
+                  <Value type="Boolean">yes</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="yes" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" modificationType="user" name="callout" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>CALLOUT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>max</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="no" name="allowActiveTags">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">yes</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="cleanupNamespaces">
+                  <Value type="Boolean">yes</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="mayContainIDs">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="mayHaveInlineLinks">
+                  <Value type="Boolean">yes</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="yes" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="categories" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXTextLiteral id="0">
+                  <text>this value will be replaced with selected category content ids by the extractIdsFromSlot exit</text>
+               </PSXTextLiteral>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>255</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <FieldOutputTranslation>
+                  <PSXFieldTranslation>
+                     <PSXExtensionCallSet id="0">
+                        <PSXExtensionCall id="0">
+                           <name>Java/global/percussion/fastforward/relationship/rxs_ExtractIdsFromSlot</name>
+                           <PSXExtensionParamValue id="0">
+                              <value>
+                                 <PSXTextLiteral id="0">
+                                    <text>psx_category_items</text>
+                                 </PSXTextLiteral>
+                              </value>
+                           </PSXExtensionParamValue>
+                        </PSXExtensionCall>
+                     </PSXExtensionCallSet>
+                     <ErrorLabel>
+                        <PSXDisplayText>Failed to select category content ids</PSXDisplayText>
+                     </ErrorLabel>
+                  </PSXFieldTranslation>
+               </FieldOutputTranslation>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="no" userSearchable="no" visibleToGlobalQuery="no"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="default_variantid" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>DEFAULT_VARIANTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>integer</DataType>
+            <DataFormat>none</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="no" name="mayContainIDs">
+                  <Value type="Boolean">yes</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="description" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>DESCRIPTION</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>1024</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="displaytitle" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>DISPLAYTITLE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>512</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXFieldValidationRules maxErrorsToStop="10" name="isValidSysDisplayTitle">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="1">
+                        <variable>
+                           <PSXSingleHtmlParameter id="0">
+                              <name>displaytitle</name>
+                           </PSXSingleHtmlParameter>
+                        </variable>
+                        <operator>IS NOT NULL</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+                  <PSXApplyWhen ifFieldEmpty="yes"/>
+                  <ErrorMessage>
+                     <PSXDisplayText>DisplayTitle field cannot be empty</PSXDisplayText>
+                  </ErrorMessage>
+               </PSXFieldValidationRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="filename" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>FILENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>512</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="keywords" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>KEYWORDS</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>1024</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="webdavowner" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>WEBDAVOWNER</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>255</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+         </PSXField>
+      </PSXFieldSet>
+      <PSXUIDefinition>
+         <PSXDisplayMapper fieldSetRef="shared" id="5">
+            <PSXDisplayMapping>
+               <FieldRef>filename</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File Name:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="12" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File Name:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>displaytitle</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Title:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="13" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Title:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>keywords</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Keywords:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="15" name="sys_TextArea"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Keywords:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>description</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Description:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="17" name="sys_TextArea"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Description:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>callout</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Callout:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="19" name="sys_EditLive"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Callout:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>body</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Body:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="24" name="sys_EditLive"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Body:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>default_variantid</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Default Template ID:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="3388" name="sys_DropDownSingle"/>
+                  <PSXChoices sortOrder="user" type="internalLookup">
+                     <PSXUrlRequest>
+                        <Href>../rxs_Support_ce/rxs_PageVariantLookup.xml</Href>
+                        <Anchor/>
+                     </PSXUrlRequest>
+                  </PSXChoices>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>categories</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Categories:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="3256" name="sys_CategoryCheckboxes"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Categories:</PSXDisplayText>
+                  </ErrorLabel>
+                  <PSXChoices sortOrder="ascending" type="internalLookup">
+                     <PSXUrlRequest>
+                        <Href>../rxs_Category_auto/all_categories</Href>
+                        <PSXParam name="sys_contentid">
+                           <DataLocator>
+                              <PSXHtmlParameter id="0">
+                                 <name>sys_contentid</name>
+                              </PSXHtmlParameter>
+                           </DataLocator>
+                        </PSXParam>
+                        <PSXParam name="sys_revision">
+                           <DataLocator>
+                              <PSXHtmlParameter id="0">
+                                 <name>sys_revision</name>
+                              </PSXHtmlParameter>
+                           </DataLocator>
+                        </PSXParam>
+                        <Anchor/>
+                     </PSXUrlRequest>
+                  </PSXChoices>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>webdavowner</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>WebDAV Owner:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="17" name="sys_TextArea"/>
+               </PSXUISet>
+            </PSXDisplayMapping>
+         </PSXDisplayMapper>
+      </PSXUIDefinition>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+   </PSXSharedFieldGroup>
+   <PSXSharedFieldGroup filename="rxs_ct_shared.xml" name="sharedbinary">
+      <PSXContainerLocator>
+         <PSXTableSet>
+            <PSXTableLocator>
+               <PSXBackEndCredential id="0">
+                  <alias>systemCredential</alias>
+                  <comment/>
+                  <datasource/>
+               </PSXBackEndCredential>
+            </PSXTableLocator>
+            <PSXTableRef alias="RXS_CT_SHAREDBINARY" name="RXS_CT_SHAREDBINARY"/>
+         </PSXTableSet>
+      </PSXContainerLocator>
+      <PSXFieldSet name="sharedbinary" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+         <PSXField clearBinaryParam="yes" forceBinary="yes" mimetype="application/octet-stream" modificationType="user" name="item" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDBINARY</tableAlias>
+                  <column>ITEM</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>binary</DataType>
+            <DataFormat>max</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="yes" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="item_ext" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDBINARY</tableAlias>
+                  <column>ITEM_EXT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" modificationType="user" name="item_filename" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDBINARY</tableAlias>
+                  <column>ITEM_FILENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>512</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="item_size" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDBINARY</tableAlias>
+                  <column>ITEM_SIZE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>integer</DataType>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" modificationType="user" name="item_type" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDBINARY</tableAlias>
+                  <column>ITEM_TYPE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>256</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+      </PSXFieldSet>
+      <PSXUIDefinition>
+         <PSXDisplayMapper fieldSetRef="sharedbinary" id="5">
+            <PSXDisplayMapping>
+               <FieldRef>item</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="121" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>item_filename</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Binary Filename:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="108" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Binary Filename:</PSXDisplayText>
+                  </ErrorLabel>
+                  <ReadOnlyRules>
+                     <PSXRule boolean="and">
+                        <PSXConditional id="2">
+                           <variable>
+                              <PSXTextLiteral id="0">
+                                 <text>1</text>
+                              </PSXTextLiteral>
+                           </variable>
+                           <operator>=</operator>
+                           <value>
+                              <PSXTextLiteral id="0">
+                                 <text>1</text>
+                              </PSXTextLiteral>
+                           </value>
+                           <boolean>AND</boolean>
+                        </PSXConditional>
+                     </PSXRule>
+                  </ReadOnlyRules>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>item_size</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File Size:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="109" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File Size:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>item_type</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File Type:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="110" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File Type:</PSXDisplayText>
+                  </ErrorLabel>
+                  <ReadOnlyRules>
+                     <PSXRule boolean="and">
+                        <PSXConditional id="2">
+                           <variable>
+                              <PSXTextLiteral id="0">
+                                 <text>1</text>
+                              </PSXTextLiteral>
+                           </variable>
+                           <operator>=</operator>
+                           <value>
+                              <PSXTextLiteral id="0">
+                                 <text>1</text>
+                              </PSXTextLiteral>
+                           </value>
+                           <boolean>AND</boolean>
+                        </PSXConditional>
+                     </PSXRule>
+                  </ReadOnlyRules>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>item_ext</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File Extension:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="111" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File Extension:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+         </PSXDisplayMapper>
+      </PSXUIDefinition>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+   </PSXSharedFieldGroup>
+   <PSXSharedFieldGroup filename="rxs_ct_shared.xml" name="sharedimage">
+      <PSXContainerLocator>
+         <PSXTableSet>
+            <PSXTableLocator>
+               <PSXBackEndCredential id="0">
+                  <alias>systemCredential</alias>
+                  <comment/>
+                  <datasource/>
+               </PSXBackEndCredential>
+            </PSXTableLocator>
+            <PSXTableRef alias="RXS_CT_SHAREDIMAGE" name="RXS_CT_SHAREDIMAGE"/>
+         </PSXTableSet>
+      </PSXContainerLocator>
+      <PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+         <PSXField clearBinaryParam="yes" forceBinary="yes" mimetype="application/octet-stream" modificationType="user" name="img1" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG1</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>binary</DataType>
+            <DataFormat>max</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img1_ext" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG1_EXT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" modificationType="user" name="img1_filename" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG1_FILENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>512</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img1_height" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG1_HEIGHT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>integer</DataType>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img1_size" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG1_SIZE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>integer</DataType>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" modificationType="user" name="img1_type" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG1_TYPE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>256</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img1_width" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG1_WIDTH</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>integer</DataType>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField clearBinaryParam="yes" forceBinary="yes" mimetype="application/octet-stream" modificationType="user" name="img2" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>binary</DataType>
+            <DataFormat>max</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="yes" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_ext" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2_EXT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_filename" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2_FILENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>512</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_height" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2_HEIGHT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>integer</DataType>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_size" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2_SIZE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>integer</DataType>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_type" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2_TYPE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>256</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="yes" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_width" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2_WIDTH</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>integer</DataType>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <FieldRules>
+               <PSXVisibilityRules dataHiding="xsl">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </variable>
+                        <operator>=</operator>
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>2</text>
+                           </PSXTextLiteral>
+                        </value>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXVisibilityRules>
+            </FieldRules>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img_alt" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG_ALT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>512</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+      </PSXFieldSet>
+      <PSXUIDefinition>
+         <PSXDisplayMapper fieldSetRef="sharedimage" id="5">
+            <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_filename</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image File Name:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="78" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image File Name:</PSXDisplayText>
+                  </ErrorLabel>
+                  <ReadOnlyRules>
+                     <PSXRule boolean="and">
+                        <PSXConditional id="2">
+                           <variable>
+                              <PSXTextLiteral id="0">
+                                 <text>1</text>
+                              </PSXTextLiteral>
+                           </variable>
+                           <operator>=</operator>
+                           <value>
+                              <PSXTextLiteral id="0">
+                                 <text>1</text>
+                              </PSXTextLiteral>
+                           </value>
+                           <boolean>AND</boolean>
+                        </PSXConditional>
+                     </PSXRule>
+                  </ReadOnlyRules>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_size</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image File Size:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="79" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image File Size:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_type</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image Mime Type:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="80" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image Mime Type:</PSXDisplayText>
+                  </ErrorLabel>
+                  <ReadOnlyRules>
+                     <PSXRule boolean="and">
+                        <PSXConditional id="2">
+                           <variable>
+                              <PSXTextLiteral id="0">
+                                 <text>1</text>
+                              </PSXTextLiteral>
+                           </variable>
+                           <operator>=</operator>
+                           <value>
+                              <PSXTextLiteral id="0">
+                                 <text>1</text>
+                              </PSXTextLiteral>
+                           </value>
+                           <boolean>AND</boolean>
+                        </PSXConditional>
+                     </PSXRule>
+                  </ReadOnlyRules>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_ext</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image Extension:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="81" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image Extension:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_height</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image Height:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="82" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image Height:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_width</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image Width:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="83" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image Width:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img_alt</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image Alt Text:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="84" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image Alt Text:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="86" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_filename</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini File Name:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="87" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini File Name:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_size</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini File Size:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="88" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini File Size:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_type</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini Mime Type:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="89" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini Mime Type:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_ext</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini Extension:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="90" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini Extension:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_height</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini Height:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="91" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini Height:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_width</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini Width:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="92" name="sys_EditBox"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini Width:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+         </PSXDisplayMapper>
+      </PSXUIDefinition>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+   </PSXSharedFieldGroup>
+</PSXContentEditorSharedDef>

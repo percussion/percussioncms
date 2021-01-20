@@ -1,0 +1,1522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDefData appName="psx_cepercPage" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_cepercPage/percPage.html" id="317" label="page" name="percPage" typeId="317"/>
+   <PSXContentEditor contentType="317" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
+      <PSXDataSet id="768">
+         <name>percPage</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <InputDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="10000">
+                     <name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>page_summary</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2Ktidy.properties</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2KserverPageTags.xml</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>yes</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                  </PSXExtensionCall>
+                  <PSXExtensionCall id="10001">
+                     <name>Java/global/percussion/exit/sys_paramStringListToParamArray</name>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>page_categories_tree</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>;</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>page_categories_tree</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>yes</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                  </PSXExtensionCall>
+                  <PSXExtensionCall id="10001">
+                     <name>Java/global/percussion/exit/sys_paramStringListToParamArray</name>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>page_categories_tree</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>;</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>page_categories_tree</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>yes</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                  </PSXExtensionCall>
+                  <PSXExtensionCall id="10000">
+                     <name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>page_summary</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2Ktidy.properties</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2KserverPageTags.xml</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>yes</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_PAGE" name="CT_PAGE"/>
+                  <PSXTableRef alias="CONTENTSTATUS" name="CONTENTSTATUS"/>
+                  <PSXTableRef alias="CT_PAGE_PAGE_CALENDAR_SET" name="CT_PAGE_PAGE_CALENDAR_SET"/>
+                  <PSXTableRef alias="CT_PAGE_PAGE_CATEGORIES_SET" name="CT_PAGE_PAGE_CATEGORIES_SET"/>
+                  <PSXTableRef alias="CT_PAGE_PAGE_TAGS_SET" name="CT_PAGE_PAGE_TAGS_SET"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="CT_page" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="additional_head_content" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>ADDL_HEAD_CONTENT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="auto_generate_summary" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>AUTO_GENERATE_SUMMARY</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>1</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="code_insert_after_body_start" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>AFTER_BODY_START</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="code_insert_before_body_close" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>BEFORE_BODY_CLOSE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="data" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>DATA</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="none" name="html_content" showInPreview="no" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXExtensionCall id="0">
+                           <name>Java/global/percussion/cms/sys_ExtractHtmlContent</name>
+                           <PSXExtensionParamValue id="0">
+                              <value>
+                                 <PSXBackEndColumn id="0">
+                                    <tableAlias>CONTENTSTATUS</tableAlias>
+                                    <column>CONTENTID</column>
+                                    <columnAlias/>
+                                 </PSXBackEndColumn>
+                              </value>
+                           </PSXExtensionParamValue>
+                        </PSXExtensionCall>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties defaultSearchLabel="Extracted Html Content" enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="migrationemptywidgets" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>MIGRATIONEMPTYWIDGETS</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>no</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_authorname" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>AUTHOR_BYLINE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>512</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXFieldSet name="page_calendar_set" repeatability="zeroOrMore" supportsSequencing="yes" type="simpleChild" userSearchable="yes">
+                     <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_calendar" showInPreview="yes" showInSummary="no" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>CT_PAGE_PAGE_CALENDAR_SET</tableAlias>
+                              <column>PAGE_CALENDAR</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>1024</DataFormat>
+                        <DefaultValue>
+                           <DataLocator>
+                              <PSXTextLiteral id="0">
+                                 <text/>
+                              </PSXTextLiteral>
+                           </DataLocator>
+                        </DefaultValue>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXPropertySet>
+                           <PSXProperty locked="no" name="allowActiveTags">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="cleanupNamespaces">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="mayContainIDs">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                        </PSXPropertySet>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                  </PSXFieldSet>
+                  <PSXFieldSet name="page_categories_tree_set" repeatability="zeroOrMore" supportsSequencing="yes" type="simpleChild" userSearchable="yes">
+                     <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_categories_tree" showInPreview="yes" showInSummary="no" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>CT_PAGE_PAGE_CATEGORIES_SET</tableAlias>
+                              <column>PAGE_CATEGORIES_TREE</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>512</DataFormat>
+                        <DefaultValue>
+                           <DataLocator>
+                              <PSXTextLiteral id="0">
+                                 <text/>
+                              </PSXTextLiteral>
+                           </DataLocator>
+                        </DefaultValue>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXPropertySet>
+                           <PSXProperty locked="no" name="allowActiveTags">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="cleanupNamespaces">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="mayContainIDs">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                        </PSXPropertySet>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                  </PSXFieldSet>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_description" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>PAGE_DESCRIPTION</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_end_date" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>PAGE_END_DATE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>datetime</DataType>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_noindex" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>PAGE_NOINDEX</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_start_date" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>PAGE_START_DATE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>datetime</DataType>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_summary" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>PAGE_SUMMARY</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageLinksConverter</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>page_summary</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXFieldSet name="page_tags_set" repeatability="zeroOrMore" supportsSequencing="yes" type="simpleChild" userSearchable="yes">
+                     <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_tags" showInPreview="yes" showInSummary="no" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>CT_PAGE_PAGE_TAGS_SET</tableAlias>
+                              <column>PAGE_TAGS</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>512</DataFormat>
+                        <DefaultValue>
+                           <DataLocator>
+                              <PSXTextLiteral id="0">
+                                 <text/>
+                              </PSXTextLiteral>
+                           </DataLocator>
+                        </DefaultValue>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXPropertySet>
+                           <PSXProperty locked="no" name="allowActiveTags">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="cleanupNamespaces">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="mayContainIDs">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                        </PSXPropertySet>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                  </PSXFieldSet>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="page_title" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>PAGE_TITLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>512</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>page_title</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                           <ErrorMessage>
+                              <PSXDisplayText>This field is required.</PSXDisplayText>
+                           </ErrorMessage>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="region_overrides" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>REGION_OVERRIDES</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="resource_link_title" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>RESOURCE_LINK_TITLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>512</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>resource_link_title</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                           <ErrorMessage>
+                              <PSXDisplayText>This field is required.</PSXDisplayText>
+                           </ErrorMessage>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="social_promotion_metadata" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>SOCIAL_PROMOTION_METADATA</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="sys_contentexpirydate" showInPreview="yes" showInSummary="yes" type="system">
+                     <DataType/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties defaultSearchLabel="Content expiration date" enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="sys_contentpostdate" showInPreview="yes" showInSummary="yes" type="system">
+                     <DataType/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties defaultSearchLabel="Content post date" enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="sys_contentpostdatetz" showInPreview="yes" showInSummary="no" type="system">
+                     <DataType/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXConditional id="0">
+                                 <variable>
+                                    <PSXTextLiteral id="0">
+                                       <text>1</text>
+                                    </PSXTextLiteral>
+                                 </variable>
+                                 <operator>=</operator>
+                                 <value>
+                                    <PSXTextLiteral id="0">
+                                       <text>1</text>
+                                    </PSXTextLiteral>
+                                 </value>
+                                 <boolean>AND</boolean>
+                              </PSXConditional>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties defaultSearchLabel="Contentpostdate time zone" enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="sys_contentstartdate" showInPreview="yes" showInSummary="yes" type="system">
+                     <DataType/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties defaultSearchLabel="Content start date" enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="template_content_migration_version" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>TEMPLATE_CONTENT_MIGRATION_VERSION</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="templateid" showInPreview="no" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PAGE</tableAlias>
+                           <column>TEMPLATEID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>templateid</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="no"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_page" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>resource_link_title</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Display title (link text):</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10001" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>512</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Display title (link text):</PSXDisplayText>
+                           </ErrorLabel>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXExtensionCallSet id="0">
+                                    <PSXExtensionCall id="0">
+                                       <name>Java/global/percussion/system/sys_LandingPageFieldEditabiltyRule</name>
+                                       <PSXExtensionParamValue id="0">
+                                          <value>
+                                             <PSXSingleHtmlParameter id="0">
+                                                <name>sys_contentid</name>
+                                             </PSXSingleHtmlParameter>
+                                          </value>
+                                       </PSXExtensionParamValue>
+                                       <PSXExtensionParamValue id="0">
+                                          <value>
+                                             <PSXSingleHtmlParameter id="0">
+                                                <name>sys_revision</name>
+                                             </PSXSingleHtmlParameter>
+                                          </value>
+                                       </PSXExtensionParamValue>
+                                    </PSXExtensionCall>
+                                 </PSXExtensionCallSet>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>File name:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="0" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>File name:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_summary</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Page summary:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10004" name="sys_tinymce">
+                              <PSXParam name="width">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>100%</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                              <PSXParam name="height">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>175</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                              <PSXParam name="requirescleanup">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>yes</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Page summary:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>auto_generate_summary</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef id="10002" name="sys_SingleCheckBox"/>
+                           <ErrorLabel>
+                              <PSXDisplayText/>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="local">
+                              <PSXEntry default="no" sequence="-1">
+                                 <PSXDisplayText>Auto generate summary</PSXDisplayText>
+                                 <Value>1</Value>
+                              </PSXEntry>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentpostdate</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentpostdatetz</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Time Zone:</PSXDisplayText>
+                           </Label>
+                           <PSXChoices sortOrder="ascending" type="global">
+                              <Key>401</Key>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_title</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Page title (browser title):</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10004" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>512</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Page title (browser title):</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_description</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Page description meta tag (for search results):</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10001" name="sys_EditBox">
+                              <PSXParam name="id">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>perc-page-description</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Page Description Meta Tag (for search results):</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_noindex</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef id="10017" name="sys_SingleCheckBox"/>
+                           <ErrorLabel>
+                              <PSXDisplayText/>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="local">
+                              <PSXEntry default="no" sequence="-1">
+                                 <PSXDisplayText>Hide page from Web search engines</PSXDisplayText>
+                                 <Value>true</Value>
+                              </PSXEntry>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_tags_set</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Tags:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10018" name="percTagListControl">
+                              <PSXParam name="maxchars">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>512</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Page_tags:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="internalLookup">
+                              <PSXUrlRequest>
+                                 <Href>../percPageSupport/getTags</Href>
+                                 <Anchor/>
+                              </PSXUrlRequest>
+                           </PSXChoices>
+                        </PSXUISet>
+                        <PSXDisplayMapper fieldSetRef="page_tags_set" id="1">
+                           <PSXDisplayMapping>
+                              <FieldRef>page_tags</FieldRef>
+                              <PSXUISet/>
+                           </PSXDisplayMapping>
+                        </PSXDisplayMapper>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_categories_tree_set</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Categories:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10002" name="sys_CheckBoxTreeJS">
+                              <PSXParam name="tree_src_url">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>../percPageSupport/getCategories.xml</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Categories:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="internalLookup">
+                              <PSXUrlRequest>
+                                 <Href>../percPageSupport/selectedCategories</Href>
+                                 <PSXParam name="sys_contentid">
+                                    <DataLocator>
+                                       <PSXSingleHtmlParameter id="0">
+                                          <name>sys_contentid</name>
+                                       </PSXSingleHtmlParameter>
+                                    </DataLocator>
+                                 </PSXParam>
+                                 <PSXParam name="sys_revision">
+                                    <DataLocator>
+                                       <PSXSingleHtmlParameter id="0">
+                                          <name>sys_revision</name>
+                                       </PSXSingleHtmlParameter>
+                                    </DataLocator>
+                                 </PSXParam>
+                                 <Anchor/>
+                              </PSXUrlRequest>
+                           </PSXChoices>
+                        </PSXUISet>
+                        <PSXDisplayMapper fieldSetRef="page_categories_tree_set" id="2">
+                           <PSXDisplayMapping>
+                              <FieldRef>page_categories_tree</FieldRef>
+                              <PSXUISet/>
+                           </PSXDisplayMapping>
+                        </PSXDisplayMapper>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_calendar_set</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef id="10003" name="percCalendarControl"/>
+                           <ErrorLabel>
+                              <PSXDisplayText/>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="internalLookup">
+                              <PSXUrlRequest>
+                                 <Href>../percPageSupport/getCalendars</Href>
+                                 <Anchor/>
+                              </PSXUrlRequest>
+                           </PSXChoices>
+                        </PSXUISet>
+                        <PSXDisplayMapper fieldSetRef="page_calendar_set" id="3">
+                           <PSXDisplayMapping>
+                              <FieldRef>page_calendar</FieldRef>
+                              <PSXUISet/>
+                           </PSXDisplayMapping>
+                        </PSXDisplayMapper>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>additional_head_content</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Additional head content:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10004" name="sys_TextArea">
+                              <PSXParam name="id">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>percpagehead</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Additional head content:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>code_insert_after_body_start</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Code insert after body start:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10003" name="sys_TextArea">
+                              <PSXParam name="id">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>percpagebodybefore</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Code insert after body start:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>code_insert_before_body_close</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Code insert before body close:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10002" name="sys_TextArea">
+                              <PSXParam name="id">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>percpagebodyafter</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Code insert before body close:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>region_overrides</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Region Overrides:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10000" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Region Overrides:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>social_promotion_metadata</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Social Promotion Metadata:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10000" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Social Promotion Metadata:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>data</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Data:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10001" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Data:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>templateid</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef id="10001" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText/>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentexpirydate</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef id="10003" name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentstartdate</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef id="10004" name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_authorname</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Byline</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10002" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Byline</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>html_content</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef id="10005" name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_start_date</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Start date:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10013" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Start date:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>page_end_date</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>End date:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10019" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>End date:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>template_content_migration_version</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Template Content Migration Version:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10005" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Template Content Migration Version:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>migrationemptywidgets</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef id="10003" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText/>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+            <userProperties>
+               <userProperty name="Control10002_Dependency10001">sys_paramStringListToParamArray</userProperty>
+               <userProperty name="Control10004_DependencyIds">10000</userProperty>
+               <userProperty name="Control10002_DependencyIds">10001</userProperty>
+               <userProperty name="Control10004_Dependency10000">sys_xdTextCleanup</userProperty>
+            </userProperties>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>percPage</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="4,5,6,7"/>
+   </PSXContentEditor>
+</ItemDefData>

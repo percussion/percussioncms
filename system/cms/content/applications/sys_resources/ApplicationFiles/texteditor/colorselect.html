@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html><head><title>Rhythmyx Color Selector</title>
+<link rel="stylesheet" type="text/css" href="/Rhythmyx/rx_resources/css/templates.css">
+
+<script language="JavaScript">
+<!-- 
+function CTabCLICK() {
+  SEL.innerHTML = RGB.innerText;
+  SAMP.style.backgroundColor = event.srcElement.bgColor;  
+}
+
+function CTabOVER() {
+  text = event.srcElement.title;
+  if (! text) return;
+  if (text != event.srcElement.bgColor) text += " (" + event.srcElement.bgColor + ")";
+  RGB.innerText = text;
+}
+
+function CTabOUT() {
+  RGB.innerText = " ";
+}
+
+function Done() {
+  window.returnValue = SAMP.style.backgroundColor;
+  window.close();
+}
+-->
+</script>
+
+</head>
+<body class="headercell2">
+<center><table class="CTab" id="ColorTable" border="1" cellspacing="0" cellpadding="0" onclick="CTabCLICK();" onmouseover="CTabOVER();" onmouseout="CTabOUT();">
+<tr>
+<td bgcolor="aliceblue" title="Alice Blue">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="antiquewhite" title="Antique White">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="aqua" title="Aqua">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="aquamarine" title="Aquamarine">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="azure" title="Azure">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="beige" title="Beige">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="bisque" title="Bisque">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="black" title="Black">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="blanchedalmond" title="Blanched Almond">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="blue" title="Blue">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="blueviolet" title="Blueviolet">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="brown" title="Brown">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="burlywood" title="Burlywood">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="cadetblue" title="Cadetblue">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="chartreuse" title="Chartreuse">&nbsp;&nbsp;&nbsp;</td>
+<td bgcolor="chocolate" title="Chocolate">&nbsp;&nbsp;&nbsp;</td>
+<tr>
+<td bgcolor="coral" title="Coral">&nbsp;</td>
+<td bgcolor="cornflower" title="Cornflower">&nbsp;</td>
+<td bgcolor="cornsilk" title="Cornsilk">&nbsp;</td>
+<td bgcolor="crimson" title="Crimson">&nbsp;</td>
+<td bgcolor="cyan" title="Cyan">&nbsp;</td>
+<td bgcolor="darkblue" title="Dark Blue">&nbsp;</td>
+<td bgcolor="darkcyan" title="Dark Cyan">&nbsp;</td>
+<td bgcolor="darkgoldenrod" title="Dark Goldenrod">&nbsp;</td>
+<td bgcolor="darkgray" title="Dark Gray">&nbsp;</td>
+<td bgcolor="darkgreen" title="Dark Green">&nbsp;</td>
+<td bgcolor="darkkhaki" title="Dark Khaki">&nbsp;</td>
+<td bgcolor="darkmagenta" title="Dark Magenta">&nbsp;</td>
+<td bgcolor="darkolivegreen" title="Dark Olive Green">&nbsp;</td>
+<td bgcolor="darkorange" title="Dark Orange">&nbsp;</td>
+<td bgcolor="darkorchid" title="Dark Orchid">&nbsp;</td>
+<td bgcolor="darkred" title="Rark Red">&nbsp;</td>
+<tr>
+<td bgcolor="darksalmon" title="Dark Salmon">&nbsp;</td>
+<td bgcolor="darkseagreen" title="Dark Seagreen">&nbsp;</td>
+<td bgcolor="darkslateblue" title="Dark Slateblue">&nbsp;</td>
+<td bgcolor="darkslategray" title="Dark Slategray">&nbsp;</td>
+<td bgcolor="darkturquoise" title="Dark Turquoise">&nbsp;</td>
+<td bgcolor="darkviolet" title="Dark Violet">&nbsp;</td>
+<td bgcolor="deeppink" title="Deep Pink">&nbsp;</td>
+<td bgcolor="deepskyblue" title="Deep Skyblue">&nbsp;</td>
+<td bgcolor="dimgray" title="Dim Gray">&nbsp;</td>
+<td bgcolor="dodgerblue" title="Dodger Blue">&nbsp;</td>
+<td bgcolor="firebrick" title="Firebrick">&nbsp;</td>
+<td bgcolor="floralwhite" title="Floral White">&nbsp;</td>
+<td bgcolor="forestgreen" title="Forest Green">&nbsp;</td>
+<td bgcolor="fuchia" title="Fuchia">&nbsp;</td>
+<td bgcolor="gainsboro" title="Gainsboro">&nbsp;</td>
+<td bgcolor="ghostwhite" title="Ghost White">&nbsp;</td>
+<tr>
+<td bgcolor="gold" title="Gold">&nbsp;</td>
+<td bgcolor="goldenrod" title="Goldenrod">&nbsp;</td>
+<td bgcolor="gray" title="Gray">&nbsp;</td>
+<td bgcolor="green" title="Green">&nbsp;</td>
+<td bgcolor="greenyellow" title="Greenyellow">&nbsp;</td>
+<td bgcolor="honeydew" title="Honeydew">&nbsp;</td>
+<td bgcolor="hotpink" title="Hotpink">&nbsp;</td>
+<td bgcolor="indianred" title="Indian Red">&nbsp;</td>
+<td bgcolor="indigo" title="Indigo">&nbsp;</td>
+<td bgcolor="ivory" title="Ivory">&nbsp;</td>
+<td bgcolor="khaki" title="Khaki">&nbsp;</td>
+<td bgcolor="lavender" title="Lavender">&nbsp;</td>
+<td bgcolor="lavenderblush" title="Lavender Blush">&nbsp;</td>
+<td bgcolor="lawngreen" title="Lawngreen">&nbsp;</td>
+<td bgcolor="lemonchiffon" title="Lemon Chiffon">&nbsp;</td>
+<td bgcolor="lightblue" title="Light Blue">&nbsp;</td>
+<tr>
+<td bgcolor="lightcoral" title="Light Coral">&nbsp;</td>
+<td bgcolor="lightcyan" title="Light Cyan">&nbsp;</td>
+<td bgcolor="lightgoldenrodyellow" title="Light Goldenrod Yellow">&nbsp;</td>
+<td bgcolor="lightgreen" title="Light Green">&nbsp;</td>
+<td bgcolor="lightgrey" title="Light Grey">&nbsp;</td>
+<td bgcolor="lightpink" title="Light Pink">&nbsp;</td>
+<td bgcolor="lightsalmon" title="Light Salmon">&nbsp;</td>
+<td bgcolor="lightseagreen" title="Light Seagreen">&nbsp;</td>
+<td bgcolor="lightskyblue" title="Light Skyblue">&nbsp;</td>
+<td bgcolor="lightslategray" title="Light Slategray">&nbsp;</td>
+<td bgcolor="lightsteelblue" title="Light Steelblue">&nbsp;</td>
+<td bgcolor="lightyellow" title="Light Yellow">&nbsp;</td>
+<td bgcolor="lime" title="Lime">&nbsp;</td>
+<td bgcolor="limegreen" title="Limegreen">&nbsp;</td>
+<td bgcolor="linen" title="Linen">&nbsp;</td>
+<td bgcolor="magenta" title="Magenta">&nbsp;</td>
+<tr>
+<td bgcolor="maroon" title="Maroon">&nbsp;</td>
+<td bgcolor="mediumaquamarine" title="Medium Aquamarine">&nbsp;</td>
+<td bgcolor="mediumblue" title="Medium Blue">&nbsp;</td>
+<td bgcolor="mediumorchid" title="Medium Orchid">&nbsp;</td>
+<td bgcolor="mediumpurple" title="Medium Purple">&nbsp;</td>
+<td bgcolor="mediumseagreen" title="Medium Seagreen">&nbsp;</td>
+<td bgcolor="mediumslateblue" title="Medium Slateblue">&nbsp;</td>
+<td bgcolor="mediumspringgreen" title="Medium Springgreen">&nbsp;</td>
+<td bgcolor="mediumturquoise" title="Medium Turquoise">&nbsp;</td>
+<td bgcolor="mediumvioletred" title="Medium Violetred">&nbsp;</td>
+<td bgcolor="midnightblue" title="Midnight Blue">&nbsp;</td>
+<td bgcolor="mintcream" title="Mintcream">&nbsp;</td>
+<td bgcolor="mistyrose" title="Misty Rose">&nbsp;</td>
+<td bgcolor="moccasin" title="Moccasin">&nbsp;</td>
+<td bgcolor="navajowhite" title="Navajo White">&nbsp;</td>
+<td bgcolor="navy" title="Navy">&nbsp;</td>
+<tr>
+<td bgcolor="oldlace" title="Oldlace">&nbsp;</td>
+<td bgcolor="olive" title="Olive">&nbsp;</td>
+<td bgcolor="olivedrab" title="Olive Drab">&nbsp;</td>
+<td bgcolor="orange" title="Orange">&nbsp;</td>
+<td bgcolor="orangered" title="Orangered">&nbsp;</td>
+<td bgcolor="orchid" title="Orchid">&nbsp;</td>
+<td bgcolor="palegoldenrod" title="Pale Goldenrod">&nbsp;</td>
+<td bgcolor="palegreen" title="Pale Green">&nbsp;</td>
+<td bgcolor="paleturquoise" title="Pale Turquoise">&nbsp;</td>
+<td bgcolor="palevioletred" title="Pale Violetred">&nbsp;</td>
+<td bgcolor="papayawhip" title="Papayawhip">&nbsp;</td>
+<td bgcolor="peachpuff" title="Peachpuff">&nbsp;</td>
+<td bgcolor="peru" title="Peru">&nbsp;</td>
+<td bgcolor="pink" title="Pink">&nbsp;</td>
+<td bgcolor="plum" title="Plum">&nbsp;</td>
+<td bgcolor="powderblue" title="Powderblue">&nbsp;</td>
+<tr>
+<td bgcolor="purple" title="Purple">&nbsp;</td>
+<td bgcolor="red" title="Red">&nbsp;</td>
+<td bgcolor="rosybrown" title="Rosy Brown">&nbsp;</td>
+<td bgcolor="royalblue" title="Royal Blue">&nbsp;</td>
+<td bgcolor="saddlebrown" title="Saddle Brown">&nbsp;</td>
+<td bgcolor="salmon" title="Salmon">&nbsp;</td>
+<td bgcolor="sandybrown" title="Sandy Brown">&nbsp;</td>
+<td bgcolor="seagreen" title="Seagreen">&nbsp;</td>
+<td bgcolor="seashell" title="Seashell">&nbsp;</td>
+<td bgcolor="Sienna" title="Sienna">&nbsp;</td>
+<td bgcolor="Silver" title="Silver">&nbsp;</td>
+<td bgcolor="skyblue" title="Skyblue">&nbsp;</td>
+<td bgcolor="slateblue" title="Slateblue">&nbsp;</td>
+<td bgcolor="slategray" title="Slategray">&nbsp;</td>
+<td bgcolor="snow" title="Snow">&nbsp;</td>
+<td bgcolor="springgreen" title="Spring Green">&nbsp;</td>
+<tr>
+<td bgcolor="steelblue" title="Steel Blue">&nbsp;</td>
+<td bgcolor="tan" title="Tan">&nbsp;</td>
+<td bgcolor="teal" title="Teal">&nbsp;</td>
+<td bgcolor="thistle" title="Thistle">&nbsp;</td>
+<td bgcolor="tomato" title="Tomato">&nbsp;</td>
+<td bgcolor="turquoise" title="Turquoise">&nbsp;</td>
+<td bgcolor="violet" title="Violet">&nbsp;</td>
+<td bgcolor="wheat" title="Wheat">&nbsp;</td>
+<td bgcolor="white" title="White">&nbsp;</td>
+<td bgcolor="whitesmoke" title="Whitesmoke">&nbsp;</td>
+<td bgcolor="yellow" title="Yellow">&nbsp;</td>
+<td bgcolor="yellowgreen" title="Yellowgreen">&nbsp;</td>
+<td colspan="4" bgcolor="silver" title="Silver">&nbsp;</td>
+</tr>
+</table>
+<br>
+<div id="RGB">&nbsp;</div>
+<br>
+Selected: <table class="datacell2" border="1" cellpadding="0" cellspacing="0"><tr>
+<td id="SEL" style="font-size:12;font-weight:bold">(None -- click on a color to select)</td><td><td id="SAMP" bgcolor="#FFFFFF">&nbsp;&nbsp;</td>
+</tr></table>
+<br>
+<button id="Ok" onclick="Done()">Done</button><button onclick="window.close();">Cancel</button>
+</center>
+<br>
+</body></html>

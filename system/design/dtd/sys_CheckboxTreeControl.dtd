@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This DTD specifies the required xml format expected for the checkbox
+   tree control available with Rhhythmyx.
+-->
+<!--
+   The tree root node. The root node will always be rendered as folder.
+   
+   label - the display label for the tree root node, required.
+-->
+<!ELEMENT CategoryTree (Children*)>
+<!ATTLIST CategoryTree
+   title CDATA #REQUIRED
+>
+<!--
+   This element defines a tree node. The depth of the tree is not limited.
+   Selectable tree nodes are rendered as checkbox, others as folders or
+   sub-folders.
+   
+   id - the value used internally to uniquely identify a node, required.
+   
+   label - the display label of this node, required.
+   
+   selectable - specifies whether or not this node is selectable, defaults 
+      to 'no'. A node that is selectable will display a checkbox to all 
+      users to select and deselect it.
+-->
+<!ELEMENT Children (Child*)>
+<!ATTLIST Children
+   id CDATA #REQUIRED
+   title CDATA #REQUIRED
+   selectable (true | false) "true"
+>

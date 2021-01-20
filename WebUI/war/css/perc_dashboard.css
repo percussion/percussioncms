@@ -1,0 +1,470 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+
+.perc-body-background {
+    overflow: auto !important;
+}
+
+.perc-body-background .perc-whitebg {
+    overflow: visible !important;
+}
+
+.perc-gadget .gadgets-gadget {
+    width : 100%;
+    overflow-y : auto;
+}
+
+.perc-dashboard {
+    overflow-x : hidden;
+    overflow-y : auto;
+    padding-right  : 10px;
+}
+
+.perc-dashboard table {
+    margin-left : 10px;
+    margin-top  : 0px;
+    border : 0px;
+    border-collapse : collapse;
+}
+
+.perc-dashboard table td {
+    border : 0px;
+}
+
+.perc-dashboard table tr {
+    border : 0px;
+}
+
+.perc-dashboard table th {
+    border : 0px;
+}
+
+.perc-gadget-titlebar-shadow {
+    height : 4px;
+    background: url(../images/images/tabAreaShadowBg.gif) center bottom repeat-x;
+}
+
+.perc-gadget {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+
+    -moz-border-radius-bottomleft      : 4px;
+    -moz-border-radius-bottomright     : 4px;
+    -moz-border-radius-topleft         : 4px;
+    -moz-border-radius-topright        : 4px;
+
+    -webkit-border-top-left-radius     : 4px;
+    -webkit-border-top-right-radius    : 4px;
+    -webkit-border-bottom-left-radius  : 4px;
+    -webkit-border-bottom-right-radius : 4px;
+
+    background: white;
+
+    margin-bottom : 10px;
+    margin-right  : 10px;
+    margin-top : 0px;
+    margin-left : 0px;
+    width:auto;
+
+    z-index : 10000;
+}
+
+.perc-gadget-content {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    -moz-border-radius-bottomleft:4px;
+    -moz-border-radius-bottomright:4px;
+
+    -webkit-border-bottom-left-radius:4px;
+    -webkit-border-bottom-right-radius:4px;
+    width : auto;
+    background:white none repeat-x scroll 0 0;
+    color:black;
+    font-size:0.9em;
+    line-height:1.2em;
+    overflow:hidden;
+    position:relative;
+}
+
+.perc-gadget .gadgets-gadget-content {
+    padding : 10px;
+}
+
+
+.perc-gadget .gadgets-gadget-title-bar, .perc-gadget-title {
+    -moz-border-radius-topleft         : 4px;
+    -moz-border-radius-topright        : 4px;
+
+    -webkit-border-top-left-radius     : 4px;
+    -webkit-border-top-right-radius    : 4px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: #4b4a4a;
+    overflow : hidden;
+    padding : 9px 0 0px 9px;
+    margin : 0px;
+    background : #e6e6e9 none repeat scroll 0 0;
+}
+
+.perc-gadget-content .gadgets-gadget-chrome {
+    margin : 0px;
+    border : none;
+}
+
+.perc-dashboard .column {
+    margin : 0px;
+    padding : 0px;
+}
+
+.perc-gadget .gadgets-gadget-title {
+    color : #4b4a4a;
+    font-weight : normal;
+    font-size : 18px;
+}
+
+.perc-gadget .gadgets-gadget-title-change, .perc-gadget .gadgets-gadget-title {
+    cursor:move;
+}
+#perc-gadget-menu {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    color: #0099cc;
+    text-decoration: none;
+    background-color : white;
+    width : 100px;
+    position : absolute;
+    display : none;
+}
+
+.perc-gadget-menuitem {
+    height : 26px;
+    padding-bottom : 1px;
+    padding-left : 15px;
+    padding-top : 8px;
+    cursor : hand;
+    float : left;
+}
+
+.perc-gadget .gadgets-gadget-title-button {
+    display : none;
+}
+
+.perc-gadget-menu-button {
+    position : relative;
+    top : -13px;
+    right : 12px;
+}
+
+.perc-gadget-menu-item {
+    background-color : white;
+    padding : 9px 0px 10px 14px;
+}
+.perc-gadget-menu-item:hover {
+    background-color : #caf589;
+    cursor: pointer;
+}
+
+.box_shadow_with_padding {
+    background-color: #41434f;
+    /* FF3.5+ */
+    -moz-box-shadow: 0px 0px 8px #000000;
+    /* Saf3.0+, Chrome */
+    -webkit-box-shadow: 0px 0px 8px #000000;
+    /* Opera 10.5, IE 9.0 */
+    box-shadow: 0px 0px 8px #000000;
+
+}
+
+.gadgets-gadget-user-prefs-dialog {
+    background-color: #E6E6E9;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+}
+
+.gadgets-gadget-user-prefs-dialog label, input, select {
+    font-size: 11px;
+    font-family: 'Open Sans', sans-serif;
+    vertical-align:middle;
+}
+
+.perc-gadget-pref-div {
+    padding-top : 25px;
+    padding-left : 35px;
+}
+
+.gadgets-gadget-user-prefs-dialog table {
+    width: 98%;
+}
+
+.gadgets-gadget-user-prefs-dialog input,select {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-right:8px;
+}
+
+.gadgets-gadget-user-prefs-dialog input[type=text], select {
+    min-width: 50%;
+}
+
+.gadgets-gadget-user-prefs-dialog input[type=text], select {
+    width: 200px;
+    border-style : solid;
+    border-width : 1px;
+    border-color : #CCCCCC;
+    height : 19px;
+    margin-top : 6px;
+    margin-bottom : 12px;
+}
+
+.gadgets-gadget-user-prefs-dialog-action-bar {
+    padding-bottom: 55px;
+}
+
+/* Dashboard Toolbar */
+
+.perc-dashboard-gadget-toolbar .perc-dashboard-restore-menu {
+    float: right;
+    display: inline-block;
+    padding: 6px;
+}
+
+.perc-dashboard-gadget-toolbar:hover a:hover {
+    text-decoration: underline;
+}
+
+.perc-dashboard-gadget-toolbar:hover ,
+.perc-dashboard-gadget-toolbar:hover i {
+    color: #133c55;
+    text-decoration: none;
+}
+
+.perc-dashboard-gadget-toolbar i {
+    color: #ccc;
+    font-size: 14pt;
+    margin-right: 4px;
+}
+
+.perc-dashboard-gadget-toolbar {
+    height: 32px;
+    color: black;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt;
+    line-height: 20px;
+    padding: 4px 12px 0 12px;
+}
+
+.perc-dashboard-gadget-list-container {
+    width: 100%;
+    overflow: auto;
+}
+
+.perc-gadget-filter{
+    height: 29px;
+    display: none;
+    margin-left: 44px;
+}
+
+#perc-dashboard-gadget-tray.ui-active .perc-gadget-filter {
+    display: inline-block;
+}
+
+#perc-dashboard-gadget-tray.ui-active .perc-dashboard-gadget-toolbar {
+    background: transparent url('../images/images/GadgetBarBG.gif') repeat scroll;
+}
+
+.perc-tray-expander {
+    float: left;
+    cursor : pointer;
+    display: inline-block;
+    padding: 6px;
+}
+
+.perc-tray-expander-icon {
+    width : 16px;
+    height : 16px;
+}
+
+.perc-tray-expander-label {
+    padding-left : 5px;
+}
+
+.perc-tray-expander-label:hover {
+    color: #133c55;
+}
+
+.perc-dashboard-restore-label:hover {
+    color: #133c55;
+}
+
+#perc-dashboard-gadget-tray.ui-active {
+    margin-bottom: 12px;
+}
+#perc-dashboard-gadget-tray {
+    min-width: 950px;
+}
+
+.perc-tray-list{
+    min-height: 51px;
+    padding-bottom: 20px;
+    padding-left: 29px;
+    white-space: nowrap;
+}
+
+.perc-gadget-type{
+    width:150px;
+    min-width:150px;
+    margin-right:35px;
+}
+
+.perc-gadget-category{
+    width:150px;
+    min-width:150px;
+}
+
+.perc-tray {
+    background-color : white;
+    color:#777777;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    text-align:left;
+    overflow: hidden;
+    white-space:nowrap;
+    z-index : 12000;
+}
+
+.perc-tray-item {
+    display:inline-block;
+    height : 31px;
+    white-space : nowrap;
+    position : relative;
+    overflow : hidden;
+    padding-right: 20px;
+    cursor : pointer;
+    padding-top : 20px;
+}
+
+.perc-tray-item-icon {
+    float : left;
+    width : 31px;
+    height : 31px;
+}
+
+.perc-tray-item-label {
+    color: #000000;
+    float : left;
+    padding-top : 8px;
+    padding-left : 5px;
+    white-space : nowrap;
+    text-overflow : ellipsis;
+    overflow : hidden;
+}
+
+.perc-dashboard-gadget-drop {
+    display : none;
+    position : absolute;
+    left : 50px;
+    top : 50px;
+    width : 100px;
+    height : 100px;
+}
+
+.perc-dashboard-gadget-highlight {
+    height : 8px;
+    width : 100px;
+    background-color : #CAF589;
+    display : none;
+}
+
+.gadgets-gadget-title{
+    margin-right:43px;
+    height:19px;
+    text-transform:uppercase;
+}
+.gadgets-gadget-title-change{
+    margin-right:43px;
+    height:19px;
+}
+.perc-ellipsis{
+    overflow:hidden;
+    text-overflow : ellipsis;
+}
+.perc-dashboard table td {
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+body {
+    position : fixed;
+    width : 100%;
+}
+
+.perc-dashboard-container {
+    position : absolute;
+    width : 100%;
+}
+
+#perc-gadget-comments-viewComments > div.ui-dialog-titlebar{
+    padding-left : 6px;
+}
+
+.perc-gadget[name="Pages By Status"]
+{
+    min-height:240px;
+}
+
+.perc-gadget[name="Blogs"]
+{
+    min-height:514px;
+}
+#perc-ba-error-main-wrapper{
+    cursor: default;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+#perc-ba-error-table-wrapper{
+    background-color: white;
+    height:250px;
+    width:625px;
+    margin-top:10px;
+}
+.perc-ba-error-table tr{
+    height:30px;
+}
+.perc-ba-error-table td{
+    vertical-align:middle;
+    padding-left:8px;
+    padding-right:8px;
+}
+
+.perc-gadget {
+    border: 1px solid silver;
+    border-radius: 8px;
+}

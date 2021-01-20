@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percSocialButtons-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Resources\percSocialButtons.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percSocialButtons-xml\percSocialButtons.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-390">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percSocialButtons.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-390\percSocialButtons.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percSocialButtons.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-390\percSocialButtons.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percSocialButtons.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-390\percSocialButtons.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percSocialButtons-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Widgets\percSocialButtons.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percSocialButtons-xml\percSocialButtons.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1098109823465029735">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percSocialButtons.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-1098109823465029735\percSocialButtons.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_socialButtons_js_percSocialButtons-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\socialButtons\js\percSocialButtons.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_socialButtons_js_percSocialButtons-js\percSocialButtons.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percSocialButtons_css_percSocialButtons-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percSocialButtons\css\percSocialButtons.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percSocialButtons_css_percSocialButtons-css\percSocialButtons.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percSocialButtonsControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percSocialButtonsControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percSocialButtonsControl.xsl\percSocialButtonsControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percSocialButtonsControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percSocialButtons_images_percSocialButtonsIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percSocialButtons\images\percSocialButtonsIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percSocialButtons_images_percSocialButtonsIcon-png\percSocialButtonsIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percSocialButtons/css/percSocialButtons.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percSocialButtons.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percSocialButtons\css\percSocialButtons.css\percSocialButtons.css</ArchiveFile>
+         <OriginalFile>widgets\percSocialButtons\css\percSocialButtons.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percSocialButtons_js_percSocialButtons-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percSocialButtons\js\percSocialButtons.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percSocialButtons_js_percSocialButtons-js\percSocialButtons.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percSocialButtons/js/percSocialButtons.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percSocialButtons.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percSocialButtons\js\percSocialButtons.js\percSocialButtons.js</ArchiveFile>
+         <OriginalFile>widgets\percSocialButtons\js\percSocialButtons.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percSocialButtons_images_percSocialButtonsPlaceholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percSocialButtons\images\percSocialButtonsPlaceholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percSocialButtons_images_percSocialButtonsPlaceholder-png\percSocialButtonsPlaceholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

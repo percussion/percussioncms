@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT ContentType EMPTY>
+<!ATTLIST  ContentType name CDATA #REQUIRED>
+<!ATTLIST  ContentType id CDATA #REQUIRED>
+<!ELEMENT CommunityContentTypeMapping (ContentType* )>
+<!ATTLIST  CommunityContentTypeMapping communityName CDATA #REQUIRED>
+<!ATTLIST  CommunityContentTypeMapping communityId CDATA #REQUIRED>
+<!ELEMENT CommunityContentTypeMapper (CommunityContentTypeMapping* )>

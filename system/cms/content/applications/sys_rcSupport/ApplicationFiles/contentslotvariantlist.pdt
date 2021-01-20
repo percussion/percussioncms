@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT variant (#PCDATA)>
+<!ATTLIST  variant variantid CDATA #REQUIRED>
+<!ATTLIST  variant name CDATA #REQUIRED>
+<!ELEMENT slot (variant* )>
+<!ATTLIST  slot name CDATA #REQUIRED>
+<!ATTLIST  slot slotid CDATA #REQUIRED>
+<!ELEMENT contentslotvariantlist (slot* )>
+<!ATTLIST  contentslotvariantlist contentid CDATA #REQUIRED>

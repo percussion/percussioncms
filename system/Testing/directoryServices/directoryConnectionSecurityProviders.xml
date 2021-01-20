@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXServerConfiguration id="1">
+   <SecurityProviders>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>Sun ONE - test/deep</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="Sun ONE - test/deep" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+      </PSXSecurityProviderInstance>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>Sun ONE - test/shallow</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="Sun ONE - test/shallow" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+      </PSXSecurityProviderInstance>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>Sun ONE - test/multiple</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="Sun ONE - test/multiple" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+      </PSXSecurityProviderInstance>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>Sun ONE - test/passwordfilter</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="Sun ONE - test/passwordfilter" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+      </PSXSecurityProviderInstance>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>Sun ONE - test/groupstatic</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="Sun ONE - test/groupstatic" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+      </PSXSecurityProviderInstance>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>Sun ONE - test/groupdynamic</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="Sun ONE - test/groupdynamic" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+      </PSXSecurityProviderInstance>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>Sun ONE - test/groupnested</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="Sun ONE - test/groupnested" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+      </PSXSecurityProviderInstance>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>Sun ONE - test/backendroleprovider</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="Sun ONE - test/backendroleprovider" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+      </PSXSecurityProviderInstance>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>Sun ONE - test/performance</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="Sun ONE - test/performance" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+      </PSXSecurityProviderInstance>
+   </SecurityProviders>
+</PSXServerConfiguration>

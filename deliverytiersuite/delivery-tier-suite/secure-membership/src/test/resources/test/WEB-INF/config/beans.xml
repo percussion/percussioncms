@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+   <bean id="propertyPlaceholderProps" class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
+      <property name="ignoreResourceNotFound" value="true" />
+      <property name="autoSecure" value="true" />
+      <property name="securedProperties">
+         <list>
+            <value>ldap.manager.password</value>
+         </list>
+      </property>
+      <property name="locations">
+         <list>
+            <value>/WEB-INF/config/perc-secured-sections.properties</value>
+         </list>
+      </property>
+      
+      <!-- THIS IS THE BEANS.xml IN THE secure_membership/resources/test/WEB-INF/config/beans.xml LOCATION -->
+	  
+      <!-- Local properties to default to if no file exists or the properties 
+         do not exist in the file DO NOT USE THESE FOR PRODUCTION, put them in the 
+         properties file where the password will be encrypted -->
+         
+          
+      <property name="properties">
+         <props>
+            <prop key="ldap.manager.password">demo</prop>
+            <prop key="ldap.manager.url">ldap://10.10.10.33:389/CN=Users,DC=test,DC=local</prop>
+            <prop key="ldap.manager.dn">CN=Administrator,CN=Users,DC=test,DC=local</prop>
+            <prop key="ldap.manager.user.search.filter">(sAMAccountName={0})</prop>
+            <prop key="ldap.manager.group.role.attribute">cn</prop>
+            <prop key="ldap.manager.group.search.filter">member={0}</prop>
+			<prop key="membership.service.host">localhost</prop>
+			<prop key="membership.service.protocol">http</prop>
+			<prop key="membership.service.port">80</prop>
+			<prop key="perc.webserver.http.port">80</prop>
+			<prop key="perc.webserver.https.port">443</prop>
+			<prop key="ldap.domain.name">test.local</prop>
+            <prop key="ldap.url">ldap://adserver.test.local/</prop>
+			<prop key="netsuite.authenticatingRole">1034</prop>
+			<prop key="netsuite.account">973588</prop>
+         </props>
+      </property>
+	  
+   </bean>
+
+   <bean id="propertyConfigurer"
+         class="com.percussion.delivery.utils.spring.PSPropertyPlaceholderConfigurer">
+      <property name="properties" ref="propertyPlaceholderProps" />
+   </bean>
+   
+   <bean id="percMembershipConfig" class="com.percussion.secure.data.PSMembershipConfiguration">
+   		<property name="membershipServiceHost">
+		   <value>${membership.service.host}</value>
+		</property>
+		<property name="membershipServiceProtocol">
+		   <value>${membership.service.protocol}</value>
+		</property>
+		<property name="membershipServicePort">
+		   <value>${membership.service.port}</value>
+		</property>	
+		<property name="membershipSessionCookieName">
+		   <value>perc_membership_session_id</value>
+		</property> 
+   </bean>
+   
+    <bean id="percMembershipAuthProvider" class="com.percussion.secure.services.PSMembershipAuthProvider">
+        <constructor-arg value="${ldap.domain.name}" />
+        <constructor-arg value="${ldap.url}" />
+        <property name="convertSubErrorCodesToExceptions" value="true"/>
+        <property name="useAuthenticationRequestCredentials" value="true"/>
+        <property name="userDetailsContextMapper" ref="grantedAuthoritiesMapper"/>
+   </bean>
+   
+   <bean id="grantedAuthoritiesMapper" class="com.percussion.secure.services.PSLdapUserDetailsMapper"/>
+   
+   <bean id="successHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+        <property name="useReferer" value="false"/>
+    </bean>
+   
+    <bean id="percMembershipLogoutHandler" class="com.percussion.secure.services.PSMembershipLogoutHandler">
+        <property name="membershipConfig" ref="percMembershipConfig" />
+    </bean> 
+    
+    
+     <!--  NetSuite Authentication Provider -->   
+     <bean id="netSuiteAuthProvider" class="com.percussion.secure.netsuite.services.PSNetSuiteAuthProvider" >
+     	<property name="authenticatingRole">
+     		<value>${netsuite.authenticatingRole}</value>
+     	</property>
+     	<property name="netsuiteAccount">
+     		<value>${netsuite.account}</value>
+     	</property>
+     </bean> 
+ 
+</beans>

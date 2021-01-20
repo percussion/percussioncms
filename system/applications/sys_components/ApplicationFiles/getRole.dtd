@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT PSXRole (name )>
+<!ATTLIST  PSXRole id CDATA #REQUIRED>
+<!ATTLIST  PSXRole DbComponentId CDATA #REQUIRED>
+<!ELEMENT getRole (PSXRole* )>

@@ -1,0 +1,71 @@
+ <!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsl:variable name="rxektronlocalemap" select="document('../rx_resources/ewebeditpro/rxektronlocalemap.xml')/*"/>
+   <!-- The following template returns ektron language file -->
+   <xsl:template name="getEktronLangFile">
+      <xsl:param name="lang" select="''"/>
+      <xsl:variable name="lang1" select="substring-before($lang,'-')"/>
+      <xsl:variable name="lang2" select="substring-after($lang,'-')"/>
+      <xsl:variable name="langmapelem1" select="$rxektronlocalemap//Language[@lang1=$lang1 and @lang2=$lang2]"/>
+      <xsl:variable name="langmapelem2" select="$rxektronlocalemap//Language[@lang1=$lang1 and @lang2='']"/>
+      <xsl:variable name="langmapelem3" select="$rxektronlocalemap//Language[@lang1=$lang1]"/>
+      <xsl:choose>
+         <xsl:when test="$langmapelem1">
+            <xsl:value-of select="$langmapelem1/@ektronlangfile"/>
+         </xsl:when>
+         <xsl:when test="$langmapelem2">
+            <xsl:value-of select="$langmapelem2/@ektronlangfile"/>
+         </xsl:when>
+         <xsl:when test="$langmapelem3">
+            <xsl:value-of select="$langmapelem3/@ektronlangfile"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="'locale0409b.xml'"/>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <!-- The following template returns ektron message file -->
+   <xsl:template name="getEktronLangMsgFile">
+      <xsl:param name="lang" select="''"/>
+      <xsl:variable name="lang1" select="substring-before($lang,'-')"/>
+      <xsl:variable name="lang2" select="substring-after($lang,'-')"/>
+      <xsl:variable name="langmapelem1" select="$rxektronlocalemap//Language[@lang1=$lang1 and @lang2=$lang2]"/>
+      <xsl:variable name="langmapelem2" select="$rxektronlocalemap//Language[@lang1=$lang1 and @lang2='']"/>
+      <xsl:variable name="langmapelem3" select="$rxektronlocalemap//Language[@lang1=$lang1]"/>
+      <xsl:choose>
+         <xsl:when test="$langmapelem1">
+            <xsl:value-of select="$langmapelem1/@ektronmsgfile"/>
+         </xsl:when>
+         <xsl:when test="$langmapelem2">
+            <xsl:value-of select="$langmapelem2/@ektronmsgfile"/>
+         </xsl:when>
+         <xsl:when test="$langmapelem3">
+            <xsl:value-of select="$langmapelem3/@ektronmsgfile"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="'ewebeditpromessages.js'"/>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>

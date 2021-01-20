@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Mark D'Andrea (Percussion) -->
+<xs:schema targetNamespace="urn:www.percussion.com/webservices/folder" xmlns:com="urn:www.percussion.com/webservices/common" xmlns="urn:www.percussion.com/webservices/folder" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xs:import namespace="urn:www.percussion.com/webservices/common" schemaLocation="sys_Common.xsd"/>
+   <xs:element name="createFolder">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="CreateFolderRequest">
+               <xs:annotation>
+                  <xs:documentation>Uses CreateFolderResponse. It creates a new folder for the supplied folder info.</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="PSXFolder"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="CreateFolderResponse">
+      <xs:annotation>
+         <xs:documentation>The returned info for the CreateFolderRequest</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="PSXFolder" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="openFolder">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="OpenFolderRequest">
+               <xs:annotation>
+                  <xs:documentation>Open an existing folder object</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="FolderId"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="OpenFolderResponse">
+      <xs:annotation>
+         <xs:documentation>The returned info from OpenFolderRequest</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="PSXFolder" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="deleteFolder">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="DeleteFolderRequest">
+               <xs:annotation>
+                  <xs:documentation>This method deletes the folder specified by the provided id and all folders contained recursively. Also all relationships of all deleted folders are removed.</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="FolderId"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="DeleteFolderResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="com:ResultResponse"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="purgeFolder">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="PurgeFolderRequest">
+               <xs:annotation>
+                  <xs:documentation>This method purges the folder specified by the provided id and all folders and content items contained recursively. Also all relationships of all deleted folders and content items are removed.</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="FolderId"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="PurgeFolderResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="com:ResultResponse"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="updateFolder">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="UpdateFolderRequest">
+               <xs:annotation>
+                  <xs:documentation>It is used to modify the addressed folder with the supplied folder into.</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="PSXFolder"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="UpdateFolderResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="PSXFolder" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="addFolderChildren">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="AddFolderChildrenRequest">
+               <xs:annotation>
+                  <xs:documentation>Add children to a folder. Only folder relationships are created between the folder and all child objects.</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="TargetParentId" type="xs:positiveInteger">
+                        <xs:annotation>
+                           <xs:documentation>the id of an existing folder to which this service should add the supplied children objects</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element ref="ChildIds">
+                        <xs:annotation>
+                           <xs:documentation>a collection of child id’s of all objects to be added to the addressed folder</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="AddFolderChildrenResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="addFolderChildren" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="copyFolderChildren">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="CopyFolderChildrenRequest">
+               <xs:annotation>
+                  <xs:documentation>This method copies all objects of the addressed children into the target folder</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="TargetParentId" type="xs:positiveInteger">
+                        <xs:annotation>
+                           <xs:documentation>the id of the target folder into which to copy all children</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element ref="ChildIds">
+                        <xs:annotation>
+                           <xs:documentation>the collection of ids of the child objects to be copied.</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element name="Recursive" type="xs:boolean">
+                        <xs:annotation>
+                           <xs:documentation>specify true, for each folder child, to copy all its child objects recursively. Otherwise, copy all child objects themselves only</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="CopyFolderChildrenResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="com:ResultResponse"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="getFolderChildren">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="GetFolderChildrenRequest">
+               <xs:annotation>
+                  <xs:documentation>This method is used to get the immediate children of a folder addressed by the folderId parameter</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="FolderId" type="xs:positiveInteger"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="GetFolderChildrenResponse">
+      <xs:annotation>
+         <xs:documentation>A list of child ids contained by the addressed folder. The list might be empty</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="PSXComponentSummaries" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="moveFolderChildren">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="MoveFolderChildrenRequest">
+               <xs:annotation>
+                  <xs:documentation>This method moves the addressed children from the specified source parent (their container) to the new target location specified</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="SourceParentId" type="xs:positiveInteger">
+                        <xs:annotation>
+                           <xs:documentation>the id of the source parent folder which children needs to be moved</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element ref="ChildIds">
+                        <xs:annotation>
+                           <xs:documentation>a collection of child ids, which need to be moved</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element name="TargetParentId" type="xs:positiveInteger">
+                        <xs:annotation>
+                           <xs:documentation>the id of the target folder into which the addressed children will be moved</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="MoveFolderChildrenResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="com:ResultResponse"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="removeFolderChildren">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="RemoveFolderChildrenRequest">
+               <xs:annotation>
+                  <xs:documentation>This service is used to remove children from a folder. If a child object is an item object, only the folder relationships are removed not the actual objects. If a child is a folder object, deletes the child folder and all folders contained recursively. Also all relationships of all deleted folders are removed</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="ParentId" type="xs:positiveInteger">
+                        <xs:annotation>
+                           <xs:documentation>the id of an existing folder from which this should remove the supplied content</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element ref="ChildIds">
+                        <xs:annotation>
+                           <xs:documentation>a collection of child id’s of all objects to be removed from the addressed folder</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="RemoveFolderChildrenResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="com:ResultResponse"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="getParentFolder">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="GetParentFolderRequest">
+               <xs:annotation>
+                  <xs:documentation> Request to get the parents for a folder or item. A folder can have only one parent, but an item may have more than one parents.</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="ChildId" type="xs:positiveInteger">
+                        <xs:annotation>
+                           <xs:documentation>The id of a folder or item</xs:documentation>
+                           <xs:documentation>The id of a folder or item</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="GetParentFolderResponse">
+      <xs:annotation>
+         <xs:documentation> The response of for the get parent folder request</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="PSXComponentSummaries" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="getFolderCommunities">
+      <xs:annotation>
+         <xs:documentation>Request a set of community id's found in the source folder recursivly.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="GetFolderCommunitiesRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="FolderId"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="GetFolderCommunitiesResponse">
+      <xs:annotation>
+         <xs:documentation>Returns a set of community id's found in the source folder reqursivly.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice>
+            <xs:element name="Communities">
+               <xs:annotation>
+                  <xs:documentation>A set of communities found for the requested source folder.</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="Community" minOccurs="0" maxOccurs="unbounded">
+                        <xs:complexType>
+                           <xs:attribute name="id" type="xs:integer" use="required"/>
+                        </xs:complexType>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+            <xs:element ref="com:ResultResponse"/>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="cloneSiteFolder">
+      <xs:annotation>
+         <xs:documentation>Request to clone an entire Site or a Site Subfolder.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="CloneSiteFolderRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="Source">
+                        <xs:annotation>
+                           <xs:documentation>The source Site Folder or Site Subfolder which needs to be cloned.</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                           <xs:sequence>
+                              <xs:element ref="PSXLocator"/>
+                           </xs:sequence>
+                        </xs:complexType>
+                     </xs:element>
+                     <xs:element name="Target">
+                        <xs:annotation>
+                           <xs:documentation>The target parent Folder into which the source will be cloned.</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                           <xs:sequence>
+                              <xs:element ref="PSXLocator"/>
+                           </xs:sequence>
+                        </xs:complexType>
+                     </xs:element>
+                     <xs:element name="PSXCloningOptions">
+                        <xs:annotation>
+                           <xs:documentation>The cloning options as selected by the user going through the wizard UI.</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                           <xs:sequence>
+                              <xs:element name="CommunityMappings" minOccurs="0">
+                                 <xs:annotation>
+                                    <xs:documentation>This maps all source community id's for which the new created objects must be created for a different community id.</xs:documentation>
+                                 </xs:annotation>
+                                 <xs:complexType>
+                                    <xs:sequence>
+                                       <xs:element name="Mapping" minOccurs="0" maxOccurs="unbounded">
+                                          <xs:complexType>
+                                             <xs:attribute name="sourceId" type="xs:integer" use="required"/>
+                                             <xs:attribute name="targetId" type="xs:integer" use="required"/>
+                                          </xs:complexType>
+                                       </xs:element>
+                                    </xs:sequence>
+                                 </xs:complexType>
+                              </xs:element>
+                           </xs:sequence>
+                           <xs:attribute name="type" type="xs:string" use="required"/>
+                           <xs:attribute name="siteToCopy" type="xs:string" use="optional"/>
+                           <xs:attribute name="siteName" type="xs:string" use="optional"/>
+                           <xs:attribute name="folderName" type="xs:string" use="required"/>
+                           <xs:attribute name="copyOption" type="xs:string" use="required"/>
+                           <xs:attribute name="copyContentOption" type="xs:string" use="required"/>
+                        </xs:complexType>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="CloneSiteFolderResponse">
+      <xs:annotation>
+         <xs:documentation>Returns the clone Site / Site Subfolder results.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice>
+            <xs:element name="CloneSiteFolderResults">
+               <xs:complexType>
+                  <xs:attribute name="errorLog" type="xs:string" use="required">
+                     <xs:annotation>
+                        <xs:documentation>Contains the name of the error log file if there were errors, is empty otherwise.</xs:documentation>
+                     </xs:annotation>
+                  </xs:attribute>
+               </xs:complexType>
+            </xs:element>
+            <xs:element ref="com:ResultResponse"/>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="PSXComponentSummaries">
+      <xs:annotation>
+         <xs:documentation> A list of component summaries</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="PSXComponentSummary" minOccurs="0" maxOccurs="unbounded"/>
+         </xs:sequence>
+         <xs:attribute name="className" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>The className attribute may be for internal use only. It is a side effect of the implementation</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="state" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>The state attribute may be for internal use only. It is a side effect of the implementation</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="PSXComponentSummary">
+      <xs:annotation>
+         <xs:documentation> Component summary of an object</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="PSXLocator"/>
+         </xs:sequence>
+         <xs:attribute name="clonedParent" type="xs:string"/>
+         <xs:attribute name="communityId" type="xs:integer"/>
+         <xs:attribute name="contentAgingTime" type="xs:string"/>
+         <xs:attribute name="contentCheckoutUserName" type="xs:string"/>
+         <xs:attribute name="contentCreatedBy" type="xs:string"/>
+         <xs:attribute name="contentCreatedDate" type="xs:string"/>
+         <xs:attribute name="contentExpiryDate" type="xs:string"/>
+         <xs:attribute name="contentId" type="xs:integer">
+            <xs:annotation>
+               <xs:documentation>The contentId is deprecated. Use the value of CONTENTID element, which is a child element of PSXLocator</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="contentLastModifiedDate" type="xs:string"/>
+         <xs:attribute name="contentLastModifier" type="xs:string"/>
+         <xs:attribute name="contentPathName" type="xs:string"/>
+         <xs:attribute name="contentPublishDate" type="xs:string"/>
+         <xs:attribute name="contentStartDate" type="xs:string"/>
+         <xs:attribute name="contentStateId" type="xs:integer"/>
+         <xs:attribute name="contentSuffix" type="xs:string"/>
+         <xs:attribute name="contentTypeId" type="xs:integer"/>
+         <xs:attribute name="currRevision" type="xs:integer"/>
+         <xs:attribute name="editRevision" type="xs:integer"/>
+         <xs:attribute name="folderType" type="xs:integer"/>
+         <xs:attribute name="locale" type="xs:string"/>
+         <xs:attribute name="name" type="xs:string"/>
+         <xs:attribute name="nextAgingDate" type="xs:string"/>
+         <xs:attribute name="nextAgingTransition" type="xs:string"/>
+         <xs:attribute name="objectType" type="xs:positiveInteger"/>
+         <xs:attribute name="permissions" type="xs:string"/>
+         <xs:attribute name="reminderDate" type="xs:string"/>
+         <xs:attribute name="repeatedAgingTransStartDate" type="xs:string"/>
+         <xs:attribute name="revisionLock" type="xs:string"/>
+         <xs:attribute name="state" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>The state attribute may be for internal use only. It is a side effect of the implementation</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="stateEnteredDate" type="xs:string"/>
+         <xs:attribute name="tipRevision" type="xs:integer"/>
+         <xs:attribute name="workflowAppId" type="xs:integer"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="PSXLocator">
+      <xs:annotation>
+         <xs:documentation>The locator of a folder or item</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="CONTENTID" type="xs:string"/>
+            <xs:element name="REVISIONID" type="xs:string"/>
+         </xs:sequence>
+         <xs:attribute name="isPersisted" type="xs:string" use="optional"/>
+         <xs:attribute name="needGenerateId" type="xs:string" use="optional"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="PSXFolder">
+      <xs:annotation>
+         <xs:documentation>The XML representation of a folder object</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="PSXLocator"/>
+            <xs:element name="Description" type="xs:string"/>
+            <xs:element name="PSXDbComponentList" minOccurs="0">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="PSXFolderProperty" maxOccurs="unbounded">
+                        <xs:complexType>
+                           <xs:sequence>
+                              <xs:element name="PSXSimpleKey">
+                                 <xs:complexType>
+                                    <xs:sequence>
+                                       <xs:element name="SYSID" type="xs:string"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="isPersisted" type="xs:string"/>
+                                    <xs:attribute name="needGenerateId" type="xs:string"/>
+                                 </xs:complexType>
+                              </xs:element>
+                              <xs:element name="Value" type="xs:string"/>
+                           </xs:sequence>
+                           <xs:attribute name="state" type="xs:string"/>
+                           <xs:attribute name="propName" type="xs:string"/>
+                        </xs:complexType>
+                     </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="ordered" type="xs:string"/>
+                  <xs:attribute name="state" type="xs:string"/>
+                  <xs:attribute name="className" type="xs:string"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="PSXObjectAcl" minOccurs="0">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="PSXObjectAclEntry" maxOccurs="unbounded">
+                        <xs:complexType>
+                           <xs:sequence>
+                              <xs:element name="PSXKey">
+                                 <xs:complexType>
+                                    <xs:sequence>
+                                       <xs:element name="SYSID" type="xs:string"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="isPersisted" type="xs:string"/>
+                                    <xs:attribute name="needGenerateId" type="xs:string"/>
+                                 </xs:complexType>
+                              </xs:element>
+                              <xs:element name="name" type="xs:string"/>
+                              <xs:element name="securityProviderInstance" type="xs:string" minOccurs="0"/>
+                              <xs:element name="securityProviderType" type="xs:integer" minOccurs="0"/>
+                           </xs:sequence>
+                           <xs:attribute name="permissions" type="xs:string" use="required"/>
+                           <xs:attribute name="state" type="xs:string" use="required"/>
+                           <xs:attribute name="type" type="xs:string" use="required"/>
+                        </xs:complexType>
+                     </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="className" type="xs:string" use="required"/>
+                  <xs:attribute name="state" type="xs:string" use="required"/>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+         <xs:attribute name="name" type="xs:string"/>
+         <xs:attribute name="id" type="xs:positiveInteger"/>
+         <xs:attribute name="communityId" type="xs:integer"/>
+         <xs:attribute name="permissions" type="xs:integer"/>
+         <xs:attribute name="state" type="xs:string"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="FolderId" type="xs:positiveInteger"/>
+   <xs:element name="ChildIds">
+      <xs:annotation>
+         <xs:documentation>A list of child ids</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="ChildId" type="xs:positiveInteger" maxOccurs="unbounded"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>

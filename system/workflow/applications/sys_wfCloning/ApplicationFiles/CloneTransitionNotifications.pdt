@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT TransitionNotification (AdditionalRecipientList, CCList, NotificationId, StateRoleRecipientTypes, TransitionId, TransitionNotificationId, WorkflowId )>
+<!ELEMENT WorkflowId (#PCDATA)>
+<!ELEMENT TransitionNotificationId (#PCDATA)>
+<!ELEMENT TransitionId (#PCDATA)>
+<!ELEMENT StateRoleRecipientTypes (#PCDATA)>
+<!ELEMENT NotificationId (#PCDATA)>
+<!ELEMENT CCList (#PCDATA)>
+<!ELEMENT AdditionalRecipientList (#PCDATA)>
+<!ELEMENT CloneTransitionNotifications (TransitionNotification* )>

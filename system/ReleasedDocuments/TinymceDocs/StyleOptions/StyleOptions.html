@@ -1,0 +1,123 @@
+<html lang="en">
+    <head>
+        <title>Styling</title>
+        <link rel="stylesheet" type="text/css" href="../../../css/dialog.css" />
+		<style type="text/css">
+		.code {
+			padding: 0px 25px 0px 25px;
+			font-family: "Courier New", Courier, monospace;
+		}
+		.wikitable {
+		border-collapse: collapse;
+		}
+		.wikicell {
+		border:1px solid #000;
+		padding-left: 15 px
+		} 
+		#label {
+		width: 100px
+		}
+		#cssclass { 
+		width: 200px
+		}
+		.indent {
+		margin-top: 20px;
+		margin-left: 50px;
+		}
+		</style>
+    </head>
+<body>
+<h2 id="Styling" class="showhide_heading">Style Options</h2>
+<p><img src="CM1StyleOptions.gif" /></p>
+<p>You can use the Style drop list to add CSS style classes to your text.  You can add the style classes to HTML tags or add them to your text inline.</p>
+<h3 id="Adding_Style_Classes_to_HTML_Tags" class="showhide_heading">Adding Style Classes to HTML Tags</h2>
+<p>The rich text editor displays the element path for each HTML tag at the bottom of the rich text editor:</p>
+<p><img src="CM1StyleElementPath.gif"/></p>
+<p>To add style classes to a tag, select the in the element path (for example, the &lt;p&gt; tag in the illustration above), then click on the Style drop list and select the CSS class you want to apply to the tag.  See <a href="#Available_CSS_Classes">below</a> for a list of available classes.</p>
+<p>The example code below shows the Body text 1 style CSS class added to an example paragraph.  Applying this style adds the class perc-body-text1 to the &lt;p&gt; tag.</p>
+<p class="code">&lt;p class="perc-body-text-1"&gt;Simply fill out the form below and we'll do the rest! We'll match the free volunteer travel opportunity with the selections you make and send you an email update.&nbsp; You're under no obligation to pursue the opportunity, and may remove yourself from our list at any time.&lt;/p&gt;</p>
+<p>The specific formatting of the class is defined in the theme CSS.</p>
+<h3 id="Adding_Style_Classes_Inline" class="showhide_heading">Adding Style Classes Inline</h2>
+<p>To add style classes to text inline, select the text to which you want to apply the style class, then click on the Style drop list and select the CSS class you want to apply to the tag.  See <a href="#Available_CSS_Classes">below</a> for a list of available classes.</p>
+<p>CM1 adds a &lt;span&gt; tag around the selected text.  The selected CSS class is added to the &lt;span&gt; tag.  In the example below, the style CSS class Quote 1 has been added to the second sentence of the text.</p>
+<p class="code">&lt;p class="perc-body-text-1"&gt;Simply fill out the form below and we'll do the rest! &lt;span class="perc-quote-1"&gt;We'll match the free volunteer travel opportunity with the selections you make and send you an email update .&lt;/span&gt; &nbsp; You're under no obligation to pursue the opportunity, and may remove yourself from our list at any time.&lt;/p&gt;</p>
+<h4 id="Removing_Inline_Style_Classes" class="showhide_heading">Removing Inline Style Classes</h2>
+<p>To remove inline style classes, move the cursor into the text contained within the &lt;span&gt; and click the Style Eraser.</p>
+<p><img src="CM1StyleEraser.gif" /></p>
+<p>NOTE:  If you click the Style Eraser while you have an HTML tag selected in the element path, all inline style classes will be removed from the text within that tag.
+<h3 id="Available_CSS_Classes" class="showhide_heading">Available CSS Classes</h2>
+The following table lists the CSS classes available in the Style drop list.  Default styles are applied to these CSS classes within the rich text editor so you can tell they have been applied.  The final styling is determined by the theme CSS applied to the text when it is previewed or published.  
+<div class="indent">
+<table class="wikitable">
+<colgroup>
+<col id="label" />
+<col id="cssclass" />
+<thead>
+<tr>
+<th scope="col" class="wikicell">Label</th>
+<th scope="col" class="wikicell">CSS Class added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="wikicell">Body text 1</td>
+<td class="wikicell">.perc-body-text-1{}</td>
+</tr>
+<tr>
+<td class="wikicell">Body text 2</td>
+<td class="wikicell">.perc-body-text-2{}</td>
+</tr>
+<tr>
+<td class="wikicell">Box 1</td>
+<td class="wikicell">.perc-box-1{}</td>
+</tr>
+<tr>
+<td class="wikicell">Box 2</td>
+<td class="wikicell">.perc-box-2{}</td>
+</tr>
+<tr>
+<td class="wikicell">Box 3</td>
+<td class="wikicell">.perc-box-3{}</td>
+</tr>
+<tr>
+<td class="wikicell">List 1</td>
+<td class="wikicell">.perc-list-1{}</td>
+</tr>
+<tr>
+<td class="wikicell">List 2</td>
+<td class="wikicell">.perc-list-2{}</td>
+</tr>
+<tr>
+<td class="wikicell">List 3</td>
+<td class="wikicell">.perc-list-3{}</td>
+</tr>
+<tr>
+<td class="wikicell">Quote 1</td>
+<td class="wikicell">.perc-quote-1{}</td>
+</tr>
+<tr>
+<td class="wikicell">Quote 2</td>
+<td class="wikicell">.perc-quote-2{}</td>
+</tr>
+<tr>
+<td class="wikicell">Table 1</td>
+<td class="wikicell">.perc-table-1{}</td>
+</tr>
+<tr>
+<td class="wikicell">Table 2</td>
+<td class="wikicell">.perc-table-2{}</td>
+</tr>
+<tr>
+<td class="wikicell">Title 1</td>
+<td class="wikicell">.perc-title-1{}</td>
+</tr>
+<tr>
+<td class="wikicell">Title 2</td>
+<td class="wikicell">.perc-title-2{}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="toc-link"><a href="../index.html">Back</a></p>
+ </body>
+</html>

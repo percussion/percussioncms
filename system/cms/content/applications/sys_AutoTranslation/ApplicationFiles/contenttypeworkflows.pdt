@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT contenttypeworkflows (ContentType*, workflows )>
+<!ELEMENT workflow EMPTY>
+<!ATTLIST  workflow workflowid CDATA #IMPLIED>
+<!ELEMENT workflows (workflow* )>
+<!ELEMENT ContentType (workflows )>
+<!ATTLIST  ContentType contenttypeid CDATA #IMPLIED>

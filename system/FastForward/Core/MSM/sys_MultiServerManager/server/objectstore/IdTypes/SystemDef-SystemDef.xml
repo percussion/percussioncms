@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplicationIDTypes>
+   <PSXDeployableObject>
+      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="SystemDef" dependencyType="Shared" displayName="System Def" isIncluded="no" objectType="SystemDef" objectTypeName="System Def" supportsIdMapping="no" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+      <RequiredClasses/>
+   </PSXDeployableObject>
+   <PSXApplicationIDTypesResource resourceName="SystemDef">
+      <PSXApplicationIDTypesElement elementName="CEField">
+         <PSXApplicationIDTypeMapping type="sys_none" value="-1">
+            <PSXAppExtensionParamIdContext index="0" paramName="p1">
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>-1</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXAppExtensionCallIdContext extRef="Java/global/percussion/generic/sys_Literal">
+                  <PSXAppCEItemIdContext type="DataLocator">
+                     <PSXAppNamedItemIdContext name="sys_relevancy" type="CEField">
+                        <PSXAppNamedItemIdContext name="systemFieldset" type="FieldSet"/>
+                     </PSXAppNamedItemIdContext>
+                  </PSXAppCEItemIdContext>
+               </PSXAppExtensionCallIdContext>
+            </PSXAppExtensionParamIdContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+      <PSXApplicationIDTypesElement elementName="InputDataExits">
+         <PSXApplicationIDTypeMapping type="sys_none" value="2">
+            <PSXAppExtensionParamIdContext index="4" paramName="RequiredAccessLevel">
+               <PSXExtensionParamValue id="222">
+                  <value>
+                     <PSXTextLiteral id="223">
+                        <text>2</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXAppExtensionCallIdContext extRef="Java/global/percussion/workflow/sys_wfAuthenticateUser" index="1">
+                  <PSXAppNamedItemIdContext name="preview" type="SysDefInputDataExitCmd"/>
+               </PSXAppExtensionCallIdContext>
+            </PSXAppExtensionParamIdContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="sys_none" value="3">
+            <PSXAppExtensionParamIdContext index="4" paramName="RequiredAccessLevel">
+               <PSXExtensionParamValue id="185">
+                  <value>
+                     <PSXTextLiteral id="186">
+                        <text>3</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXAppExtensionCallIdContext extRef="Java/global/percussion/workflow/sys_wfAuthenticateUser" index="1">
+                  <PSXAppNamedItemIdContext name="edit" type="SysDefInputDataExitCmd"/>
+               </PSXAppExtensionCallIdContext>
+            </PSXAppExtensionParamIdContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+      <PSXApplicationIDTypesElement elementName="CEAppFlow">
+         <PSXApplicationIDTypeMapping type="sys_none" value="0">
+            <PSXAppExtensionParamIdContext index="8" paramName="paramValue4">
+               <PSXExtensionParamValue id="158">
+                  <value>
+                     <PSXTextLiteral id="163">
+                        <text>0</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXAppExtensionCallIdContext extRef="Java/global/percussion/generic/sys_MakeAbsLink">
+                  <PSXAppUrlRequestIdContext href="">
+                     <PSXAppIndexedItemIdContext index="0" type="ConditionalRequest">
+                        <PSXAppNamedItemIdContext name="clone" type="AppFlow"/>
+                     </PSXAppIndexedItemIdContext>
+                  </PSXAppUrlRequestIdContext>
+               </PSXAppExtensionCallIdContext>
+            </PSXAppExtensionParamIdContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+   </PSXApplicationIDTypesResource>
+</PSXApplicationIDTypes>

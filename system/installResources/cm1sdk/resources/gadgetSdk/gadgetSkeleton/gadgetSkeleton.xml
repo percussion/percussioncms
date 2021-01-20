@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!--
+/******************************************************************************
+ *
+ * [ @GADGETNAME@.xml ]
+ *
+ *
+ ******************************************************************************
+ -->
+<Module>
+  <ModulePrefs title="@GADGETDISPLAYNAME@" description="Gadget description text goes here." thumbnail="images/gadgetIcon.png" height="250"/> 
+  <Content type="html">
+     <![CDATA[ 
+      <style type="text/css">
+        
+        
+       </style>
+       <!-- Pull in the Percussion Common Gadget CSS so we can use classes to help maintain the proper look & feel -->
+       <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" /> 
+       <div class="perc-gadget @GADGETNAME@">
+       
+       </div>  
+     ]]>
+  </Content> 
+</Module>

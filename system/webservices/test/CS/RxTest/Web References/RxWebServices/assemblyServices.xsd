@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<xsd:schema xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:asms="urn:www.percussion.com/6.0.0/assemblyServices" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/assemblyServices" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="../common.xsd" namespace="urn:www.percussion.com/6.0.0/common" />
+  <xsd:simpleType name="OutputFormatType">
+    <xsd:annotation>
+      <xsd:documentation>An enumeration with all possible assembler output formats.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="binary" />
+      <xsd:enumeration value="page" />
+      <xsd:enumeration value="snippet" />
+      <xsd:enumeration value="database" />
+      <xsd:enumeration value="global" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="PublishType">
+    <xsd:annotation>
+      <xsd:documentation>An enumeration with all possible publishing times.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="unspecified" />
+      <xsd:enumeration value="default" />
+      <xsd:enumeration value="always" />
+      <xsd:enumeration value="never" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TemplateType">
+    <xsd:annotation>
+      <xsd:documentation>Enumerates all template types.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="local" />
+      <xsd:enumeration value="shared" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TemplateUsageType">
+    <xsd:annotation>
+      <xsd:documentation>Enumertaes all templates usage types.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="none" />
+      <xsd:enumeration value="default" />
+      <xsd:enumeration value="defined" />
+      <xsd:enumeration value="legacy" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="PSAssemblyTemplate">
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:DesignObject">
+          <xsd:sequence>
+            <xsd:element name="Bindings">
+              <xsd:annotation>
+                <xsd:documentation>A list with all variable bindings used with this template.</xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element minOccurs="0" maxOccurs="unbounded" name="Binding">
+                    <xsd:complexType>
+                      <xsd:attribute name="id" type="com:Id">
+                        <xsd:annotation>
+                          <xsd:documentation>
+                                 The id of the binding which this references.
+                              </xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:attribute>
+                      <xsd:attribute name="variable" type="xsd:string" use="required">
+                        <xsd:annotation>
+                          <xsd:documentation>The variable to bind.</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:attribute>
+                      <xsd:attribute name="expression" type="xsd:string" use="required">
+                        <xsd:annotation>
+                          <xsd:documentation>The expression to be evaluated for the binding variable.</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:attribute>
+                      <xsd:attribute default="0" name="executionOrder" type="xsd:int">
+                        <xsd:annotation>
+                          <xsd:documentation>The 0 based order in which to execute the bindings.</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:attribute>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="Slots">
+              <xsd:annotation>
+                <xsd:documentation>A list of slots supported with this template.</xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element minOccurs="0" maxOccurs="unbounded" name="Slot" type="com:Reference" />
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="Sites">
+              <xsd:annotation>
+                <xsd:documentation>A list with sites supported with the template.</xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element minOccurs="0" maxOccurs="unbounded" name="Site" type="com:Reference" />
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="Template">
+              <xsd:annotation>
+                <xsd:documentation>The template code.</xsd:documentation>
+              </xsd:annotation>
+              <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                  <xsd:whiteSpace value="preserve" />
+                </xsd:restriction>
+              </xsd:simpleType>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The name of the assembly template.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="label" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The display label of the assembly template.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="assembler" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The name of the assembly template extension used for the assembly process.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute default="../assembler" name="assemblyUrl" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>The URL of the content assembler.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="stylesheet" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>The stylesheet used for legacy assemblers.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="locationPrefix" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>The file prefix used to generate published file names.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="locationSuffix" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>The file suffix used to generate published file names.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="relationshipType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>The relationship type of active assembly relationships used with this template.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="outputFormat" type="asms:OutputFormatType">
+            <xsd:annotation>
+              <xsd:documentation>The format of the assembled output.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="whenToPublish" type="asms:PublishType">
+            <xsd:annotation>
+              <xsd:documentation>Describes when to publish the content of this assembler.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="mimeType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>The default mime type for this template.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="charset" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>The character set used for character oriented mime types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="globalTemplateUsage" type="asms:TemplateUsageType">
+            <xsd:annotation>
+              <xsd:documentation>Specifies whether global templates are used and if so which type.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="globalTemplate" type="com:Id">
+            <xsd:annotation>
+              <xsd:documentation>Specifies the GUID of the global template if the global template usage is set to 'defined'.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="templateType" type="asms:TemplateType">
+            <xsd:annotation>
+              <xsd:documentation>The type of this template, local or shared.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSTemplateSlot">
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:DesignObject">
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="Arguments">
+              <xsd:annotation>
+                <xsd:documentation>A collection of finder arguments.</xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element maxOccurs="unbounded" name="Argument">
+                    <xsd:annotation>
+                      <xsd:documentation>The argument value.</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:complexType>
+                      <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                          <xsd:attribute name="name" type="xsd:string" use="required">
+                            <xsd:annotation>
+                              <xsd:documentation>The argument name.</xsd:documentation>
+                            </xsd:annotation>
+                          </xsd:attribute>
+                        </xsd:extension>
+                      </xsd:simpleContent>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="AllowedContent">
+              <xsd:annotation>
+                <xsd:documentation>A collection of allowed content. </xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element maxOccurs="unbounded" name="Content">
+                    <xsd:complexType>
+                      <xsd:attribute name="contentTypeId" type="com:Id" use="required">
+                        <xsd:annotation>
+                          <xsd:documentation>The id of the content type allowed for this slot.</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:attribute>
+                      <xsd:attribute name="templateId" type="com:Id" use="required">
+                        <xsd:annotation>
+                          <xsd:documentation>The id of the template allowed for this slot and the specified content type.</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:attribute>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The slot name.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="label" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The slot display label.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute default="regular" name="type">
+            <xsd:annotation>
+              <xsd:documentation>The type of the slot, e.g. 'regular', 'inline'. Defaults
+to 'regular' slot if not specified.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="regular" />
+                <xsd:enumeration value="inline" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+          <xsd:attribute default="false" name="isSystemSlot" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Specifies whether this is a system slot or not.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="relationshipName" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The name of the relationship type which is used to
+relate content within this slot.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="finder" type="xsd:string" use="optional">
+            <xsd:annotation>
+              <xsd:documentation>The name of the finder extension used to find automated content for this slot.
+</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

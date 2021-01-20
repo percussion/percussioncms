@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   A Rhythmyx native library loader configuration.
+   traceEnabled attrubute if present and set to "yes"
+   will activate loader tracing.
+-->
+<!ELEMENT LibraryLoader (NativeLibs*)>
+<!ATTLIST LibraryLoader
+   traceEnabled CDATA #IMPLIED
+>
+
+<!--
+   NativeLibs element may have one or more NativeLib, which are grouped by the OS.
+   The "os" attribute must be set to one of the following: "win", "unix", "solaris" or "linux".
+   The "os" attribute can also contain a comma separated list of os keywords, for
+   example: os="solaris, linux".
+   The libraries are loaded in the exact order as they are provisioned for a given os.
+-->
+<!ELEMENT NativeLibs (NativeLib*)>
+<!ATTLIST NativeLibs
+   os CDATA #REQUIRED
+>
+
+<!--
+   Each NativeLib has two attributes that define a single library properties for the loader,
+   such as name and location. The location attribute determines what method should
+   be used to load the library; there are two methods of loading native libraries in java:
+
+   1. Using System.load that requires a full file path, this method requires "location"
+       attribute to point to either a directory relative to the Rx root, ie: "bin" or a more
+       precise location such as /usr/local/lib. There must be no trailing slash.
+
+       For this method to work the library name should be an exact match to the files
+       actual library file name, for example "libMyObj.so will be set as "libMyObj.so";
+   
+   2. Using System.loadLibrary which relies on the OS path to locate and load the library
+       based on the SHORT library name, for example "libMyObj.so will be set as "MyObj";
+      see javadoc for more details. For this method to work the "location" attribute has to
+      be either missing or set to an empty string.
+-->
+<!ELEMENT NativeLib EMPTY>
+<!ATTLIST NativeLib
+   name CDATA #REQUIRED
+   location CDATA #IMPLIED
+>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xs:schema targetNamespace="urn:www.percussion.com/webservices/contentdata" xmlns:com="urn:www.percussion.com/webservices/common" xmlns:si="urn:www.percussion.com/webservices/standarditem" xmlns="urn:www.percussion.com/webservices/contentdata" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xs:import namespace="urn:www.percussion.com/webservices/common" schemaLocation="sys_Common.xsd"/>
+   <xs:import namespace="urn:www.percussion.com/webservices/standarditem" schemaLocation="sys_StandardItem.xsd"/>
+   <xs:element name="PurgeKey">
+      <xs:annotation>
+         <xs:documentation>This key is used to purge content items. At this point this only includes the contentid since purging of specific revisions is not supported.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attribute name="contentId" type="xs:integer" use="required"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="openItem">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="OpenItemRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="si:ContentKey"/>
+                     <xs:element name="IncludeChildren" type="xs:boolean"/>
+                     <xs:element name="IncludeRelated" type="xs:boolean"/>
+                     <xs:element name="IncludeBinary" type="xs:boolean"/>
+                     <xs:element name="CheckOut" type="xs:boolean"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="OpenItemResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="si:Item" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="openChild">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="OpenChildRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="si:ContentKey"/>
+                     <xs:element name="ChildName" type="xs:string"/>
+                     <xs:element ref="CheckOut"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="OpenChildResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="si:Item" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="openRelated">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="OpenRelatedRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="si:ContentKey"/>
+                     <xs:element ref="CheckOut"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="OpenRelatedResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="si:Item" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="openField">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="OpenFieldRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="si:ContentKey"/>
+                     <xs:element name="FieldName" type="xs:string"/>
+                     <xs:element name="AttachType">
+                        <xs:simpleType>
+                           <xs:restriction base="xs:string">
+                              <xs:enumeration value="inline"/>
+                              <xs:enumeration value="reference"/>
+                              <xs:enumeration value="attachment"/>
+                           </xs:restriction>
+                        </xs:simpleType>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="OpenFieldResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="si:Item" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="newItem">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="NewItemRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="ContentType" type="xs:string">
+                        <xs:annotation>
+                           <xs:documentation>This can either be the name of a content type or the internal id.</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="NewItemResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="si:Item" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="newCopy">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="NewCopyRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="si:ContentKey"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="NewCopyResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="si:Item" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="purgeItems">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="PurgeItemsRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="PurgeKey" maxOccurs="unbounded"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="PurgeItemsResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="com:ResultResponse"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="updateItem">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="UpdateItemRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="si:Item"/>
+                     <xs:element name="CheckIn" type="xs:boolean"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="UpdateItemResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="si:ContentKey" minOccurs="0"/>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="promoteRevision">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="PromoteRevisionRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="si:ContentKey"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="PromoteRevisionResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="com:ResultResponse"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="CheckOut" type="xs:boolean"/>
+</xs:schema>

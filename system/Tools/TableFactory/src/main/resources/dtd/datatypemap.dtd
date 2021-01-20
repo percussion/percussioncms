@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+  This dtd specifies a set of mappings used to convert JDBC data types to
+  the corresponding native data type.
+-->
+
+<!--
+  A list of maps, each corresponding to a particular back-end database type. 
+  Each map may be JDBC driver and operating system specific if necessary.
+-->
+<!ELEMENT DataTypeMaps (DataTypeMap+)>
+
+<!--
+  A set of datatype mappings for a particular backend driver.
+  
+  Attributes:
+  for - The name of the backend alias.  Currently supported values are:
+      MSSQL, ORACLE, MSACCESS, DB2.  At a minimum this or "driver" 
+      must be specified.  
+  driver - specifies the jdbc driver name(s).  The driver name being used
+      will be matched on this value.  At a minimum this or "for" must 
+      be specified.  
+  os - Optionally specifies the operating system(s).  This is used to handle
+      an rdbms that has different native types on different operating 
+      systems.  If a list, must be delimited with semi_colons.
+  maxIndexColSize - The maximum size for any column that may be included in an
+  	  index definition.  Defaults to -1 (unlimited) if not specified.   Used to
+  	  avoid creating indexes that exceed the backend's maximum allowable 
+  	  size of combined index column values.  Applies only to columns that 
+  	  contain character data (CHAR, VARCHAR), and specifies the number of 
+  	  characters.
+-->
+<!ELEMENT DataTypeMap (DataType+)>
+<!ATTLIST DataTypeMap
+   for CDATA #IMPLIED
+   driver CDATA #IMPLIED
+   os CDATA #IMPLIED
+   maxIndexColSize CDATA #IMPLIED
+>
+
+<!--
+  The mapping from JDBC type to native type.
+
+  Attributes:
+  jdbc - the string representation of the JDBC data type.
+  native - the string representation of the native data type.  Must not include
+           any size/precision parameter.
+  defaultSize - provides a default size/precision to be used when the table
+                definition does not provide one.  This attribute must be
+                defined if the data type supports size/precision.
+  defaultScale - provides a default scale to be used when the table defintion
+                 does not provide one.  This attribute must be defined if the
+                 data type supports scale.
+  suffix - an optional clause to be appended after the native string and
+           precision and scale parameters.  Some databases have data types that
+           require this addition text; for example, DB2's VARBINARY data type
+           is specifed as "VARCHAR () FOR BIT DATA".  "FOR BIT DATA" is the
+           suffix.
+           
+  isNative2Jdbc -  optional attribute. Indicates if this mapping should be used 
+	to provide the JDBC data type corresponding to the native data type. If two 
+	or more JDBC data types map to the same native data type (for example, 
+	both java.sql.Types#CLOB and java.sql.Types#LONGVARCHAR 
+	map to native type "NTEXT" on  SQL Server) then this attribute can be 
+	specified on one of the mappings. The JDBC data type of the mapping 
+	with this attribute specified will be used if the native type of the column 
+	matches the native type of this mapping. If two or more mappings have
+	this attribute specified then an attempt will be made to make an exact match 
+	on the precision and scale attributes if defined.  If no match is made, the
+	first mapping will be used and others will be ignored.        
+-->
+<!ELEMENT DataType EMPTY>
+<!ATTLIST DataType
+	jdbc CDATA #REQUIRED
+	native CDATA #REQUIRED
+	defaultSize CDATA #IMPLIED
+	defaultScale CDATA #IMPLIED
+	suffix CDATA #IMPLIED
+	isNative2Jdbc (y | n) "n"
+>

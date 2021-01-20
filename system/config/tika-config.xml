@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+    <service-loader loadErrorHandler="IGNORE"/>
+
+    <parsers>
+        <parser class="org.apache.tika.parser.DefaultParser">
+            <mime-exclude>image/jpeg</mime-exclude>
+            <mime-exclude>application/pdf</mime-exclude>
+            <mime-exclude>application/x-sqlite3</mime-exclude>
+            <parser-exclude class="org.apache.tika.parser.jdbc.SQLite3Parser"/>
+            <parser-exclude class="org.apache.tika.parser.executable.ExecutableParser"/>
+        </parser>
+        <parser class="org.apache.tika.parser.AutoDetectParser">
+            <mime>application/pdf</mime>
+            <mime>application/msword</mime>
+        </parser>
+    </parsers>
+</properties>

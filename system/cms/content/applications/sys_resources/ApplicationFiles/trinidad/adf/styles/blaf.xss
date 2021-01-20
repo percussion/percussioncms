@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+	   
+-->
+
+<!--
+   See oracle-desktop.xss for the styles used by the desktop implementation
+   of the Oracle Browser Look And Feel.  
+
+   Note: This file is only provided by backward compatibility.  However,
+   as of UIX 2.2.5, custom style sheets are no longer required to 
+   explicitly import the base look and feel's style sheet.  So, rather
+   than importing blaf.xss or oracle-desktop.xss, custom style sheets
+   should no longer be importing any style sheet at all.  The styles
+   defined in custom style sheets are automatically merged on top of
+   the look and feel's style sheet (ie. on top of oracle-desktop.xss).
+-->
+
+<styleSheetDocument xmlns="http://myfaces.apache.org/uix/style">
+
+<!-- 
+  No need to import oracle-desktop.xss.  We'll automatically be
+  layered on top of the current LAF's style sheet.
+-->
+
+
+ <styleSheet>
+
+  <!--
+    The following styles are no longer used by UIX.  However, they
+    are defined by BLAF, so they are provided here for existing
+    applications which make use of these styles.
+  -->
+
+  <!-- 
+    BreadCrumbs: Use OraBreadCrumbs and OraBreadCrumbsSelected instead. 
+  -->
+
+  <style selector=".OraCrumbsSelected">
+    <includeStyle name="AFSmallFont"/>
+    <includeStyle name="AFTextForeground"/>
+    <property name="text-decoration">none</property>
+  </style>
+
+  <style selector=".OraCrumbsEnabled">
+    <includeStyle name="SmallLinkFont"/>
+    <includeStyle name="AFLinkForeground"/>
+  </style>
+
+  <!--
+    Button: UIX no longer uses (or never has used?) these styles.
+            Leaving here for applications that need these styles
+            for their own purposes.
+  -->
+  <style selector=".OraButtonText">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+
+  <style selector=".OraButtonTextDisabled">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFVeryDarkAccentForeground"/>
+  </style>
+
+  <!--
+    Level 3 Navigation
+ 
+    These styles are not currently used by BLAF's sideBar/styledList.
+    Leaving here for backward compatibility, but these can probably
+    be removed altogether.
+  -->
+
+  <style selector=".OraNav3Selected">
+    <includeStyle name="AFDefaultBoldFont"/>
+    <includeStyle name="AFDarkBackground"/>
+    <includeStyle name="AFSelectedTextForeground"/>
+    <property name="text-decoration">none</property>
+  </style>
+
+  <style selector=".OraNav3Enabled">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkAccentBackground"/>
+    <includeStyle name="AFTextForeground"/>
+  </style>
+
+  <style selector=".OraNav3Disabled">
+    <includeStyle name="AFDefaultFont"/>
+    <includeStyle name="AFDarkAccentBackground"/>
+    <includeStyle name="AFMediumAccentForeground"/>
+    <property name="text-decoration">none</property>
+  </style>
+
+ </styleSheet>
+</styleSheetDocument>

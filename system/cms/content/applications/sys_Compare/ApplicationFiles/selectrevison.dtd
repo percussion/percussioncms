@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT selectrevison (itemnumber, sys_contentid, sys_revision, sys_variantid, title, items )>
+<!ELEMENT item (revid, date, actor, state, comment )>
+<!ELEMENT comment (#PCDATA)>
+<!ELEMENT state (#PCDATA)>
+<!ELEMENT actor (#PCDATA)>
+<!ELEMENT date (#PCDATA)>
+<!ELEMENT revid (#PCDATA)>
+<!ELEMENT items (item* )>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT sys_variantid (#PCDATA)>
+<!ELEMENT sys_revision (#PCDATA)>
+<!ELEMENT sys_contentid (#PCDATA)>
+<!ELEMENT itemnumber (#PCDATA)>

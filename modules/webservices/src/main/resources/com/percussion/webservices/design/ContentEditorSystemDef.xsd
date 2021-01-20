@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:com="urn:www.percussion.com/6.0.0/common" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xsd:include schemaLocation="BasicObjects.xsd"/>
+   <xsd:element name="CommandHandlerExits">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:InputDataExits"/>
+            <xsd:element ref="com:ResultDataExits"/>
+         </xsd:sequence>
+         <xsd:attribute name="commandName" type="xsd:string" use="required"/>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CommandName" type="xsd:string"/>
+   <xsd:element name="PSContentEditorSystemDef">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:SystemLocator"/>
+            <xsd:element ref="com:PSXCommandHandlerStylesheets"/>
+            <xsd:element ref="com:PSXApplicationFlow"/>
+            <xsd:element ref="com:SectionLinkList" minOccurs="0"/>
+            <xsd:element ref="com:CommandHandlerExits" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element ref="com:SystemParamNames" minOccurs="0"/>
+            <xsd:element ref="com:InitParams" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:sequence minOccurs="0">
+               <xsd:element ref="com:PSXContainerLocator"/>
+               <xsd:element ref="com:PSXFieldSet"/>
+               <xsd:element ref="com:PSXUIDefinition"/>
+               <xsd:element ref="com:PSXValidationRules" minOccurs="0"/>
+               <xsd:element ref="com:PSXInputTranslations" minOccurs="0"/>
+               <xsd:element ref="com:PSXOutputTranslations" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:sequence>
+         <xsd:attribute name="cacheTimeout" type="xsd:string" default="15"/>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SystemLocator">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:PSXContainerLocator"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="InitParams">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:CommandName" maxOccurs="unbounded"/>
+            <xsd:element ref="com:PSXParam" maxOccurs="unbounded"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SystemParamNames">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:PSXParam" maxOccurs="unbounded"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

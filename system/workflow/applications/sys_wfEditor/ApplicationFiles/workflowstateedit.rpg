@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflowstateedit (relatedlinks, componentname, workflowlinfourl, workflowStateEdit, workflowid, stateid, URL )>
+<!ELEMENT URL (extstateroles, exttransitions, extagingtransitions )>
+<!ELEMENT extagingtransitions (#PCDATA)>
+<!ELEMENT exttransitions (#PCDATA)>
+<!ELEMENT extstateroles (#PCDATA)>
+<!ELEMENT stateid (#PCDATA)>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT workflowStateEdit (Name, publishable, Description )>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT publishable (#PCDATA)>
+<!ELEMENT Name (#PCDATA)>
+<!ELEMENT workflowlinfourl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

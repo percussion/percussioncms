@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+   version="2.0">
+
+   <!-- ========== Tag Library Description Elements ========================= -->
+
+   <description>Rhythmyx component taglibrary</description>
+   <tlib-version>1.0</tlib-version>
+   <short-name>rxcomp</short-name>
+   <uri>http://rhythmyx.percussion.com/components</uri>
+
+   <!-- ========== Tag Descriptions ========================================= -->
+
+   <!--  These tags work by using the request parameters to get the 
+      components registered. -->
+   <tag>
+      <description>Emit the appropriate side navigation.</description>
+      <name>sidenav</name>
+      <tag-class>com.percussion.servlets.taglib.PSPageSidenavTag</tag-class>
+      <body-content>empty</body-content>
+      <attribute>
+         <name>component</name>
+         <required>true</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>page</name>
+         <required>true</required>
+         <type>String</type>
+      </attribute>
+   </tag>
+
+   <tag>
+      <description>
+         This container renders it's component children as defined by the
+         MenuModel from trinidad. The current "selected" tab is defined by the
+         focus row key. If the container would only show one tab then no tabs
+         are rendered.
+      </description>
+      <name>tabContainer</name>
+      <tag-class>com.percussion.servlets.taglib.PSTabsContainerTag</tag-class>
+      <attribute>
+         <name>inlineStyle</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>var</name>
+         <required>true</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>value</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+   </tag>
+
+   <tag>
+      <description>
+         Tab container that shows or hides the tabs based on the user being in
+         at least one of the mentioned roles.
+      </description>
+      <name>pagetabs</name>
+      <tag-class>com.percussion.servlets.taglib.PSPageTabsTag</tag-class>
+      <attribute>
+         <name>roles</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>component</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+   </tag>
+
+   <tag>
+      <description>Create a css based menu, menubar</description>
+      <name>menubar</name>
+      <tag-class>com.percussion.servlets.taglib.PSMenuBarTag</tag-class>
+      <attribute>
+         <name>id</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+   </tag>
+
+   <tag>
+      <description>Create a css based menu, cascade</description>
+      <name>menu</name>
+      <tag-class>com.percussion.servlets.taglib.PSCascadeMenuTag</tag-class>
+      <attribute>
+         <name>label</name>
+         <required>true</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>id</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+   </tag>
+
+   <tag>
+      <description>Progress bar</description>
+      <name>progressBar</name>
+      <tag-class>com.percussion.servlets.taglib.PSProgressBarTag</tag-class>
+      <attribute>
+         <name>percent</name>
+         <required>true</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>id</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>rendered</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+   </tag>
+
+   <tag>
+      <description>Create a css based menu, item</description>
+      <name>menuitem</name>
+      <tag-class>com.percussion.servlets.taglib.PSMenuItemTag</tag-class>
+      <attribute>
+         <name>value</name>
+         <required>true</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>title</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>action</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>url</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>immediate</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>rendered</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>onclick</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>id</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+   </tag>
+
+   <tag>
+      <description>
+         Create a span that has an id with a specified value
+      </description>
+      <name>spanid</name>
+      <tag-class>com.percussion.servlets.taglib.PSSpanIdTag</tag-class>
+      <attribute>
+         <name>definedid</name>
+         <required>true</required>
+         <type>String</type>
+      </attribute>
+      <attribute>
+         <name>inlineStyle</name>
+         <required>false</required>
+         <type>String</type>
+      </attribute>
+   </tag>
+
+   <!--  EL Functions -->
+   <function>
+      <name>i18ntext</name>
+      <function-class>com.percussion.i18n.PSI18nUtils</function-class>
+      <function-signature>
+         java.lang.String getString( java.lang.String, java.lang.String)
+      </function-signature>
+   </function>
+   <function>
+      <name>i18nhtml</name>
+      <function-class>com.percussion.i18n.PSI18nUtils</function-class>
+      <function-signature>
+         java.lang.String getHtmlString( java.lang.String, java.lang.String)
+      </function-signature>
+   </function>
+   <function>
+      <name>i18nmnemonic</name>
+      <function-class>com.percussion.i18n.PSI18nUtils</function-class>
+      <function-signature>
+         java.lang.String getMnemonic( java.lang.String, java.lang.String)
+      </function-signature>
+   </function>
+   <function>
+      <name>hasComponentRole</name>
+      <function-class>
+         com.percussion.services.utils.jspel.PSRoleUtilities
+      </function-class>
+      <function-signature>
+         java.lang.Boolean hasComponentRole(java.lang.String,java.lang.String)
+      </function-signature>
+   </function>
+   <function>
+      <name>getUserRoles</name>
+      <function-class>
+         com.percussion.services.utils.jspel.PSRoleUtilities
+      </function-class>
+      <function-signature>java.lang.String getUserRoles()</function-signature>
+   </function>
+   <function>
+      <name>getUserCurrentCommunity</name>
+      <function-class>
+         com.percussion.services.utils.jspel.PSRoleUtilities
+      </function-class>
+      <function-signature>
+         java.lang.String getUserCurrentCommunity()
+      </function-signature>
+   </function>
+   <function>
+      <name>getUserCurrentLocale</name>
+      <function-class>
+         com.percussion.services.utils.jspel.PSRoleUtilities
+      </function-class>
+      <function-signature>
+         java.lang.String getUserCurrentLocale()
+      </function-signature>
+   </function>
+   <function>
+      <name>getLocaleCount</name>
+      <function-class>
+         com.percussion.services.utils.jspel.PSLocaleUtilities
+      </function-class>
+      <function-signature>
+         java.lang.Integer getLocaleCount()
+      </function-signature>
+   </function>
+   <function>
+      <name>getInternal</name>
+      <function-class>
+         com.percussion.services.utils.jspel.PSItemUtilities
+      </function-class>
+      <function-signature>
+         java.lang.String getInternal(java.lang.String)
+      </function-signature>
+   </function>
+   <function>
+      <name>getSiteIdFromName</name>
+      <function-class>
+         com.percussion.services.utils.jspel.PSItemUtilities
+      </function-class>
+      <function-signature>
+         java.lang.Long getSiteIdFromName(java.lang.String)
+      </function-signature>
+   </function>
+   <function>
+      <name>getFolderIdFromPath</name>
+      <function-class>
+         com.percussion.services.utils.jspel.PSItemUtilities
+      </function-class>
+      <function-signature>
+         java.lang.Integer getFolderIdFromPath(java.lang.String)
+      </function-signature>
+   </function>
+   <function>
+      <name>getPanelUrl</name>
+      <function-class>
+         com.percussion.services.utils.jspel.PSItemUtilities
+      </function-class>
+      <function-signature>
+         java.lang.String getPanelUrl(java.lang.Integer, java.lang.Long,
+         java.lang.Integer)
+      </function-signature>
+   </function>
+</taglib>

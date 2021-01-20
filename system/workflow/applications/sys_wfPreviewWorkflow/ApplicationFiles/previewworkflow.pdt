@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflow (states*, description )>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT state (description )>
+<!ATTLIST  state id CDATA #IMPLIED>
+<!ATTLIST  state link CDATA #IMPLIED>
+<!ATTLIST  state publishable CDATA #IMPLIED>
+<!ATTLIST  state linknewagingtransition CDATA #IMPLIED>
+<!ATTLIST  state name CDATA #IMPLIED>
+<!ATTLIST  state linknewtransition CDATA #IMPLIED>
+<!ELEMENT states (state* )>
+<!ATTLIST  workflow id CDATA #IMPLIED>
+<!ATTLIST  workflow link CDATA #IMPLIED>
+<!ATTLIST  workflow initialstate CDATA #IMPLIED>
+<!ATTLIST  workflow name CDATA #IMPLIED>
+<!ATTLIST  workflow linknewstate CDATA #IMPLIED>
+<!ATTLIST  workflow admin CDATA #IMPLIED>
+<!ELEMENT previewworkflow (workflow )>

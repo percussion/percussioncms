@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProxyConfigurations>
+	<!-- Uncomment these values to configure proxy server.
+	<ProxyConfig>
+		<host>127.0.0.1</host>
+		<port>3128</port>
+		<protocols>
+			<protocol>http</protocol>
+		</protocols>
+	</ProxyConfig>
+	<ProxyConfig>
+		<host>127.0.0.1</host>
+		<port>3128</port>
+		<user>username</user>
+		<password>password</password>
+		<protocols>
+			<protocol>https</protocol>
+		</protocols>
+	</ProxyConfig>
+	-->
+</ProxyConfigurations>

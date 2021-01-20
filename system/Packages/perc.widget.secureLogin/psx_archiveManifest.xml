@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percSecureLogin-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Widgets\percSecureLogin.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percSecureLogin-xml\percSecureLogin.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--7462949394166316985">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\VAMSHI~1.PER\AppData\Local\Temp\percSecureLogin.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--7462949394166316985\percSecureLogin.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percSecureLogin_images_widgetIconLoginOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percSecureLogin\images\widgetIconLoginOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percSecureLogin_images_widgetIconLoginOver-gif\widgetIconLoginOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percSecureLogin_images_widgetIconLogin-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percSecureLogin\images\widgetIconLogin.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percSecureLogin_images_widgetIconLogin-gif\widgetIconLogin.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percSecureLogin_js_percSecureLogin-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percSecureLogin\js\percSecureLogin.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percSecureLogin_js_percSecureLogin-js\percSecureLogin.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_secureLogin_css_perc--secureLogin--widget-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\secureLogin\css\perc-secureLogin-widget.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_secureLogin_css_perc--secureLogin--widget-css\perc-secureLogin-widget.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-369">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\VAMSHI~1.PER\AppData\Local\Temp\percSecureLogin.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-369\percSecureLogin.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\VAMSHI~1.PER\AppData\Local\Temp\percSecureLogin.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-369\percSecureLogin.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\VAMSHI~1.PER\AppData\Local\Temp\percSecureLogin.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-369\percSecureLogin.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percSecureLogin_images_widgetSecureLoginSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percSecureLogin\images\widgetSecureLoginSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percSecureLogin_images_widgetSecureLoginSampleBackground-png\widgetSecureLoginSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percSecureLogin-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Resources\percSecureLogin.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percSecureLogin-xml\percSecureLogin.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

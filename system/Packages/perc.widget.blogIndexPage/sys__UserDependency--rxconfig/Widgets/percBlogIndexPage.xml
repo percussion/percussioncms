@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!DOCTYPE Widget [
+<!ENTITY defaultDateFormat "EEE MMM d, yyyy hh:mm a">
+]>
+<Widget>
+   <WidgetPrefs title="Blog List"
+        contenttype_name="percBlogIndexAsset"
+        category="blog"
+        description="Blog list page for dispaying all blog post"
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/blogIndexPage/images/widgetIconBlogIndex.gif"
+        preferred_editor_width="780"
+        preferred_editor_height="520"
+        create_shared_asset="false"
+        is_editable_on_template="false"
+        is_responsive="true"/>
+    <UserPref name="titleFormat"
+        display_name="Format of blog post title"
+        required="false"
+        datatype="enum" default_value="h2">
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+        <EnumValue value="p" display_value="Paragraph" />
+    </UserPref>
+    <UserPref name="autoListDivId"
+        display_name="Blog list div id"
+        datatype="string"/>
+    <UserPref name="sortby"
+      display_name="Sort by"
+      required="true"
+      default_value="rx:resource_link_title"
+      datatype="enum">
+      <EnumValue value="none" display_value="None" />
+      <EnumValue value="rx:resource_link_title" display_value="Link text" />
+      <EnumValue value="rx:page_title" display_value="Title" />
+      <EnumValue value="rx:sys_contentcreateddate" display_value="Created date" />
+      <EnumValue value="rx:sys_contentpostdate" display_value="Post Date" />
+    </UserPref>
+    <UserPref name="sortDirection"
+      display_name="Sort Order"
+      required="true"
+      default_value="desc"
+      datatype="enum"
+      >
+      <EnumValue value="desc" display_value="Descending" />
+      <EnumValue value="asc" display_value="Ascending" />
+    </UserPref>
+    <UserPref name="blogPostDateTimeFormat"
+      display_name="Format of blog post date"
+      default_value="&defaultDateFormat;"
+      datatype="string" />
+      <UserPref name="locale"
+      display_name="Date Format Locale"
+      required="true"
+      default_value="en-US"
+      datatype="enum">
+      <EnumValue value="sq-AL" display_value="Albanian Albania (AL)"/>
+      <EnumValue value="ar-DZ" display_value="Arabic Algeria (DZ)"/>
+      <EnumValue value="ar-BH" display_value="Arabic Bahrain (BH)"/>
+      <EnumValue value="ar-EG" display_value="Arabic Egypt (EG)"/>
+      <EnumValue value="ar-IQ" display_value="Arabic Iraq (IQ)"/>
+      <EnumValue value="ar-JO" display_value="Arabic Jordan (JO)"/>
+      <EnumValue value="ar-KW" display_value="Arabic Kuwait (KW)"/>
+      <EnumValue value="ar-LB" display_value="Arabic Lebanon (LB)"/>
+      <EnumValue value="ar-LY" display_value="Arabic Libya (LY)"/>
+      <EnumValue value="ar-MA" display_value="Arabic Morocco (MA)"/>
+      <EnumValue value="ar-OM" display_value="Arabic Oman (OM)"/>
+      <EnumValue value="ar-QA" display_value="Arabic Qatar (QA)"/>
+      <EnumValue value="ar-SA" display_value="Arabic Saudi Arabia (SA)"/>
+      <EnumValue value="ar-SD" display_value="Arabic Sudan (SD)"/>
+      <EnumValue value="ar-SY" display_value="Arabic Syria (SY)"/>
+      <EnumValue value="ar-TN" display_value="Arabic Tunisia (TN)"/>
+      <EnumValue value="ar-AE" display_value="Arabic United Arab Emirates (AE)"/>
+      <EnumValue value="ar-YE" display_value="Arabic Yemen (YE)"/>
+      <EnumValue value="be-BY" display_value="Belarusian Belarus (BY)"/>
+      <EnumValue value="bg-BG" display_value="Bulgarian Bulgaria (BG)"/>
+      <EnumValue value="ca-ES" display_value="Catalan Spain (ES)"/>
+      <EnumValue value="zh-CN" display_value="Chinese China (CN)"/>
+      <EnumValue value="zh-SG" display_value="Chinese Singapore (SG)"/>
+      <EnumValue value="zh-HK" display_value="Chinese Hong Kong (HK)"/>
+      <EnumValue value="zh-TW" display_value="Chinese Taiwan (TW)"/>
+      <EnumValue value="hr-HR" display_value="Croatian Croatia (HR)"/>
+      <EnumValue value="cs-CZ" display_value="Czech Czech Republic (CZ)"/>
+      <EnumValue value="da-DK" display_value="Danish Denmark (DK)"/>
+      <EnumValue value="nl-BE" display_value="Dutch Belgium (BE)"/>
+      <EnumValue value="nl-NL" display_value="Dutch Netherlands (NL)"/>
+      <EnumValue value="en-AU" display_value="English Australia (AU)"/>
+      <EnumValue value="en-CA" display_value="English Canada (CA)"/>
+      <EnumValue value="en-IN" display_value="English India (IN)"/>
+      <EnumValue value="en-IE" display_value="English Ireland (IE)"/>
+      <EnumValue value="en-MT" display_value="English Malta (MT)"/>
+      <EnumValue value="en-NZ" display_value="English New Zealand (NZ)"/>
+      <EnumValue value="en-PH" display_value="English Philippines (PH)"/>
+      <EnumValue value="en-SG" display_value="English Singapore (SG)"/>
+      <EnumValue value="en-ZA" display_value="English South Africa (ZA)"/>
+      <EnumValue value="en-GB" display_value="English United Kingdom (GB)"/>
+      <EnumValue value="en-US" display_value="English United States (US)"/>
+      <EnumValue value="et-EE" display_value="Estonian Estonia (EE)"/>
+      <EnumValue value="fi-FI" display_value="Finnish Finland (FI)"/>
+      <EnumValue value="fr-BE" display_value="French Belgium (BE)"/>
+      <EnumValue value="fr-CA" display_value="French Canada (CA)"/>
+      <EnumValue value="fr-FR" display_value="French France (FR)"/>
+      <EnumValue value="fr-LU" display_value="French Luxembourg (LU)"/>
+      <EnumValue value="fr-CH" display_value="French Switzerland (CH)"/>
+      <EnumValue value="de-AT" display_value="German Austria (AT)"/>
+      <EnumValue value="de-DE" display_value="German Germany (DE)"/>
+      <EnumValue value="de-LU" display_value="German Luxembourg (LU)"/>
+      <EnumValue value="de-CH" display_value="German Switzerland (CH)"/>
+      <EnumValue value="el-CY" display_value="Greek Cyprus (CY)"/>
+      <EnumValue value="el-GR" display_value="Greek Greece (GR)"/>
+      <EnumValue value="iw-IL" display_value="Hebrew Israel (IL)"/>
+      <EnumValue value="hi-IN" display_value="Hindi India (IN)"/>
+      <EnumValue value="hu-HU" display_value="Hungarian Hungary (HU)"/>
+      <EnumValue value="is-IS" display_value="Icelandic Iceland (IS)"/>
+      <EnumValue value="in-ID" display_value="Indonesian Indonesia (ID)"/>
+      <EnumValue value="ga-IE" display_value="Irish Ireland (IE)"/>
+      <EnumValue value="it-IT" display_value="Italian Italy (IT)"/>
+      <EnumValue value="it-CH" display_value="Italian Switzerland (CH)"/>
+      <EnumValue value="ja-JP" display_value="Japanese Japan (JP)"/>
+      <EnumValue value="ko-KR" display_value="Korean South Korea (KR)"/>
+      <EnumValue value="lv-LV" display_value="Latvian Latvia (LV)"/>
+      <EnumValue value="lt-LT" display_value="Lithuanian Lithuania (LT)"/>
+      <EnumValue value="mk-MK" display_value="Macedonian Macedonia (MK)"/>
+      <EnumValue value="ms-MY" display_value="Malay Malaysia (MY)"/>
+      <EnumValue value="mt-MT" display_value="Maltese (mt)	Malta (MT)"/>
+      <EnumValue value="no-NO" display_value="Norwegian Norway (NO)"/>
+      <EnumValue value="nb-NO" display_value="Norwegian Bokmal Norway (NO)"/>
+      <EnumValue value="nn-NO" display_value="Norwegian Nynorsk Norway (NO)"/>
+      <EnumValue value="pl-PL" display_value="Polish Poland (PL)"/>
+      <EnumValue value="pt-BR" display_value="Portuguese Brazil (BR)"/>
+      <EnumValue value="pt-PT" display_value="Portuguese Portugal (PT)"/>
+      <EnumValue value="ro-RO" display_value="Romanian Romania (RO)"/>
+      <EnumValue value="ru-RU" display_value="Russian Russia (RU)"/>
+      <EnumValue value="sr-BA" display_value="Serbian Bosnia and Herzegovina (BA)"/>
+      <EnumValue value="sr-ME" display_value="Serbian Montenegro (ME)"/>
+      <EnumValue value="sr-RS" display_value="Serbian Serbia (RS)"/>
+      <EnumValue value="sk-SK" display_value="Slovak Slovakia (SK)"/>
+      <EnumValue value="sl-SI" display_value="Slovenian Slovenia (SI)"/>
+      <EnumValue value="es-AR" display_value="Spanish Argentina (AR)"/>
+      <EnumValue value="es-BO" display_value="Spanish Bolivia (BO)"/>
+      <EnumValue value="es-CL" display_value="Spanish Chile (CL)"/>
+      <EnumValue value="es-CO" display_value="Spanish Colombia (CO)"/>
+      <EnumValue value="es-CR" display_value="Spanish Costa Rica (CR)"/>
+      <EnumValue value="es-DO" display_value="Spanish Dominican Republic (DO)"/>
+      <EnumValue value="es-EC" display_value="Spanish Ecuador (EC)"/>
+      <EnumValue value="es-SV" display_value="Spanish El Salvador (SV)"/>
+      <EnumValue value="es-GT" display_value="Spanish Guatemala (GT)"/>
+      <EnumValue value="es-HN" display_value="Spanish Honduras (HN)"/>
+      <EnumValue value="es-MX" display_value="Spanish Mexico (MX)"/>
+      <EnumValue value="es-NI" display_value="Spanish Nicaragua (NL)"/>
+      <EnumValue value="es-PA" display_value="Spanish Panama (PA)"/>
+      <EnumValue value="es-PY" display_value="Spanish Paraguay (PY)"/>
+      <EnumValue value="es-PE" display_value="Spanish Peru (PE)"/>
+      <EnumValue value="es-PR" display_value="Spanish Puerto Rico (PR)"/>
+      <EnumValue value="es-ES" display_value="Spanish Spain (ES)"/>
+      <EnumValue value="es-US" display_value="Spanish United States (US)"/>
+      <EnumValue value="es-UY" display_value="Spanish Uruguay (UY)"/>
+      <EnumValue value="es-VE" display_value="Spanish Venezuela (VE)"/>
+      <EnumValue value="sv-SE" display_value="Swedish Sweden (SE)"/>
+      <EnumValue value="th-TH" display_value="Thai Thailand (TH)"/>
+      <EnumValue value="tr-TR" display_value="Turkish Turkey (TR)"/>
+      <EnumValue value="uk-UA" display_value="Ukrainian Ukraine (UA)"/>
+      <EnumValue value="vi-VN" display_value="Vietnamese Vietnam (VN)"/>
+      </UserPref>
+    <UserPref name="perc_hidefield_title"
+      display_name="Hide post title"
+      default_value="false"
+      datatype="bool" />
+    <UserPref name="perc_hidefield_summary"
+      display_name="Hide post summary"
+      default_value="false"
+      datatype="bool" />
+    <UserPref name="perc_hidefield_blog_date"
+      display_name="Hide date and time"
+      default_value="false"
+      datatype="bool" />
+    <UserPref name="perc_hidefield_byline"
+      display_name="Hide byline"
+      default_value="false"
+      datatype="bool" />
+    <UserPref name="perc_hidefield_comments"
+      display_name="Hide comments"
+      default_value="false"
+      datatype="bool" />
+    <UserPref name="perc_hidefield_tags"
+      display_name="Hide tags"
+      default_value="false"
+      datatype="bool" />
+    <UserPref name="perc_tag_label"
+      display_name="Text to use for &quot;tags&quot; label"
+      default_value="Tags:"
+      datatype="string" />
+    <UserPref name="perc_hidefield_categories"
+      display_name="Hide categories"
+      default_value="false"
+      datatype="bool" />
+    <UserPref name="perc_category_label"
+      display_name="Text to use for &quot;categories&quot; label"
+      default_value="Categories:"
+      datatype="string" />
+    <UserPref name="totalMaxResults"
+         display_name="Maximum number of total results"
+         default_value="500"
+         datatype="number" />
+    <UserPref name="blogPostMaxResults"
+      display_name="Number of posts per page"
+      default_value="10"
+      datatype="number" />
+    <UserPref name="pagingPagesText"
+      display_name="Text to use for &lt;em&gt;pages&lt;/em&gt; (X of Y &lt;strong&gt;pages&lt;/strong&gt;)"
+      default_value="pages"
+      datatype="string" />
+    <UserPref name="resultEntriesTextPlural"
+      display_name='Text for "entries" in list count'
+      default_value="entries"
+      datatype="string" />
+    <UserPref name="resultEntriesTextSingular"
+      display_name='Text for "entry" when one list has one item'
+      default_value="entry"
+      datatype="string" />
+    <UserPref name="listAriaLabel"
+      display_name="Blog List aria-label"
+      datatype="string" />
+    <UserPref name="listAriaRole"
+      display_name="Blog List aria-role"
+      datatype="string" />
+    <UserPref name="perc_hide_when_empty"
+      display_name="Hide blog list when empty"
+      default_value="false"
+      datatype="bool" />
+    <UserPref name="blogListHeaderText"
+      display_name="Text to use for result header"
+      default_value="Results for"
+      datatype="string" />
+    <UserPref name="blogPostReadMoreText"
+      display_name='Text to use for "more link"'
+      default_value="more..."
+      datatype="string" />
+     <UserPref name="blogPostCommentsText"
+      display_name='Text to use for "Comments"'
+      default_value="Comments"
+      datatype="string" />
+     <UserPref name="blogPostBylineText"
+      display_name='Text to use for "Author Byline"'
+      default_value="by"
+      datatype="string" />
+    <UserPref name="enable_rss_icon"
+      display_name="Include rss icon"
+      default_value="false"
+      datatype="bool"/>
+    <UserPref name="rssIconPosition"
+      display_name="RSS icon position"
+      default_value="perc-list-top"
+      datatype="enum">
+      <EnumValue value="perc-list-top" display_value="Top of list" />
+      <EnumValue value="perc-list-bottom" display_value="Bottom of list" />
+    </UserPref>
+    <UserPref name="rssLinkText"
+      display_name='Text to use for "RSS Link"'
+      default_value="RSS Link"
+      datatype="string" />
+    <UserPref name="enableCalenderIcon"
+          display_name="Enable Calendar Icon"
+          default_value="false"
+          datatype="bool"/>
+    <CssPref name="rootclass"
+      display_name="CSS Root Class"
+      datatype="string" />
+    <Code type="jexl">
+    <![CDATA[
+    $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+    $perc.setWidgetContents($assetItems);
+    ## Initialize Properties
+    $isEditMode = $perc.isEditMode() || $perc.isPreviewMode();
+    $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+    $titleFormat = $perc.widget.item.properties.get('titleFormat');
+    $blogPostDateTimeFormat = $perc.widget.item.properties.get('blogPostDateTimeFormat');
+    $enableCalenderIcon = $perc.widget.item.properties.get('enableCalenderIcon');
+    $blogPostReadMoreText = $perc.widget.item.properties.get('blogPostReadMoreText');
+    $perc_hidefield_title = $perc.widget.item.properties.get('perc_hidefield_title');
+    $perc_hidefield_summary = $perc.widget.item.properties.get('perc_hidefield_summary');
+    $perc_hidefield_blog_date = $perc.widget.item.properties.get('perc_hidefield_blog_date');
+    $perc_hidefield_byline = $perc.widget.item.properties.get('perc_hidefield_byline');
+    $perc_hidefield_comments = $perc.widget.item.properties.get('perc_hidefield_comments');
+    $resultEntriesTextPlural = $perc.widget.item.properties.get('resultEntriesTextPlural');
+    $resultEntriesTextSingular = $perc.widget.item.properties.get('resultEntriesTextSingular');
+    $autoListDivId = $perc.widget.item.properties.get('autoListDivId');
+    $blogPostCommentsText = $perc.widget.item.properties.get('blogPostCommentsText');
+    $totalMaxResults = $perc.widget.item.properties.get('totalMaxResults');
+    $perc_max_post_entries = $perc.widget.item.properties.get('blogPostMaxResults');
+    $pagingPagesText = $perc.widget.item.properties.get('pagingPagesText');
+    $listAriaLabel = $perc.widget.item.properties.get('listAriaLabel');
+    $listAriaRole = $perc.widget.item.properties.get('listAriaRole');
+    $perc_hide_when_empty = $perc.widget.item.properties.get('perc_hide_when_empty');
+    $pagingOfText = $perc.widget.item.properties.get('pagingOfText');
+    $blogPostNoContentText = $perc.widget.item.properties.get('blogPostNoContentText');
+    $rssLinkText = $perc.widget.item.properties.get('rssLinkText');
+    $perc_hidefield_tags = $perc.widget.item.properties.get('perc_hidefield_tags');
+    $perc_tag_label = $perc.widget.item.properties.get('perc_tag_label');
+    $perc_hidefield_categories = $perc.widget.item.properties.get('perc_hidefield_categories');
+    $perc_category_label = $perc.widget.item.properties.get('perc_category_label');
+    $blogPostBylineText = $perc.widget.item.properties.get('blogPostBylineText');
+    $results_title = $perc.widget.item.properties.get('blogListHeaderText');
+    $sortByVal = $perc.widget.item.properties.get('sortby');
+    if($sortByVal == null || $sortByVal == "none") {
+        $sortByVal = "rx:resource_link_title";
+    }
+    $sortDirection = $perc.widget.item.properties.get('sortDirection');
+    if($sortDirection == null){
+        $sortDirection = "desc";
+    }
+    $pageTitle = $perc.page.title;
+    if ($listAriaLabel == '' || $listAriaLabel == null) {
+        if ($pageTitle != null && $pageTitle != '') {
+            $listAriaLabel = 'aria-label="' + $pageTitle + ' blog list"';
+        } else {
+            $listAriaLabel = 'aria-label="Blog list"';
+        }
+    } else {
+        $listAriaLabel = 'aria-label="' + $listAriaLabel + '"';
+    }
+    if ($listAriaRole == '' || $listAriaRole == null) {
+        $listAriaRole = 'role="region"';
+    }
+    else {
+        $listAriaRole = 'role="' + $listAriaRole + '"';
+    }
+    if($autoListDivId == '' || $autoListDivId == null) {
+       $autoListDivId = $perc.widget.item.id + "_list";
+    }
+    if ($resultEntriesTextPlural == "" || $resultEntriesTextPlural == null)
+    {
+        $resultEntriesTextPlural = 'results';
+    }
+    if ($resultEntriesTextSingular == "" || $resultEntriesTextSingular == null)
+    {
+        $resultEntriesTextSingular = 'result';
+    }
+    $titleFormatStartTag = '<' + $titleFormat +' class="perc-blog-list-title">';
+    $titleFormatEndTag = '</' + $titleFormat + '>';
+    $enableRssIcon = $perc.widget.item.properties.get('enable_rss_icon');
+    $rssIconPosition = $perc.widget.item.properties.get('rssIconPosition');
+    $locale = $perc.widget.item.properties.get('locale');
+    if($locale == null)
+        $locale = "en-US";
+    if (empty($rootclass)) {
+        $rootclass = "";
+    }
+    $baseUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+    if ( ! $assetItems.isEmpty() ) {
+        $assetItem = $assetItems.get(0);
+        $enableRssField = $assetItem.getNode().getProperty('enable_rss_feed').String;
+        $pageId = $perc.page.id;
+        $feedname = $assetItem.getNode().getProperty('feed_name').String;
+        if(!empty($pageId))
+        {
+            $finderPath = $rx.pageutils.getItemPath($pageId);
+            $pathParts = $finderPath.split("\/");
+            $siteName = $pathParts[2];
+            $sUrl = $baseUrl + "/feeds/rss/" + $siteName + "/" + $feedname +"/";
+        }
+    }
+    ## Get navigation.  If we can't find it, we're probably in a template.
+    $navFinder="Java/global/percussion/widgetcontentfinder/perc_NavWidgetContentFinder";
+    $navContainer = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $navFinder, null, true);
+    $navLoc = "";
+    if ( ! $navContainer.isEmpty() ) {
+        $navLoc = $navContainer.get(0).getFolderPath();
+        $blogPostTempId = $rx.pageutils.getBlogPostTemplateId($navLoc);
+        ## Building the jcr query to get a list of appropriate pages.
+        $linkContext = $perc.linkContext;
+        $query = "select rx:sys_contentid, rx:sys_folderid from rx:percPage  where jcr:path like '" + $navLoc + "/%'";
+        ## Filter by the blog post templates only - if we don't find a template - filter by -1 so non blog pages don't get picked up
+        if ($blogPostTempId != null)
+        {
+            $query = $query + " and rx:templateid = '" + $blogPostTempId + "'";
+        }
+        $query = $query + " order by " + $sortByVal + " " + $sortDirection;
+        if ($perc_max_post_entries == '' || $perc_max_post_entries == null) {
+            $perc_max_post_entries = 10;
+        }
+        if(empty($totalMaxResults)) {
+          $totalMaxResults = 500;
+        }
+        $maxResults = $perc_max_post_entries;
+        $params = $rx.string.stringToMap(null);
+        $params.put('query', $query);
+        $params.put('max_results', $totalMaxResults);
+        $finderName="Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
+        $relresults=  $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+        $rowtag = $tools.alternator.auto('ui-perc-list-odd', 'ui-perc-list-even');
+        ##Apply the alpha order to the list of tags and categories
+        for($post : $relresults){
+            if($post.node.hasProperty('rx:page_tags')){
+                $tagValues = $post.node.getProperty('rx:page_tags').getValues();
+                $rx.pageutils.alphaOrderTag($tagValues);
+            }
+            if($post.node.hasProperty('rx:page_tags')){
+                $catValues = $post.node.getProperty('rx:page_categories_tree').getValues();
+                $rx.pageutils.alphaOrderCategory($catValues);
+            }
+        }
+        ## Builds the criteria object for use on the delivery tier
+        $criteria = "[";
+        $criteria = $criteria + "&quot;type = 'page'&quot;";
+        $criteriaSep = ", ";
+        if ($navLoc != null && $navLoc != "" && $navLoc != "//Sites")
+        {
+            $temppath = $navLoc.replace("//Sites/", "");
+            if($temppath.indexOf("/") > 0)
+            {
+                $temppaths = $temppath.split("/");
+                $criteria = $criteria  +  $criteriaSep +  "&quot;site = '" + $temppaths[0] + "'&quot;";
+                $folderpath = "";
+                $counter = 1;
+                while($counter < $temppaths.size())
+                {
+                    $folderpath = $folderpath + "/" + $temppaths[$counter];
+                    $counter = $counter + 1;
+                }
+                $criteria = $criteria  +  $criteriaSep +  "&quot;folder LIKE '" + $folderpath + "/%'&quot;";
+                if ($blogPostTempId != null)
+                {
+                   $templateNameList = $rx.pageutils.templateNames($blogPostTempId);
+                   if($templateNameList.size() > 0)
+                   {
+                       $criteria = $criteria  +  $criteriaSep +  "&quot;dcterms:source = '" + $templateNameList.get(0).toString() + "'&quot;";
+                   }
+                }
+            }
+            else
+            {
+                $criteria = $criteria  +  $criteriaSep +  "&quot;site = '" + $temppath + "'&quot;";
+            }
+        }
+        $criteria = $criteria + "]";
+        ##builds the order by clause
+        $orderby = "";
+        if($sortByVal == "rx:resource_link_title")
+        {
+             $orderby = "linktext_lower " + $sortDirection;
+        }
+        else if ( $sortByVal == "rx:page_title")
+      {
+             $orderby = "dcterms:title  " + $sortDirection +" , linktext_lower " + $sortDirection;
+      }
+    else if($sortByVal == null || $sortByVal == "none" || $sortByVal == "rx:sys_contentpostdate")
+    {
+        $orderby = "dcterms:created " + $sortDirection + ", linktext_lower " + $sortDirection;
+    }
+        
+        ##Build the query string for the delivery side blog list
+        $dynamicListData = "{" + "&quot;criteria&quot;:" + $criteria;
+        if($orderby != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;orderBy&quot;:&quot;" + $orderby + "&quot;";
+        }
+
+        if ($perc_max_post_entries != null && $perc_max_post_entries != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;maxResults&quot;:" + $perc_max_post_entries;
+        }
+        if ($pagingPagesText != null && $pagingPagesText != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;pagingPagesText&quot;:" + "&quot;" + $pagingPagesText + "&quot;" ;
+        }
+        if ($pagingOfText != null && $pagingOfText != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;pagingOfText&quot;:" + "&quot;" + $pagingOfText + "&quot;" ;
+        }
+        if ($blogPostReadMoreText != null && $blogPostReadMoreText != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;blogPostReadMoreText&quot;:" + "&quot;" + $blogPostReadMoreText + "&quot;" ;
+        }
+        if ($blogPostBylineText != null && $blogPostBylineText != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;blogPostBylineText&quot;:" + "&quot;" + $blogPostBylineText + "&quot;" ;
+        }
+        if ($blogPostCommentsText != null && $blogPostCommentsText != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;blogPostCommentsText&quot;:" + "&quot;" + $blogPostCommentsText + "&quot;" ;
+        }
+        if ($rssLinkText != null && $rssLinkText != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;rssLinkText&quot;:" + "&quot;" + $rssLinkText + "&quot;" ;
+        }
+        if ($locale != null && $locale != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;locale&quot;:" + "&quot;" + $locale + "&quot;" ;
+        }
+        if ($blogPostDateTimeFormat != null && $blogPostDateTimeFormat != "")
+        {
+            $dynamicListData = $dynamicListData + ", &quot;dateFormat&quot;:" + "&quot;" + $blogPostDateTimeFormat + "&quot;" ;
+        }
+        if ($resultEntriesTextPlural != "" && $resultEntriesTextPlural != null)
+        {
+            $dynamicListData = $dynamicListData + ", &quot;entriesTextPlural&quot;:&quot;" + $resultEntriesTextPlural + "&quot;";
+        }
+        if ($resultEntriesTextSingular != "" && $resultEntriesTextSingular != null)
+        {
+            $dynamicListData = $dynamicListData + ", &quot;entriesTextSingular&quot;:&quot;" + $resultEntriesTextSingular + "&quot;";
+        }
+        if($totalMaxResults != "")
+        {
+        	$dynamicListData = $dynamicListData + ", &quot;totalMaxResults&quot;:" + $totalMaxResults;
+        }
+        $dynamicListData = $dynamicListData + ", &quot;deliveryurl&quot; : &quot;" + $baseUrl + "&quot;";
+        $dynamicListData = $dynamicListData + ", &quot;isEditMode&quot; : &quot;" + $isEditMode + "&quot;";
+
+        $feedDynamicListData = $dynamicListData + "}";
+        $dynamicListData = $dynamicListData + "}";
+
+        ##Blog list query ends
+        $titleResults = "{&quot;resultsTitle&quot; : &quot;" + $results_title + "&quot;}";
+    }
+    ]]>
+    </Code>
+    <Content type="velocity"><![CDATA[
+#define($ariaLabelString)##
+#if($title && $title.length() > 0)##
+aria-labelledby="$!{headerId}"##
+#else##
+$!{listAriaLabel}##
+#end##
+#end##
+#if($relresults.size() > 0)##
+#if($feedname)##
+<div style="display:none" hidden data-name="feedQuery_$feedname" data-query="$!{feedDynamicListData}"></div>
+#end##
+<div id="$!{autoListDivId}" $!{ariaLabelString} class="#cleanClass("$!{rootclass} perc-blog-list-container")" #if($perc_hide_when_empty && $relresults.size() <= 0)hidden #end aria-live="polite" $!{listAriaRole} aria-busy="true" aria-relevant="additions" aria-atomic="true" data-query="$!{dynamicListData}" data-title="$!{titleResults}">
+## The large number of #*  *# and ## notations prevent extra spacing from being output by velocity.  This makes the html line up correctly.
+#if("$navLoc" != "")##
+#if($relresults.size() > 0)##
+#if($enableRssIcon && $enableRssField == "Enable Rss feed" && $rssIconPosition == "perc-list-top")##Keep link class name perc-rss-icon in sync with delivery tier.
+<span class='perc-rss-icon-top'><a class='perc-rss-icon' href="$!{sUrl}" aria-label="$!{rssLinkText}" title="$!{rssLinkText}" >$!{rssLinkText}</a></span>
+#end##
+<ol style="visibility:hidden" class="perc-blog-list perc-list-main">
+#foreach($result in $relresults)##
+#set($catMap = $rx.string.stringToMap(null))##
+#set($catClass = "")##
+## Row alternator stuff, providing necessary classes for styling
+#if($velocityCount == 1)##
+#set($firstrow = ' ui-perc-list-first')##
+#else##
+#set($firstrow = ' ')##
+#end##
+#if($velocityCount == $relresults.size())##
+#set($lastrow = ' ui-perc-list-last')##
+#else##
+#set($lastrow = ' ')##
+#end##
+#set($hidden = "")##
+#if($velocityCount > $perc_max_post_entries)##
+#set($hidden = ' style="display:none"')##
+#end##
+## Obtain various properties from the given page.
+#set($pagelink=$tools.esc.html($rx.pageutils.itemLink($linkContext, $result)))##
+#set($linkTitle=$rx.pageutils.html($result.node,"resource_link_title,sys_title", "-no-title-"))##
+#if($result.node.hasProperty('rx:page_summary'))##
+#set($pageSummary = $result.node.getProperty('rx:page_summary').getString().replace('<!-- morelink -->', "<a href='$!{pagelink}' aria-label='Read more about $!{linkTitle}' title='$!{linkTitle}'>$!{blogPostReadMoreText}</a>"))##
+#end##
+## Split locale to get language and country
+#if("" == "$!{locale}")##
+#set($locale="en-US")##
+#end##
+#set($localeSplit = $locale.split("-"))##
+#set($locale_lang = $localeSplit.get(0))##
+#set($locale_country = $localeSplit.get(1))##
+#set($ctor = $sys.getClass().forName('java.util.Locale').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.lang.String')))##
+#set($locale = $ctor.newInstance($locale_lang, $locale_country))##
+##Setup Date Formatting
+#set($format_ctorOut = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.util.Locale')))##
+#set($formatterOut = $format_ctorOut.newInstance("$!{blogPostDateTimeFormat}",$locale))##
+#set($postDateObject="")##
+#set($postDate="")##
+#if($result.node.hasProperty('rx:sys_contentpostdate'))##
+#set($postDateObject=$result.node.getProperty('rx:sys_contentpostdate'))##
+#if("$!{postDateObject.Date}" != "")##
+#set($dummy = $formatterOut.applyPattern($!{blogPostDateTimeFormat}))##
+#set($postDate = $formatterOut.format($postDateObject.Date.Time))##
+#end##
+#end##
+#if("$!{postDate}" == "")##
+#set($dummy = $formatterOut.applyPattern($!{blogPostDateTimeFormat}))##
+#set($postDate = $formatterOut.format($tools.date.getDate()))##
+#end##
+#if($result.node.hasProperty('rx:page_authorname'))##
+#set($author=$tools.esc.html($result.node.getProperty('rx:page_authorname').getString().trim()))##
+#end##
+#if($result.node.hasProperty('rx:page_categories_tree'))##
+#set($postCategories=$result.node.getProperty('rx:page_categories_tree').getValues())##
+#foreach($category in $postCategories)##
+#foreach($node in $category.getString().split("/"))##
+#if("$!{node}" !="" && "$!{node}" != "Categories")##
+#set($leaf=$node)##
+#set($leaf = $leaf.replaceAll("[^a-zA-Z0-9]+","").trim().toLowerCase())##
+#set($dummy = $catMap.put($leaf,$leaf))##
+#end##
+#end##
+#end##
+#foreach($c in $catMap.entrySet())##
+#if(""=="$!{catClass}")##
+#set($catClass = " perc-bloglist-category-$!{c.key}")##
+#else##
+#set($catClass = "$!{catClass} perc-bloglist-category-$!{c.key}")##
+#end##if
+#end##for
+#end##if
+<li$!{hidden} class="#cleanClass("$!{rowtag}$!{firstrow}$!{lastrow} ui-perc-list-element$!{catClass}")">##
+##start calendar icon support##
+#if($enableCalenderIcon)##
+#set($calPostDateObject="")##
+#set($calPostDate="")##
+#set($calPostDateObject=$result.node.getProperty('rx:sys_contentpostdate'))##
+#set($calPostDateObjectString=$result.node.getProperty('rx:sys_contentpostdate').String)##
+#if("$!{calPostDateObjectString}" == "")##
+#set($calPostDateObject=$tools.date.getDate())##
+#else##
+#set($calPostDateObject=$result.node.getProperty('rx:sys_contentpostdate').getDate())##
+#end##
+#if("$!{calPostDateObject}" != "")##
+#set($calPostDate = $formatterOut.format($calPostDateObject.getTime()))##
+#end##
+<div class="perc-blog-list-calicon">
+<div class="perc-blog-list-calicon-month">
+#set($format_ctorOut2 = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), 	$sys.getClass().forName('java.util.Locale')))##
+#set($formatterOut2 = $format_ctorOut2.newInstance("MMM",$locale))##
+#set($calPostDate = $formatterOut2.format($calPostDateObject.getTime()))##
+$calPostDate##
+</div>
+<div class="perc-blog-list-calicon-day">
+#set($format_ctorOut3 = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), 	$sys.getClass().forName('java.util.Locale')))##
+#set($formatterOut3 = $format_ctorOut3.newInstance("dd",$locale))##
+#set($calPostDate = $formatterOut3.format($calPostDateObject.getTime()))##
+$calPostDate##
+</div>
+</div>
+#end##
+##end calendar icon support##
+#if( ! $perc_hidefield_title)##
+#if("$!{linkTitle}" != "")##
+$!{titleFormatStartTag}<a href="$!{pagelink}" aria-label="$!{linkTitle}" title="$!{linkTitle}">$!{linkTitle}</a>$!{titleFormatEndTag}
+#end##
+#end##
+#if(!$perc_hidefield_byline || !$perc_hidefield_blog_date)##
+<div class="perc-blog-list-dateByline-container">
+#end##
+#if(!$perc_hidefield_byline)##
+<div class="perc-blog-list-byline-container">
+#if("$!{author}" != "")##
+$!{blogPostBylineText} $!{author}##
+#end##
+</div>
+#end##
+#if(!$perc_hidefield_blog_date)##
+#set( $postDateTz = $result.node.getProperty('rx:sys_contentpostdatetz').String  )##
+#if($postDateTz == "Default")##
+#set( $postDateTz = "" )##
+#end##
+<div class="perc-blog-list-date-container">
+$!{postDate} $postDateTz
+</div>
+#end##
+#if(!$perc_hidefield_byline || !$perc_hidefield_blog_date)##
+</div>
+#end##
+#if(!$perc_hidefield_summary)##
+<div class="perc-blog-list-summary-container">
+$!{pageSummary}
+</div>
+#end##
+#if(!$perc_hidefield_tags)##
+#if($result.node.hasProperty('rx:page_tags'))##
+#set($postTags=$result.node.getProperty('rx:page_tags').getValues())##
+#if($postTags.size()>0)##
+#set($noValue="")##
+#else##
+#set($noValue="perc-blog-hide-container")##
+#end##
+<div class="perc-blog-list-tag-container $noValue">
+<span>$!{perc_tag_label}</span>
+#set($sep=",")##
+#foreach($tag in $postTags)##
+#if($velocityCount == $postTags.size())##
+#set($sep="")##
+#end##
+<a href="javascript:void(0)" aria-label="Tag: $tools.esc.html($tag.getString())" title="$tools.esc.html($tag.getString())">$tools.esc.html($tag.getString())$sep</a>
+#end##
+</div>
+#else##
+<div class="perc-blog-list-tag-container perc-blog-list-hide-container">
+<span>$tools.esc.html($!{perc_tag_label})</span>
+</div>
+#end##
+#end##
+#if(!$perc_hidefield_categories)##
+#if($result.node.hasProperty('rx:page_categories_tree'))##
+#set($postCategories=$result.node.getProperty('rx:page_categories_tree').getValues())##
+#if($postCategories.size()>0)##
+#set($noValue="")##
+#else##
+#set($noValue="perc-blog-hide-container")##
+#end##
+<div class="#cleanClass("perc-blog-list-category-container $noValue")">
+<span>$!{perc_category_label}</span>
+#set($sep=",")##
+#foreach($category in $postCategories)##
+#if($velocityCount == $postCategories.size())##
+#set($sep="")##
+#end##
+#foreach($node in $category.getString().split("/"))##
+#set($leaf=$node)##
+#end##
+<a href="javascript:void(0)" aria-label="Category: $tools.esc.html($!{leaf})" title="$tools.esc.html($!{leaf})">$tools.esc.html($!{leaf})$!{sep}</a>
+#end##
+</div>
+#else##
+<div class="perc-blog-list-category-container perc-blog-list-hide-container">
+<span>$tools.esc.html($!{perc_category_label})</span>
+</div>
+#end##
+#end##
+#if(!$perc_hidefield_comments)##
+<div class="perc-blog-list-comment-container">
+#set($blogPostCommentsText = $tools.esc.html($blogPostCommentsText))##
+<p><a href="$!{pagelink}" aria-label="Comments for: $!{linkTitle}" title="$!{blogPostCommentsText}">$!{blogPostCommentsText}</a></p>
+</div>
+#end##
+</li>
+#end##
+</ol>
+#if($enableRssIcon && $enableRssField == "Enable Rss feed" && $rssIconPosition == "perc-list-bottom")##Keep link class name perc-rss-icon in sync with delivery tier.
+<span class = 'perc-rss-icon-bottom'><a class = 'perc-rss-icon' href="$!{sUrl}" aria-label="$!{rssLinkText}" title="$!{rssLinkText}">$!{rssLinkText}</a></span>
+#end##
+#else##
+<div class = "perc-no-post">$!{blogPostNoContentText}</div>
+#end##
+## Blog List Structure for useage by delivery tier services. Must be kept in sync with regular structure.
+<div style="display:none" role="presentation" class="perc-blog-list-structure">
+<ol class="perc-blog-list">
+<li class="#cleanClass("$rowtag ui-perc-list-element")">##
+##start calendar icon structure##
+#if($enableCalenderIcon)##
+<div class="perc-blog-list-calicon">
+<div class="perc-blog-list-calicon-month"></div>
+<div class="perc-blog-list-calicon-day"></div>
+</div>
+#end##
+##end calendar icon structure##
+#if( ! $perc_hidefield_title)##
+$!{titleFormatStartTag}<a>Placeholder Text</a>$!{titleFormatEndTag}
+#end##
+#if(!$perc_hidefield_byline || !$perc_hidefield_blog_date)##
+<div class="perc-blog-list-dateByline-container">
+#end##
+#if(!$perc_hidefield_byline)##
+<div class="perc-blog-list-byline-container">
+</div>
+#end##
+#if(!$perc_hidefield_blog_date)##
+<div class="perc-blog-list-date-container">
+</div>
+#end##
+#if(!$perc_hidefield_byline || !$perc_hidefield_blog_date)##
+</div>
+#end##
+#if(!$perc_hidefield_summary)##
+<div class="perc-blog-list-summary-container">
+</div>
+#end##
+#if(!$perc_hidefield_tags)##
+<div class="perc-blog-list-tag-container">
+<span>$!{perc_tag_label}</span>
+</div>
+#end##
+#if(!$perc_hidefield_categories)##
+<div class="perc-blog-list-category-container">
+<span>$!{perc_category_label}</span>
+</div>
+#end##
+#if(!$perc_hidefield_comments)##
+<div class="perc-blog-list-comment-container">
+<p><a class="perc-no-update-link-text" title="$!{blogPostCommentsText}">$!{blogPostCommentsText}</a></p>
+</div>
+#end##
+</li>
+</ol>
+#end##
+</div>
+#else##
+#createEmptyWidgetContent("bloglist-sample-content", "This blog list widget is showing sample content.")##
+#end##
+</div>]]></Content>
+</Widget>

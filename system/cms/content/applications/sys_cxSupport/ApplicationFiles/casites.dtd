@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT casites (componentname, pagename, relatedlinks, currentpsfirst, list* )>
+<!ELEMENT list (id, desc, name, url, virtualsiteurl )>
+<!ELEMENT virtualsiteurl (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT desc (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT currentpsfirst (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ATTLIST  casites xml:lang CDATA #IMPLIED>

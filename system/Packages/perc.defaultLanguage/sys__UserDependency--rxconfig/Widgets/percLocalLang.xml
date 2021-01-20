@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percLocalLang - Version 2.2.0]
+-->
+<Widget>
+   <WidgetPrefs title="Local Language"
+        contenttype_name="percLocalLanguage"
+        description="For SEO with International sites. Allows manual selection of alternate language pages to add necessary href-lang markup for Google."
+        author="Piotr Butkiewicz"
+        thumbnail="/rx_resources/widgets/percLocalLang/images/percLocalLangIcon.png"
+        preferred_editor_width="800"
+        preferred_editor_height="600"/>   
+    <Code type="jexl">
+    <!-- This section is used to set up data that will be used in the content section -->
+    <![CDATA[
+    $linkContext = $perc.linkContext;    
+    
+    $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null); 
+    $perc.setWidgetContents($assets);
+    $pagelink="";
+    if ( ! $assets.isEmpty())
+    {
+        $assetItem = $assets.get(0);
+        $data = $assetItem.Node.getProperty('rx:localLangData').getString();
+        $json = $rx.pageutils.createJsonObject($data);
+        $jsonArray = $json.getJSONArray("config");
+        $headContent = "";
+        ##
+        $previewLinks = $rx.string.stringToMap(null);
+        $headLinks = $rx.string.stringToMap(null);
+        $testing = $rx.string.stringToMap(null);
+        $resultList = $rx.string.stringToMap(null);
+        ##
+        for ($j : $jsonArray) {
+            if ($j.has("protocol")) {
+                $protocol = $j.getString("protocol");
+            } else {
+                $protocol = "";
+            }
+            $temppath = $j.getString("pagepath");
+            $pagepath = $temppath.replace("//Sites", "");
+            $pagename = $j.getString("pagename");
+            $folderpath = $temppath.replace($pagename,"");
+            ##
+            $pageId = $j.getString("pageId");
+            $default = $j.getString("defLang");
+            if ($default == null) {
+                $default = false;
+            }
+            $lang = $j.getString("lang");
+            $country = $j.getString("country");
+            ##
+            if ($pageId != null && $pageId != "") {
+                $contentId = $rx.pageutils.parseGuid($pageId).getUUID();
+            }
+            ##
+            if ($country != null && $country != "") {
+                $countryLang = $lang + "-" + $country;
+            } else {
+                $countryLang = $lang;    
+            }
+            ##
+            if ($folderpath != null && $pagename != null && $contentId != null) {
+                ##
+                $query = "select rx:sys_contentid, rx:sys_folderid from rx:percPage where rx:sys_contentid = :contentId";
+                $params = $rx.string.stringToMap(null);
+                $params.put('max_results', 1);
+                $params.put('query', $query);
+                $params.put('contentId', $contentId);
+                $finderName  = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
+                $relresults = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+                if ($relresults != null && $relresults.size()>0) {
+                    for ($result : $relresults) {
+                        $resultList.put($result,$result);
+                        ##
+                        $pageId = $result.id;
+                        if ($pageId != null) {
+                            ##
+                            $tempPath = $rx.pageutils.getItemPath($pageId);
+                            $escPath = $tools.esc.html($tempPath);
+                            $pageLink = $escPath.replace("/Sites/", "").toLowerCase();
+                            ##
+                            if($default){
+                                $xdefault = "<link rel='alternate' hreflang='x-default' href='" + $protocol + "://" + $pageLink + "'/>";
+                                $headLinks.put($xdefault,$xdefault);
+                                $previewLinks.put($xdefault,$xdefault);
+                            }
+                            $relalt = "<link rel='alternate' hreflang='" + $countryLang + "' href='" + $protocol + "://" + $pageLink + "'/>";
+                            $headLinks.put($relalt, $relalt);
+                            ##
+                            $relaltString = "&lt;link rel='alternate' hreflang='" + $countryLang + "' href='" + $protocol + "://" + $pageLink + "' /&gt;";
+                            $previewLinks.put($relaltString,$relaltString);
+                        }
+                    } 
+                }
+            }
+        } ## End Foreach loop
+        ##
+      } ## end  ! $assets.isEmpty()
+    ]]>
+    </Code>
+    <Content type="velocity">
+    <![CDATA[
+#if($perc.isEditMode())##
+<div style="background: transparent url(/Rhythmyx/rx_resources/widgets/percLocalLang/images/percLocalLangPlaceholder.png) no-repeat scroll center center;filter: alpha(opacity=50);opacity: .50;" title="Default Language Widget">
+##
+#if("$!previewLinks}" != "")##
+<b>Local Language alternate pages:</b><br/>
+<br />
+#foreach($link in $previewLinks)##
+<div>$link</div>
+#end##
+#else##
+<b>Local Language alternate pages:</b><br/>
+<div>No pages selected</div>
+#end##
+</div>
+#end## End if perc.isEditMode()
+##
+#set( $newline="
+")##
+#if("$!headLinks}" != "")##
+#foreach($l in $headLinks)##
+#set($addlHead = $perc.page.getAdditionalHeadContent())##
+$perc.page.setAdditionalHeadContent("$!{addlHead}$!{newline}$!{l}")##
+#end##
+#end##
+    ]]>
+</Content>    
+</Widget>

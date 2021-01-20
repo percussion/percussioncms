@@ -1,0 +1,65 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<html>
+	<head>
+		<title>Legacy Content Repository</title>
+	</head>
+	<body>
+		<h2>Basic Design</h2>
+		<p>Each content type or content type child is represented by a
+		combination of a
+		<code>IPSTypeKey</code> and a <code>PSTypeConfiguration</code>.
+		The key has two implementations, one for content types and one
+		for content type children. The configuration contains two things:
+		the list of bean classes that represent the type or child, and the 
+		XML descriptor for Hibernate.
+		</p>
+		<p>All content types also get information from 
+		<code>PSComponentSummary</code>, which is loaded as an annotated 
+		class into the spring configuration for the session factory. </p>
+		<h2>Session Factory Management</h2>
+		<p>Each time the item def manager notes a change or set of
+		changes to one or more content types, the content repository is 
+		notified. If the item def manager is in a batch update mode then
+		more than one update may be gathered together.</p>
+		<p>When the configuration is updated, the internal configuration
+		that is held in the repository is modified to correspond to the new
+		global configuration. Then a new Hibernate session factory is created
+		which can be used by the content repository.</p>
+		<h2>Loading Content Items</h2>
+		<p>The loading process is nearly the same for content items or item 
+		children. The only difference is the primary keys and whether the 
+		configuration includes <code>PSComponentSummary</code>. For each 
+		table involved, a Java class is constructed using runtime information.
+		Each field in the content type or child corresponds to a property
+		in the constructed bean class.</p>
+		<p>To load an item, an instance of each component class is loaded
+		into memory using the calculated hibernate configuration. These
+		are then proxied using a property wrapper and a property concrete
+		class to form the properties for a content node. Body fields are
+		proxied specially to ensure that the body contents are assembled
+		during content assembly.</p>
+	</body>
+</html>

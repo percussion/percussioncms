@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Owner EMPTY>
+<!ATTLIST  Owner sys_contentid CDATA #REQUIRED>
+<!ATTLIST  Owner sys_title CDATA #REQUIRED>
+<!ELEMENT Object (Owner* )>
+<!ATTLIST  Object sys_contentid CDATA #REQUIRED>
+<!ATTLIST  Object sys_relationshiptype CDATA #REQUIRED>

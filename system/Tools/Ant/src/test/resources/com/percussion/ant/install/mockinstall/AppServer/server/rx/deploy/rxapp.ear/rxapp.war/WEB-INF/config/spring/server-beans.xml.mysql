@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+   <tx:annotation-driven transaction-manager="sys_transactionManager"/>
+   <bean class="com.percussion.services.PSResourceHelper" id="sys_dummy">
+
+   </bean>
+   <bean class="com.percussion.services.general.impl.PSRhythmyxInfo" id="sys_rhythmyxinfo">
+
+      <property name="bindings">
+
+         <map>
+
+            <entry key="UNIT_TESTING">
+
+               <value>false</value>
+
+            </entry>
+
+         </map>
+
+      </property>
+
+   </bean>
+   <bean class="com.percussion.services.datasource.PSDatasourceResolver" id="sys_datasourceResolver">
+      <property name="repositoryDatasource" value="RhythmyxData"/>
+      <property name="datasourceConfigurations">
+         <list>
+            <bean class="com.percussion.services.datasource.PSDatasourceConfig" id="RhythmyxData">
+               <property name="name" value="RhythmyxData"/>
+               <property name="dataSource" value="jdbc/RhythmyxData"/>
+               <property name="database" value=""/>
+               <property name="origin" value=""/>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer" id="sys_notificationMessageHandlerContainerQ">
+          <property name="concurrentConsumers" value="2"/>
+          <property name="connectionFactory" ref="sys_jmsConnectionFactory"/>
+          <property name="destination" ref="sys_notificationQueueDestination"/>
+          <property name="messageListener" ref="sys_messageQueueService"/>
+    </bean>
+   <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer" id="sys_emailMessageHandlerContainerQ">
+
+      <property name="concurrentConsumers" value="1"/>
+
+      <property name="connectionFactory" ref="sys_jmsConnectionFactory"/>
+
+      <property name="destination" ref="sys_emailQueueDestination"/>
+
+      <property name="messageListener" ref="sys_emailQueueListener"/>
+
+   </bean>
+   <bean class="com.percussion.services.system.impl.PSEmailMessageHandler" id="sys_emailQueueListener">
+
+   </bean>
+   <bean class="com.percussion.services.datasource.PSHibernateDialectConfig" id="sys_hibernateDialects">
+
+      <property name="dialects">
+
+         <map>
+                <entry key="jtds:sqlserver">
+                    <value>org.hibernate.dialect.SQLServerDialect</value>
+                </entry>
+                <entry key="inetdae7">
+                    <value>org.hibernate.dialect.SQLServerDialect</value>
+                </entry>
+                <entry key="oracle:thin">
+                    <value>org.hibernate.dialect.Oracle9iDialect</value>
+                </entry>
+                <entry key="db2">
+                    <value>org.hibernate.dialect.DB2Dialect</value>
+                </entry>
+                <entry key="derby">
+                    <value>org.hibernate.dialect.DerbyTenSevenDialect</value>
+                </entry>
+                <entry key="mysql">
+                    <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
+                </entry>
+
+         </map>
+
+      </property>
+
+   </bean>
+   <bean class="com.percussion.services.utils.general.PSServiceConfigurationBean" id="sys_beanConfiguration">
+		<!-- Properties that can be set here:
+			<property name="maxCachedContentNodeSize" value="0"/>
+				(the max number of content nodes cached by the assembly service, defaults to 0.)
+			<property name="quartzThreadCount" value="3"/>
+				(the max number of concurrent jobs triggered by the quartz scheduler, defauts to 3.)
+			<property name="publishJobTimeout" value="600"/>
+				(the timeout that a publishing job to wait for the job specific status updates from the processed publishing work, defaults to 600 minutes or 10 hours.)
+			<property name="publishQueueTimeout" value="10"/>
+				(the timeout that a publishing job to wait for the notification of any publishing job status updates (from the queue). This is acting like a heart-beat of the publishing queue, defaults to 10 minutes)
+			<property name="useHttpsForSecureSite" value="true"/>
+				(the flag determines if the secure site requires HTTPS, defaults to true;
+				otherwise all secured sections or pages can be accessed by HTTP and HTTPS is not required.)
+		-->
+
+   </bean>
+   <bean class="com.percussion.rx.delivery.impl.PSLocalDeliveryManager" id="sys_deliveryManager">
+		<!-- Property for specifying temporary directory to store assembled
+		     content before deliver/commit to target location.
+		     The default temporary directory is "temp/publish" under the
+		     Rhythmyx installation directory.
+		<property name="tempDir">
+		   <value>/Rhythmyx/temp/publish</value>
+		</property>
+		-->
+
+   </bean>
+   <bean class="com.percussion.services.audit.data.PSDesignObjectAuditConfig" id="sys_designObjectAuditConfig">
+
+      <property name="enabled" value="true"/>
+
+      <property name="logRetentionDays" value="30"/>
+
+   </bean>
+   <bean class="com.percussion.services.schedule.impl.PSSchedulerBean" destroy-method="destroy" id="sys_quartzScheduler">
+      <!-- Configurable scheduler factory properties
+           org.quartz.threadPool.threadCount property is defined in sys_beanConfiguration
+      -->
+      <property name="quartzProperties">
+         <value>
+            org.quartz.scheduler.instanceName=DefaultQuartzScheduler
+            org.quartz.scheduler.rmi.export=false
+            org.quartz.scheduler.rmi.proxy=false
+            org.quartz.scheduler.wrapJobExecutionInUserTransaction=false
+            org.quartz.threadPool.class=org.quartz.simpl.SimpleThreadPool
+            org.quartz.threadPool.threadPriority=5
+            org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread=true
+            org.quartz.jobStore.misfireThreshold=60000
+            org.quartz.jobStore.class=org.quartz.impl.jdbcjobstore.JobStoreTX
+            org.quartz.jobStore.tablePrefix=PSX_Q
+            org.quartz.jobStore.dataSource=rhythmyxDataSource
+            org.quartz.dataSource.rhythmyxDataSource.connectionProvider.class=com.percussion.services.schedule.impl.PSRhythmyxConnectionProvider
+         </value>
+      </property>
+      <property name="datasourceManager">
+         <ref bean="sys_datasourceManager"/>
+      </property>
+      <property name="configurationBean">
+
+         <ref bean="sys_beanConfiguration"/>
+      </property>
+   </bean>
+   <bean class="com.percussion.services.schedule.impl.PSSchedulingService" id="sys_schedulingService">
+      <property name="sessionFactory">
+         <ref bean="sys_sessionFactory"/>
+      </property>
+      <property name="scheduler">
+         <ref local="sys_quartzScheduler"/>
+      </property>
+   </bean>
+   <bean class="com.percussion.webservices.aop.security.impl.PSSecurityAopTestImplWs" id="sys_securityAopTestWebService"/>
+   <bean class="com.percussion.webservices.aop.security.impl.PSSecurityAopTestImplDesignWs" id="sys_securityAopTestWebServiceDesign"/>
+</beans>

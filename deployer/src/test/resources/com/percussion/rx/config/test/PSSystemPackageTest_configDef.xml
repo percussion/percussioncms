@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+<!---  ========================================
+        Contexts
+       ========================================
+-->
+   <bean id="Publish" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="Publish"/>
+      <property name="type" value="CONTEXT"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSContextSetter">
+              <property name="properties">
+                   <map>
+                      <entry key="defaultLocationScheme" value="${perc.SystemObjects.Publish.defaultLocationScheme}"/>
+                   </map>
+              </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+   <bean id="Site_Folder_Assembly" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="Site_Folder_Assembly"/>
+      <property name="type" value="CONTEXT"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSContextSetter">
+              <property name="properties">
+                   <map>
+                      <entry key="defaultLocationScheme" value="${perc.SystemObjects.Site_Folder_Assembly.defaultLocationScheme}"/>
+                   </map>
+              </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+<!---  ========================================
+        Inline Slots
+       ========================================
+-->
+   <bean id="sys_inline_image" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="sys_inline_image"/>
+      <property name="type" value="SLOT"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSTemplateSlotSetter">
+              <property name="properties">
+                   <map>
+                      <entry key="contentTypeTemplatePairs" value="${perc.SystemObjects.sys_inline_image.slotAssociations}"/>
+                   </map>
+              </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+   <bean id="sys_inline_link" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="sys_inline_link"/>
+      <property name="type" value="SLOT"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSTemplateSlotSetter">
+              <property name="properties">
+                   <map>
+                      <entry key="contentTypeTemplatePairs" value="${perc.SystemObjects.sys_inline_link.slotAssociations}"/>
+                   </map>
+              </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+   <bean id="sys_inline_variant" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="sys_inline_variant"/>
+      <property name="type" value="SLOT"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSTemplateSlotSetter">
+              <property name="properties">
+                   <map>
+                      <entry key="contentTypeTemplatePairs" value="${perc.SystemObjects.sys_inline_variant.slotAssociations}"/>
+                   </map>
+              </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+<!---  ========================================
+        Relationship Configurations
+       ========================================
+-->
+   <bean id="ActiveAssembly" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="ActiveAssembly"/>
+      <property name="type" value="RELATIONSHIP_CONFIGNAME"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigSetter">
+             <property name="properties">
+                <map>
+                   <entry key="deepCloning" value="${perc.SystemObjects.ActiveAssembly.deepCloning}"/>
+                   <entry key="shallowCloning" value="${perc.SystemObjects.ActiveAssembly.shallowCloning}"/>
+                </map>
+             </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+   <bean id="ActiveAssembly-Mandatory" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="ActiveAssembly-Mandatory"/>
+      <property name="type" value="RELATIONSHIP_CONFIGNAME"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigSetter">
+             <property name="properties">
+               <map>
+                  <entry key="deepCloning" value="${perc.SystemObjects.ActiveAssembly-Mandatory.deepCloning}"/>
+                  <entry key="shallowCloning" value="${perc.SystemObjects.ActiveAssembly-Mandatory.shallowCloning}"/>
+               </map>
+             </property>
+          </bean>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigEffectSetter">
+             <property name="properties">
+               <map>
+                 <entry key="effects" value="${perc.SystemObjects.ActiveAssembly-Mandatory.effects}"/>
+               </map>
+             </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+   <bean id="FolderContent" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="FolderContent"/>
+      <property name="type" value="RELATIONSHIP_CONFIGNAME"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigSetter">
+             <property name="properties">
+                <map>
+                   <entry key="deepCloning" value="${perc.SystemObjects.FolderContent.deepCloning}"/>
+                   <entry key="shallowCloning" value="${perc.SystemObjects.FolderContent.shallowCloning}"/>
+                </map>
+             </property>
+          </bean>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigEffectSetter">
+             <property name="properties">
+                <map>
+                   <entry key="effects" value="${perc.SystemObjects.FolderContent.effects}"/>
+                </map>
+             </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+   <bean id="NewCopy" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="NewCopy"/>
+      <property name="type" value="RELATIONSHIP_CONFIGNAME"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigSetter">
+             <property name="properties">
+                <map>
+                   <entry key="deepCloning" value="${perc.SystemObjects.NewCopy.deepCloning}"/>
+                   <entry key="shallowCloning" value="${perc.SystemObjects.NewCopy.shallowCloning}"/>
+                   <entry key="fieldOverrides" value="${perc.SystemObjects.NewCopy.fieldOverrides}"/>
+                </map>
+             </property>
+          </bean>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigEffectSetter">
+             <property name="properties">
+                <map>
+                   <entry key="effects" value="${perc.SystemObjects.NewCopy.effects}"/>
+                </map>
+             </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+   <bean id="PromotableVersion" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="PromotableVersion"/>
+      <property name="type" value="RELATIONSHIP_CONFIGNAME"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigSetter">
+             <property name="properties">
+                <map>
+                   <entry key="deepCloning" value="${perc.SystemObjects.PromotableVersion.deepCloning}"/>
+                   <entry key="shallowCloning" value="${perc.SystemObjects.PromotableVersion.shallowCloning}"/>
+                   <entry key="fieldOverrides" value="${perc.SystemObjects.PromotableVersion.fieldOverrides}"/>
+                </map>
+             </property>
+          </bean>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigEffectSetter">
+             <property name="properties">
+                <map>
+                   <entry key="effects" value="${perc.SystemObjects.PromotableVersion.effects}"/>
+                </map>
+             </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+   <bean id="Translation" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="Translation"/>
+      <property name="type" value="RELATIONSHIP_CONFIGNAME"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigSetter">
+             <property name="properties">
+                <map>
+                   <entry key="deepCloning" value="${perc.SystemObjects.Translation.deepCloning}"/>
+                   <entry key="shallowCloning" value="${perc.SystemObjects.Translation.shallowCloning}"/>
+                   <entry key="fieldOverrides" value="${perc.SystemObjects.Translation.fieldOverrides}"/>
+                </map>
+             </property>
+          </bean>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigEffectSetter">
+             <property name="properties">
+                <map>
+                   <entry key="effects" value="${perc.SystemObjects.Translation.effects}"/>
+                </map>
+             </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+   <bean id="Translation-Mandatory" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="Translation-Mandatory"/>
+      <property name="type" value="RELATIONSHIP_CONFIGNAME"/>
+      <property name="propertySetters">
+        <list>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigSetter">
+             <property name="properties">
+                <map>
+                   <entry key="deepCloning" value="${perc.SystemObjects.Translation-Mandatory.deepCloning}"/>
+                   <entry key="shallowCloning" value="${perc.SystemObjects.Translation-Mandatory.shallowCloning}"/>
+                   <entry key="fieldOverrides" value="${perc.SystemObjects.Translation-Mandatory.fieldOverrides}"/>
+                </map>
+             </property>
+          </bean>
+          <bean class="com.percussion.rx.config.impl.PSRelationshipConfigEffectSetter">
+             <property name="properties">
+                <map>
+                   <entry key="effects" value="${perc.SystemObjects.Translation-Mandatory.effects}"/>
+                </map>
+             </property>
+          </bean>
+        </list>
+      </property>
+   </bean>
+
+</beans>

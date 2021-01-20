@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   The dialog configuration.
+   
+   title - the dialog title.
+-->
+<!ELEMENT DialogConfig (Tree)>
+<!ATTLIST DialogConfig
+   title CDATA #REQUIRED
+>
+<!--
+   The Tree specifies the root name to be displayed and may specify an 
+   editor.
+   
+   name - the root node display name.
+   editor - the fully qualified class name of the editor panel to
+      be shown in the editor pane, optional.
+-->
+<!ELEMENT Tree (Folder*, Config*)>
+<!ATTLIST Tree
+   name CDATA #REQUIRED
+   editor CDATA #IMPLIED
+>
+<!--
+   A Folder is a collection of Folders and / or Configs.
+   
+   name - the folder node display name.
+   editor - the fully qualified class name of the editor panel to
+      be shown in the editor pane, optional.
+-->
+<!ELEMENT Folder (Folder*, Config*)>
+<!ATTLIST Folder
+   name CDATA #REQUIRED
+   editor CDATA #IMPLIED
+>
+<!--
+   A Config will always be the end of a tree path.
+   
+   name - the config node display name.
+   editor - the fully qualified class name of the editor panel to
+      be shown in the editor pane, required.
+-->
+<!ELEMENT Config EMPTY>
+<!ATTLIST Config
+   name CDATA #REQUIRED
+   editor CDATA #REQUIRED
+>

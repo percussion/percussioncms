@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXSubject (name, securityProviderType, securityProviderInstance )>
+<!ELEMENT securityProviderInstance (#PCDATA)>
+<!ELEMENT securityProviderType (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST  PSXSubject id CDATA #REQUIRED>
+<!ATTLIST  PSXSubject DbComponentId CDATA #REQUIRED>
+<!ATTLIST  PSXSubject type CDATA #REQUIRED>
+<!ELEMENT getSubject (PSXSubject* )>

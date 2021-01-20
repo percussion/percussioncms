@@ -1,0 +1,6 @@
+${0} = $assetItem.getNode().getProperty(''{0}'').String;
+if (! $perc.isEditMode())
+'{'
+    ${0} = updateManagedLinks($perc.linkContext, ${0}, $sys.assemblyItem.PubServerId );    
+'}'
+

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+   <bean id="propertyPlaceholderProps"
+         class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
+      <property name="ignoreResourceNotFound" value="true" />
+      <property name="autoSecure" value="true" />
+      <property name="securedProperties">
+         <list>
+            <value>cacheMgr.password</value>
+            <value>db.password</value>
+         </list>
+      </property>
+      <property name="locations">
+         <!-- One or more locations of the property files. Properties with 
+            the same name override based on the order the file appears in the list last 
+            one defined wins -->
+         <list>
+            <value>file:${catalina.home}/conf/perc/perc-encryption.properties</value>
+            <value>file:${catalina.home}/conf/perc/perc-datasources.properties</value>
+            <value>file:${catalina.home}/conf/perc/perc-polls-services.properties</value>
+            <value>file:${catalina.home}/conf/perc/perc-security.properties</value>
+         </list>
+      </property>
+      <!-- Local properties to default to if no file exists or the properties 
+         do not exist in the file DO NOT USE THESE FOR PRODUCTION, put them in the 
+         properties file where the password will be encrypted -->
+      <property name="properties">
+         <props>
+            <!-- default properties for database -->
+            <prop key="jdbcUrl">jdbc:derby:${catalina.home}/derbydata/percpolls;create=true</prop>
+            <prop key="jdbcDriver">org.apache.derby.jdbc.EmbeddedDriver</prop>
+            <prop key="maximumPoolSize">10</prop>
+            <prop key="db.username">test</prop>
+            <prop key="db.password">test</prop>
+            <prop key="db.schema">APP</prop>
+            <prop key="datasource">percDataSource</prop>
+            <prop key="hibernateProperties">percHibernateProperties</prop>
+            <prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
+            <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
+            <prop key="hibernate.cache.use_second_level_cache">false</prop>
+            <prop key="hibernate.cache.use_query_cache">false</prop>
+            <prop key="session.timeout.mins">60</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop>
+            
+             <!-- default properties for encryption -->
+            <prop key="encryption.type">ENC</prop>
+             <!-- default properties for Spring Security -->
+             <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="propertyConfigurer"
+         class="com.percussion.delivery.utils.spring.PSPropertyPlaceholderConfigurer">
+      <property name="properties" ref="propertyPlaceholderProps" />
+   </bean>
+
+    <import resource="perc-datasources.xml" />
+    <import resource="file:${catalina.home}/conf/perc/*-datasources.xml" />
+   <import resource="security.xml" />
+
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="pollsSessionFactory" />
+    </bean>
+
+   <!-- Hibernate SessionFactory -->
+   <bean id="pollsSessionFactory"
+         class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+      <property name="dataSource">
+         <ref bean="${datasource}" />
+      </property>
+      <property name="hibernateProperties">
+         <ref bean="${hibernateProperties}" />
+      </property>
+      <property name="configLocation">
+         <value>/WEB-INF/hibernate.cfg.xml</value>
+      </property>
+   </bean>
+
+   <bean id="pollsDao"
+         class="com.percussion.delivery.polls.service.rdbms.PSPollsDao">
+      <property name="sessionFactory">
+         <ref bean="pollsSessionFactory" />
+      </property>
+   </bean>
+   
+   <!-- Polls Service bean -->
+   <bean id="pollsService"
+         class="com.percussion.delivery.polls.services.impl.PSPollsService"
+         autowire="constructor">      
+   </bean>
+
+   <bean id="pollRestService"
+         class="com.percussion.delivery.polls.services.PSPollsRestService">
+      <constructor-arg ref="pollsService" />
+   </bean>
+      
+  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
+   	<constructor-arg index="0"><null/></constructor-arg>
+   	<constructor-arg index="1"><null/></constructor-arg>
+   </bean>
+
+   
+</beans>

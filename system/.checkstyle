@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fileset-config file-format-version="1.2.0" simple-config="true">
+    <local-check-config name="Percussion Coding Standards" location="buildResources/checkStyleIdeal.xml" type="project" description="Checkstyle configuration that checks the Percussion Software coding standards. See the Percussion Specification Library on Poseidon for details on coding standard.&#10;&#10;The checks for the new code. These are the checks which would be too disruptive to introduce for all the code.&#10;">
+        <additional-data name="protect-config-file" value="true"/>
+    </local-check-config>
+    <fileset name="all" enabled="true" check-config-name="Percussion Coding Standards" local="true">
+        <file-match-pattern match-pattern="." include-pattern="true"/>
+    </fileset>
+    <filter name="WriteProtectedFiles" enabled="true"/>
+    <filter name="UnOpenedFiles" enabled="true"/>
+</fileset-config>

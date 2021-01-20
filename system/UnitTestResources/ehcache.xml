@@ -1,0 +1,625 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="false" monitoring="autodetect"
+         dynamicConfig="true" name="sys_cacheManager">
+    <!-- Sets the path to the directory where cache .data files are created.
+
+         If the path is a Java System Property it is replaced by
+         its value in the running VM.
+
+         The following properties are translated:
+         user.home - User's home directory
+         user.dir - User's current working directory
+         java.io.tmpdir - Default temp file path -->
+    <diskStore path="user.dir/perc-cache"/>
+
+
+    <!--Default Cache configuration. These will applied to caches programmatically created through
+        the CacheManager.
+
+        The following attributes are required:
+
+        maxInMemory                    - Sets the maximum number of objects that will be created in memory
+        eternal                        - Sets whether elements are eternal. If eternal,  timeouts are ignored and the
+                                         element is never expired.
+        overflowToDisk                 - Sets whether elements can overflow to disk when the in-memory cache
+                                         has reached the maxInMemory limit.
+
+        The following attributes are optional:
+        timeToIdleSeconds              - Sets the time to idle for an element before it expires.
+                                         i.e. The maximum amount of time between accesses before an element expires
+                                         Is only used if the element is not eternal.
+                                         Optional attribute. A value of 0 means that an Element can idle for infinity.
+                                         The default value is 0.
+        timeToLiveSeconds              - Sets the time to live for an element before it expires.
+                                         i.e. The maximum time between creation time and when an element expires.
+                                         Is only used if the element is not eternal.
+                                         Optional attribute. A value of 0 means that and Element can live for infinity.
+                                         The default value is 0.
+         diskExpiryThreadIntervalSeconds- The number of seconds between runs of the disk expiry thread. The default value
+                                         is 120 seconds.
+        -->
+
+    <defaultCache
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSLocale"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSComponentSummary"
+        maxElementsInMemory="100000"
+        eternal="true"
+        overflowToDisk="true"
+        memoryStoreEvictionPolicy="LFU"
+        />          
+        
+    <cache name="PSCmsObject"
+        maxElementsInMemory="10000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+
+    <cache name="PSConfig"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSRelationshipPropertyData"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSPersistentProperty"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSPersistentPropertyMeta"
+        maxElementsInMemory="4000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSAssemblyTemplate"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSAssemblyTemplate_Bindings"
+        maxElementsInMemory="5000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSAssemblyTemplate_Slots"
+        maxElementsInMemory="10000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSTemplateBinding"
+        maxElementsInMemory="5000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSTemplateSlot"
+        maxElementsInMemory="10000"
+        eternal="true"
+        overflowToDisk="false"
+        />                                                                  
+
+    <cache name="PSTemplateSlot_Template"
+        maxElementsInMemory="4000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSTemplateSlot_Associations"
+        maxElementsInMemory="4000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+
+    <cache name="PSSlotContentFinderParam"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+    <cache name="PSTemplateTypeSlotAssociation"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+ 
+     <cache name="PSAutoTranslation"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />
+          
+    <cache name="PSKeyword"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSNodeDefinition"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSContentTemplateDesc"
+        maxElementsInMemory="500"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+        <cache name="PSContentTypeWorkflow"
+        maxElementsInMemory="500"
+        eternal="true"
+        overflowToDisk="false"
+        />
+
+    <cache name="PSItemFilter"
+        maxElementsInMemory="50"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSItemFilter_Rules"
+        maxElementsInMemory="150"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSItemFilterRuleDef"
+        maxElementsInMemory="150"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSItemFilterRuleDef_Params"
+        maxElementsInMemory="300"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSItemFilterRuleParam"
+        maxElementsInMemory="300"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSGuidGeneratorData"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSObjectLock"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSContentList"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSTemplateExpanderParam"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSContentListGeneratorParam"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSRelationshipConfigName"
+        maxElementsInMemory="20"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSRelationshipData"
+        maxElementsInMemory="20000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSAccessLevelImpl"
+        maxElementsInMemory="5000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSAclEntryImpl"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSAclImpl"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSBackEndRole"
+        maxElementsInMemory="500"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSCommunity"
+        maxElementsInMemory="20"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSCommunityRoleAssociation"
+        maxElementsInMemory="300"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSBackEndSubject"
+        maxElementsInMemory="6000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSSite"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSSite_Property"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSSite_Template"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSSiteProperty"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSPublishingContext"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSLocationScheme"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSLocationScheme_Parameters"
+        maxElementsInMemory="3000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSLocationSchemeParameter"
+        maxElementsInMemory="3000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSContentStatusHistory"
+        maxElementsInMemory="100000"
+        eternal="true"
+        overflowToDisk="false"
+        memoryStoreEvictionPolicy="LFU"
+        />
+        
+     <cache name="PSSharedProperty"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSUIComponent"
+        maxElementsInMemory="50"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSUIComponentProperty"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSHierarchyNode"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSHierarchyNodeProperty"
+        maxElementsInMemory="500"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSDeliveryType"
+        maxElementsInMemory="250"
+        eternal="true"
+        overflowToDisk="false"
+        />
+ 
+     <cache name="PSEdition"
+        maxElementsInMemory="500"
+        eternal="true"
+        overflowToDisk="false"
+        />
+
+     <cache name="PSEditionContentList"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+         
+     <cache name="PSEditionTaskDef"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+      <cache name="PSEditionTask_params"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />       
+        
+    <cache name="memory"
+        maxElementsInMemory="50000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <!-- Do not overflow to disk, the objects are not serializable -->
+    <cache name="content"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />        
+    <!--  caches the relationships for content (slot) finder -->
+    <cache name="slot"
+        maxElementsInMemory="6000"
+        eternal="true"
+        overflowToDisk="false"
+        memoryStoreEvictionPolicy="LFU"
+        />
+        
+    <cache name="contentlist"
+        maxElementsInMemory="500"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+      
+     <cache name="assemblyqueries"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />     
+        
+     <cache name="contentmanagerqueries"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />  
+        
+     <cache name="filtermanagerqueries"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />    
+
+    <cache name="workflow"
+        maxElementsInMemory="5000"
+        eternal="true"
+        overflowToDisk="false"
+        /> 
+        
+    <cache name="pubstatus"
+        maxElementsInMemory="40000"
+        eternal="true"
+        overflowToDisk="false"
+        />           
+
+    <!-- don't cache task log since they are not used often, but set 1 to shut off a warning from Ehcache -->
+    <cache name="PSScheduledTaskLog"
+        maxElementsInMemory="1"
+        eternal="true"
+        overflowToDisk="false"
+        />           
+
+    <cache name="PSNotificationTemplate"
+        maxElementsInMemory="200"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <!-- no need to cache the meta data for now, as it is always retrieved in each full publishing -->
+    <cache name="PSMetadata"
+        maxElementsInMemory="5000"
+        eternal="true"
+        overflowToDisk="false"
+        />   
+        
+    <cache name="object"
+        maxElementsInMemory="4000"
+        eternal="true"
+        overflowToDisk="false"
+        />           
+    <cache name="item"
+        maxElementsInMemory="100000"
+        eternal="true"
+        overflowToDisk="false"
+        memoryStoreEvictionPolicy="LFU"
+        />           
+    <cache name="childitem"
+        maxElementsInMemory="20000"
+        eternal="true"
+        overflowToDisk="false"
+        />           
+
+    <cache name="PSPkgInfo"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />          
+        
+    <cache name="PSPkgElement"
+        maxElementsInMemory="10000"
+        eternal="true"
+        overflowToDisk="false"
+        />          
+        
+    <cache name="PSPkgElementDependency"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />          
+        
+    <cache name="PSIdName"
+        maxElementsInMemory="1"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSConfigStatus"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+
+    <cache name="PSPkgDependency"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSPubServer"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+     <cache name="PSPubServerProperty"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSManagedLink"
+        maxElementsInMemory="100000"
+        eternal="true"
+        overflowToDisk="true"
+        memoryStoreEvictionPolicy="LFU"
+        />         
+        
+    <cache name="PSSiteImportSummary"
+        maxElementsInMemory="1000"
+        eternal="true"
+        overflowToDisk="false"
+        />   
+
+    <cache name="PSWidgetBuilderDefinition"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />   
+        
+    <cache name="PSUserItem"
+        maxElementsInMemory="50"
+        eternal="true"
+        overflowToDisk="false"
+        />
+
+    <cache name="PSImportLogEntry"
+        maxElementsInMemory="5000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="PSContentChangeEvent"
+        maxElementsInMemory="5000"
+        eternal="true"
+        overflowToDisk="false"
+        />   
+        
+     <cache name="JEXL_EXPR_CACHE"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />        
+          
+     <cache name="JEXL_SCRIPT_CACHE"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />               
+        
+      <cache name="PSIntegrityTask"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />               
+        
+        <cache name="PSIntegrityTaskProperty"
+        maxElementsInMemory="2000"
+        eternal="true"
+        overflowToDisk="false"
+        />               
+        
+        <cache name="PSRecent"
+        maxElementsInMemory="20000"
+        eternal="true"
+        overflowToDisk="false"
+        />               
+        
+        <cache name="PSFolderProperty"
+        maxElementsInMemory="100000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+                       
+        <cache name="PSIntegrityStatus"
+        maxElementsInMemory="10000"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+</ehcache>

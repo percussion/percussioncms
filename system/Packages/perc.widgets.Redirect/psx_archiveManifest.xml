@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percRedirect_images_redirect--widget--placeholder--small-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\percRedirect\images\redirect-widget-placeholder-small.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percRedirect_images_redirect--widget--placeholder--small-png\redirect-widget-placeholder-small.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-394">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percRedirect.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-394\percRedirect.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percRedirect.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-394\percRedirect.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percRedirect.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-394\percRedirect.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percRedirect_images_redirect--widget--icon--tray-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\percRedirect\images\redirect-widget-icon-tray.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percRedirect_images_redirect--widget--icon--tray-png\redirect-widget-icon-tray.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percRedirect-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percRedirect.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percRedirect-xml\percRedirect.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-2665817691603862185">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percRedirect.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-2665817691603862185\percRedirect.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percRedirect-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Resources\percRedirect.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percRedirect-xml\percRedirect.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXSharedFieldGroup filename="rxs_ct_feeds_shared.xml" name="rssfeeds">
+   <PSXContainerLocator>
+      <PSXTableSet>
+         <PSXTableLocator>
+            <PSXBackEndCredential id="275">
+               <alias>contentCredential</alias>
+               <comment/>
+               <datasource/>
+            </PSXBackEndCredential>
+         </PSXTableLocator>
+         <PSXTableRef alias="RSSFEEDS_RSSFEEDS" name="RSSFEEDS_RSSFEEDS"/>
+      </PSXTableSet>
+   </PSXContainerLocator>
+   <PSXFieldSet name="rssfeeds" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+      <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="enable_rss_feed" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RSSFEEDS_RSSFEEDS</tableAlias>
+               <column>ENABLE_RSS_FEED</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>50</DataFormat>
+         <DefaultValue>
+            <DataLocator>
+               <PSXTextLiteral id="0">
+                  <text/>
+               </PSXTextLiteral>
+            </DataLocator>
+         </DefaultValue>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="no" name="allowActiveTags">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="cleanupNamespaces">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="mayContainIDs">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="application/octet-stream" modificationType="user" name="enable_rss_icon" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RSSFEEDS_RSSFEEDS</tableAlias>
+               <column>ENABLE_RSS_ICON</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>50</DataFormat>
+         <DefaultValue>
+            <DataLocator>
+               <PSXTextLiteral id="0">
+                  <text/>
+               </PSXTextLiteral>
+            </DataLocator>
+         </DefaultValue>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="no" name="allowActiveTags">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="cleanupNamespaces">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="mayContainIDs">
+               <Value type="Boolean">yes</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+      </PSXField>
+      <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="feed_description" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RSSFEEDS_RSSFEEDS</tableAlias>
+               <column>FEED_DESCRIPTION</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>4000</DataFormat>
+         <DefaultValue>
+            <DataLocator>
+               <PSXTextLiteral id="0">
+                  <text/>
+               </PSXTextLiteral>
+            </DataLocator>
+         </DefaultValue>
+         <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+         <FieldRules>
+            <PSXFieldValidationRules maxErrorsToStop="2147483647">
+               <PSXRule boolean="and">
+                  <PSXExtensionCallSet id="0">
+                     <PSXExtensionCall id="0">
+                        <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                        <PSXExtensionParamValue id="0">
+                           <value>
+                              <PSXSingleHtmlParameter id="0">
+                                 <name>feed_description</name>
+                              </PSXSingleHtmlParameter>
+                           </value>
+                        </PSXExtensionParamValue>
+                     </PSXExtensionCall>
+                  </PSXExtensionCallSet>
+               </PSXRule>
+               <PSXApplyWhen ifFieldEmpty="yes">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXSingleHtmlParameter id="0">
+                              <name>enable_rss_feed</name>
+                           </PSXSingleHtmlParameter>
+                        </variable>
+                        <operator>IS NOT NULL</operator>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXApplyWhen>
+               <ErrorMessage>
+                  <PSXDisplayText>Feed description is required.</PSXDisplayText>
+               </ErrorMessage>
+            </PSXFieldValidationRules>
+         </FieldRules>
+         <PSXPropertySet>
+            <PSXProperty locked="no" name="allowActiveTags">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="cleanupNamespaces">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="mayContainIDs">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="feed_name" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RSSFEEDS_RSSFEEDS</tableAlias>
+               <column>FEED_NAME</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>2000</DataFormat>
+         <DefaultValue>
+            <DataLocator>
+               <PSXTextLiteral id="0">
+                  <text/>
+               </PSXTextLiteral>
+            </DataLocator>
+         </DefaultValue>
+         <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+         <FieldRules>
+            <PSXFieldValidationRules maxErrorsToStop="2147483647">
+               <PSXRule boolean="and">
+                  <PSXExtensionCallSet id="0">
+                     <PSXExtensionCall id="0">
+                        <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                        <PSXExtensionParamValue id="0">
+                           <value>
+                              <PSXSingleHtmlParameter id="0">
+                                 <name>feed_name</name>
+                              </PSXSingleHtmlParameter>
+                           </value>
+                        </PSXExtensionParamValue>
+                     </PSXExtensionCall>
+                  </PSXExtensionCallSet>
+               </PSXRule>
+               <PSXApplyWhen ifFieldEmpty="yes">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXSingleHtmlParameter id="0">
+                              <name>enable_rss_feed</name>
+                           </PSXSingleHtmlParameter>
+                        </variable>
+                        <operator>IS NOT NULL</operator>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXApplyWhen>
+               <ErrorMessage>
+                  <PSXDisplayText>Feed name is required.</PSXDisplayText>
+               </ErrorMessage>
+            </PSXFieldValidationRules>
+         </FieldRules>
+         <PSXPropertySet>
+            <PSXProperty locked="no" name="allowActiveTags">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="cleanupNamespaces">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="mayContainIDs">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="feed_title" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>RSSFEEDS_RSSFEEDS</tableAlias>
+               <column>FEED_TITLE</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>2000</DataFormat>
+         <DefaultValue>
+            <DataLocator>
+               <PSXTextLiteral id="0">
+                  <text/>
+               </PSXTextLiteral>
+            </DataLocator>
+         </DefaultValue>
+         <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+         <FieldRules>
+            <PSXFieldValidationRules maxErrorsToStop="2147483647">
+               <PSXRule boolean="and">
+                  <PSXExtensionCallSet id="0">
+                     <PSXExtensionCall id="0">
+                        <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                        <PSXExtensionParamValue id="0">
+                           <value>
+                              <PSXSingleHtmlParameter id="0">
+                                 <name>feed_title</name>
+                              </PSXSingleHtmlParameter>
+                           </value>
+                        </PSXExtensionParamValue>
+                     </PSXExtensionCall>
+                  </PSXExtensionCallSet>
+               </PSXRule>
+               <PSXApplyWhen ifFieldEmpty="yes">
+                  <PSXRule boolean="and">
+                     <PSXConditional id="0">
+                        <variable>
+                           <PSXSingleHtmlParameter id="0">
+                              <name>enable_rss_feed</name>
+                           </PSXSingleHtmlParameter>
+                        </variable>
+                        <operator>IS NOT NULL</operator>
+                        <boolean>AND</boolean>
+                     </PSXConditional>
+                  </PSXRule>
+               </PSXApplyWhen>
+               <ErrorMessage>
+                  <PSXDisplayText>Feed title is required.</PSXDisplayText>
+               </ErrorMessage>
+            </PSXFieldValidationRules>
+         </FieldRules>
+         <PSXPropertySet>
+            <PSXProperty locked="no" name="allowActiveTags">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="cleanupNamespaces">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="no" name="mayContainIDs">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+   </PSXFieldSet>
+   <PSXUIDefinition>
+      <PSXDisplayMapper fieldSetRef="rssfeeds" id="0">
+         <PSXDisplayMapping>
+            <FieldRef>enable_rss_icon</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText/>
+               </Label>
+               <PSXControlRef id="10014" name="sys_SingleCheckBox">
+                  <PSXParam name="id">
+                     <DataLocator>
+                        <PSXTextLiteral id="0">
+                           <text>perc-enable-rss-icon</text>
+                        </PSXTextLiteral>
+                     </DataLocator>
+                  </PSXParam>
+               </PSXControlRef>
+               <ErrorLabel>
+                  <PSXDisplayText>Include RSS icon</PSXDisplayText>
+               </ErrorLabel>
+               <PSXChoices sortOrder="ascending" type="local">
+                  <PSXEntry default="no" sequence="-1">
+                     <PSXDisplayText>Include RSS icon</PSXDisplayText>
+                     <Value>Include RSS icon</Value>
+                  </PSXEntry>
+               </PSXChoices>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>feed_name</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>Feed name</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="10018" name="sys_EditBox">
+                  <PSXParam name="maxlength">
+                     <DataLocator>
+                        <PSXTextLiteral id="0">
+                           <text>2000</text>
+                        </PSXTextLiteral>
+                     </DataLocator>
+                  </PSXParam>
+                  <PSXParam name="id">
+                     <DataLocator>
+                        <PSXTextLiteral id="0">
+                           <text>perc-feed-name</text>
+                        </PSXTextLiteral>
+                     </DataLocator>
+                  </PSXParam>
+               </PSXControlRef>
+               <ErrorLabel>
+                  <PSXDisplayText>Feed name</PSXDisplayText>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>feed_title</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>Feed title</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="10015" name="sys_EditBox">
+                  <PSXParam name="maxlength">
+                     <DataLocator>
+                        <PSXTextLiteral id="0">
+                           <text>2000</text>
+                        </PSXTextLiteral>
+                     </DataLocator>
+                  </PSXParam>
+                  <PSXParam name="id">
+                     <DataLocator>
+                        <PSXTextLiteral id="0">
+                           <text>perc-feed-title</text>
+                        </PSXTextLiteral>
+                     </DataLocator>
+                  </PSXParam>
+               </PSXControlRef>
+               <ErrorLabel>
+                  <PSXDisplayText>Feed title:</PSXDisplayText>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>feed_description</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText>Feed description</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="10016" name="sys_TextArea">
+                  <PSXParam name="id">
+                     <DataLocator>
+                        <PSXTextLiteral id="0">
+                           <text>perc-feed-description</text>
+                        </PSXTextLiteral>
+                     </DataLocator>
+                  </PSXParam>
+               </PSXControlRef>
+               <ErrorLabel>
+                  <PSXDisplayText>Feed description</PSXDisplayText>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>enable_rss_feed</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText/>
+               </Label>
+               <PSXControlRef id="10014" name="sys_SingleCheckBox">
+                  <PSXParam name="id">
+                     <DataLocator>
+                        <PSXTextLiteral id="0">
+                           <text>perc-enable-feed</text>
+                        </PSXTextLiteral>
+                     </DataLocator>
+                  </PSXParam>
+               </PSXControlRef>
+               <ErrorLabel>
+                  <PSXDisplayText/>
+               </ErrorLabel>
+               <PSXChoices sortOrder="ascending" type="local">
+                  <PSXEntry default="no" sequence="-1">
+                     <PSXDisplayText>Enable RSS feed</PSXDisplayText>
+                     <Value>Enable Rss feed</Value>
+                  </PSXEntry>
+               </PSXChoices>
+            </PSXUISet>
+         </PSXDisplayMapping>
+      </PSXDisplayMapper>
+   </PSXUIDefinition>
+   <PSXValidationRules maxErrorsToStop="10"/>
+   <PSXInputTranslations/>
+   <PSXOutputTranslations/>
+</PSXSharedFieldGroup>

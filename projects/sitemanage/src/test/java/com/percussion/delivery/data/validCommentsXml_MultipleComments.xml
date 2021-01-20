@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<DeliveryServicesContent>
+    <CommentService>
+        <Comments count="1" pagePath="/Site1/folder/page">
+            <Comment>
+                <Title>MultiComments Comment 1</Title>
+                <Email>MultiComments Comment 1 - Email</Email>
+                <Body>MultiComments Comment 1 - Body</Body>
+                <Username>MultiComments Comment 1 - Username</Username>
+                <Url>MultiComments Comment 1 - Url</Url>
+            </Comment>
+            <Comment>
+                <Title>MultiComments Comment 2</Title>
+                <Email>MultiComments Comment 2 - Email</Email>
+                <Body>MultiComments Comment 2 - Body</Body>
+                <Username>MultiComments Comment 2 - Username</Username>
+                <Url>MultiComments Comment 2 - Url</Url>
+            </Comment>
+            <Comment>
+                <Title>MultiComments Comment 3</Title>
+                <Email>MultiComments Comment 3 - Email</Email>
+                <Body>MultiComments Comment 3 - Body</Body>
+                <Username>MultiComments Comment 3 - Username</Username>
+                <Url>MultiComments Comment 3 - Url</Url>
+            </Comment>
+        </Comments>
+        
+        <Comments count="5" pagePath="/Site2/folder/page2">
+            <Comment>
+                <Title>MultiComments Comment 4</Title>
+                <Email>MultiComments Comment 4 - Email</Email>
+                <Body>MultiComments Comment 4 - Body</Body>
+                <Username>MultiComments Comment 4 - Username</Username>
+                <Url>MultiComments Comment 4 - Url</Url>
+            </Comment>
+            <Comment>
+                <Title>MultiComments Comment 5</Title>
+                <Email>MultiComments Comment 5 - Email</Email>
+                <Body>MultiComments Comment 5 - Body</Body>
+                <Username>MultiComments Comment 5 - Username</Username>
+                <Url>MultiComments Comment 5 - Url</Url>
+            </Comment>
+            <Comment>
+                <Title>MultiComments Comment 6</Title>
+                <Email>MultiComments Comment 6 - Email</Email>
+                <Body>MultiComments Comment 6 - Body</Body>
+                <Username>MultiComments Comment 6 - Username</Username>
+                <Url>MultiComments Comment 6 - Url</Url>
+            </Comment>
+        </Comments>
+    </CommentService>
+</DeliveryServicesContent>

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editvariantsite (relatedlinks, variantname, variantid, pagename, componentname, site* )>
+<!ELEMENT site (siteid, sitename, addurl )>
+<!ELEMENT addurl (#PCDATA)>
+<!ELEMENT sitename (#PCDATA)>
+<!ELEMENT siteid (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>
+<!ELEMENT variantname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

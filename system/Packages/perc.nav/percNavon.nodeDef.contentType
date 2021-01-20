@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>Content Type for basic Managed Navigation Content Items.</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>314</id>
+    <internal-name>percNavon</internal-name>
+    <label>Navon</label>
+    <mandatory>false</mandatory>
+    <name>rx:percNavon</name>
+    <new-request>../psx_cepercNavon/percNavon.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercNavon/percNavon.html</query-request>
+    <raw-content-type>314</raw-content-type>
+    <template-ids>
+      <template-id>0-4-542</template-id>
+      <template-id>0-4-544</template-id>
+      <template-id>0-4-509</template-id>
+      <template-id>0-4-510</template-id>
+      <template-id>0-4-511</template-id>
+      <template-id>0-4-540</template-id>
+      <template-id>0-4-551</template-id>
+      <template-id>0-4-535</template-id>
+      <template-id>0-4-508</template-id>
+      <template-id>0-4-507</template-id>
+      <template-id>0-4-553</template-id>
+      <template-id>0-4-536</template-id>
+    </template-ids>
+    <update-request/>
+    <workflow-ids>
+      <string>0-23-6</string>
+      <string>0-23-5</string>
+      <string>0-23-4</string>
+      <string>0-23-7</string>
+    </workflow-ids>
+  </node-definition>

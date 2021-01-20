@@ -1,0 +1,13 @@
+Tool to clear siteid and folderid attributes from inline relationships inside the contents.
+Instructions to run the tool.
+Stop the Rhythmyx server
+Make a back up of your database.
+Extract the contents of RhythmyxInlineLinkClearAttribs zip file to InlineLinkClearAttribs folder.
+Open InlineLinkClearAttribs.properties file and change the properties to point to your installation.
+Start the Rhythmyx server.
+Save the file.
+Make sure to check-in all the items for the site you are running this tool.
+Run the tool by executing RhythmyxInlineLinkClearAttribs.bat file.
+The tool removes the site id and folder id properties from the inline relationships.
+
+

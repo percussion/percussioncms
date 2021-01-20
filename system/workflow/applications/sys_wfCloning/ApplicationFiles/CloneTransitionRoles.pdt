@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT TransitionRole (TransitionId, TransitionRoleId, WorkflowId )>
+<!ELEMENT WorkflowId (#PCDATA)>
+<!ELEMENT TransitionRoleId (#PCDATA)>
+<!ELEMENT TransitionId (#PCDATA)>
+<!ELEMENT CloneTransitionRoles (TransitionRole* )>

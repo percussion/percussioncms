@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDefData appName="psx_cepercRichTextAsset" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_cepercRichTextAsset/percRichTextAsset.html" id="326" label="Rich Text" name="percRichTextAsset" typeId="326"/>
+   <PSXContentEditor contentType="326" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsRichText.png" objectType="1" producesResource="no" workflowId="6">
+      <PSXDataSet id="768">
+         <name>percRichTextAsset</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <InputDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="10004">
+                     <name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>text</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2Ktidy.properties</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2KserverPageTags.xml</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>yes</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_PERCRICHTEXTASSET" name="CT_PERCRICHTEXTASSET"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+                  <FieldRef>sys_contentpostdate</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="CT_percRichTextAsset" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="text" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCRICHTEXTASSET</tableAlias>
+                           <column>TEXT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageLinksConverter</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>text</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_percRichTextAsset" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Name:</PSXDisplayText>
+                           </Label>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>text</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Text:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10002" name="sys_tinymce">
+                              <PSXParam name="width">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>100%</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                              <PSXParam name="requirescleanup">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>yes</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Text:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+            <userProperties>
+               <userProperty name="Control10002_Dependency10004">sys_xdTextCleanup</userProperty>
+               <userProperty name="Control10002_DependencyIds">10004</userProperty>
+            </userProperties>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>percRichTextAsset</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations>
+         <PSXConditionalExit maxErrorsToStop="10">
+            <PSXExtensionCallSet id="0">
+             <PSXExtensionCall id="0">
+                <name>Java/global/percussion/content/sys_cleanReservedHtmlClasses</name>
+                <PSXExtensionParamValue id="0">
+                   <value>
+                        <PSXTextLiteral id="0">
+                           <text>text</text>
+                        </PSXTextLiteral>
+                   </value>
+                </PSXExtensionParamValue>
+             </PSXExtensionCall>        
+          </PSXExtensionCallSet>
+         </PSXConditionalExit>
+      </PSXInputTranslations> 
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="4,5,6,7"/>
+   </PSXContentEditor>
+</ItemDefData>

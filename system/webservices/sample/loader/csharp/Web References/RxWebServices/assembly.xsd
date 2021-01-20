@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:asm="urn:www.percussion.com/6.0.0/assembly" xmlns:asms="urn:www.percussion.com/6.0.0/assemblyServices" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/assembly" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="../common.xsd" namespace="urn:www.percussion.com/6.0.0/common" />
+  <xsd:import schemaLocation="assemblyServices.xsd" namespace="urn:www.percussion.com/6.0.0/assemblyServices" />
+  <xsd:element name="LoadSlotsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the template slot to load, aqsterisk wildcards are accepted. All template slots will be loaded if not supplied or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadSlotsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="asms:PSTemplateSlot">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded template slots in read-only mode, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadAssemblyTemplatesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the assembly template to load, asterisk wildcards are accepted. All assembly templates will be loaded if not supplied or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="ContentType" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the content type for which to load the assembly templates, asterisk wildcards are accepted. All assembly templates will be loaded if not supplied or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadAssemblyTemplatesResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="asms:PSAssemblyTemplate">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded assembly templates in read-only 
+                     mode, never null, may be empty, ordered in alpha order by 
+                     name.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

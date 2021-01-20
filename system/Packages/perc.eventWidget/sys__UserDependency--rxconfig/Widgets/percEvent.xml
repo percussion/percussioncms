@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!DOCTYPE Widget [
+        <!ENTITY defaultDateFormat "M/d/yyyy hh:mm a">
+        ]>
+<Widget>
+    <WidgetPrefs title="Event"
+                 contenttype_name="percEventAsset"
+                 category="content"
+                 description="Display information about an event"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/event/images/widgetIconEvent.png"
+                 preferred_editor_width="780"
+                 preferred_editor_height="710"
+                 is_responsive="true"
+    />
+    <Resource href="/rx_resources/widgets/event/css/style.css"
+              type="css"
+              placement="head" />
+    <UserPref name="perc_hidefield_displaytitle"
+              display_name="Hide title field"
+              default_value="false"
+              datatype="bool"/>
+    <UserPref name="perc_hidefield_callout"
+              display_name="Hide summary field"
+              default_value="false"
+              datatype="bool"/>
+    <UserPref name="perc_hidefield_body"
+              display_name="Hide description field"
+              default_value="false"
+              datatype="bool"/>
+    <UserPref name="perc_hidefield_location"
+              display_name="Hide location field"
+              default_value="false"
+              datatype="bool"/>
+    <UserPref name="perc_hidefield_start_time"
+              display_name="Hide start date field"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_end_time"
+              display_name="Hide end date field"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="renderEmptyFields"
+              display_name="Render empty fields"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="startDateTimeFormat"
+              display_name="Format of start date"
+              default_value="&defaultDateFormat;"
+              datatype="string" />
+    <UserPref name="endDateTimeFormat"
+              display_name="Format of end date"
+              default_value="&defaultDateFormat;"
+              datatype="string" />
+    <CssPref name="rootclass"
+             display_name="CSS Root Class"
+             datatype="string" />
+    <Code type="jexl">
+        <![CDATA[
+    $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+    $perc.setWidgetContents($assets);
+    if (! $assets.isEmpty())
+    {
+        $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+        if (!empty($rootclass))
+            $rootclass = $rootclass + " ";
+        $startDateTimeFormat = $perc.widget.item.properties.get('startDateTimeFormat');
+        $endDateTimeFormat = $perc.widget.item.properties.get('endDateTimeFormat');
+
+        $assetItem = $assets.get(0);
+        $eventTitle = $rx.pageutils.html($assetItem,'displaytitle');
+        $eventDescription = $rx.pageutils.html($assetItem, 'body');
+        $eventSummary = $rx.pageutils.html($assetItem,'callout');
+        $eventLocation = $rx.pageutils.html($assetItem,'location');
+
+        $tmp = $assetItem.Node.getProperty('start_time').Date;
+        $ISODateFormat="yyyy-MM-dd hh:mm a";
+        if (empty($tmp))
+        {
+            $eventStart = "";
+            $eventStartISO = "";
+        }
+        else
+        {
+            $eventStart = $tools.date.format($startDateTimeFormat,$tmp.Time);
+            $eventStartISO = $tools.date.format($ISODateFormat,$tmp.Time);
+        }
+
+        $tmp = $assetItem.Node.getProperty('end_time').Date;
+        if (empty($tmp))
+        {
+            $eventEnd = "";
+            $eventEndISO = "";
+        }
+        else
+        {
+            $eventEnd = $tools.date.format($endDateTimeFormat,$tmp.Time);
+            $eventEndISO = $tools.date.format($ISODateFormat,$tmp.Time);
+        }
+
+        $perc_hidefield_displaytitle = $perc.widget.item.properties.get('perc_hidefield_displaytitle');
+        $perc_hidefield_callout = $perc.widget.item.properties.get('perc_hidefield_callout');
+        $perc_hidefield_body = $perc.widget.item.properties.get('perc_hidefield_body');
+        $perc_hidefield_location = $perc.widget.item.properties.get('perc_hidefield_location');
+        $perc_hidefield_start_time = $perc.widget.item.properties.get('perc_hidefield_start_time');
+        $perc_hidefield_end_time = $perc.widget.item.properties.get('perc_hidefield_end_time');
+        $renderEmptyFields = $perc.widget.item.properties.get('renderEmptyFields');
+
+        $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+        if ($dsUrl.indexOf("http://localhost") != -1 )
+			$dsUrl = "";
+        $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
+    }
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[
+
+#if ($assetItem)
+   <div class="$!{rootclass} perc-event" data="$!{dynamicListData}">
+##  don't need to check for empty on title because it is required
+   #if(! $perc_hidefield_displaytitle)
+      <div class="perc-event-title" >$eventTitle</div>
+   #end
+   #if(!($perc_hidefield_callout || ($eventSummary == "" && ! $renderEmptyFields)))
+      <div class="summary">$eventSummary</div>
+   #end
+   #if(!($perc_hidefield_body || ($eventDescription == "" && ! $renderEmptyFields)))
+      <div class="description">$eventDescription</div>
+   #end
+   #if(!($perc_hidefield_location || ($eventLocation == "" && ! $renderEmptyFields)))
+      <div class="location">$eventLocation</div>
+   #end
+   #if(!($perc_hidefield_start_time || ($eventStart == "" && ! $renderEmptyFields)))
+      <div class="perc-event-date"><abbr class="dtstart" title="$eventStartISO">$eventStart</abbr></div>
+   #end
+   #if(!($perc_hidefield_end_time || ($eventEnd == "" && ! $renderEmptyFields)))
+      <div class="perc-event-date"><abbr class="dtend" title="$eventEndISO">$eventEnd</abbr></div>
+   #end
+   </div>
+#elseif ($perc.isEditMode())  ## if ($assetItem)
+   #createEmptyWidgetContent("event-sample-content", "This event widget is showing sample content.")
+#end
+    ]]>
+    </Content>
+</Widget>

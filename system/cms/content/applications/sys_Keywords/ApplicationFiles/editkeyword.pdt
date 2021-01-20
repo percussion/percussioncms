@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editkeyword (categoryid, lookupsequence, lookuptype, newlookupitemurl, lookupid, lookupname, lookupdescription, contenttypeurl, lookupvalue, dbactiontype, contentlookupurl, sloturlbyname, cancelurl, relatedlinks, componentname, entry* )>
+<!ELEMENT entry (id, deleteurl, name, description, editurl, value, sequence )>
+<!ELEMENT sequence (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
+<!ELEMENT editurl (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT deleteurl (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT sloturlbyname (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT dbactiontype (#PCDATA)>
+<!ELEMENT lookupvalue (#PCDATA)>
+<!ELEMENT contenttypeurl (#PCDATA)>
+<!ELEMENT lookupdescription (#PCDATA)>
+<!ELEMENT lookupname (#PCDATA)>
+<!ELEMENT lookupid (#PCDATA)>
+<!ELEMENT newlookupitemurl (#PCDATA)>
+<!ELEMENT lookuptype (#PCDATA)>
+<!ELEMENT lookupsequence (#PCDATA)>
+<!ELEMENT categoryid (#PCDATA)>

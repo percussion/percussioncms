@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description/>
+    <hide-from-menu>false</hide-from-menu>
+    <id>370</id>
+    <internal-name>percOrganization</internal-name>
+    <label>percOrganization</label>
+    <mandatory>false</mandatory>
+    <name>rx:percOrganization</name>
+    <new-request>../psx_cepercOrganization/percOrganization.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercOrganization/percOrganization.html</query-request>
+    <raw-content-type>370</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

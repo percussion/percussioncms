@@ -1,0 +1,52 @@
+<%--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  --%>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Comment</title>
+		<link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
+		<link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/common/perc_common_gadget.css" />
+		<link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/common/css/PercDataTable.css" />
+		<link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/perc_comments_gadget/Perc_CommentsGadget_ViewComments.css" />
+	</head>
+	<body>
+		<div id="perc-gadget-comments-viewComments-container">
+		</div>
+		
+		<script src="/cm/jslib/jquery.js"></script>
+		<script src="/cm/jslib/jquery-ui.js"></script>
+		<script src="/cm/jslib/jquery.timeago.js"></script>
+		<script src="/cm/jslib/jquery.getUrlParam.js"></script>
+		<script src="/cm/jslib/jquery.dataTables.js"></script>
+		<script src="/cm/jslib/jquery.dataTables.FixedHeader.js"></script>
+        <script src="/cm/widgets/PercDataTable.js"></script>
+        <script src="/cm/plugins/perc_path_constants.js"></script>
+        <script src="/cm/plugins/perc_utils.js"></script>
+        <script src="/cm/services/PercServiceUtils.js"></script>
+		<script src="/cm/gadgets/repository/perc_comments_gadget/PercCommentsGadgetService.js"></script>
+		<script src="/cm/gadgets/repository/perc_comments_gadget/Perc_CommentsGadget_ViewComments.js"></script>
+	</body>
+</html>

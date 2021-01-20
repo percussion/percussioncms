@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- Include the shared definitions -->
+<!ENTITY % RelationshipSet SYSTEM "PSXRelationshipSet.dtd">
+%RelationshipSet;
+<!--
+   XML documents conforming to this DTD will be sent to the Active Assembly 
+   Handler. The first locator defines the current owner of the relationships 
+   to be processed. The dependent set provides a list of locators and 
+   properties to be processed. The second locator is optional and specifies 
+   the target for operations like 'move'.
+   
+   type - the relationship type to use, must be a type with category 
+      'rs_activeassembly'. Defaults to 'Related Content' if not supplied.
+   
+   index - the index used for the requested operation. This makes only sense
+      for 'insert' and 'reorder' requests. Not supplied or set to -1 if not
+      used.
+-->
+<!ELEMENT PSXActiveAssemblerHandlerRequest (PSXLocator, PSXDependentSet, 
+   PSXLocator?)>
+<!ATTLIST PSXActiveAssemblerHandlerRequest
+   type CDATA #IMPLIED
+   index CDATA #IMPLIED
+>
+<!--
+   A collection of dependent objects.
+-->
+<!ELEMENT PSXDependentSet (PSXDependent+)>
+<!--
+   The dependent provides a locator and an optional property set. Known
+   properties are 'sys_variantid', 'sys_slotid' and 'sys_sortrank'.
+-->
+<!ELEMENT PSXDependent (PSXLocator, PSXPropertySet?)>
+<!--
+   A collection of system and/or user properties. Use the relationship 
+   configuration to find out if a property is a system or user property.
+-->
+<!ELEMENT PSXPropertySet (PSXProperty+)>

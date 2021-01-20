@@ -1,0 +1,157 @@
+.jmodal-overlay
+{
+	width:100%;
+	background-color:#888;
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:200;
+	margin:0;
+	padding:0;
+	}
+	
+/* skinId: jmodal-main  */
+.jmodal-main
+{
+	left:0;
+	padding:0;
+	margin:0;
+	top:0;
+	position:absolute;
+	z-index:201;
+	overflow:visible;
+	}
+.jmodal-main .jmodal-top
+{
+    height:10px;
+    position:relative;
+    width:100%;
+    	}
+.jmodal-main .jmodal-top div
+{
+    height:10px;
+    position:absolute;
+    top:0;
+    }
+.jmodal-main .jmodal-top-left
+{
+	width:10px;
+	left:0;
+	background:url(../images/jmodal/dialog_top_left.png) center bottom no-repeat;
+	}
+.jmodal-main .jmodal-top-right
+{
+	width:10px;
+	right:0;
+	background:url(../images/jmodal/dialog_top_right.png) center bottom no-repeat;
+	}
+.jmodal-main .jmodal-border-top
+{
+    left:10px;
+    right:10px;
+	background:url(../images/jmodal/dialog_border.png) center bottom repeat-x;
+	}
+.jmodal-main .jmodal-middle
+{
+    position:relative;
+    width:100%;
+    height:auto;
+    left:0;
+    top:0;
+    }
+.jmodal-main .jmodal-border-left
+{
+	background:url(../images/jmodal/dialog_border.png) right bottom repeat-y;
+	width:10px;
+	left:0;
+	position:absolute;
+	top:0;
+	bottom:0;
+	}
+.jmodal-main .jmodal-border-right
+{
+	width:10px;
+	right:0;
+	position:absolute;
+	top:0;
+	bottom:0;
+	background:url(../images/jmodal/dialog_border.png) left bottom repeat-y;
+	}
+.jmodal-main .jmodal-middle-content
+{
+    padding:0 10px;
+    font-family: Verdana,Arial,sans-serif;
+}
+.jmodal-main  .jmodal-title
+{
+	height: 30px;
+	background-color: #AAAAAA;
+	font-weight: bold;
+	text-indent: 10px;
+	color: #000;
+	letter-spacing:2px;
+	line-height: 30px;
+	border-bottom: groove 2px #4682B4;
+	}
+.jmodal-main .jmodal-content
+{	
+    height: auto;
+    background-color: #F5FFFA;
+    padding: 20px 10px;
+	}
+.jmodal-main .jmodal-opts
+{
+	background-color: #AAAAAA;
+	border-top: 1px solid #ccc;
+	padding: 5px;
+	text-align: right;
+	}
+.jmodal-main .jmodal-opts input
+{
+    background-color: #D3D3D3;
+    border-color: #000000 #BCBCBC #BCBCBC #000000;
+    border-style: solid;
+    border-width: 1px;
+    color: #000;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 2px 10px;
+    text-align: center;
+    margin-right: 5px;
+    font-family: Verdana,Arial,sans-serif;
+	}
+/* ie png fixed */
+.jmodal-png-fiexed
+{
+	filter:alpha(opacity=50);
+	}
+.jmodal-main .jmodal-bottom
+{
+    height:10px;
+    position:relative;
+    width:100%;
+    }
+.jmodal-main .jmodal-bottom div
+{
+    position:absolute;
+    top:0;
+    height:10px;
+    }
+.jmodal-main .jmodal-border-bottom
+{
+    left:10px;
+    right:10px;
+	background:url(../images/jmodal/dialog_border.png) center top repeat-x;
+	}
+.jmodal-main .jmodal-bottom-left
+{
+	width:10px;
+	left:0;
+	background:url(../images/jmodal/dialog_bottom_left.png) center top no-repeat;
+	}
+.jmodal-main .jmodal-bottom-right
+{
+	width:10px;
+	right:0;
+	background:url(../images/jmodal/dialog_bottom_right.png) center top no-repeat;
+	}

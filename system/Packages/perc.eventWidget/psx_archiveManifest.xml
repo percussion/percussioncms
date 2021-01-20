@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_event_images_widgetIconEvent-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\event\images\widgetIconEvent.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_event_images_widgetIconEvent-png\widgetIconEvent.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_event_images_widgetIconEventOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\event\images\widgetIconEventOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_event_images_widgetIconEventOver-png\widgetIconEventOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsEvent.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\images\ContentTypeIcons\filetypeIconsEvent.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsEvent.png\filetypeIconsEvent.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-335">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percEventAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-335\percEventAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percEventAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-335\percEventAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percEventAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-335\percEventAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percEvent-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rxconfig\Widgets\percEvent.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percEvent-xml\percEvent.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_event_images_widgetEventSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\event\images\widgetEventSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_event_images_widgetEventSampleBackground-png\widgetEventSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--4720746503772045211">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percEventAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--4720746503772045211\percEventAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

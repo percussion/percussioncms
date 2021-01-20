@@ -1,0 +1,14 @@
+/*TABLE {border: 2px solid purple !important; 
+   margin: 5px !important; border-collapse: 
+   separate !important; border-spacing: 1px !important; 
+   empty-cells: show !important;}
+TH {border: 1px solid blue !important; 
+   padding: 3px !important;}
+TD {border: 1px solid red !important; 
+   padding: 3px !important;}*/
+	 
+table { background:#e7e7e7; width:200px; border:0; margin:0; margin-bottom:40px; padding:10px 4px; font-family:Arial, Helvetica, sans-serif; font-size:0.7em; }
+th { font-size:1em; font-weight:normal; color:#999; padding:1px; }
+td { border:1px solid #e0e0e0; border-bottom:1px solid #f0f0f0; border-right:1px solid #f0f0f0; text-align:center; }
+td a:link, td a:visited { padding:2px; color:#999; text-decoration:none; width:auto; display:block; }
+td a:hover { color:#333; text-decoration:underline; background:#fff; }

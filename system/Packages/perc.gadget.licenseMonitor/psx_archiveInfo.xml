@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveInfo archiveRef="perc.gadget.licenseMonitor" category="USER" created="1407772307660" editable="true" serverName="dev-jb:9992" userName="Admin">
+   <PSXFormatVersion buildId="80" buildNumber="20140801" displayVersion="5.3.14" interfaceVersion="9" majorVersion="5" microVersion="14" minorVersion="3" optionalId="" versionString="INTERNAL"/>
+   <PSXDbmsInfo>
+      <datasource>RhythmyxData</datasource>
+      <driver>derby</driver>
+      <server>//localhost:1527/CMDB</server>
+      <database/>
+      <origin>CMDB</origin>
+      <userid>CMDB</userid>
+      <password>sVRQvOk3uB+nU5SNgaynaw==</password>
+   </PSXDbmsInfo>
+   <PSXArchiveDetail>
+      <PSXExportDescriptor archiveType="normal">
+         <PSXDescriptor id="1641366853617985296" name="perc.gadget.licenseMonitor">
+            <Description>Gadget that monitor the license status</Description>
+            <Publisher name="Percusion Software Inc" url="http://www.percussion.com"/>
+            <CmsVersion max="8.0.0" min="2.7.0"/>
+            <Version>1.1.3</Version>
+            <ImplConfigFile/>
+            <LocalConfigFile/>
+            <PKGDependencies/>
+         </PSXDescriptor>
+         <Packages>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_UserDependency" dependencyType="Shared" displayName="User Dependency" isAssociation="yes" isIncluded="yes" objectType="Custom" objectTypeName="Custom" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes">
+                  <Dependencies>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_license_monitor_gadget/images/gadgetSprites.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_license_monitor_gadget/images/gadgetSprites.png" dependencyType="User" displayName="gadgetSprites.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_dialogs.js">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_dialogs.js" dependencyType="User" displayName="perc_license_monitor_dialogs.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_gadget.css">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_gadget.css" dependencyType="User" displayName="perc_license_monitor_gadget.css" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_gadget.js">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_gadget.js" dependencyType="User" displayName="perc_license_monitor_gadget.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_gadget.xml">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_gadget.xml" dependencyType="User" displayName="perc_license_monitor_gadget.xml" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_indicator.js">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_indicator.js" dependencyType="User" displayName="perc_license_monitor_indicator.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_license_monitor_gadget/perc_module_license_manager.js">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_license_monitor_gadget/perc_module_license_manager.js" dependencyType="User" displayName="perc_module_license_manager.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_license_monitor_gadget/images/PercLicenseMonitorGadget.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_license_monitor_gadget/images/PercLicenseMonitorGadget.png" dependencyType="User" displayName="PercLicenseMonitorGadget.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+         </Packages>
+         <ModifiedPackages/>
+         <MissingPackages/>
+      </PSXExportDescriptor>
+      <DbmsInfoMap>
+         <DbmsInfoMapping PkgKey="Custom-sys_UserDependency"/>
+      </DbmsInfoMap>
+   </PSXArchiveDetail>
+</PSXArchiveInfo>

@@ -1,0 +1,86 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<h1><font face="Arial">
+	The Publishing System 
+</font></h1>
+<p><font face="Arial"> 
+	The publishing system takes a unit of work to publish, called an 
+	edition, and executes the edition. The edition consists of a series of 
+	content lists, each of which identify zero or more content items to be 
+	assembled using specified templates and places in calculated locations. 
+	The edition also references a site, which defines where filesystem 
+	content will be published, as well as identifying other per-site 
+	information to be used in assembly and delivery. 
+</font><h2><font face="Arial"> 
+	The Publishing Job 
+</font></h2>
+<p><font face="Arial"> 
+	The central concept in publishing is the job. The job can be thought of 
+	as an instantiation of the edition. The job reads the site and edition 
+	data, runs pre and post edition tasks, and manages the assembly and 
+	delivery of the content. 
+</font></p>
+<p><font face="Arial"> 
+	The job sends the content to be assembled to the publishing queue. A 
+	configured set of processors take the assembly items and produce 
+	delivery results. The delivery results are sent to the delivery 
+	manager, which invokes the appropriate delivery handler. The handler 
+	then either stores the result for later delivery when the job 
+	&quot;commits&quot;, or delivers right away for old style 
+	<em>IPSPublisher</em> handlers. 
+</font></p><font face="Arial"> 
+Each job is identified by a job id. The id is a 64 bit number. This 
+number is incremented for each job run and will never, in a practical 
+sense, repeat. If the customer were to somehow run 1000 jobs every 
+second, it would still take almost 600 million years to repeat. I think 
+we can safely assume that Rhythmyx will not exist in its current form at 
+that time. At a more realistic rate of running jobs, billions of years 
+would go by. 
+<br></font>
+<p><font face="Arial"> 
+	Each item is identified by a reference id, which are also 64 bit 
+	numbers. Since there are many items per job, this will repeat 
+	substantially more quickly. Yet even a thousand years hence, one 
+	suspect that clearing out the database would be the least worry. So the 
+	reference id will not repeat in a period of time we're worried about. 
+</font></p>
+<p><font face="Arial"> 
+	The job id is used for the status table and the reference id is used 
+	for the items table. Both tables are periodically purged of old 
+	content. Since this is the only storage of those ids, there will never 
+	be more than a relatively small number of the ids in the database over 
+	a period of time. 
+</font></p>
+<h2><font face="Arial"> 
+	Publishing Handler 
+</font></h2>
+<p><font face="Arial">The publishing handler accepts work to be done from the publishing queue. 
+The handler first uses the assembly service to create an assembly result and then 
+calls the delivery manager to deliver the content. It sends status to the  
+publishing results handler via the result queue. 
+</font><h2><font face="Arial">Publishing Results Handler</font></h2>
+<p><font face="Arial">The publishing results handler takes status updates and forwards them to the 
+business publisher service, which maintains the job state and updates the database via
+the publisher service.</font>

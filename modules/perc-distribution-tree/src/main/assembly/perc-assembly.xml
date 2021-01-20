@@ -1,0 +1,96 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<assembly>
+    <id>assembly</id>
+    <formats>
+        <format>jar</format>
+        <!--
+        <format>tar.gz</format>
+        <format>zip</format>
+        -->
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>${assembly-directory}</directory>
+            <outputDirectory></outputDirectory>
+           
+            <excludes>
+                <!-- handle windows / linux scripts below for permissions and line endings -->
+                <exclude>**/*.sh</exclude>
+                <exclude>**/*.bat</exclude>
+                <exclude>**/META-INF/**</exclude>
+                <exclude>*-config.jar</exclude>
+                <!-- common OS detritus -->
+                <exclude>**/.DS_Store</exclude>
+                <exclude>**/Thumbs.db</exclude>
+                <exclude>**/desktop.ini</exclude>
+                <!-- common temp files -->
+                <exclude>**/*~</exclude>
+                <exclude>**/*.bak</exclude>
+                <exclude>**/*.backup</exclude>
+                <exclude>**/*.old</exclude>
+                <exclude>**/*.swp</exclude>
+                <exclude>**/*.debug</exclude>
+                <exclude>**/*.dump</exclude>
+                <exclude>**/*.log</exclude>
+                <exclude>**/~*</exclude>
+                <!-- common git/scm files -->
+                <exclude>**/*.orig</exclude>
+                <exclude>**/*.diff</exclude>
+                <exclude>**/*.patch</exclude>
+                <exclude>**/.gitignore</exclude>
+                <!-- various editor files -->
+                <exclude>**/*.iml</exclude>
+                <exclude>**/*.ipr</exclude>
+                <exclude>**/*.iws</exclude>
+                <exclude>**/*.idea</exclude>
+                <exclude>**/.classpath</exclude>
+                <exclude>**/.project</exclude>
+                <exclude>**/.settings</exclude>
+                <!-- maven dust -->
+                <exclude>**/*.versionsBackup</exclude>
+                <exclude>**/*.releaseBackup</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>${assembly-directory}</directory>
+            <outputDirectory></outputDirectory>
+            <includes>
+                <include>**/.bat</include>
+            </includes>
+            <lineEnding>windows</lineEnding>
+        </fileSet>
+        <fileSet>
+            <directory>${assembly-directory}</directory>
+            <outputDirectory></outputDirectory>
+            <includes>
+                <include>**/*.sh</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <lineEnding>unix</lineEnding>
+        </fileSet>
+
+    </fileSets>
+</assembly>

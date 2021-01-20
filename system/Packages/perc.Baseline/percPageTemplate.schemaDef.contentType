@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CT_PERCPAGETEMPLATE">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SRCTEMPLATE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>200</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="LABEL">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>300</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DESCRIPTION">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>500</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="HTMLHEADER">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="BODYMARKUP">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DATA">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CSSREGION">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CSSOVERRIDE">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="THEME">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>300</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ADDITIONAL_HEAD_CONTENT">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CODE_INSERT_AFTER_BODY_START">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CODE_INSERT_BEFORE_BODY_CLOSE">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ADDITIONAL_HEAD_CONTENT1">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PROTECTED_REGION">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>200</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PROTECTED_REGION_TEXT">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>200</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DOC_TYPE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="TYPE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENT_MIGRATION_VERSION">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+   </row>
+   <primarykey action="c">
+      <name>CONTENTID</name>
+      <name>REVISIONID</name>
+   </primarykey>
+</table>

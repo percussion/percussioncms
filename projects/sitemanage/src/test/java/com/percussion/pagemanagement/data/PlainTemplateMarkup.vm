@@ -1,0 +1,36 @@
+#perc_templateHeader()
+<div id="container" class="perc-region perc-vertical perc-container hspan_12">
+     <div class="perc-vertical">
+        <div id="header" class="perc-region perc-vertical vspan_2">
+           <div class="perc-vertical">
+			  #region("header" '' '' '' '')
+           </div>
+        </div>     
+        <div id="middle" class="perc-region perc-horizontal">
+           <div class="perc-horizontal">
+              <div id="leftsidebar" class="perc-region perc-vertical  vspan_4  hspan_2">
+                 <div class="perc-vertical">
+					#region("leftsidebar" '' '' '' '')
+                 </div>
+              </div>                   
+              <div id="content" class="perc-region perc-vertical vspan_4  hspan_8">
+                 <div class="perc-vertical">
+					#region("content" '' '' '' '')
+                 </div>
+              </div>
+              <div id="rightsidebar" class="perc-region perc-vertical vspan_4 hspan_2">
+                 <div class="perc-vertical">
+					#region("rightsidebar" '' '' '' '')
+                 </div>
+              </div>               
+              <div class="clear-float"></div>
+           </div>
+        </div>
+        <div id="footer" class="perc-region perc-vertical vspan_2">
+           <div class="perc-vertical">
+			  #region("footer" '' '' '' '')
+           </div>
+        </div>              
+     </div>
+  </div>
+#perc_templateFooter()

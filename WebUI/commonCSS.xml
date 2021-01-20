@@ -1,0 +1,46 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<fileset dir="${war.source.dir}" includes="css/FontAwesome/css/font-awesome.min.css" />
+<fileset dir="${war.source.dir}" includes="css/perc_default.css" />
+<fileset dir="${war.source.dir}" includes="css/layout.css" />
+<fileset dir="${war.source.dir}" includes="css/percFinder.css" />
+<fileset dir="${war.source.dir}" includes="css/percDialog.css" />
+<fileset dir="${war.source.dir}" includes="css/base/ui.all.css" />
+<fileset dir="${war.source.dir}" includes="css/jquery.tooltip.css" />
+
+<fileset dir="${war.source.dir}" includes="css/jquery.autocomplete.css" />
+
+<fileset dir="${war.source.dir}" includes="css/superfish.css" />
+<fileset dir="${war.source.dir}" includes="css/PercDropdown.css" />
+<fileset dir="${war.source.dir}" includes="css/PercViewDropdown.css" />
+<fileset dir="${war.source.dir}" includes="css/PercWorkflowDropdown.css" />
+<fileset dir="${war.source.dir}" includes="css/PercDatetimePicker.css" />
+<fileset dir="${war.source.dir}" includes="css/PercMultiDropDown.css" />
+
+<fileset dir="${war.source.dir}" includes="widgets/PercWizard/PercWizard.css" />
+
+<fileset dir="${war.source.dir}" includes="widgets/PercDataTable/PercDataTable.css" />
+<fileset dir="${war.source.dir}" includes="widgets/PercFinderListView/PercFinderListView.css" />
+<fileset dir="${war.source.dir}" includes="widgets/PercFinderTree/PercFinderTree.css" />

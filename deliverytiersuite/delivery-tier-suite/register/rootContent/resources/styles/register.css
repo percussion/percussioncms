@@ -1,0 +1,118 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) Percussion Software, Inc.  1999-2020
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *      Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+#perc-register-button-container
+{
+    position: relative;
+    width: 270;
+}
+#perc-register-button
+{
+    background-image: url(../images/buttonRegister.png);
+    width: 78px;
+    height:29px;
+    left: 194px;
+    position:relative;
+}
+#perc-register-button:hover
+{
+    background-image: url(../images/buttonRegisterOver.png);
+    cursor: pointer;
+}
+
+#perc-register-button.disabled
+{
+    background-image: url(../images/buttonRegisterGray.png);
+}
+
+.form-body
+{
+
+}
+body
+{
+    background-color:#E6E6E9;
+    margin:0px;
+    padding-left:35px;
+}
+.form-title
+
+{
+    font-size: 19px;
+    font-weight: normal;
+    margin: 0 0 25px -17px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+ 
+.ie8 .form-title {
+    margin: 0 0 30px -17px;
+}
+
+.field-error-container
+{
+ height: 12px;
+ color: #FF0000;
+ font-family: Verdana;
+ font-size: 10px;
+ font-weight:normal;
+ visibility:hidden;
+ margin-bottom: 2px;
+}
+
+#field-email-error-container.field-error-container {
+    margin-bottom:1px;
+}
+.field-label-container
+{
+ padding-bottom:3px;
+ color: #000000;
+ font-family: Verdana;
+ font-size: 11px;
+ font-weight:normal;
+}
+
+#perc-privacy-policy-link,
+#perc-privacy-policy-link a,
+#perc-privacy-policy-link a:visited,
+#perc-privacy-policy-link a:hover,
+#perc-privacy-policy-link a:active
+{
+ color: #0099CC;
+ font-family: Verdana;
+ font-size: 10px;
+ font-weight:normal;
+}
+
+.field-row
+{
+ margin-bottom:2px;
+}
+
+input[type="text"]
+{
+ width:266px;
+}

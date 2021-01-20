@@ -1,0 +1,69 @@
+/*** Overriding styles for IE8  ***/
+
+
+div#perc-finder-selected-label{
+    color:#999999;
+    display: none;
+    float:left;
+    font-size:11px;
+    font-weight:normal;
+    padding-left:10px;
+    margin: 17px 0px 0px 5px;
+    text-decoration:none;
+    width:auto;
+    overflow:hidden;
+    white-space:nowrap;
+    text-align:left;
+    text-overflow:ellipsis;
+}
+
+ul.perc-dropdown-option-list
+{
+    border:1px solid #CACACA;
+}
+#perc-dropdown-view .sf-menu > li.sfHover > a,
+#perc-template-view .sf-menu > li.sfHover > a, 
+#perc-template-actions .sf-menu > li.sfHover > a,
+#perc-dropdown-actions .sf-menu > li.sfHover > a,
+#perc-dropdown-actions-layout .sf-menu > li.sfHover > a,
+#perc-dropdown-view-layout .sf-menu > li.sfHover > a,
+#perc-dropdown-help-layout .sf-menu > li.sfHover > a,
+#perc-dropdown-publish-now .sf-menu > li.sfHover > a,
+#perc-dropdown-actions-style .sf-menu > li.sfHover > a,
+#perc-dropdown-view-style .sf-menu > li.sfHover > a {
+     border:1px solid #CACACA;
+     border-bottom:0px solid white;
+}
+
+.perc-dropdown.sf-shadow ul {
+    margin-top:-1px;
+    border-top:1px solid #CACACA;
+}
+.perc-gadget-menu-item {
+    border-left:1px solid #CACACA;
+
+}
+.perc-gadget-menu-items{
+    border-top:1px solid #CACACA;
+    border-bottom:1px solid #CACACA;
+}
+
+.perc-finder-goto-or-search input {
+    padding-top: 5px;
+}
+
+.perc-font-icon {
+    background: transparent !important;
+}
+
+.perc-finder-goto-or-search input {
+    padding-top: 6px !important;
+}
+
+.perc-main .perc-header .perc-logo {
+    width: 44px;
+    height: 43px;
+	background: none !important; 
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/images/headerLogo.png',sizingMethod= 'scale');
+-ms-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/images/headerLogo.png', sizingMethod='scale');
+}

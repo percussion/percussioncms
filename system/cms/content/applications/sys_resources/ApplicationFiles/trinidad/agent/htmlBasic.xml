@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+	   
+-->
+<capabilityData xmlns="http://myfaces.apache.org/trinidad/agent/capabilities">
+  <capability name="dom" value="none"/>
+  <capability name="accessKeys" value="true"/> 
+  <capability name="textPresentation" value="false"/>  
+  <capability name="tables" value="basic"/>
+  <capability name="frames" value="false"/>  
+  <capability name="iframes" value="false"/>  
+  <capability name="-adfinternal-id" value="true"/>    
+  <capability name="-adfinternal-advancedForms" value="false"/>
+  <capability name="-adfinternal-target" value="false"/>  
+  <capability name="-adfinternal-intrinsicEvents" value="false"/>
+  <capability name="-adfinternal-scriptingSpeed" value="none"/>  
+  <capability name="-adfinternal-styleAttributes" value="none"/>
+  <capability name="-adfinternal-nameIdentification" value="false"/>
+  <capability name="-adfinternal-disabledFormElements" value="true"/>
+  <capability name="-adfinternal-readonlyFormElements" value="true"/>
+  <capability name="-adfinternal-advancedButtons" value="false"/>
+  <capability name="-adfinternal-valign" value="true"/>
+  <capability name="-adfinternal-nowrap" value="true"/>
+   <!-- image econdings --> 
+  <capability name="-adfinternal-gifImage" value="true"/>  
+  <capability name="-adfinternal-bmpImage" value="true"/>   
+  <capability name="-adfinternal-jpegImage" value="true"/>    
+  <capability name="-adfinternal-multipleWindows" value="false"/>
+  <capability name="-adfinternal-navigation" value="true"/>
+  <capability name="-adfinternal-editing" value="true"/>
+  <capability name="-adfinternal-altRendersTooltipOnImage" value="false"/>
+  <capability name="-adfinternal-cssSelectors" value="none"/>
+  <capability name="-adfinternal-fieldset" value="false"/>  
+  <capability name="-adfinternal-supportsDisabledOptions" value="false"/>
+  <capability name="-adfinternal-onclickOnImgInput" value="true"/>    
+</capabilityData>

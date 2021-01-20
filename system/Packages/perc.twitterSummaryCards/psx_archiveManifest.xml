@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percTwitterSummaryCards-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\dev\rxconfig\Widgets\percTwitterSummaryCards.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percTwitterSummaryCards-xml\percTwitterSummaryCards.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-638">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percTwitterCards.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-638\percTwitterCards.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percTwitterCards.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-638\percTwitterCards.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percTwitterCards.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-638\percTwitterCards.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percTwitterSummaryCards_images_twitter--card--placeholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\dev\rx_resources\widgets\percTwitterSummaryCards\images\twitter-card-placeholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percTwitterSummaryCards_images_twitter--card--placeholder-png\twitter-card-placeholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percTwitterSummaryCards_images_twitter--card--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\dev\rx_resources\widgets\percTwitterSummaryCards\images\twitter-card-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percTwitterSummaryCards_images_twitter--card--icon-png\twitter-card-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percTwitterSummaryCards_images_twitter--card--placeholder--small-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\dev\rx_resources\widgets\percTwitterSummaryCards\images\twitter-card-placeholder-small.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percTwitterSummaryCards_images_twitter--card--placeholder--small-png\twitter-card-placeholder-small.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-8941335282716770392">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percTwitterCards.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-8941335282716770392\percTwitterCards.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

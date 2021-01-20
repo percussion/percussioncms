@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_previewIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\PercAssetStatusGadget\images\previewIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_previewIcon-png\previewIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_PercAssetStatusGadget-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\PercAssetStatusGadget\PercAssetStatusGadget.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_PercAssetStatusGadget-xml\PercAssetStatusGadget.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_gadgetIconAssetsByStatus-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\PercAssetStatusGadget\images\gadgetIconAssetsByStatus.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_gadgetIconAssetsByStatus-png\gadgetIconAssetsByStatus.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_tobeprocessed-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\PercAssetStatusGadget\images\tobeprocessed.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_tobeprocessed-png\tobeprocessed.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_processing-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\PercAssetStatusGadget\images\processing.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_processing-gif\processing.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_errorIcon-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\PercAssetStatusGadget\images\errorIcon.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_images_errorIcon-gif\errorIcon.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_PercAssetStatusGadget-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\PercAssetStatusGadget\PercAssetStatusGadget.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_PercAssetStatusGadget_PercAssetStatusGadget-js\PercAssetStatusGadget.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

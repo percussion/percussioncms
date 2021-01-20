@@ -1,0 +1,808 @@
+<PSXApplication id="445" active="no" hidden="no" enabled="yes" version="2.0">
+   <name>rx_ceImage</name>
+   <description/>
+   <requestRoot>rx_ceImage</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/_rxmaster_1002212952327/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20011005T100255578</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="8">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20011018T161328500</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="user">
+         <name>Anonymous</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataQuery="no" dataCreate="no" dataUpdate="no" dataDelete="no" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>0</maxThreads>
+   <maxRequestTime>0</maxRequestTime>
+   <maxRequestsInQueue>0</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>0</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="832">
+      <name>purge</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXUpdatePipe id="1059">
+         <name>UpdatePipe</name>
+         <description/>
+         <PSXBackEndDataTank id="1058">
+            <PSXBackEndTable id="1057">
+               <alias>RXIMAGE</alias>
+               <driver>inetdae7</driver>
+               <server>JB</server>
+               <database>rxmaster</database>
+               <origin>dbo</origin>
+               <table>RXIMAGE</table>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="1055" returnEmptyXml="no">
+            <PSXDataMapping id="0" groupId="1">
+               <PSXHtmlParameter id="0">
+                  <name>sys_contentid</name>
+               </PSXHtmlParameter>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXIMAGE</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSynchronizer id="1056" allowInserts="no" allowUpdates="no" allowDeletes="yes">
+            <PSXUpdateColumn id="0" isKey="yes" isEditable="no">
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXIMAGE</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </PSXUpdateColumn>
+         </PSXDataSynchronizer>
+      </PSXUpdatePipe>
+      <PSXPageDataTank id="831">
+         <schemaSource>file:Rx40_RXIMAGE.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor id="0" directDataStream="no">
+         <requestPage>purge</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+         </MimeProperties>
+      </PSXRequestor>
+   </PSXDataSet>
+   <PSXContentEditor contentType="4" workflowId="3">
+      <PSXDataSet id="835">
+         <name>image</name>
+         <description/>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="2">
+            <name>cePipe</name>
+            <description/>
+            <InputDataExits>
+               <PSXExtensionCallSet id="833">
+                  <PSXExtensionCall id="0">
+                     <name>Java/global/percussion/generic/sys_FileInfo</name>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <driver>inetdae7</driver>
+                        <server>JB</server>
+                        <userId>sa</userId>
+                        <password encrypted="yes"/>
+                     </PSXBackEndCredential>
+                     <Database>rxmaster</Database>
+                     <Origin>dbo</Origin>
+                  </PSXTableLocator>
+                  <PSXTableRef name="RXIMAGE" alias="RXIMAGE"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="main" type="parent" repeatability="zeroOrMore" supportsSequencing="yes">
+                  <PSXField name="imgbody" showInSummary="no" showInPreview="no" forceBinary="yes" type="local" clearBinaryParam="yes">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>IMGDATA</column>
+                           <columnAlias>IMGDATA</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>binary</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="thumbody_size" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>THUMFILESIZE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="imgwidth" showInSummary="no" showInPreview="no" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>IMGWIDTH</column>
+                           <columnAlias>IMGWIDTH</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="imgalign" showInSummary="no" showInPreview="no" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>IMGALIGN</column>
+                           <columnAlias>IMGALIGN</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>25</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="imgbody_size" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>IMGFILESIZE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="imgheight" showInSummary="no" showInPreview="no" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>IMGHEIGHT</column>
+                           <columnAlias>IMGHEIGHT</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="thumbody_filename" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>THUMFILENAME</column>
+                           <columnAlias>THUMFILENAME</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="abstractcontent" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>ABSTRACTCONTENT</column>
+                           <columnAlias>IMGABSTRACT</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="thumwidth" showInSummary="no" showInPreview="no" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>THUMWIDTH</column>
+                           <columnAlias>THUMWIDTH</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="thumbody_type" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>THUMMIMETYPE</column>
+                           <columnAlias>THUMMIMETYPE</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>128</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="thumbody_ext" showInSummary="no" showInPreview="no" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>THUMEXTENSION</column>
+                           <columnAlias>THUMEXTENSION</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>20</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="thumalign" showInSummary="no" showInPreview="no" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>THUMALIGN</column>
+                           <columnAlias>THUMALIGN</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>25</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="imgbody_filename" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>IMGFILENAME</column>
+                           <columnAlias>IMGFILENAME</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="thumbody" showInSummary="no" showInPreview="no" forceBinary="yes" type="local" clearBinaryParam="yes">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>THUMDATA</column>
+                           <columnAlias>THUMDATA</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>binary</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="imgbody_ext" showInSummary="no" showInPreview="no" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>IMGEXTENSION</column>
+                           <columnAlias>IMGEXTENSION</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>20</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="imgbody_type" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>IMGMIMETYPE</column>
+                           <columnAlias>IMGMIMETYPE</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>128</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="thumheight" showInSummary="no" showInPreview="no" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>THUMHEIGHT</column>
+                           <columnAlias>THUMHEIGHT</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="imgdisplaytitle" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXIMAGE</tableAlias>
+                           <column>IMGDISPLAYTITLE</column>
+                           <columnAlias>IMGDISPLAYTITLE</columnAlias>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>100</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper id="0" fieldSetRef="main">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentstartdate</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef name="sys_CalendarSimple"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentexpirydate</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef name="sys_CalendarSimple"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_reminderdate</FieldRef>
+                        <PSXUISet accessKey="R">
+                           <Label>
+                              <PSXDisplayText>Reminder Date:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_CalendarSimple"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>imgdisplaytitle</FieldRef>
+                        <PSXUISet accessKey="D">
+                           <Label>
+                              <PSXDisplayText>Image Display Title:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>abstractcontent</FieldRef>
+                        <PSXUISet accessKey="W">
+                           <Label>
+                              <PSXDisplayText>Image Abstract:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>imgbody</FieldRef>
+                        <PSXUISet accessKey="V">
+                           <Label>
+                              <PSXDisplayText>Image Upload:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_File">
+                              <PSXParam name="clearBinaryParam">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="1">
+                                       <text>imgbody_clear</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>imgbody_filename</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Image File Name:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="2">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>imgbody_type</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Image Mime Type:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="2">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>imgbody_size</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Image File Size (in bytes):</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="2">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>imgbody_ext</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>thumbody</FieldRef>
+                        <PSXUISet accessKey="X">
+                           <Label>
+                              <PSXDisplayText>Thumbnail Image Upload:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_File"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>thumbody_filename</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Thumbnail Image File Name:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="2">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>thumbody_type</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Thumbnail Image Type:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="2">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>thumbody_size</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Thumbnail Image File Size (in bytes):</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="2">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>thumalign</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>imgwidth</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>imgheight</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>imgalign</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>thumwidth</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>thumheight</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>thumbody_ext</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+         </PSXContentEditorPipe>
+         <PSXPageDataTank id="834">
+            <schemaSource>file:image.xml</schemaSource>
+            <actionTypeXmlField/>
+         </PSXPageDataTank>
+         <PSXRequestor id="0" directDataStream="no">
+            <requestPage>image</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <SectionLinkList>
+         <PSXUrlRequest name="bannerincludeurl">
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/generic/sys_MakeIntLink</name>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>../sys_ComponentSupport/component.xml</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>sys_componentname</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>cmp_banner</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+            </PSXExtensionCall>
+         </PSXUrlRequest>
+         <PSXUrlRequest name="userstatusincludeurl">
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/generic/sys_MakeIntLink</name>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>../sys_ComponentSupport/component.xml</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>sys_componentname</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>cmp_userstatus</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+            </PSXExtensionCall>
+         </PSXUrlRequest>
+         <PSXUrlRequest name="helpincludeurl">
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/generic/sys_MakeIntLink</name>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>../sys_ComponentSupport/component.xml</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>sys_componentname</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>ca_help</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+            </PSXExtensionCall>
+         </PSXUrlRequest>
+      </SectionLinkList>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+   </PSXContentEditor>
+   <PSXLogger id="0" logErrors="no" logServerStartStop="no" logAppStartStop="no" logAppStatistics="no" logExecutionPlan="no" logBasicUserActivity="no" logDetailedUserActivity="no" logFullUserActivity="no" logMultipleHandlers="no"/>
+   <PSXTraceInfo id="0" traceEnabled="no" traceOutputColumnWidth="80" traceTimestampOnlyEnabled="no" traceBasicRequestInfo="no" traceInitHttpVar="no" traceFileInfo="no" traceAppHandlerProc="no" traceAppSecurity="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceMapper="no" traceSessionInfo="no" traceDbPool="no" traceExitProc="no" traceExitExec="no" tracePostExitXml="no" tracePostExitCgi="no" traceOutputConv="no" traceResultSet="no" traceConditionalEval="no"/>
+   <PSXErrorWebPages id="829" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="830">
+      <providerType>SMTP</providerType>
+      <server>JB</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="locationX829">16</userProperty>
+   <userProperty name="locationX828">16</userProperty>
+   <userProperty name="schemaSourceReadOnly834">true</userProperty>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="schemaSourceReadOnly831">true</userProperty>
+   <userProperty name="locationY829">55</userProperty>
+   <userProperty name="locationY828">10</userProperty>
+   <userProperty name="pageDatatankFilePath834">C:\Rhythmyx40\rx_ceImage\src\image.xml</userProperty>
+   <userProperty name="locationX835">113</userProperty>
+   <userProperty name="locationX834">0</userProperty>
+   <userProperty name="locationX833">10</userProperty>
+   <userProperty name="locationX832">274</userProperty>
+   <userProperty name="pageDatatankSrcType834">1</userProperty>
+   <userProperty name="locationX830">16</userProperty>
+   <userProperty name="locationY835">192</userProperty>
+   <userProperty name="locationY834">0</userProperty>
+   <userProperty name="pageDatatankSrcType831">3</userProperty>
+   <userProperty name="locationY833">22</userProperty>
+   <userProperty name="locationY832">308</userProperty>
+   <userProperty name="locationY830">100</userProperty>
+</PSXApplication>

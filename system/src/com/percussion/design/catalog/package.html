@@ -1,0 +1,211 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   $Id: package.html 1.2 1999/01/13 15:50:35Z Administrator Release $
+
+   Version Labels  : $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 20000724_2_0 20000522_1_1 20000501_1_1 20000327_1_1 20000111_1_0 991227_1_0 991214_1_0 991213_1_0 991202_1_0 Release_1_0_Intl Release_10_1 Release_10 $
+
+   Locked By       : $Locker: $
+
+   Revision History:
+                     $Log: package.html $
+                     Revision 1.2  1999/01/13 15:50:35Z  Administrator
+                      added RCS headers
+-->
+
+<BODY>
+
+This specification describes the internal classes which are used by the E2
+server as well as the XML/HTML model used to send and receive catalog
+requests from external applications (such as browsers and the E2 designer).
+The Cataloger provides metadata about the various components E2 supports.
+The request categories supported for cataloging are:</P>
+
+<UL>
+<LI>data - provides metadata about back-end drivers, tables, etc. </LI>
+<LI>exit - provides metadata about the installed exit handlers </LI>
+<LI>mail - provides metadata about the installed mail providers </LI>
+<LI>security - provides metadata about the installed security providers </LI>
+<LI>xml - provides metadata about the internal XML documents the E2 server
+    utilizes</LI>
+</UL>
+
+<H2>Implementation Phases</H2>
+
+<P>For phase I, basic catalog support will be provided, with the following
+limits:</P>
+
+<UL>
+<LI>cataloging will not support looking up pre-defined metadata from the
+    object store</LI>
+</UL>
+
+<P>For version 1.0 release, the following will be added:</P>
+
+<UL>
+<LI>cataloger will search the object store</LI>
+</UL>
+
+<H2>Client - Server Interfaces</H2>
+<P>The client performs catalog requests through the E2 server. Let's define
+the interface between the client and server. Catalog requests will usually be
+performed by the E2 designer. To access the cataloger, the requestor must be
+logged in and have design access to the E2 server.</P>
+
+<H3>Request URL</H3>
+<P>The E2 server may be accessed through a hook mechanism, such as ISAPI
+filters or it may be accessed as a resource, such as ISAPI extensions.
+ISAPI filters use the following syntax:</P>
+<PRE><CODE>
+   protocol://host/E2Root/E2Design
+</CODE></PRE>
+
+ISAPI extensions use the following syntax:
+
+<PRE><CODE>
+   protocol://host/E2Root/E2Executable
+</CODE></PRE>
+
+<P>The components are defined as follows:</P>
+
+<UL>
+<LI>protocol - several protocols have been defined for communicating with
+    web servers. The most common protocol is the HyperText Transfer
+	Protocol (HTTP). To provide secure transmissions over HTTP, Secure HTTP
+	(HTTPS) is used. HTTPS uses SSL to encrypt all outgoing data and decrypt
+	all incoming data.</LI>
+<LI>host - the Internet host domain name or IP address of the web server.
+    For example, Percussion's Internet host domain name is www.percussion.com
+	and it's IP address is 38.227.11.4.</LI>
+<LI>E2Root - the root directory for E2 (usually where it's installed)</LI>
+<LI>E2Design - this is a magic directory name E2 reacts to. For the
+    production release, we'll want to use RealProductNameDesign in lieu of
+	E2Design.</LI>
+<LI>E2Executable - the name of the E2 executable module. For instance, the
+    ISAPI Extension name may be psxisapie.dll</LI></UL>
+
+<H3>Request Header</H3>
+
+<P>The special E2 request header, PS-Request-Type, must be set when
+performing catalog requests. The request type is one of the following:</P>
+<UL>
+<LI>design-catalog-data - data store catalog information is being
+    requested</LI>
+<LI>design-catalog-exit - exit handler catalog information is being
+    requested</LI>
+<LI>design-catalog-mail - mail provider catalog information is being
+    requested</LI>
+<LI>design-catalog-security - security provider catalog information is being
+    requested</LI>
+<LI>design-catalog-xml - internal xml catalog information is being
+    requested</LI>
+</UL>
+
+<H3>Request Body</H3>
+
+<P>Along with the URL, a request body is needed. This is done by performing a
+POST request. GET is not supported for cataloging. The body uses the 
+<CODE>text/xml</CODE> MIME type and contains the raw XML data for the request.
+A sample catalog request to get the ODBC server names is as follows:</P>
+
+<PRE><CODE>
+   Content-Type: text/xml
+
+   &lt;?xml version="1.0" standalone="yes"?&gt;
+   &lt;PSXServerCatalog&gt;
+      &lt;driverName&gt;ODBC&lt;/driverName&gt;
+   &lt;/PSXServerCatalog&gt;
+</CODE></PRE>
+
+<P>The XML descriptions of the various catalog requests are explained in
+their corresponding Java interfaces. In particular, a CatalogHandler is
+defined for each type of catalog request. To see the format of the XML
+request, review the corresponding catalog handler's documentation.
+Knowledge of the XML format is not required by clients as this is dealt
+with by the catalog handler. The supported request types, and their
+corresponding handlers are:</P>
+<TABLE BORDER="1">
+<TR><TH>Request Category</TH><TH>Request Type</TH><TH>Handler</TH></TR>
+<TR><TD>data</TD>
+    <TD>Driver</TD>
+    <TD>PSDriverCatalogHandler</TD></TR>
+<TR><TD>data</TD>
+    <TD>DriverSupport</TD>
+    <TD>PSDriverSupportCatalogHandler</TD></TR>
+<TR><TD>data</TD>
+    <TD>Server</TD>
+    <TD>PSServerCatalogHandler</TD></TR>
+<TR><TD>data</TD>
+    <TD>Database</TD>
+    <TD>PSDatabaseCatalogHandler</TD></TR>
+<TR><TD>data</TD>
+    <TD>Schema</TD>
+    <TD>PSSchemaCatalogHandler</TD></TR>
+<TR><TD>data</TD>
+    <TD>Table</TD>
+    <TD>PSTableCatalogHandler</TD></TR>
+<TR><TD>data</TD>
+    <TD>Column</TD>
+    <TD>PSColumnCatalogHandler</TD></TR>
+<TR><TD>data</TD>
+    <TD>UniqueKey</TD>
+    <TD>PSUniqueKeyCatalogHandler</TD></TR>
+<TR><TD>data</TD>
+    <TD>ForeignKey</TD>
+    <TD>PSForeignKeyCatalogHandler</TD></TR>
+<TR><TD>data</TD>
+    <TD>Index</TD>
+    <TD>PSIndexCatalogHandler</TD></TR>
+<TR><TD>exit</TD>
+    <TD>???</TD>
+    <TD>???</TD></TR>
+<TR><TD>mail</TD>
+    <TD>MailProvider</TD>
+    <TD>PSMailProviderCatalogHandler</TD></TR>
+<TR><TD>security</TD>
+    <TD>???</TD>
+    <TD>???</TD></TR>
+<TR><TD>xml</TD>
+    <TD>DocType</TD>
+    <TD>PSDocTypeCatalogHandler</TD></TR>
+</TABLE>
+
+<H2>Java Interface</H2>
+
+<P>The Java interface to the cataloger is what will be used by the designer
+clients, such as the Visual Workbench. The request will be received by the
+E2 server and passed on to the appropriate manager, based upon the request
+category. These are:</P>
+
+<TABLE BORDER="1">
+<TR><TH>Request Category</TH><TH>Manager</TH></TR>
+<TR><TD>data</TD>            <TD>Data Manager</TD></TR>
+<TR><TD>exit</TD>            <TD>Exit Manager</TD></TR>
+<TR><TD>mail</TD>            <TD>Mail Manager</TD></TR>
+<TR><TD>security</TD>        <TD>ACL Manager</TD></TR>
+<TR><TD>xml</TD>             <TD>E2 Server</TD></TR>
+</TABLE>
+
+</BODY>

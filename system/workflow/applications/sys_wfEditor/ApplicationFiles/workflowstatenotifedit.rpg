@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflowstatenotifedit (relatedlinks, componentname, workflowlinfourl, Subject, workflowid, notification, notificationid, Body )>
+<!ELEMENT Body (#PCDATA)>
+<!ELEMENT notificationid (#PCDATA)>
+<!ELEMENT Id (#PCDATA)>
+<!ELEMENT notification (Id )>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT Subject (#PCDATA)>
+<!ELEMENT workflowlinfourl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

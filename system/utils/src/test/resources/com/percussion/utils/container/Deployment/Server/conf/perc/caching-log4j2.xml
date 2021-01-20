@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<Configuration status="error" name="caching">
+  <Appenders>
+    <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${sys:catalina.base}/logs/caching.log"
+                 filePattern="logs/$${date:yyyy-MM}/caching-%d{MM-dd-yyyy}-%i.log.gz">
+      <PatternLayout>
+        <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [Thread: %t] %level [%c][%M] - %msg%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10 MB"/>
+      </Policies>
+    </RollingRandomAccessFile>
+  </Appenders>
+  <Loggers>
+    <Root level="error" includeLocation="true" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+    </Root>
+     <Logger name="com.percussion.delivery.caching" level="info" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+     
+     <!-- 
+     <Logger name="com.percussion.delivery.caching.impl.PSCacheRestService" level="info" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.caching.impl.PSCacheRestService" level="debug" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.caching.impl.PSCacheRestService" level="error" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.caching.impl.PSCacheRestService" level="warn" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+     -->
+  </Loggers>
+</Configuration>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+  <ModulePrefs title="Pages By Status" category="content,search" description="This gadget provides the ability to view all pages by site and workflow status." thumbnail="images/gadgetIconPagesByStatus.png" height="320">
+        <Require feature="perc_core"/>
+        <Require feature="settitle" />
+        <Require feature="perc_getDashboardColumn" />
+        <Require feature="minimessage" />
+        <Require feature="perc_jquery_ui"/>
+  </ModulePrefs>
+  <UserPref name="zrows" display_name="Display height" required="false" datatype="enum" default_value="10">
+        <EnumValue value="5" display_value="5 results"/>
+        <EnumValue value="10" display_value="10 results"/>
+        <EnumValue value="15" display_value="15 results"/>
+        <EnumValue value="20" display_value="20 results"/>
+        <EnumValue value="25" display_value="25 results"/>
+  </UserPref>
+  <Content type="html">
+     <![CDATA[
+
+    <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
+    <link rel="stylesheet" type="text/css" href="/cm/css/perc_default.css" />
+    <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+
+    <link href="/cm/widgets/PercDataTable/PercDataTable.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercSimpleMenu/PercSimpleMenu.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercTooltip/PercTooltip.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/css/perc_gadgets_search_criteria_panel.css" rel="stylesheet" type="text/css" />
+    <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+
+    <script src="/cm/jslib/jquery.dataTables.js"></script>
+    <!--script src="/cm/jslib/jquery.tools.min.js"></script-->
+	<script src="/cm/plugins/perc_utils.js" ></script>
+
+    <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
+    <script src="/cm/widgets/PercTooltip/PercTooltip.js"></script>
+    <script src="/cm/widgets/PercDataTable/PercDataTable.js"></script>
+    <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js" ></script>
+    <script src="/cm/widgets/PercPageDataTable/PercPageDataTable.js"></script>
+
+    <script src="/cm/plugins/perc_gadgets_search_criteria_panel.js" ></script>
+    <script src="/cm/plugins/perc_gadgets_search_criteria_dialog.js" ></script>
+
+    <script src="/cm/jslib/jquery.text-overflow.js"></script>
+    <script src="/cm/gadgets/repository/perc_workflow_status_gadget/perc_workflow_status_gadget.js"></script>
+
+    <script >
+        var loadingMsg = null;
+        var miniMsg = null;
+        var moduleId = __MODULE_ID__;
+        $(document).ready(function() {
+            miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
+            //loadingMsg = miniMsg.createStaticMessage("Loading...");
+        });
+
+        function _expandNotify(){
+            self.location.reload();
+        }
+    </script>
+    <style type = 'text/css'>
+        #perc-pagesbystatus-gadget table.perc-datatable .perc-checkbox,
+        #perc-pagesbystatus-gadget table.perc-datatable .perc-preview {
+            width: 20px !important;
+        }
+        #perc-pagesbystatus-gadget table.perc-datatable th,
+        #perc-pagesbystatus-gadget table.perc-datatable td {
+            width: 60px !important;
+            margin: 0px !important;
+            padding: 0px !important;
+        }
+        #perc-pagesbystatus-gadget table.perc-datatable div.perc-first {
+            padding-top:0px;
+            padding-bttom:0px;
+            vertical-align:middle;
+        }
+        #perc-pagesbystatus-gadget table.perc-datatable th,  #perc-pagesbystatus-gadget table.perc-datatable td {
+            padding-top:0px;
+            padding-bottom:0px;
+            vertical-align:middle;
+        }
+        #perc-pagesbystatus-gadget table.perc-datatable tr {
+            height:32px;
+        }
+
+        #perc-pagesbystatus-gadget .perc-datatable tbody td .perc-first, .perc-datatable-paginator-pages-label, #perc-pagesbystatus-gadget table.perc-datatable .perc-callback  {
+            font-weight:normal !important;
+        }
+        #perc-filter-section{
+            padding-top:10px;
+            padding-bottom:0px;
+            vertical-align:middle;
+            color:#0099CC;
+            font-family:Verdana;
+            font-size:11px;
+            font-weight:normal;
+            height:55px;
+        }
+        #perc-bulk-approve-button{
+            margin-left:0px;
+            height:22px;
+            width:66px;
+            margin-top: -4px;
+			cursor: pointer;
+        }
+        #perc-bulk-approve-button:hover{
+        }
+        #perc-bulk-approve-button.perc-disabled{
+        }
+        #perc-bulk-referesh-button{
+            padding-right:20px;
+        }
+        #perc-pagesbystatus-gadget table.perc-datatable th.perc-datatable-head-column.perc-last {
+            text-align: left;
+        }
+
+    </style>
+        <div id = 'perc-filter-section'>
+            <button id = 'perc-bulk-approve-button' class='btn btn-primary' style = 'float:left' title='Click to Approve the selected Pages'>Approve</button>
+            <div id="perc-search-criteria-panel-content" />
+            <div style = 'clear:both'> </div>
+        </div>
+    <div id="perc-pagesbystatus-gadget">
+
+    </div>
+     ]]>
+  </Content>
+</Module>

@@ -1,0 +1,2624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplication active="no" enabled="yes" hidden="no" id="1087" startPriority="0" version="2.0">
+	<name>sys_wfCloning</name>
+	<description>Support application for workflow cloning.</description>
+	<requestRoot>sys_wfCloning</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_jbr_1105389409048/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050110T153321049</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="54">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050120T104621423</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>admin1</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior/>
+	</PSXAcl>
+	<maxThreads>-1</maxThreads>
+	<maxRequestTime>-1</maxRequestTime>
+	<maxRequestsInQueue>-1</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>1</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="3273">
+		<name>UpdateStates</name>
+		<description>Update resource to set the deatils of the States of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3217">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3216">
+				<PSXBackEndTable id="3215">
+					<alias>STATES</alias>
+					<table>STATES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3213" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/ContentValid</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>CONTENTVALID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/SortOrder</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>SORTORDER</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/StateDesc</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATEDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/StateId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/StateName</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATENAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3214">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>CONTENTVALID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>SORTORDER</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATEDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATENAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3272">
+			<schemaSource>file:CloneStates.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateStates</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3275">
+		<name>UpdateRoles</name>
+		<description>Update resource to set the deatils of the Roles of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3223">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3222">
+				<PSXBackEndTable id="3221">
+					<alias>ROLES</alias>
+					<table>ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3219" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneRoles/Role/RoleDesc</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneRoles/Role/RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneRoles/Role/RoleName</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLENAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneRoles/Role/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3220">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLENAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3274">
+			<schemaSource>file:CloneRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3277">
+		<name>UpdateNotifications</name>
+		<description>Update resource to set the deatils of the Notifications of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3229">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3228">
+				<PSXBackEndTable id="3227">
+					<alias>NOTIFICATIONS</alias>
+					<table>NOTIFICATIONS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3225" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/Body</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>BODY</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/Description</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>DESCRIPTION</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/NotificationId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>NOTIFICATIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/Subject</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>SUBJECT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3226">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>NOTIFICATIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>BODY</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>DESCRIPTION</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>SUBJECT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3276">
+			<schemaSource>file:CloneNotifications.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateNotifications</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3279">
+		<name>UpdateTransitions</name>
+		<description>Update resource to set the deatils of the Transitions of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3235">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3234">
+				<PSXBackEndTable id="3233">
+					<alias>TRANSITIONS</alias>
+					<table>TRANSITIONS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3231" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/AgingInterval</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>AGINGINTERVAL</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/AgingType</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>AGINGTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/DefaultTransition</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>DEFAULTTRANSITION</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/SystemField</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>SYSTEMFIELD</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionActions</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONACTIONS</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionActionTrigger</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONACTIONTRIGGER</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionApprovalsRequired</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONAPPROVALSREQUIRED</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionCommentrequired</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONCOMMENTREQUIRED</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionDesc</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionFromStateId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONFROMSTATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionLabel</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONLABEL</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionPrompt</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONPROMPT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionRoles</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONROLES</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionToStateId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONTOSTATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionType</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3232">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>AGINGINTERVAL</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>AGINGTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>DEFAULTTRANSITION</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>SYSTEMFIELD</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONACTIONS</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONACTIONTRIGGER</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONAPPROVALSREQUIRED</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONCOMMENTREQUIRED</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONFROMSTATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONLABEL</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONPROMPT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONROLES</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONTOSTATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3278">
+			<schemaSource>file:CloneTransitions.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateTransitions</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3281">
+		<name>UpdateStateRoles</name>
+		<description>Update resource to set the deatils of the State Roles of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3241">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3240">
+				<PSXBackEndTable id="3239">
+					<alias>STATEROLES</alias>
+					<table>STATEROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3237" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/AdhocType</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ADHOCTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/AssignmentType</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ASSIGNMENTTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/IsNotifyOn</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ISNOTIFYON</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/ShowInInbox</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>SHOWININBOX</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/StateId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>STATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3238">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>STATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ADHOCTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ASSIGNMENTTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ISNOTIFYON</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>SHOWININBOX</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3280">
+			<schemaSource>file:CloneStateRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateStateRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3283">
+		<name>UpdateTransitionRoles</name>
+		<description>Update resource to set the deatils of the Transition Roles of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3247">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3246">
+				<PSXBackEndTable id="3245">
+					<alias>TRANSITIONROLES</alias>
+					<table>TRANSITIONROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3243" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionRoles/TransitionRole/TransitionId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionRoles/TransitionRole/TransitionRoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>TRANSITIONROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionRoles/TransitionRole/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3244">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>TRANSITIONROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3282">
+			<schemaSource>file:CloneTransitionRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateTransitionRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3285">
+		<name>UpdateTransitionNotifications</name>
+		<description>Update resource to set the deatils of the Transition Notifications of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3253">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3252">
+				<PSXBackEndTable id="3251">
+					<alias>TRANSITIONNOTIFICATIONS</alias>
+					<table>TRANSITIONNOTIFICATIONS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3249" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/AdditionalRecipientList</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>ADDITIONALRECIPIENTLIST</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/CCList</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>CCLIST</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/NotificationId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>NOTIFICATIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/StateRoleRecipientTypes</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>STATEROLERECIPIENTTYPES</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/TransitionId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/TransitionNotificationId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>TRANSITIONNOTIFICATIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3250">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>TRANSITIONNOTIFICATIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>ADDITIONALRECIPIENTLIST</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>CCLIST</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>NOTIFICATIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>STATEROLERECIPIENTTYPES</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3284">
+			<schemaSource>file:CloneTransitionNotifications.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateTransitionNotifications</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3287">
+		<name>QueryTransitions</name>
+		<description>Query resource to get the deatils of the Transitions of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3052">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3048">
+				<PSXBackEndTable id="3047">
+					<alias>TRANSITIONS</alias>
+					<table>TRANSITIONS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3050" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/AgingInterval</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>AGINGINTERVAL</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/AgingType</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>AGINGTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/DefaultTransition</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>DEFAULTTRANSITION</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/SystemField</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>SYSTEMFIELD</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionActions</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONACTIONS</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionActionTrigger</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONACTIONTRIGGER</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionApprovalsRequired</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONAPPROVALSREQUIRED</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionCommentrequired</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONCOMMENTREQUIRED</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionDesc</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionFromStateId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONFROMSTATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionLabel</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONLABEL</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionPrompt</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONPROMPT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionRoles</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONROLES</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionToStateId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONTOSTATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/TransitionType</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>TRANSITIONTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitions/Transition/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3049" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>TRANSITIONS</tableAlias>
+									<column>WORKFLOWAPPID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_workflowid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3286">
+			<schemaSource>file:CloneTransitions.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryTransitions</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3294">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3296">
+		<name>QueryStateRoles</name>
+		<description>Query resource to get the deatils of the State Roles of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3058">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3054">
+				<PSXBackEndTable id="3053">
+					<alias>STATEROLES</alias>
+					<table>STATEROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3056" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/AdhocType</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ADHOCTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/AssignmentType</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ASSIGNMENTTYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/IsNotifyOn</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ISNOTIFYON</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/ShowInInbox</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>SHOWININBOX</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/StateId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>STATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStateRoles/StateRole/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3055" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>STATEROLES</tableAlias>
+									<column>WORKFLOWAPPID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_workflowid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3295">
+			<schemaSource>file:CloneStateRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryStateRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3294">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3298">
+		<name>QueryTransitionRoles</name>
+		<description>Query resource to get the deatils of the Transition Roles of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3076">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3072">
+				<PSXBackEndTable id="3071">
+					<alias>TRANSITIONROLES</alias>
+					<table>TRANSITIONROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3074" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionRoles/TransitionRole/TransitionId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionRoles/TransitionRole/TransitionRoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>TRANSITIONROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionRoles/TransitionRole/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3073" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>TRANSITIONROLES</tableAlias>
+									<column>WORKFLOWAPPID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_workflowid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3297">
+			<schemaSource>file:CloneTransitionRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryTransitionRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3294">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3300">
+		<name>QueryTransitionNotifications</name>
+		<description>Query resource to get the deatils of the Transition Notifications of the given Workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3082">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3078">
+				<PSXBackEndTable id="3077">
+					<alias>TRANSITIONNOTIFICATIONS</alias>
+					<table>TRANSITIONNOTIFICATIONS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3080" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/AdditionalRecipientList</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>ADDITIONALRECIPIENTLIST</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/CCList</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>CCLIST</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/NotificationId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>NOTIFICATIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/StateRoleRecipientTypes</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>STATEROLERECIPIENTTYPES</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/TransitionId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>TRANSITIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/TransitionNotificationId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>TRANSITIONNOTIFICATIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneTransitionNotifications/TransitionNotification/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3079" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>TRANSITIONNOTIFICATIONS</tableAlias>
+									<column>WORKFLOWAPPID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_workflowid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3299">
+			<schemaSource>file:CloneTransitionNotifications.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryTransitionNotifications</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3294">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3302">
+		<name>QueryNotifications</name>
+		<description>Query resource to get the deatils of the Notifications of the given workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3259">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3255">
+				<PSXBackEndTable id="3254">
+					<alias>NOTIFICATIONS</alias>
+					<table>NOTIFICATIONS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3257" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/Body</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>BODY</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/Description</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>DESCRIPTION</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/NotificationId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>NOTIFICATIONID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/Subject</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>SUBJECT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneNotifications/Notification/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>NOTIFICATIONS</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3256" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>NOTIFICATIONS</tableAlias>
+									<column>WORKFLOWAPPID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_workflowid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3301">
+			<schemaSource>file:CloneNotifications.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryNotifications</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3294">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3304">
+		<name>QueryRoles</name>
+		<description>Query resource to get the deatils of the Roles of the given workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3265">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3261">
+				<PSXBackEndTable id="3260">
+					<alias>ROLES</alias>
+					<table>ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3263" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneRoles/Role/RoleDesc</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneRoles/Role/RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneRoles/Role/RoleName</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLENAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneRoles/Role/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3262" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>ROLES</tableAlias>
+									<column>WORKFLOWAPPID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_workflowid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3303">
+			<schemaSource>file:CloneRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3294">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3306">
+		<name>QueryStates</name>
+		<description>Query resource to get the deatils of the states of the given workflow.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3271">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3267">
+				<PSXBackEndTable id="3266">
+					<alias>STATES</alias>
+					<table>STATES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3269" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/ContentValid</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>CONTENTVALID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/SortOrder</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>SORTORDER</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/StateDesc</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATEDESC</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/StateId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/StateName</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>STATENAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneStates/State/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3268" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>STATES</tableAlias>
+									<column>WORKFLOWAPPID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_workflowid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3305">
+			<schemaSource>file:CloneStates.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryStates</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3294">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="yes" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="3200" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="3201">
+		<providerType>SMTP</providerType>
+		<server>&lt;Unspecified&gt;</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="3245sizeheight">200</userProperty>
+	<userProperty name="3233locationy">20</userProperty>
+	<userProperty name="3233locationx">20</userProperty>
+	<userProperty name="pageDatatankSrcType3299">2</userProperty>
+	<userProperty name="pageDatatankSrcType3297">2</userProperty>
+	<userProperty name="pageDatatankSrcType3295">2</userProperty>
+	<userProperty name="3251sizewidth">120</userProperty>
+	<userProperty name="3239locationy">20</userProperty>
+	<userProperty name="3239locationx">20</userProperty>
+	<userProperty name="pageDatatankSrcType3286">2</userProperty>
+	<userProperty name="pageDatatankSrcType3284">2</userProperty>
+	<userProperty name="pageDatatankSrcType3282">2</userProperty>
+	<userProperty name="pageDatatankSrcType3280">2</userProperty>
+	<userProperty name="3260sizeheight">200</userProperty>
+	<userProperty name="pageDatatankSrcType3278">2</userProperty>
+	<userProperty name="pageDatatankSrcType3276">2</userProperty>
+	<userProperty name="pageDatatankSrcType3274">2</userProperty>
+	<userProperty name="3227sizewidth">120</userProperty>
+	<userProperty name="pageDatatankSrcType3272">2</userProperty>
+	<userProperty name="pageDatatankSrcType3270">2</userProperty>
+	<userProperty name="3245readonly">false</userProperty>
+	<userProperty name="3221sizeheight">200</userProperty>
+	<userProperty name="pageDatatankSrcType3305">2</userProperty>
+	<userProperty name="3260sizewidth">120</userProperty>
+	<userProperty name="pageDatatankSrcType3303">2</userProperty>
+	<userProperty name="pageDatatankSrcType3301">2</userProperty>
+	<userProperty name="3221locationy">20</userProperty>
+	<userProperty name="3221locationx">20</userProperty>
+	<userProperty name="pageDatatankSrcType3264">2</userProperty>
+	<userProperty name="3251locationy">20</userProperty>
+	<userProperty name="3251locationx">20</userProperty>
+	<userProperty name="pageDatatankSrcType3258">2</userProperty>
+	<userProperty name="pageDatatankSrcType3248">2</userProperty>
+	<userProperty name="pageDatatankSrcType3242">2</userProperty>
+	<userProperty name="3239sizeheight">200</userProperty>
+	<userProperty name="3227locationy">20</userProperty>
+	<userProperty name="3227locationx">20</userProperty>
+	<userProperty name="pageDatatankSrcType3236">2</userProperty>
+	<userProperty name="3254readonly">false</userProperty>
+	<userProperty name="3260locationy">20</userProperty>
+	<userProperty name="pageDatatankSrcType3230">2</userProperty>
+	<userProperty name="3260locationx">20</userProperty>
+	<userProperty name="3215sizewidth">120</userProperty>
+	<userProperty name="3221readonly">false</userProperty>
+	<userProperty name="pageDatatankSrcType3224">2</userProperty>
+	<userProperty name="3245sizewidth">120</userProperty>
+	<userProperty name="pageDatatankSrcType3218">2</userProperty>
+	<userProperty name="pageDatatankSrcType3212">2</userProperty>
+	<userProperty name="3251sizeheight">200</userProperty>
+	<userProperty name="pageDatatankFilePath3299">C:\CodeTemp\MartinCloningFiles\CloneTransitionNotifications.dtd</userProperty>
+	<userProperty name="pageDatatankFilePath3297">C:\CodeTemp\MartinCloningFiles\CloneTransitionRoles.dtd</userProperty>
+	<userProperty name="pageDatatankFilePath3295">C:\CodeTemp\MartinCloningFiles\CloneStateRoles.dtd</userProperty>
+	<userProperty name="locationY3299">0</userProperty>
+	<userProperty name="locationY3298">473</userProperty>
+	<userProperty name="locationY3297">0</userProperty>
+	<userProperty name="locationY3296">375</userProperty>
+	<userProperty name="locationY3295">0</userProperty>
+	<userProperty name="locationY3294">299</userProperty>
+	<userProperty name="locationY3293">299</userProperty>
+	<userProperty name="locationY3292">299</userProperty>
+	<userProperty name="locationY3291">299</userProperty>
+	<userProperty name="locationY3290">299</userProperty>
+	<userProperty name="pageDatatankFilePath3286">C:\CodeTemp\MartinCloningFiles\CloneTransitions.dtd</userProperty>
+	<userProperty name="pageDatatankFilePath3284">C:\CodeTemp\MartinCloningFiles\CloneTransitionNotifications.dtd</userProperty>
+	<userProperty name="3215readonly">false</userProperty>
+	<userProperty name="locationY3289">299</userProperty>
+	<userProperty name="pageDatatankFilePath3282">C:\CodeTemp\MartinCloningFiles\CloneTransitionRoles.dtd</userProperty>
+	<userProperty name="locationY3288">299</userProperty>
+	<userProperty name="locationY3287">271</userProperty>
+	<userProperty name="pageDatatankFilePath3280">C:\CodeTemp\MartinCloningFiles\CloneStateRoles.dtd</userProperty>
+	<userProperty name="locationY3286">0</userProperty>
+	<userProperty name="locationY3285">707</userProperty>
+	<userProperty name="locationY3284">0</userProperty>
+	<userProperty name="locationY3283">596</userProperty>
+	<userProperty name="3266sizeheight">200</userProperty>
+	<userProperty name="locationY3282">0</userProperty>
+	<userProperty name="locationY3281">488</userProperty>
+	<userProperty name="locationY3280">0</userProperty>
+	<userProperty name="3215locationy">20</userProperty>
+	<userProperty name="3215locationx">20</userProperty>
+	<userProperty name="locationX3299">357</userProperty>
+	<userProperty name="locationX3298">51</userProperty>
+	<userProperty name="locationX3297">357</userProperty>
+	<userProperty name="locationX3296">34</userProperty>
+	<userProperty name="pageDatatankFilePath3278">C:\CodeTemp\MartinCloningFiles\CloneTransitions.dtd</userProperty>
+	<userProperty name="locationX3295">342</userProperty>
+	<userProperty name="locationX3294">304</userProperty>
+	<userProperty name="pageDatatankFilePath3276">C:\CodeTemp\MartinCloningFiles\CloneNotifications.dtd</userProperty>
+	<userProperty name="locationX3293">304</userProperty>
+	<userProperty name="locationX3292">304</userProperty>
+	<userProperty name="pageDatatankFilePath3274">C:\CodeTemp\MartinCloningFiles\CloneRoles.dtd</userProperty>
+	<userProperty name="locationX3291">304</userProperty>
+	<userProperty name="locationX3290">304</userProperty>
+	<userProperty name="locationY3279">388</userProperty>
+	<userProperty name="pageDatatankFilePath3272">C:\CodeTemp\MartinCloningFiles\CloneStates.dtd</userProperty>
+	<userProperty name="locationY3278">0</userProperty>
+	<userProperty name="locationY3277">286</userProperty>
+	<userProperty name="pageDatatankFilePath3270">C:\CodeTemp\MartinCloningFiles\CloneStates.dtd</userProperty>
+	<userProperty name="locationY3276">0</userProperty>
+	<userProperty name="locationY3275">183</userProperty>
+	<userProperty name="locationY3274">0</userProperty>
+	<userProperty name="locationY3273">63</userProperty>
+	<userProperty name="locationY3272">0</userProperty>
+	<userProperty name="locationY3271">10</userProperty>
+	<userProperty name="3227sizeheight">200</userProperty>
+	<userProperty name="locationY3270">0</userProperty>
+	<userProperty name="pageDatatankFilePath3305">C:\CodeTemp\MartinCloningFiles\CloneStates.dtd</userProperty>
+	<userProperty name="locationX3289">304</userProperty>
+	<userProperty name="pageDatatankFilePath3303">C:\CodeTemp\MartinCloningFiles\CloneRoles.dtd</userProperty>
+	<userProperty name="locationX3288">304</userProperty>
+	<userProperty name="locationX3287">4</userProperty>
+	<userProperty name="pageDatatankFilePath3301">C:\CodeTemp\MartinCloningFiles\CloneNotifications.dtd</userProperty>
+	<userProperty name="locationX3286">342</userProperty>
+	<userProperty name="locationX3285">374</userProperty>
+	<userProperty name="locationY3306">4</userProperty>
+	<userProperty name="locationX3284">0</userProperty>
+	<userProperty name="locationY3305">0</userProperty>
+	<userProperty name="locationX3283">369</userProperty>
+	<userProperty name="locationY3304">76</userProperty>
+	<userProperty name="locationX3282">0</userProperty>
+	<userProperty name="locationY3303">0</userProperty>
+	<userProperty name="pageDatatankFilePath3264">C:\CodeTemp\MartinCloningFiles\CloneRoles.dtd</userProperty>
+	<userProperty name="locationX3281">375</userProperty>
+	<userProperty name="locationY3302">179</userProperty>
+	<userProperty name="locationX3280">0</userProperty>
+	<userProperty name="locationY3269">24</userProperty>
+	<userProperty name="locationY3301">0</userProperty>
+	<userProperty name="locationY3268">24</userProperty>
+	<userProperty name="locationY3300">573</userProperty>
+	<userProperty name="locationY3267">0</userProperty>
+	<userProperty name="locationY3265">10</userProperty>
+	<userProperty name="locationY3264">0</userProperty>
+	<userProperty name="locationY3263">24</userProperty>
+	<userProperty name="3233sizewidth">120</userProperty>
+	<userProperty name="locationY3262">24</userProperty>
+	<userProperty name="locationY3261">0</userProperty>
+	<userProperty name="locationX3279">380</userProperty>
+	<userProperty name="locationX3278">0</userProperty>
+	<userProperty name="locationX3277">373</userProperty>
+	<userProperty name="locationX3276">0</userProperty>
+	<userProperty name="pageDatatankFilePath3258">C:\CodeTemp\MartinCloningFiles\CloneNotifications.dtd</userProperty>
+	<userProperty name="3266sizewidth">120</userProperty>
+	<userProperty name="locationX3275">386</userProperty>
+	<userProperty name="locationX3274">0</userProperty>
+	<userProperty name="locationX3273">379</userProperty>
+	<userProperty name="locationX3272">0</userProperty>
+	<userProperty name="locationX3271">10</userProperty>
+	<userProperty name="3239readonly">false</userProperty>
+	<userProperty name="locationX3270">341</userProperty>
+	<userProperty name="locationY3259">10</userProperty>
+	<userProperty name="locationY3258">0</userProperty>
+	<userProperty name="locationY3257">24</userProperty>
+	<userProperty name="locationY3256">24</userProperty>
+	<userProperty name="locationY3255">0</userProperty>
+	<userProperty name="locationY3253">10</userProperty>
+	<userProperty name="locationY3252">0</userProperty>
+	<userProperty name="locationY3250">24</userProperty>
+	<userProperty name="locationX3306">166</userProperty>
+	<userProperty name="locationX3305">341</userProperty>
+	<userProperty name="locationX3304">77</userProperty>
+	<userProperty name="locationX3303">342</userProperty>
+	<userProperty name="locationX3302">24</userProperty>
+	<userProperty name="locationX3269">211</userProperty>
+	<userProperty name="locationX3301">348</userProperty>
+	<userProperty name="locationX3268">77</userProperty>
+	<userProperty name="locationX3300">105</userProperty>
+	<userProperty name="locationX3267">0</userProperty>
+	<userProperty name="schemaSourceReadOnly3299">true</userProperty>
+	<userProperty name="locationX3265">10</userProperty>
+	<userProperty name="pageDatatankFilePath3248">C:\CodeTemp\MartinCloningFiles\CloneTransitionNotifications.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly3297">true</userProperty>
+	<userProperty name="locationX3264">342</userProperty>
+	<userProperty name="locationX3263">211</userProperty>
+	<userProperty name="schemaSourceReadOnly3295">true</userProperty>
+	<userProperty name="locationX3262">77</userProperty>
+	<userProperty name="locationX3261">0</userProperty>
+	<userProperty name="locationY3249">24</userProperty>
+	<userProperty name="locationY3248">0</userProperty>
+	<userProperty name="pageDatatankFilePath3242">C:\CodeTemp\MartinCloningFiles\CloneTransitionRoles.dtd</userProperty>
+	<userProperty name="locationY3247">10</userProperty>
+	<userProperty name="locationY3246">0</userProperty>
+	<userProperty name="locationY3244">24</userProperty>
+	<userProperty name="locationY3243">24</userProperty>
+	<userProperty name="locationY3242">0</userProperty>
+	<userProperty name="locationY3241">10</userProperty>
+	<userProperty name="locationY3240">0</userProperty>
+	<userProperty name="locationX3259">10</userProperty>
+	<userProperty name="locationX3258">348</userProperty>
+	<userProperty name="locationX3257">228</userProperty>
+	<userProperty name="locationX3256">94</userProperty>
+	<userProperty name="locationX3255">0</userProperty>
+	<userProperty name="locationX3253">10</userProperty>
+	<userProperty name="pageDatatankFilePath3236">C:\CodeTemp\MartinCloningFiles\CloneStateRoles.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly3286">true</userProperty>
+	<userProperty name="locationX3252">357</userProperty>
+	<userProperty name="schemaSourceReadOnly3284">true</userProperty>
+	<userProperty name="locationX3250">236</userProperty>
+	<userProperty name="locationY3238">24</userProperty>
+	<userProperty name="schemaSourceReadOnly3282">true</userProperty>
+	<userProperty name="locationY3237">24</userProperty>
+	<userProperty name="locationY3236">0</userProperty>
+	<userProperty name="pageDatatankFilePath3230">C:\CodeTemp\MartinCloningFiles\CloneTransitions.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly3280">true</userProperty>
+	<userProperty name="locationY3235">10</userProperty>
+	<userProperty name="locationY3234">0</userProperty>
+	<userProperty name="locationY3232">24</userProperty>
+	<userProperty name="locationY3199">10</userProperty>
+	<userProperty name="locationY3231">24</userProperty>
+	<userProperty name="locationY3230">0</userProperty>
+	<userProperty name="locationX3249">169</userProperty>
+	<userProperty name="locationX3248">0</userProperty>
+	<userProperty name="locationX3247">10</userProperty>
+	<userProperty name="locationX3246">357</userProperty>
+	<userProperty name="schemaSourceReadOnly3278">true</userProperty>
+	<userProperty name="locationX3244">236</userProperty>
+	<userProperty name="locationX3243">169</userProperty>
+	<userProperty name="schemaSourceReadOnly3276">true</userProperty>
+	<userProperty name="locationX3242">0</userProperty>
+	<userProperty name="locationX3241">10</userProperty>
+	<userProperty name="pageDatatankFilePath3224">C:\CodeTemp\MartinCloningFiles\CloneNotifications.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly3274">true</userProperty>
+	<userProperty name="locationX3240">372</userProperty>
+	<userProperty name="locationY3229">10</userProperty>
+	<userProperty name="locationY3228">0</userProperty>
+	<userProperty name="schemaSourceReadOnly3272">true</userProperty>
+	<userProperty name="locationY3226">24</userProperty>
+	<userProperty name="schemaSourceReadOnly3270">true</userProperty>
+	<userProperty name="locationY3225">24</userProperty>
+	<userProperty name="locationY3224">0</userProperty>
+	<userProperty name="locationY3223">10</userProperty>
+	<userProperty name="locationY3222">0</userProperty>
+	<userProperty name="3266locationy">20</userProperty>
+	<userProperty name="3266locationx">20</userProperty>
+	<userProperty name="3254sizeheight">200</userProperty>
+	<userProperty name="locationY3220">24</userProperty>
+	<userProperty name="3266readonly">false</userProperty>
+	<userProperty name="schemaSourceReadOnly3305">true</userProperty>
+	<userProperty name="locationX3238">236</userProperty>
+	<userProperty name="schemaSourceReadOnly3303">true</userProperty>
+	<userProperty name="locationX3237">169</userProperty>
+	<userProperty name="locationX3236">0</userProperty>
+	<userProperty name="schemaSourceReadOnly3301">true</userProperty>
+	<userProperty name="locationX3235">10</userProperty>
+	<userProperty name="pageDatatankFilePath3218">C:\CodeTemp\MartinCloningFiles\CloneRoles.dtd</userProperty>
+	<userProperty name="locationX3234">372</userProperty>
+	<userProperty name="locationX3232">236</userProperty>
+	<userProperty name="3251readonly">false</userProperty>
+	<userProperty name="3221sizewidth">120</userProperty>
+	<userProperty name="locationX3199">16</userProperty>
+	<userProperty name="locationX3231">169</userProperty>
+	<userProperty name="schemaSourceReadOnly3264">true</userProperty>
+	<userProperty name="locationX3230">0</userProperty>
+	<userProperty name="locationY3219">24</userProperty>
+	<userProperty name="locationY3218">0</userProperty>
+	<userProperty name="pageDatatankFilePath3212">C:\CodeTemp\MartinCloningFiles\CloneStates.dtd</userProperty>
+	<userProperty name="locationY3217">10</userProperty>
+	<userProperty name="locationY3216">0</userProperty>
+	<userProperty name="locationY3214">24</userProperty>
+	<userProperty name="locationY3213">24</userProperty>
+	<userProperty name="3233readonly">false</userProperty>
+	<userProperty name="locationY3212">0</userProperty>
+	<userProperty name="3215sizeheight">200</userProperty>
+	<userProperty name="3254sizewidth">120</userProperty>
+	<userProperty name="locationX3229">10</userProperty>
+	<userProperty name="locationX3228">366</userProperty>
+	<userProperty name="locationX3226">236</userProperty>
+	<userProperty name="locationX3225">169</userProperty>
+	<userProperty name="schemaSourceReadOnly3258">true</userProperty>
+	<userProperty name="locationX3224">0</userProperty>
+	<userProperty name="locationX3223">10</userProperty>
+	<userProperty name="locationX3222">372</userProperty>
+	<userProperty name="locationX3220">225</userProperty>
+	<userProperty name="locationY3201">100</userProperty>
+	<userProperty name="locationY3200">55</userProperty>
+	<userProperty name="3245locationy">20</userProperty>
+	<userProperty name="3245locationx">20</userProperty>
+	<userProperty name="locationX3219">158</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="locationX3218">0</userProperty>
+	<userProperty name="locationX3217">10</userProperty>
+	<userProperty name="locationX3216">373</userProperty>
+	<userProperty name="schemaSourceReadOnly3248">true</userProperty>
+	<userProperty name="locationX3214">226</userProperty>
+	<userProperty name="locationX3213">159</userProperty>
+	<userProperty name="locationX3212">0</userProperty>
+	<userProperty name="schemaSourceReadOnly3242">true</userProperty>
+	<userProperty name="schemaSourceReadOnly3236">true</userProperty>
+	<userProperty name="locationX3201">16</userProperty>
+	<userProperty name="locationX3200">16</userProperty>
+	<userProperty name="schemaSourceReadOnly3230">true</userProperty>
+	<userProperty name="3227readonly">false</userProperty>
+	<userProperty name="3260readonly">false</userProperty>
+	<userProperty name="3254locationy">20</userProperty>
+	<userProperty name="schemaSourceReadOnly3224">true</userProperty>
+	<userProperty name="3254locationx">20</userProperty>
+	<userProperty name="3233sizeheight">200</userProperty>
+	<userProperty name="schemaSourceReadOnly3218">true</userProperty>
+	<userProperty name="schemaSourceReadOnly3212">true</userProperty>
+	<userProperty name="3239sizewidth">120</userProperty>
+</PSXApplication>

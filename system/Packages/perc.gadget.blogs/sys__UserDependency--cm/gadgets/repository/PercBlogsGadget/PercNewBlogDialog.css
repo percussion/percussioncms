@@ -1,0 +1,90 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.perc-select-blog-location{
+    float : left;
+    width : 350px;
+}
+
+.perc-select-title-name-and-link {
+    position : absolute;
+    right : 30px;
+}
+
+div.perc-wizard.ui-dialog-content {
+    padding : 13px 30px 13px 30px;
+}
+
+div.perc-wizard-content-0.perc-wizard-content-step {
+    margin : 64px 0 0 0;
+}
+
+div.perc-wizard-content-1.perc-wizard-content-step {
+    margin : 20px 0 0 0;
+}
+
+div.perc-wizard .perc-new-blog-input, div.perc-blog-text-link-error-message, div.perc-blog-page-name-error-message, div.perc-blog-title-error-message, div.perc-blog-page-name-unique-error-message {
+    padding-left : 11px;
+}
+
+div.perc-error-message {
+    padding-top : 0px;
+}
+
+div.perc-wizard .perc-new-blog-input input {
+    margin : 0px;
+}
+
+div.perc-wizard div.perc-scrollable {
+    width : 400px;
+    margin : 0px;
+}
+
+div.perc-blog-index-page-template-label, div.perc-blog-post-page-template-label, div.perc-blog-index-page-template-error-message, div.perc-blog-post-page-template-error-message {
+    padding-left : 40px;
+}
+
+div.perc-error-message {
+    display : none;
+    color : red;
+}
+
+div.perc-select-page-name-ui, div.perc-select-blog-text-link-ui {
+    margin-top : 12px;
+}
+
+div.perc-select-blog-location-tree {
+    background-image : url(/cm/images/finderTreeBackground.jpg);
+}
+
+div.perc-label {
+    padding-bottom:8px;
+}
+
+div.perc-blog-post-page-template-label {
+    padding-top : 20px;
+}
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

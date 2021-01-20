@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplication active="no" enabled="yes" hidden="no" id="1054" startPriority="0" version="2.0">
+	<name>psx_cerffImage</name>
+	<description>Creates Image Image Items</description>
+	<requestRoot>psx_cerffImage</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_stevegolinder_1069270167127/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20031119T141812897</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="82">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050318T182226595</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Anonymous</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior/>
+   </PSXAcl>
+	<maxThreads>-1</maxThreads>
+	<maxRequestTime>-1</maxRequestTime>
+	<maxRequestsInQueue>-1</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>1</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="38">
+		<name>purge</name>
+		<description>Deletes Image Content Items</description>
+		<transactionType>forAllRows</transactionType>
+		<PSXUpdatePipe id="1412">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="1411">
+				<PSXBackEndTable id="1409">
+					<alias>RXS_CT_SHAREDIMAGE</alias>
+					<table>RXS_CT_SHAREDIMAGE</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="1410">
+					<alias>RXS_CT_SHARED</alias>
+					<table>RXS_CT_SHARED</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="1406" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXSingleHtmlParameter id="0">
+						<name>sys_contentid</name>
+					</PSXSingleHtmlParameter>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+						<column>CONTENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXSingleHtmlParameter id="0">
+						<name>sys_contentid</name>
+					</PSXSingleHtmlParameter>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXS_CT_SHARED</tableAlias>
+						<column>CONTENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="yes" allowInserts="no" allowUpdates="no" id="1407">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+						<column>CONTENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXS_CT_SHARED</tableAlias>
+						<column>CONTENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="37">
+			<schemaSource>file:Rx40_RXBRIEF.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>purge</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXContentEditor contentType="307" iconSource="2" iconValue="img1_ext" enableRelatedContent="no" objectType="1" workflowId="5">
+		<PSXDataSet id="41">
+			<name>template</name>
+			<description>default template</description>
+			<transactionType>none</transactionType>
+			<PSXContentEditorPipe id="0">
+				<name>cePipe</name>
+				<description>This is the ContentEditorLocaDef for Default ContentType</description>
+				<InputDataExits>
+					<PSXExtensionCallSet id="39">
+						<PSXExtensionCall id="1630">
+							<name>Java/global/percussion/generic/sys_FileInfo</name>
+						</PSXExtensionCall>
+						<PSXExtensionCall id="0">
+							<name>Java/global/percussion/exit/sys_imageInfoExtractor</name>
+						</PSXExtensionCall>
+						<PSXExtensionCall id="0">
+							<name>Java/global/percussion/extensions/general/sys_CopyParameter</name>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>img1_filename</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>filename</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+						</PSXExtensionCall>
+						<PSXExtensionCall id="0">
+							<name>Java/global/percussion/extensions/general/sys_CopyParameter</name>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>img1_ext</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>sys_suffix</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+						</PSXExtensionCall>
+					</PSXExtensionCallSet>
+				</InputDataExits>
+				<PSXContainerLocator>
+					<PSXTableSet>
+						<PSXTableLocator>
+							<PSXBackEndCredential id="275">
+								<alias>contentCredential</alias>
+								<datasource/>
+							</PSXBackEndCredential>
+						</PSXTableLocator>
+						<PSXTableRef alias="RXS_CT_IMAGE" name="RXS_CT_IMAGE"/>
+					</PSXTableSet>
+				</PSXContainerLocator>
+				<PSXContentEditorMapper>
+					<SystemFieldExcludes>
+						<FieldRef>sys_pathname</FieldRef>
+						<FieldRef>sys_pubdate</FieldRef>
+					</SystemFieldExcludes>
+					<SharedFieldIncludes>
+						<SharedFieldGroupName>shared</SharedFieldGroupName>
+						<SharedFieldGroupName>sharedimage</SharedFieldGroupName>
+						<SharedFieldExcludes>
+						   <FieldRef>keywords</FieldRef>
+						   <FieldRef>body</FieldRef>
+						   <FieldRef>callout</FieldRef>
+						</SharedFieldExcludes>
+					</SharedFieldIncludes>
+					<PSXFieldSet name="RXS_CT_Image" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+						<PSXFieldSet name="shared" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+							<PSXField forceBinary="no" modificationType="user" name="filename" showInPreview="no" showInSummary="no" type="shared">
+								<DataType/>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+						</PSXFieldSet>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img_category" showInPreview="yes" showInSummary="no" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_IMAGE</tableAlias>
+									<column>IMG_CATEGORY</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXPropertySet>
+								<PSXProperty locked="no" name="mayHaveInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+							</PSXPropertySet>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+							<PSXField forceBinary="no" modificationType="user" name="img1_type" showInPreview="yes" showInSummary="no" type="shared">
+								<DataType/>
+								<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+							<PSXField forceBinary="no" modificationType="user" name="img1_filename" showInPreview="yes" showInSummary="no" type="shared">
+								<DataType/>
+								<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+						</PSXFieldSet>
+					</PSXFieldSet>
+					<PSXUIDefinition>
+						<PSXDisplayMapper fieldSetRef="RXS_CT_Image" id="0">
+							<PSXDisplayMapping>
+								<FieldRef>sys_title</FieldRef>
+                        <PSXUISet accessKey="s"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>displaytitle</FieldRef>
+                        <PSXUISet accessKey="t"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_contentstartdate</FieldRef>
+                        <PSXUISet accessKey="D"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_contentexpirydate</FieldRef>
+                        <PSXUISet accessKey="e"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_reminderdate</FieldRef>
+                        <PSXUISet accessKey="r"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>description</FieldRef>
+                        <PSXUISet accessKey="D"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img1</FieldRef>
+                        <PSXUISet accessKey="m"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img1_filename</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img1_ext</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img1_type</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img1_height</FieldRef>
+								<PSXUISet>
+									<ReadOnlyRules>
+										<PSXRule boolean="and">
+											<PSXConditional id="2">
+												<variable>
+													<PSXTextLiteral id="0">
+														<text>1</text>
+													</PSXTextLiteral>
+												</variable>
+												<operator>=</operator>
+												<value>
+													<PSXTextLiteral id="0">
+														<text>1</text>
+													</PSXTextLiteral>
+												</value>
+												<boolean>AND</boolean>
+											</PSXConditional>
+										</PSXRule>
+									</ReadOnlyRules>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img1_width</FieldRef>
+								<PSXUISet>
+									<ReadOnlyRules>
+										<PSXRule boolean="and">
+											<PSXConditional id="2">
+												<variable>
+													<PSXTextLiteral id="0">
+														<text>1</text>
+													</PSXTextLiteral>
+												</variable>
+												<operator>=</operator>
+												<value>
+													<PSXTextLiteral id="0">
+														<text>1</text>
+													</PSXTextLiteral>
+												</value>
+												<boolean>AND</boolean>
+											</PSXConditional>
+										</PSXRule>
+									</ReadOnlyRules>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img_alt</FieldRef>
+                        <PSXUISet accessKey="x"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img_category</FieldRef>
+                        <PSXUISet accessKey="g">
+									<Label>
+										<PSXDisplayText>Image Category:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="3349" name="sys_DropDownSingle"/>
+									<ErrorLabel>
+										<PSXDisplayText>Image Category:</PSXDisplayText>
+									</ErrorLabel>
+									<PSXChoices sortOrder="ascending" type="global">
+										<Key>324</Key>
+									</PSXChoices>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img1_size</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>filename</FieldRef>
+                        <PSXUISet accessKey="N"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_suffix</FieldRef>
+                        <PSXUISet accessKey="S"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img2</FieldRef>
+                        <PSXUISet accessKey="M"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img2_filename</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img2_ext</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img2_type</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img2_height</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img2_width</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img2_size</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet accessKey="m"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet accessKey="w"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_lang</FieldRef>
+                        <PSXUISet accessKey="l"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_currentview</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>webdavowner</FieldRef>
+                        <PSXUISet accessKey="O"/>
+							</PSXDisplayMapping>
+						</PSXDisplayMapper>
+					</PSXUIDefinition>
+				</PSXContentEditorMapper>
+            <userProperties>
+               <userProperty name="Control86_Dependency1630">sys_FileInfo</userProperty>
+               <userProperty name="Control86_DependencyIds">1630</userProperty>
+               <userProperty name="Control76_DependencyIds">1630</userProperty>
+               <userProperty name="Control76_Dependency1630">sys_FileInfo</userProperty>
+            </userProperties>
+			</PSXContentEditorPipe>
+			<PSXPageDataTank id="40">
+				<schemaSource>file:unspecified</schemaSource>
+				<actionTypeXmlField/>
+			</PSXPageDataTank>
+			<PSXRequestor directDataStream="no" id="0">
+				<requestPage>rffImage</requestPage>
+				<SelectionParams/>
+				<ValidationRules/>
+				<characterEncoding>UTF-8</characterEncoding>
+				<MimeProperties>
+					<html>
+						<PSXTextLiteral id="0">
+							<text>text/html</text>
+						</PSXTextLiteral>
+					</html>
+					<htm>
+						<PSXTextLiteral id="0">
+							<text>text/html</text>
+						</PSXTextLiteral>
+					</htm>
+				</MimeProperties>
+			</PSXRequestor>
+		</PSXDataSet>
+		<PSXValidationRules maxErrorsToStop="10"/>
+		<PSXInputTranslations/>
+		<PSXOutputTranslations/>
+		<PSXWorkflowInfo type="inclusionary" values="4,5"/>
+	</PSXContentEditor>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="35" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="36">
+		<providerType>SMTP</providerType>
+		<server>//Ben</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="pageDatatankSrcType40">-1</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="locationX41">29</userProperty>
+	<userProperty name="locationY39">22</userProperty>
+	<userProperty name="locationY38">60</userProperty>
+	<userProperty name="locationY36">100</userProperty>
+	<userProperty name="locationY35">55</userProperty>
+	<userProperty name="locationY34">10</userProperty>
+	<userProperty name="schemaSourceReadOnly37">true</userProperty>
+	<userProperty name="pageDatatankSrcType37">3</userProperty>
+	<userProperty name="locationX39">10</userProperty>
+	<userProperty name="locationX38">178</userProperty>
+	<userProperty name="locationX36">16</userProperty>
+	<userProperty name="locationY41">55</userProperty>
+	<userProperty name="locationX35">16</userProperty>
+	<userProperty name="locationX34">16</userProperty>
+	<userProperty name="schemaSourceReadOnly40">false</userProperty>
+</PSXApplication>

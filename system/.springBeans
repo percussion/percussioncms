@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<configs>
+		<config>ear/config/spring/local-beans.xml</config>
+		<config>ear/config/spring/server-beans.xml</config>
+		<config>ear/config/spring/beans.xml</config>
+	</configs>
+	<configSets>
+		<configSet>
+			<name>Local</name>
+			<allowBeanDefinitionOverriding>false</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>ear/config/spring/beans.xml</config>
+				<config>ear/config/spring/local-beans.xml</config>
+			</configs>
+		</configSet>
+		<configSet>
+			<name>Server</name>
+			<allowBeanDefinitionOverriding>false</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>ear/config/spring/beans.xml</config>
+				<config>ear/config/spring/server-beans.xml</config>
+			</configs>
+		</configSet>
+	</configSets>
+</beansProjectDescription>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+ <New id="ConnectionFactory" class="org.eclipse.jetty.plus.jndi.Resource">
+  <Arg></Arg>
+    <Arg>java:/ConnectionFactory</Arg>
+    <Arg>
+     <New class="org.apache.activemq.ActiveMQConnectionFactory">
+       <Arg>vm://localhost?brokerConfig=xbean:activemq.xml</Arg>
+    </New>
+    </Arg>
+  </New>
+ <New id="NotificationQueue" class="org.eclipse.jetty.plus.jndi.Resource">
+    <Arg></Arg>
+    <Arg>queue/notificationQueue</Arg>
+    <Arg>
+     <New class="org.apache.activemq.command.ActiveMQQueue">
+       <Arg>PERCUSSION.NOTIFICATIONS</Arg>
+    </New>
+    </Arg>
+</New>
+ <New id="PublishQueue" class="org.eclipse.jetty.plus.jndi.Resource">
+  <Arg></Arg>
+    <Arg>queue/publishQueue</Arg>
+    <Arg>
+     <New class="org.apache.activemq.command.ActiveMQQueue">
+       <Arg>PERCUSSION.PUBLISHING</Arg>
+    </New>
+    </Arg>
+  </New>
+  <New id="EmailQueue" class="org.eclipse.jetty.plus.jndi.Resource">
+    <Arg></Arg>
+    <Arg>queue/emailQueue</Arg>
+    <Arg>
+     <New class="org.apache.activemq.command.ActiveMQQueue">
+       <Arg>PERCUSSION.EMAIL</Arg>
+    </New>
+    </Arg>
+  </New>
+</Configure>

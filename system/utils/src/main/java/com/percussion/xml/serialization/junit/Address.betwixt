@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<info primitiveTypes="element">
+  <element name="address">
+  <element name="street" property="street"/>
+  <element name="addressline2" property="addressLine2"/>
+  <element name="town" property="town"/>
+  <element name="state" property="state"/>
+  <element name="zip" property="zip"/>
+  </element>
+</info>

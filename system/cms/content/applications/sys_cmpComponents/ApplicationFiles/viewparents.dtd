@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT viewparents (parentsfor, list* )>
+<!ELEMENT list (componentname, componentid, componentdesc, componenturl, editurl, componentdisplayname )>
+<!ELEMENT componentdisplayname (#PCDATA)>
+<!ELEMENT editurl (#PCDATA)>
+<!ELEMENT componenturl (#PCDATA)>
+<!ELEMENT componentdesc (#PCDATA)>
+<!ELEMENT componentid (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT parentsfor (#PCDATA)>

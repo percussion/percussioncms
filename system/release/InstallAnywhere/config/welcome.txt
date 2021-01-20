@@ -1,0 +1,3 @@
+Welcome to the InstallShield wizard for Rhythmyx.
+
+The InstallShield wizard will guide you through the installation steps.

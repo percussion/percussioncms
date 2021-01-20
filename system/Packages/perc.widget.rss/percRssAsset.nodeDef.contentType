@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>A widget to read rss feeds.</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>359</id>
+    <internal-name>percRssAsset</internal-name>
+    <label>RSS</label>
+    <mandatory>false</mandatory>
+    <name>rx:percRssAsset</name>
+    <new-request>../psx_cepercRssAsset/percRssAsset.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercRssAsset/percRssAsset.html</query-request>
+    <raw-content-type>359</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CONTENTSTATUS">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="HIB_VER">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTSTATEID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTCHECKOUTUSERNAME">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTLASTMODIFIER">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTLASTMODIFIEDDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTTYPEID">
+         <jdbctype>BIGINT</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTCREATEDDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="LASTTRANSITIONDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="NEXTAGINGDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTCREATEDBY">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTSTARTDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTEXPIRYDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTAGINGTIME">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTPUBLISHDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTPOSTDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTPOSTDATETZ">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>35</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTPATHNAME">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONTENTSUFFIX">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="TITLE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CURRENTREVISION">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="TIPREVISION">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="EDITREVISION">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONLOCK">
+         <jdbctype>CHAR</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CLONEDPARENT">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REMINDERDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="STATEENTEREDDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="NEXTAGINGTRANSITION">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REPEATEDAGINGTRANSSTARTDATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="COMMUNITYID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="LOCALE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>16</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="OBJECTTYPE">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PUBLIC_REVISION">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+   </row>
+   <primarykey action="c">
+      <name>CONTENTID</name>
+   </primarykey>
+   <indexdefinitions>
+      <index action="c" isUnique="n" name="IX_CONSTAT_RECENT">
+         <name>CONTENTLASTMODIFIEDDATE</name>
+      </index>
+      <index action="c" isUnique="n" name="IX_CONSTAT_USER">
+         <name>CONTENTCHECKOUTUSERNAME</name>
+      </index>
+      <index action="c" isUnique="n" name="IX_CONSTAT_TITLE">
+         <name>TITLE</name>
+      </index>
+      <index action="c" isUnique="n" name="IX_CONSTAT_ITEMSTATE">
+         <name>CONTENTSTATEID</name>
+         <name>WORKFLOWAPPID</name>
+         <name>CONTENTID</name>
+      </index>
+      <index action="c" isUnique="n" name="IX_CONSTAT_AUTH">
+         <name>CONTENTCREATEDBY</name>
+      </index>
+      <index action="c" isUnique="n" name="IX_PUBLIC_REVISION">
+         <name>PUBLIC_REVISION</name>
+      </index>
+      <index action="c" isUnique="n" name="IX_CONSTAT_CURRTYPE">
+         <name>CONTENTTYPEID</name>
+         <name>CONTENTID</name>
+         <name>CURRENTREVISION</name>
+      </index>
+   </indexdefinitions>
+</table>

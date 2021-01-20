@@ -1,0 +1,34 @@
+<rxupgrade>
+	<module name="server" logfile="upgradeConvertCommunityVisibility.log">
+		<from major="5" minor="0" micro="-1" build="-1"/>
+		<to major="5" minor="7" micro="-1" build="-1"/>
+		<plugins>
+			<plugin name="ConvertCommunityVisibility">
+				<class>com.percussion.install.PSUpgradePluginConvertCommunityVisibility</class>
+				<data>
+					<!-- 
+					   Each update element indicates a single table to be scanned for community
+					   entries. The style attribute indicates whether the table is a join table,
+					   or a property table.
+					   
+					   All entries take a type attribute. The number in the type attribute is from
+					   the PSTypeEnum ordinal value. The name attribute indicates the table to 
+					   be scanned.
+					   
+					   Join tables have a tuple of the community and object id. The columns are
+					   specified by the objectid and community attributes.  
+					   
+					   Property tables are more complex. They have a column indicating the object
+					   id, plus a name and value column. In addition, the name column has a 
+					   particular name that indicates a community entry.
+					
+					   Scanning adds entries to the acl tables via the service. If the entries 
+					   already exist then they are left alone and not replaced. 
+					   -->
+					<update type="4" style="join" name="rxtestvariantcommunity"
+					      objectid="variantid" community="communityid" />
+            </data>
+			</plugin>
+		</plugins>
+	</module>
+</rxupgrade>

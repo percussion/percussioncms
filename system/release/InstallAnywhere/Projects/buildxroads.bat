@@ -1,0 +1,1 @@
+ismp %1\%2\release\installshield\projects\xroads\xroads.xml -build

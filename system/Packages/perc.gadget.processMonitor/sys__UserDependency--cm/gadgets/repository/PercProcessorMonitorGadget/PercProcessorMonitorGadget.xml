@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+    <ModulePrefs title="Process Monitor" category="content,search" description="Background process monitor gadget shows details of background processes" thumbnail="images/gadgetIconProcessMonitor.png" height="300">
+        <Require feature="perc_core"/>
+        <Require feature="settitle" />
+        <Require feature="perc_getDashboardColumn" />
+        <Require feature="minimessage" />
+        <Require feature="perc_jquery_ui"/>
+    </ModulePrefs>
+    <Content type="html">
+        <![CDATA[
+
+    <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
+    <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+    <script src="/cm/gadgets/repository/PercProcessorMonitorGadget/PercProcessorMonitorGadget.js" ></script>
+    <script >
+        var loadingMsg = null;
+        var miniMsg = null;
+        $(document).ready(function() {
+            miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
+            loadingMsg = miniMsg.createStaticMessage("Loading...");
+            $.renderProcessMonitor(percJQuery,true);
+        });
+
+        function _expandNotify(){
+            self.location.reload();
+        }
+    </script>
+     ]]>
+    </Content>
+</Module>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXObjectAclEntry (PSXKey, name, securityProviderType?, securityProviderInstance? )>
+<!ELEMENT securityProviderInstance (#PCDATA)>
+<!ELEMENT securityProviderType (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT SYSID (#PCDATA)>
+<!ELEMENT PSXKey (SYSID )>
+<!ATTLIST  PSXObjectAclEntry state CDATA #IMPLIED>
+<!ATTLIST PSXObjectAclEntry type (role | user | community | everyone ) "everyone">
+<!ATTLIST  PSXObjectAclEntry permissions CDATA #IMPLIED>
+<!ELEMENT PSXObjectAcl (PSXObjectAclEntry+ )>
+<!ATTLIST  PSXObjectAcl id CDATA #REQUIRED>
+<!ELEMENT ObjectAclList (PSXObjectAcl* )>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<DashboardContent>
+
+    <GadgetDef column="0" expanded="true" gadgetType="cm1_welcome_gadget/perc_welcome_gadget.xml"/>
+    
+    <GadgetDef column="1" expanded="false" gadgetType="perc_activity_gadget">
+        <UserPref name="site">Site1</UserPref>
+        <UserPref name="duration_UserPref">days</UserPref>
+        <UserPref name="zrows">10</UserPref>
+        <UserPref name="duration_value">5</UserPref>
+    </GadgetDef>
+    
+    <GadgetDef column="1" expanded="true" gadgetType="perc_bulk_file_upload_gadget" />
+    
+    <GadgetDef column="1" expanded="false" gadgetType="perc_comments_gadget">
+        <UserPref name="site">Site1</UserPref>
+        <UserPref name="zrows">5</UserPref>
+    </GadgetDef>
+    
+    <GadgetDef column="1" expanded="false" gadgetType="perc_effectiveness_gadget">
+        <UserPref name="site">Site1</UserPref>
+        <UserPref name="duration_UserPref">days</UserPref>
+        <UserPref name="duration_value">5</UserPref>
+        <UserPref name="usage_value">pageviews</UserPref>
+        <UserPref name="value_threshold">0</UserPref>
+    </GadgetDef>
+    
+    <GadgetDef column="0" expanded="true" gadgetType="perc_google_setup_gadget" />
+    
+    <GadgetDef column="1" expanded="false" gadgetType="perc_seo_gadget/perc_seo_status_gadget.xml">
+        <UserPref name="status">Pending</UserPref>
+        <UserPref name="site">Site1</UserPref>
+        <UserPref name="ykeyword">sample</UserPref>
+        <UserPref name="zeverity">MEDIUM</UserPref>
+        <UserPref name="zrows">15</UserPref>
+    </GadgetDef>
+    
+    <GadgetDef column="1" expanded="false" gadgetType="perc_traffic_gadget">
+        <UserPref name="0-usage">pageviews</UserPref>
+        <UserPref name="a-site">Site1</UserPref>
+        <UserPref name="b-dateFrom">01/15/2011</UserPref>
+        <UserPref name="c-dateTo">04/15/2011</UserPref>
+        <UserPref name="d-granularity">MONTH</UserPref>
+        <UserPref name="e0-activity-title">false</UserPref>
+        <UserPref name="e1-activity-new">true</UserPref>
+        <UserPref name="e2-activity-updates">true</UserPref>
+        <UserPref name="e3-activity-takedowns">false</UserPref>
+        <UserPref name="f1-livePages-title">false</UserPref>
+        <UserPref name="f2-livePages">false</UserPref>
+        <UserPref name="zrows">20</UserPref>
+    </GadgetDef>
+    
+    <GadgetDef column="1" expanded="false" gadgetType="perc_workflow_status_gadget">
+        <UserPref name="status">Pending</UserPref>
+        <UserPref name="site">@all</UserPref>
+        <UserPref name="zrows">5</UserPref>
+    </GadgetDef>
+    
+    <GadgetDef column="0" expanded="true" gadgetType="PercFormTrackerGadget" />
+    
+</DashboardContent>

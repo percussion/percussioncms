@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Historylookup (historyentry*, contentid )>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT historyentry (historylastmodifieddate*, historytransitionid*, historyid*, historycontentid*, historyvalid*, historystate*, historyeventtime*, historytransitiondesc*, historyactor*, historycheckoutusername*, historylastmodifiername*, historyworkflowappid*, historyrolename*, historytitle* )>
+<!ELEMENT historytitle (#PCDATA)>
+<!ELEMENT historyrolename (#PCDATA)>
+<!ELEMENT historyworkflowappid (#PCDATA)>
+<!ELEMENT historylastmodifiername (#PCDATA)>
+<!ELEMENT historycheckoutusername (#PCDATA)>
+<!ELEMENT historyactor (#PCDATA)>
+<!ELEMENT historytransitiondesc (#PCDATA)>
+<!ELEMENT historyeventtime (#PCDATA)>
+<!ELEMENT historystate (#PCDATA)>
+<!ELEMENT historyvalid (#PCDATA)>
+<!ELEMENT historycontentid (#PCDATA)>
+<!ELEMENT historyid (#PCDATA)>
+<!ELEMENT historytransitionid (#PCDATA)>
+<!ELEMENT historylastmodifieddate (#PCDATA)>

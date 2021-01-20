@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXServerConfiguration id="1">
+   <Authentications>
+      <PSXAuthentication name="Sun ONE" scheme="simple">
+         <Credentials>
+            <User appendBaseDn="no" attributeName="cn">Directory Manager</User>
+            <Password encrypted="yes">/eUAHlL7NB6qYLz/pPGizPlzz70jVPJs</Password>
+         </Credentials>
+      </PSXAuthentication>
+      <PSXAuthentication name="Sun ONE - passwordfilter" scheme="simple">
+         <Credentials>
+            <User appendBaseDn="no" attributeName="cn">Directory Manager</User>
+            <Password encrypted="yes">3ZYZkvNCWzxGMpalrzkXJgi4ttEiJ8tN</Password>
+         </Credentials>
+         <FilterExtensionName>Java/testing/tst_passwordFilter</FilterExtensionName>
+      </PSXAuthentication>
+      <PSXAuthentication name="Sun ONE - ui/bottomup/reference" scheme="simple">
+         <Credentials>
+            <User appendBaseDn="no" attributeName="cn">Directory Manager</User>
+            <Password encrypted="yes">XebWx95lJx9p1ThJIjRr1mGRFOvQe6+M</Password>
+         </Credentials>
+      </PSXAuthentication>
+      <PSXAuthentication name="Sun ONE - ui/topdown/reference" scheme="simple">
+         <Credentials>
+            <User appendBaseDn="no" attributeName="cn">Directory Manager</User>
+            <Password encrypted="yes">XebWx95lJx9p1ThJIjRr1mGRFOvQe6+M</Password>
+         </Credentials>
+         <FilterExtensionName>Java/global/percussion/filter/defaultPasswordFilter</FilterExtensionName>
+      </PSXAuthentication>
+   </Authentications>
+</PSXServerConfiguration>

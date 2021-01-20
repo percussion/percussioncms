@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<CacheConfig>
+   <CacheRegion name="www.abc.com">
+      <Provider plugin="com.percussion.delivery.caching.tests.fakeProviders.PSFakeProviderPlugin7">
+         <Properties>
+            <Property name="user">foo</Property>
+            <Property name="password">blah</Property>
+            <Property name="cp">78999</Property>
+         </Properties>
+      </Provider>
+      <WebProperties>
+         <WebProperty>webProp1</WebProperty>
+         <WebProperty>webProp2</WebProperty>
+      </WebProperties>
+   </CacheRegion>
+</CacheConfig>

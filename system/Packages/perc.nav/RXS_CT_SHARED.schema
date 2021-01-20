@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="RXS_CT_SHARED">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="FILENAME">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>512</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DISPLAYTITLE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>512</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="KEYWORDS">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1024</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DESCRIPTION">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1024</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CALLOUT">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="BODY">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DEFAULT_VARIANTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="WEBDAVOWNER">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+   </row>
+   <primarykey action="c">
+      <name>CONTENTID</name>
+      <name>REVISIONID</name>
+   </primarykey>
+</table>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXUserOptions>
+	<PSXOptions category="display">
+		<!-- Background color for applet non=client area. -->
+		<PSXOption context="general" optionid="backgroundcolor">0x4867a7</PSXOption>
+		<!-- Selection or highlight color for navigation pane and main display area. -->
+		<PSXOption context="general" optionid="highlightcolor">0x4867a7</PSXOption>
+		<!-- Selection or highlight color for navigation pane and main display area. -->
+		<PSXOption context="general" optionid="foregroundcolor">0x000000</PSXOption>
+		<!-- Selection or highlight color for navigation pane and main display area. -->
+		<PSXOption context="general" optionid="heading_foregroundcolor">0xffffff</PSXOption>
+		<!-- Font settings for all the text rendered in the applet -->
+		<PSXOption context="general" optionid="font" classname="com.percussion.cx.PSFont">
+			<PSXFont>
+				<Style>plain</Style>
+				<Size>11</Size>
+				<Face>Tahoma</Face>
+			</PSXFont>
+		</PSXOption>
+		<PSXOption context="general" optionid="menu_foregroundcolor">0xffffff</PSXOption>
+		<!-- Font settings for all the menu text rendered in the applet -->
+		<PSXOption classname="com.percussion.cx.PSFont" context="general" optionid="menu_font">
+			<PSXFont>
+				<Style>plain</Style>
+				<Size>12</Size>
+				<Face>Tahoma</Face>
+			</PSXFont>
+		</PSXOption>
+	</PSXOptions>
+</PSXUserOptions>

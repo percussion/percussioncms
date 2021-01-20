@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplication active="no" enabled="yes" hidden="no" id="21" startPriority="0" version="2.0">
+	<name>rxs_GlobalTemplates</name>
+	<description/>
+	<requestRoot>rxs_GlobalTemplates</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_CHANAK_1085614303650/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20040521T064245651</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="122">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050323T144127795</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+	</PSXAcl>
+	<maxThreads>-1</maxThreads>
+	<maxRequestTime>-1</maxRequestTime>
+	<maxRequestsInQueue>-1</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>1</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXLogger id="0" logAppStartStop="yes" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="228" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="229">
+		<providerType>SMTP</providerType>
+		<server>//jbr:1032</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="locationY229">100</userProperty>
+	<userProperty name="locationY231">7</userProperty>
+	<userProperty name="locationY228">55</userProperty>
+	<userProperty name="locationY230">154</userProperty>
+	<userProperty name="locationY227">10</userProperty>
+	<userProperty name="locationX231">132</userProperty>
+	<userProperty name="locationX229">16</userProperty>
+	<userProperty name="locationX228">16</userProperty>
+	<userProperty name="locationX230">106</userProperty>
+	<userProperty name="externalInterfaceConnectedFigures231"/>
+	<userProperty name="locationX227">16</userProperty>
+	<userProperty name="externalInterfaceConnectedFigures230"/>
+	<userProperty name="externalInterfaceKey231">231</userProperty>
+	<userProperty name="externalInterfaceHtml231">C:\Documents and Settings\Administrator\Desktop\ff551\templatesCI1\CI_Demo_pages\newVersions\corporate-global-template.html</userProperty>
+	<userProperty name="externalInterfaceKey230">230</userProperty>
+	<userProperty name="externalInterfaceHtml230">C:\rx56\rx20050318\rxs_GlobalTemplates\enterprise-global-template.html</userProperty>
+</PSXApplication>

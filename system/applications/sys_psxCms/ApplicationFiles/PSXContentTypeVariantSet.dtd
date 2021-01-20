@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXContentTypeVariant (PSXKey, VariantDescription, StyleSheetName, AssemblyUrl, Description?, LocationPrefix?, PublishWhen?, PSXVariantSlotTypeSet )>
+<!ELEMENT PSXVariantSlotTypeSet (#PCDATA)>
+<!ELEMENT PublishWhen (#PCDATA)>
+<!ELEMENT LocationPrefix (#PCDATA)>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT AssemblyUrl (#PCDATA)>
+<!ELEMENT StyleSheetName (#PCDATA)>
+<!ELEMENT VariantDescription (#PCDATA)>
+<!ELEMENT PSXKey (CONTENTTYPEID, VARIANTID )>
+<!ELEMENT VARIANTID (#PCDATA)>
+<!ELEMENT CONTENTTYPEID (#PCDATA)>
+<!ATTLIST PSXKey isPersisted (yes | no ) "yes">
+<!ATTLIST PSXKey needGenerateId (yes | no ) "no">
+<!ATTLIST  PSXContentTypeVariant outputFormat CDATA #REQUIRED>
+<!ATTLIST  PSXContentTypeVariant aaType CDATA #REQUIRED>
+<!ELEMENT PSXContentTypeVariantSet (PSXContentTypeVariant* )>
+<!ATTLIST  PSXContentTypeVariantSet className CDATA #REQUIRED>
+<!ATTLIST  PSXContentTypeVariantSet ordered CDATA #REQUIRED>
+<!ATTLIST  PSXContentTypeVariantSet state CDATA #REQUIRED>

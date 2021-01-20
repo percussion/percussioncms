@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This file contains the DTD that defines the data required to render a search
+   query page.
+-->
+
+<!-- Include the DisplayChoices.dtd -->
+<!ENTITY % ContentEditor SYSTEM "sys_ContentEditor.dtd">
+%ContentEditor;                
+
+<!--
+   The element containing all query definitions.
+   
+   searchMode - ui hint to indicate if a page should initially be displayed in simple
+   or advanced mode.
+   xml:lang - the current user's locale
+-->
+<!ELEMENT SearchQueryDef (ResultSettings, FullTextSearchSettings?, 
+  SearchFields, KeywordDependencies, ExtraSettings)>
+<!ATTLIST SearchQueryDef 
+	searchMode (simple | advanced) "simple"
+	xml:lang CDATA #REQUIRED
+>
+
+<!--
+	Each field defines one of the settings that controls how search results are 
+  returned.
+-->
+<!ELEMENT ResultSettings (DisplayField*)>
+
+<!--
+   Each field controls a property used to control full text search options.  
+   Ommitted if the search is not configured to use the external search engine.
+   Fields are grouped by those that show in simple mode, and those that show
+   in advanced.
+-->
+<!ELEMENT FullTextSearchSettings (Simple, Advanced)>
+
+<!--
+	Each FTS property to display in simple mode
+-->
+<!ELEMENT Simple (DisplayField*)>
+
+<!--
+	Each FTS property to display in advanced mode
+-->
+<!ELEMENT Advanced (DisplayField*)>
+
+<!--
+	Each field defines a parametric search field.
+-->
+<!ELEMENT SearchFields (DisplayField*)>
+
+<!--
+	Hidden fields used to pass data thru to the next resource.
+-->
+<!ELEMENT ExtraSettings (DisplayField*)>
+
+<!--
+	Defines all data required for cascading keyword support.  Any field with 
+  keyword support will be listed as a child KeywordField.
+-->
+<!ELEMENT KeywordDependencies (KeywordField*)>
+
+<!--
+	Defines all possible keyword data for a single field.  
+	
+	name - the name of the field
+-->
+<!ELEMENT KeywordField (ParentField+, KeywordData+, DefaultChoices?)>
+<!ATTLIST KeywordField
+	name CDATA #REQUIRED
+>
+
+<!--
+	Defines the name of a parent field upon which this fields choices may depend.  Value is the name of the parent field.
+-->
+<!ELEMENT ParentField (#PCDATA)>
+
+<!--
+	Defines the choices available for a particular combination of parent field
+  values.  Each Key child element specifies a value of the corresponding parent
+  field.  Thus the first key of each KeywordData entry corresponds to the value
+  of the first ParentField, the second key specifies the value for the second 
+  ParentField and so on.  Each possible combination of available parent field 
+  values result in a single KeywordData element.
+-->
+<!ELEMENT KeywordData (Key+, DisplayChoices)>
+
+<!--
+	Defines the value of the corresponding ParentField
+-->
+<!ELEMENT Key (#PCDATA)>
+
+<!--
+	Defines the choices available if no parents are defined or if a parent 
+  selection has not yet been made.
+-->
+<!ELEMENT DefaultChoices (DisplayChoices)>
+

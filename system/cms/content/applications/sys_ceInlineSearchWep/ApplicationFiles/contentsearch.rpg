@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT contentsearch (author*, contenttitle*, enddate*, startdate*, contenttypesurl* )>
+<!ELEMENT contenttypesurl (#PCDATA)>
+<!ELEMENT startdate (#PCDATA)>
+<!ELEMENT enddate (#PCDATA)>
+<!ELEMENT contenttitle (#PCDATA)>
+<!ELEMENT author (#PCDATA)>

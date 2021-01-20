@@ -1,0 +1,14 @@
+.center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.widgel-ping .content {
+    color: #000000;
+    font-family: Verdana,sans-serif;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.widgel-ping .result {
+}

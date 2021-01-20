@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplicationIDTypes>
+   <PSXDeployableObject>
+      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rxs_Support_ce" dependencyType="Shared" displayName="rxs_Support_ce" isIncluded="no" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+      <RequiredClasses/>
+   </PSXDeployableObject>
+   <PSXApplicationIDTypesResource resourceName="rxs_PageVariantLookup (rxs_PageVariantLookup)">
+      <PSXApplicationIDTypesElement elementName="Selector">
+         <PSXApplicationIDTypeMapping type="sys_none" value="1">
+            <PSXAppConditionalContext type="value">
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>PSX_TEMPLATE</tableAlias>
+                           <column>OUTPUTFORMAT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXNumericLiteral id="0">
+                           <number>1</number>
+                           <format>#,##0.###</format>
+                        </PSXNumericLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+   </PSXApplicationIDTypesResource>
+</PSXApplicationIDTypes>

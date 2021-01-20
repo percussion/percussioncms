@@ -1,0 +1,315 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {
+border:0;
+font:inherit;
+vertical-align:baseline;
+margin:0;
+padding:0;
+}
+
+body {
+line-height:1;
+overflow:hidden;
+background:#000;
+position:relative;
+font:14px/1 "Lucida Console","Lucida Sans Typewriter",Monaco,"Bitstream Vera Sans Mono",monospace;
+color:#FFF;
+text-shadow:0 -1px 0 #000;
+}
+
+ol,ul {
+list-style:none;
+}
+
+table {
+border-collapse:collapse;
+border-spacing:0;
+}
+
+caption,th,td {
+text-align:left;
+font-weight:400;
+vertical-align:middle;
+}
+
+q,blockquote {
+quotes:none;
+}
+
+q:before,q:after,blockquote:before,blockquote:after {
+content:none;
+}
+
+a img {
+border:none;
+}
+
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary {
+display:block;
+}
+
+html,body {
+height:100%;
+}
+
+a {
+color:#FFF;
+text-decoration: none;
+}
+
+
+#percwrapper {
+-webkit-transition:height 240ms ease,width 240ms ease,margin 240ms ease;
+-moz-transition:height 240ms ease,width 240ms ease,margin 240ms ease;
+-ms-transition:height 240ms ease,width 240ms ease,margin 240ms ease;
+-o-transition:height 240ms ease,width 240ms ease,margin 240ms ease;
+transition:height 240ms ease,width 240ms ease,margin 240ms ease;
+-webkit-box-shadow:0 0 12px 1px #000;
+-moz-box-shadow:0 0 12px 1px #000;
+box-shadow:0 0 12px 1px #000;
+-webkit-transform:translate3d(0,0,0);
+position:relative;
+background-color:#FFF;
+width:100%;
+height:100%;
+display:block;
+margin:0 auto;
+}
+
+#percwrapper iframe {
+width:100%;
+height:100%;
+}
+
+#percwrapper.noTransitions {
+-webkit-transition:0;
+-moz-transition:0;
+-ms-transition:0;
+-o-transition:0;
+transition:0;
+}
+
+#percwrapper .keyboard-bg {
+-webkit-transform:translateY(-20px);
+-moz-transform:translateY(-20px);
+-ms-transform:translateY(-20px);
+-o-transform:translateY(-20px);
+transform:translateY(-20px);
+display:block;
+opacity:0;
+position:absolute;
+top:0;
+bottom:0;
+right:0;
+left:0;
+pointer-events:none;
+}
+
+
+body>header {
+background: #133c55;
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+-ms-transform: rotate(90deg);
+position: absolute;
+top: 146px;
+width: 351px;
+height: 47px;
+z-index: 104;
+right: -136px;
+border-radius: 5px;
+opacity: .4;
+}
+
+body>header:hover {
+background: #133c55;
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+-ms-transform: rotate(90deg);
+position: absolute;
+top: 146px;
+width: 351px;
+height: 47px;
+z-index: 104;
+right: -136px;
+border-radius: 5px;
+opacity: 1;
+}
+
+body>section {
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:3;
+}
+
+#percsize {
+-webkit-transition: padding 240ms ease;
+-moz-transition: padding 240ms ease;
+-ms-transition: padding 240ms ease;
+-o-transition: padding 240ms ease;
+transition: padding 240ms ease;
+-webkit-box-shadow: 0 1px 0 #363738;
+-moz-box-shadow: 0 1px 0 #363738;
+box-shadow: 0 1px 0 #363738;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+border-radius: 4px;
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+-ms-transform: rotate(-90deg);
+border: 1px solid #040404;
+text-transform: uppercase;
+text-align: center;
+min-width: 80px;
+display: block;
+margin: 9px 0 0 8px;
+padding: 3px 1px 3px;
+position: absolute;
+top: -6px;
+left: -4px;
+font-size: 11px;
+font-family: Verdana,Arial,sans-serif;
+}
+
+header .keyboard,.cssrefresh,.percclose {
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+-ms-transform: rotate(90deg);
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+border-radius: 4px;
+color: #EEE;
+position: absolute;
+z-index: 1;
+top: 9px;
+right: 4px;
+}
+
+
+#percdevices {
+font-family: FontAwesome;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+border-radius: 4px;
+-webkit-transition: all 200ms ease;
+-moz-transition: all 200ms ease;
+-ms-transition: all 200ms ease;
+-o-transition: all 200ms ease;
+transition: all 200ms ease;
+position: absolute;
+z-index: 1;
+top: 8px;
+left: 31%;
+margin-left: -52px;
+}
+
+#percdevices a:first-of-type {
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+-ms-transform: rotate(-90deg);
+-webkit-border-radius:4px 0 0 4px;
+-moz-border-radius:4px 0 0 4px;
+-ms-border-radius:4px 0 0 4px;
+-o-border-radius:4px 0 0 4px;
+border-radius:4px 0 0 4px;
+}
+
+#percdevices a:last-of-type {
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+-ms-transform: rotate(-90deg);
+-webkit-border-radius:0 4px 4px 0;
+-moz-border-radius:0 4px 4px 0;
+-ms-border-radius:0 4px 4px 0;
+-o-border-radius:0 4px 4px 0;
+border-radius:0 4px 4px 0;
+border-right-width:1px;
+}
+
+#percdevices a {
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+-ms-transform: rotate(-90deg);
+text-decoration:none;
+border-right-width:0;
+float:left;
+display:block;
+width:40px;
+height:30px;
+outline:none;
+}
+
+#percdevices a:hover {
+/*background:linear-gradient(#2c2c2c,#242424);*/
+}
+
+#percdevices span {
+text-align:center;
+display:block;
+width:40px;
+height:30px;
+opacity:.75;
+}
+
+#percdevices .perc-large-tablet-landscape{
+font-size: 24px;
+left:0px;
+}
+
+#percdevices .perc-large-tablet-portrait span{
+font-size: 24px;
+left:0px;
+}
+
+#percdevices .perc-small-tablet-portrait span{
+left:0px;
+}
+
+#percdevices .perc-small-tablet-landscape span{
+left:0px;
+}
+
+#percdevices .perc-smartphone-portrait span{
+left:0px;
+}
+
+#percdevices .perc-smartphone-landscape span{
+left:0px;
+}
+
+#percdevices .perc-large-tablet-landscape span,#percdevices .perc-small-tablet-landscape span,#percdevices .perc-smartphone-landscape span {
+-webkit-transform:rotate(90deg);
+-moz-transform:rotate(90deg);
+-ms-transform:rotate(90deg);
+-o-transform:rotate(90deg);
+transform:rotate(90deg);
+}
+
+#percdevices .perc-auto span {
+text-indent:0;
+line-height:30px;
+text-transform:uppercase;
+font-size:10px;
+font-family: Verdana,Arial,sans-serif;
+}
+
+#percwrapper iframe::-webkit-scrollbar,#wrapper iframe::-moz-scrollbar {
+display:none;
+}
+
+header .keyboard a.active,header .keyboard a:active,.cssrefresh a.active,.cssrefresh a:active,.percclose a.active,.percclose a:active,#percdevices a.active,#percdevices a:active {
+outline:none;
+}
+
+header .keyboard a.active span,header .keyboard a:active span,.cssrefresh a.active span,.cssrefresh a:active span,.percclose a.active span,.percclose a:active span,#percdevices a.active span,#percdevices a:active span {
+opacity:1;
+}
+

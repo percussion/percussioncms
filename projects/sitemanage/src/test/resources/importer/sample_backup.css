@@ -1,0 +1,66 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) Percussion Software, Inc.  1999-2020
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *      Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+@import "importA.css";
+
+body {
+    line-height: 1;
+    margin: 3px 0 0 3px;
+    position: relative;
+}
+.relativeWithDots {
+    background: url("../images/fondo_1.png") repeat-x scroll 0 0 transparent;
+    border: 1px solid #DADADA;
+    height: 122px;
+    padding: 7px 0 0 7px;
+    position: relative;
+    width: 953px;
+}
+.relativeWithoutDots {
+    background: url("/images/corner.modulo.png") no-repeat scroll 0 0 transparent;
+}
+.relativeWithoutSlash a {
+    background-image: url("images/boton.gif");
+    background-repeat: no-repeat;
+}
+.absolute {
+    background: url("http://generic:9980/images/back.modulo.png") repeat-x scroll 0 0 transparent;
+    color: #FFFFFF;
+    float: left;
+}
+.moduloHead .der p {
+    border-bottom: 1px solid #7BBBDF;
+    color: #C3E3F0;
+}
+.invalidUrl {
+    background: url("c:/malformed/url.png/") no-repeat scroll 0 0 transparent;
+}
+.binary {
+    background: url(data:image/gif;base64,AABgASAAAIMAAVCBxIsKDBgwgTDkzAsKGAhxARSJx4oKJFAxgzFtjIkYDHjwNCigxAsiSAkygDAgA7) no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    height: 41px;
+}

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDefData appName="psx_cepercArchiveList" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_cepercArchiveList/percArchiveList.html" id="351" label="Archives" name="percArchiveList" typeId="351"/>
+   <PSXContentEditor contentType="351" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsArchiveList.png" objectType="1" producesResource="no" workflowId="6">
+      <PSXDataSet id="768">
+         <name>percArchiveList</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_PERCARCHIVELIST1" name="CT_PERCARCHIVELIST1"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+                  <FieldRef>sys_contentpostdate</FieldRef>
+               </SystemFieldExcludes>
+               <SharedFieldIncludes>
+                  <SharedFieldGroupName>queryfields</SharedFieldGroupName>
+               </SharedFieldIncludes>
+               <PSXFieldSet name="CT_percArchiveList" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="archive_page_result" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCARCHIVELIST1</tableAlias>
+                           <column>ARCHIVE_PAGE_RESULT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>2000</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="displaytitle" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCARCHIVELIST1</tableAlias>
+                           <column>DISPLAYTITLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_percArchiveList" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Name:</PSXDisplayText>
+                           </Label>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>displaytitle</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Title:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10037" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Results title:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>query_published_after</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>query_published_before</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>query_site_path</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>query_string</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>query_template_list</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>query_title_contains</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>archive_page_result</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef id="10039" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText/>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>percArchiveList</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="6"/>
+   </PSXContentEditor>
+</ItemDefData>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-337">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percFileAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-337\percFileAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percFileAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-337\percFileAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percFileAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-337\percFileAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_file_images_widgetIconFileOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\file\images\widgetIconFileOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_file_images_widgetIconFileOver-png\widgetIconFileOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-607">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\perc.fileBinary.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-607\perc.fileBinary.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_file_images_widgetFileSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\file\images\widgetFileSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_file_images_widgetFileSampleBackground-png\widgetFileSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7023114102759227515">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\perc.fileBinary.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-7023114102759227515\perc.fileBinary.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percFile-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rxconfig\Widgets\percFile.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percFile-xml\percFile.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--2005495941909446534">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percFileAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--2005495941909446534\percFileAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_file_images_widgetIconFile-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\file\images\widgetIconFile.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_file_images_widgetIconFile-png\widgetIconFile.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

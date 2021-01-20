@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflowtransitionnotifedit (relatedlinks, componentname, transitioninfourl, workflowid, stateid, transitionid, transitionnotifid, sys_isaging, edittransnotif, notificationid, recipienttype, addrecipientlist, DBActionType, cclist )>
+<!ELEMENT cclist (#PCDATA)>
+<!ELEMENT DBActionType (#PCDATA)>
+<!ELEMENT addrecipientlist (#PCDATA)>
+<!ELEMENT recipienttype (#PCDATA)>
+<!ELEMENT notificationid (#PCDATA)>
+<!ELEMENT edittransnotif (#PCDATA)>
+<!ELEMENT sys_isaging (#PCDATA)>
+<!ELEMENT transitionnotifid (#PCDATA)>
+<!ELEMENT transitionid (#PCDATA)>
+<!ELEMENT stateid (#PCDATA)>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT transitioninfourl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

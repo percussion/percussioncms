@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings/>
+    <template-slot-ids/>
+    <guid>0-4-610</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/resourceAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description/>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>perc.sys.resource</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/html</mime-type>
+    <name>perc.sys.resource</name>
+    <output-format>Page</output-format>
+    <publish-when>Default</publish-when>
+    <style-sheet-path/>
+    <template/>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

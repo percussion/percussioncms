@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<!--
+   Runs all Junit tests using the following properties and references:
+      Properties:
+         classdir - the root directory from which to recursively search for 
+            Junit test classes.
+         junit.results.dir - the directory in which test results are to be
+            written as Xml files.
+      References:
+         junit.test.classpath - the classpath used to run the junit tests.
+   
+   Converts the junit.test.classpath ref to a property named filter.classpath, 
+      which may used by the custom filter represented by the filterFile entity.
+      
+   Will fail upon error if the property FAIL_ON_JUNIT_ERROR is set.   
+-->
+<project name="JunitTest" basedir="." default="runJunitTest">
+ 
+	<!-- setup code coverage -->
+		<property environment="env" />
+		<property name="cobertura.dir" value="${env.THIRD_PARTY_TOOLS_BASE}/cobertura/cobertura-1.9.4.1" />
+
+		<path id="cobertura.classpath">
+		    <fileset dir="${cobertura.dir}">
+		        <include name="cobertura.jar" />
+		        <include name="lib/**/*.jar" />
+		    </fileset>
+		</path>
+
+		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+	
+	<target name="runJunitTest">
+      <pathconvert property="filter.classpath" refid="junit.test.classpath"/>
+		
+		<mkdir dir="${outputdir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<mkdir dir="${coverage.results.dir}" />
+		<echo>Test run configured with the following directories:</echo>
+		<echo>Classes Dir: ${classdir} </echo>		
+		<echo>Output Dir: ${outputdir} </echo>
+		<echo>Instrumented Dir: ${outputdir}/instrumented </echo>
+		<echo>RX Deployer Dir: ${rxdeploydir} </echo>
+		<echo>Tools Dir: ${toolsdir} </echo>
+		<echo>J-Unit Results Dir: ${junit.results.dir} </echo>
+		<echo>Coburtura Coverage Results Dir: ${coverage.results.dir} </echo>
+		<echo>Core Dir: ${coredir}</echo>
+		<echo>UI Dir: ${uidir}</echo>
+		<echo>Base Dir: ${basedir}</echo>
+		<echo>Web Services Dir: ${webservicesdir}</echo>
+		<echo>FAIL_ON_JUNIT_ERROR: ${FAIL_ON_JUNIT_ERROR}</echo>
+		<echo>env.THIRD_PARTY_TOOLS_BASE: ${env.THIRD_PARTY_TOOLS_BASE}</echo>	
+		<echo>env.JAVA_HOME: ${env.JAVA_HOME}</echo>	
+				
+		<delete file="${junit.results.dir}/cobertura.ser"  failonerror="false" />
+		<!-- See https://github.com/cobertura/cobertura/wiki/FAQ -->
+		<delete failonerror="false">
+			<fileset dir="${outputdir}/instrumented">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
+		
+		<!-- Instrument Classes For Code Coverage -->
+		<cobertura-instrument todir="${outputdir}/instrumented" datafile="${junit.results.dir}/cobertura.ser">
+		    <fileset dir="${classdir}">
+		        <include name="**/*.class"/>
+		    </fileset>						
+		</cobertura-instrument>	
+		
+      <junit printsummary="true" fork="on" enableTestListenerEvents="false" showoutput="false" forkmode="once"
+            errorProperty="test.failed" failureProperty="test.failed">
+         <sysproperty key="rxdeploydir" value="${rxdeploydir}"/>
+         <sysproperty key="java.library.path" value="${toolsdir}/Eclipse"/>
+      	<jvmarg value="-Xmx1024m"/>
+      	<jvmarg value="-XX:MaxPermSize=256m"/>
+      	<jvmarg value="-server"/>
+      	<jvmarg value="-noverify" />
+      	<sysproperty key="net.sourceforge.cobertura.datafile"
+      							file="${junit.results.dir}/cobertura.ser" />
+      	<classpath>
+      		<pathelement location="${outputdir}/instrumented" />
+      		<path refid="junit.test.classpath"/>
+      		<path refid="cobertura.classpath" />
+      	</classpath>
+      	         
+         <formatter type="xml"/>
+         <batchtest todir="${junit.results.dir}">
+            <fileset dir="${classdir}">
+              <include name="**/*Test.class"/>
+              <include name="com/percussion/webservices/**/*TestCase.class"/>
+              <exclude name="**/*All*Tests.class"/>
+              <exclude name="**/*$*.class"/>
+              <or>
+                 <include file="temp/tempFilters.xml"/>
+              </or>
+            </fileset>
+			<fileset dir="${deployerclassdir}">
+              <include name="**/*Test.class"/>
+              <exclude name="**/*All*Tests.class"/>
+              <exclude name="**/*$*.class"/>
+              <or>
+                 <include file="temp/tempFilters.xml"/>
+              </or>
+			</fileset>
+         </batchtest>
+      </junit>
+	<mkdir dir="${coverage.results.dir}" />
+	<cobertura-report datafile="${junit.results.dir}/cobertura.ser" format="xml" destdir="${coverage.results.dir}">
+              	<fileset dir="${coredir}/src" includes="*.java" />
+              	<fileset dir="${uidir}/src" includes="*.java" />
+              	<fileset dir="${uidir}/Designer/src" includes="*.java" />
+              	<fileset dir="${basedir}/deploy/src" includes="*.java" />
+              	<fileset dir="${basedir}/i18n/src" includes="*.java" />
+              	<fileset dir="${basedir}/agenthandler/src" includes="*.java" />
+              	<fileset dir="${basedir}/cms/publisher/src" includes="*.java" />
+              	<fileset dir="${basedir}/cms/publisher/rxpubserver/webapps/admin/WEB-INF/classes" includes="*.java" />
+              	<fileset dir="${basedir}/ServerUIComponents/src" includes="*.java" />
+              	<fileset dir="${basedir}/servlet/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/Deployment/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/Simple/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/Help/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/JarSplitter/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/TableFactory/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/InlineLinkConverter/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/Converters/src" includes="*.java" />
+              	<fileset dir="${basedir}/uploader/src" includes="*.java" />
+              	<fileset dir="${basedir}/loader/src" includes="*.java" />
+              	<fileset dir="${basedir}/cms/dbpublisher/src" includes="*.java" />
+              	<fileset dir="${basedir}/misctools/src" includes="*.java" />
+              	<fileset dir="${basedir}/PSJniRegistry/src" includes="*.java" />
+              	<fileset dir="${basedir}/workflow/src" includes="*.java" />
+              	<fileset dir="${basedir}/htmlconverter/Src" includes="*.java" />
+              	<fileset dir="${basedir}/beans/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/HTMLparser/src" includes="*.java" />
+              	<fileset dir="${basedir}/src" includes="*.java" />
+              	<fileset dir="${basedir}/utils/src" includes="*.java" />
+              	<fileset dir="${basedir}/ContentExplorer/src" includes="*.java" />
+              	<fileset dir="${basedir}/rxfiletracker/src" includes="*.java" />
+              	<fileset dir="${basedir}/Exits/Java/src" includes="*.java" />
+              	<fileset dir="${basedir}/rxfiletracker/Exits/Java/src" includes="*.java" />
+              	<fileset dir="${basedir}/release/src" includes="*.java" />
+              	<fileset dir="${basedir}/integration/src" includes="*.java" />
+              	<fileset dir="${basedir}/FastForward/ManagedNav/Exits/Java/Src" includes="*.java" />
+              	<fileset dir="${basedir}/FastForward/SiteFolderPublishing/Exits/Java/Src" includes="*.java" />
+              	<fileset dir="${basedir}/FastForward/DefaultTemplate/Exits/Java/Src" includes="*.java" />
+              	<fileset dir="${basedir}/business/src" includes="*.java" />
+              	<fileset dir="${basedir}/services/src" includes="*.java" />
+              	<fileset dir="${basedir}/utils/src" includes="*.java" />
+              	<fileset dir="${basedir}/Testing/src" includes="*.java" />
+              	<fileset dir="${basedir}/Testing/Extensions/src" includes="*.java" />
+              	<fileset dir="${basedir}/Autotest/src" includes="*.java" />
+              	<fileset dir="${webservicesdir}/generated" />
+              	<fileset dir="${webservicesdir}/src" includes="*.java" />
+              	<fileset dir="${webservicesdir}/test" />
+              	<fileset dir="${basedir}/controls/src" includes="*.java" />
+              	<fileset dir="${basedir}/../designer/core/src" includes="*.java" />
+              	<fileset dir="${basedir}/../designer/ui/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/RxFix/src" includes="*.java" />
+              	<fileset dir="${basedir}/ContentUi/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/Ant/src" includes="*.java" />
+              	<fileset dir="${basedir}/release/Install/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/CodeGenerator/src" includes="*.java" />
+              	<fileset dir="${basedir}/Tools/ImageWidgetService/src" includes="*.java" />
+		</cobertura-report>       	
+            	
+	  <!-- Set failure if previous results failed for when more then one set of tests is run -->
+	  <antcall target="setFailure" />
+	  <condition property="test.failed">
+		<available file="${junit.results.dir}/setFailed.txt" />
+      </condition>
+	  	  
+      <!-- save results of unit tests for the calling scripts -->
+      <echo file="${junit.results.dir}/testsFailed.txt" message="${test.failed}"/>
+
+      <condition property="fail.on.error" value="true">
+         <and>
+            <istrue value="${FAIL_ON_JUNIT_ERROR}"/>
+            <isset property="test.failed"/>
+         </and>
+      </condition>
+      <fail message="One or more JUnit tests failed.  Check the ${junit.results.dir} directory for details" 
+         if="fail.on.error"/>
+   </target>
+              	
+   <!-- Set file on failure -->
+   <target name="setFailure" if="test.failed">
+		<echo file="${junit.results.dir}/setFailed.txt" message="Failed" />
+   </target>
+              	
+</project>

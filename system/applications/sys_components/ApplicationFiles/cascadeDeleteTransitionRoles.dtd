@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT TransitionRoles EMPTY>
+<!ATTLIST  TransitionRoles WorkflowAppId CDATA #REQUIRED>
+<!ATTLIST  TransitionRoles RoleId CDATA #REQUIRED>
+<!ELEMENT Action (TransitionRoles )>
+<!ATTLIST  Action type CDATA #REQUIRED>
+<!ELEMENT cascadeDeleteTransitionRoles (Action* )>

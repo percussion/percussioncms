@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_login_js_loginform-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\login\js\loginform.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_login_js_loginform-js\loginform.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--1012099280841736120">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\percLoginAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--1012099280841736120\percLoginAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_login_images_widgetIconLogin-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\login\images\widgetIconLogin.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_login_images_widgetIconLogin-gif\widgetIconLogin.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_ContentTypeIcons_filetypeIconsLogin-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\images\ContentTypeIcons\filetypeIconsLogin.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_ContentTypeIcons_filetypeIconsLogin-png\filetypeIconsLogin.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsLogin.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\images\ContentTypeIcons\filetypeIconsLogin.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsLogin.png\filetypeIconsLogin.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percLogin-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Widgets\percLogin.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percLogin-xml\percLogin.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_login_js_loginform-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\login\js\loginform.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_login_js_loginform-min-js\loginform.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_login_images_widgetIconLoginOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\login\images\widgetIconLoginOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_login_images_widgetIconLoginOver-gif\widgetIconLoginOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percLogin-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Resources\percLogin.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percLogin-xml\percLogin.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-367">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\percLoginAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-367\percLoginAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\percLoginAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-367\percLoginAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\percLoginAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-367\percLoginAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_login_images_widgetLoginSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\login\images\widgetLoginSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_login_images_widgetLoginSampleBackground-png\widgetLoginSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

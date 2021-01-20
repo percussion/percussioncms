@@ -1,0 +1,554 @@
+<PSXPackageConfiguration>
+
+<PSXDependencyMap>
+<PSXDependencyDef
+      objectType="AclDef"
+      objectTypeName="Acl Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSAclDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="ACL"/>
+  <PSXDependencyDef
+      objectType="Application"
+      objectTypeName="Application"
+      handlerClass="com.percussion.deployer.server.dependencies.PSApplicationDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="APPLICATION"/>
+  <PSXDependencyDef
+      objectType="AuthType"
+      objectTypeName="Auth Type"
+      handlerClass="com.percussion.deployer.server.dependencies.PSAuthTypeDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="AUTH_TYPE"/>
+   <PSXDependencyDef
+       objectType="Community"
+       objectTypeName="Community"
+       handlerClass="com.percussion.deployer.server.dependencies.PSCommunityDependencyHandler"
+       isDeployableElement="yes"
+       supportsIdTypes="no"
+       supportsIdMapping="no"
+       supportsUserDependencies="no"
+       guidType="COMMUNITY_DEF"/>
+   <PSXDependencyDef
+       objectType="CommunityDef"
+       objectTypeName="Community Definition"
+       handlerClass="com.percussion.deployer.server.dependencies.PSCommunityDefDependencyHandler"
+       isDeployableElement="no"
+       supportsIdTypes="no"
+       supportsIdMapping="yes"
+       supportsUserDependencies="no"
+       guidType="COMMUNITY_DEF"/>
+   <PSXDependencyDef
+       objectType="ConfigFile"
+       objectTypeName="Configuration File"
+       handlerClass="com.percussion.deployer.server.dependencies.PSConfigFileDependencyHandler"
+       isDeployableElement="no"
+       supportsIdTypes="no"
+       supportsIdMapping="no"
+       supportsUserDependencies="no"
+       guidType="CONFIGURATION"/>
+   <PSXDependencyDef
+       objectType="ImageFile"
+       objectTypeName="Image File"
+       handlerClass="com.percussion.deployer.server.dependencies.PSImageFileDependencyHandler"
+       isDeployableElement="no"
+       supportsIdTypes="no"
+       supportsIdMapping="no"
+       supportsUserDependencies="no"
+       guidType="IMAGE_FILE"/>
+  <PSXDependencyDef
+      objectType="ContentEditor"
+      objectTypeName="Content Type"
+      handlerClass="com.percussion.deployer.server.dependencies.PSCEDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="NODEDEF"/>
+  <PSXDependencyDef
+      objectType="ContentList"
+      objectTypeName="Content List"
+      handlerClass="com.percussion.deployer.server.dependencies.PSContentListDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="CONTENT_LIST"/>
+  <PSXDependencyDef
+      objectType="ContentListDef"
+      objectTypeName="Content List Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSContentListDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="CONTENT_LIST"/>
+  <!--ContentTypes support idTypes -->	   
+  <PSXDependencyDef
+      objectType="ContentType"
+      objectTypeName="Content Type Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSContentTypeDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="NODEDEF"/>
+  <PSXDependencyDef 
+      objectType="ContentTypeTemplateDef"
+      objectTypeName="ContentType Template Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSContentTypeTemplateDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="CONTENT_TYPE_TEMPLATE_DEF"/>
+  <PSXDependencyDef
+      objectType="Context"
+      objectTypeName="Context"
+      handlerClass="com.percussion.deployer.server.dependencies.PSContextDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="CONTEXT"/>
+  <PSXDependencyDef
+      objectType="ContextDef"
+      objectTypeName="Context Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSContextDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="CONTEXT"/>
+  <PSXDependencyDef
+      objectType="CEControl"
+      objectTypeName="Content Editor Control"
+      handlerClass="com.percussion.deployer.server.dependencies.PSControlElementDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="CONTROL"/>
+  <PSXDependencyDef
+      objectType="Control"
+      objectTypeName="Control"
+      handlerClass="com.percussion.deployer.server.dependencies.PSControlDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="yes"
+      guidType="CONTROL"/>
+  <PSXDependencyDef
+      objectType="Custom"
+      objectTypeName="Custom"
+      handlerClass="com.percussion.deployer.server.dependencies.PSCustomDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="yes"
+      guidType="CUSTOM"/>
+   <PSXDependencyDef
+       objectType="Data"
+       objectTypeName="Table Data"
+       handlerClass="com.percussion.deployer.server.dependencies.PSDataDependencyHandler"
+       isDeployableElement="no"
+       supportsIdTypes="no"
+       supportsIdMapping="no"
+       supportsUserDependencies="no"
+       guidType="TABLE_DATA"/>
+  <PSXDependencyDef
+      objectType="DbFunctionDef"
+      objectTypeName="Database Function Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSDbFunctionDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="DATABASE_FUNCTION_DEF"/>
+  <PSXDependencyDef
+      objectType="DisplayFormat"
+      objectTypeName="Display Format"
+      handlerClass="com.percussion.deployer.server.dependencies.PSDisplayFormatDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="DISPLAY_FORMAT"/>
+  <PSXDependencyDef
+      objectType="DisplayFormatDef"
+      objectTypeName="Display Format Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSDisplayFormatDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="DISPLAY_FORMAT"/>
+  <PSXDependencyDef
+      objectType="EditionDef"
+      objectTypeName="Edition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSEditionDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="EDITION"/>
+  <PSXDependencyDef
+      objectType="EditionTaskDef"
+      objectTypeName="Edition Task"
+      handlerClass="com.percussion.deployer.server.dependencies.PSEditionTaskDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="EDITION_TASK_DEF"/>
+  <PSXDependencyDef
+      objectType="Extension"
+      objectTypeName="Extension"
+      handlerClass="com.percussion.deployer.server.dependencies.PSExitDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="yes"
+      guidType="EXTENSION"/>
+  <PSXDependencyDef
+      objectType="Filter"
+      objectTypeName="Filter"
+      handlerClass="com.percussion.deployer.server.dependencies.PSFilterDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="ITEM_FILTER"/>
+  <PSXDependencyDef
+      objectType="FilterDef"
+      objectTypeName="Filter Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSFilterDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="ITEM_FILTER"/>
+  <PSXDependencyDef
+      objectType="KeywordPkg"
+      objectTypeName="Keyword"
+      handlerClass="com.percussion.deployer.server.dependencies.PSKeywordElementDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="KEYWORD_DEF"/>
+  <PSXDependencyDef
+      objectType="Keyword"
+      objectTypeName="Keyword Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSKeywordDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="KEYWORD_DEF"/>
+  <PSXDependencyDef
+      objectType="LoadableHandler"
+      objectTypeName="LoadableHandler"
+      handlerClass="com.percussion.deployer.server.dependencies.PSLoadableHandlerDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="LOADABLE_HANDLER"/>
+  <PSXDependencyDef
+      objectType="LocationSchemeDef"
+      objectTypeName="Location Scheme"
+      handlerClass="com.percussion.deployer.server.dependencies.PSLocSchemeDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="LOCATION_SCHEME"/>
+  <PSXDependencyDef
+      objectType="MenuAction"
+      objectTypeName="Action Menu"
+      handlerClass="com.percussion.deployer.server.dependencies.PSMenuActionDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="ACTION"/>
+  <PSXDependencyDef
+      objectType="MenuActionCategory"
+      objectTypeName="Action Menu Category"
+      handlerClass="com.percussion.deployer.server.dependencies.PSMenuActionCategoryDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="ACTION"/>
+  <PSXDependencyDef
+      objectType="MenuActionDef"
+      objectTypeName="Action Menu Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSMenuActionDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="ACTION"/>
+  <PSXDependencyDef
+      objectType="Relationship"
+      objectTypeName="Relationship"
+      handlerClass="com.percussion.deployer.server.dependencies.PSRelationshipDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="RELATIONSHIP_CONFIGNAME"/>
+  <PSXDependencyDef
+      objectType="RelationshipDef"
+      objectTypeName="Relationship Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSRelationshipDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="RELATIONSHIP_CONFIGNAME"/>
+  <PSXDependencyDef
+      objectType="SharedGroup"
+      objectTypeName="Shared Group"
+      handlerClass="com.percussion.deployer.server.dependencies.PSSharedGroupDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="SHARED_GROUP"/>
+  <PSXDependencyDef
+      objectType="StateDef"
+      objectTypeName="State Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSStateDefDependencyHandler"
+      isDeployableElement="no"
+      supportsParentId="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="WORKFLOW_STATE"/>
+   <PSXDependencyDef
+       objectType="Schema"
+       objectTypeName="Table Schema"
+       handlerClass="com.percussion.deployer.server.dependencies.PSSchemaDependencyHandler"
+       isDeployableElement="no"
+       supportsIdTypes="no"
+       supportsIdMapping="no"
+       supportsUserDependencies="no"
+       guidType="TABLE_SCHEMA"/>
+  <PSXDependencyDef
+      objectType="Search"
+      objectTypeName="Search"
+      handlerClass="com.percussion.deployer.server.dependencies.PSSearchDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="SEARCH_DEF"/>
+  <PSXDependencyDef
+      objectType="SearchDef"
+      objectTypeName="Search Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSSearchDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="SEARCH_DEF"/>
+  <PSXDependencyDef
+      objectType="Site"
+      objectTypeName="Site"
+      handlerClass="com.percussion.deployer.server.dependencies.PSSiteDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="SITE"/>
+  <PSXDependencyDef
+      objectType="SiteDef"
+      objectTypeName="Site Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSSiteDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="SITE"/>
+  <PSXDependencyDef
+      objectType="Slot"
+      objectTypeName="Slot"
+      handlerClass="com.percussion.deployer.server.dependencies.PSSlotDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="SLOT"/>
+  <!-- slots support id types -->
+  <PSXDependencyDef
+      objectType="SlotDef"
+      objectTypeName="Slot Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSSlotDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="SLOT"/>
+  <PSXDependencyDef
+      objectType="Stylesheet"
+      objectTypeName="Stylesheet"
+      handlerClass="com.percussion.deployer.server.dependencies.PSStylesheetDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="STYLESHEET"/>
+  <PSXDependencyDef
+      objectType="SupportFile"
+      objectTypeName="Support File"
+      handlerClass="com.percussion.deployer.server.dependencies.PSSupportFileDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="SUPPORT_FILE"/>
+  <PSXDependencyDef 
+      objectType="sys_Templates"
+      objectTypeName="Template"
+      handlerClass="com.percussion.deployer.server.dependencies.PSTemplateDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="TEMPLATE"/>
+  <PSXDependencyDef
+      objectType="TemplateDef"
+      objectTypeName="Template Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSTemplateDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="TEMPLATE"/>
+  <PSXDependencyDef
+      objectType="TemplateCommunityDef"
+      objectTypeName="TemplateCommunity Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSTemplateCommunityDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="TEMPLATE_COMMUNITY_DEF"/>
+  <PSXDependencyDef
+      objectType="TransitionDef"
+      objectTypeName="Transition Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSTransitionDefDependencyHandler"
+      isDeployableElement="no"
+      supportsParentId="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="WORKFLOW_TRANSITION"/>
+  <PSXDependencyDef
+      objectType="sys_UserDependency"
+      objectTypeName="User Dependency"
+      handlerClass="com.percussion.deployer.server.dependencies.PSUserDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="USER_DEPENDENCY"/>
+  <PSXDependencyDef
+      objectType="VariantDef"
+      objectTypeName="Variant Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSVariantDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="TEMPLATE"/>
+  <PSXDependencyDef
+      objectType="View"
+      objectTypeName="Content View"
+      handlerClass="com.percussion.deployer.server.dependencies.PSViewDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="VIEW_DEF"/>
+  <PSXDependencyDef
+      objectType="ViewDef"
+      objectTypeName="Content View Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSViewDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="VIEW_DEF"/>
+  <PSXDependencyDef
+      objectType="Workflow"
+      objectTypeName="Workflow"
+      handlerClass="com.percussion.deployer.server.dependencies.PSWorkflowDependencyHandler"
+      isDeployableElement="yes"
+      supportsIdTypes="no"
+      supportsIdMapping="no"
+      supportsUserDependencies="no"
+      guidType="WORKFLOW"/>
+  <PSXDependencyDef
+      objectType="WorkflowDef"
+      objectTypeName="Workflow Definition"
+      handlerClass="com.percussion.deployer.server.dependencies.PSWorkflowDefDependencyHandler"
+      isDeployableElement="no"
+      supportsIdTypes="no"
+      supportsIdMapping="yes"
+      supportsUserDependencies="no"
+      guidType="WORKFLOW"/>
+</PSXDependencyMap>
+
+<PkgDeployOrder>
+   <PkgElement objectType="Schema"             parentType="Custom"/>
+   <PkgElement objectType="Data"               parentType="Custom"/>
+   <PkgElement objectType="sys_UserDependency" parentType="Custom"/>
+   <PkgElement objectType="Extension"          parentType="Custom"/>
+   <PkgElement objectType="SharedGroup"        parentType="Custom"/>
+   <PkgElement objectType="Application"        parentType="Custom"/>
+   <PkgElement objectType="Workflow"/>
+   <PkgElement objectType="Community"/>
+   <PkgElement objectType="Slot"/>
+   <PkgElement objectType="sys_Templates"/>
+   <PkgElement objectType="ContentEditor"/>
+   <PkgElement objectType="Slot"/>
+   <PkgElement objectType="ContentList"/>
+   <PkgElement objectType="Filter"/>
+   <PkgElement objectType="Context"/>
+   <PkgElement objectType="Site"/>
+   <PkgElement objectType="DisplayFormat"/>
+   <PkgElement objectType="View"/>
+   <PkgElement objectType="Search"/>
+   <PkgElement objectType="MenuAction"/>
+   <PkgElement objectType="Relationship"/>
+   <PkgElement objectType="KeywordPkg"/>
+   <PkgElement objectType="CEControl"/>
+</PkgDeployOrder>
+<UninstallIgnoreTypes>
+	<Object type="WORKFLOW_TRANSITION"/>
+	<Object type="WORKFLOW_STATE"/>
+	<Object type="STYLESHEET"/>
+	<Object type="SUPPORT_FILE"/>
+	<Object type="DATABASE_FUNCTION_DEF"/>
+	<Object type="TABLE_DATA"/>
+	<Object type="TABLE_SCHEMA"/>
+	<Object type="ROLE"/>
+	<Object type="LOADABLE_HANDLER"/>
+	<Object type="TEMPLATE_COMMUNITY_DEF"/>
+	<Object type="FOLDER_CONTENTS"/>
+	<Object type="FOLDER_TRANSLATIONS"/>
+	<Object type="ACL"/>
+</UninstallIgnoreTypes>
+</PSXPackageConfiguration>

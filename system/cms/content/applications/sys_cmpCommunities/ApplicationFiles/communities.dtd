@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT communities (componentname, pagename, relatedlinks, newcommunityurl, copycommunityurl, list* )>
+<!ELEMENT list (communityname, communityid, communitydesc, editcommunityurl, deletecommunityurl )>
+<!ELEMENT deletecommunityurl (#PCDATA)>
+<!ELEMENT editcommunityurl (#PCDATA)>
+<!ELEMENT communitydesc (#PCDATA)>
+<!ELEMENT communityid (#PCDATA)>
+<!ELEMENT communityname (#PCDATA)>
+<!ELEMENT copycommunityurl (#PCDATA)>
+<!ELEMENT newcommunityurl (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="WidgetContentFinder" context="global/percussion/widgetcontentfinder/" deprecated="no" handler="Java" name="perc_DefaultWidgetContentFinder" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">The default widget content finder, which finds items that relate to page and page's template through widget instance IDs. The items relate to template through the widget instance IDs are ignored if the same items also relate to the page by the same widget IDs</initParam>
+      <initParam name="com.percussion.extension.version">43</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.pagemanagement.assembler.impl.finder.PSRelationshipWidgetContentFinder</initParam>
+      <interface name="com.percussion.pagemanagement.assembler.IPSWidgetContentFinder"/>
+      <PSXExtensionParamDef id="0">
+         <name>max_results</name>
+         <dataType>java.lang.String</dataType>
+         <description>The maximum number of items to return for the widget, defaults to unlimited.</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="3400.5" y="1886.0">com.percussion.utils.container.PSAbstractConnector</node>
+    <node x="1918.5" y="3831.0">com.percussion.utils.container.IPSJndiDatasource</node>
+    <node x="4283.5" y="169.0">com.percussion.utils.container.PSAbstractConnectors</node>
+    <node x="3009.0" y="722.0">com.percussion.utils.container.PSJBossConnectors</node>
+    <node x="566.0" y="4375.0">com.percussion.utils.jdbc.PSDatasourceConfig</node>
+    <node x="2657.5" y="1107.0">com.percussion.utils.container.PSAbstractXmlConnectors</node>
+    <node x="2366.5" y="671.0">com.percussion.utils.container.PSTomcatConnectors</node>
+    <node x="4641.0" y="4607.0">com.percussion.utils.container.IPSContainerUtils</node>
+    <node x="1521.0" y="3267.5">com.percussion.utils.container.config.model.impl.BaseContainerUtils</node>
+    <node x="3848.0" y="2139.0">com.percussion.utils.container.PSJettyConnectors</node>
+    <node x="2244.5" y="3654.0">com.percussion.utils.container.PSJndiDatasourceImpl</node>
+    <node x="1958.0" y="3022.0">com.percussion.utils.container.IPSDtsConfig</node>
+    <node x="4333.0" y="-7.0">com.percussion.utils.container.IPSConnectorInfo</node>
+    <node x="1958.0" y="671.0">com.percussion.utils.container.PSDtsConfig</node>
+    <node x="3378.5" y="810.0">com.percussion.utils.tomcat.PSTomcatConnector</node>
+    <node x="966.0" y="4596.0">com.percussion.utils.jdbc.IPSDatasourceResolver</node>
+    <node x="157.0" y="4651.0">com.percussion.utils.jdbc.IPSDatasourceConfig</node>
+    <node x="46.0" y="3754.5">com.percussion.utils.jdbc.PSDatasourceResolver</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.percussion.utils.container.PSJBossConnectors" target="com.percussion.utils.container.PSAbstractConnectors">
+      <point x="0.0" y="-158.0" />
+      <point x="3160.0" y="440.0" />
+      <point x="-156.5" y="80.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.IPSContainerUtils" target="com.percussion.utils.container.IPSJndiDatasource">
+      <point x="-159.0" y="-40.0" />
+      <point x="2040.0" y="4680.0" />
+      <point x="0.0" y="289.0" />
+    </edge>
+    <edge source="com.percussion.utils.jdbc.PSDatasourceResolver" target="com.percussion.utils.jdbc.IPSDatasourceResolver">
+      <point x="234.0" y="0.0" />
+      <point x="1160.0" y="4000.0" />
+      <point x="-40.0" y="-124.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSJBossConnectors" target="com.percussion.utils.container.PSAbstractXmlConnectors">
+      <point x="0.0" y="158.0" />
+      <point x="3160.0" y="1280.0" />
+      <point x="142.5" y="-40.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSJndiDatasourceImpl" target="com.percussion.utils.container.IPSJndiDatasource">
+      <point x="-195.5" y="0.0" />
+      <point x="121.5" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.config.model.impl.BaseContainerUtils" target="com.percussion.utils.container.IPSDtsConfig">
+      <point x="40.0" y="-212.5" />
+      <point x="1720.0" y="3080.0" />
+      <point x="-162.0" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSAbstractXmlConnectors" target="com.percussion.utils.tomcat.PSTomcatConnector">
+      <point x="142.5" y="0.0" />
+      <point x="-181.5" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSTomcatConnectors" target="com.percussion.utils.container.PSAbstractXmlConnectors">
+      <point x="0.0" y="169.0" />
+      <point x="2480.0" y="1280.0" />
+      <point x="-142.5" y="-40.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSDtsConfig" target="com.percussion.utils.container.PSAbstractConnectors">
+      <point x="0.0" y="-169.0" />
+      <point x="2120.0" y="380.0" />
+      <point x="-156.5" y="20.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSDtsConfig" target="com.percussion.utils.container.PSAbstractXmlConnectors">
+      <point x="40.0" y="169.0" />
+      <point x="2160.0" y="1320.0" />
+      <point x="-142.5" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.config.model.impl.BaseContainerUtils" target="com.percussion.utils.jdbc.IPSDatasourceResolver">
+      <point x="-159.0" y="40.0" />
+      <point x="1200.0" y="3520.0" />
+      <point x="0.0" y="-124.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.IPSDtsConfig" target="com.percussion.utils.container.PSAbstractConnectors">
+      <point x="162.0" y="0.0" />
+      <point x="4400.0" y="3080.0" />
+      <point x="-40.0" y="191.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSAbstractXmlConnectors" target="com.percussion.utils.container.PSAbstractConnectors">
+      <point x="0.0" y="213.0" />
+      <point x="2800.0" y="3040.0" />
+      <point x="4240.0" y="3040.0" />
+      <point x="4240.0" y="500.0" />
+      <point x="-156.5" y="140.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.IPSContainerUtils" target="com.percussion.utils.jdbc.IPSDatasourceResolver">
+      <point x="-159.0" y="0.0" />
+      <point x="234.0" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSJettyConnectors" target="com.percussion.utils.container.PSAbstractConnectors">
+      <point x="152.0" y="0.0" />
+      <point x="4200.0" y="2440.0" />
+      <point x="4200.0" y="480.0" />
+      <point x="-156.5" y="120.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.config.model.impl.BaseContainerUtils" target="com.percussion.utils.jdbc.PSDatasourceResolver">
+      <point x="-159.0" y="0.0" />
+      <point x="280.0" y="3480.0" />
+      <point x="0.0" y="-245.5" />
+    </edge>
+    <edge source="com.percussion.utils.jdbc.IPSDatasourceResolver" target="com.percussion.utils.jdbc.PSDatasourceConfig">
+      <point x="-234.0" y="0.0" />
+      <point x="154.0" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.config.model.impl.BaseContainerUtils" target="com.percussion.utils.container.IPSContainerUtils">
+      <point x="159.0" y="40.0" />
+      <point x="4760.0" y="3520.0" />
+      <point x="-40.0" y="-113.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.config.model.impl.BaseContainerUtils" target="com.percussion.utils.container.PSAbstractConnectors">
+      <point x="159.0" y="-40.0" />
+      <point x="4440.0" y="3440.0" />
+      <point x="0.0" y="191.0" />
+    </edge>
+    <edge source="com.percussion.utils.jdbc.PSDatasourceResolver" target="com.percussion.utils.jdbc.PSDatasourceConfig">
+      <point x="234.0" y="80.0" />
+      <point x="720.0" y="4080.0" />
+      <point x="0.0" y="-345.0" />
+    </edge>
+    <edge source="com.percussion.utils.tomcat.PSTomcatConnector" target="com.percussion.utils.container.PSAbstractConnector">
+      <point x="181.5" y="0.0" />
+      <point x="3800.0" y="1320.0" />
+      <point x="3800.0" y="2400.0" />
+      <point x="159.5" y="-40.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSAbstractConnectors" target="com.percussion.utils.container.IPSConnectorInfo">
+      <point x="0.0" y="-191.0" />
+      <point x="0.0" y="47.0" />
+    </edge>
+    <edge source="com.percussion.utils.jdbc.IPSDatasourceResolver" target="com.percussion.utils.jdbc.IPSDatasourceConfig">
+      <point x="0.0" y="124.0" />
+      <point x="1200.0" y="5160.0" />
+      <point x="280.0" y="5160.0" />
+      <point x="0.0" y="69.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSJettyConnectors" target="com.percussion.utils.container.PSAbstractConnector">
+      <point x="-152.0" y="0.0" />
+      <point x="159.5" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSDtsConfig" target="com.percussion.utils.container.PSTomcatConnectors">
+      <point x="162.0" y="0.0" />
+      <point x="-113.5" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.config.model.impl.BaseContainerUtils" target="com.percussion.utils.container.IPSJndiDatasource">
+      <point x="0.0" y="212.5" />
+      <point x="1680.0" y="4120.0" />
+      <point x="-121.5" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSDtsConfig" target="com.percussion.utils.container.IPSDtsConfig">
+      <point x="0.0" y="169.0" />
+      <point x="0.0" y="-58.0" />
+    </edge>
+    <edge source="com.percussion.utils.jdbc.PSDatasourceResolver" target="com.percussion.utils.jdbc.IPSDatasourceConfig">
+      <point x="0.0" y="245.5" />
+      <point x="0.0" y="-69.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSAbstractXmlConnectors" target="com.percussion.utils.container.PSAbstractConnector">
+      <point x="40.0" y="213.0" />
+      <point x="2840.0" y="2440.0" />
+      <point x="-159.5" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.PSTomcatConnectors" target="com.percussion.utils.container.PSAbstractConnectors">
+      <point x="0.0" y="-169.0" />
+      <point x="2480.0" y="400.0" />
+      <point x="-156.5" y="40.0" />
+    </edge>
+    <edge source="com.percussion.utils.jdbc.PSDatasourceConfig" target="com.percussion.utils.jdbc.IPSDatasourceConfig">
+      <point x="-154.0" y="0.0" />
+      <point x="123.0" y="0.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.IPSContainerUtils" target="com.percussion.utils.container.PSAbstractConnectors">
+      <point x="0.0" y="-113.0" />
+      <point x="4800.0" y="360.0" />
+      <point x="156.5" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Orthogonal" zoom="0.7000000000000001" x="860.9999999999999" y="820.4285714285713" />
+  <SelectedNodes>
+    <node>com.percussion.utils.jdbc.IPSDatasourceResolver</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,0 +1,19 @@
+dojo.kwCompoundRequire({
+   common: [
+      "ps.widget.Autoscroller",
+      "ps.widget.ContentPaneProgress",
+      "ps.widget.MenuBar2",
+      "ps.widget.MenuBarIcon",
+      "ps.widget.MenuBarItem2",
+      "ps.widget.MenuBarItemDropDown",
+      "ps.widget.PopupMenu",
+      "ps.widget.PSSplitContainer",
+      "ps.widget.ScrollableNodes",
+      "ps.widget.Tree",
+      "ps.widget.TreeDndController",
+      "ps.widget.TreeIcon",
+      "ps.widget.TreeSelector",
+      "ps.widget.PSImageGallery"
+   ]
+});
+dojo.provide("ps.widget.*");

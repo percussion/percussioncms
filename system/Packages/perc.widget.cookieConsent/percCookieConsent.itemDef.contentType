@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDefData appName="psx_cepercCookieConsent" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_cepercCookieConsent/percCookieConsent.html" id="402" label="percCookieConsent" name="percCookieConsent" typeId="402">
+      <Description>A widget that displays an 'accept consent' dialog on the website.</Description>
+   </PSXItemDefSummary>
+   <PSXContentEditor contentType="402" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
+      <PSXDataSet id="768">
+         <name>percCookieConsent</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <InputDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="10015">
+                     <name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>consenttext</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2Ktidy.properties</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2KserverPageTags.xml</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>yes</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <ResultDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="0">
+                     <name>Java/global/percussion/content/sys_manageLinksPostProcessor</name>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </ResultDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_PERCCOOKIECONSENT" name="CT_PERCCOOKIECONSENT"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_contentpostdate</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="CT_percCookieConsent" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="consenttext" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCCOOKIECONSENT</tableAlias>
+                           <column>CONSENTTEXT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>We use cookies to improve user experience on this website.  By continuing to browse the site, you agree to our use of cookies.  Please see our cookie policy page to learn more.</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>consenttext</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                        </PSXFieldValidationRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageLinksConverter</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>consenttext</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                        <FieldOutputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldOutputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="cookiepolicy" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCCOOKIECONSENT</tableAlias>
+                           <column>COOKIEPOLICY</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                        <FieldOutputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnEdit</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>cookiepolicy</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>cookiepolicy_linkId</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldOutputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="cookiepolicy_linkId" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCCOOKIECONSENT</tableAlias>
+                           <column>COOKIEPOLICY_LINKID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnUpdate</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>cookiepolicy</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>cookiepolicy_linkId</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                        <FieldOutputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldOutputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="privacypolicy" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCCOOKIECONSENT</tableAlias>
+                           <column>PRIVACYPOLICY</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                        <FieldOutputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnEdit</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>privacypolicy</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>privacypolicy_linkId</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldOutputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="privacypolicy_linkId" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCCOOKIECONSENT</tableAlias>
+                           <column>PRIVACYPOLICY_LINKID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnUpdate</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>privacypolicy</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>privacypolicy_linkId</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                        <FieldOutputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0"/>
+                              <ErrorLabel>
+                                 <PSXDisplayText/>
+                              </ErrorLabel>
+                           </PSXFieldTranslation>
+                        </FieldOutputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_percCookieConsent" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef id="0" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>consenttext</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Cookie Disclaimer:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10002" name="sys_tinymce"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Consent text:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>privacypolicy</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Privacy Policy Page (optional):</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10010" name="sys_PagePath">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>1000</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Privacy Policy (optional):</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>privacypolicy_linkId</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>privacypolicy_linkId:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10006" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>privacypolicy_linkId:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>cookiepolicy</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Cookie Policy Page (optional):</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10011" name="sys_PagePath">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>1000</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Cookie Policy (optional):</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>cookiepolicy_linkId</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>cookiepolicy_linkId:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10009" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>cookiepolicy_linkId:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+            <userProperties>
+               <userProperty name="Control10002_Dependency10015">sys_xdTextCleanup</userProperty>
+               <userProperty name="Control10002_DependencyIds">10015</userProperty>
+            </userProperties>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>percCookieConsent</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations>
+         <PSXConditionalExit maxErrorsToStop="10">
+            <PSXExtensionCallSet id="0">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/content/sys_managedItemPathPreProcessor</name>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </PSXConditionalExit>
+      </PSXInputTranslations>
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="4,5,6,7"/>
+   </PSXContentEditor>
+</ItemDefData>

@@ -1,0 +1,81 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<link href="PercDataTable.css" rel="stylesheet" type="text/css"/>
+<link href="../PercSimpleMenu/PercSimpleMenu.css" rel="stylesheet" type="text/css"/>
+<script src="../../jslib/jquery.js"></script>
+<script src="../../jslib/jquery-ui.js"></script>
+<script src="../../jslib/jquery.dataTables.js"></script>
+<script src="PercDataTable.js"></script>
+<script src="../PercSimpleMenu/PercSimpleMenu.js"></script>
+<script src="../PercPageDataTable/PercPageDataTable.js"></script>
+<script>
+    $(function(){
+        var data1 = [
+            {callback : rowclick, rowContent : [[{content : "Comment 4", title : "/Site/Site1", callback : open}],["7/22/33","22:44:55 PM"]],  rowData : {commentId : 11123, pageId : 1123, pagePath : "/aewq/dsa/cxz"}},
+            {rowContent : [[{content : "Comment 5", title : "/Site/Site2"}],["8/22/33","22:44:55 PM"]],  rowData : {commentId : 21123, pageId : 2123, pagePath : "/sewq/dsa/cxz"}},
+            {rowContent : [[{content : "Comment 6", title : "/Site/Site3"}],["9/22/33","22:44:55 PM"]],  rowData : {commentId : 31123, pageId : 3123, pagePath : "/dewq/dsa/cxz"}},
+            {rowContent : [[{content : "Comment 7", title : "/Site/Site4"}],["10/22/33","22:44:55 PM"]], rowData : {commentId : 41123, pageId : 4123, pagePath : "/fewq/dsa/cxz"}},
+            {rowContent : [[{content : "Comment 1", title : "/Site/Site5"}],["12/22/33","22:44:55 PM"]], rowData : {commentId : 51123, pageId : 5123, pagePath : "/gewq/dsa/cxz"}},
+            {rowContent : [[{content : "Comment 2", title : "/Site/Site6"}],["13/22/33","22:44:55 PM"]], rowData : {commentId : 61123, pageId : 6123, pagePath : "/hewq/dsa/cxz"}},
+            {rowContent : [[{content : "Comment 3", title : "/Site/Site7"}],["14/22/33","22:44:55 PM"]], rowData : {commentId : 71123, pageId : 7123, pagePath : "/jewq/dsa/cxz"}}
+        ];
+        var headers = ["Heading 111","Heading 2"];
+//        var menus = [$.PercPageActions, $.PercCommentsGadgetModerateAction, $.PercCommentsGadgetActions, $.PercPageActions, $.PercPageActions];
+        var menus = $.PercPageActions;
+        var config = {percData : data1, percHeaders : headers, percMenus : menus};
+        $("#myTable").PercPageDataTable(config);
+        
+        var data2 = [
+            {rowContent : [["Comment 1","/Site/Site2"],"12/22/33"]},
+            {rowContent : [["Comment 2","/Site/Site3"],"13/22/33"]},
+            {rowContent : [["Comment 3","/Site/Site4"],"14/22/33"]}
+        ];
+        headers = ["Heading 1","Heading 2"];
+        config = {percRowDblclickCallback : rowDblclickCallback, percRowClickCallback : rowClickCallback, percData : data2, percHeaders : headers, bFilter: false, percMenus : menus};
+        $("#myTable2").PercPageDataTable(config);
+    })
+    
+    function rowClickCallback(row) {
+        console.log("rowClickCallback");
+        console.log(row);
+    }
+    
+    function rowDblclickCallback(row) {
+        console.log("rowDblclickCallback");
+        console.log(row);
+    }
+    
+    function open(event) {
+        console.log("open !!!!");
+    }
+
+    function rowclick(event) {
+        console.log("rowclick !!!!");
+    }
+
+</script>
+
+<div id="myTable"></div>
+<div id="myTable2"></div>

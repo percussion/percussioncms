@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflowedit (relatedlinks, componentname, URL, workflowView, workflowEdit, workflowname, workflowid, workflowlink )>
+<!ELEMENT workflowlink (#PCDATA)>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT workflowname (#PCDATA)>
+<!ELEMENT workflowEdit (Name, State, Admin, Description )>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT Admin (#PCDATA)>
+<!ELEMENT State (#PCDATA)>
+<!ELEMENT Name (#PCDATA)>
+<!ELEMENT workflowView (RoleLink, StateLink, NotifLink )>
+<!ELEMENT NotifLink (#PCDATA)>
+<!ELEMENT StateLink (#PCDATA)>
+<!ELEMENT RoleLink (#PCDATA)>
+<!ELEMENT URL (extroles, extstate, extnotifs )>
+<!ELEMENT extnotifs (#PCDATA)>
+<!ELEMENT extstate (#PCDATA)>
+<!ELEMENT extroles (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

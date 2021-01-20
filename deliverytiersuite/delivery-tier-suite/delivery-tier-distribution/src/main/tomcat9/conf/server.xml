@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<!-- Note:  A "Server" is not itself a "Container", so you may not
+     define subcomponents such as "Valves" at this level.
+     Documentation at /docs/config/server.html
+ -->
+<Server port="${shutdown.port}" shutdown="SHUTDOWN">
+    <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+    <!-- Security listener. Documentation at /docs/config/listeners.html
+    <Listener className="org.apache.catalina.security.SecurityListener" />
+    -->
+    <!-- Prevent memory leaks due to use of particular java/javax APIs-->
+    <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+    <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+    <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+    <!-- Global JNDI resources
+         Documentation at /docs/jndi-resources-howto.html
+    -->
+    <GlobalNamingResources>
+        <!-- Editable user database that can also be used by
+             UserDatabaseRealm to authenticate users
+        -->
+        <Resource name="UserDatabase" auth="Container"
+                  type="org.apache.catalina.UserDatabase"
+                  description="User database that can be updated and saved"
+                  factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+                  pathname="conf/tomcat-users.xml" />
+    </GlobalNamingResources>
+
+
+    <!-- A "Service" is a collection of one or more "Connectors" that share
+         a single "Container" Note:  A "Service" is not itself a "Container",
+         so you may not define subcomponents such as "Valves" at this level.
+         Documentation at /docs/config/service.html
+     -->
+    <Service name="Catalina">
+
+        <!--The connectors can use a shared executor, you can define one or more named thread pools-->
+        <!--
+        <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
+            maxThreads="150" minSpareThreads="4"/>
+        -->
+
+
+        <!-- A "Connector" represents an endpoint by which requests are received
+             and responses are returned. Documentation at :
+             Java HTTP Connector: /docs/config/http.html
+             Java AJP  Connector: /docs/config/ajp.html
+             APR (HTTP/AJP) Connector: /docs/apr.html
+             Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
+        -->
+
+        <Connector  SSLEnabled="${http.SSLEnabled}"
+                    URIEncoding="${http.URIEncoding}"
+                    acceptCount="${http.acceptCount}"
+                    acceptorThreadPriority="${http.acceptorThreadPriority}"
+                    address="${http.address}"
+                    allowHostHeaderMismatch="${http.allowHostHeaderMismatch}"
+                    allowTrace="${http.allowTrace}"
+                    asyncTimeout="${http.asyncTimeout}"
+                    bindOnInit="${http.bindOnInit}"
+                    compressibleMimeType="${http.compressibleMimeType}"
+                    compression="${http.compression}"
+                    compressionMinSize="${http.compressionMinSize}"
+                    connectionTimeout="${http.connectionTimeout}"
+                    disableUploadTimeout="${http.disableUploadTimeout}"
+                    discardFacades="${http.discardFacades}"
+                    enableLookups="${http.enableLookups}"
+                    executorTerminationTimeoutMillis="${http.executorTerminationTimeoutMillis}"
+                    keepAliveTimeout="${http.keepAliveTimeout}"
+                    maxConnections="${http.maxConnections}"
+                    maxCookieCount="${http.maxCookieCount}"
+                    maxExtensionSize="${http.maxExtensionSize}"
+                    maxHeaderCount="${http.maxHeaderCount}"
+                    maxHttpHeaderSize="${http.maxHttpHeaderSize}"
+                    maxKeepAliveRequests="${http.maxKeepAliveRequests}"
+                    maxParameterCount="${http.maxParameterCount}"
+                    maxPostSize="${http.maxPostSize}"
+                    maxSavePostSize="${http.maxSavePostSize}"
+                    maxSwallowSize="${http.maxSwallowSize}"
+                    maxThreads="${http.maxThreads}"
+                    maxTrailerSize="${http.maxTrailerSize}"
+                    minSpareThreads="${http.minSpareThreads}"
+                    noCompressionStrongETag="${http.noCompressionStrongETag}"
+                    parseBodyMethods="${http.parseBodyMethods}"
+                    port="${http.port}"
+                    processorCache="${http.processorCache}"
+                    redirectPort="${http.redirectPort}"
+                    rejectIllegalHeader="${http.rejectIllegalHeader}"
+                    relaxedPathChars="&quot; &lt; &gt; [ \ ] ^ ` { | }"
+                    relaxedQueryChars="&quot; &lt; &gt; [ \ ] ^ ` { | }"
+                    scheme="${http.scheme}"
+                    secure="${http.secure}"
+                    tcpNoDelay="${http.tcpNoDelay}"
+                    threadPriority="${http.threadPriority}"
+                    throwOnFailure="${http.throwOnFailure}"
+                    useAsyncIO="${http.useAsyncIO}"
+                    useBodyEncodingForURI="${http.useBodyEncodingForURI}"
+                    useIPVHosts="${http.useIPVHosts}"
+                    useKeepAliveResponseHeader="${http.useKeepAliveResponseHeader}"
+                    xpoweredBy="${http.xpoweredBy}"
+        />
+        <Connector  SSLEnabled="${https.SSLEnabled}"
+                    URIEncoding="${https.URIEncoding}"
+                    acceptCount="${https.acceptCount}"
+                    acceptorThreadPriority="${https.acceptorThreadPriority}"
+                    address="${https.address}"
+                    allowHostHeaderMismatch="${https.allowHostHeaderMismatch}"
+                    allowTrace="${https.allowTrace}"
+                    asyncTimeout="${https.asyncTimeout}"
+                    bindOnInit="${https.bindOnInit}"
+                    clientAuth="${https.clientAuth}"
+                    compressibleMimeType="${https.compressibleMimeType}"
+                    compression="${https.compression}"
+                    compressionMinSize="${https.compressionMinSize}"
+                    connectionTimeout="${https.connectionTimeout}"
+                    disableUploadTimeout="${https.disableUploadTimeout}"
+                    discardFacades="${https.discardFacades}"
+                    enableLookups="${https.enableLookups}"
+                    keepAliveTimeout="${https.keepAliveTimeout}"
+                    keyAlias="${https.keyAlias}"
+                    keystoreFile="${https.keystoreFile}"
+                    keystorePass="${https.keystorePass}"
+                    maxConnections="${https.maxConnections}"
+                    maxCookieCount="${https.maxCookieCount}"
+                    maxExtensionSize="${https.maxExtensionSize}"
+                    maxHeaderCount="${https.maxHeaderCount}"
+                    maxHttpHeaderSize="${https.maxHttpHeaderSize}"
+                    maxKeepAliveRequests="${https.maxKeepAliveRequests}"
+                    maxParameterCount="${https.maxParameterCount}"
+                    maxPostSize="${https.maxPostSize}"
+                    maxSwallowSize="${https.maxSwallowSize}"
+                    maxThreads="${https.maxThreads}"
+                    maxTrailerSize="${https.maxTrailerSize}"
+                    minSpareThreads="${https.minSpareThreads}"
+                    noCompressionStrongETag="${https.noCompressionStrongETag}"
+                    parseBodyMethods="${https.parseBodyMethods}"
+                    port="${https.port}"
+                    processorCache="${https.processorCache}"
+                    sslEnabledProtocols="${https.sslEnabledProtocols}"
+                    rejectIllegalHeader="${https.rejectIllegalHeader}"
+                    relaxedPathChars="&quot; &lt; &gt; [ \ ] ^ ` { | }"
+                    relaxedQueryChars="&quot; &lt; &gt; [ \ ] ^ ` { | }"
+                    scheme="${https.scheme}"
+                    secure="${https.secure}"
+                    tcpNoDelay="${https.tcpNoDelay}"
+                    threadPriority="${https.threadPriority}"
+                    throwOnFailure="${https.throwOnFailure}"
+                    useAsyncIO="${https.useAsyncIO}"
+                    useBodyEncodingForURI="${https.useBodyEncodingForURI}"
+                    useIPVHosts="${https.useIPVHosts}"
+                    useKeepAliveResponseHeader="${https.useKeepAliveResponseHeader}"
+                    xpoweredBy="${https.xpoweredBy}"
+                    sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation"
+        >
+        </Connector>
+
+        <!--
+                certificateKeyPassword ="${https.certificateKeyPassword}"
+                certificateFile="${https.certificateFile}"
+                certificateChainFile="${https.certificateChainFile}"
+                certificateKeyFile="${https.certificateKeyFile}"
+                -->
+
+        <!-- An Engine represents the entry point (within Catalina) that processes
+             every request.  The Engine implementation for Tomcat stand alone
+             analyzes the HTTP headers included with the request, and passes them
+             on to the appropriate Host (virtual host).
+             Documentation at /docs/config/engine.html -->
+
+        <!-- You should set jvmRoute to support load-balancing via AJP ie :
+        <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
+        -->
+        <Engine name="Catalina" defaultHost="localhost">
+
+            <!--For clustering, please take a look at documentation at:
+                /docs/cluster-howto.html  (simple how to)
+                /docs/config/cluster.html (reference documentation) -->
+            <!--
+            <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
+            -->
+
+
+            <!-- Use the LockOutRealm to prevent attempts to guess user passwords
+                 via a brute-force attack -->
+            <Realm className="org.apache.catalina.realm.LockOutRealm">
+                <!-- This Realm uses the UserDatabase configured in the global JNDI
+                     resources under the key "UserDatabase".  Any edits
+                     that are performed against this UserDatabase are immediately
+                     available for use by the Realm.  -->
+                <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+                       resourceName="UserDatabase">
+                    <CredentialHandler className="org.apache.catalina.realm.MessageDigestCredentialHandler"
+                                       algorithm="SHA"
+                    />
+                </Realm>
+            </Realm>
+
+            <Host name="localhost"  appBase="webapps"
+                  unpackWARs="true" autoDeploy="true">
+
+
+                <!-- Access log processes all example.
+                     Documentation at: /docs/config/valve.html
+                     Note: The pattern used is equivalent to using pattern="common" -->
+                <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+                       prefix="localhost_access_log" suffix=".txt"
+                       pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+                <Valve className="org.apache.catalina.valves.ErrorReportValve"
+                       errorCode.404="webapps/ROOT/error.html"
+                       errorCode.414="webapps/ROOT/error.html"
+                       errorCode.415="webapps/ROOT/error.html"
+                       errorCode.501="webapps/ROOT/error.html"
+                       errorCode.500="webapps/ROOT/error.html"
+                       errorCode.502="webapps/ROOT/error.html"
+                       showReport="false"
+                       showServerInfo="false" />
+            </Host>
+
+            <Valve className="com.percussion.tomcat.valves.PSSimpleRedirectorValve" targetHost="localhost" serviceNames="perc-form-processor,perc-common-ui,perc-metadata-services,perc-comments-services,feeds,perc-caching,perc-membership-services,perc-integrations,perc-generickey-services,perc-polls-services,perc-thirdparty-services"/>
+
+        </Engine>
+    </Service>
+</Server>

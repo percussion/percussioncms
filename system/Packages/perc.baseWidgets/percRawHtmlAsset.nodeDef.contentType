@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description/>
+    <hide-from-menu>false</hide-from-menu>
+    <id>324</id>
+    <internal-name>percRawHtmlAsset</internal-name>
+    <label>HTML</label>
+    <mandatory>false</mandatory>
+    <name>rx:percRawHtmlAsset</name>
+    <new-request>../psx_cepercRawHtmlAsset/percRawHtmlAsset.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercRawHtmlAsset/percRawHtmlAsset.html</query-request>
+    <raw-content-type>324</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

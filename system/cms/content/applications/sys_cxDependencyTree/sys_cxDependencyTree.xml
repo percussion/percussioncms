@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="1019" startPriority="0" version="2.0">
+	<name>sys_cxDependencyTree</name>
+	<description>The application to generate applet html for dependency tree view </description>
+	<requestRoot>sys_cxDependencyTree</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_syamala_1046209236578/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20030225T164032453</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="12">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20030718T113452000</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+	</PSXAcl>
+	<maxThreads>0</maxThreads>
+	<maxRequestTime>0</maxRequestTime>
+	<maxRequestsInQueue>0</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>0</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="246">
+		<name>Dataset37801</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="76">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="72">
+				<PSXBackEndTable id="71">
+					<alias>CONTENTSTATUS</alias>
+					<table>CONTENTSTATUS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="74" returnEmptyXml="no">
+				<PSXDataMapping groupId="0" id="0">
+					<PSXXmlField id="0">
+						<name>dependencytree/@xml:lang</name>
+					</PSXXmlField>
+					<PSXUserContext id="0">
+						<name>User/SessionObject/sys_lang</name>
+					</PSXUserContext>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>dependencytree/contentid</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>CONTENTSTATUS</tableAlias>
+						<column>CONTENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>dependencytree/revisionid</name>
+					</PSXXmlField>
+					<PSXSingleHtmlParameter id="0">
+						<name>sys_revision</name>
+					</PSXSingleHtmlParameter>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>dependencytree/title</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>CONTENTSTATUS</tableAlias>
+						<column>TITLE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>dependencytree/relationship</name>
+					</PSXXmlField>
+					<PSXSingleHtmlParameter id="0">
+						<name>sys_relationship</name>
+					</PSXSingleHtmlParameter>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="73" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>CONTENTSTATUS</tableAlias>
+									<column>CONTENTID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_contentid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="244">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/general/sys_AddServerProperties</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>RestrictSearchFieldsToUserCommunity</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>CacheSearchableFieldsInApplet</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/general/sys_AddPluginProperties</name>
+					</PSXExtensionCall>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/general/sys_AddIsManagedNavUsed</name>
+					</PSXExtensionCall>					
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="245">
+			<schemaSource>file:dependencytree.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>dependencytree</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="247">
+				<styleSheet>file:dependencytree.xsl</styleSheet>
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="249">
+		<name>Dataset5605</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="5611">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="5607">
+				<PSXBackEndTable id="5606">
+					<alias>RXDUAL</alias>
+					<table>RXDUAL</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="5609" returnEmptyXml="no">
+				<PSXDataMapping groupId="0" id="0">
+					<PSXXmlField id="0">
+						<name>Dummy/@xml:lang</name>
+					</PSXXmlField>
+					<PSXUserContext id="0">
+						<name>User/SessionObject/sys_lang</name>
+					</PSXUserContext>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="5608" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="yes" id="0">
+				<Keys>
+					<Key>
+						<PSXUserContext id="0">
+							<name>User/SessionObject/sys_lang</name>
+						</PSXUserContext>
+					</Key>
+				</Keys>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="248">
+			<schemaSource>file:Dummy.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>DependencyTreeMenu</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="250">
+				<styleSheet>file:DependencyTreeMenu.xsl</styleSheet>
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="242" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="243">
+		<providerType>SMTP</providerType>
+		<server>JB</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="schemaSourceReadOnly248">false</userProperty>
+	<userProperty name="locationY250">160</userProperty>
+	<userProperty name="schemaSourceReadOnly245">true</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="locationX249">28</userProperty>
+	<userProperty name="locationX247">206</userProperty>
+	<userProperty name="locationX246">31</userProperty>
+	<userProperty name="pageDatatankSrcType248">3</userProperty>
+	<userProperty name="locationX244">56</userProperty>
+	<userProperty name="locationX243">16</userProperty>
+	<userProperty name="locationY249">146</userProperty>
+	<userProperty name="locationX242">16</userProperty>
+	<userProperty name="pageDatatankSrcType245">2</userProperty>
+	<userProperty name="locationX241">16</userProperty>
+	<userProperty name="locationY247">31</userProperty>
+	<userProperty name="locationY246">25</userProperty>
+	<userProperty name="locationY244">22</userProperty>
+	<userProperty name="locationY243">100</userProperty>
+	<userProperty name="locationY242">55</userProperty>
+	<userProperty name="locationY241">10</userProperty>
+	<userProperty name="locationX250">219</userProperty>
+</PSXApplication>

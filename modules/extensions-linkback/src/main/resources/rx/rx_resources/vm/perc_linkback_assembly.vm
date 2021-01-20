@@ -1,0 +1,3 @@
+#macro(linkback_head)##
+<meta name="$rx.linkback.linkbackParamName" id="$rx.linkback.linkbackParamName" content="$rx.linkback.encode($sys.params)"/>##
+#end

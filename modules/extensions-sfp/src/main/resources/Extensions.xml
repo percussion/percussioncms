@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXExtensionHandlerConfiguration handlerName="Java">
+   <Extension categorystring="jexl" context="global/percussion/system/" deprecated="no" handler="Java" name="calendarMonthModel" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Provides details about assigned month for rendering a calendar and events.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.fastforward.calendar.PSCalendarMonthModel</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSJexlExpression"/>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="contenteditor" context="global/percussion/fastforward/relationship/" deprecated="no" handler="Java" name="rxs_ExtractIdsFromSlot" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Returns a list of the owner content ids from the relationships in the specified slot.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.fastforward.relationship.PSExtractIdsFromSlotExit</initParam>
+      <interface name="com.percussion.extension.IPSUdfProcessor" />
+      <PSXExtensionParamDef id="0">
+         <name>slotname</name>
+         <dataType>java.lang.String</dataType>
+         <description>The name of the slot whose owner content ids should be parsed from its relationships.</description>
+      </PSXExtensionParamDef>
+      <suppliedResources />
+   </Extension>
+   <Extension categorystring="contenteditor" context="global/percussion/fastforward/relationship/" deprecated="no" handler="Java" name="rxs_BuildRelationshipsFromIds" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Returns a list of the owner content ids from the relationships in the specified slot.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.fastforward.relationship.PSBuildRelationshipsFromIdsExit</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor" />
+      <PSXExtensionParamDef id="0">
+         <name>fieldname</name>
+         <dataType>java.lang.String</dataType>
+         <description>The name of the field providing the ids. (required)</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>slotname</name>
+         <dataType>java.lang.String</dataType>
+         <description>The name of the slot whose relationships should be modified to match ids contained in field. (required)</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>templatename</name>
+         <dataType>java.lang.String</dataType>
+         <description>The name of the template to be added to slot when relationships are created. (required)</description>
+      </PSXExtensionParamDef>
+      <suppliedResources />
+   </Extension>
+   <Extension categorystring="sitefolderpublishing" context="global/percussion/fastforward/sfp/" deprecated="no" handler="Java" name="rxs_SiteFolderAssembly" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Builds a publishing location from site folders</initParam>
+		<initParam name="com.percussion.extension.version">9</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.fastforward.sfp.PSSiteFolderAssembly</initParam>
+		<interface name="com.percussion.extension.IPSAssemblyLocation"/>
+		<interface name="com.percussion.extension.IPSUdfProcessor"/>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="fastforward" context="global/percussion/fastforward/" deprecated="no" handler="Java" name="rxs_ExpandRecurringEvents" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Expands recurring events defined by recurringEvents.dtd and converts into sys_AssemblerInfo.dtd suitible for use with AutoRelatedContent.</initParam>
+		<initParam name="com.percussion.extension.version">12</initParam>
+		<initParam name="className">com.percussion.fastforward.calendar.PSExpandRecurringEvents</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>calendarStart</name>
+			<dataType>String</dataType>
+			<description>The start datetime of the calendar being generated. No recurring event instances before this datetime will be returned. This parameter is required.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>calendarEnd</name>
+			<dataType>String</dataType>
+			<description>The end datetime of the calendar being generated. No recurring event instances on or after this datetime will be returned. This parameter is required.</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="fastforward" context="global/percussion/fastforward/" deprecated="no" handler="Java" name="rxs_AutoGenerateFileName" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description"/>
+		<initParam name="com.percussion.extension.version">27</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.fastforward.PSAutoGenerateFileName</initParam>
+		<resource href="file:classes"/>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>defaultFilename</name>
+			<dataType>java.lang.String</dataType>
+			<description>default filename if non provided</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>providedFilename</name>
+			<dataType>java.lang.String</dataType>
+			<description>provided filename</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>updateResource</name>
+			<dataType>java.lang.String</dataType>
+			<description>update resource name</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="sitefolderpublishing" context="global/percussion/fastforward/sfp/" deprecated="no" handler="Java" name="rxs_SiteFolderContentListBulkBuilder" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">The site folder root will be queried based on the request's sys_siteid parameter. It flushes all caches (Assembler, Resource, ManageNav and Folder cache) on a Publishing Hub. For debugging purpose, the result set will be sorted if the request contains a HTML parameter sys_sort=1.</initParam>
+		<initParam name="com.percussion.extension.version">4</initParam>
+		<initParam name="className">com.percussion.fastforward.sfp.PSSiteFolderContentListBulkExit</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>filenameContext</name>
+			<dataType>String</dataType>
+			<description>Id of the context used to generate just filenames for content items (this exit will supply the path)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>deliveryType</name>
+			<dataType>String</dataType>
+			<description>Determines the value of the deliverytype attribute of the contentlist root element. defaults to 'ftp'.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>isIncremental</name>
+			<dataType>String</dataType>
+			<description>'y' to generate an incremental publishing content list, 'n' for full publishing. defaults to 'n'</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>contentValidValues</name>
+			<dataType>String</dataType>
+			<description>Comma-delimited list of contentvalid values for states that are eligible for publishing</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>maxRowsPerPage</name>
+			<dataType>String</dataType>
+			<description>enables pagination mode by determining the maximum number of content items to appear in a single page of the content list. Defaults to -1 (disables pagination mode; unlimited number of items)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>contentResourceName</name>
+			<dataType>String</dataType>
+			<description>Content items and its related variants lookup resource name, default is rx_supportSiteFolderContentList/getSFPContentList.xml. However, the application will process the SQL ResultSet only, not XML document</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>ParamListToPass</name>
+			<dataType>String</dataType>
+			<description>Comma separated list of all non standard HTML parameters to pass on from request to the content URL for each item in the content list</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>protocol</name>
+			<dataType>String</dataType>
+			<description>The HTTP protocol to use when constructing the content URL, defaults to HTTP</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>host</name>
+			<dataType>String</dataType>
+			<description>The host name or ip address to use when constructing the content URL, defaults to the current server</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>port</name>
+			<dataType>String</dataType>
+			<description>The port to use when constructing the content URL, defaults to the current server's listening port</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>subFolderPath</name>
+			<dataType>String</dataType>
+			<description>A sub folder of the published site. This is used when publishing a sub folder of a site, not the whole site. Defaults to the site folder if not specified. Note, make sure to use URL encoded path if this is specified in URL of the content list. For example, use %2F for slash '/' characters.</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="sitefolderpublishing" context="global/percussion/fastforward/sfp/" deprecated="no" handler="Java" name="rxs_SiteFolderContentListBuilder" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">The site folder root will be queried based on the request's sys_siteid parameter. It flushes all caches (Assembler, Resource, ManageNav and Folder cache) on a Publishing Hub. For debugging purpose, the result set will be sorted if the request contains a HTML parameter sys_sort=1.</initParam>
+		<initParam name="com.percussion.extension.version">4</initParam>
+		<initParam name="className">com.percussion.fastforward.sfp.PSSiteFolderContentListExit</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>filenameContext</name>
+			<dataType>String</dataType>
+			<description>Id of the context used to generate just filenames for content items (this exit will supply the path)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>deliveryType</name>
+			<dataType>String</dataType>
+			<description>Determines the value of the deliverytype attribute of the contentlist root element. defaults to 'ftp'.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>isIncremental</name>
+			<dataType>String</dataType>
+			<description>'y' to generate an incremental publishing content list, 'n' for full publishing. defaults to 'n'</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>contentValidValues</name>
+			<dataType>String</dataType>
+			<description>Comma-delimited list of contentvalid values for states that are eligible for publishing</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>maxRowsPerPage</name>
+			<dataType>String</dataType>
+			<description>enables pagination mode by determining the maximum number of content items to appear in a single page of the content list. Defaults to -1 (disables pagination mode; unlimited number of items)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>contentVariantResourceName</name>
+			<dataType>String</dataType>
+			<description>Content variant lookup resource name, default is rx_supportSiteFolderContentList/lookupVariantsBySiteItem.xml</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>ParamListToPass</name>
+			<dataType>String</dataType>
+			<description>Comma separated list of all non standard HTML parameters to pass on from request to the content URL for each item in the content list</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>protocol</name>
+			<dataType>String</dataType>
+			<description>The HTTP protocol to use when constructing the content URL, defaults to HTTP</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>host</name>
+			<dataType>String</dataType>
+			<description>The host name or ip address to use when constructing the content URL, defaults to the current server</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>port</name>
+			<dataType>String</dataType>
+			<description>The port to use when constructing the content URL, defaults to the current server's listening port</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>subFolderPath</name>
+			<dataType>String</dataType>
+			<description>A sub folder of the published site. This is used when publishing a sub folder of a site, not the whole site. It is default to the site folder if not specified.</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="fastforward" context="global/percussion/fastforward/" deprecated="no" handler="Java" name="rxs_CopyValueToRequest" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Copies the values to the request object as parameters</initParam>
+		<initParam name="com.percussion.extension.version">5</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.fastforward.PSCopyValueToRequest</initParam>
+		<interface name="com.percussion.extension.IPSUdfProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>paramName</name>
+			<dataType>java.lang.String</dataType>
+			<description>delimited names of the parameters to be set</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>paramValue</name>
+			<dataType>java.lang.String</dataType>
+			<description>delimited values of the parameters</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="fastforward" context="global/percussion/fastforward/" deprecated="yes" handler="Java" name="rxs_MakeCalendar" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">This exit takes the result document (based on sys_AssemblerInfo DTD) and transforms it into another DTD (calendar.dtd) that is used by the stylesheet to generate the calendar.</initParam>
+		<initParam name="com.percussion.extension.version">12</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.fastforward.calendar.PSMakeCalendar</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>startDate</name>
+			<dataType>java.util.Date</dataType>
+			<description>Any date in the month for creating the calendar</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="sitefolderpublishing" context="global/percussion/fastforward/sfp/" deprecated="no" handler="Java" name="rxs_AutoSiteItemFilter" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Filters the items based on the site folder hierarchy.</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="className">com.percussion.fastforward.sfp.PSAutoSiteItemFilter</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>ItemSiteFolderURL</name>
+			<dataType>java.lang.String</dataType>
+			<description>the url of a resource that produces the site folder root xml file. ../rx_supportSiteFolderContentList/lookupSiteFolderRoot.xml</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="sitefolderpublishing" context="global/percussion/fastforward/sfp/" deprecated="no" handler="Java" name="rxs_TouchAutoIndices" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">This extension touches the last modify date and last modifier for all AutoIndex variants and their parents registered in the system. Add this extension to  a content list generator resource.</initParam>
+		<initParam name="com.percussion.extension.version">3</initParam>
+		<initParam name="className">com.percussion.fastforward.sfp.PSTouchAutoIndex</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>ContentValidList</name>
+			<dataType>String</dataType>
+			<description>Optional. Comma separated list of content valid character attributes of the workflow states. Default is 'Y','I','y','i'</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="sitefolderpublishing" context="global/percussion/fastforward/sfp/" deprecated="no" handler="Java" name="rxs_pubAppendPurgedOrMovedItems" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">The objectives of this extension are to filter the content list for
+publishing by appending the content items/pages that were published earlier
+and are:
+
+1. Purged from the system
+2. Removed from a folder
+3. Moved from one folder to another
+
+to the unpublish content list XML result document. It uses the following
+algorithm to do the above:
+
+1. Gets all previously published items/pages to the site by making an
+internal request to a Rhythmyx resource. These are obtained as a result set
+for performance reasons.
+2. Gets the parent folderids for each of the items. While doing so, it
+assumes the item can exist in multiple folders.
+3. It generates publish paths for each of the folders it exists in.
+4. It filters out any item with publish path not matching with the
+previously published location path.
+5. It builds the content list document for these remaining items/pages by
+making another internal request to a Rhythmyx resource.
+6. Finally, this list is merged with the result document which is already
+an unpublish content list document.
+
+The exit takes one optional parameter to indicate if the publish path
+comparison should be case sensitive. The default value for this is "no". It
+assumes the DTD of the result document to be contentlist.dtd and
+the content list being generated is for unpublishing.</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.fastforward.sfp.PSAppendPurgedOrMovedItems</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>isPathCaseSensitive</name>
+			<dataType>java.lang.String</dataType>
+			<description>Optional. Is the publocation case sensitive? Specify "yes" (case insensitive) if the publocation is case sensitive. Default is "no".</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+</PSXExtensionHandlerConfiguration>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<agentlist>
+<agent name="aging" servicetype="scheduled">
+  <class>com.percussion.server.agent.PSAging</class>
+  <schedule delay="600" interval="600"/>
+</agent>
+<agent name="servertime">
+  <class>com.percussion.server.agent.PSServerTime</class>
+</agent>
+</agentlist>

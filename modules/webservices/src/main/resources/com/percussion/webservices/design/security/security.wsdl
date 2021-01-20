@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<wsdl:definitions name="security" targetNamespace="urn:www.percussion.com/6.0.0/security" xmlns:sec="urn:www.percussion.com/6.0.0/security" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/faults" schemaLocation="../faults.xsd">
+         </xsd:import>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/security" schemaLocation="security.xsd">
+         </xsd:import>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="AuthenticationHeader">
+      <wsdl:part name="Session" element="com:PSAuthenticationHeader"/>
+   </wsdl:message>
+   <wsdl:message name="empty"/>
+   <wsdl:message name="LoginRequest">
+      <wsdl:part name="LoginRequest" element="sec:LoginRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoginResponse">
+      <wsdl:part name="LoginResponse" element="sec:LoginResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LogoutRequest">
+      <wsdl:part name="LogoutRequest" element="sec:LogoutRequest"/>
+   </wsdl:message>
+   <wsdl:message name="RefreshSessionRequest">
+      <wsdl:part name="RefreshSessionRequest" element="sec:RefreshSessionRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadCommunitiesRequest">
+      <wsdl:part name="LoadCommunitiesRequest" element="sec:LoadCommunitiesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadCommunitiesResponse">
+      <wsdl:part name="LoadCommunitiesResponse" element="sec:LoadCommunitiesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadRolesRequest">
+      <wsdl:part name="LoadRolesRequest" element="sec:LoadRolesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadRolesResponse">
+      <wsdl:part name="LoadRolesResponse" element="sec:LoadRolesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FilterByRuntimeVisibilityRequest">
+      <wsdl:part name="FilterByRuntimeVisibilityRequest" element="sec:FilterByRuntimeVisibilityRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FilterByRuntimeVisibilityResponse">
+      <wsdl:part name="FilterByRuntimeVisibilityResponse" element="sec:FilterByRuntimeVisibilityResponse"/>
+   </wsdl:message>
+   <!--
+      Fault messages
+    -->
+   <wsdl:message name="ContractViolationFaultMessage">
+      <wsdl:part name="fault" element="flt:PSContractViolationFault"/>
+   </wsdl:message>
+   <wsdl:message name="NotAuthenticatedFaultMessage">
+      <wsdl:part name="fault" element="flt:PSNotAuthenticatedFault"/>
+   </wsdl:message>
+   <wsdl:message name="InvalidSessionFaultMessage">
+      <wsdl:part name="fault" element="flt:PSInvalidSessionFault"/>
+   </wsdl:message>
+   <wsdl:message name="NotAuthorizedFaultMessage">
+      <wsdl:part name="fault" element="flt:PSNotAuthorizedFault"/>
+   </wsdl:message>
+   <wsdl:portType name="security">
+      <wsdl:operation name="Login">
+         <wsdl:input message="sec:LoginRequest"/>
+         <wsdl:output message="sec:LoginResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="sec:ContractViolationFaultMessage"/>
+         <wsdl:fault name="NotAuthenticatedFault" message="sec:NotAuthenticatedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="Logout">
+         <wsdl:input message="sec:LogoutRequest"/>
+         <wsdl:output message="sec:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="sec:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="sec:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="RefreshSession">
+         <wsdl:input message="sec:RefreshSessionRequest"/>
+         <wsdl:output message="sec:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="sec:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="sec:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadCommunities">
+         <wsdl:input message="sec:LoadCommunitiesRequest"/>
+         <wsdl:output message="sec:LoadCommunitiesResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="sec:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="sec:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadRoles">
+         <wsdl:input message="sec:LoadRolesRequest"/>
+         <wsdl:output message="sec:LoadRolesResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="sec:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="sec:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FilterByRuntimeVisibility">
+         <wsdl:input message="sec:FilterByRuntimeVisibilityRequest"/>
+         <wsdl:output message="sec:FilterByRuntimeVisibilityResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="sec:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="ContractViolationFault" message="sec:ContractViolationFaultMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="securitySOAP" type="sec:security">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="Login">
+         <soap:operation soapAction="urn:Login"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthenticatedFault">
+            <soap:fault use="literal" name="NotAuthenticatedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="Logout">
+         <soap:operation soapAction="urn:Logout"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="RefreshSession">
+         <soap:operation soapAction="urn:RefreshSession"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadCommunities">
+         <soap:operation soapAction="urn:LoadCommunities"/>
+         <wsdl:input>
+            <soap:header message="sec:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="LoadCommunitiesRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadRoles">
+         <soap:operation soapAction="urn:LoadRoles"/>
+         <wsdl:input>
+            <soap:header message="sec:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="LoadRolesRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FilterByRuntimeVisibility">
+         <soap:operation soapAction="urn:FilterByRuntimeVisibility"/>
+         <wsdl:input>
+            <soap:header message="sec:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="FilterByRuntimeVisibilityRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

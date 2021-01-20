@@ -1,0 +1,13 @@
+- Name: 81copyFormNotification
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskFileCopy
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: copy
+    Type: file
+    Source: Deployment/Server/conf/perc/perc-email.properties.sample
+    Destination: Deployment/Server/conf/perc/perc-email.properties
+    PreserveFileDate: true
+    FailOnSourceNotFound: true

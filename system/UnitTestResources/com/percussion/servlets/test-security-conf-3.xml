@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityConfiguration>
+   <!-- anonymous requests -->
+   <path authType="anonymous">anon1</path>
+   <path authType="anonymous">anon2</path>
+</securityConfiguration>

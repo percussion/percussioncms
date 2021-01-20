@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT PSXLocator (CONTENTID, REVISIONID)>
+<!ELEMENT REVISIONID (#PCDATA)>
+<!ELEMENT CONTENTID (#PCDATA)>
+<!ATTLIST PSXLocator
+	isPersisted (yes | no) "yes"
+>
+<!ELEMENT PSXComponentSummary (PSXLocator)>
+<!ATTLIST PSXComponentSummary
+	contentId CDATA #REQUIRED
+	contentTypeId CDATA #REQUIRED
+	currRevision CDATA #REQUIRED
+	editRevision CDATA #REQUIRED
+	name CDATA #REQUIRED
+	objectType CDATA #REQUIRED
+	tipRevision CDATA #REQUIRED
+   publicRevision CDATA #IMPLIED
+	clonedParent CDATA #IMPLIED
+	communityId CDATA #IMPLIED
+	contentAgingTime CDATA #IMPLIED
+	contentCheckoutUserName CDATA #IMPLIED
+	contentCreatedBy CDATA #IMPLIED
+	contentCreatedDate CDATA #IMPLIED
+	contentExpiryDate CDATA #IMPLIED
+	contentLastModifiedDate CDATA #IMPLIED
+	contentLastModifier CDATA #IMPLIED
+	contentPathName CDATA #IMPLIED
+	contentPublishDate CDATA #IMPLIED
+	contentStartDate CDATA #IMPLIED
+	contentStateId CDATA #IMPLIED
+	contentSuffix CDATA #IMPLIED
+	lastTransitionDate CDATA #IMPLIED
+	locale CDATA #IMPLIED
+	nextAgingDate CDATA #IMPLIED
+	nextAgingTransition CDATA #IMPLIED
+	permissions CDATA #IMPLIED
+	reminderDate CDATA #IMPLIED
+	repeatedAgingTransStartDate CDATA #IMPLIED
+	revisionLock CDATA #IMPLIED
+	state CDATA #IMPLIED
+	stateEnteredDate CDATA #IMPLIED
+	workflowAppId CDATA #IMPLIED
+>
+<!ELEMENT PSXComponentSummaries (PSXComponentSummary*)>

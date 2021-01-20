@@ -1,0 +1,180 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<html><head><META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container - Deployer HOW-TO</title><meta value="Remy Maucherat" name="author"><meta value="remm@apache.org" name="email"></head><body vlink="#525D76" alink="#525D76" link="#525D76" text="#000000" bgcolor="#ffffff"><table cellspacing="4" width="100%" border="0"><!--PAGE HEADER--><tr><td colspan="2"><!--JAKARTA LOGO--><a href="http://jakarta.apache.org/"><img border="0" alt="The Jakarta Project" align="left" src="./../images/jakarta-logo.gif"></a><!--PROJECT LOGO--><a href="http://jakarta.apache.org/tomcat/"><img border="0" alt="
+      The Apache Jakarta Tomcat Servlet/JSP Container
+    " align="right" src="./../images/tomcat.gif"></a></td></tr><!--HEADER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><tr><!--RIGHT SIDE MAIN BODY--><td align="left" valign="top" width="80%"><table cellspacing="4" width="100%" border="0"><tr><td valign="top" align="left"><h1>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container</h1><h2>Deployer HOW-TO</h2></td><td nowrap="true" valign="top" align="right"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Table of Contents"><strong>Table of Contents</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>
+<a href="#Introduction">Introduction</a><br>
+<a href="#Context descriptors">Context XML descriptors</a><br>
+<a href="#Deploying on Tomcat startup">Deploying on Tomcat startup</a><br>
+<a href="#Deploying on a running Tomcat server">Deploying on running Tomcat server</a><br>
+<a href="#Deploying using the Client Deployer Package">Deploying using the Client Deployer Package</a><br>
+<blockquote>
+</blockquote>
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Introduction"><strong>Introduction</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>The deployer, as its name implies, allows deploying and undeploying web
+applications to the Tomcat server, either statically (the application is 
+setup before the server is started), or dynamically (in conjunction with the
+Tomcat Manager web application or manipulating already deployed applications).
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Context descriptors"><strong>Context descriptors</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>A Context XML descriptor is a fragment of XML data which contains a valid
+Context element which would normally be found in the main server configuration
+file (conf/server.xml), and allows easy and automated manipulation 
+of web applications by the various management tools available in Tomcat. 
+For a given host, the Context descriptors are located in 
+<code>$CATALINA_HOME/conf/[enginename]/[hostname]/foo.xml</code>. Note that 
+while the name of the file is not tied to the webapp name, Tomcat will create
+Context descriptors which match the webapp name whenever it will generate a
+Context descriptor.
+</p>
+
+<p>Context descriptors allow defining all aspects and configuration parameters
+of a Context, such as naming resources and session manager configuration.
+It should be noted that the docBase specified in the Context element can 
+refer to either the .WAR or the directory which will be created when the
+.WAR is expanded or the .WAR itself.</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Deploying on Tomcat startup"><strong>Deploying on Tomcat startup</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>The webapps which are present in the host appBase will be deployed if the
+host "deployOnStartup" property is true. The deployment process is 
+the following:
+<ul>
+    <li>The Context XML declarations will be deployed first</li>
+    <li>Expanded web applications not referenced by Context XML declarations
+        will then be deployed; if they have an associated .WAR file and it is
+        newer than the expanded web application, the expanded directory will
+        be removed and the webapp will be redeployed from the .WAR</li>
+    <li>.WAR files will be deployed</li>
+</ul>
+For each deployed web application, a matching Context XML descriptor will be
+created unless one exists already.
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Deploying on a running Tomcat server"><strong>Deploying on a running Tomcat server</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>If the host "autoDeploy" property is true, the host will attempt to deploy 
+and update web applications dynamically, as needed. The host will need to
+have background processing enabled for automatic reloading to work, which
+is the default.</p>
+
+<p>This includes:
+<ul>
+    <li>Deployment of WARs which are copied to the host appBase.</li>
+    <li>Deployment of expanded web applications which are copied to the host
+        appBase.</li>
+    <li>Redeployment of a web application which has been deployed from a WAR
+        when the WAR is updated: the expanded web application is removed, 
+        and the WAR is expanded again. This will not happen if the host is
+        configured so that WARs are not expanded, in which case the webapp
+        will be simply redeployed.</li>
+    <li>Redeployment of the web application if the /WEB-INF/web.xml file is
+        updated.</li>
+    <li>Redeployment of the web application if the context XML file from which
+        the web application has been deployed is updated.</li>
+    <li>Redeployment of the web application if a context XML file (with a
+        name corresponding to the context path of the previously deployed
+        application) is added in the 
+        <code>$CATALINA_HOME/conf/[enginename]/[hostname]/</code> folder.</li>
+    <li>Undeployment of the web application if its document base is deleted
+        (on Windows, this assumes that anti locking features are enabled, otherwise
+        it is not possible to delete the resources of a running web application).</li>
+</ul>
+Note: Web application reloading can also be configured in the loader, in which
+case loaded classes will be tracked for changes.
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Deploying using the Client Deployer Package"><strong>Deploying using the Client Deployer Package</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>The client deployer is a package which can be used to validate, compile,
+and deploy a web application to a production or development server. It should 
+be noted that this feature uses the Tomcat manager for automatic deployment.
+</p>
+
+<p>The deployer includes the Catalina manager Ant tasks, the Jasper page
+compiler for JSP compilation before deployment, as well as a task which
+validates the webapp's deployment descriptor. The validator task (class
+<code>org.apache.catalina.ant.ValidatorTask</code>) allows only one parameter:
+the base path of an expanded web application.</p>
+
+<p>The deployer uses an unpacked web application as input (see the list of the
+properties used by the deployer below). A web application which 
+is programatically deployed with the deployer may include Tomcat specific 
+deployment configuration, by including a Context configuration XML file in 
+<code>/META-INF/context.xml</code>.</p>
+
+<p>The deployer package includes a ready to use Ant script, with the following
+targets:
+<ul>
+    <li><code>compile</code> (default): Compile and validate the web 
+        application. This can be used standalone, and does not need a running
+        Tomcat server. The compiled application will only run on the associated
+        Tomcat 5.5.x server release, and is not guaranteed to work on another
+        Tomcat release, as the code generated by Jasper depends on its runtime
+        component. It should also be noted that this target will also compile
+        automatically any Java source file located in the 
+        <code>/WEB-INF/classes</code> folder of the web application.</li>
+    <li><code>deploy</code>: Deploy a web application (compiled or not) to 
+        a Tomcat server</li>
+    <li><code>undeploy</code>: Undeploy a web application</li>
+    <li><code>start</code>: Start web application</li>
+    <li><code>reload</code>: Reload web application</li>
+    <li><code>stop</code>: Stop web application</li>
+</ul>
+The following properties can be specified, either as system properties, or by
+using a <code>deployer.properties</code> file located in the root folder of the
+deployer package:
+<ul>
+    <li><code>build</code>: The build folder used will be, by default, 
+        <code>${build}/webapp${path}</code>. After the end of the execution
+        of the <code>compile</code> target, the web application WAR will be
+        located at <code>${build}/webapp${path}.war</code>.</li>
+    <li><code>webapp</code>: Folder containing the expanded web application 
+        which will be compiled and validated. By default, the folder is
+        <code>myapp</code>.</li>
+    <li><code>path</code>: Deployed context path of the web application, 
+        by default <code>/myapp</code>.</li>
+    <li><code>url</code>: Absolute URL to the manager web application of a 
+        running Tomcat server, which will be used to deploy and undeploy the
+        web application. By default, the deployer will attempt to access 
+        a Tomcat instance running on localhost, at 
+        <code>http://localhost:8080/manager</code>.</li>
+    <li><code>username</code>: Username to be used to connect to the Tomcat 
+        manager.</li>
+    <li><code>password</code>: Password to be used to connect to the Tomcat
+        manager.</li>
+</ul>
+</p>
+
+</blockquote></td></tr></table></td></tr><!--FOOTER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><!--PAGE FOOTER--><tr><td colspan="2"><div align="center"><font size="-1" color="#525D76"><em>
+        Copyright &copy; 1999-2004, Apache Software Foundation
+        </em></font></div></td></tr></table></body></html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DeliveryServerConfig>
+	
+   <DeliveryServer>
+		
+      <connection-url>http://localhost:9980</connection-url>
+		
+      <user>ps_manager</user>
+		
+      <password encrypted="true">-7a817995ebf59950e59a1641964fdd61</password>
+        <admin-connection-url>https://localhost:8443</admin-connection-url>
+		
+      <allow-self-signed-certificate>true</allow-self-signed-certificate>
+		
+      <availableServices>
+		   
+         <service>perc-form-processor</service>
+           <service>feeds</service>
+		   
+         <service>perc-comments-services</service>
+		   
+         <service>perc-metadata-services</service>
+		
+         <service>perc-membership-services</service>
+      </availableServices>
+	
+   </DeliveryServer>
+</DeliveryServerConfig>

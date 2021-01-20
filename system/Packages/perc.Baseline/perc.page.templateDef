@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings/>
+    <template-slot-ids/>
+    <guid>0-4-602</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/velocityAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description>The master page template. This template may referenced by the base template (perc.base....).</description>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>page template</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/html</mime-type>
+    <name>perc.page</name>
+    <output-format>Global</output-format>
+    <publish-when>Unspecified</publish-when>
+    <style-sheet-path/>
+    <template>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;@@widget.beforeHtmlStart&lt;html&gt;&lt;head&gt;
+&lt;title&gt;#displayfield("page_title") TEST&lt;/title&gt;@@widget.head@@template.head@@template.css#displayfield("meta_keywords")###displayfield("header")##&lt;/head&gt;&lt;body&gt;@@widget.afterBodyStart@@template.body@@widget.beforeBodyEnd#displayfield("footer")##&lt;/body&gt;&lt;/html&gt;</template>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

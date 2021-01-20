@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>Manages binary files other than images, such as .pdf or .doc.</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>337</id>
+    <internal-name>percFileAsset</internal-name>
+    <label>File</label>
+    <mandatory>false</mandatory>
+    <name>rx:percFileAsset</name>
+    <new-request>../psx_cepercFileAsset/percFileAsset.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercFileAsset/percFileAsset.html</query-request>
+    <raw-content-type>337</raw-content-type>
+    <template-ids>
+      <template-id>0-4-607</template-id>
+    </template-ids>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

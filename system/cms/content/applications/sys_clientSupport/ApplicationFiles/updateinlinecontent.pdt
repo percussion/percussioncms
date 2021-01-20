@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT updateinlinecontent (sys_contentid, sys_revision, inlinecontentids )>
+<!ELEMENT inlinecontentids (#PCDATA)>
+<!ELEMENT sys_revision (#PCDATA)>
+<!ELEMENT sys_contentid (#PCDATA)>

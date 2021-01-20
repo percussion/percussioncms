@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveInfo archiveRef="perc.widget.taglist" category="USER" created="1329251384808" editable="true" serverName="Usuario-Win7:9982" userName="Admin">
+   <PSXFormatVersion buildId="3" buildNumber="20120201" displayVersion="5.3.14" interfaceVersion="9" majorVersion="5" microVersion="14" minorVersion="3" optionalId="" versionString="INTERNAL"/>
+   <PSXDbmsInfo>
+      <datasource>RhythmyxData</datasource>
+      <driver>derby</driver>
+      <server>//localhost:1527/CMDB</server>
+      <database/>
+      <origin>CMDB</origin>
+      <userid>CMDB</userid>
+      <password>AV9tg72/4cRC6P72msLp/A==</password>
+   </PSXDbmsInfo>
+   <PSXArchiveDetail>
+      <PSXExportDescriptor archiveType="normal">
+         <PSXDescriptor id="89618396756322064" name="perc.widget.taglist">
+            <Description>Display list of the tags</Description>
+            <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
+            <CmsVersion max="8.0.0" min="1.9.0"/>
+            <Version>1.1.7</Version>
+            <ImplConfigFile/>
+            <LocalConfigFile/>
+            <PKGDependencies/>
+         </PSXDescriptor>
+         <Packages>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="tagListWidgetControl" dependencyType="Shared" displayName="tagListWidgetControl" isAssociation="yes" isIncluded="yes" objectType="CEControl" objectTypeName="Content Editor Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                  <Dependencies>
+                     <PSXDeployableObject>
+                        <PSXDependency autoDep="no" autoExpand="yes" dependencyId="tagListWidgetControl" dependencyType="Local" displayName="tagListWidgetControl" isAssociation="no" isIncluded="yes" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes">
+                           <Dependencies>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/css/jquery.tagList.css" dependencyType="Shared" displayName="jquery.tagList.css" isAssociation="no" isIncluded="yes" objectType="SupportFile" objectTypeName="Support File" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                    <Dependencies>
+                                       <PSXDeployableObject>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources" dependencyType="System" displayName="rx_resources" isAssociation="yes" isIncluded="no" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                          <RequiredClasses/>
+                                       </PSXDeployableObject>
+                                    </Dependencies>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/js/jquery.tagList.js" dependencyType="Shared" displayName="jquery.tagList.js" isAssociation="no" isIncluded="yes" objectType="SupportFile" objectTypeName="Support File" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                    <Dependencies>
+                                       <PSXDeployableObject>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources" dependencyType="System" displayName="rx_resources" isAssociation="yes" isIncluded="no" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                          <RequiredClasses/>
+                                       </PSXDeployableObject>
+                                    </Dependencies>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/stylesheets/controls/tagListWidgetControl.xsl" dependencyType="Shared" displayName="tagListWidgetControl.xsl" isAssociation="no" isIncluded="yes" objectType="SupportFile" objectTypeName="Support File" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                    <Dependencies>
+                                       <PSXDeployableObject>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources" dependencyType="System" displayName="rx_resources" isAssociation="yes" isIncluded="no" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                          <RequiredClasses/>
+                                       </PSXDeployableObject>
+                                    </Dependencies>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                           </Dependencies>
+                        </PSXDependency>
+                        <RequiredClasses/>
+                     </PSXDeployableObject>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="347" dependencyType="Shared" displayName="percTagList" isAssociation="yes" isIncluded="yes" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                  <Dependencies>
+                     <PSXDeployableObject>
+                        <PSXDependency autoDep="no" autoExpand="yes" dependencyId="347" dependencyType="Local" displayName="percTagList" isAssociation="no" isIncluded="yes" objectType="ContentType" objectTypeName="Content Type Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <Dependencies>
+                              <PSXDeployableElement>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="6" dependencyType="Shared" displayName="Default Workflow" isAssociation="yes" isIncluded="no" objectType="Workflow" objectTypeName="Workflow" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                    <Dependencies>
+                                       <PSXDeployableObject>
+                                          <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="6" dependencyType="Local" displayName="Default Workflow" isAssociation="no" isIncluded="yes" objectType="WorkflowDef" objectTypeName="Workflow Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="7" dependencyType="Local" displayName="Archive" isAssociation="no" isIncluded="yes" objectType="StateDef" objectTypeName="State Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                      <Dependencies>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1" dependencyType="Local" displayName="Approve" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="2" dependencyType="Local" displayName="Resubmit" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                      </Dependencies>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1" dependencyType="Local" displayName="Draft" isAssociation="no" isIncluded="yes" objectType="StateDef" objectTypeName="State Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                      <Dependencies>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="3" dependencyType="Local" displayName="Approve" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="4" dependencyType="Local" displayName="Submit" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                      </Dependencies>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="5" dependencyType="Local" displayName="Live" isAssociation="no" isIncluded="yes" objectType="StateDef" objectTypeName="State Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                      <Dependencies>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="5" dependencyType="Local" displayName="AutoUnPublishItem" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="6" dependencyType="Local" displayName="Edit" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                      </Dependencies>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="4" dependencyType="Local" displayName="Pending" isAssociation="no" isIncluded="yes" objectType="StateDef" objectTypeName="State Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                      <Dependencies>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="7" dependencyType="Local" displayName="AutoPublishItem" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="8" dependencyType="Local" displayName="AutoUnPublishItem" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="9" dependencyType="Local" displayName="Edit" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="10" dependencyType="Local" displayName="Live" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                      </Dependencies>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="6" dependencyType="Local" displayName="Quick Edit" isAssociation="no" isIncluded="yes" objectType="StateDef" objectTypeName="State Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                      <Dependencies>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="11" dependencyType="Local" displayName="Approve" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="12" dependencyType="Local" displayName="Archive" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                      </Dependencies>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="2" dependencyType="Local" displayName="Review" isAssociation="no" isIncluded="yes" objectType="StateDef" objectTypeName="State Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                      <Dependencies>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="13" dependencyType="Local" displayName="Approve" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                         <PSXDeployableObject>
+                                                            <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="14" dependencyType="Local" displayName="Reject" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                                               <Dependencies/>
+                                                            </PSXDependency>
+                                                            <RequiredClasses/>
+                                                         </PSXDeployableObject>
+                                                      </Dependencies>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="2032955291330412657" dependencyType="Local" displayName="temp" isAssociation="no" isIncluded="yes" objectType="AclDef" objectTypeName="Acl Definition" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <RequiredClasses/>
+                                       </PSXDeployableObject>
+                                    </Dependencies>
+                                 </PSXDependency>
+                                 <Description/>
+                              </PSXDeployableElement>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_EditBox" dependencyType="System" displayName="sys_EditBox" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_HiddenInput" dependencyType="System" displayName="sys_HiddenInput" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/images/ContentTypeIcons/tagListIcon.png" dependencyType="Local" displayName="tagListIcon.png" isAssociation="no" isIncluded="yes" objectType="ImageFile" objectTypeName="Image File" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                    <Dependencies/>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="tagListWidgetControl" dependencyType="Shared" displayName="tagListWidgetControl" isAssociation="no" isIncluded="yes" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes">
+                                    <Dependencies>
+                                       <PSXDeployableObject>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/css/jquery.tagList.css" dependencyType="Shared" displayName="jquery.tagList.css" isAssociation="no" isIncluded="yes" objectType="SupportFile" objectTypeName="Support File" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources" dependencyType="System" displayName="rx_resources" isAssociation="yes" isIncluded="no" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <RequiredClasses/>
+                                       </PSXDeployableObject>
+                                       <PSXDeployableObject>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/js/jquery.tagList.js" dependencyType="Shared" displayName="jquery.tagList.js" isAssociation="no" isIncluded="yes" objectType="SupportFile" objectTypeName="Support File" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources" dependencyType="System" displayName="rx_resources" isAssociation="yes" isIncluded="no" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <RequiredClasses/>
+                                       </PSXDeployableObject>
+                                       <PSXDeployableObject>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/stylesheets/controls/tagListWidgetControl.xsl" dependencyType="Shared" displayName="tagListWidgetControl.xsl" isAssociation="no" isIncluded="yes" objectType="SupportFile" objectTypeName="Support File" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources" dependencyType="System" displayName="rx_resources" isAssociation="yes" isIncluded="no" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <RequiredClasses/>
+                                       </PSXDeployableObject>
+                                    </Dependencies>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                              <PSXDeployableObject>
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="89617967259582535" dependencyType="Local" displayName="temp" isAssociation="no" isIncluded="yes" objectType="AclDef" objectTypeName="Acl Definition" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                    <Dependencies>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1003" dependencyType="Shared" displayName="Corporate_Investments" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1003" dependencyType="Local" displayName="Corporate_Investments" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1004" dependencyType="Shared" displayName="Corporate_Investments_Admin" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1004" dependencyType="Local" displayName="Corporate_Investments_Admin" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="10" dependencyType="Shared" displayName="Default" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="10" dependencyType="Local" displayName="Default" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1002" dependencyType="Shared" displayName="Enterprise_Investments" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1002" dependencyType="Local" displayName="Enterprise_Investments" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                       <PSXDeployableElement>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1001" dependencyType="Shared" displayName="Enterprise_Investments_Admin" isAssociation="yes" isIncluded="no" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                             <Dependencies>
+                                                <PSXDeployableObject>
+                                                   <PSXDependency autoDep="yes" autoExpand="yes" dependencyId="1001" dependencyType="Local" displayName="Enterprise_Investments_Admin" isAssociation="no" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                                      <Dependencies/>
+                                                   </PSXDependency>
+                                                   <RequiredClasses/>
+                                                </PSXDeployableObject>
+                                             </Dependencies>
+                                          </PSXDependency>
+                                          <Description/>
+                                       </PSXDeployableElement>
+                                    </Dependencies>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                           </Dependencies>
+                        </PSXDependency>
+                        <RequiredClasses/>
+                     </PSXDeployableObject>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+            <PSXDeployableElement>
+               <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_UserDependency" dependencyType="Shared" displayName="User Dependency" isAssociation="yes" isIncluded="yes" objectType="Custom" objectTypeName="Custom" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes">
+                  <Dependencies>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/buttonBlueMinus.gif">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/buttonBlueMinus.gif" dependencyType="User" displayName="buttonBlueMinus.gif" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/buttonBlueMinusOver.gif">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/buttonBlueMinusOver.gif" dependencyType="User" displayName="buttonBlueMinusOver.gif" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/buttonBluePlus.gif">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/buttonBluePlus.gif" dependencyType="User" displayName="buttonBluePlus.gif" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/buttonBluePlusOver.gif">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/buttonBluePlusOver.gif" dependencyType="User" displayName="buttonBluePlusOver.gif" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/ButtonBrowse.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/ButtonBrowse.png" dependencyType="User" displayName="ButtonBrowse.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/ButtonBrowseOver.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/ButtonBrowseOver.png" dependencyType="User" displayName="ButtonBrowseOver.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/calendar.gif">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/calendar.gif" dependencyType="User" displayName="calendar.gif" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/collapsable.gif">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/collapsable.gif" dependencyType="User" displayName="collapsable.gif" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/expandable.gif">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/expandable.gif" dependencyType="User" displayName="expandable.gif" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rxconfig/Resources/percTagList.xml">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rxconfig/Resources/percTagList.xml" dependencyType="User" displayName="percTagList.xml" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rxconfig/Widgets/percTagList.xml">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rxconfig/Widgets/percTagList.xml" dependencyType="User" displayName="percTagList.xml" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/widgetIconLinkTagList.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/widgetIconLinkTagList.png" dependencyType="User" displayName="widgetIconLinkTagList.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/widgetIconLinkTagListOver.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/widgetIconLinkTagListOver.png" dependencyType="User" displayName="widgetIconLinkTagListOver.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/widgetLinkTagListSampleBackground.png">
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/widgetLinkTagListSampleBackground.png" dependencyType="User" displayName="widgetLinkTagListSampleBackground.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                     </PSXUserDependency>
+                  </Dependencies>
+               </PSXDependency>
+               <Description/>
+            </PSXDeployableElement>
+         </Packages>
+         <ModifiedPackages/>
+         <MissingPackages/>
+      </PSXExportDescriptor>
+      <DbmsInfoMap>
+         <DbmsInfoMapping PkgKey="ContentEditor-347"/>
+         <DbmsInfoMapping PkgKey="CEControl-tagListWidgetControl"/>
+         <DbmsInfoMapping PkgKey="Custom-sys_UserDependency"/>
+      </DbmsInfoMap>
+   </PSXArchiveDetail>
+</PSXArchiveInfo>

@@ -1,0 +1,287 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/* override the font and color of text */
+.perc-dropdown *
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    color: #0099cc;
+    text-decoration: none;
+}
+
+.perc-dropdown.sf-menu a,
+.perc-dropdown.sf-menu a:visited
+{
+    /* visited pseudo selector so IE6 applies text colour*/
+    color: #006F94;
+}
+
+
+.perc-dropdown .sf-sub-indicator
+{
+    background: transparent url('../images/images/dropdownArrow.gif') no-repeat;
+    background-position : 0px 0px;
+}
+
+/* override dropdown title background */
+.perc-dropdown.sf-menu li
+{
+    background: #E6E6E9 none repeat scroll 0 0;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.perc-workflow .perc-dropdown.sf-menu li
+{
+    margin: 0px;
+}
+
+/* override dropdown title background hover */
+.perc-dropdown.sf-menu li a:hover
+{
+    background: #E6E6E9 none repeat scroll 0 0;
+}
+
+/* override dropdown option background */
+.perc-dropdown.sf-menu li li
+{
+    background: #FFFFFF none repeat scroll 0 0;
+    margin-top: 0px;
+}
+
+/* override dropdown option background hover */
+.perc-dropdown.sf-menu li li a:hover
+{
+    background: #CAF589 none repeat scroll 0 0;
+}
+
+.perc-dropdown.sf-menu a
+{
+    border-left: 1px solid #FFFFFF;
+    border-top: 0px solid #FFFFFF;
+}
+
+.perc-dropdown.sf-menu li li a
+{
+    border-left: 1px solid lightgrey;
+    border-top: 0px solid #FFFFFF;
+}
+
+.perc-dropdown.sf-menu li li a:first
+{
+    border-top: 1px solid lightgrey;
+    margin-right: 0px;
+    margin-top: 0px;
+}
+
+.perc-dropdown.sf-shadow ul
+{
+    box-shadow:  2px 0px 2px #a2a2a2, -2px 0px 2px #a2a2a2, 0px 2px 2px #a2a2a2, 0px -2px 2px #a2a2a2;
+    margin-top:-3px;
+    border-top:1px solid #a2a2a2;
+}
+
+.perc-dropdown.perc-dropdown-template-pages-items-dropdown.sf-shadow ul,
+.perc-dropdown.perc-imported-page-dropdown-list.sf-shadow ul
+{
+    margin-top: -23px;
+    margin-left: -95px;
+}
+
+.perc-dropdown.sf-menu a:focus,
+.perc-dropdown.sf-menu a:hover
+{
+    background: #FFFFFF;
+}
+
+#perc-content-menu li li a,
+#perc-pageEditor-menu li li a,
+#perc-layout-menu li li a,
+#perc-style-menu li li a
+{
+    margin-right: 0px;
+    margin-top: 0px;
+    padding: 9px;
+}
+
+#perc-content-menu li li a:first,
+#perc-pageEditor-menu li li a:first,
+#perc-style-menu li li a:first
+{
+    padding: 9px 9px 12px 9px;
+}
+
+.sf-menu li:hover ul,
+.sf-menu li.sfHover ul
+{
+    left: 0;
+    top: 3.5em;
+    z-index: 99;
+}
+
+.perc-dropdown a > .sf-sub-indicator
+{
+    top: 9px;
+}
+
+/* Page Workflow Dropdown */
+.perc-dropdown-page-workflow .perc-dropdown-title
+{
+    width: 64px;
+    height: 17px;
+}
+
+/* Target View Dropdown*/
+.perc-dropdown-target-view.sf-menu
+{
+    padding: 0 0 0 8px;
+}
+
+#perc-dropdown-view li a,
+#perc-template-view a,
+#perc-template-actions li a,
+#perc-dropdown-actions li a,
+#perc-dropdown-actions-layout li a,
+#perc-dropdown-view-layout li a,
+#perc-dropdown-help-layout li a,
+#perc-dropdown-publish-now li a,
+#perc-dropdown-actions-style li a,
+#perc-dropdown-view-style li a
+{
+    margin-right: 0px;
+    margin-top: 0px;
+    padding-top: 6px;
+    margin-top:12px;
+    padding-left:6px;
+    padding-right: 26px;
+}
+
+.perc-template-pages-items-dropdown li,
+.perc-imported-page-dropdown-list li
+{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.perc-template-pages-items-dropdown li li,
+.perc-imported-page-dropdown-list li li
+{
+    padding: 6px 0 !important;
+}
+
+#perc-dropdown-view .sf-menu > li > a:hover,
+#perc-template-view .sf-menu > li > a:hover,
+#perc-template-actions .sf-menu > li > a:hover,
+#perc-dropdown-actions .sf-menu > li > a:hover,
+#perc-dropdown-actions-layout .sf-menu > li > a:hover,
+#perc-dropdown-view-layout .sf-menu > li > a:hover,
+#perc-dropdown-help-layout .sf-menu > li > a:hover,
+#perc-dropdown-publish-now .sf-menu > li > a:hover,
+#perc-dropdown-actions-style .sf-menu > li > a:hover,
+#perc-dropdown-view-style .sf-menu > li > a:hover,
+#perc-dropdown-view .sf-menu > li.sfHover > a,
+#perc-template-view .sf-menu > li.sfHover > a,
+#perc-template-actions .sf-menu > li.sfHover > a,
+#perc-dropdown-actions .sf-menu > li.sfHover > a,
+#perc-dropdown-actions-layout .sf-menu > li.sfHover > a,
+#perc-dropdown-view-layout .sf-menu > li.sfHover > a,
+#perc-dropdown-help-layout .sf-menu > li.sfHover > a,
+#perc-dropdown-publish-now .sf-menu > li.sfHover > a,
+#perc-dropdown-actions-style .sf-menu > li.sfHover > a,
+#perc-dropdown-view-style .sf-menu > li.sfHover > a,
+.perc-template-pages-items-dropdown .sf-menu > li.sfHover > a,
+.perc-imported-page-dropdown .sf-menu > li.sfHover > a
+{
+    box-shadow: -2px -3px 3px #a2a2a2, 2px -2px 1px #a2a2a2;
+    background:white;
+    z-index:10000
+}
+
+
+
+a.perc-dropdown-option.ui-state-default
+{
+    background: white;
+}
+.sf-sub-indicator
+{
+    right: 10px;
+}
+
+#perc-template-actions .perc-dropdown-option-list,
+#perc-template-view .perc-dropdown-option-list
+{
+    left : 10px;
+}
+
+#perc-dropdown-page-workflow .perc-dropdown-option-list
+{
+    left : -12px;
+}
+
+.sf-menu ul
+{
+    width: 12em;
+}
+
+.perc-dropdown-template-action.sf-menu ul
+{
+    width: 18em;
+}
+
+
+#perc-dropdown-help-layout .sf-menu ul
+{
+    width: 14em;
+}
+
+.sf-menu ul
+.perc-dropdown.sf-menu li li a.perc-drop-disabled
+{
+    background-color: #fff;
+    background: #fff;
+    color: #9FA3AA;
+    cursor: default;
+}
+
+#perc-dropdown-view li.current,
+#perc-dropdown-view-layout li.current,
+#perc-dropdown-help-layout li.current,
+#perc-dropdown-views-style li.current,
+#perc-template-view li.current,
+#perc-dropdown-view-style li.current
+{
+    padding: 0 9px 0 0;
+}
+
+#perc-dropdown-help-layout li.current {
+    padding-left:0px;
+}
+
+#perc-template-view li.current
+{
+    padding-right: 0px;
+}

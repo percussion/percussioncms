@@ -1,0 +1,86 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/contentmeta/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://www.w3.org/2001/XMLSchema" xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:cmp="urn:www.percussion.com/webservices/contentmeta" targetNamespace="urn:www.percussion.com/webservices/contentmeta/wsdl">
+	<import location="sys_Header.xsd" namespace="urn:www.percussion.com/webservices/header"/>
+	<import location="sys_ContentMetaParameters.xsd" namespace="urn:www.percussion.com/webservices/contentmeta"/>
+	<message name="header-request">
+		<part name="Authentication" element="hdr:Authentication"/>
+	</message>
+	<message name="header-response">
+		<part name="HeaderResponse" element="hdr:HeaderResponse"/>
+	</message>
+	<message name="contentStatus-request">
+		<part name="parameters" element="cmp:contentStatus"/>
+	</message>
+	<message name="contentStatus-response">
+		<part name="parameters" element="cmp:ContentStatusResponse"/>
+	</message>
+	<message name="revisionList-request">
+		<part name="parameters" element="cmp:revisionList"/>
+	</message>
+	<message name="revisionList-response">
+		<part name="parameters" element="cmp:RevisionListResponse"/>
+	</message>
+	<portType name="ContentMetaPort">
+		<operation name="contentStatus">
+			<input message="tns:contentStatus-request"/>
+			<output message="tns:contentStatus-response"/>
+		</operation>
+		<operation name="revisionList">
+			<input message="tns:revisionList-request"/>
+			<output message="tns:revisionList-response"/>
+		</operation>
+	</portType>
+	<binding name="ContentMetaBinding" type="tns:ContentMetaPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="contentStatus">
+			<soap:operation soapAction="urn:#contentStatus"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="revisionList">
+			<soap:operation soapAction="urn:#revisionList"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="ContentMetaServices">
+		<port name="ContentMetaPort" binding="tns:ContentMetaBinding">
+			<soap:address location="http://localhost:9980/RxServices/servlet/messagerouter"/>
+		</port>
+	</service>
+</definitions>

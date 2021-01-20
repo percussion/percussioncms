@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<Widget>
+    <WidgetPrefs title="Facebook Open Graph"
+                 contenttype_name="percOpenGraph"
+                 category="social"
+                 description="Adds Facebook Open Graph tags to a Page or Template."
+                 author="Percussion Software, Inc."
+                 thumbnail="/rx_resources/widgets/percOpenGraph/images/open-graph-icon.png"
+                 preferred_editor_width="800"
+                 preferred_editor_height="600"/>
+    <!-- User prefs define input needed when in layout config for a widget -->
+    <!-- Available data types are bool, number, enum, string -->
+    <UserPref name="og_site_name"
+              display_name="Site Name"
+              default_value=""
+              datatype="string"
+              required="true"	  />
+    <UserPref name="og_type"
+              display_name="Type"
+              default_value="website"
+              datatype="enum">
+        <EnumValue value="article" display_value="Article" />
+        <EnumValue value="books.author" display_value="Book Author" />
+        <EnumValue value="books.book" display_value="Book" />
+        <EnumValue value="books.genre" display_value="Book Genre" />
+        <EnumValue value="business.business" display_value="Business" />
+        <EnumValue value="fitness.course" display_value="Fitness Course" />
+        <EnumValue value="game.achievement" display_value="Game Achievement" />
+        <EnumValue value="music.album" display_value="Music Album" />
+        <EnumValue value="music.playlist" display_value="Music Playlist" />
+        <EnumValue value="music.radio_station" display_value="Music Radio Station" />
+        <EnumValue value="music.song" display_value="Music Song" />
+        <EnumValue value="place" display_value="Place" />
+        <EnumValue value="product" display_value="Product" />
+        <EnumValue value="product.group" display_value="Product Group" />
+        <EnumValue value="product.item" display_value="Product Item" />
+        <EnumValue value="profile" display_value="Profile" />
+        <EnumValue value="restaurant.menu" display_value="Restaurant Menu" />
+        <EnumValue value="restaurant.menu_item" display_value="Restaurant Menu Item" />
+        <EnumValue value="restaurant.menu_section" display_value="Restaurant Menu Section" />
+        <EnumValue value="restaurant.restaurant" display_value="Restaurant" />
+        <EnumValue value="video.episode" display_value="Video - Television Show Episode" />
+        <EnumValue value="video.movie" display_value="Video - Movie" />
+        <EnumValue value="video.other" display_value="Video - General" />
+        <EnumValue value="video.tv_show" display_value="Video - Television Show" />
+        <EnumValue value="website" display_value="Website" />
+    </UserPref>
+    <UserPref name="og_image"
+              display_name="Image Asset (Path)"
+              required="false"
+              default_value=""
+              datatype="string"/>
+    <UserPref name="og_image_width"
+              display_name="Image Asset Width"
+              required="false"
+              default_value="1200"
+              datatype="number"/>
+    <UserPref name="og_image_height"
+              display_name="Image Asset Height"
+              required="false"
+              default_value="630"
+              datatype="number"/>
+
+    <UserPref name="og_locale"
+              display_name="Locale"
+              default_value="en_US"
+              datatype="enum">
+        <EnumValue value="sq_AL" display_value="Albanian Albania (AL)"/>
+        <EnumValue value="ar_DZ" display_value="Arabic Algeria (DZ)"/>
+        <EnumValue value="ar_BH" display_value="Arabic Bahrain (BH)"/>
+        <EnumValue value="ar_EG" display_value="Arabic Egypt (EG)"/>
+        <EnumValue value="ar_IQ" display_value="Arabic Iraq (IQ)"/>
+        <EnumValue value="ar_JO" display_value="Arabic Jordan (JO)"/>
+        <EnumValue value="ar_KW" display_value="Arabic Kuwait (KW)"/>
+        <EnumValue value="ar_LB" display_value="Arabic Lebanon (LB)"/>
+        <EnumValue value="ar_LY" display_value="Arabic Libya (LY)"/>
+        <EnumValue value="ar_MA" display_value="Arabic Morocco (MA)"/>
+        <EnumValue value="ar_OM" display_value="Arabic Oman (OM)"/>
+        <EnumValue value="ar_QA" display_value="Arabic Qatar (QA)"/>
+        <EnumValue value="ar_SA" display_value="Arabic Saudi Arabia (SA)"/>
+        <EnumValue value="ar_SD" display_value="Arabic Sudan (SD)"/>
+        <EnumValue value="ar_SY" display_value="Arabic Syria (SY)"/>
+        <EnumValue value="ar_TN" display_value="Arabic Tunisia (TN)"/>
+        <EnumValue value="ar_AE" display_value="Arabic United Arab Emirates (AE)"/>
+        <EnumValue value="ar_YE" display_value="Arabic Yemen (YE)"/>
+        <EnumValue value="be_BY" display_value="Belarusian Belarus (BY)"/>
+        <EnumValue value="bg_BG" display_value="Bulgarian Bulgaria (BG)"/>
+        <EnumValue value="ca_ES" display_value="Catalan Spain (ES)"/>
+        <EnumValue value="zh_CN" display_value="Chinese China (CN)"/>
+        <EnumValue value="zh_SG" display_value="Chinese Singapore (SG)"/>
+        <EnumValue value="zh_HK" display_value="Chinese Hong Kong (HK)"/>
+        <EnumValue value="zh_TW" display_value="Chinese Taiwan (TW)"/>
+        <EnumValue value="hr_HR" display_value="Croatian Croatia (HR)"/>
+        <EnumValue value="cs_CZ" display_value="Czech Czech Republic (CZ)"/>
+        <EnumValue value="da_DK" display_value="Danish Denmark (DK)"/>
+        <EnumValue value="nl_BE" display_value="Dutch Belgium (BE)"/>
+        <EnumValue value="nl_NL" display_value="Dutch Netherlands (NL)"/>
+        <EnumValue value="en_AU" display_value="English Australia (AU)"/>
+        <EnumValue value="en_CA" display_value="English Canada (CA)"/>
+        <EnumValue value="en_IN" display_value="English India (IN)"/>
+        <EnumValue value="en_IE" display_value="English Ireland (IE)"/>
+        <EnumValue value="en_MT" display_value="English Malta (MT)"/>
+        <EnumValue value="en_NZ" display_value="English New Zealand (NZ)"/>
+        <EnumValue value="en_PH" display_value="English Philippines (PH)"/>
+        <EnumValue value="en_SG" display_value="English Singapore (SG)"/>
+        <EnumValue value="en_ZA" display_value="English South Africa (ZA)"/>
+        <EnumValue value="en_GB" display_value="English United Kingdom (GB)"/>
+        <EnumValue value="en_US" display_value="English United States (US)"/>
+        <EnumValue value="et_EE" display_value="Estonian Estonia (EE)"/>
+        <EnumValue value="fi_FI" display_value="Finnish Finland (FI)"/>
+        <EnumValue value="fr_BE" display_value="French Belgium (BE)"/>
+        <EnumValue value="fr_CA" display_value="French Canada (CA)"/>
+        <EnumValue value="fr_FR" display_value="French France (FR)"/>
+        <EnumValue value="fr_LU" display_value="French Luxembourg (LU)"/>
+        <EnumValue value="fr_CH" display_value="French Switzerland (CH)"/>
+        <EnumValue value="de_AT" display_value="German Austria (AT)"/>
+        <EnumValue value="de_DE" display_value="German Germany (DE)"/>
+        <EnumValue value="de_LU" display_value="German Luxembourg (LU)"/>
+        <EnumValue value="de_CH" display_value="German Switzerland (CH)"/>
+        <EnumValue value="el_CY" display_value="Greek Cyprus (CY)"/>
+        <EnumValue value="el_GR" display_value="Greek Greece (GR)"/>
+        <EnumValue value="iw_IL" display_value="Hebrew Israel (IL)"/>
+        <EnumValue value="hi_IN" display_value="Hindi India (IN)"/>
+        <EnumValue value="hu_HU" display_value="Hungarian Hungary (HU)"/>
+        <EnumValue value="is_IS" display_value="Icelandic Iceland (IS)"/>
+        <EnumValue value="in_ID" display_value="Indonesian Indonesia (ID)"/>
+        <EnumValue value="ga_IE" display_value="Irish Ireland (IE)"/>
+        <EnumValue value="it_IT" display_value="Italian Italy (IT)"/>
+        <EnumValue value="it_CH" display_value="Italian Switzerland (CH)"/>
+        <EnumValue value="ja_JP" display_value="Japanese Japan (JP)"/>
+        <EnumValue value="ko_KR" display_value="Korean South Korea (KR)"/>
+        <EnumValue value="lv_LV" display_value="Latvian Latvia (LV)"/>
+        <EnumValue value="lt_LT" display_value="Lithuanian Lithuania (LT)"/>
+        <EnumValue value="mk_MK" display_value="Macedonian Macedonia (MK)"/>
+        <EnumValue value="ms_MY" display_value="Malay Malaysia (MY)"/>
+        <EnumValue value="mt_MT" display_value="Maltese (mt)	Malta (MT)"/>
+        <EnumValue value="no_NO" display_value="Norwegian Norway (NO)"/>
+        <EnumValue value="nb_NO" display_value="Norwegian Bokmal Norway (NO)"/>
+        <EnumValue value="nn_NO" display_value="Norwegian Nynorsk Norway (NO)"/>
+        <EnumValue value="pl_PL" display_value="Polish Poland (PL)"/>
+        <EnumValue value="pt_BR" display_value="Portuguese Brazil (BR)"/>
+        <EnumValue value="pt_PT" display_value="Portuguese Portugal (PT)"/>
+        <EnumValue value="ro_RO" display_value="Romanian Romania (RO)"/>
+        <EnumValue value="ru_RU" display_value="Russian Russia (RU)"/>
+        <EnumValue value="sr_BA" display_value="Serbian Bosnia and Herzegovina (BA)"/>
+        <EnumValue value="sr_ME" display_value="Serbian Montenegro (ME)"/>
+        <EnumValue value="sr_RS" display_value="Serbian Serbia (RS)"/>
+        <EnumValue value="sk_SK" display_value="Slovak Slovakia (SK)"/>
+        <EnumValue value="sl_SI" display_value="Slovenian Slovenia (SI)"/>
+        <EnumValue value="es_AR" display_value="Spanish Argentina (AR)"/>
+        <EnumValue value="es_BO" display_value="Spanish Bolivia (BO)"/>
+        <EnumValue value="es_CL" display_value="Spanish Chile (CL)"/>
+        <EnumValue value="es_CO" display_value="Spanish Colombia (CO)"/>
+        <EnumValue value="es_CR" display_value="Spanish Costa Rica (CR)"/>
+        <EnumValue value="es_DO" display_value="Spanish Dominican Republic (DO)"/>
+        <EnumValue value="es_EC" display_value="Spanish Ecuador (EC)"/>
+        <EnumValue value="es_SV" display_value="Spanish El Salvador (SV)"/>
+        <EnumValue value="es_GT" display_value="Spanish Guatemala (GT)"/>
+        <EnumValue value="es_HN" display_value="Spanish Honduras (HN)"/>
+        <EnumValue value="es_MX" display_value="Spanish Mexico (MX)"/>
+        <EnumValue value="es_NI" display_value="Spanish Nicaragua (NL)"/>
+        <EnumValue value="es_PA" display_value="Spanish Panama (PA)"/>
+        <EnumValue value="es_PY" display_value="Spanish Paraguay (PY)"/>
+        <EnumValue value="es_PE" display_value="Spanish Peru (PE)"/>
+        <EnumValue value="es_PR" display_value="Spanish Puerto Rico (PR)"/>
+        <EnumValue value="es_ES" display_value="Spanish Spain (ES)"/>
+        <EnumValue value="es_US" display_value="Spanish United States (US)"/>
+        <EnumValue value="es_UY" display_value="Spanish Uruguay (UY)"/>
+        <EnumValue value="es_VE" display_value="Spanish Venezuela (VE)"/>
+        <EnumValue value="sv_SE" display_value="Swedish Sweden (SE)"/>
+        <EnumValue value="th_TH" display_value="Thai Thailand (TH)"/>
+        <EnumValue value="tr_TR" display_value="Turkish Turkey (TR)"/>
+        <EnumValue value="uk_UA" display_value="Ukrainian Ukraine (UA)"/>
+        <EnumValue value="vi_VN" display_value="Vietnamese Vietnam (VN)"/>
+    </UserPref>
+    <UserPref name="fb_app_id"
+              display_name="Facebook App Id"
+              default_value=""
+              datatype="string"
+              required="false"/>
+
+    <!-- CssPrefs are input fields exposed in the CSS config for a widget -->
+    <!-- Generally we always provide root and summary class css fields -->
+    <CssPref name="rootclass"
+             display_name="CSS root class"
+             datatype="string" />
+
+    <Code type="jexl">
+        <!-- This section is used to set up data that will be used in the content section -->
+        <![CDATA[
+	  $percPageID = $perc.getPage().getId();
+	   $pageId = $perc.page.id;
+       $widgetId = $perc.widget.item.id;
+       $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+          if (empty($rootclass)) {
+            $rootclass = "";
+       }
+	$assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+	$perc.setWidgetContents($assetItems);
+
+   $og_site_name = $perc.widget.item.properties.get('og_site_name');
+   $og_type = $perc.widget.item.properties.get('og_type');
+   $og_image = $perc.widget.item.properties.get('og_image');
+   $og_image_width = $perc.widget.item.properties.get('og_image_width');
+   $og_image_height = $perc.widget.item.properties.get('og_image_height');
+   $og_locale = $perc.widget.item.properties.get('og_locale');
+   $fb_app_id = $perc.widget.item.properties.get('fb_app_id');
+
+    if($sys.assemblyItem.getNode().hasProperty("rx:page_summary")){
+   		$summary = $sys.assemblyItem.getNode().getProperty("rx:page_summary").value.String;
+   	}else{
+   		$summary = "";
+   	}
+   $description = $perc.page.description;
+   $summary_text = "";
+
+	  if ( ! $assetItems.isEmpty() ) {
+        $assetItem = $assetItems.get(0);
+		if(!empty($assetItem)){
+			$site_name_override = $assetItem.getNode().getProperty('site_name_override').String;
+			$title_override = $assetItem.getNode().getProperty('title_override').String;
+			$description_override = $assetItem.getNode().getProperty('description_override').String;
+			$image_override = $assetItem.getNode().getProperty('image_override').String;
+			$image_override_linkId = $assetItem.getNode().getProperty('image_override_linkId').String;
+			$image_width_override = $assetItem.getNode().getProperty('image_width_override').String;
+			$image_height_override = $assetItem.getNode().getProperty('image_height_override').String;
+			$url_override = $assetItem.getNode().getProperty('url_override').String;
+			$type_override = $assetItem.getNode().getProperty('type_override').String;
+			$locale_override = $assetItem.getNode().getProperty('locale_override').String;
+			$fb_app_id_override = $assetItem.getNode().getProperty('fb_app_id_override').String;
+
+		}
+	}
+
+	if(! empty($site_name_override)){
+		$use_site_name = $tools.esc.html($site_name_override);
+	}else{
+		$use_site_name= $tools.esc.html($og_site_name);
+	}
+    $meta_sitename='<meta property="og:site_name" content="' + $use_site_name + '" />';
+
+    if(! empty($fb_app_id_override)){
+		$use_fb_app_id = $tools.esc.html($fb_app_id_override);
+	}else{
+		$use_fb_app_id = $tools.esc.html($fb_app_id);
+	}
+	$meta_fb_app_id='<meta property="og:fb_app_id" content="' + $use_fb_app_id + '" />';
+
+	if(! empty($locale_override)){
+		$use_locale = $tools.esc.html($locale_override);
+	}else{
+		$use_locale = $tools.esc.html($og_locale);
+	}
+	$meta_locale='<meta property="og:locale" content="' + $use_locale + '" />';
+
+	if(! empty($title_override)){
+		$use_title = $tools.esc.html($title_override);
+	}else{
+		$use_title = $tools.esc.html($perc.page.title);
+	}
+	$meta_title='<meta property="og:title" content="' + $use_title + '" />';
+
+	if(! empty($type_override) && $type_override != 'none'){
+		$use_type = $tools.esc.html($type_override);
+	}else{
+		$use_type = $tools.esc.html($og_type);
+	}
+
+	$meta_type='<meta property="og:type" content="' + $use_type + '" />';
+
+	if(! empty($url_override)){
+		$use_url = $tools.esc.html($url_override);
+	}else{
+		$pagelink = $tools.esc.html($rx.pageutils.itemLink($perc.linkContext, $perc.page));
+		$use_url = $pagelink;
+	}
+
+	if(! empty($summary)){
+
+		$doc = $sys.getClass().forName('org.jsoup.Jsoup').parseBodyFragment($summary);
+		$body = $doc.body();
+		$summary_images = $body.getElementsByTag("img");
+		if($summary_images.size() > 0){
+			$summary_image = $summary_images.first();
+		$image_summary = $summary_image.attr("src");
+		$image_alt = $summary_image.attr("alt");
+		}
+		$summary_text  = $doc.text();
+	}
+
+	if(! empty($description_override)){
+		$use_description = $tools.esc.html($description_override);
+	}else{
+	    if(! empty($description)){
+			$use_description = $tools.esc.html($description);
+		}
+		else{
+			if(!empty($summary_text)){
+				$use_description = $summary_text;
+			}
+			else{
+				$use_description = "";
+			}
+		}
+	}
+	$meta_description='<meta property="og:description" content="' + $use_description + '" />';
+	if(! empty($image_override) && ! empty($image_override_linkId )){
+
+   		    $image_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $image_override_linkId);
+			$use_image = $tools.esc.html($image_path);
+	}else{
+		if(! empty($image_summary)){
+			$use_image = $image_summary;
+		}else{
+			if(! empty($og_image)){
+				$use_image = $og_image;
+			}
+		}
+	}
+
+			
+	if(! empty($image_height_override)){
+		$use_image_height = $tools.esc.html($image_height_override);
+	}else{
+	    if(! empty($og_image_height)){
+			$use_image_height = $tools.esc.html($og_image_height);
+		}
+	}
+
+	$meta_image_height='<meta property="og:image:height" content="' + $use_image_height + '" />';
+	 
+			
+	if(! empty($image_width_override)){
+		$use_image_width = $tools.esc.html($image_width_override);
+	}else{
+	    if(! empty($og_image_width)){
+			$use_image_width = $tools.esc.html($og_image_width);
+		}
+		
+	}
+	
+	$meta_image_width='<meta property="og:image:width" content="' + $use_image_width + '" />';
+	
+
+	$baseURL = $perc.linkContext.getSite().getSiteProtocol() + "://";
+	$pubSiteName = $perc.linkContext.getSite().getName();
+
+	if(! empty($use_url)){
+		if(! $use_url.startsWith("http")){
+
+			if($use_url.startsWith("/Sites/"))
+				$use_url = $use_url.replace("/Sites/","");
+
+			if($use_url.startsWith("/"))
+				$use_url = $use_url.substring(1);
+
+			if(! $use_url.startsWith($pubSiteName)){
+				$use_url = $baseURL + $pubSiteName + "/" + $use_url;
+			}else{
+				$use_url = $baseURL + $use_url;
+			}
+
+		}
+	}
+	$meta_url='<meta property="og:url" content="' + $use_url + '" />';
+
+	if(! empty($use_image)){
+		if(! $use_image.startsWith("http")){
+
+			if(! $use_image.startsWith("/")){
+				$use_image = "/" + $use_image;
+			}
+
+			$use_image = $baseURL + $pubSiteName + $use_image;
+		}
+	}
+
+	if(!empty($use_image)){
+	    $meta_image='<meta property="og:image" content="' + $use_image + '" />';
+	}else{
+		$meta_image="";
+	}
+	
+
+	if( empty($perc.page.getAdditionalHeadContent())){
+		$perc.page.setAdditionalHeadContent("");
+		$addlHead = "";
+	}else{
+		$addlHead = $perc.page.getAdditionalHeadContent();
+	}
+	$nl="";
+	if(!empty($use_site_name)){
+		$perc.page.setAdditionalHeadContent($addlHead + $meta_sitename);
+	}
+
+	if(!empty($use_title)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_title));
+	}
+
+	if(!empty($use_description)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_description));
+	}
+	if(!empty($use_url)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_url));
+	}
+
+	if(!empty($use_type)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_type));
+	}
+
+	if(!empty($use_image)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_image));
+			if(!empty($use_image_width)){
+			$addlHead = $perc.page.getAdditionalHeadContent();
+			$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_image_width));
+		}
+		if(!empty($use_image_height)){
+			$addlHead = $perc.page.getAdditionalHeadContent();
+			$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_image_height));
+		}
+	}
+		
+	if(!empty($use_locale)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead, $meta_locale));
+	}
+
+	if(!empty($use_fb_app_id)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_fb_app_id));
+	}
+
+	]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[
+#if($perc.isEditMode())##
+<img src="/Rhythmyx/rx_resources/widgets/percOpenGraph/images/open-graph-placeholder-small.png" alt="Facebook Open Graph Tags" title="Facebook Open Graph Tags" />
+#end##
+    ]]>
+    </Content>
+</Widget>

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT default (body*, relatedimages*, author*, relatedarticles*, title*, hotarticles* )>
+<!ELEMENT hotarticles (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT relatedarticles (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT relatedimages (#PCDATA)>
+<!ELEMENT body (#PCDATA)>
+<!ATTLIST  default relatedlinkurl CDATA #IMPLIED>

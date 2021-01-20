@@ -1,0 +1,227 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" 
+    import="com.percussion.services.contentmgr.IPSContentMgr"
+    import="com.percussion.services.contentmgr.PSContentMgrLocator"
+    import="org.jsoup.Jsoup"
+    import="org.jsoup.safety.Whitelist"
+    import="org.owasp.encoder.Encode"
+    import="javax.jcr.Value, javax.jcr.query.Query"
+    import="javax.jcr.query.QueryResult, javax.jcr.query.Row"
+    import="javax.jcr.query.RowIterator"
+	import="java.util.HashMap"
+	import="java.util.Map"
+    
+    %>
+<%--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  --%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JCR Query Debugger</title>
+</head>
+<body>
+<%!IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
+   %>
+<%!Map pmap = new HashMap();
+   %>
+<h1>JCR Query Debugger</h1>
+<p>
+Use this page to debug JSR-170 SQL-like queries
+</p>
+<form method="POST"> 
+Parameters
+<br>
+<%
+    String[] allNames = expandParam(request.getParameterValues("qname"), 6);
+         String[] allValues = expandParam(request.getParameterValues("qvalue"),
+               6);
+         String lastquery = request.getParameter("querybody");
+         if (lastquery == null || lastquery.trim().length() == 0)
+         {
+            lastquery = "select rx:displaytitle, jcr:path from rx:rffgeneric";
+         }
+         
+         %>
+      
+<table title="Query Parameters" border="1"> 
+<thead>
+<tr><th>Name</th><th>Value</th></tr>
+</thead>
+   <tr>
+       <td><input type="text" name="qname" maxlength="30" value="<%= allNames[0] %>" /> </td>
+       <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[0] %>" /> </td>
+   </tr>
+   <tr>
+       <td><input type="text" name="qname" maxlength="30" value="<%= allNames[1] %>" /> </td>
+       <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[1] %>" /> </td>
+   </tr>   
+   <tr>
+       <td><input type="text" name="qname" maxlength="30" value="<%= allNames[2] %>" /> </td>
+       <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[2] %>" /> </td>
+   </tr>   
+   <tr>
+       <td><input type="text" name="qname" maxlength="30" value="<%= allNames[3] %>" /> </td>
+       <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[3] %>" /> </td>
+   </tr>   
+   <tr>
+       <td><input type="text" name="qname" maxlength="30" value="<%= allNames[4] %>" /> </td>
+       <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[4] %>" /> </td>
+   </tr>   
+   <tr>
+       <td><input type="text" name="qname" maxlength="30" value="<%= allNames[5] %>" /> </td>
+       <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[5] %>" /> </td>
+   </tr>   
+
+</table>
+<br/>
+<textarea name="querybody" rows="5" cols="60">
+<%=sanitizeForHtml(lastquery)%>
+</textarea>
+<br/>
+<input type="submit" name="execute" value="execute" label="Execute" /> 
+</form>
+<p>
+<%if (request.getMethod().equals("POST")
+               && request.getParameter("execute").equals("execute"))
+         {
+            try
+            {
+               out.println("<pre>");
+               Map pmap = buildParamMap(allNames, allValues, out);
+               String qry = request.getParameter("querybody");
+               if (qry != null && qry.trim().length() > 0)
+               {
+                  out.println("\nQuery is " + qry.trim());
+               }
+               long before = System.currentTimeMillis();
+               Query query = mgr.createQuery(qry, Query.SQL);
+               QueryResult qresults = mgr.executeQuery(query, -1, pmap);
+               long after = System.currentTimeMillis();
+               long elapsed = after - before;
+               out.println("Elapsed time is " + String.valueOf(elapsed) + " milliseconds ");
+               out.println("</pre>");
+               String[] columns = qresults.getColumnNames();
+               out.println("<table>");
+               printTableHeader(columns, out);
+               printTableRows(qresults, out);
+               out.println("</table>");
+            } catch (Exception ex)
+            {
+               out.println("<pre> Unexpected Exception \n");
+               out.println(ex.toString());
+               StackTraceElement[] stacktrace = ex.getStackTrace();
+               for (int m = 0; m < stacktrace.length; m++)
+               {
+                  out.println(stacktrace[m].toString());
+               }
+               out.println("</pre>");
+            }
+         }
+      %>
+      
+<%! private String[] expandParam(String[] inParam, int size)
+   {
+      int ilen = 0;
+      if (inParam != null)
+      {
+         ilen = inParam.length;
+      }
+      if (ilen >= size)
+      {
+         return inParam;
+      }
+      String[] outParam = new String[size];
+      java.util.Arrays.fill(outParam, "");
+      if (ilen > 0)
+      {
+         System.arraycopy(inParam, 0, outParam, 0, ilen);
+      }
+      return outParam;
+   }
+   private Map buildParamMap(String[] allNames, String[] allValues,
+         javax.servlet.jsp.JspWriter out)
+         throws java.io.IOException
+   {
+      Map pmap = new HashMap();
+      for (int i = 0; i < allNames.length; i++)
+      {
+         String pNameLoop = sanitizeForHtml(allNames[i]);
+         String pValLoop = sanitizeForHtml(allValues[i]);
+         if (pNameLoop.trim().length() > 0 && pValLoop.trim().length() > 0)
+         {
+            out.println(pNameLoop + " " + pValLoop);
+            pmap.put(pNameLoop, pValLoop);
+         }
+      }
+      return pmap;
+   }
+   private void printTableHeader(String[] columns,
+         javax.servlet.jsp.JspWriter out)
+         throws java.io.IOException
+   {
+      out.println("<thead><tr>");
+      for (int j = 0; j < columns.length; j++)
+      {
+         out.println("<th>" + sanitizeForHtml(columns[j]) + "</th>");
+      }
+      out.println("</tr></thead>");
+   }
+   private void printTableRows(QueryResult qresults,
+         javax.servlet.jsp.JspWriter out)
+         throws java.io.IOException, javax.jcr.RepositoryException
+   {
+      RowIterator rows = qresults.getRows();
+      while (rows.hasNext())
+      {
+         out.println("<tr>");
+         Row nrow = rows.nextRow();
+         Value[] nvalues = nrow.getValues();
+         for (int k = 0; k < nvalues.length; k++)
+         {
+            String kval = "&nbsp;";
+            if (nvalues[k] != null)
+            {
+               kval = Encode.forHtml(nvalues[k].getString());
+            }
+            out.println("<td>" + kval + "</td>");
+         }
+         out.println("</tr>");
+      }
+   }
+   
+   private String sanitizeForHtml(String input){
+	   String ret = null;
+	   if(input != null){
+		   ret = Jsoup.clean(input, Whitelist.none());
+	   }
+	   return ret;
+   }
+   %>
+</p>
+
+
+</body>
+</html>

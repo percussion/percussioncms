@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="5" startPriority="0" version="2.0">
+   <name>psx_cefolder</name>
+   <description>This application contains the content type used to support folders.</description>
+   <requestRoot>psx_cefolder</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/_winkelried_1033056459062/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20020929T111126171</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="7">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20050131T193958237</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>-1</maxThreads>
+   <maxRequestTime>-1</maxRequestTime>
+   <maxRequestsInQueue>-1</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>1</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXContentEditor contentType="101" enableRelatedContent="no" objectType="2" workflowId="-1">
+      <PSXDataSet id="286">
+         <name>template</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocalDef for Folder ContentType</description>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="275">
+                        <alias>contentCredential</alias>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="PSX_FOLDER" name="PSX_FOLDER"/>
+                  <PSXTableRef alias="PSX_OBJECTACL" name="PSX_OBJECTACL"/>
+                  <PSXTableRef alias="PSX_PROPERTIES" name="PSX_PROPERTIES"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_contentpostdate</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="PSX_FOLDER" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="no">
+                  <PSXFieldSet name="acl" repeatability="zeroOrMore" supportsSequencing="no" type="complexChild" userSearchable="no">
+                     <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="permissions" showInPreview="yes" showInSummary="yes" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>PSX_OBJECTACL</tableAlias>
+                              <column>PERMISSIONS</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>integer</DataType>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                     <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="type" showInPreview="yes" showInSummary="yes" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>PSX_OBJECTACL</tableAlias>
+                              <column>TYPE</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>integer</DataType>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                     <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="name" showInPreview="yes" showInSummary="yes" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>PSX_OBJECTACL</tableAlias>
+                              <column>NAME</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>255</DataFormat>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                  </PSXFieldSet>
+                  <PSXField defaultSearchLabel="Workflow" forceBinary="no" modificationType="userCreate" name="sys_workflowid" showInPreview="yes" showInSummary="yes" systemMandatory="yes" userCustomizable="yes" userSearchable="yes" type="system">
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>-1</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <PSXSearchProperties defaultSearchLabel="Workflow" enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="description" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>PSX_FOLDER</tableAlias>
+                           <column>DESCRIPTION</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXFieldSet name="properties" repeatability="zeroOrMore" supportsSequencing="no" type="complexChild" userSearchable="no">
+                     <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="propertyName" showInPreview="yes" showInSummary="yes" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>PSX_PROPERTIES</tableAlias>
+                              <column>PROPERTYNAME</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>50</DataFormat>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                     <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="propertyValue" showInPreview="yes" showInSummary="yes" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>PSX_PROPERTIES</tableAlias>
+                              <column>PROPERTYVALUE</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>4000</DataFormat>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                     <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="propertyDescription" showInPreview="yes" showInSummary="yes" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>PSX_PROPERTIES</tableAlias>
+                              <column>DESCRIPTION</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>255</DataFormat>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                  </PSXFieldSet>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="PSX_FOLDER" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>description</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Description:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="382" name="sys_EditBox"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Description:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>properties</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Properties:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="425" name="sys_Table"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Properties:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                        <PSXDisplayMapper fieldSetRef="properties" id="435">
+                           <PSXDisplayMapping>
+                              <FieldRef>propertyName</FieldRef>
+                              <PSXUISet>
+                                 <Label>
+                                    <PSXDisplayText>Property Name:</PSXDisplayText>
+                                 </Label>
+                                 <PSXControlRef id="426" name="sys_EditBox"/>
+                                 <ErrorLabel>
+                                    <PSXDisplayText>Property Name:</PSXDisplayText>
+                                 </ErrorLabel>
+                              </PSXUISet>
+                           </PSXDisplayMapping>
+                           <PSXDisplayMapping>
+                              <FieldRef>propertyValue</FieldRef>
+                              <PSXUISet>
+                                 <Label>
+                                    <PSXDisplayText>Property Value:</PSXDisplayText>
+                                 </Label>
+                                 <PSXControlRef id="427" name="sys_EditBox"/>
+                                 <ErrorLabel>
+                                    <PSXDisplayText>Property Value:</PSXDisplayText>
+                                 </ErrorLabel>
+                              </PSXUISet>
+                           </PSXDisplayMapping>
+                           <PSXDisplayMapping>
+                              <FieldRef>propertyDescription</FieldRef>
+                              <PSXUISet>
+                                 <Label>
+                                    <PSXDisplayText>Property Description:</PSXDisplayText>
+                                 </Label>
+                                 <PSXControlRef id="428" name="sys_EditBox"/>
+                                 <ErrorLabel>
+                                    <PSXDisplayText>Property Description:</PSXDisplayText>
+                                 </ErrorLabel>
+                              </PSXUISet>
+                           </PSXDisplayMapping>
+                        </PSXDisplayMapper>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>acl</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>ACL:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="214" name="sys_Table"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>ACL:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                        <PSXDisplayMapper fieldSetRef="acl" id="229">
+                           <PSXDisplayMapping>
+                              <FieldRef>type</FieldRef>
+                              <PSXUISet>
+                                 <Label>
+                                    <PSXDisplayText>Type:</PSXDisplayText>
+                                 </Label>
+                                 <PSXControlRef id="215" name="sys_EditBox"/>
+                                 <ErrorLabel>
+                                    <PSXDisplayText>Type:</PSXDisplayText>
+                                 </ErrorLabel>
+                              </PSXUISet>
+                           </PSXDisplayMapping>
+                           <PSXDisplayMapping>
+                              <FieldRef>name</FieldRef>
+                              <PSXUISet>
+                                 <Label>
+                                    <PSXDisplayText>Name:</PSXDisplayText>
+                                 </Label>
+                                 <PSXControlRef id="216" name="sys_EditBox"/>
+                                 <ErrorLabel>
+                                    <PSXDisplayText>Name:</PSXDisplayText>
+                                 </ErrorLabel>
+                              </PSXUISet>
+                           </PSXDisplayMapping>
+                           <PSXDisplayMapping>
+                              <FieldRef>permissions</FieldRef>
+                              <PSXUISet>
+                                 <Label>
+                                    <PSXDisplayText>Permissions:</PSXDisplayText>
+                                 </Label>
+                                 <PSXControlRef id="219" name="sys_EditBox"/>
+                                 <ErrorLabel>
+                                    <PSXDisplayText>Permissions:</PSXDisplayText>
+                                 </ErrorLabel>
+                              </PSXUISet>
+                           </PSXDisplayMapping>
+                        </PSXDisplayMapper>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+         </PSXContentEditorPipe>
+         <PSXPageDataTank id="285">
+            <schemaSource>file:unspecified</schemaSource>
+            <actionTypeXmlField/>
+         </PSXPageDataTank>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>folder</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+   </PSXContentEditor>
+   <PSXLogger id="0" logAppStartStop="yes" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+   <PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+   <PSXErrorWebPages id="277" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="278">
+      <providerType>SMTP</providerType>
+      <server>rxmaster</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="locationY281">24</userProperty>
+   <userProperty name="locationY280">0</userProperty>
+   <userProperty name="279sizeheight">200</userProperty>
+   <userProperty name="locationX301">255</userProperty>
+   <userProperty name="locationX300">83</userProperty>
+   <userProperty name="pageDatatankSrcType299">2</userProperty>
+   <userProperty name="279locationy">20</userProperty>
+   <userProperty name="279locationx">20</userProperty>
+   <userProperty name="pageDatatankSrcType294">3</userProperty>
+   <userProperty name="locationX299">356</userProperty>
+   <userProperty name="locationX298">262</userProperty>
+   <userProperty name="pageDatatankSrcType292">3</userProperty>
+   <userProperty name="locationX297">278</userProperty>
+   <userProperty name="locationX296">278</userProperty>
+   <userProperty name="pageDatatankSrcType290">3</userProperty>
+   <userProperty name="locationX295">201</userProperty>
+   <userProperty name="locationX293">15</userProperty>
+   <userProperty name="locationY278">100</userProperty>
+   <userProperty name="locationY277">55</userProperty>
+   <userProperty name="locationX291">28</userProperty>
+   <userProperty name="locationY276">10</userProperty>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="schemaSourceReadOnly299">true</userProperty>
+   <userProperty name="schemaSourceReadOnly294">false</userProperty>
+   <userProperty name="schemaSourceReadOnly292">false</userProperty>
+   <userProperty name="schemaSourceReadOnly290">false</userProperty>
+   <userProperty name="279sizewidth">120</userProperty>
+   <userProperty name="pageDatatankSrcType288">2</userProperty>
+   <userProperty name="pageDatatankSrcType285">3</userProperty>
+   <userProperty name="locationY301">62</userProperty>
+   <userProperty name="locationY300">61</userProperty>
+   <userProperty name="locationX289">14</userProperty>
+   <userProperty name="pageDatatankSrcType283">2</userProperty>
+   <userProperty name="locationX287">69</userProperty>
+   <userProperty name="locationX286">26</userProperty>
+   <userProperty name="locationX284">-14</userProperty>
+   <userProperty name="locationX283">356</userProperty>
+   <userProperty name="locationX282">236</userProperty>
+   <userProperty name="locationX281">102</userProperty>
+   <userProperty name="locationY299">0</userProperty>
+   <userProperty name="locationX280">0</userProperty>
+   <userProperty name="locationY298">403</userProperty>
+   <userProperty name="locationY297">315</userProperty>
+   <userProperty name="locationY296">315</userProperty>
+   <userProperty name="locationY295">528</userProperty>
+   <userProperty name="locationY293">231</userProperty>
+   <userProperty name="schemaSourceReadOnly288">true</userProperty>
+   <userProperty name="locationY291">324</userProperty>
+   <userProperty name="schemaSourceReadOnly285">false</userProperty>
+   <userProperty name="279readonly">true</userProperty>
+   <userProperty name="schemaSourceReadOnly283">true</userProperty>
+   <userProperty name="locationX278">16</userProperty>
+   <userProperty name="locationX277">16</userProperty>
+   <userProperty name="locationX276">16</userProperty>
+   <userProperty name="locationY289">421</userProperty>
+   <userProperty name="locationY287">22</userProperty>
+   <userProperty name="locationY286">536</userProperty>
+   <userProperty name="locationY284">20</userProperty>
+   <userProperty name="locationY283">0</userProperty>
+   <userProperty name="locationY282">24</userProperty>
+</PSXApplication>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXProp (#PCDATA)>
+<!ATTLIST  PSXProp description CDATA #REQUIRED>
+<!ATTLIST  PSXProp name CDATA #REQUIRED>
+<!ATTLIST  PSXProp propid CDATA #REQUIRED>
+<!ELEMENT PSXProps (PSXProp+ )>
+<!ATTLIST  PSXProps propsurl CDATA #REQUIRED>

@@ -1,0 +1,115 @@
+ ############################################################################
+ #
+ # $Id: package.nmk 1.6 2000/10/10 20:29:05Z martingenhart Release $
+ #
+ # Version Labels	: $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 $
+ #
+ # Locked By		: $Locker: $
+ #
+ # Revision History:
+ #	$Log: package.nmk $
+ #	Revision 1.6  2000/10/10 20:29:05Z  martingenhart
+ #	added new class PSLogDatabase
+ #	Revision 1.5  2000/06/27 21:31:58Z  chadloder
+ #	Correction: PSLogManagerThreadTests should be PSLogManagerThreadTest
+ #	Revision 1.4  1999/11/19 23:25:29  paulhoward
+ #	Fixed infinite recursion on EXCLUDED_CLASSES macro.
+ #	
+ #	Revision 1.3  1999/09/23 14:50:42Z  chadloder
+ #	Fixed shared/default classes
+ #	Revision 1.2  1999/09/22 22:29:45  chadloder
+ #	Fixed minor bugs; added PROPERTIES, IMAGES, RESOURCES, ALL_FILES
+ #	Revision 1.1  1999/09/21 23:51:39  AlexTeng
+ #	Initial revision
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.log
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+	PSLogHandlerTest \
+	PSLogManagerTest \
+	PSLogManagerThreadTest
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = \
+	IPSLogReader \
+	IPSLogReaderFilter \
+	IPSLogWriter \
+	PSApplicationLogReaderFilter \
+	PSBackEndLogReader \
+	PSBackEndLogWriter \
+	PSFileLogReader \
+	PSFileLogReaderWriterPair \
+	PSFileLogWriter \
+	PSLogEntry \
+	PSLogHandler \
+	PSLogManager \
+	PSLogMultipleHandlers \
+	PSLogQueueThread \
+	PSOutputLogReaderFilter \
+	PSServerLogReaderFilter
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+	PSLogApplicationStart \
+	PSLogApplicationStatistics \
+	PSLogApplicationStop \
+	PSLogBasicUserActivity \
+	PSLogDetailedUserActivity \
+	PSLogError \
+	PSLogExecutionPlan \
+	PSLogFullUserActivity \
+	PSLogInformation \
+	PSLogServerStart \
+	PSLogServerStop \
+	PSLogServerWarning \
+	PSLogStringBundle \
+	PSLogSubMessage \
+	PSLogDatabase
+
+#
+# Properties files
+#
+PROPERTIES = \
+	PSLogStringBundle.properties
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)
+
+
+

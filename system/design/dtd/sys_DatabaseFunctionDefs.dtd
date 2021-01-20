@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!ELEMENT PSXDatabaseFunctionsColl (PSXDatabaseFunction*)>
+<!-- 
+   Each PSXDatabaseFunction groups all of the definitions for a standard fct
+   name for all supported drivers of that function. Not every driver
+   supported by Rx must support every function. The workbench will filter
+   the list based on the db for the given resource. If multiple dbs are used
+   in a resource, the intersection set is used. The server will not validate
+   these functions. If an invalid one is entered by manually editing the
+   application xml, a runtime exception will occur.
+
+   Attributes:
+      standardFunctionName - name of the database function. 
+                             This is case-insenstive, so two or more PSXDatabaseFunction
+                             elements should not have the value for this attribute differing
+                             only in case.
+
+-->
+<!ELEMENT PSXDatabaseFunction (PSXDatabaseFunctionDef*)>
+<!ATTLIST PSXDatabaseFunction
+	standardFunctionName CDATA #REQUIRED
+>
+<!-- 
+   The actual definition of the function for a specific database.
+   Attributes:
+      standardFunctionName - must be the same as the attribute by the same
+      name in the containing node.
+      
+      driver - The jdbc subprotocol used by the driver. For example, "inetdae7" or "db2" or "oracle:thin".
+               The value of this attribute is case-sensitive.
+
+               This attribute may not be specified or specified as "*" for the first PSXDatabaseFunctionDef 
+               element, in which case this database function definition is considered
+               the default function definition. 
+               Default function definition will be used unless there is another 
+               PSXDatabaseFunctionDef element defined with a matching driver name.
+               If a default function defintion has been provided then subsequent 
+               definitions for the same function can specify only the elements which
+               differ from the default defintion (that is, override the default value). 
+               For example, just provide the Body or Description element or Param elements. 
+               Database function definition for such cases will be constructed using 
+               the default database function definition and the database function 
+               definition for the matching driver.
+-->
+<!ELEMENT PSXDatabaseFunctionDef (Body?, Param*, Description?)>
+<!ATTLIST PSXDatabaseFunctionDef
+	standardFunctionName CDATA #REQUIRED
+	driver CDATA #IMPLIED
+>
+<!-- 
+   There should be a replacement parameter for every parameter of the 
+   function. For example, the substring function may have the following Body:
+      
+         SUBSTR({0}, {1}, {2})
+         
+   Where {0} will be replaced at run time with the dynamically generated 
+   value as specified by the definition of the first parameter, {1} by the 2nd
+   parameter, and so on. It is an error if the number of expected parameters 
+   doesn't match the number of actual parameters.
+
+   The function parameters should be specified in ascending order. The first
+   argument to the function should be {0} and second {1} and so on. 
+   
+   A function parameter can also be specified in the format shown below. This should be used
+   if the function parameter value needs to be assigned based on the first non-null and
+   non-empty value from a list of choices.
+   
+   {0,choice,0#firstArg|1#secondArg}
+   
+   In this example, the first parameter to the function will be assigned value as follows:
+   
+   1> If the runtime value of the first parameter to the function is non-null and non-empty
+         then it will be used.
+         
+   2> If the runtime value of the first parameter to the function is null or empty, then the
+         second parameter to the function will be evaluated. If it is non-null and non-empty
+         then it will be used.
+         
+    3> If both first and second parameters are null or empty then null will be used (and hence
+          "Omit if Null" should be specified if all parameters in the choice list can be null or empty)
+          
+   
+   There is no limit to the number of choices in the choice list. Here are some other examples 
+   of function body containing choice list.
+   
+   FUNC1BODY( {0} , {1,choice,1#secondArg|2#thirdArg} , {3} )
+   
+   FUNC2BODY( {0} , {1} {2,choice,2#thirdArg|3#fourthArg|4#fifthArg|5#sixthArg})
+   
+   FUNC3BODY( {0} {1,choice,1#secondArg|2#thirdArg} , {3} ,  {4})
+   
+   FUNC4BODY( {0} , {1} {2,choice,2#thirdArg|3#fourthArg} , {4} ,  {5,choice,5#sixthArg|6#seventhArg|7#eighthArg} , {8} , {9} )
+-->
+<!ELEMENT Body (#PCDATA)>
+<!--
+   The content of this element is a Description element which provides details
+   about the parameter.
+   
+   Attributes:
+      name - name of the parameter
+      type - type of the parameter. If the parameter expects numberic values, specify the type as "number".  
+      staticBind - Whether the database function param value should be bound statically,
+					or dynamically. For static binding, the function parameter value is
+					evaluated and subsituted in the body of the function. For dynamic
+					binding, a "?" is subsituted for the parameter value in the function
+					body and the actual value is bound before statement execution using
+					one of the <code>java.sql.PreparedStatement.setXXX()</code> methods 
+					(based on the type of the parameter - number, text or array)
+ 
+-->
+<!ELEMENT Param (Description?)>
+<!ATTLIST Param
+	name CDATA #REQUIRED
+	type (text | number) "text"
+	staticBind (y | n) "y"
+>
+<!--
+   The content of this element is the description of the parameter which will be displayed in the
+   Workbench.
+-->
+<!ELEMENT Description (#PCDATA)>

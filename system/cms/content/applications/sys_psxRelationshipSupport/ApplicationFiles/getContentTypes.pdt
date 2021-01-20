@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXContentType (id, name, description, newurl, queryurl )>
+<!ELEMENT queryurl (#PCDATA)>
+<!ELEMENT newurl (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ATTLIST  PSXContentType hideFromMenu CDATA #IMPLIED>
+<!ATTLIST  PSXContentType objectType CDATA #REQUIRED>
+<!ELEMENT getContentTypes (PSXContentType* )>

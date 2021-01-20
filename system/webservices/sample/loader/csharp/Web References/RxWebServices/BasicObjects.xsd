@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema xmlns:com="urn:www.percussion.com/6.0.0/common" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/common" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="ActionLinkRef" type="xsd:string" />
+  <xsd:element name="Alias" type="xsd:string" />
+  <xsd:element name="Anchor" type="xsd:string" />
+  <xsd:element name="CommandHandler">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXConditionalStylesheet" />
+          <xsd:element ref="com:PSXStylesheet" />
+        </xsd:sequence>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXConditionalRequest" />
+          <xsd:element ref="com:PSXUrlRequest" />
+        </xsd:sequence>
+      </xsd:choice>
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Conditions">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:PSXRule" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DataFormat" type="xsd:string" />
+  <xsd:element name="DataLocator">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="com:PSXBackEndColumn" />
+        <xsd:element ref="com:PSXCgiVariable" />
+        <xsd:element ref="com:PSXCookie" />
+        <xsd:element ref="com:PSXDateLiteral" />
+        <xsd:element ref="com:PSXExtensionCall" />
+        <xsd:element ref="com:PSXHtmlParameter" />
+        <xsd:element ref="com:PSXNumericLiteral" />
+        <xsd:element ref="com:PSXSingleHtmlParameter" />
+        <xsd:element ref="com:PSXTextLiteral" />
+        <xsd:element ref="com:PSXUserContext" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DataType">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="size" type="xsd:string" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DefaultSelected">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXDefaultSelected" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DefaultUI">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:PSXUISet" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DefaultValue">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:DataLocator" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DependentField">
+    <xsd:complexType>
+      <xsd:attribute name="fieldRef" type="xsd:string" use="required" />
+      <xsd:attribute default="optional" name="dependencyType">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="optional" />
+            <xsd:enumeration value="required" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Description" type="xsd:string" />
+  <xsd:element name="ErrorLabel">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXDisplayText" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ErrorMessage">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXDisplayText" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FieldInputTranslation">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXFieldTranslation" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FieldOutputTranslation">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXFieldTranslation" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FieldRef" type="xsd:string" />
+  <xsd:element name="FieldRules">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:PSXVisibilityRules" />
+        <xsd:element minOccurs="0" ref="com:PSXFieldValidationRules" />
+        <xsd:element minOccurs="0" ref="com:FieldInputTranslation" />
+        <xsd:element minOccurs="0" ref="com:FieldOutputTranslation" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FieldValidationRuleRef">
+    <xsd:complexType>
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Href" type="xsd:string" />
+  <xsd:element name="InputDataExits">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:PSXExtensionCallSet" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Key" type="xsd:string" />
+  <xsd:element name="Label">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXDisplayText" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="OccurrenceSettings">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute default="optional" name="dimension">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="optional" />
+                <xsd:enumeration value="required" />
+                <xsd:enumeration value="oneOrMore" />
+                <xsd:enumeration value="zeroOrMore" />
+                <xsd:enumeration value="count" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+          <xsd:attribute default="delimited" name="multiValuedType">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="delimited" />
+                <xsd:enumeration value="separate" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+          <xsd:attribute default=";" name="delimiter" type="xsd:string" />
+          <xsd:attribute name="transitionId" type="xsd:string" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXActionLink">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXDisplayText" />
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXParam" />
+      </xsd:sequence>
+      <xsd:attribute default="no" name="isDisabled">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="no" name="isTransition">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="name" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXActionLinkList">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:PSXActionLink" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXApplicationFlow">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:CommandHandler" />
+      </xsd:sequence>
+      <xsd:attribute name="filename" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the file from which this was loaded and will be stored back, a relative path including file extension from the default shared definition directory.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXApplyWhen">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXRule" />
+      </xsd:sequence>
+      <xsd:attribute default="no" name="ifFieldEmpty">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXBackEndColumn">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:tableAlias" />
+        <xsd:element ref="com:column" />
+        <xsd:element minOccurs="0" ref="com:columnAlias" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXBackEndCredential">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:alias" />
+        <xsd:element minOccurs="0" ref="com:comment" />
+        <xsd:element ref="com:datasource" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXCgiVariable">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXChoiceFilter">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:DependentField" />
+        <xsd:element ref="com:PSXUrlRequest" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXChoices">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:choice>
+          <xsd:element ref="com:Key" />
+          <xsd:element maxOccurs="unbounded" ref="com:PSXEntry" />
+          <xsd:element ref="com:PSXUrlRequest" />
+        </xsd:choice>
+        <xsd:element minOccurs="0" ref="com:PSXNullEntry" />
+        <xsd:element minOccurs="0" ref="com:DefaultSelected" />
+        <xsd:element minOccurs="0" ref="com:PSXChoiceFilter" />
+      </xsd:sequence>
+      <xsd:attribute default="global" name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="global" />
+            <xsd:enumeration value="local" />
+            <xsd:enumeration value="lookup" />
+            <xsd:enumeration value="internalLookup" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="ascending" name="sortOrder">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="ascending" />
+            <xsd:enumeration value="descending" />
+            <xsd:enumeration value="user" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXCommandHandlerStylesheets">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:CommandHandler" />
+      </xsd:sequence>
+      <xsd:attribute name="filename" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the file from which this was loaded and will be stored back, a relative path including file extension from the default shared definition directory.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXConditional">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:variable" />
+        <xsd:element ref="com:operator" />
+        <xsd:element ref="com:value" />
+        <xsd:element minOccurs="0" ref="com:boolean" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXConditionalExit">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXExtensionCallSet" />
+        <xsd:element minOccurs="0" ref="com:PSXApplyWhen" />
+      </xsd:sequence>
+      <xsd:attribute default="10" name="maxErrorsToStop" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXConditionalRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXUrlRequest" />
+        <xsd:element ref="com:Conditions" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXConditionalStylesheet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXStylesheet" />
+        <xsd:element ref="com:Conditions" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXContainerLocator">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:PSXTableSet" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXContentItemStatus">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXControlRef">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXParam" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" />
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXCookie">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXCustomActionGroup">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXLocation" />
+        <xsd:element minOccurs="0" ref="com:RemoveActions" />
+        <xsd:element ref="com:PSXFormAction" />
+        <xsd:element ref="com:PSXActionLinkList" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXDateLiteral">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:date" />
+        <xsd:element ref="com:format" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXDefaultSelected">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute default="nullEntry" name="type">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="nullEntry" />
+                <xsd:enumeration value="sequence" />
+                <xsd:enumeration value="text" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXDisplayFieldRef">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:FieldRef" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXDisplayMapper">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXDisplayMapping" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute name="fieldSetRef" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXDisplayMapping">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:FieldRef" />
+        <xsd:element ref="com:PSXUISet" />
+        <xsd:element minOccurs="0" ref="com:PSXDisplayMapper" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXDisplayText" type="xsd:string" />
+  <xsd:element name="PSXEntry">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXDisplayText" />
+        <xsd:element ref="com:Value" />
+      </xsd:sequence>
+      <xsd:attribute name="sequence" type="xsd:string" />
+      <xsd:attribute default="no" name="default">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXExtensionCall">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXExtensionParamValue" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXExtensionCallSet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXExtensionCall" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXExtensionParamValue">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:value" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXField">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:DataLocator" />
+        <xsd:element minOccurs="0" ref="com:DataType" />
+        <xsd:element minOccurs="0" ref="com:DataFormat" />
+        <xsd:element minOccurs="0" ref="com:DefaultValue" />
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:OccurrenceSettings" />
+        <xsd:element minOccurs="0" ref="com:FieldRules" />
+        <xsd:element minOccurs="0" ref="com:PSXChoices" />
+        <xsd:element minOccurs="0" ref="com:PSXPropertySet" />
+        <xsd:element minOccurs="0" ref="com:PSXSearchProperties" />
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+      <xsd:attribute default="no" name="showInSummary">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="yes" name="showInPreview">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="no" name="forceBinary">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="user" name="modificationType">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="system" />
+            <xsd:enumeration value="systemCreate" />
+            <xsd:enumeration value="user" />
+            <xsd:enumeration value="userCreate" />
+            <xsd:enumeration value="none" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="yes" name="userSearchable">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="yes" name="userCustomizable">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="defaultSearchLabel" type="xsd:string" />
+      <xsd:attribute name="clearBinaryParam">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="local" />
+            <xsd:enumeration value="shared" />
+            <xsd:enumeration value="system" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="mimetype" type="xsd:string" />
+      <xsd:attribute name="fieldvaluetype">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="content" />
+            <xsd:enumeration value="meta" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="no" name="systemMandatory">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXFieldSet">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="com:PSXField" />
+        <xsd:element ref="com:PSXFieldSet" />
+      </xsd:choice>
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+      <xsd:attribute default="parent" name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="parent" />
+            <xsd:enumeration value="simpleChild" />
+            <xsd:enumeration value="complexChild" />
+            <xsd:enumeration value="multiPropertySimpleChild" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="zeroOrMore" name="repeatability">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="zeroOrMore" />
+            <xsd:enumeration value="oneOrMore" />
+            <xsd:enumeration value="count" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="count" type="xsd:string" />
+      <xsd:attribute default="yes" name="supportsSequencing">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="yes" name="userSearchable">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXFieldTranslation">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXExtensionCallSet" />
+        <xsd:element minOccurs="0" ref="com:ErrorLabel" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXFieldValidationRules">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+          <xsd:element ref="com:PSXRule" />
+          <xsd:element ref="com:FieldValidationRuleRef" />
+        </xsd:choice>
+        <xsd:element minOccurs="0" ref="com:PSXApplyWhen" />
+        <xsd:element minOccurs="0" ref="com:ErrorMessage" />
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" />
+      <xsd:attribute default="10" name="maxErrorsToStop" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXFormAction">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXUrlRequest" />
+      </xsd:sequence>
+      <xsd:attribute default="GET" name="method">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="GET" />
+            <xsd:enumeration value="POST" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXFunctionCall">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXFunctionParamValue" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXFunctionParamValue">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:value" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXHtmlParameter">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXInputTranslations">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:PSXConditionalExit" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXLiteralSet">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXDateLiteral" />
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXNumericLiteral" />
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXTextLiteral" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXLocation">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:FieldRef" />
+      </xsd:sequence>
+      <xsd:attribute default="summaryView" name="page">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="summaryView" />
+            <xsd:enumeration value="rowEdit" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="form" name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="form" />
+            <xsd:enumeration value="row" />
+            <xsd:enumeration value="field" />
+            <xsd:enumeration value="wfAction" />
+            <xsd:enumeration value="wfTransition" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="sequence" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXNullEntry">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXEntry" />
+      </xsd:sequence>
+      <xsd:attribute default="onlyIfNull" name="includeWhen">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="always" />
+            <xsd:enumeration value="onlyIfNull" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="first" name="sortOrder">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="first" />
+            <xsd:enumeration value="last" />
+            <xsd:enumeration value="sorted" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXNumericLiteral">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:number" />
+        <xsd:element ref="com:format" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXOutputTranslations">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:PSXConditionalExit" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXParam">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:DataLocator" />
+      </xsd:sequence>
+      <xsd:attribute name="type" type="xsd:string" />
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXProperty">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:Value" />
+        <xsd:element minOccurs="0" ref="com:Description" />
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+      <xsd:attribute default="no" name="locked">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXPropertySet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:PSXProperty" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXRule">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:choice>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXConditional" />
+          <xsd:element ref="com:PSXExtensionCall" />
+          <xsd:element ref="com:PSXExtensionCallSet" />
+        </xsd:choice>
+        <xsd:element minOccurs="0" ref="com:ErrorLabel" />
+      </xsd:sequence>
+      <xsd:attribute default="and" name="boolean">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="and" />
+            <xsd:enumeration value="or" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXSearchProperties">
+    <xsd:complexType>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute default="yes" name="userSearchable">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="no" name="enableTransformation">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="no" name="tokenizeSearchContent">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="yes" name="userCustomizable">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="yes" name="visibleToGlobalQuery">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="yes" />
+            <xsd:enumeration value="no" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="defaultSearchLabel" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXSingleHtmlParameter">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXStylesheet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXUrlRequest" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXTableLocator">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="com:TableLocatorAlias" />
+        <xsd:choice>
+          <xsd:choice>
+            <xsd:element ref="com:PSXBackEndCredential" />
+            <xsd:element ref="com:Alias" />
+          </xsd:choice>
+        </xsd:choice>
+      </xsd:choice>
+      <xsd:attribute name="alias" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXTableRef">
+    <xsd:complexType>
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+      <xsd:attribute name="alias" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXTableSet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXTableLocator" />
+        <xsd:element maxOccurs="unbounded" ref="com:PSXTableRef" />
+      </xsd:sequence>
+      <xsd:attribute name="href" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXTextLiteral">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:text" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXUIDefinition">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:DefaultUI" />
+        <xsd:element ref="com:PSXDisplayMapper" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXUISet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:Label" />
+        <xsd:element minOccurs="0" ref="com:PSXControlRef" />
+        <xsd:element minOccurs="0" ref="com:ErrorLabel" />
+        <xsd:element minOccurs="0" ref="com:PSXChoices" />
+        <xsd:element minOccurs="0" ref="com:ReadOnlyRules" />
+        <xsd:element minOccurs="0" ref="com:PSXCustomActionGroup" />
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" />
+      <xsd:attribute name="defaultSet" type="xsd:string" />
+      <xsd:attribute name="accessKey" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXUrlRequest">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:sequence>
+          <xsd:element ref="com:Href" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXParam" />
+          <xsd:element minOccurs="0" ref="com:Anchor" />
+        </xsd:sequence>
+        <xsd:element ref="com:PSXExtensionCall" />
+      </xsd:choice>
+      <xsd:attribute name="name" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXUserContext">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXValidationRules">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:PSXConditionalExit" />
+      </xsd:sequence>
+      <xsd:attribute default="10" name="maxErrorsToStop" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXVisibilityRules">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXRule" />
+      </xsd:sequence>
+      <xsd:attribute default="xsl" name="dataHiding">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="xsl" />
+            <xsd:enumeration value="xml" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXXmlField">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:name" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ReadOnlyRules">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXRule" />
+        <xsd:element minOccurs="0" ref="com:PSXControlRef" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="RemoveActions">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:ActionLinkRef" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ResultDataExits">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="com:PSXExtensionCallSet" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SectionLinkList">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXUrlRequest" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="TableLocatorAlias" type="xsd:string" />
+  <xsd:element name="Value">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute default="String" name="type">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:NMTOKEN">
+                <xsd:enumeration value="Boolean" />
+                <xsd:enumeration value="Date" />
+                <xsd:enumeration value="String" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="alias" type="xsd:string" />
+  <xsd:element name="boolean" type="xsd:string" />
+  <xsd:element name="column" type="xsd:string" />
+  <xsd:element name="columnAlias" type="xsd:string" />
+  <xsd:element name="comment" type="xsd:string" />
+  <xsd:element name="datasource" type="xsd:string" />
+  <xsd:element name="date" type="xsd:string" />
+  <xsd:element name="format" type="xsd:string" />
+  <xsd:element name="name" type="xsd:string" />
+  <xsd:element name="number" type="xsd:string" />
+  <xsd:element name="operator" type="xsd:string" />
+  <xsd:element name="tableAlias" type="xsd:string" />
+  <xsd:element name="text" type="xsd:string" />
+  <xsd:element name="value">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="com:PSXBackEndColumn" />
+        <xsd:element ref="com:PSXDateLiteral" />
+        <xsd:element ref="com:PSXNumericLiteral" />
+        <xsd:element ref="com:PSXTextLiteral" />
+        <xsd:element ref="com:PSXCgiVariable" />
+        <xsd:element ref="com:PSXHtmlParameter" />
+        <xsd:element ref="com:PSXCookie" />
+        <xsd:element ref="com:PSXUserContext" />
+        <xsd:element ref="com:PSXXmlField" />
+        <xsd:element ref="com:PSXSingleHtmlParameter" />
+        <xsd:element ref="com:PSXLiteralSet" />
+        <xsd:element ref="com:PSXFunctionCall" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="variable">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="com:PSXBackEndColumn" />
+        <xsd:element ref="com:PSXTextLiteral" />
+        <xsd:element ref="com:PSXCgiVariable" />
+        <xsd:element ref="com:PSXHtmlParameter" />
+        <xsd:element ref="com:PSXSingleHtmlParameter" />
+        <xsd:element ref="com:PSXCookie" />
+        <xsd:element ref="com:PSXUserContext" />
+        <xsd:element ref="com:PSXXmlField" />
+        <xsd:element ref="com:PSXFunctionCall" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXProcessCheck">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Conditions">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="com:PSXRule" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="context" type="xsd:string" use="required" />
+      <xsd:attribute name="name" use="required">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="rs_clonedeep" />
+            <xsd:enumeration value="rs_cloneshallow" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="sequence" type="xsd:boolean" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXCloneOverrideField">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:value" />
+        <xsd:element ref="com:Conditions" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:boolean" use="required" />
+      <xsd:attribute name="name" use="required">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="sys_communityid" />
+            <xsd:enumeration value="sys_lang" />
+            <xsd:enumeration value="sys_title" />
+            <xsd:enumeration value="sys_workflowid" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXCloneOverrideFieldList">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:PSXCloneOverrideField" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:boolean" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="EffectSet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:PSXConditionalEffect" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXConditionalEffect">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXExtensionCall" />
+      </xsd:sequence>
+      <xsd:attribute name="activationEndpoint" use="required">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="dependent" />
+            <xsd:enumeration value="either" />
+            <xsd:enumeration value="owner" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ExtensionSet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="com:PSXConditionalExtension" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXConditionalExtension">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXExtensionCall" />
+        <xsd:element ref="com:Conditions" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

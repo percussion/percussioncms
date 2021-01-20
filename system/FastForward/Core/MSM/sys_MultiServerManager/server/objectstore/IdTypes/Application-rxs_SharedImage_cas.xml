@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplicationIDTypes>
+   <PSXDeployableObject>
+      <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rxs_SharedImage_cas" dependencyType="Local" displayName="rxs_SharedImage_cas" isIncluded="yes" objectType="Application" objectTypeName="Application" supportsIdMapping="no" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no"/>
+      <RequiredClasses/>
+   </PSXDeployableObject>
+   <PSXApplicationIDTypesResource resourceName="s_sharedimage (s_sharedimage)">
+      <PSXApplicationIDTypesElement elementName="ResultPages">
+         <PSXApplicationIDTypeMapping type="sys_none" value="11">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>shared_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>11</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="s_image.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="sys_none" value="12">
+            <PSXAppConditionalContext type="value">
+               <PSXConditional id="0">
+                  <variable>
+                     <PSXSingleHtmlParameter id="0">
+                        <name>shared_variantid</name>
+                     </PSXSingleHtmlParameter>
+                  </variable>
+                  <operator>=</operator>
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>12</text>
+                     </PSXTextLiteral>
+                  </value>
+                  <boolean>AND</boolean>
+               </PSXConditional>
+               <PSXAppNamedItemIdContext name="s_imageandtitle.xsl" type="ResultPage"/>
+            </PSXAppConditionalContext>
+         </PSXApplicationIDTypeMapping>
+      </PSXApplicationIDTypesElement>
+   </PSXApplicationIDTypesResource>
+</PSXApplicationIDTypes>

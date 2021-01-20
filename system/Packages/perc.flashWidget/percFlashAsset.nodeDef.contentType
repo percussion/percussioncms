@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>Manages binary files other than images, such as .pdf or .doc.</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>333</id>
+    <internal-name>percFlashAsset</internal-name>
+    <label>Flash</label>
+    <mandatory>false</mandatory>
+    <name>rx:percFlashAsset</name>
+    <new-request>../psx_cepercFlashAsset/percFlashAsset.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercFlashAsset/percFlashAsset.html</query-request>
+    <raw-content-type>333</raw-content-type>
+    <template-ids>
+      <template-id>0-4-369</template-id>
+    </template-ids>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

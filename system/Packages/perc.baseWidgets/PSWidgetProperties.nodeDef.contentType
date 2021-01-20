@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>Stores all property data for all widgets.</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>330</id>
+    <internal-name>PSWidgetProperties</internal-name>
+    <label>PSWidgetProperties</label>
+    <mandatory>false</mandatory>
+    <name>rx:PSWidgetProperties</name>
+    <new-request>../psx_cePSWidgetProperties/PSWidgetProperties.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cePSWidgetProperties/PSWidgetProperties.html</query-request>
+    <raw-content-type>330</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

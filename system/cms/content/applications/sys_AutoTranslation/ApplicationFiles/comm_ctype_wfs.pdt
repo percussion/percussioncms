@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Workflow EMPTY>
+<!ATTLIST  Workflow workflowid CDATA #IMPLIED>
+<!ATTLIST  Workflow workflowname CDATA #IMPLIED>
+<!ELEMENT Workflows (Workflow* )>
+<!ELEMENT ContentType (Workflows )>
+<!ATTLIST  ContentType contenttypeid CDATA #IMPLIED>
+<!ATTLIST  ContentType contenttypename CDATA #IMPLIED>
+<!ELEMENT ContentTypes (ContentType* )>
+<!ELEMENT Community (ContentTypes )>
+<!ATTLIST  Community communityid CDATA #IMPLIED>
+<!ATTLIST  Community communityname CDATA #IMPLIED>
+<!ELEMENT comm_ctype_wfs (Community* )>
+<!ATTLIST  comm_ctype_wfs configuredctypeurl CDATA #IMPLIED>

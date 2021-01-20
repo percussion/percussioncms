@@ -1,0 +1,1 @@
+java -Dinstall.dir=C:\DevEnv\Installs\dev2 -Dinstall.stage.dts=false -Dinstall.dts=false -jar perc-ant-8.0.0-SNAPSHOT.jar -f install.xml

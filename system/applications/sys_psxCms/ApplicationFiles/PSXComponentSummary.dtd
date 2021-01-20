@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXComponentSummary EMPTY>
+<!ATTLIST PSXComponentSummary
+  name           CDATA #REQUIRED
+  objectType     CDATA #REQUIRED
+  contentTypeId  CDATA #REQUIRED
+  contentId      CDATA #REQUIRED
+  currRevision   CDATA #REQUIRED
+  tipRevision    CDATA #REQUIRED
+  editRevision   CDATA #REQUIRED
+  accessMask     CDATA #IMPLIED
+>

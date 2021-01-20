@@ -1,0 +1,171 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="copySetupFile.xml" basedir="../../../" default="process">
+
+   <property name="RELEASE_DIR" value="${basedir}/release"/>
+   <property name="TOOLS_DIR" value="${basedir}/Tools"/>
+   <property name="IAPROJECTS_DIR" value="${RELEASE_DIR}/InstallAnywhere/Projects"/>
+   <property name="SETUP_DIR" value="${RELEASE_DIR}/setup"/>
+   <property name="SETUP_DOCS_DIR" value="${SETUP_DIR}/docs"/>
+   <property name="SETUP_SRC_DIR" value="${SETUP_DIR}/src"/>
+	<property name="SETUP_LINUX_DIR" value="${SETUP_DIR}/linux"/>
+   <property name="SETUP_LINUX32_DIR" value="${SETUP_DIR}/linux32"/>
+   <property name="SETUP_WINDOWS32_DIR" value="${SETUP_DIR}/windows32"/>
+   <property name="SETUP_LINUX64_DIR" value="${SETUP_DIR}/linux64"/>
+   <property name="SETUP_WINDOWS64_DIR" value="${SETUP_DIR}/windows64"/>	
+   <property name="SETUP_WINDOWS_SDK_DIR" value="${SETUP_DIR}/windows_sdk"/>   
+   <property name="SETUP_LINUX_SDK_DIR" value="${SETUP_DIR}/linux_sdk"/>  
+   	
+   <property name="BUILD_OUTPUT_DIR" value="_Build_Output/Web_Installers/InstData"/>
+   <property name="SETUP" value="${IAPROJECTS_DIR}/setup/setup${BUILD_OUTPUT_DIR}"/>
+   <property name="DEVTOOLS_DIR" value="${IAPROJECTS_DIR}/devtools/devtools${BUILD_OUTPUT_DIR}/Windows/VM"/>
+   <property name="DEVTOOLS_DIR_Linux" value="${IAPROJECTS_DIR}/devtools/devtools${BUILD_OUTPUT_DIR}/Linux/VM"/>
+   <property name="DTS_DIR_Windows32" value="${IAPROJECTS_DIR}/dts/setup${BUILD_OUTPUT_DIR}/Windows32/VM"/>
+   <property name="DTS_DIR_Linux32" value="${IAPROJECTS_DIR}/dts/setup${BUILD_OUTPUT_DIR}/Linux32/VM"/>
+   <property name="DTS_DIR_Windows64" value="${IAPROJECTS_DIR}/dts/setup${BUILD_OUTPUT_DIR}/Windows64/VM"/>
+   <property name="DTS_DIR_Linux64" value="${IAPROJECTS_DIR}/dts/setup${BUILD_OUTPUT_DIR}/Linux64/VM"/>		
+   <property name="JREBUNDLE_DIR" value="${RELEASE_DIR}/installer/bundledvms/"/>
+   <property name="EXTRAS_DIR" value="${basedir}/build/dist/extras"/>
+      
+   <target name="init">
+      <tstamp/>
+      <mkdir dir="${SETUP_SRC_DIR}"/>
+      <mkdir dir="${SDK_DIR}"/>
+   </target>
+   
+   <target name="process" depends="init">
+      <!-- Move Windows executables -->
+      <move todir="${SETUP_WINDOWS32_DIR}/setup">
+         <fileset dir="${SETUP}/Windows32/VM">
+            <include name="*.exe"/>
+         </fileset>
+   	 	<fileset dir="${DTS_DIR_Windows32}">
+         	<include name="*.exe"/>
+        </fileset>
+      </move>
+   	 
+    <move todir="${SETUP_WINDOWS_SDK_DIR}/setup">
+            <fileset dir="${DEVTOOLS_DIR}">
+               <include name="*.exe"/>
+            </fileset>
+    </move>
+   	
+    <move todir="${SETUP_WINDOWS64_DIR}/setup">
+       <fileset dir="${SETUP}/Windows64/VM">
+          <include name="*.exe"/>
+       </fileset>
+      <fileset dir="${DTS_DIR_Windows64}">
+          <include name="*.exe"/>
+      </fileset>
+    </move>
+
+      <!-- Move Linux executables -->
+      <move todir="${SETUP_LINUX32_DIR}/setup">
+         <fileset dir="${SETUP}/Linux32/VM">
+            <include name="*.bin"/>
+         </fileset>
+      	 <fileset dir="${DTS_DIR_Linux32}">
+      	    <include name="*.bin"/>
+      	  </fileset>
+   	  </move>
+	 
+	  <!-- Copy Linux scrips -->
+      <copy todir="${SETUP_LINUX32_DIR}/setup">
+         <fileset dir="${SETUP_LINUX_DIR}">
+            <include name="*.sh"/>
+         </fileset>
+   	  </copy>
+
+    <!-- Move Linux executables and scripts-->
+    <move todir="${SETUP_LINUX64_DIR}/setup">
+       <fileset dir="${SETUP}/Linux64/VM">
+          <include name="*.bin"/>
+       </fileset>
+       <fileset dir="${SETUP_LINUX_DIR}">
+          <include name="*.sh"/>
+       </fileset>
+       <fileset dir="${DTS_DIR_Linux64}">
+            <include name="*.bin"/>
+        </fileset>
+    </move>
+   	
+    <move todir="${SETUP_LINUX_SDK_DIR}/setup">
+             <fileset dir="${DEVTOOLS_DIR_Linux}">
+                <include name="*.bin"/>
+             </fileset>
+    </move>
+   	
+      <!-- Copy readme -->
+      <copy todir="${SETUP_WINDOWS64_DIR}">
+         <fileset dir="${RELEASE_DIR}">
+            <include name="readme.html"/>
+         </fileset>   
+      </copy>
+    <copy todir="${SETUP_WINDOWS32_DIR}">
+       <fileset dir="${RELEASE_DIR}">
+          <include name="readme.html"/>
+       </fileset>   
+    </copy>   	
+   	
+    <copy todir="${SETUP_WINDOWS_SDK_DIR}">
+          <fileset dir="${RELEASE_DIR}">
+             <include name="readme.html"/>
+          </fileset>   
+    </copy>  
+	  <copy todir="${SETUP_LINUX64_DIR}">
+         <fileset dir="${RELEASE_DIR}">
+            <include name="readme.html"/>
+         </fileset>   
+      </copy>
+    <copy todir="${SETUP_LINUX32_DIR}">
+       <fileset dir="${RELEASE_DIR}">
+          <include name="readme.html"/>
+       </fileset>   
+    </copy>   	
+   	
+   	<copy todir="${SETUP_LINUX_SDK_DIR}">
+   	          <fileset dir="${RELEASE_DIR}">
+   	             <include name="readme.html"/>
+   	          </fileset>   
+   	</copy> 
+   	
+   </target>
+
+   <target name="createAntInstallerForQA">
+	  <ant antfile="${basedir}/build.xml" target="assembleAntInstallerClasspath"/>
+      <property name="antinstallerdir" location="${SETUP_DIR}/QA/antInstaller"/>
+	  <delete dir="${antinstallerdir}"/>
+	  <mkdir dir="${antinstallerdir}"/>
+	  <copy tofile="${SETUP_DIR}/QA/RhythmyxServer.bat" file="${basedir}/buildResources/ciRhythmyxServer.bat"/>
+      <copy todir="${antinstallerdir}">
+         <fileset dir="${basedir}/Tools/Ant" includes="bin/**,lib/**"/>
+         <fileset dir="${basedir}/installResources/QA"/>
+      </copy>
+      <copy todir="${antinstallerdir}/lib">
+         <fileset dir="${basedir}/build/antLib"/>
+      </copy>
+   </target>   
+
+</project>

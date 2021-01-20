@@ -1,0 +1,26 @@
+- Name: 8maildomain
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: update
+    Key: MAIL_DOMAIN
+    Value: percussion.marketing
+    Marker:
+    Placement:
+    Source: rxconfig/Workflow/rxworkflow.properties
+- Name: 8smtphost
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: update
+    Key: SMTP_HOST
+    Value: mail.percussion.marketing
+    Marker:
+    Placement:
+    Source: rxconfig/Workflow/rxworkflow.properties

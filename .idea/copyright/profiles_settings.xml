@@ -1,0 +1,11 @@
+<component name="CopyrightManager">
+  <settings>
+    <module2copyright>
+      <element module="All" copyright="PercussionOpenSourceagplv3-classpath" />
+      <element module="PercussionOpenSource" copyright="PercussionOpenSourceagplv3-classpath" />
+    </module2copyright>
+    <LanguageOptions name="JAVA">
+      <option name="fileTypeOverride" value="3" />
+    </LanguageOptions>
+  </settings>
+</component>

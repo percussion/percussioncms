@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="editiontask" context="global/percussion/task/" deprecated="no" handler="Java" name="perc_WorkflowEditionTask" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">
+		Workflows the edition
+		</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="className">com.percussion.sitemanage.task.impl.PSWorkflowEditionTask</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.rx.publisher.IPSEditionTask"/>
+      <PSXExtensionParamDef id="0">
+         <name>state</name>
+         <dataType>java.lang.String</dataType>
+         <description>State the item should be in before being workflowed.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>trigger</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the trigger to use for workflowing the item if its in the right state.</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

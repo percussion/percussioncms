@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percNavBar-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percNavBar.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percNavBar-xml\percNavBar.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_images_widgetIconBreadcrumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\images\widgetIconBreadcrumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_images_widgetIconBreadcrumb-png\widgetIconBreadcrumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_images_arrows--ffffff-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\images\arrows-ffffff.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_images_arrows--ffffff-png\arrows-ffffff.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_js_superfish-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\js\superfish.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_js_superfish-js\superfish.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_js_hoverIntent-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\js\hoverIntent.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_js_hoverIntent-min-js\hoverIntent.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_js_navbar-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\js\navbar.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_js_navbar-min-js\navbar.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_js_supersubs-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\js\supersubs.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_js_supersubs-js\supersubs.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percNavBar-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Resources\percNavBar.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percNavBar-xml\percNavBar.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_images_widgetIconNavBar-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\images\widgetIconNavBar.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_images_widgetIconNavBar-png\widgetIconNavBar.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_js_hoverIntent-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\js\hoverIntent.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_js_hoverIntent-js\hoverIntent.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_images_shadow-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\images\shadow.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_images_shadow-png\shadow.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_changelog-txt">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\changelog.txt</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_changelog-txt\changelog.txt</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_js_supersubs-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\js\supersubs.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_js_supersubs-min-js\supersubs.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_js_superfish-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\js\superfish.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_js_superfish-min-js\superfish.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_js_navbar-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\js\navbar.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_js_navbar-js\navbar.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percNavBreadcrumb-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percNavBreadcrumb.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percNavBreadcrumb-xml\percNavBreadcrumb.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_css_superfish--navbar-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\css\superfish-navbar.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_css_superfish--navbar-css\superfish-navbar.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_css_megafish-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\css\megafish.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_css_megafish-css\megafish.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_css_superfish-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\css\superfish.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_css_superfish-css\superfish.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_navBar_css_superfish--vertical-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\navBar\css\superfish-vertical.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_navBar_css_superfish--vertical-css\superfish-vertical.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

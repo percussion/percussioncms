@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT addcommrelation_variants (componentname, pagename, relatedlinks, communityid, relidname, currentpsfirst, updateurl, cancelurl, reltypename, communityname, communityurl, contenttype* )>
+<!ELEMENT contenttype (name, id, desc, list* )>
+<!ELEMENT list (name, id, desc )>
+<!ELEMENT desc (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT communityurl (#PCDATA)>
+<!ELEMENT communityname (#PCDATA)>
+<!ELEMENT reltypename (#PCDATA)>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT updateurl (#PCDATA)>
+<!ELEMENT currentpsfirst (#PCDATA)>
+<!ELEMENT relidname (#PCDATA)>
+<!ELEMENT communityid (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>

@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT propertylookup (addurl, list* )>
+<!ELEMENT list (propertyid, componentname, componentid, propertyname, propertyvalue, propertydesc, editurl, deleteurl )>
+<!ELEMENT deleteurl (#PCDATA)>
+<!ELEMENT editurl (#PCDATA)>
+<!ELEMENT propertydesc (#PCDATA)>
+<!ELEMENT propertyvalue (#PCDATA)>
+<!ELEMENT propertyname (#PCDATA)>
+<!ELEMENT componentid (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT propertyid (#PCDATA)>
+<!ELEMENT addurl (#PCDATA)>

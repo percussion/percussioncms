@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   <!--
+      Use this XML file to place beans definitions that might be configurable 
+      by the user.
+   -->
+   
+   <!-- Data-type mappings -->
+   <bean id="datatypeMappings"
+         class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
+      <property name="ignoreResourceNotFound" value="true" />
+      <!--
+         Default properties. They are overwritten by the .properties files
+         specified below.
+      -->
+      <property name="properties">
+         <props>
+            <prop key="created">DATE</prop>
+            <prop key="creator">STRING</prop>
+            <prop key="date">DATE</prop>
+            <prop key="description">STRING</prop>
+            <prop key="title">STRING</prop>
+            <prop key="subject">STRING</prop>
+            <prop key="abstract">TEXT</prop>
+         </props>
+      </property>
+   </bean>
+   
+   <!-- Property datatype mappings -->
+   <bean id="PropertyDatatypeMappings"
+         class="com.percussion.delivery.metadata.impl.PSPropertyDatatypeMappings">
+      <property name="datatypeMappings" ref="datatypeMappings" />
+   </bean>
+
+   <bean id="FakeCacheManagerConnector"
+         class="com.percussion.delivery.metadata.PSFakeCacheManagerConnector">
+   </bean>
+
+   <bean id="CacheManagerConnector" class="com.percussion.delivery.caching.impl.PSCacheManagerConnector">
+      <property name="cacheManagerHost">
+         <value>${cacheMgr.cacheManagerHost}</value>
+      </property>
+      <property name="username">
+         <value>${cacheMgr.username}</value>
+      </property>
+      <property name="password">
+         <value>${cacheMgr.password}</value>
+      </property>
+      <property name="interRequestWait">
+         <value>${cacheMgr.interRequestWait}</value>
+      </property>
+      <property name="maxWait">
+         <value>${cacheMgr.maxWait}</value>
+      </property>
+   </bean>
+
+</beans>

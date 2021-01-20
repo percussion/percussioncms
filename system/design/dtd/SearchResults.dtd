@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This DTD specifies the format of XML documents produced for search
+   results.
+   
+   xml:lang - the language in which the dynamic data elements are 
+      provided.
+   selectionMode - specifies if the results produced are for multiple or
+      single selection, e.g. the results are used to link items to slots
+      versus they are used to link items to inline links.
+   tabsize - the tab size as used for category indentation. It defines the
+      width of the 'spacer.gif' inserted depending on the category level.
+      Defaults to 10 if not specified.
+-->
+<!ELEMENT SearchResults (Header, Results?, Actions?, PassThroughParameters)>
+<!ATTLIST SearchResults
+   xml:lang CDATA #REQUIRED
+   selectionMode (multiple | single) "multiple"
+   tabsize CDATA #IMPLIED
+>
+<!--
+   This element defines all table header information, such as column
+   labels and data types.
+-->
+<!ELEMENT Header (HeaderColumn+)>
+<!--
+   This element defines all column meta information.
+   
+   label - the column display label. It is expected to be in the language as
+      specified in the 'xml:lang' attribute of the document element.
+   width - the column width in percent. Only non categorized columns have 
+      this attribute. The sum of all non categorized column width must add 
+      up to 100%.
+   type - the data type fo the column data. This value determines how the
+      data for the column is used. If Image, then the data is interpreted 
+      as a url to the actual image, all others are intepreted as text.
+   isCategory - specifies whether this column is a category column or a
+      normal data column as specified by the display format. It may be 
+      used by the renderer to group the data in a tree or tree-like 
+      structure.
+   sorted - if present this attribute specifies that this is the sorted
+      column, either 'ascending' or 'descending'. This is used to display
+      the correct image for the sorted column.
+-->
+<!ELEMENT HeaderColumn EMPTY>
+<!ATTLIST HeaderColumn
+   label CDATA #REQUIRED
+   width CDATA #IMPLIED
+   type (Date | Image | Numeric | Text) "Text"
+   isCategory (no | yes) "no"
+   sorted (ascending | descending) "ascending"
+>
+<!--
+   This element defines all search result data. It is a collection of a
+   collection of optional category columns and one or more data columns.
+-->
+<!ELEMENT Results (Row+)>
+<!--
+   A data row. Categories are only expected in rows where they change
+   from the last processed row to this one. The Categories element only
+   contains colmuns marked as isCategory in the HeaderColumn element.
+   All non categorized columns are set as Column childd to this element.
+-->
+<!ELEMENT Row (Categories?, Column+, Properties*)>
+
+<!--
+   A collection of category columns. The number of columns expected is equal
+   to the number of category columns specified in the Header element.
+-->
+<!ELEMENT Categories (Column+)>
+<!--
+   The column value, expected in the language as specified in the
+   'xml:lang' attribute of the document element for all data types except
+   'Image'. For data type 'Image', this is the relative path to the image
+   resource, e.g. '../sys_resources/images/add.gif' of the Rhythmyx
+   application producing an XML document with this format.
+   The <JavaScript> element can be used as UI hint to render the column
+   as link. The script will be executed if that link is followed.
+   
+   categoryLevel - the category level if this is a category column. The
+      level starts with '0' and is incremented by '1' for each level. This
+      information can be used to render category indentations.
+-->
+<!ELEMENT Column (Value, JavaScript?)>
+<!ATTLIST Column
+   categoryLevel CDATA #IMPLIED
+>
+
+<!--
+   A List of properties for the item.  Which properties returned will depend
+   upon the html parameters submitted with the search request.
+-->
+<!ELEMENT Properties (Property+)>
+
+<!--
+   A property of the item.  The value of this element is the property value.
+   
+   name - the name of the property.
+-->
+<!ELEMENT Property (#PCDATA)>
+<!ATTLIST Property 
+   name CDATA #REQUIRED
+>
+
+<!--
+   A data value element.
+-->
+<!ELEMENT Value (#PCDATA)>
+<!--
+   This element defines a collection of actions that can be applied to this 
+   search results.
+-->
+<!--
+   This element holds a java script which can be used for preview links
+   and action commands. This can be a complete script or a script fragment
+   that can be used e.g. in 'onClick' attributes of an action button.
+-->
+<!ELEMENT JavaScript (#PCDATA)>
+<!ELEMENT Actions (Action+)>
+<!--
+   An action definition.
+   
+   name - the action name, this in an internal name, independent of the
+      language.
+   label - the display label for this command, expected in the language as
+      defined in the 'xml:lang' attribute of the document element.
+-->
+<!ELEMENT Action (JavaScript)>
+<!ATTLIST Action
+   name CDATA #REQUIRED
+   label CDATA #REQUIRED
+>
+<!--
+   A collection of HTML parameters to be passed through.
+-->
+<!ELEMENT PassThroughParameters (Parameter+)>
+<!--
+   An HTML parameter definition.
+   
+   name - the parameter name.
+-->
+<!ELEMENT Parameter (Value)>
+<!ATTLIST Parameter
+   name CDATA #REQUIRED
+>

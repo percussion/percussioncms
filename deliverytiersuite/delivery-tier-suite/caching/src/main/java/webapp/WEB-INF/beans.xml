@@ -1,0 +1,130 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+<context:component-scan base-package="com.percussion.delivery.caching" />
+
+ <!-- This file contains database-specific beans -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	    <property name="jdbcUrl" value="jdbc:derby:percakamaiqueuedata;create=true" />
+		<property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
+	</bean>
+
+   <!-- DataSource -->
+   <bean id="percDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+   		<constructor-arg ref="hikariConfig" />
+   	</bean>
+
+	<import resource="security.xml" />
+
+
+<!-- Database Property --><!--
+<bean id="percAkamaiQueueHibernateProperties"
+ class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+ <property name="properties">
+  <props>
+   <prop key="hibernate.hbm2ddl.auto">update</prop>
+   <prop
+    key="hibernate.dialect">org.hibernate.dialect.DerbyDialect</prop>
+   <prop
+    key="hibernate.query.substitutions">true 'T', false 'F'</prop>
+   <prop key="hibernate.show_sql">false</prop>
+   <prop key="hibernate.jdbc.batch_size">50</prop>
+   <prop key="hibernate.cache.use_query_cache">false</prop>
+   <prop key="hibernate.cache.use_second_level_cache">false</prop>
+
+  </props>
+ </property>
+</bean>
+-->
+
+<!-- Hibernate SessionFactory --><!--
+<bean id="sessionFactory" 
+   class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+ <property name="dataSource">
+     <ref local="percDataSource"/>
+ </property>
+ <property name="hibernateProperties">
+     <ref bean="percAkamaiQueueHibernateProperties" />
+ </property>
+ <property name="configLocation">
+   <value>/WEB-INF/hibernate.cfg.xml</value>
+ </property>
+</bean>
+
+ <bean id="propertyPlaceholderProps"
+         class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
+      <property name="ignoreResourceNotFound" value="true" />
+      <property name="autoSecure" value="true" />
+      <property name="locations">-->
+         <!--
+            One or more locations of the property files. Properties with 
+            the same name override based on the order the file appears in the list last 
+            one defined wins
+         --><!--
+         <list>
+            <value>file:${catalina.home}/conf/perc/perc-encryption.properties</value>
+         </list>
+      </property>
+      -->
+    
+      <!--
+         Local properties to default to if no file exists or the properties 
+         do not exist in the file DO NOT USE THESE FOR PRODUCTION, put them in the 
+         properties file where the password will be encrypted
+      --><!--
+      <property name="properties">
+         <props>-->
+		    <!-- default properties for encrypting --><!--
+            <prop key="encryption.type">ENC</prop>
+         </props>
+      </property>
+</bean>
+
+
+<bean id="akamaiQueueDao"
+      class="com.percussion.delivery.caching.plugins.akamai.PSAkamaiCacheQueueDao" autowire="constructor">
+   <property name="sessionFactory"><ref local="sessionFactory"/></property>
+</bean>
+-->
+<bean id="cacheManager" class="com.percussion.delivery.caching.impl.PSCacheManager" init-method="init">
+   <constructor-arg value="file:${catalina.home}/conf/perc/CacheConfig.xml" />
+   <constructor-arg value="WEB-INF/CacheConfig.xml" />
+</bean>
+
+<bean id="cacheRestService" class="com.percussion.delivery.caching.impl.PSCacheRestService">
+   <constructor-arg ref="cacheManager" />
+</bean>
+
+</beans>

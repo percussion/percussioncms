@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplication active="no" enabled="yes" hidden="no" id="1046" startPriority="0" version="2.0">
+	<name>psx_cerffContacts</name>
+	<description>manages contact items </description>
+	<requestRoot>psx_cerffContacts</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_cabal_1069351540963/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20031120T130728908</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="11">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20040913T093946523</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Anonymous</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior/>
+   </PSXAcl>
+	<maxThreads>-1</maxThreads>
+	<maxRequestTime>-1</maxRequestTime>
+	<maxRequestsInQueue>-1</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>1</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="33">
+		<name>purge</name>
+		<description>deletes contact items </description>
+		<transactionType>forAllRows</transactionType>
+		<PSXUpdatePipe id="676">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="675">
+				<PSXBackEndTable id="673">
+					<alias>RXS_CT_CONTACTS</alias>
+					<table>RXS_CT_CONTACTS</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="674">
+					<alias>RXS_CT_SHARED</alias>
+					<table>RXS_CT_SHARED</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="670" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXSingleHtmlParameter id="0">
+						<name>sys_contentid</name>
+					</PSXSingleHtmlParameter>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXS_CT_CONTACTS</tableAlias>
+						<column>CONTENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXSingleHtmlParameter id="0">
+						<name>sys_contentid</name>
+					</PSXSingleHtmlParameter>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXS_CT_SHARED</tableAlias>
+						<column>CONTENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="yes" allowInserts="no" allowUpdates="no" id="671">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXS_CT_CONTACTS</tableAlias>
+						<column>CONTENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXS_CT_SHARED</tableAlias>
+						<column>CONTENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="32">
+			<schemaSource>file:rx_zho_RXS_CT_CONTACTS.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>purge</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXContentEditor contentType="305" enableRelatedContent="no"  iconSource="1" iconValue="rffContacts.gif" objectType="1" workflowId="4">
+		<PSXDataSet id="35">
+			<name>template</name>
+			<description>default template</description>
+			<transactionType>none</transactionType>
+			<PSXContentEditorPipe id="0">
+				<name>cePipe</name>
+				<description>This is the ContentEditorLocaDef for Default ContentType</description>
+				<PSXContainerLocator>
+					<PSXTableSet>
+						<PSXTableLocator>
+							<PSXBackEndCredential id="275">
+								<alias>contentCredential</alias>
+								<datasource/>
+							</PSXBackEndCredential>
+						</PSXTableLocator>
+						<PSXTableRef alias="RXS_CT_CONTACTS" name="RXS_CT_CONTACTS"/>
+					</PSXTableSet>
+				</PSXContainerLocator>
+				<PSXContentEditorMapper>
+					<SystemFieldExcludes>
+						<FieldRef>sys_pathname</FieldRef>
+						<FieldRef>sys_reminderdate</FieldRef>
+						<FieldRef>sys_contentexpirydate</FieldRef>
+						<FieldRef>sys_pubdate</FieldRef>
+						<FieldRef>sys_suffix</FieldRef>
+					</SystemFieldExcludes>
+					<SharedFieldIncludes>
+						<SharedFieldGroupName>shared</SharedFieldGroupName>
+						<SharedFieldExcludes>
+						   <FieldRef>keywords</FieldRef>
+						   <FieldRef>description</FieldRef>
+						   <FieldRef>filename</FieldRef>
+						   <FieldRef>body</FieldRef>
+						   <FieldRef>callout</FieldRef>
+						</SharedFieldExcludes>
+					</SharedFieldIncludes>
+					<PSXFieldSet name="rxs_ct_contacts" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+						<PSXField forceBinary="no" modificationType="user" name="lastname" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>LASTNAME</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>100</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="phone" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>PHONE</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="address2" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>ADDRESS2</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>200</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="dept" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>DEPT</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>255</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="country" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>COUNTRY</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>100</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="middlename" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>MIDDLENAME</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>100</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="cellphone" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>CELLPHONE</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="firstname" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>FIRSTNAME</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>100</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="state" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>STATE</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>100</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="email" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>EMAIL</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>200</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="address1" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>ADDRESS1</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>200</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="fax" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>FAX</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="city" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>CITY</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>200</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" modificationType="user" name="zipcode" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_CONTACTS</tableAlias>
+									<column>ZIPCODE</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>10</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+					</PSXFieldSet>
+					<PSXUIDefinition>
+						<PSXDisplayMapper fieldSetRef="rxs_ct_contacts" id="0">
+							<PSXDisplayMapping>
+								<FieldRef>sys_title</FieldRef>
+								<PSXUISet accessKey="s"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>displaytitle</FieldRef>
+								<PSXUISet accessKey="t"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>firstname</FieldRef>
+								<PSXUISet accessKey="F">
+									<Label>
+										<PSXDisplayText>First Name:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="304" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>First Name:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>middlename</FieldRef>
+								<PSXUISet accessKey="m">
+									<Label>
+										<PSXDisplayText>Middle Name:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="306" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Middle Name:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>lastname</FieldRef>
+								<PSXUISet accessKey="L">
+									<Label>
+										<PSXDisplayText>Last Name:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="305" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Last Name:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>dept</FieldRef>
+								<PSXUISet accessKey="D">
+									<Label>
+										<PSXDisplayText>Dept:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="301" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Dept:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>address1</FieldRef>
+								<PSXUISet accessKey="1">
+									<Label>
+										<PSXDisplayText>Address 1:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="297" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Address 1:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>address2</FieldRef>
+								<PSXUISet accessKey="2">
+									<Label>
+										<PSXDisplayText>Address 2:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="298" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Address 2:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>city</FieldRef>
+								<PSXUISet accessKey="i">
+									<Label>
+										<PSXDisplayText>City:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="300" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>City:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>state</FieldRef>
+								<PSXUISet accessKey="S">
+									<Label>
+										<PSXDisplayText>State:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="308" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>State:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>zipcode</FieldRef>
+								<PSXUISet accessKey="Z">
+									<Label>
+										<PSXDisplayText>Zip Code:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="28" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Zip Code:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>country</FieldRef>
+								<PSXUISet accessKey="o">
+									<Label>
+										<PSXDisplayText>Country:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="665" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Country:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>phone</FieldRef>
+								<PSXUISet accessKey="h">
+									<Label>
+										<PSXDisplayText>Phone:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="307" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Phone:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>cellphone</FieldRef>
+								<PSXUISet accessKey="h">
+									<Label>
+										<PSXDisplayText>Cell Phone:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="299" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Cell Phone:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>fax</FieldRef>
+								<PSXUISet accessKey="x">
+									<Label>
+										<PSXDisplayText>Fax:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="303" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Fax:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>email</FieldRef>
+								<PSXUISet accessKey="m">
+									<Label>
+										<PSXDisplayText>Email:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="302" name="sys_EditBox"/>
+									<ErrorLabel>
+										<PSXDisplayText>Email:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_contentstartdate</FieldRef>
+								<PSXUISet accessKey="D"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_communityid</FieldRef>
+								<PSXUISet accessKey="m"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_workflowid</FieldRef>
+								<PSXUISet accessKey="w">
+									<PSXChoices sortOrder="ascending" type="internalLookup">
+										<PSXUrlRequest>
+											<Href>../sys_commSupport/communityworkflows.xml</Href>
+											<Anchor/>
+										</PSXUrlRequest>
+										<PSXChoiceFilter>
+											<DependentField dependencyType="required" fieldRef="sys_communityid"/>
+											<DependentField dependencyType="required" fieldRef="sys_contenttypeid"/>
+											<PSXUrlRequest>
+												<Href>sys_psxContentEditorCataloger/WorkflowContentTypeCommunityLookup.xml</Href>
+												<Anchor/>
+											</PSXUrlRequest>
+										</PSXChoiceFilter>
+									</PSXChoices>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_lang</FieldRef>
+								<PSXUISet accessKey="l"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_currentview</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>webdavowner</FieldRef>
+								<PSXUISet accessKey="O"/>
+							</PSXDisplayMapping>
+						</PSXDisplayMapper>
+					</PSXUIDefinition>
+				</PSXContentEditorMapper>
+			</PSXContentEditorPipe>
+			<PSXPageDataTank id="34">
+				<schemaSource>file:unspecified</schemaSource>
+				<actionTypeXmlField/>
+			</PSXPageDataTank>
+			<PSXRequestor directDataStream="no" id="0">
+				<requestPage>rffContacts</requestPage>
+				<SelectionParams/>
+				<ValidationRules/>
+				<characterEncoding>UTF-8</characterEncoding>
+				<MimeProperties>
+					<html>
+						<PSXTextLiteral id="0">
+							<text>text/html</text>
+						</PSXTextLiteral>
+					</html>
+					<htm>
+						<PSXTextLiteral id="0">
+							<text>text/html</text>
+						</PSXTextLiteral>
+					</htm>
+				</MimeProperties>
+			</PSXRequestor>
+		</PSXDataSet>
+		<PSXValidationRules maxErrorsToStop="10"/>
+		<PSXInputTranslations/>
+		<PSXOutputTranslations/>
+		<PSXWorkflowInfo type="inclusionary" values="4,5"/>
+	</PSXContentEditor>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="30" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="31">
+		<providerType>SMTP</providerType>
+		<server>//erikserating</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="locationY29">10</userProperty>
+	<userProperty name="locationY31">100</userProperty>
+	<userProperty name="pageDatatankSrcType34">3</userProperty>
+	<userProperty name="locationY30">55</userProperty>
+	<userProperty name="pageDatatankSrcType32">3</userProperty>
+	<userProperty name="schemaSourceReadOnly34">false</userProperty>
+	<userProperty name="schemaSourceReadOnly32">true</userProperty>
+	<userProperty name="locationX35">14</userProperty>
+	<userProperty name="locationX33">107</userProperty>
+	<userProperty name="locationX31">16</userProperty>
+	<userProperty name="locationX29">16</userProperty>
+	<userProperty name="locationX30">16</userProperty>
+	<userProperty name="locationY35">22</userProperty>
+	<userProperty name="locationY33">23</userProperty>
+</PSXApplication>

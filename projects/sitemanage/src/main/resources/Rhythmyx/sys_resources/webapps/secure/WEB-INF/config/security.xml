@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans:beans xmlns:security="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:util="http://www.springframework.org/schema/util"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <security:http disable-url-rewriting="true" use-expressions="true">
+
+        <security:csrf disabled="true"/>
+        <security:headers >
+            <security:content-security-policy policy-directives="${ContentSecurityPolicy}" />
+        </security:headers>
+        <security:cors configuration-source-ref="corsSource" />
+        <security:http-basic/>
+    </security:http>
+    <beans:bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
+        <beans:property name="corsConfigurations">
+            <util:map>
+                <beans:entry key="/**">
+                    <beans:bean class="org.springframework.web.cors.CorsConfiguration">
+                        <beans:property name="allowedHeaders">
+                            <beans:list>
+                                <beans:value>perc-tid</beans:value>
+                                <beans:value>perc-version</beans:value>
+                                <beans:value>Content-Type</beans:value>
+                                <beans:value>Origin</beans:value>
+                                <beans:value>Accept</beans:value>
+                                <beans:value>Authorization</beans:value>
+                                <beans:value>X-Request-With</beans:value>
+                                <beans:value>X-PINGOTHER</beans:value>
+                                <beans:value>pingpong</beans:value>
+                            </beans:list>
+                        </beans:property>
+                        <beans:property name="allowedMethods">
+                            <beans:list>
+                                <beans:value>POST</beans:value>
+                                <beans:value>GET</beans:value>
+                                <beans:value>PUT</beans:value>
+                                <beans:value>DELETE</beans:value>
+                                <beans:value>OPTIONS</beans:value>
+                            </beans:list>
+                        </beans:property>
+                        <beans:property name="allowedOrigins">
+                            <beans:bean class="org.springframework.util.StringUtils" factory-method="commaDelimitedListToSet">
+                                <beans:constructor-arg type="java.lang.String" value="${Access-Control-Allow-Origin}"/>
+                            </beans:bean>
+                        </beans:property>
+                        <beans:property name="exposedHeaders">
+                            <beans:list>
+                                <beans:value>perc-tid</beans:value>
+                                <beans:value>perc-version</beans:value>
+                            </beans:list>
+                        </beans:property>
+                    </beans:bean>
+                </beans:entry>
+            </util:map>
+        </beans:property>
+    </beans:bean>
+</beans:beans>

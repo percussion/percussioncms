@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT deletetransitionroles (transitionid, transitionroleid, workflowid )>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT transitionroleid (#PCDATA)>
+<!ELEMENT transitionid (#PCDATA)>

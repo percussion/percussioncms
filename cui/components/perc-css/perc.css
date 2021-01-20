@@ -1,0 +1,188 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+body{
+    font-size: 13px;
+    color: #576071;
+    font-weight:400;
+    line-height: 1.84615
+}
+h1, h2, h3, h4, h5, h6{
+    font-weight:semibold;
+}
+h1{
+    font-size:48px;
+    line-height: 1.0 em;
+}
+h1 {
+    font-size: 48px;
+    line-height: 1.0;
+}
+
+h2 {
+    font-size: 36px;
+    line-height: 1.3333333333333333333333;
+}
+
+h3 {
+    font-size: 24px;
+    line-height: 1.0;
+}
+
+h4 {
+    font-size: 21px;
+    line-height: 1.142857142857143;
+}
+
+h5 {
+    font-size: 18px;
+    line-height: 1.3333333333333333333333;
+}
+
+h6 {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+p {
+    font-style: normal;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.component-locked {
+    background-color: #dedede;
+    opacity: 0.45;
+    filter: alpha(opacity=45);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.component-locked-content {
+    position: absolute;
+    top: 40%;
+    margin: auto;
+    width: 100%;
+}
+
+.busy-indicator {
+    color: #17accc;
+    font-size: 36px;
+    opacity: 1.0;
+    -webkit-animation: fa-spin 1s infinite linear;
+    animation: fa-spin 1s infinite linear;
+}
+
+.button {
+    font-style: normal;
+    font-size: 18px;
+    cursor: pointer;
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    border: 0px;
+    border-radius: 2px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.primary-button {
+    color: #ffffff;
+    background-color: #007ea8;
+}
+.primary-button-ext {
+    width: 150px;
+}
+.primary-button:hover {
+    color: #e9f6fc;
+    text-decoration: none;
+    background-color: #0093B3;
+}
+
+.secondary-button {
+    color: #576071;
+    border: 1px solid #979797;
+}
+
+.secondary-button:hover {
+    color: #17accc;
+    border: 1px solid #17accc;
+}
+
+.info-tip {
+    background-color: #f9f9f9;
+    border-color: #ee5336;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 5px;
+    padding: 16px;
+    text-align: center;
+}
+
+.info-tip-text {
+    font-size: 16px;
+    color: #262626;
+}
+
+.gray-tab-bar{
+    height:40px;
+    margin:20px 20px 20px 40px;
+    background-color:gray;
+    color:#f1f1f1;
+    font-size:14px;
+    border: 0px;
+    border-radius: 2px;
+    vertical-align: middle;
+    padding-left:20px;
+    font-weight:400;
+}
+
+.gray-tab-item{
+    display:inline-block;
+    padding:9px 20px 2px 20px;
+}
+.gray-tab-active{
+    color:#ffffff;
+    border-bottom:4px solid white;
+}
+#asset-folder-tree{
+    height: 368px;
+    width: 100%;
+    overflow: auto;
+}
+#page-folder-tree{
+    overflow: auto;
+}
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

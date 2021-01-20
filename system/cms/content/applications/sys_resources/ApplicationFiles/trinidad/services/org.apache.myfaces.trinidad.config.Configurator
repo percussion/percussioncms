@@ -1,0 +1,2 @@
+org.apache.myfaces.trinidadinternal.config.upload.FileUploadConfiguratorImpl
+org.apache.myfaces.trinidadinternal.config.dispatch.DispatchResponseConfiguratorImpl

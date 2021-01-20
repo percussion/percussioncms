@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXServerConfiguration id="1">
+   <SecurityProviders>
+      <PSXSecurityProviderInstance id="0" type="BackEndTable">
+         <name>Sun ONE - test/backend</name>
+         <Properties>
+            <passwordColumn>PASSWORD</passwordColumn>
+            <uidColumn>USERID</uidColumn>
+            <tableName>TST_USERLOGIN</tableName>
+            <datasourceName/>
+         </Properties>
+      </PSXSecurityProviderInstance>
+   </SecurityProviders>
+</PSXServerConfiguration>

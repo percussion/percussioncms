@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT LoginResponse (LoginData?, ResultResponse? )>
+<!ELEMENT Result (#PCDATA)>
+<!ATTLIST  Result errorCode CDATA #IMPLIED>
+<!ELEMENT ResultResponse (Result* )>
+<!ATTLIST  ResultResponse type CDATA #IMPLIED>
+<!ELEMENT LoginData (SessionId, Communities?, Roles?, Locales? )>
+<!ELEMENT Locale (#PCDATA)>
+<!ELEMENT Locales (Locale+ )>
+<!ELEMENT Role (#PCDATA)>
+<!ELEMENT Roles (Role+ )>
+<!ELEMENT Community (#PCDATA)>
+<!ATTLIST  Community id CDATA #REQUIRED>
+<!ELEMENT Communities (Community+ )>
+<!ELEMENT SessionId (#PCDATA)>
+<!ATTLIST  LoginData hostUrl CDATA #REQUIRED>
+<!ATTLIST  LoginData defaultLocale CDATA #IMPLIED>
+<!ATTLIST  LoginData defaultCommunityId CDATA #IMPLIED>

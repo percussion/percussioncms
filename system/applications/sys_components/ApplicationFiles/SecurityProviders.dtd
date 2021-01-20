@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT PSXSecurityProviderInstanceSummary (name )>
+<!ATTLIST  PSXSecurityProviderInstanceSummary type CDATA #REQUIRED>
+<!ATTLIST  PSXSecurityProviderInstanceSummary typeInt CDATA #REQUIRED>
+<!ELEMENT SecurityProviders (PSXSecurityProviderInstanceSummary* )>

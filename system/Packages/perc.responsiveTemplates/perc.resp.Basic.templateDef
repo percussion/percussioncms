@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings/>
+    <template-slot-ids/>
+    <guid>0-4-599</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/pageAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description>Basic responsive template, it is an inverted C-clamp style template.</description>
+    <global-template/>
+    <global-template-usage>Default</global-template-usage>
+    <label>Basic</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/html</mime-type>
+    <name>perc.resp.Basic</name>
+    <output-format>Page</output-format>
+    <publish-when>Default</publish-when>
+    <style-sheet-path/>
+    <template>#perc_templateHeader()
+&lt;div id="perc-resp-container" class="row perc-region"&gt;
+    &lt;div id="perc-resp-top-column" class="large-12 columns perc-region"&gt;
+    	&lt;div id="perc-resp-header" class="row perc-region"&gt;
+            &lt;div id="perc-resp-header-left" class="large-12 columns perc-region"&gt;
+                #region("perc-resp-header-left" '' '' '' '')
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id="perc-resp-body" class="row perc-region"&gt;
+            &lt;div id="perc-resp-body-content" class="large-9 columns perc-region"&gt;
+                #region("perc-resp-body-content" '' '' '' '')
+            &lt;/div&gt;
+            &lt;div id="perc-resp-body-sidebar" class="large-3 columns perc-region"&gt;
+                #region("perc-resp-body-sidebar" '' '' '' '')
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id="perc-resp-footer" class="row perc-region"&gt;
+            &lt;div id="perc-resp-footer-content" class="large-12 columns perc-region"&gt;
+                #region("perc-resp-footer-content" '' '' '' '')
+            &lt;/div&gt;
+        &lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+#perc_templateFooter()</template>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

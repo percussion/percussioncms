@@ -1,0 +1,1178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:con="urn:www.percussion.com/6.0.0/content" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/content" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="../common.xsd" namespace="urn:www.percussion.com/6.0.0/common" />
+  <xsd:complexType name="PSItemSummary">
+    <xsd:annotation>
+      <xsd:documentation>Item summaries may be returned by lookup services for items and folders. It contains most information required for user interface clients and all information to lookup the full object.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="ContentType" type="com:Reference">
+        <xsd:annotation>
+          <xsd:documentation>The content type of the referenced item. It is null for folder object.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="Operation">
+        <xsd:annotation>
+          <xsd:documentation>A collection of operations that the user is allowed to perform for this item at the moment.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="read" />
+            <xsd:enumeration value="write" />
+            <xsd:enumeration value="transition" />
+            <xsd:enumeration value="checkin" />
+            <xsd:enumeration value="checkout" />
+            <xsd:enumeration value="none" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="com:Id" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The id of the referenced item.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="objectType" type="com:ObjectType" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The object type of the referenced item, e.g. 'item', 'folder'.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="name" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The name of the referenced item which is the content of the 'sys_title' system field.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="PSFieldDescription">
+    <xsd:complexType>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The field name.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="dataType" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The field data type.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="binary" />
+            <xsd:enumeration value="date" />
+            <xsd:enumeration value="number" />
+            <xsd:enumeration value="text" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSAaRelationship">
+    <xsd:annotation>
+      <xsd:documentation>A full description of a relationship of category activeassembly.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:Relationship">
+          <xsd:sequence>
+            <xsd:element name="Slot" type="com:Reference">
+              <xsd:annotation>
+                <xsd:documentation>The reference of the slot used for this relationship.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Template" type="com:Reference">
+              <xsd:annotation>
+                <xsd:documentation>The reference of the template used for this relationship</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="Site" type="com:Reference">
+              <xsd:annotation>
+                <xsd:documentation>The reference of the site used for this relationship</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" name="Folder">
+              <xsd:annotation>
+                <xsd:documentation>The reference and path of the folder used for this relationship</xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:complexContent mixed="false">
+                  <xsd:extension base="com:Reference">
+                    <xsd:attribute name="path" type="xsd:string" />
+                  </xsd:extension>
+                </xsd:complexContent>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element minOccurs="0" default="0" name="SortRank" nillable="true" type="xsd:nonNegativeInteger">
+              <xsd:annotation>
+                <xsd:documentation>The 0 based sortrank used to sort related items within its container.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSAaRelationshipFilter">
+    <xsd:annotation>
+      <xsd:documentation>Specifies all rules by which to filter relationship lookups for relationships of category activeassembly. All specified rules will be AND'ed together.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:RelationshipFilter">
+          <xsd:attribute name="slot" type="xsd:string" use="optional">
+            <xsd:annotation>
+              <xsd:documentation>The name of the slot for which to filter the results.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="template" type="xsd:string" use="optional">
+            <xsd:annotation>
+              <xsd:documentation>The name of the template for which to filter the results.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="folderPath" type="xsd:string" use="optional">
+            <xsd:annotation>
+              <xsd:documentation>The folder name by which to filter that results.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="site" type="xsd:string" use="optional">
+            <xsd:annotation>
+              <xsd:documentation>The site name by which to filter the results.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSAutoTranslation">
+    <xsd:annotation>
+      <xsd:documentation>Auto translations specify default parameters used for translations for a specified content type and locale.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="contentTypeId" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The id of the content type for which to use this auto translation definition.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="communityId" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>Specifies the id of the community into which items will be translated.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="workflowId" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>Specifies the id of the workflow into which items will be translated.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="contentTypeName" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>The name of the content type for which to use this auto translation definition.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="locale" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The code of the locale for which to use this auto translation definition.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="communityName" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>Specifies the name of the community into which items will be translated.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="workflowName" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>Specifies the name of the workflow into which items will be translated.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSChildEntry">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>This is a unique identifier for this child content. If not supplied, a new child entry will be created.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Action" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>What action do you want the server to take? Supported values are ignore, insert, update and delete. If not specified, the action is determined by the id attribute. If the id is provided, the entry is updated, otherwise it is inserted. If the value is delete, the child elements are ignored and the entry is removed from the repository. If the value is ambiguous (e.g. an id is supplied but this value is set to insert), an error will be generated for this entry. Services which return PSChildEntry elements will set the Action to the correct value needed for a call to the SaveChildEntries service. For a CreateChildEntries call, it is returned as insert, for a LoadChildEntries call, it is returned as update (same for loading an item with existing children).</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element maxOccurs="unbounded" ref="con:PSField" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSContentType">
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:DesignObject">
+          <xsd:sequence>
+            <xsd:element name="ContentEditor" type="xsd:anySimpleType">
+              <xsd:annotation>
+                <xsd:documentation>This is the Xml representation of a PSContentEditor as a String</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The internal name of this content type. Use this name to reference thois content type by name.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="label" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The display name of this content type.
+</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="objectType" type="com:ObjectType" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The integer representation of the type of the object used to represent this content type, e.g. Folder, Item, etc.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="requestUrl" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>The URL used to access objects of this content type.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute default="false" name="hideFromMenu" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Flag to indicate whether or not to hide this content type from menues.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSContentTypeSummary">
+    <xsd:annotation>
+      <xsd:documentation>A content type summary describes all fields and children for one specific content type.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Fields">
+          <xsd:annotation>
+            <xsd:documentation>All fields that are available with this content type.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="con:PSFieldDescription" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Children">
+          <xsd:annotation>
+            <xsd:documentation>All fieldsets that are available with this content type.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="con:PSContentTypeSummaryChild" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="com:Id" use="required" />
+      <xsd:attribute name="name" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the content type that this summary represents.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="description" type="xsd:string" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSContentTemplateDesc">
+    <xsd:annotation>
+      <xsd:documentation>Describes an association of a template to a content type.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:attribute name="id" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The GUID which uniquely identifies this content type template association.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="contentTypeId" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The content type GUID of the association.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="templateId" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The GUID of the template which is associated to the specified content type.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSField">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSFieldValue" />
+        <xsd:element minOccurs="0" name="ValueChoices">
+          <xsd:annotation>
+            <xsd:documentation>Contains the list of possible values for a field that have been defined by the designer.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Choice">
+                <xsd:annotation>
+                  <xsd:documentation>This element is used to specify one of possibly many values that could be used as the content for a field. When shown to the end user, the value of the displayName attribute should be used if present. When submitted to the server, the Option value should always be submitted, not the displayName.
+</xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:string">
+                      <xsd:attribute name="displayName" type="xsd:string" use="optional">
+                        <xsd:annotation>
+                          <xsd:documentation>The text that should be used when showing this option to the user. If not provided, the option value itself should be displayed to the user.</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:attribute>
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>This is the name of a field defined in the item or child. This is unique across all fields in the parent and all children.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="displayName" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The label as displayed to end users, the field name will be used instead if this is not present.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="fieldValueType">
+        <xsd:annotation>
+          <xsd:documentation>This type string specifies whether the data is for Meta or Content.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="meta" />
+            <xsd:enumeration value="content" />
+            <xsd:enumeration value="unknown" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="mimeType" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Is the content plain text (i.e. #PCDATA) or Xml content. If Xml, the server will take the first child element and store it and its children as an Xml fragment. This will be a mime type for example: image/gif, text/xml, text/html, text/plain </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="sourceType">
+        <xsd:annotation>
+          <xsd:documentation>This type describes the source definition, either local, shared or system.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="local" />
+            <xsd:enumeration value="shared" />
+            <xsd:enumeration value="system" />
+            <xsd:enumeration value="unknown" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="transferEncoding">
+        <xsd:annotation>
+          <xsd:documentation>Binary data may be transmitted in an Xml document by encoding it appropriately. If the value is encoded binary, this attribute should be set to base64. Xml data can be transmitted as text if it contains processing instructions and the like if the Xml reserved characters are escaped. In this case, set this attribute to 'xmlEscaped'. In either case, the server will decode the value before saving it. If an href is supplied and the HTTP protocol </xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="none" />
+            <xsd:enumeration value="base64" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute default="false" name="showInPreview" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>Specifies whether or not this field is shown in previews.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="dataType">
+        <xsd:annotation>
+          <xsd:documentation>The data type or this field, text, date, number or binary.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="text" />
+            <xsd:enumeration value="date" />
+            <xsd:enumeration value="number" />
+            <xsd:enumeration value="binary" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="declaredNamespaces" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Contains a string that lists the namespaces that should be declared for this field.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute default="false" name="cleanupNamespaces" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>A boolean property that indicates to text cleanup and the assembly system that namespaces should be selectively removed according to a configuration.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute default="false" name="allowActiveTags" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>A boolean property that tells text cleanup that JSP and ASP tags may appear in the content.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="dimension">
+        <xsd:annotation>
+          <xsd:documentation>Describes if and how many values for this field must be set to be able to save the containing item to the content store.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="optional" />
+            <xsd:enumeration value="required" />
+            <xsd:enumeration value="oneormore" />
+            <xsd:enumeration value="zeroormore" />
+            <xsd:enumeration value="count" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="contentType" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>The name of the content type which contains this field.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSFieldValue">
+    <xsd:annotation>
+      <xsd:documentation>This element is used to store the content of a field. The content may be character based or binary.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="RawData" nillable="true" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The string or encoded data if the mime type is not set to XML.
+</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="attachmentId" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>If the data is not included in this element, this attribute can be specified to indicate where to retrieve it. If specified, any supplied value is ignored. If it is char data, a charEncoding may be specified. The referenced data will be interpreted according to the transferEncoding specified. The server will support multipart/related submissions, as specified in the 'SOAP Messages with Attachments' note submitted to the w3c (the server won't initially support nested multipart types).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSFolder">
+    <xsd:annotation>
+      <xsd:documentation>Describes a complete folder.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Security">
+          <xsd:annotation>
+            <xsd:documentation>A collection of users, roles and virtual groups that have access to this folder.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="AclEntry">
+                <xsd:annotation>
+                  <xsd:documentation>The ACL entry for a user, a role or a virtual group</xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                  <xsd:attribute name="name" type="xsd:string" use="required">
+                    <xsd:annotation>
+                      <xsd:documentation>The name of the subject (user, role or virtual group) of the ACL entry</xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:attribute>
+                  <xsd:attribute name="type" use="required">
+                    <xsd:annotation>
+                      <xsd:documentation>The type of the subject in this ACL entry. It is either user, role or virtual group</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:simpleType>
+                      <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="user">
+                          <xsd:annotation>
+                            <xsd:documentation>Indicates the ACL entry is for a user.</xsd:documentation>
+                          </xsd:annotation>
+                        </xsd:enumeration>
+                        <xsd:enumeration value="role">
+                          <xsd:annotation>
+                            <xsd:documentation>Indicates the ACL entry is for a role</xsd:documentation>
+                          </xsd:annotation>
+                        </xsd:enumeration>
+                        <xsd:enumeration value="virtual">
+                          <xsd:annotation>
+                            <xsd:documentation>Indicates the ACL entry is for a virtual group.</xsd:documentation>
+                          </xsd:annotation>
+                        </xsd:enumeration>
+                      </xsd:restriction>
+                    </xsd:simpleType>
+                  </xsd:attribute>
+                  <xsd:attribute name="permissionRread" type="xsd:boolean" use="required">
+                    <xsd:annotation>
+                      <xsd:documentation>Determines if the subject (user, role or virtual group) has the read access or not. It is <code>true</code> if the subject has the read access to this folder; otherwise the subject does not have the read access to this folder.</xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:attribute>
+                  <xsd:attribute name="permissionWrite" type="xsd:boolean" use="required">
+                    <xsd:annotation>
+                      <xsd:documentation>Determines if the subject (user, role or virtual group) has the write access or not. It is <code>true</code> if the subject has the write access to this folder; otherwise the subject does not have the write access to this folder.</xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:attribute>
+                  <xsd:attribute name="permissionAdmin" type="xsd:boolean" use="required">
+                    <xsd:annotation>
+                      <xsd:documentation>Determines if the subject (user, role or virtual group) has the admin access or not. It is <code>true</code> if the subject has the read admin to this folder; otherwise the subject does not have the admin access to this folder.</xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:attribute>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Properties">
+          <xsd:annotation>
+            <xsd:documentation>A collection of user specified properties for this folder.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Property">
+                <xsd:complexType>
+                  <xsd:attribute name="name" type="xsd:string" use="required" />
+                  <xsd:attribute name="value" type="xsd:string" use="optional" />
+                  <xsd:attribute name="description" type="xsd:string" use="optional" />
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="DisplayFormat" type="com:Reference">
+          <xsd:annotation>
+            <xsd:documentation>The default display format used to show children of this folder.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Community" type="com:Reference">
+          <xsd:annotation>
+            <xsd:documentation>The Community whose members have access to the folder. A null value (or not specified) indicates all users in all Communities have access to this folder.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="com:Id" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>The folder id. May not be present if this folder is not stored in the repository yet.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The folder name.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="path" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>The fully qualified folder path.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="localeCode" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The locale code for this folder.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="globalTemplate" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>The name of the globale template used to render assembled content of this folder.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="description" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>The folder description.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSItem">
+    <xsd:annotation>
+      <xsd:documentation>This element contains some to all of the data associated with an item including content and related items. On a query from the server, different parts of the document may not be present depending on what was requested. On an update request, fields that are not included are skipped.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Fields">
+          <xsd:annotation>
+            <xsd:documentation>A collection of item fields as requested. This may be empty, a list of requested fields or all item fields.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSField" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="Children">
+          <xsd:annotation>
+            <xsd:documentation>A collection of children as requested. This may be missing, a list of requested or all children.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="Name" type="xsd:string">
+                <xsd:annotation>
+                  <xsd:documentation>The internal name of the fieldset.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element minOccurs="0" name="DisplayName" type="xsd:string">
+                <xsd:annotation>
+                  <xsd:documentation>The display label of the fieldset.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element minOccurs="0" default="true" name="Sequenced" type="xsd:boolean">
+                <xsd:annotation>
+                  <xsd:documentation>Defines whether the entries in this child are sequenced or not.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSChildEntry" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="Slots">
+          <xsd:annotation>
+            <xsd:documentation>A collection of item slots with related content. This may be missing, a list of requested or all slots.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="Name" type="xsd:string">
+                <xsd:annotation>
+                  <xsd:documentation>The name of the slot.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSRelatedItem" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="Folders">
+          <xsd:annotation>
+            <xsd:documentation>A collection with all folders to which this item is attached to. This is only returned if requested.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:attribute name="path" type="xsd:string" />
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The item id.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="contentType" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the content type that describes this item. During a submission, either the id or this value must be supplied. If all are supplied, this attribute is ignored.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="systemLocale" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The locale code of the calling application.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="dataLocale" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The locale for this item.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="checkedOutBy" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The name of the user that has this item checked out. This is only available if the item is checked out.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSItemStatus">
+    <xsd:annotation>
+      <xsd:documentation>This element is used to bring an item into edit mode and to release it from there. It holds the item state information before the edit and summarizes the actions taken to bring it into edit mode.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="FromState" type="com:Reference">
+          <xsd:annotation>
+            <xsd:documentation>The reference of the workflow state in which the item was before it was prepared for edit. This is only available if the item had to be transitioned to bring it into edit mode.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="ToState" type="com:Reference">
+          <xsd:annotation>
+            <xsd:documentation>The reference of the workflow state to which the item was transitioned to prepare it for edit. This is only available if the item had to be transitioned to bring it into edit mode.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The id of the item for which this status information is.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute default="false" name="didCheckout" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>This flag specifies whether or not the item had to be checked out to prepare it for edit.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute default="false" name="didTransition" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>This flag specifies whether or not the item had to be transitioned to prepare it for edit.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSItemSummary" type="con:PSItemSummary">
+    <xsd:annotation>
+      <xsd:documentation>Item summaries may be returned by lookup services for items and folders. Item summaries contain most information required for user interface clients and all information to lookup the full objects.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="PSSearchResults">
+    <xsd:annotation>
+      <xsd:documentation>Search results may be returned by lookup services for items. It contains most information required for user interface clients and all information to lookup the full object.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="con:PSItemSummary">
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="Fields">
+              <xsd:annotation>
+                <xsd:documentation>A list with all through the search requested field name-value pairs.</xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:simpleContent>
+                  <xsd:extension base="xsd:string">
+                    <xsd:attribute name="name" type="xsd:string" use="required">
+                      <xsd:annotation>
+                        <xsd:documentation>The field name.</xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:attribute>
+                  </xsd:extension>
+                </xsd:simpleContent>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSKeyword">
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:DesignObject">
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="Choices">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element maxOccurs="unbounded" ref="con:PSKeywordChoice" />
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="label" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The label of the keyword as displayed to end users.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="value" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The value of the keyword as used internally.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="keywordType" type="xsd:string" use="required" />
+          <xsd:attribute name="sequence" type="xsd:int" />
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSKeywordChoice">
+    <xsd:complexType>
+      <xsd:attribute name="label" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The display name of this keyword choice as represented to users.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="value" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The keyword choice value as used internally.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="description" type="xsd:string" />
+      <xsd:attribute default="0" name="sequence" type="xsd:int">
+        <xsd:annotation>
+          <xsd:documentation>The sequence number of this keyword choice.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSLocale">
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:DesignObject">
+          <xsd:attribute name="code" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The language code such as en-us, etc.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="label" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The display label used to present this locale to end users.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute default="false" name="enabled" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Specifies whether or not this locale is enabled.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSRelatedItem">
+    <xsd:annotation>
+      <xsd:documentation>A related item is another piece of content in the CMS that is used by this item in some way.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="con:PSAaRelationship" />
+        <xsd:element ref="con:PSItem" />
+        <xsd:element minOccurs="0" name="KeyFields">
+          <xsd:annotation>
+            <xsd:documentation>The set of fields that form a unique key for the supplied item, with corresponding values.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="SearchField">
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base="xsd:string">
+                      <xsd:attribute name="name" type="xsd:string" use="required" />
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="action">
+        <xsd:annotation>
+          <xsd:documentation>What action do you want the server to take with this relationship? Several possibilities exist: 1. sys_contentid is provided with the child Item: a. action is 'delete' - The relationship is removed from this item. b. action is 'ignore' - The relationship remains, but its order may be changed. c. action is not present - Same as ignore. d. action is anything else - An 'Invalid action' error will be indicated for this action. 2. A new Item w/ no contentid is provided: a. action is not present - A lookup is performed using the supplied KeyFields. Either the item is inserted or the existing item id is used. It is an error if no KeyFields are supplied, or multiple items are found. b. action is 'insertOnly' - Same as not present. c. action is 'modify' - Same as not present d. action is 'ignore' - The entry is skipped. e. action is anything else - An 'Invalid action' error will be indicated for this action.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ignore" />
+            <xsd:enumeration value="insert" />
+            <xsd:enumeration value="update" />
+            <xsd:enumeration value="delete" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSRevisions">
+    <xsd:annotation>
+      <xsd:documentation>Describes all avaliable revisions for one specific item.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="EditRevision" type="xsd:int">
+          <xsd:annotation>
+            <xsd:documentation>The edit revision of the requested item.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="CurrentRevision" type="xsd:int">
+          <xsd:annotation>
+            <xsd:documentation>The current revision of the requested item.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Revisions">
+          <xsd:annotation>
+            <xsd:documentation>A list of revisions of the Content Item. It may be null or empty if the Content Item has not been checked in after its creation.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSRevision" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSSearch">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="con:PSSearchParams" />
+      </xsd:sequence>
+      <xsd:attribute default="true" name="useDbCaseSensitivity" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>If this flag is false, a case-insensitive search is used for all search fields. If it is true, then the default behavior of the database is used.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute default="false" name="useExternalSearchEngine" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>This flag specifies whether or not to use the external search engine for this request.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSSlotContent">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSRelatedItem" />
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the slot for which this collection shows all related items.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSContentTypeSummaryChild">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ChildField">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="con:PSFieldDescription" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The fieldset name of the child.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSContentEditorDefinition">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Definition" type="xsd:anySimpleType">
+          <xsd:annotation>
+            <xsd:documentation>This is the Xml representation of a content editor definition as a String.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The name of the content editor definition.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="type">
+        <xsd:annotation>
+          <xsd:documentation>The definition type, system or shared.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:pattern value="system" />
+            <xsd:pattern value="shared" />
+            <xsd:enumeration value="system" />
+            <xsd:enumeration value="shared" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSRevision">
+    <xsd:complexType>
+      <xsd:attribute name="id" type="com:Id" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The item id includes the revision for this revision object.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="revision" type="xsd:int" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The revision number. This number is also included in the id returned with this element.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="isCurrentRevision" type="xsd:boolean" use="required">
+        <xsd:annotation>
+          <xsd:documentation>Is this revision the current revision for the requested item?</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="isEditRevision" type="xsd:boolean" use="required">
+        <xsd:annotation>
+          <xsd:documentation>Is this revision the edit revision of the requested item?</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="creationDate" type="xsd:dateTime" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The date and time when this revision was created.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="creator" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the actor who created this revision.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="comment" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>The comment entered while this revision was created.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSSearchParams">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Title">
+          <xsd:annotation>
+            <xsd:documentation>The sys_tile item field is exposed specifically for easy access. This could as well be handled through the Parameters element.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element default="equal" name="Operator" nillable="true" type="com:operatorTypes">
+                <xsd:annotation>
+                  <xsd:documentation>Specifies the operator to pass to the internal search engine.  Ignored if the externalOperator attribute is specified with a non-empty value.  Otherwise the search results are filtered by this condition using the internal search engine. Defaults to 'equal' if not specified</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element default="and" name="Connector" nillable="true" type="com:connectorTypes">
+                <xsd:annotation>
+                  <xsd:documentation>Determines the logical operator to use when the result of this condition is evaluated with the next condition.  May be ignored if the externalOperator attribute is supplied such that the condition will be evaluated by an external search engine. If ignored, the default behavior of the external engine will define how multiple conditions are evaluated. Defaults to 'and' if not specified
+</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name="Value" type="xsd:string">
+                <xsd:annotation>
+                  <xsd:documentation>The sys_title value to search for.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="ContentType" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The content type name to searc for.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="FullTextQuery" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Specifies a full text query to pass to an external search engine.  If such an engine has not been configured on the server, an error is returned.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="FolderFilter">
+          <xsd:annotation>
+            <xsd:documentation>If this element is present, then its value will be interpreted as a path to a folder in the system. The results from the standard search are intersected with all children of this folder (and sub folders if the 'includeSubFolders' attribute is true) and only the results that are in both sets are returned. If the path does not specify an existing folder, an error is returned.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:simpleContent>
+              <xsd:extension base="xsd:string">
+                <xsd:attribute default="true" name="includeSubFolders" type="xsd:boolean">
+                  <xsd:annotation>
+                    <xsd:documentation>If true, then objects in the specified folder or any of its sub-folders are allowed. If false, only objects that are direct children of this folder are allowed in the search results.</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:attribute>
+              </xsd:extension>
+            </xsd:simpleContent>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Parameter">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="con:PSSearchField" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="SearchResults">
+          <xsd:annotation>
+            <xsd:documentation>Whether requested or not, the following fields are guaranteed to be included in the search results: sys_contentid, sys_contenttypeid, sys_title, sys_workflowappid, sys_contentstateid and sys_contentcheckoutusername. If not specified, all fields will be returned.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="con:PSSearchResultField" />
+            </xsd:sequence>
+            <xsd:attribute default="1" name="startIndex" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation>Used to limit the returned results. All results between this value and endIndex are returned, inclusive.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="endIndex" type="xsd:int">
+              <xsd:annotation>
+                <xsd:documentation>Used to limit the returned results. All results between startIndex and this value are returned, inclusive. If not present, defaults to the # of results in the current request.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Properties">
+          <xsd:annotation>
+            <xsd:documentation>One or more properties that are passed through to the search engine. These properties are currently supported:
+bodyfilter: This is the property name used to transfer the 'Filter with' text.
+expansionlevel: Constant for Convera search eninge property name expansion level.
+querytype: Constant for Convera search engine property name query type, values are: 16 (boolean), 32 (concept), 64 (pattern).
+searchMode: Property to define the search mode, values are: simple (this means that any search fields are to be ignored, and only the full text  query string is to be used), advanced (this means that any search fields are to be included as well as any full text query string).
+overrideGlobalMaxResults: Property to allow a search to override any max search results specified in the global search configuration in the server  configuration. If this property is specified with a value of 'y', then the max results setting of this search is used, otherwise the global  maximum is in effect (note that the max results value specified by this search is still used if it is less than the global max or if the gobal max  is not specified).</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="con:PSSearchProperty" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute default="false" name="searchForFolders" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>This attribute can be used to enable searching for folders. This property determines if folders are returned in the results as opposed to only allowing results that are in a folder (see FolderFilter element).  For backwards compatibility, this value defaults to false.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSSearchResultField">
+    <xsd:complexType>
+      <xsd:attribute name="name" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the field to include with the search result.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSSearchProperty">
+    <xsd:annotation>
+      <xsd:documentation>A search property as name / value pair.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The property name.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSSearchField">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element default="equal" name="Operator" nillable="true" type="com:operatorTypes">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the operator to pass to the internal search engine.  Ignored if the externalOperator attribute is specified with a non-empty value.  Otherwise the search results are filtered by this condition using the internal search engine. Defaults to 'equal' if not specified</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element default="and" name="Connector" nillable="true" type="com:connectorTypes">
+          <xsd:annotation>
+            <xsd:documentation>Determines the logical operator to use when the result of this condition is evaluated with the next condition.  May be ignored if the externalOperator attribute is supplied such that the condition will be evaluated by an external search engine. If ignored, the default behavior of the external engine will define how multiple conditions are evaluated. Defaults to 'and' if not specified
+</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Value" nillable="true" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The field value to search for.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+      <xsd:attribute name="externalOperator" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

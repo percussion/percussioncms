@@ -1,0 +1,29 @@
+<project name="install" default="install" basedir=".">
+
+<property name="resourceDir" location="../../windows/resource"/>
+
+<target name="install">
+
+   <mkdir dir="tmp"/>
+   <unzip src="${resourceDir}/server.zip" dest="tmp"/>
+   <unzip src="${resourceDir}/devtools.zip" dest="tmp"/>
+   <unzip src="${resourceDir}/doc.zip" dest="tmp"/>
+
+   <ant antfile="tmp/system/installResources/install.xml" inheritall="false">
+      <property file="install.properties"/>
+   </ant>
+
+   <copy todir="${install.dir}" file="${basedir}/../RhythmyxServer.bat"/>
+   
+   <property file="install.properties"/>
+   <fail message="Install failed!">
+            <condition>
+               <not>
+                  <available file="${install.dir}/rxconfig/Installer/rhythmyxInstalled"/>
+               </not>
+            </condition>
+   </fail>
+   
+</target>
+
+</project>

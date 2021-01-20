@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT modifyslotitem (relateditem*, authtype*, variant*, sysid*, contentslotvariantsurl*, revision*, variantid*, rxcontext*, slot*, contentid* )>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT slot (#PCDATA)>
+<!ELEMENT rxcontext (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>
+<!ELEMENT revision (#PCDATA)>
+<!ELEMENT contentslotvariantsurl (#PCDATA)>
+<!ELEMENT sysid (#PCDATA)>
+<!ELEMENT variant (#PCDATA)>
+<!ELEMENT authtype (#PCDATA)>
+<!ELEMENT relateditem (#PCDATA)>
+<!ATTLIST  modifyslotitem xml:lang CDATA #IMPLIED>

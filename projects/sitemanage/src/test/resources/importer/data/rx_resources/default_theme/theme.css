@@ -1,0 +1,1264 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) Percussion Software, Inc.  1999-2020
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *      Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* Import css files for all widgets*/
+
+/*Navigation imports*/
+@import "../../widgets/navBar/css/superfish.css";
+@import "../../widgets/navBar/css/superfish-navbar.css";
+@import "../../widgets/navBar/css/superfish-vertical.css";
+
+/*Image widget imports*/
+@import "../../widgets/image/lightbox/lightbox.css";
+
+/* Import css file ends here*/
+
+/* Inline styles for rich text
+----------------------------------*/
+body {
+
+    font-family: Verdana;
+    font-size: 11px;
+    font-weight: normal;
+}
+a, a:link, a:visited,  a:hover, a:active {
+   text-decoration: none;
+   color: #0099cc;
+}
+
+.perc-body-text-1 {}
+.perc-body-text-2 {}
+.perc-title-1
+{
+    text-align: center;
+}
+
+.perc-title-2
+{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
+.perc-quote-1 {}
+.perc-quote-2 {}
+.perc-list-1
+{
+    list-style-type: square;
+}
+.perc-list-2 {}
+.perc-list-3 {}
+.perc-box-1
+{
+    border: 1px;
+    border-style: solid;
+}
+.perc-box-2 {}
+.perc-box-3 {}
+.perc-table-1 {}
+.perc-table-2 {}
+
+/* Region CSS
+----------------------------------*/
+
+.vspan_2 { height : 120px }
+.vspan_4 { height : 240px }
+.vspan_6 { height : 360px }
+.vspan_8 { height : 480px }
+
+.hspan_2  { width : 160px }
+.hspan_8  { width : 640px }
+.hspan_10 { width : 800px }
+.hspan_12 { width : 960px }
+
+#content { margin : 0 auto }
+
+/* Wrapper for all body content */
+#container
+{
+    margin: 0 auto;
+}
+
+/* Widget CSS
+----------------------------------*/
+
+.ui-widget
+{
+    font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+    font-size: 1.1em;
+}
+
+.ui-widget-content
+{
+    border: 1px solid #dddddd;
+    background: #eeeeee url(images/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x;
+    color: #333333;
+}
+
+/* Event widget CSS - uses  hCalendar 1.0 microformat
+All fields are wrapped in <div>s, with labels specified here. */
+
+/*Root level class of all events */
+.perc-event {}
+
+.perc-event .perc-event-title:before
+{
+    content: "Title: ";
+}
+
+.perc-event .summary:before
+{
+    content: "Summary: ";
+}
+
+.perc-event .description:before
+{
+    content: "Description: ";
+}
+
+.perc-event .location:before
+{
+    content: "Location: ";
+}
+
+/* This style is applied to both event date fields. */
+.perc-event-date {}
+
+.perc-event .dtstart:before
+{
+    content: "Start: ";
+}
+
+.perc-event .dtend:before
+{
+    content: "End: ";
+}
+
+/* End event widget CSS */
+
+/* Begin list widget CSS */
+/*Root class for all page auto list widgets*/
+.perc-page-auto-list {}
+
+.perc-list-vertical, .perc-list-vertical li
+{
+    width: 100%;
+    margin-top: 5px;
+}
+
+.perc-list-horizontal {
+    min-height : 54px;
+}
+
+.perc-list-horizontal li
+{
+    float: left;
+    position: relative;
+    list-style-type: none;
+    margin-right:10px;
+}
+
+.perc-list-title
+{
+    font-family: Times New Roman;
+    font-style: regular;
+    font-size: 18px;
+}
+
+.perc-page-auto-list  .perc-list-main {
+    margin-top: 11px;
+    padding-left: 18px;
+}
+
+.perc-list-main-container {
+    padding-top: 0px;
+    margin-top: 0px;
+    padding-left: 18px;
+}
+
+ .perc-tag-list .perc-list-main-container, .perc-tag-list .perc-list-main {
+    padding-top: 0px;
+    margin-top: 11px;
+    padding-left: 18px;
+}
+
+.perc-comma-separated-main-container {
+    padding-top: 0px;
+    margin-top: 0px;
+    list-style: none;
+    padding-left: 0px;
+}
+
+.perc-list-first {}
+
+.perc-list-last {}
+
+.perc-list-odd {}
+
+.perc-list-even {}
+
+.perc-list-element {
+
+    list-style-image: url("images/bullet.png");
+}
+
+/*Root class for all image auto list widgets*/
+.perc-image-auto-list {}
+
+/*Image specific override of vertical list*/
+.perc-image-auto-list.perc-list-vertical, .perc-image-auto-list.perc-list-vertical li
+{
+    list-style-type: none;
+}
+
+.perc-caption
+{
+    margin-bottom: 10px;
+}
+
+/* End list widget CSS */
+
+/* Begin File widget CSS */
+/*Root class for all file widgets*/
+
+.perc-file {}
+
+/* End File widget CSS */
+
+/* Begin Breadcrumb widget CSS */
+
+/* Begin Iframe widget CSS */
+/*Root class for all iframe widgets*/
+
+.perc-iframe {}
+
+/* End Iframe widget CSS */
+
+.perc-breadcrumb
+{
+    margin-left: 30px;
+}
+
+.perc-breadcrumb-main
+{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.perc-breadcrumb-main li
+{
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+/* End Breadcrumb widget CSS */
+
+/* Begin Form widget CSS */
+.perc-form
+{
+
+}
+.form-title
+{
+    font-weight: normal;
+    font-family: Arial;
+    font-size: 20px;
+    margin-bottom:20px;
+}
+.field-row
+{
+    font-family: Verdana;
+    font-size: 12px;
+    color: #000000;
+    margin: 5px 5px 20px 15px;
+}
+.perc-label-location-top div.field-row > div
+{
+    display: block;
+}
+.perc-label-location-left div.field-row > div
+{
+    display: inline-block;
+    vertical-align: top;
+}
+.perc-label-location-left div.field-row > div:first-child
+{
+    width: 150px;
+}
+.field-input-container > div > div
+{
+    display: inline-block;
+}
+.perc-required-field
+{
+    font-weight: bold;
+    font-family: Verdana;
+    font-size: 11px;
+    color: #cc0000;
+}
+.field-label
+{
+    font-weight: bold;
+    font-family: Verdana;
+    font-size: 11px;
+    color: #000000;
+}
+.field-label-container
+{
+    margin-bottom:10px;
+    font-weight: bold;
+    font-family: Verdana;
+    font-size: 11px;
+    color: #000000;
+}
+.field-input-container
+{
+    font-weight: normal;
+    font-family: Verdana;
+    font-size: 11px;
+    color: #000000;
+}
+.ui-datepicker-trigger {
+    cursor: pointer;
+    padding-left: 3px;
+    vertical-align:top;
+    margin-top:-3px;
+    margin-left:-10px;
+    margin-right:10px;
+}
+
+#ui-datepicker-div{
+
+    z-index:20000;
+}
+.ui-widget.ui-datepicker {
+    font-size: 11px;
+}
+
+/* Form Validation Message CSS*/
+
+.perc-form-error-asterisk {
+    color: #cc0000;
+    display: block;
+    float: left;
+    margin-left: -10pt;
+    margin-right: 5pt;
+    font-family: Verdana;
+    font-size: 11px;
+    font-weight:bold;
+}
+
+.form-error-msg, .perc-reg-error-message{
+   font-family: Arial;
+   font-size: 11px;
+   font-weight: normal;
+   color: red;
+}
+
+.required{
+    color: #000000;
+    font-family: Verdana;
+    font-size: 11px;
+    font-weight: normal;
+}
+.perc-form input[type="text"],.perc-form textarea{
+    border-color: #CECFCE #CECFCE #D6D7DE #D6D7DE;
+    border-style: solid;
+    border-width: 1px;
+    color: #000000;
+    font-family: Verdana;
+    font-size: 11px;
+    font-weight: normal;
+    margin-right:10px;
+    width:320px;
+}
+
+.perc-form textarea {
+    width:480px;
+    height:200px;
+}
+
+.perc-form label{
+    margin-right:10px;
+}
+
+textarea.form-error-msg {
+       color: #000000;
+    font-family: Verdana;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+/* End Form widget CSS */
+
+/* Begin CM1 V2.0 updates */
+
+/* Begin Liked Widget CSS */
+
+.perc-likedWidget
+{
+    padding: 1em;
+}
+.perc-likedWidget-button
+{
+    display: block;
+    border-width: 0;
+    background: transparent no-repeat scroll center center;
+}
+.perc-likedWidget-button-disabled
+{
+    background-image: url("/web_resources/widgets/liked/images/IconLikeDisabled.png");
+    width: 51px;
+    height: 17px;
+}
+.perc-likedWidget-button-likeable
+{
+    background-image: url("/web_resources/widgets/liked/images/IconLike.png");
+    width: 51px;
+    height: 17px;
+}
+.perc-likedWidget-button-liked
+{
+    background-image: url("/web_resources/widgets/liked/images/IconThumbsUp.png");
+    width: 12px;
+    height: 12px;
+}
+.perc-likedWidget-button-noScript
+{
+    display: none;
+}
+
+.perc-like-widget {
+    font-family : verdana;
+    font-size : 11px;
+    display: inline-block;
+}
+
+.perc-like-widget .perc-like-button {
+    float : left;
+}
+
+.perc-like-widget.perc-disabled .perc-like-button button {
+    background : url(/web_resources/widgets/liked/images/IconLikeDisabled.png) transparent no-repeat scroll center center;
+    display : block;
+    border-width : 0;
+    height : 18px;
+    width : 51px;
+    cursor : pointer;
+}
+
+.perc-like-widget.perc-disabled .perc-like-counter {
+    display : none;
+}
+
+.perc-like-widget.perc-liked {
+    font-family : verdana;
+    font-size : 11px;
+}
+
+.perc-like-widget.perc-liked .perc-like-button {
+    float : left;
+}
+
+.perc-like-widget.perc-liked .perc-like-button button{
+    background : url(/web_resources/widgets/liked/images/IconThumbsUp.png) transparent no-repeat scroll center center;
+    display : block;
+    border-width : 0;
+    height : 18px;
+    width : 13px;
+    cursor : pointer;
+}
+
+.perc-like-widget.perc-liked .perc-like-button button:hover{
+    background : url(/web_resources/widgets/liked/images/likeX.png) transparent no-repeat scroll center center;
+    cursor : pointer;
+}
+
+.perc-like-widget.perc-liked .perc-likedWidget-button-noScript {
+    display : none;
+    background : url(/web_resources/widgets/liked/images/likeOFF.png) transparent no-repeat scroll center center;
+}
+
+.perc-like-widget.perc-liked .perc-like-counter {
+    float : left;
+}
+
+.perc-like-widget.perc-liked .perc-like-counter-left {
+    padding-left : 8px;
+}
+
+.perc-like-widget.perc-liked .perc-like-counter-right {
+    padding-right : 2px;
+}
+
+.perc-like-widget.perc-liked .perc-like-counter .perc-like-counter-value {
+    height : 18px;
+}
+
+.perc-like-widget.perc-liked .perc-like-counter-text {
+    color : #006190;
+    padding-top : 2px;
+    font-weight : bold;
+}
+
+.perc-like-widget.perc-unliked {
+    font-family : verdana;
+    font-size : 11px;
+}
+
+.perc-like-widget.perc-unliked .perc-like-button {
+    float : left;
+    cursor : pointer;
+}
+
+.perc-like-widget.perc-unliked .perc-like-button button{
+    background : url(/web_resources/widgets/liked/images/likeOFF.png) transparent no-repeat scroll center center;
+    display : block;
+    border-width : 0;
+    height : 18px;
+    width : 51px;
+    cursor : pointer;
+}
+
+.perc-like-widget.perc-unliked .perc-likedWidget-button-noScript {
+    display : none;
+    background : url(/web_resources/widgets/liked/images/likeOFF.png) transparent no-repeat scroll center center;
+}
+
+.perc-like-widget.perc-unliked .perc-like-counter {
+    float : left;
+    padding-left : 3px;
+}
+
+.perc-like-widget.perc-unliked .perc-like-counter-left {
+    background : url(/web_resources/widgets/liked/images/likeTotalLikesLeft.png) transparent no-repeat left center;
+    padding-left : 8px;
+}
+
+.perc-like-widget.perc-unliked .perc-like-counter-right {
+    background : url(/web_resources/widgets/liked/images/likeTotalLikesRight.png) transparent no-repeat right center;
+    padding-right : 2px;
+}
+
+.perc-like-widget.perc-unliked .perc-like-counter .perc-like-counter-value {
+    background : #006190;
+    height : 18px;
+}
+
+.perc-like-widget.perc-unliked .perc-like-counter-text {
+    color : white;
+    padding-top : 2px;
+    padding-right : 5px;
+    padding-left : 5px;
+    font-weight : bold;
+}
+
+.perc-like-widget.perc-unliked .perc-like-people {
+    display : none;
+}
+
+/* End Liked Widget CSS */
+
+/* List Widget CSS Starts */
+
+.perc-tag-title, .perc-category-title, .perc-archive-title
+{
+    font-family: Times New Roman;
+    font-style: regular;
+    font-size: 18px;
+
+}
+
+.perc-tag-element, .perc-archive-month, .perc-archive-year
+{
+    font-family: Verdana;
+    font-style: regular;
+    font-size: 11px;
+    text-align: left;
+    margin-top : 5px;
+    padding-top: 0;
+
+}
+
+ul.perc-list-main-container  li.perc-tag-element, li.perc-archive-year, ul.perc-archive-flat li.perc-archive-month {
+
+    list-style-image: url("images/bullet.png");
+}
+
+ul.perc-comma-separated-main-container li.perc-tag-element, ul.perc-archive-hierarchical li.perc-archive-month {
+
+    list-style-image: none;
+    list-style-type:none;
+}
+
+.perc-archive-list {
+
+}
+
+ul.perc-archive-hierarchical {
+
+    padding-left:15px;
+}
+
+ul.perc-archive-flat{
+
+    padding-left:15px;
+}
+
+
+ul.perc-archive-month-wrapper {
+    padding-left:7px;
+}
+/* List Widget CSS Ends */
+
+
+/* Comments Widget CSS */
+
+.perc-comments
+{
+   margin-top: 10px;
+}
+.perc-comment
+{
+   font-family: Times;
+   color: #000000;
+}
+.perc-comment div
+{
+    margin-bottom: 5px;
+}
+.perc-comment-createdDate
+{
+   font-family: Verdana;
+   font-weight: bold;
+   font-size: 11px;
+   color: #666666
+}
+.perc-comment-username
+{
+   margin: 0;
+   font-size: 14px;
+   font-weight: bold;
+}
+.perc-comment-title
+{
+   font-weight: bold;
+   font-size: 14px;
+}
+.perc-comment-username a, .perc-comment-username a:link, .perc-comment-username a:visited, .perc-comment-username a:hover, .perc-comment-username a:active {
+   text-decoration: none;
+   color: #0099cc;
+}
+.perc-comment-text
+{
+   font-weight: normal;
+   font-size: 14px;
+}
+.perc-comment-divider
+{
+   background-color: #cccccc;
+   height: 1px;
+   width: 100%;
+   margin-bottom: 5px;
+}
+.perc-comment-message{
+   font-family: Verdana;
+   font-weight: bold;
+   font-size: 11px;
+   color: #FF9933;
+}
+.perc-comment-highlight
+{
+    border: 6px solid #E6E6E9;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+.perc-list-main-inline
+{
+    padding-left: 0px;
+}
+
+.perc-list-elemment-inline
+{
+    display: inline;
+    list-style: none outside none;
+}
+
+.perc-result-divider
+{
+   background-color: #999999;
+   height: 1px;
+   width: 100%;
+   margin-bottom: 15px;
+}
+
+.perc-result-title,.perc-bloglist-result-title
+{
+    font-family: Times New Roman;
+    font-size: 21px;
+    font-weight: normal;
+    text-align: center;
+    margin-bottom: 1px;
+}
+.perc-result-count,.perc-bloglist-result-count
+{
+    font-family: Verdana;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 1pt;
+    margin-bottom: 5px;
+}
+.perc-result-page-title
+{
+    font-family: Times New Roman;
+    font-size: 18px;
+    font-weight: normal;
+    text-align: left;
+    margin-bottom: -10px;
+}
+.perc-result-page-date
+{
+    font-family: Verdana;
+    font-size: 11px;
+    font-weight: normal;
+    text-align: right;
+    margin-bottom: 20px;
+}
+.perc-result-page-summary
+{
+    font-family: Times New Roman;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: justify;
+    margin-bottom: 30px;
+}
+.perc-result-page-item
+{
+    margin: 5px;
+}
+
+
+/* End Comments Widget CSS */
+/* RSS Icon CSS */
+
+.perc-rss-icon
+{
+    float:right;
+    display:block;
+    width:22px;
+    height:22px;
+    background:url(images/rss_logo.png);
+    text-indent:-10000px;
+    cursor:pointer;
+    outline:none;
+    background-repeat:no-repeat;
+}
+
+.perc-rss-icon-top {
+
+}
+
+.perc-rss-icon-bottom {
+
+}
+/* End RSS Icon CSS*/
+
+/* Begin Blog widget CSS */
+
+.perc-blog-wrapper
+{
+    padding: 10px;
+}
+
+.perc-blog-title
+{
+    font-family: "Times New Roman", serif;
+    font-size: 18px;
+    margin: 0;
+}
+
+.perc-blog-post
+{
+    font-family: "Times New Roman", serif;
+    font-size: 12px;
+}
+.perc-blog-dateByline-container
+{
+    overflow: auto;
+}
+.perc-blog-dateByline-container > div:first-child
+{
+    float: left;
+}
+.perc-blog-dateByline-container > div:first-child + div
+{
+    float: right;
+}
+.perc-blog-date
+{
+    font-family: Verdana, sans-serif;
+    font-size: 11px;
+}
+.perc-blog-byline
+{
+    font-family: "Times New Roman", serif;
+    font-size: 14px;
+}
+
+.perc-blog-author-label
+{
+
+}
+
+.perc-blog-author-name
+{
+}
+
+.perc-blog-post-tag-container
+{
+    margin-bottom: 5px;
+}
+
+.perc-blog-hide-container{
+    display: none;
+}
+
+/* End Blog widget CSS */
+
+/* Blog Index Page CSS Starts */
+.perc-blog-list {
+    font-family: "Times New Roman", serif;
+    font-size: 13px;
+
+}
+
+ol.perc-blog-list {
+    list-style-type:none;
+    padding: 0 20px;
+}
+
+.perc-blog-list-dateByline-container
+{
+    overflow: auto;
+}
+.perc-blog-list-dateByline-container > div:first-child
+{
+    float: left;
+}
+.perc-blog-list-dateByline-container > div:first-child + div
+{
+    float: right;
+}
+
+.perc-blog-list-more-link {
+}
+.perc-blog-list-title {
+    font-family: "Times New Roman", serif;
+    font-size: 18px;
+    margin-bottom:0px;
+
+}
+
+.perc-blog-list-byline-container {
+    font-family: "Times New Roman", serif;
+    font-size: 14px;
+    display:inline
+}
+.perc-blog-list-date-container {
+    font-family: Verdana;
+    font-size: 11px;
+    display:inline;
+    float:right;
+}
+
+.perc-blog-list-tag-container,
+.perc-blog-list-category-container{
+    margin-bottom: 5px;
+}
+
+/* Blog Index Page CSS Ends */
+
+/* Pagination Controls */
+.perc-pagination-container {
+    border-top: 1px solid lightgrey;
+    padding: 10px 20px;
+    text-align:center;
+    overflow: auto;
+}
+.perc-pagination-container .perc-goto, .perc-pagination-container .perc-goto-quick-nav {
+    color: #006B9D;
+    font-family: Verdana;
+    font-size: 11px;
+    font-weight: normal;
+    margin-left:4px;
+    margin-right:4px;
+    cursor:pointer;
+}
+.perc-pagination-container .perc-goto {
+    margin-right: 2px;
+    margin-left: 2px;
+}
+.perc-pagination-container .perc-current-page {
+    font-weight:bold;
+}
+.perc-pagination-container .perc-goto-first {
+    margin-right: 7px;
+}
+.perc-pagination-container .perc-goto-first:after {
+    content: '<<'
+}
+.perc-pagination-container .perc-goto-pre {
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.perc-pagination-container .perc-goto-pre:after {
+    content: '<'
+}
+.perc-pagination-container .perc-goto-next {
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.perc-pagination-container .perc-goto-next:after {
+    content: '>'
+}
+.perc-pagination-container .perc-goto-last{
+    margin-left: 7px;
+}
+.perc-pagination-container .perc-goto-last:after {
+    content: '>>'
+}
+.perc-pagination-container .perc-page-count {
+    float: left;
+}
+.perc-pagination-container .perc-page-nav {
+    float: right;
+}
+.perc-pagination-container .perc-comma-after:after {
+    content: ',';
+    font-weight: normal;
+}
+/* Pagination Controls Ends */
+
+/* Category List Widget */
+
+span.dynatree-expander {
+    margin: -1px;
+}
+
+ul.dynatree-container {
+    background-color: transparent;
+/*    overflow : hidden;*/
+}
+
+ul.dynatree-container li {
+    background-color: transparent;
+    list-style: none outside none;
+    margin: 0;
+    background-image: none;
+    background-position: 0 0;
+/*
+    padding: 1px 0 0;
+*/
+}
+ul.dynatree-container ul {
+    margin: 0;
+    padding: 0 0 0 0;
+    overflow: hidden;
+}
+
+ul.dynatree-container li li {
+    padding: 0 0 0 13px;
+}
+
+ul.dynatree-container li {
+    padding : 0px;
+}
+
+ul.dynatree-container a {
+    color: #0099CC;
+    margin: 0 0 0 0px;
+    text-decoration: none;
+    vertical-align: top;
+}
+span.dynatree-node a {
+    display: inline-block;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+span.dynatree-icon {
+     display:none
+}
+
+span.dynatree-connector {
+    background-image: none;
+}
+
+.dynatree-exp-cl span.dynatree-expander, span.dynatree-expander {
+   background-image: url('images/buttonBlueSmallPlus.gif');
+   background-position: center center;
+}
+
+.dynatree-exp-el span.dynatree-expander, .dynatree-exp-edl span.dynatree-expander,
+.dynatree-exp-e span.dynatree-expander, .dynatree-exp-ed span.dynatree-expander
+{
+    background-image: url('images/buttonBlueSmallMinus.gif');
+    background-position: center center;
+}
+
+.perc-category-list-expanded span.dynatree-active a,
+.perc-category-list-collapsible span.dynatree-active a {
+    background-color:none;
+    color:#0099CC;
+}
+
+.perc-category-list-expanded{
+    overflow: hidden;
+}
+
+div.perc-category-list-expanded li{
+    list-style-type: disc;
+}
+
+div.perc-category-list-expanded li li {
+    padding: 0 px;
+}
+
+div.perc-category-list-expanded ul {
+    padding: 0 0 0 13px;
+}
+
+/* Category List Widget Ends */
+
+/*Blog Navigation Starts */
+
+
+.perc-blog-nav-bottom {
+    border-top:1px solid #A0A0A0;
+    margin-top: 15px;
+    padding-top:10px;
+
+}
+
+.perc-blog-nav-top {
+    border-bottom:1px solid #A0A0A0;
+    padding-bottom:10px;
+    margin-bottom:10px;
+}
+
+div.perc-blog-navigation-wrapper {
+    width:100%;
+    text-align:center;
+    font-weight:bold;
+}
+
+div.perc-blog-nav-left-wrapper {
+    text-align:left;
+    width:33%;
+    float:left;
+}
+
+div.perc-place-holder {
+    text-align:left;
+    width:34%;
+    float:left;
+}
+
+div.perc-blog-nav-right-wrapper {
+    text-align:right;
+    width:33%;
+    float:left;
+}
+
+div.perc-newer-post-wrapper {
+    float:left;
+    width:89%;
+}
+
+div.perc-older-post-wrapper {
+    padding-left:22px;
+}
+
+div.perc-clear-both {
+    width:100%;
+    clear:both;
+}
+
+.perc-older-post-wrapper a{
+
+}
+.perc-blog-left-arrow {
+    background: url('images/leftArrow.png');
+    background-repeat:no-repeat;
+    background-position:left center;
+    padding-left:12px;
+    width:10px;
+    height:13px;
+    float:left;
+}
+
+.perc-blog-right-arrow  {
+    background: url('images/rightArrow.png');
+    background-repeat:no-repeat;
+    background-position:right center;
+    padding-right:12px;
+    float:left;
+    width:10px;
+    height:13px;
+
+}
+.perc-newer-post-wrapper a{
+
+}
+
+.perc-older-post{}
+.perc-newer-post{}
+
+/*Blog Navigation Ends */
+/* End CM1 V2.0 updates */
+
+/* Begin CM1 V2.2 updates */
+/* Begin Share This Widget CSS */
+
+.perc-share-this-widget {
+    
+}
+
+.perc-share-this-widget-facebook-button { 
+    background-image: url(/web_resources/widgets/shareThis/images/IconFacebook.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+}
+
+.perc-share-this-widget-facebook-button:hover {
+    cursor: pointer;
+}
+
+.perc-share-this-widget-twitter-button { 
+    background-image: url(/web_resources/widgets/shareThis/images/IconTwitter.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+}
+
+.perc-share-this-widget-twitter-button:hover {
+    cursor: pointer;
+}
+
+.perc-share-this-widget-digg-button { 
+    background-image: url(/web_resources/widgets/shareThis/images/IconDigg.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+}
+
+.perc-share-this-widget-digg-button:hover {
+    cursor: pointer;
+}
+
+/* End Share This Widget CSS */
+
+/* Begin Rss Widget CSS */
+
+.perc-feed-widget {
+    
+}
+
+.perc-feed-title {
+    font-family: "Verdana";
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.perc-feed-item {
+    border-color: #CCCCCC;
+    border-style: solid;
+    border-width: 1px;
+    margin-top: -1px;
+}
+
+.perc-feed-item-title {
+    font-family: "Verdana";
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.perc-feed-item-date {
+    font-family: "Verdana";
+    font-size: 10px;
+    font-weight: regular;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.perc-feed-item-description {
+    font-family: "Verdana";
+    font-size: 11px;
+    font-weight: regular;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+/* End Rss Widget CSS */
+/* End CM1 V2.2 updates */
+
+/* Styles for Registration Widget */
+
+.perc-reg-confirmation-message div:first-child{
+    font-weight:bold;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+/* Form and comments form widgets */
+.perc-form input[type="text"], .perc-comments-form input[type="text"], .perc-form textarea, .perc-comments-form textarea {
+border-color: #CECFCE #CECFCE #D6D7DE #D6D7DE;
+border-style: solid;
+border-width: 1px;
+color: black;
+font-family: Verdana;
+font-size: 11px;
+font-weight: normal;
+}
+/* End form and comments form widgets */

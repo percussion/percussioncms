@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- This DTD describes the web services search response -->
+<!ELEMENT SearchResponse (Result*, ResultResponse?)>
+<!ATTLIST SearchResponse
+   endIndex CDATA #IMPLIED
+>
+
+<!ELEMENT ResultResponse (Result*)>
+<!ATTLIST ResultResponse
+   type (success | failure | partial) #REQUIRED
+>
+
+<!ELEMENT Result (ResultField*)>
+<!--name: This is an optional attribute, used as a workaround for an issue in .NET 2003, otherwise the generated C# by .NET 2003 will not be usable.-->
+<!ATTLIST Result
+   name CDATA #IMPLIED
+>
+ 
+<!-- Each Result element (rpw) will have ResultField elements as children. 
+Each ResultField element represents a column of the row with the follwing DTD. 
+The text child value of the element is the the value fo the result column. 
+It has two attributes, namely, name - the internal name of the column and 
+displayValue - which is the display value of the column. -->
+<!ELEMENT ResultField (#PCDATA)>
+<!ATTLIST ResultField
+   name CDATA #REQUIRED
+   displayValue CDATA #IMPLIED
+>

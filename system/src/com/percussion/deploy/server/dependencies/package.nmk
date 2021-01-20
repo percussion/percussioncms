@@ -1,0 +1,164 @@
+############################################################################
+#
+# COPYRIGHT (c) 1999 - 2004 by Percussion Software, Inc., Woburn, MA USA.
+# All rights reserved. This material contains unpublished, copyrighted
+# work including confidential and proprietary information of Percussion.
+#
+############################################################################
+ 
+PACKAGE=com.percussion.deploy.server.dependencies
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+   PSKeywordDependencyHandlerTest \
+   PSRoleDefDependencyHandlerTest
+
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = \
+   PSAclDefDependencyHandler \
+   PSApplicationDependencyHandler \
+   PSAppObjectDependencyHandler \
+   PSAssemblyServiceHelper \
+   PSAuthTypeDependencyHandler \
+   PSDataDependencyHandler \
+   PSDataObjectDependencyHandler \
+   PSDependencyHandler \
+   PSCEDependencyHandler \
+   PSCmsObjectDependencyHandler \
+   PSCommunityDependencyHandler \
+   PSCommunityDefDependencyHandler \
+   PSComponentDefDependencyHandler \
+   PSComponentDependencyHandler \
+   PSComponentSlotDependencyHandler \
+   PSConfigFileDependencyHandler \
+   PSContentAssemblerDependencyHandler \
+   PSContentEditorObjectDependencyHandler \
+   PSContentDefDependencyHandler \
+   PSContentDependencyHandler \
+   PSContentListDependencyHandler \
+   PSContentListDefDependencyHandler \
+   PSContentRelationDependencyHandler \
+   PSContentTypeDependencyHandler \
+   PSContentTypeTemplateDefDependencyHandler \
+   PSContextDefDependencyHandler \
+   PSContextDependencyHandler \
+   PSControlDependencyHandler \
+   PSCustomDependencyHandler \
+   PSDbFunctionDefDependencyHandler \
+   PSDependencyUtils \
+   PSDisplayFormatDefDependencyHandler \
+   PSDisplayFormatDependencyHandler \
+   PSEditionDefDependencyHandler \
+   PSEditionTaskDefDependencyHandler \
+   PSElementDependencyHandler \
+   PSExitDefDependencyHandler \
+   PSFileDependencyHandler \
+   PSFilterDefDependencyHandler \
+   PSFilterDependencyHandler \
+   PSFolderDefDependencyHandler \
+   PSFolderDependencyHandler \
+   PSFolderContentsDependencyHandler \
+   PSFolderObjectDependencyHandler \
+   PSFolderTranslationsDependencyHandler \
+   PSFolderTreeDefDependencyHandler \
+   PSFolderTreeDependencyHandler \
+   PSIdTypeDependencyHandler \
+   PSImageFileDependencyHandler \
+   PSKeywordDependencyHandler \
+   PSKeywordElementDependencyHandler \
+   PSLoadableHandlerDependencyHandler \
+   PSLocaleDefDependencyHandler \
+   PSLocaleDependencyHandler \
+   PSLocSchemeDefDependencyHandler \
+   PSMenuActionCategoryDependencyHandler \
+   PSMenuActionDefDependencyHandler \
+   PSMenuActionDependencyHandler \
+   PSMenuActionObjectDependencyHandler \
+   PSPairDependencyId \
+   PSPairIdDependencyHandler \
+   PSPublisherServiceHelper \
+   PSRelationshipDefDependencyHandler \
+   PSRelationshipDependencyHandler \
+   PSRoleDefDependencyHandler \
+   PSSchemaDependencyHandler \
+   PSSearchDefDependencyHandler \
+   PSSearchDependencyHandler \
+   PSSearchObjectDependencyHandler \
+   PSSharedGroupDependencyHandler \
+   PSSiteDefDependencyHandler \
+   PSSiteDependencyHandler \
+   PSSlotDefDependencyHandler \
+   PSSlotDependencyHandler \
+   PSStateDefDependencyHandler \
+   PSStylesheetDependencyHandler \
+   PSSupportFileDependencyHandler \
+   PSSystemDefDependencyHandler \
+   PSSystemDefElementDependencyHandler \
+   PSTemplateDefDependencyHandler \
+   PSTemplateDependencyHandler \
+   PSTemplateCommunityDefDependencyHandler \
+   PSTransitionDefDependencyHandler \
+   PSTranslationSettingsDefDependencyHandler \
+   PSUserDependencyHandler \
+   PSVariantDefDependencyHandler \
+   PSViewDefDependencyHandler \
+   PSViewDependencyHandler \
+   PSWorkflowDefDependencyHandler \
+   PSWorkflowDependencyHandler \
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+
+#
+# Properties files
+#
+PROPERTIES = \
+
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# XML files
+#
+XML_FILES = \
+  PSLocaleDefDependencyHandlerResources.xml
+
+
+#
+# Resource files (properties, image and XML files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES) \
+	$(XML_FILES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)
+
+all :
+	[-@
+	]

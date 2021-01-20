@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXServerConfiguration id="1" installType="master" serverType="Both">
+   <requestRoot>Rhythmyx</requestRoot>
+   <defaultAppName>sys_welcome</defaultAppName>
+   <PSXAcl id="1">
+      <PSXAclEntry id="1" type="user">
+         <name>Default</name>
+         <securityProviderType>Any</securityProviderType>
+         <!-- securityProviderInstance -->
+         <serverAccessLevel dataAccess="yes" designAccess="yes" createApplications="yes" deleteApplications="yes" administerServer="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <securityProviderType>Any</securityProviderType>
+         <serverAccessLevel administerServer="yes" createApplications="yes" dataAccess="yes" deleteApplications="yes" designAccess="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <AllowDetailedAuthErrorMsgs>yes</AllowDetailedAuthErrorMsgs>
+   <Performance>
+      <userSessionEnabled>yes</userSessionEnabled>
+      <userSessionTimeout>1800</userSessionTimeout>
+   </Performance>
+   <PSXLogger id="1" logErrors="yes" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no"/>
+   <!-- PSXErrorWebPages -->
+   <JdbcDriverConfigs>
+      <PSXJdbcDriverConfig driverName="oracle:thin" className="oracle.jdbc.OracleDriver" containerTypeMapping="Oracle8"/>
+      <PSXJdbcDriverConfig driverName="jtds:sqlserver" className="net.sourceforge.jtds.jdbc.Driver" containerTypeMapping="MS SQLSERVER2000"/>
+      <PSXJdbcDriverConfig driverName="db2" className="com.ibm.db2.jcc.DB2Driver" containerTypeMapping="DB2"/>
+      <PSXJdbcDriverConfig driverName="mysql" className="com.mysql.jdbc.Driver" containerTypeMapping="MYSQL"/>
+      <PSXJdbcDriverConfig driverName="sqlserver" className="com.microsoft.sqlserver.jdbc.SQLServerDriver" containerTypeMapping="MSSQLSERVER"/>
+      <PSXJdbcDriverConfig driverName="derby" className="org.apache.derby.jdbc.EmbeddedDriver" containerTypeMapping="DERBY"/>
+   </JdbcDriverConfigs>
+   <SecurityProviders>
+		<!--  Disable old security providers
+		<PSXSecurityProviderInstance id="0" type="WebServer">
+			<name>Web Server</name>
+			<Properties>
+				<RoleListDelimiter>;</RoleListDelimiter>
+				<AuthenticatedUserHeader>Auth_User</AuthenticatedUserHeader>
+				<UserRoleListHeader>RxUserRoles</UserRoleListHeader>
+			</Properties>
+		</PSXSecurityProviderInstance>
+        -->
+      <PSXSecurityProviderInstance id="0" type="BackEndTable">
+         <name>rxmaster</name>
+         <Properties>
+            <tableName>USERLOGIN</tableName>
+            <datasourceName/>
+            <uidColumn>USERID</uidColumn>
+            <passwordColumn>PASSWORD</passwordColumn>
+            <passwordFilter>Java/global/percussion/filter/sys_DefaultPasswordFilter</passwordFilter>
+         </Properties>
+      </PSXSecurityProviderInstance>
+   </SecurityProviders>
+   <PSXServerCacheSettings id="0" enabled="yes" maxMemory="104857600" maxDiskSpace="1073741824" maxPageSize="256000" agingTime="-1"/>
+   <DisableSandboxSecurity>y</DisableSandboxSecurity>
+   <!-- PSXNotifier -->
+   <BrowserUISettings>
+      <ContentActions uiType="actionMenu"/>
+      <SearchSettings useCurrentCommunity="yes"/>
+   </BrowserUISettings>
+   <PSXJavaPluginConfig>
+      <PSXJavaPlugin browserkey="Any" downloadlocation="http://java.sun.com/update/1.5.0/jinstall-1_5_0_12-windows-i586.cab#Version=1,5,0,12" oskey="Any" versioningtype="dynamic" versiontouse="1.5.0_12"/>
+   </PSXJavaPluginConfig>
+   <PSXSearchConfig adminMaster="yes" maxSearchResult="-1" fullTextSearchEnabled="yes" traceEnabled="no">
+      <Properties>
+         <Property name="indexRootDir">sys_search/lucene</Property>
+         <Property name="synonym_expansion">no</Property>
+         <Property name="index_on_startup">yes</Property>
+      </Properties>
+      <ResultProcessingExits>
+         <PSXExtensionCallSet id="102">
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/search/sys_AddVariantSiteFolder</name>
+            </PSXExtensionCall>
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/search/sys_AddThumbnailURL</name>
+            </PSXExtensionCall>
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/search/sys_cleanFolderSearchResults</name>
+            </PSXExtensionCall>
+         </PSXExtensionCallSet>
+      </ResultProcessingExits>
+      <Analyzers/>
+      <TextConverters/>
+   </PSXSearchConfig>
+   <CxAppletOptions selectiveViewRefresh="yes"/>
+</PSXServerConfiguration>

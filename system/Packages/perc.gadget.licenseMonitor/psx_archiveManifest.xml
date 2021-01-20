@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__module__license__manager-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\perc_license_monitor_gadget\perc_module_license_manager.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__module__license__manager-js\perc_module_license_manager.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__indicator-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\perc_license_monitor_gadget\perc_license_monitor_indicator.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__indicator-js\perc_license_monitor_indicator.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__dialogs-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\perc_license_monitor_gadget\perc_license_monitor_dialogs.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__dialogs-js\perc_license_monitor_dialogs.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_images_gadgetSprites-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\perc_license_monitor_gadget\images\gadgetSprites.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_images_gadgetSprites-png\gadgetSprites.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__gadget-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\perc_license_monitor_gadget\perc_license_monitor_gadget.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__gadget-js\perc_license_monitor_gadget.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_images_PercLicenseMonitorGadget-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\perc_license_monitor_gadget\images\PercLicenseMonitorGadget.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_images_PercLicenseMonitorGadget-png\PercLicenseMonitorGadget.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__gadget-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\perc_license_monitor_gadget\perc_license_monitor_gadget.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__gadget-xml\perc_license_monitor_gadget.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__gadget-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\cm\gadgets\repository\perc_license_monitor_gadget\perc_license_monitor_gadget.css</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__license__monitor__gadget_perc__license__monitor__gadget-css\perc_license_monitor_gadget.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

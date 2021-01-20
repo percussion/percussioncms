@@ -1,0 +1,222 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.site-improve-save-btn {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #1e5e86 !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+p {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.site-improve-btn {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #FFF;
+    background-color: #1e5e86 !important;
+    text-decoration: none;
+}
+
+.site-improve-btn:hover {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #FFF;
+    background-color: #133c55 !important;
+    text-decoration: none;
+}
+
+.site-improve-save-btn:hover {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #133c55 !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.si-btn-div {
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.perc-site-improve-logo-top-absolute {
+    display: block;
+    margin: auto;
+    max-width: 50%;
+    height: auto;
+}
+
+.perc-site-improve-logo-top {
+    display: block;
+    margin: auto;
+    max-width: 50%;
+    height: auto;
+}
+
+.site-improve-back-btn {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #FFF;
+    background-color: #1e5e86 !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.site-improve-back-btn:hover {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #FFF;
+    background-color: #133c55 !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.site-improve-button-line {
+    vertical-align: top;
+}
+
+.site-improve-text-input {
+    width: 100%;
+    padding: 2px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.siteimprove-status-wrapper {
+    display: inline;
+}
+
+.perc-site-improve-logo-inline-top{
+    display: block;
+    margin: auto;
+    max-width: 50%;
+    height: auto;
+}
+
+.perc-site-improve-text {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: black;
+}
+
+.perc-site-improve-text-center {
+    text-align: center;
+}
+
+.perc-site-improve-text-main {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.3em;
+}
+
+
+.perc-siteimprove-select {
+    color: black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.perc-site-improve-text-instructions {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.site-improve-perc-form-control {
+    width: 250px;
+    height: 15px;
+}
+
+.site-improve-checkboxes {
+    display: inline-block;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.site-improve-checkboxes-desc {
+    margin-left: -20;
+}
+
+.site-improve-select-site {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.site-improve-config-status-success {
+    color: #30901f;
+    position:relative;
+    top: 10px;
+}
+
+.site-improve-advanced {
+    margin-top: 10px;
+}
+
+.site-improve-config-status-failure {
+    color: #cd0a0a;
+    position:relative;
+    top: 10px;
+}
+
+.site-improve-config-status-failure-message {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    vertical-align: super;
+}
+
+/**
+ * For the toggle switch to enable Siteimprove
+ */
+input#enableSiteimprove[type=checkbox]{
+    height: 0;
+    width: 0;
+    opacity: 0;
+}
+
+label[for="enableSiteimprove"] {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 80px;
+    height: 36px;
+    background: #e6e6e9;
+    display: block !important;
+    border-radius: 100px;
+    position: relative;
+}
+
+label[for="enableSiteimprove"]:after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 30px;
+    height: 30px;
+    background: #cccccc;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+input#enableSiteimprove:checked + label[for="enableSiteimprove"] {
+    background: #e6e6e9;
+}
+
+input#enableSiteimprove:checked + label[for="enableSiteimprove"]:after {
+    left: calc(100% - 4px);
+    transform: translateX(-100%);
+    background: #1e5e86;
+}
+
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

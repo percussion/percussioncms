@@ -1,0 +1,178 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.pw-container {
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    /* max-width: 500px; */
+    /* background: #F8F8F8;*/
+    /* padding: 30px 30px 20px 30px; */
+    font: 14px Verdana, sans-serif;
+    color: #666;
+    /* border-radius: 5px; */
+    /* -webkit-border-radius: 5px; */
+    /* -moz-border-radius: 5px; */
+    /* padding: 0 !important; */
+}
+
+.pw-container .pw-status {
+    float: none;
+    margin: 0;
+    width: 100%;
+    padding: 7px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.pw-container .pw-status.success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.pw-container .pw-status.danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.pw-form {
+    max-width: 330px;
+    /* padding: 15px; */
+    margin: 0 auto;
+}
+
+.pw-form h1 {
+    font: 24px Verdana, sans-serif;
+    padding: 20px 0px 20px 40px;
+    display: block;
+    margin: -30px -30px 10px -30px;
+    color: #FFF;
+    /*    background: #9DC45F;*/
+    text-shadow: 1px 1px 1px #949494;
+    border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    border-bottom: 1px solid #89AF4C;
+}
+
+.pw-form h1>span {
+    display: block;
+    font-size: 11px;
+    color: #FFF;
+}
+
+.pw-form label {
+    display: block;
+    margin: 0px 0px 5px;
+}
+
+.pw-form label>span {
+    float: left;
+    margin-top: 10px;
+    color: #5E5E5E;
+}
+
+.pw-form input[type="text"],
+.pw-form input[type="password"],
+.pw-form textarea,
+.pw-form select {
+    color: #555;
+    height: 30px;
+    line-height: 15px;
+    width: 100%;
+    padding: 0px 0px 0px 10px;
+    margin-top: 2px;
+    margin-bottom: 0.5em;
+    border: 1px solid #E5E5E5;
+    background: #FBFBFB;
+    outline: 0;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+    box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+    font: normal 14px/14px Arial, Helvetica, sans-serif;
+}
+
+.pw-form textarea {
+    height: 100px;
+    padding-top: 10px;
+}
+
+.pw-form select {
+    background: url('down-arrow.png') no-repeat right, -moz-linear-gradient(top, #FBFBFB 0%, #E9E9E9 100%);
+    background: url('down-arrow.png') no-repeat right, -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FBFBFB), color-stop(100%, #E9E9E9));
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+    width: 100%;
+    height: 30px;
+}
+
+.pw-form .pw-submit {
+    background-color: #133c55;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-border-radius: 5px;
+    border: none;
+    margin-top: 1em;
+    padding: 10px 25px 10px 25px;
+    color: #FFF;
+    text-shadow: 1px 1px 1px #949494;
+}
+
+.pw-form .pw-submit:hover {
+    background-color: #298ac0;
+}
+
+
+.pw-form .pw-submit:disabled {
+    background-color: #bcbcbc;
+    cursor: not-allowed;
+}
+
+.pw-form .pw-submit:disabled:hover {
+    background-color: #bcbcbc;
+}
+
+.pw-form em.error {
+    color: red;
+    font-style: italic;
+    display: block;
+    padding: 0 42px 0 0;
+}
+
+.pw-form input.error {
+    border: 1px dotted red;
+}
+
+.pw-form .pw-message {
+    float: none;
+    margin-top: 0;
+    margin-right: 0;
+    margin-left: 0.5em;
+    padding: 7px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}

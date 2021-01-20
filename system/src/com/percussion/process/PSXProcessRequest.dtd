@@ -1,0 +1,56 @@
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!--
+   Attributes:
+   procName - The name of the process definition you wish to execute.
+
+   wait - How many milliseconds to wait for the process to complete. If it 
+   hasn't completed by this time, it is forcefully terminated. If 0 or not 
+   provided, the server waits forever.
+   
+   waitForCompletion - 'yes' means wait for allotted wait time and kill
+   if not finished, 'no' means do not wait, spawn a process
+   and leave it running, defaults to 'yes'.
+-->
+<!ELEMENT PSXProcessRequest (Params?)>
+<!ATTLIST PSXProcessRequest
+   procName CDATA #REQUIRED
+   wait     CDATA #IMPLIED
+   waitForCompletion (yes|no) "yes"
+   >
+
+<!--
+   Container for all process parameter pairs. These will be passed through
+   to the process manager for use as part of the context for resolving 
+   templates.
+-->
+<!ELEMENT Params (Param+)>
+
+<!--
+   The name and value are required. The value is the content.
+-->
+<!ELEMENT Param (#PCDATA)>
+<!ATTLIST Param 
+   name CDATA #REQUIRED
+   >

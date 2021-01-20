@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" monitorInterval="30">
+    <Appenders>
+
+        <RollingFile name="FILE" fileName="${log4j:configParentLocation}/../logs/server.log"
+                     filePattern="${log4j:configParentLocation}/../logs/server-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout header="${env:rxDir} ${env:deployerdir} ${java:runtime} - ${java:vm} - ${java:os}" pattern="%d %-5p [%c] %m%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <RollingFile name="RXGLOBALTEMPLATES" fileName="${log4j:configParentLocation}/../logs/globaltemplate.log"
+                     filePattern="${log4j:configParentLocation}/../logs/globaltemplate-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <RollingFile name="VELOCITY" fileName="${log4j:configParentLocation}/../logs/velocity.log"
+                     filePattern="${log4j:configParentLocation}/../logs/velocity-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <RollingFile name="RevisionPurgeApp" fileName="${log4j:configParentLocation}/../logs/revisionPurge.log"
+                     filePattern="${log4j:configParentLocation}/../logs/revisionPurge-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+        </Console>
+
+    </Appenders>
+
+    <Loggers>
+        <AsyncRoot level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncRoot>
+
+        <!-- =========================== -->
+        <!-- Setup the Percussion loggers -->
+        <!-- =========================== -->
+
+        <!-- Percussion turn off excessive logger from betwixt -->
+        <AsyncLogger name="org.apache.commons.betwixt.io.BeanReader" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+        <AsyncLogger name="org.apache.commons.betwixt.digester.ElementRule" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <!-- Turn off excessive logging from PDF Box -->
+        <AsyncLogger name="org.apache.pdfbox" level="fatal" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.apache.pdfbox.util.PDFStreamEngine" level="off" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.apache.pdfbox.pdmodel.font.PDSimpleFont" level="off" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.apache.pdfbox.pdmodel.font.PDFont" level="off" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.apache.pdfbox.pdmodel.font.FontManager" level="off" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.apache.pdfbox.pdfparser.PDFObjectStreamParser" level="off" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.apache.pdfbox.pdmodel.graphics.xobject.PDPixelMap" level="off" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.hibernate" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.springframework" level="warn" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="XmlUtil" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="net.htmlparser.jericho" level="off" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.apache.cxf" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.eclipse.jetty.annotations.AnnotationParser" level="OFF" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="com.percussion" level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <!-- AsyncLogger config to be used by global template creation process -->
+        <AsyncLogger name="com.percussion.globaltemplates" level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="RXGLOBALTEMPLATES"/>
+        </AsyncLogger>
+
+        <!-- Remove info about basic auth -->
+        <AsyncLogger name="org.apache.commons.httpclient.auth.AuthChallengeProcessor" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <!-- Change to INFO to see Metadata extraction errors -->
+        <AsyncLogger name="org.deri.any23.extractor.SingleDocumentExtraction" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.apache.velocity" level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="VELOCITY"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="com.percussion.services.assembly.impl.plugin.PSVelocityAssembler" level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="VELOCITY"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="RevisionPurge" level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="RevisionPurgeApp"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.amazonaws" level="error" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+       <!-- <AsyncLogger name="com.percussion.rx.delivery" level="DEBUG" includeLocation="true">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>-->
+
+    </Loggers>
+</Configuration>

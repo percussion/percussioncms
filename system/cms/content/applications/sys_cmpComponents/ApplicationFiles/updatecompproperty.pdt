@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT updatecompproperty (propertyid, componentid, propertyname, propertyvalue, propertydesc )>
+<!ELEMENT propertydesc (#PCDATA)>
+<!ELEMENT propertyvalue (#PCDATA)>
+<!ELEMENT propertyname (#PCDATA)>
+<!ELEMENT componentid (#PCDATA)>
+<!ELEMENT propertyid (#PCDATA)>

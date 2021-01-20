@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (label, relationshipid, slotid, contentid, revision, checkoutstatus, workflowappid, contentcheckoutusername, communityid, publishabletype, variant )>
+<!ELEMENT vitem (variantid, variantname )>
+<!ELEMENT variantname (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>
+<!ELEMENT variant (vitem* )>
+<!ELEMENT publishabletype (#PCDATA)>
+<!ELEMENT communityid (#PCDATA)>
+<!ELEMENT contentcheckoutusername (#PCDATA)>
+<!ELEMENT workflowappid (#PCDATA)>
+<!ELEMENT checkoutstatus (#PCDATA)>
+<!ELEMENT revision (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT slotid (#PCDATA)>
+<!ELEMENT relationshipid (#PCDATA)>
+<!ELEMENT label (#PCDATA)>
+<!ELEMENT slotitems (item* )>
+<!ATTLIST  slotitems xml:lang CDATA #IMPLIED>

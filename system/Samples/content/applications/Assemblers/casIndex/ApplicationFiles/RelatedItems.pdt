@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT RelatedItems (displaytitle*, abstractcontent*, relatedarticles*, relatedlinks* )>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT relatedarticles (#PCDATA)>
+<!ELEMENT abstractcontent (#PCDATA)>
+<!ELEMENT displaytitle (#PCDATA)>

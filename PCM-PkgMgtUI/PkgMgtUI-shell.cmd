@@ -1,0 +1,1 @@
+@java -Xmx256M -cp "%~dp0\src;%~dp0\bin;C:gwt-2.8.2/gwt-user.jar;C:gwt-2.8.2/gwt-dev.jar;smartgwt.jar" com.google.gwt.dev.GWTShell -out "%~dp0\www" %* com.percussion.gwt.pkgmgtui.PkgMgtUI/PkgMgtUI.html

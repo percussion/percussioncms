@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="Form"
+                 contenttype_name="percFormAsset"
+                 category="integration"
+                 description="Widget to build and render form data."
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/form/images/widgetIconForm.gif"
+                 preferred_editor_width="965"
+                 preferred_editor_height="600"
+                 is_responsive="false"
+    />
+    <UserPref name="labelalign"
+              display_name="Label align"
+              required="true"
+              default_value="top"
+              datatype="enum">
+        <EnumValue value="top" display_value="Top of the control" />
+        <EnumValue value="left" display_value="Left of the control" />
+    </UserPref>
+
+    <CssPref name="rootclass"
+             display_name="CSS Root Class"
+             datatype="string" />
+
+    <Code type="jexl">
+        <![CDATA[
+            $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+            if(!empty($rootclass)) {
+                $rootclass = $rootclass;
+            }
+            $props = $perc.widget.item.properties;
+            $labelalignclass = "perc-label-location-top";
+            if($props.get("labelalign") != null && $props.get("labelalign").equals("left"))
+                $labelalignclass = "perc-label-location-left";
+
+			$dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+
+            $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
+
+        ]]>
+    </Code>
+
+    <Content type="velocity">
+        <![CDATA[
+#loadRelatedWidgetContents()##
+#if( ! $perc.widgetContents.isEmpty())##
+#set($node = $perc.widgetContents.get(0).node)##
+#end##
+<div class = "perc-form $!{rootclass} $!{labelalignclass}" data="$!{dynamicListData}">
+#if( ! $perc.widgetContents.isEmpty())##
+#set($formString = $node.getProperty('rx:renderedform').getString())##
+#set($returnString = $rx.pageutils.processForm($sys.assemblyItem, $perc.widget, $formString))##
+<div class = "perc-form-name">$returnString </div>
+#set($formData = $node.getProperty('rx:formdata').String)##
+#if($formData.contains('honeypot') || $formData.contains('recaptcha'))##
+<script>
+    function validatePercForm() {
+        var ret = false;
+        #if($formData.contains('honeypot'))##
+        if(!document.getElementById('topyenoh').value) {
+            ret=true;
+        }
+        else {
+            ret=false;
+        }
+        #end##
+        #if($formData.contains('recaptcha'))##
+         if (grecaptcha.getResponse() === '') { 
+         	ret = false;
+         }else {
+         	ret = true;
+         }
+        #end##
+        return ret;
+    }
+</script>
+#end##
+
+#elseif ($perc.isEditMode())
+#createEmptyWidgetContent("form-sample-content", "This Form widget is showing sample content.")
+#end
+
+#if($perc.isPreviewMode())
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+jQuery("form").submit(function(){return false;});
+jQuery("input[type = 'submit']").attr('disabled', 'disabled');
+});
+</script>
+#end
+</div>
+]]>
+    </Content>
+</Widget>

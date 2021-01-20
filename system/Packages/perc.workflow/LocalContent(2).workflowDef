@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="STATES">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="STATEID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="STATENAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="CONTENTVALID">
+            <jdbctype>CHAR</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="STATEDESC">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SORTORDER">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>STATEID</name>
+         <name>WORKFLOWAPPID</name>
+      </primarykey>
+      <indexdefinitions>
+         <index action="c" isUnique="n" name="IX_STATES_NAME">
+            <name>STATENAME</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table name="STATES" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">1</column>
+         <column encoding="text" name="STATENAME">Default</column>
+         <column encoding="text" name="CONTENTVALID">i</column>
+         <column encoding="text" name="STATEDESC">This is the only state for local content</column>
+         <column encoding="text" name="WORKFLOWAPPID">7</column>
+         <column encoding="text" name="SORTORDER">10</column>
+      </row>
+   </table>
+</PSXDependencyData>

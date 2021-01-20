@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT value (#PCDATA)>
+<!ELEMENT PSXAttributeValue (value )>
+<!ATTLIST  PSXAttributeValue id CDATA #REQUIRED>
+<!ATTLIST  PSXAttributeValue DbComponentId CDATA #REQUIRED>
+<!ELEMENT PSXAttribute (PSXAttributeValue* )>
+<!ATTLIST  PSXAttribute id CDATA #REQUIRED>
+<!ATTLIST  PSXAttribute DbComponentId CDATA #REQUIRED>
+<!ATTLIST  PSXAttribute name CDATA #REQUIRED>
+<!ELEMENT getAttribute (PSXAttribute* )>

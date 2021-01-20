@@ -1,0 +1,11 @@
+$Image_linkId = $assetItem.getNode().getProperty('Image_linkId').String;
+$Image_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $Image_linkId, $sys.assemblyItem.PubServerId);
+$Image_alt_text="";
+$Image_title="";
+$Image_sys_contentId = $rx.pageutils.getManagedLinkDependentId($Image_linkId);
+if ($Image_sys_contentId != "")
+{
+    $Image_assetMap = $rx.pageutils.findItemFieldValues('percImageAsset', 'displaytitle,alttext', $Image_sys_contentId);
+    $Image_alt_text = $Image_assetMap.get('alttext');
+    $Image_title = $Image_assetMap.get('displaytitle');
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>  <acl-impl id="1">
+    <guid>3384459-17-74</guid>
+    <description/>
+    <entries>
+      <entry id="2">
+        <acl-id>3721252097245577290</acl-id>
+        <community>false</community>
+        <group>false</group>
+        <id>3721252024231144350</id>
+        <name>Default</name>
+        <negative>false</negative>
+        <owner>true</owner>
+        <ps-permissions>
+          <ps-permission id="3">
+            <acl-entry-id>3721252024231144350</acl-entry-id>
+            <id>3721252024231144353</id>
+            <permission>READ</permission>
+          </ps-permission>
+          <ps-permission id="4">
+            <acl-entry-id>3721252024231144350</acl-entry-id>
+            <id>3721252024231144351</id>
+            <permission>OWNER</permission>
+          </ps-permission>
+          <ps-permission id="5">
+            <acl-entry-id>3721252024231144350</acl-entry-id>
+            <id>3721252024231144352</id>
+            <permission>UPDATE</permission>
+          </ps-permission>
+          <ps-permission id="6">
+            <acl-entry-id>3721252024231144350</acl-entry-id>
+            <id>3721252024231144354</id>
+            <permission>DELETE</permission>
+          </ps-permission>
+        </ps-permissions>
+        <role>false</role>
+        <system-community>false</system-community>
+        <system-entry>true</system-entry>
+        <type>USER</type>
+        <typed-principal id="7">
+          <community>false</community>
+          <group>false</group>
+          <name>Default</name>
+          <principal-type>USER</principal-type>
+          <role>false</role>
+          <subject>false</subject>
+          <system-community>false</system-community>
+          <system-entry>true</system-entry>
+          <user>true</user>
+        </typed-principal>
+        <user>true</user>
+      </entry>
+    </entries>
+    <first-owner idref="7"/>
+    <label>temp</label>
+    <name>temp</name>
+    <object-guid>0-14-1027</object-guid>
+    <object-id>1027</object-id>
+    <object-type>14</object-type>
+    <version>0</version>
+  </acl-impl>

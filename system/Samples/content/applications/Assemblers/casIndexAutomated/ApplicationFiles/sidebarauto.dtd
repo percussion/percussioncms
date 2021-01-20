@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT sidebarauto (displaytitle*, sys_AssemblerInfo*, queryurl* )>
+<!ELEMENT queryurl (#PCDATA)>
+<!ELEMENT sys_AssemblerInfo (#PCDATA)>
+<!ELEMENT displaytitle (#PCDATA)>

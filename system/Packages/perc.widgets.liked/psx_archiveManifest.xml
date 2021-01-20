@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percLiked-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rxconfig\Widgets\percLiked.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percLiked-xml\percLiked.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_liked_images_IconLikeDisabled-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\web_resources\widgets\liked\images\IconLikeDisabled.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_liked_images_IconLikeDisabled-png\IconLikeDisabled.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_liked_images_likeTooltipBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\web_resources\widgets\liked\images\likeTooltipBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_liked_images_likeTooltipBackground-png\likeTooltipBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_liked_images_widgetIconLiked-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\liked\images\widgetIconLiked.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_liked_images_widgetIconLiked-png\widgetIconLiked.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percLiked-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rxconfig\Resources\percLiked.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percLiked-xml\percLiked.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_liked_images_likeTotalLikesRight-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\web_resources\widgets\liked\images\likeTotalLikesRight.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_liked_images_likeTotalLikesRight-png\likeTotalLikesRight.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_liked_images_likeX-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\web_resources\widgets\liked\images\likeX.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_liked_images_likeX-png\likeX.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_liked_images_widgetIconLikedOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\liked\images\widgetIconLikedOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_liked_images_widgetIconLikedOver-png\widgetIconLikedOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_liked_images_likeTotalLikesLeft-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\web_resources\widgets\liked\images\likeTotalLikesLeft.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_liked_images_likeTotalLikesLeft-png\likeTotalLikesLeft.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_liked_images_likeOFF-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\web_resources\widgets\liked\images\likeOFF.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_liked_images_likeOFF-png\likeOFF.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_liked_images_IconThumbsUp-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\web_resources\widgets\liked\images\IconThumbsUp.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_liked_images_IconThumbsUp-png\IconThumbsUp.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_liked_images_IconLike-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\web_resources\widgets\liked\images\IconLike.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_liked_images_IconLike-png\IconLike.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

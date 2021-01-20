@@ -1,0 +1,28 @@
+#
+# perc-email.properties
+# Specific properties for email service
+#
+#
+
+# SMTP service
+email.hostName=smtp.gmail.com
+
+# Host port number
+email.portNumber=587
+
+# User name
+email.userName=percdev
+
+# Password
+email.password=pdevelopment
+
+# Enable/disable TLS
+# true when TLS is enabled, otherwise set to false
+email.TLS=true
+
+# From Email address 
+email.fromAddress=percdev@gmail.com
+
+# Add the sslPort property with proper port to enable SSL. The SSL is disabled if sslPort property is empty.
+email.sslPort=465
+email.bounceAddress=percdev@gmail.com

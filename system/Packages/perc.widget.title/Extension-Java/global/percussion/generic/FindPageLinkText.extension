@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="" context="global/percussion/generic/" deprecated="no" handler="Java" name="FindPageLinkText" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Returns the page link text with given asset id</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.extensions.general.PSPageLinkText</initParam>
+      <interface name="com.percussion.extension.IPSUdfProcessor"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

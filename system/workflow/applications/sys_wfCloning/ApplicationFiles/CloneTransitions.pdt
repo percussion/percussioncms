@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Transition (AgingInterval, AgingType, DefaultTransition, SystemField, TransitionActions, TransitionActionTrigger, TransitionApprovalsRequired, TransitionCommentrequired, TransitionDesc, TransitionFromStateId, TransitionId, TransitionLabel, TransitionPrompt, TransitionRoles, TransitionToStateId, TransitionType, WorkflowId )>
+<!ELEMENT WorkflowId (#PCDATA)>
+<!ELEMENT TransitionType (#PCDATA)>
+<!ELEMENT TransitionToStateId (#PCDATA)>
+<!ELEMENT TransitionRoles (#PCDATA)>
+<!ELEMENT TransitionPrompt (#PCDATA)>
+<!ELEMENT TransitionLabel (#PCDATA)>
+<!ELEMENT TransitionId (#PCDATA)>
+<!ELEMENT TransitionFromStateId (#PCDATA)>
+<!ELEMENT TransitionDesc (#PCDATA)>
+<!ELEMENT TransitionCommentrequired (#PCDATA)>
+<!ELEMENT TransitionApprovalsRequired (#PCDATA)>
+<!ELEMENT TransitionActionTrigger (#PCDATA)>
+<!ELEMENT TransitionActions (#PCDATA)>
+<!ELEMENT SystemField (#PCDATA)>
+<!ELEMENT DefaultTransition (#PCDATA)>
+<!ELEMENT AgingType (#PCDATA)>
+<!ELEMENT AgingInterval (#PCDATA)>
+<!ELEMENT CloneTransitions (Transition* )>

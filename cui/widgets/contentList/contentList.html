@@ -1,0 +1,89 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE html>
+<div class='content-list'>
+	<div id='content-list-header' data-bind="visible: isEmpty() && !isLoading()">
+		<div class="content-list-header-item col-xs-2 cm-grid cm-ac">File Name (URL)</div>
+		<div class="content-list-header-item col-xs-3 cm-grid cm-ac">Title</div>
+		<div class="content-list-header-item col-xs-1 cm-grid cm-ac">Type</div>
+		<div class="content-list-header-item col-xs-1 cm-grid cm-ac">Status</div>
+		<div class="content-list-header-item col-xs-2 cm-grid cm-ac">Last Modified</div>
+		<div class="content-list-header-item col-xs-2 cm-grid cm-ac">Last Published</div>
+		<div class="content-list-header-item col-xs-1 cm-grid cm-ac">Last Modified By</div>
+	</div>
+	<div id="spinner" class="center" data-bind="visible: isLoading()"><i class="fa fa-spinner" data-bind="css: {'fa-spin': isLoading()}"></i></div>
+	<div id='content-list-body' data-bind="visible: !isLoading(), foreach: contentListItems">
+		<div class="row" data-bind="event: { mouseenter: showRollover,  mouseleave:  hideRollover}">
+			<div class="content-list-item col-xs-2 cm-grid cm-ac" data-bind="text: fileName"></div>
+			<div class="content-list-item col-xs-3 cm-grid cm-ac" data-bind="text: name"></div>
+			<div class="content-list-item col-xs-1 cm-grid cm-ac" data-bind="text: type"></div>
+			<div class="content-list-item col-xs-1 cm-grid cm-ac" data-bind="text: status"></div>
+			<div class="content-list-item col-xs-2 cm-grid cm-ac" data-bind="text: lastModifiedDate"></div>
+			<div class="content-list-item col-xs-2 cm-grid cm-ac" data-bind="text: lastPublishedDate"></div>
+			<div class="content-list-item col-xs-1 cm-grid cm-ac" data-bind="text: lastModifier"></div>
+			<div class="content-list-rollover-menu cm-grid cm-ac" data-bind="visible: isSelected">
+				<div>
+					<div class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchOpen"><i class="fa fa-pencil icon"></i>Open</div>
+					<div class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchPreview"><i class="fa fa-eye icon"></i>Preview</div>
+					<div class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchCopy, visible:isCopyAllowed"><i class="fa fa-files-o icon"></i>Copy</div>
+					<div class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchDelete"><i class="fa fa-times icon"></i>Delete</div>
+					<div class="content-list-rollover-menu-option col-xs-2" data-bind="visible: isBookmarkAllowed, click: $root.launchBookmark"><i class='fa fa-star icon'></i>Bookmark</div>
+				</div>
+				<div class="preview" data-bind="fadeVisible: isSelected">
+				<div class="preview-data-header" data-bind="text: name"></div>
+					<div class="preview-thumbnail"><img class="preview-image" data-bind="attr: {src: thumbnailPath()}, visible: isThumbnailAvailable()"></img><i data-bind="visible: !isThumbnailAvailable()" title="Thumbnail is not yet available for this page." class="peview-image fa fa-camera fa-5x"></i></div>
+					
+					<div class="preview-data">
+						<ul class="col-left">
+							<li class="col1">File Name:</li>
+							<li class="col1">Display Title:</li>
+							<li class="col1">File Type:</li>
+							<li class="col1">Last edited:</li>
+							<li class="col1">Last edited by:</li>
+							<li class="col1">Last published:</li>
+							<li class="col1">Scheduled publish dates:</li>
+							<li class="col1">Scheduled removal dates:</li>
+							<li class="col1">Folder Path:</li>
+						</ul>
+						<ul class="col-right">
+							<li class="col2" data-bind="text: fileName, attr: {title: fileName}"></li>
+							<li class="col2" data-bind="text: name, attr: {title: name}"></li>
+							<li class="col2" data-bind="text: type, attr: {title: type}"></li>
+							<li class="col2" data-bind="text: lastModifiedDate, attr: {title: lastModifiedDate}"></li>
+							<li class="col2" data-bind="text: lastModifier, attr: {title: lastModifier}"></li>
+							<li class="col2" data-bind="text: lastPublishedDate, attr: {title: lastPublishedDate}"></li>
+							<li class="col2" data-bind="text: scheduledPublishDates, attr: {title: scheduledPublishDates}"></li>
+							<li class="col2" data-bind="text: scheduledRemovalDates, attr: {title: scheduledRemovalDates}"></li>
+							<li class="col2" data-bind="text: path, attr: {title: path}"></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="show-more-results" data-bind="visible: showMoreResultsRow(), click:showMoreResults"><p>Show more results<p></div>
+    <div id="empty-list-error" data-bind="visible: !isEmpty() && !isLoading()"><p data-bind="html:emptyContentMessage"><p></div>
+	<pre data-bind='text: ko.toJSON($root, null, 2), visible: debug'/>
+</div>

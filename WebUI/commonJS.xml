@@ -1,0 +1,75 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<fileset dir="${war.source.dir}" includes="jslib/jquery.js" />
+<fileset dir="${war.source.dir}" includes="jslib/json.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.form.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.blockui.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.caret.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.dataTables.js" />
+<fileset dir="${war.source.dir}" includes="plugins/PercViewReadyManager.js" />
+<fileset dir="${war.source.dir}" includes="jslib/PSJSUtils.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.text-overflow.js" />
+<fileset dir="${war.source.dir}" includes="plugins/perc_path_constants.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery-ui.js" />
+<fileset dir="${war.source.dir}" includes="plugins/PercExtendUiDialog.js" />
+<fileset dir="${war.source.dir}" includes="plugins/perc_utils.js" />
+<fileset dir="${war.source.dir}" includes="plugins/perc_sessionTimeout.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.bbq.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.cookie.js" />
+<fileset dir="${war.source.dir}" includes="services/PercServiceUtils.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.layout.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.metadata.js" />
+<fileset dir="${war.source.dir}" includes="jslib/Jeditable.js" />
+<fileset dir="${war.source.dir}" includes="jslib/tools.scrollable-1.1.2.js" />
+<fileset dir="${war.source.dir}" includes="jslib/tools.scrollable.mousewheel-1.0.1.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.validate.js" />
+<fileset dir="${war.source.dir}" includes="jslib/jquery.tooltip.js" />
+<fileset dir="${war.source.dir}" includes="plugins/perc_extend_jQueryValidate.js" />
+<fileset dir="${war.source.dir}" includes="controllers/PercDirtyController.js" />
+<fileset dir="${war.source.dir}" includes="plugins/PercNavigationManager.js" />
+<fileset dir="${war.source.dir}" includes="plugins/PercFolderHelper.js" />
+<fileset dir="${war.source.dir}" includes="plugins/PercFolderPropertiesDialog.js" />
+<fileset dir="${war.source.dir}" includes="widgets/PercFinderTree.js" />
+<fileset dir="${war.source.dir}" includes="plugins/PercPathSelectionDialog.js" />
+<fileset dir="${war.source.dir}" includes="views/PercCreateNewAssetDialog.js" />
+
+
+<fileset dir="${war.source.dir}" includes="jslib/jquery.autocomplete.js" />
+<fileset dir="${war.source.dir}" includes="plugins/PercListEditorWidget.js" />
+
+<!-- PercDropdown -->
+<fileset dir="${war.source.dir}" includes="jslib/superfish.js" />
+<fileset dir="${war.source.dir}" includes="widgets/PercDropdown.js" />
+<fileset dir="${war.source.dir}" includes="jslib/dropdownchecklist.js" />
+<fileset dir="${war.source.dir}" includes="jslib/timepicker.js" />
+
+<!-- Section Service -->
+<fileset dir="${war.source.dir}" includes="services/perc_sectionServiceClient.js" />
+
+        <!-- Recent Service -->
+<fileset dir="${war.source.dir}" includes="services/PercRecentListService.js" />
+
+<!-- Redirect Handler -->
+<fileset dir="${war.source.dir}" includes="plugins/PercRedirectHandler.js" />

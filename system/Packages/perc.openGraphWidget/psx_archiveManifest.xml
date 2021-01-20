@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-1027">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\SDHARI~1\AppData\Local\Temp\perc_Locale_With_Underscore.keyword</RxFile>
+         <ArchiveFile>Keyword-1027\perc_Locale_With_Underscore.keyword</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-1028">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\SDHARI~1\AppData\Local\Temp\perc_OpenGraph_ObjectTypes.keyword</RxFile>
+         <ArchiveFile>Keyword-1028\perc_OpenGraph_ObjectTypes.keyword</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percOpenGraph_images_open--graph--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5.4\jetty\..\rx_resources\widgets\percOpenGraph\images\open-graph-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percOpenGraph_images_open--graph--icon-png\open-graph-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percOpenGraph_images_open--graph--placeholder--small-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5.4\jetty\..\rx_resources\widgets\percOpenGraph\images\open-graph-placeholder-small.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percOpenGraph_images_open--graph--placeholder--small-png\open-graph-placeholder-small.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-392">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\SDHARI~1\AppData\Local\Temp\percOpenGraph.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-392\percOpenGraph.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\SDHARI~1\AppData\Local\Temp\percOpenGraph.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-392\percOpenGraph.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\SDHARI~1\AppData\Local\Temp\percOpenGraph.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-392\percOpenGraph.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-3721252097245577292">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\SDHARI~1\AppData\Local\Temp\percOpenGraph.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-3721252097245577292\percOpenGraph.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-3721252097245577291">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\SDHARI~1\AppData\Local\Temp\perc_OpenGraph_ObjectTypes.keyword.aclDef</RxFile>
+         <ArchiveFile>AclDef-3721252097245577291\perc_OpenGraph_ObjectTypes.keyword.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-3721252097245577290">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\SDHARI~1\AppData\Local\Temp\perc_Locale_With_Underscore.keyword.aclDef</RxFile>
+         <ArchiveFile>AclDef-3721252097245577290\perc_Locale_With_Underscore.keyword.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percOpenGraph_images_open--graph--placeholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5.4\jetty\..\rx_resources\widgets\percOpenGraph\images\open-graph-placeholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percOpenGraph_images_open--graph--placeholder-png\open-graph-placeholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percOpenGraph-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5.4\jetty\..\rxconfig\Widgets\percOpenGraph.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percOpenGraph-xml\percOpenGraph.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

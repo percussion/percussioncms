@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- Include the shared definitions -->
+<!ENTITY % Log4J SYSTEM "log4j.dtd">
+%Log4J;
+<!--
+   This specifies the Content Connector configuration with all its plugin
+   points. This configuration contains one time configuration information
+   that allows a user to plugin his own functionality. It also provides
+   default values for components like 'log4j:configuration' and 
+   'ErrorHandling'.
+-->
+<!ELEMENT PSXContentLoaderConfig (Connection, Selectors, Extractors, PSXFieldTransformationsDef?, PSXItemTransformationsDef?, Loaders, log4j:configuration, ErrorHandling)>
+<!--
+   The connection info used to connect to a Rhythmyx server.
+   
+   Predefined properties:
+
+     "Rhythmyx Server Protocol" - Server protocol, "http" or "https"
+     "Rhythmyx Server" - Host name of the Rhythmyx Server
+     "Port" - Port of the Rhythmyx Server
+     "ServerRoot" - Optional property if the server root is not "Rhythmyx"
+-->
+<!ELEMENT Connection (Properties, User, Password)>
+<!--
+   A user name.
+-->
+<!ELEMENT User (#PCDATA)>
+<!--
+   A password.
+   
+   encrypted - specifies whther or not the password is encrypted.
+-->
+<!ELEMENT Password (#PCDATA)>
+<!ATTLIST Password
+   encrypted (yes | no) "yes"
+>
+<!--
+   A collection of all specified selectors.
+-->
+<!ELEMENT Selectors (PSXContentSelectorDef+)>
+<!--
+   This element specifies all pieces needed for a content selector.
+   
+   name - the selector name, must be unique across all selectors
+      specified in this file.
+   
+   class - the fully qualified class name for this selector plugin.
+-->
+<!ELEMENT PSXContentSelectorDef (Properties?, SearchRoots?)>
+<!ATTLIST PSXContentSelectorDef
+   name CDATA #REQUIRED
+   class CDATA #REQUIRED
+>
+<!--
+   A collection of search roots. We need at least one.
+-->
+<!ELEMENT SearchRoots (SearchRoot+)>
+<!--
+   Each search root can have its own properties and filters.
+   
+   name - the name as displayed in the UI, must be unique accross
+      all search roots for the current selector.
+-->
+<!ELEMENT SearchRoot (Properties?, Filters?)>
+<!ATTLIST SearchRoot
+   name CDATA #REQUIRED
+>
+<!--
+	This collection of properties specifies all selector specific 
+	properties.
+-->
+<!ELEMENT Properties (PSXProperty+)>
+<!--
+   A property specifies a name and a value.
+   
+   name - the property name, must be unique within its container.
+-->
+<!ELEMENT PSXProperty (Value)>
+<!ATTLIST PSXProperty
+   name CDATA #REQUIRED
+>
+<!--
+   A property value.
+-->
+<!ELEMENT Value (#PCDATA)>
+<!--
+   A collection of filters.
+-->
+<!ELEMENT Filters (PSXFilter+)>
+<!--
+    A filter specifies a name and a value. The value is a regular
+    expression string.
+    
+    name - the filter name, must be unique within its container.
+-->
+<!ELEMENT PSXFilter (Value)>
+<!ATTLIST PSXFilter
+   name CDATA #REQUIRED
+>
+<!--
+   We know two types of extractors: the StaticItemExtractors and the
+   ItemExtractors. This element specifies all available extractors.
+-->
+<!ELEMENT Extractors (PSXExtractorDef+)>
+<!--
+   This element specifies all pieces needed for a content extractor.
+   
+   name - the extractor name, must be unique across all extractors
+      specified in this file.
+      
+   type - the extractor type, one of 'item' or 'staticItem'. Item
+      extratcors extract content items managed by Rhythmyx. Static
+      Item extractors extract web resources not managed by Rhythmyx
+      but needed for previews and publishing.
+      
+      
+   class - the fully qualified class name for this extractor plugin.
+-->
+<!ELEMENT PSXExtractorDef (FieldProperties?, Properties?, MimeTypes?, Filters?, PSXFieldTransformationsDef?, PSXItemTransformationsDef?, PSXWorkflowDef?)>
+<!ATTLIST PSXExtractorDef
+   name CDATA #REQUIRED
+   type (staticItem | item) "staticItem"
+   class CDATA #REQUIRED
+>
+<!--
+   A collection of field definition.
+   
+   name - the name of the field.
+   
+   valueType - the type of the value, must be one of the "Literal", "Number", "Variable", "XPath" constants
+-->
+<!ELEMENT PSFieldProperties (PSXFieldProperty+)>
+<!ELEMENT PSXFieldProperty (Value)>
+<!ATTLIST PSXFieldProperty
+	name CDATA #REQUIRED
+	valueType CDATA #REQUIRED
+>
+<!--
+   A collection of mime types.
+-->
+<!ELEMENT MimeTypes (PSXMimeTypeDef+)>
+<!--
+   The mime type that the current NonItemExtractor will accept.
+   
+   name - the mime type name, e.g. image/gif. Must be unique within 
+      this file.
+-->
+<!ELEMENT PSXMimeTypeDef (PSXExtensionDef+)>
+<!ATTLIST PSXMimeTypeDef
+   name CDATA #REQUIRED
+>
+<!--
+   A file extension.
+   
+   name - the extension name, e.g. gif.
+-->
+<!ELEMENT PSXExtensionDef EMPTY>
+<!ATTLIST PSXExtensionDef
+   name CDATA #REQUIRED
+>
+<!--
+   A collection of field transformations.
+-->
+<!ELEMENT PSXFieldTransformationsDef (PSXFieldTransformationDef+)>
+<!--
+   A transformation specifies the class and a list of parameters.
+   
+   name - the transformation name used in UI's. The name must be
+      unique within its container. It is case insensitive.
+
+   class - the fully qualified class name for this transformation plugin.
+   
+   targetField - the field that this transformer is going to work with.
+-->
+<!ELEMENT PSXFieldTransformationDef (ParamDefs?)>
+<!ATTLIST PSXFieldTransformationDef
+   name CDATA #REQUIRED
+   class CDATA #REQUIRED
+   targetField CDATA #REQUIRED
+>
+<!--
+   A collection of item transformations.
+-->
+<!ELEMENT PSXItemTransformationsDef (PSXTransformationDef+)>
+<!--
+   A transformation specifies the class and a list of parameters.
+   
+   name - the transformation name used in UI's. The name must be
+      unique within its container. It is case insensitive.
+
+   class - the fully qualified class name for this transformation plugin.
+-->
+<!ELEMENT PSXTransformationDef (ParamDefs?)>
+<!ATTLIST PSXTransformationDef
+   name CDATA #REQUIRED
+   class CDATA #REQUIRED
+>
+<!-- 
+   List of Parameters defined for a given 
+   transformation.
+-->
+<!ELEMENT ParamDefs (PSXParamDef+)>
+<!--
+   A parameter definition/instance. A definition will not have a 
+   Value.
+   
+   name - the parameter name.
+   type - the parameter type.
+-->
+<!ELEMENT PSXParamDef (Description, Value?)>
+<!ATTLIST PSXParamDef
+   name CDATA #REQUIRED
+   type CDATA #REQUIRED
+>
+<!--
+   A parameter description.
+-->
+<!ELEMENT Description (#PCDATA)>
+<!--
+   This specifies all workflow transitions.
+   
+   name - the workflow name for which to perform the transitions.
+-->
+<!ELEMENT PSXWorkflowDef (TransitionSet+)>
+<!ATTLIST PSXWorkflowDef
+   name CDATA #REQUIRED
+>
+<!--
+   This specifies one set of transitions
+   
+   name - the transition set name, which must be one of the values, "insert", "pre-update" or "post-update"
+-->
+<!ELEMENT TransitionSet (PSXTransitionDef+)>
+<!ATTLIST TransitionSet
+   name CDATA #REQUIRED
+>
+<!--
+   Specifies a transition to be performed.
+   
+   name - the transition name, which may not be unique within its current workflow
+   trigger - the internal transition name, Trigger, which is a unique name within its current workflow. This internal transition name will be used to perform the transition
+-->
+<!ELEMENT PSXTransitionDef EMPTY>
+<!ATTLIST PSXTransitionDef
+   name CDATA #REQUIRED
+   trigger CDATA #REQUIRED
+>
+<!--
+   A collection of all specified content loaders.
+-->
+<!ELEMENT Loaders (PSXLoaderDef+)>
+<!--
+   This element specifies all pieces needed for a content loader.
+   
+   name - the loader name, must be unique accross all loaders
+      specified in this file.
+-->
+<!ELEMENT PSXLoaderDef (Class, Properties?)>
+<!ATTLIST PSXLoaderDef
+   name CDATA #REQUIRED
+>
+<!ELEMENT Class (#PCDATA)>
+<!--
+   Stores all logging information as properties.
+-->
+<!ELEMENT Logging (Properties)>
+<!--
+   Stores all error handling properties, including emails if selected.
+-->
+<!ELEMENT PSXErrorHandlingDef (Properties, PSXEmailDef?)>
+<!--
+   Specifies all email properties.
+   
+   attachlogs - specifies whether or not to attach the log file to emails.
+-->
+<!ELEMENT PSXEmailDef (Recipients, CCRecipients?)>
+<!ATTLIST PSXEmailDef
+   attachlogs CDATA #REQUIRED
+   smtpHost CDATA #REQUIRED
+   fromAddr CDATA #REQUIRED
+>
+<!--
+   A list of email recipients.
+-->
+<!ELEMENT Recipients (Recipient+)>
+<!--
+   A list of courtesy email recipients.
+-->
+<!ELEMENT CCRecipients (Recipient+)>
+<!--
+   An email recipient.
+-->
+<!ELEMENT Recipient (#PCDATA)>

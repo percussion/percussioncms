@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT stateinfo (statelink, workflowlink, workflowslink )>
+<!ELEMENT workflowslink (#PCDATA)>
+<!ELEMENT workflowlink (#PCDATA)>
+<!ELEMENT statelink (#PCDATA)>
+<!ATTLIST  stateinfo statename CDATA #IMPLIED>
+<!ATTLIST  stateinfo stateid CDATA #IMPLIED>
+<!ATTLIST  stateinfo workflowid CDATA #IMPLIED>
+<!ATTLIST  stateinfo workflowname CDATA #IMPLIED>

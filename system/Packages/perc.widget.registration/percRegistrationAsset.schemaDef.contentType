@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CT_PERCREGISTRATIONASSET">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SUCCESS_URL">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PASSWORD_LABEL">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONFIRM_PASSWORD_LABEL">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SUBMIT_LABEL">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONFIRMATION_MESSAGE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ERROR_MESSAGE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CONFIRMATION_PAGE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>2000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ERROR_PAGE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>2000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PAGES_BROWSER">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REGISTRATION_PAGES_CHOOSER">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+   </row>
+   <primarykey action="c">
+      <name>CONTENTID</name>
+      <name>REVISIONID</name>
+   </primarykey>
+</table>

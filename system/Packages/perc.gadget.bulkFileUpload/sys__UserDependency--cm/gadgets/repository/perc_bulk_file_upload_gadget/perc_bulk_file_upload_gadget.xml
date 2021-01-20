@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+    <ModulePrefs title="Bulk Upload" category="content" description="This gadget provides the ability to upload local file system content directly to the Assets Library." thumbnail="images/gadgetIconBulkFileUpload.png" height="465">
+        <Require feature="perc_core"/>
+        <Require feature="perc_jquery_ui"/>
+        <Require feature="perc_collapser"/>
+        <Require feature="dynamic-height"/>
+    </ModulePrefs>
+    <Content type="html">
+        <![CDATA[
+    <!-- All These files are for the PercFinderTree - Perhaps this should be a feature -->
+    <link href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/cm/gadgets/repository/perc_bulk_file_upload_gadget/css/jquery.fileupload.css" type="text/css"/>
+    <link  rel="stylesheet" href="/cm/gadgets/repository/perc_bulk_file_upload_gadget/css/perc_bulk_file_upload.css" type="text/css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/b5599b836a.css" />
+
+    <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+    <script  src="/cm/plugins/perc_path_constants.js"></script>
+    <script  src="/cm/plugins/perc_utils.js"></script>
+    <script  src="/cm/services/PercServiceUtils.js"></script>
+    <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/vendor/jquery.ui.widget.js"></script>
+    <script  src="/cm/widgets/PercFinderTree.js?"></script>
+    <script  src="/cm/jslib/jquery.dynatree.js?"></script>
+    <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/jquery.fileupload.js"></script>
+    <script  src="/cm/services/PercWorkflowService.js"></script>
+    <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/perc_bulk_file_upload_collapse.js"></script>
+    <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/perc_bulk_file_upload_finder_tree.js"></script>
+    <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/perc_bulk_file_upload.js"></script>
+
+    <!-- HTML -->
+    <div class="perc-gadget perc-bulk-file-upload-gadget" id="fileupload" data-module-id="__MODULE_ID__">
+        <!-- DynaTree Folder Selection -->
+        <div id="perc-bulk-top-section">
+            <div id="perc-bulk-form">
+                <a aria-label="Expand upload target folder path location" class="perc-bulk-collapse" id="perc-bulk-target-collapser" href="#" title="Expand target folder path"></a>
+                <label id="perc-bulk-target-folder-label" for="perc-bulk-target-tree" class="perc-label">Target folder:</label>
+                <span id="perc-bulk-target-folder">Select target folder</span>
+                <br/>
+                <div id="perc-bulk-target-tree-container" role="presentation">
+                    <div id="perc-bulk-target-tree" role="tree"></div>
+                </div>
+                <div style="clear: both;"></div>
+                <div id="bulk_approve" title = "When checked, approves all uploaded assets automatically.">
+                    <input type="checkbox" id="perc-bulk-approve-onupload" disabled="disabled" /><label class="perc-approval-label-disabled" id="perc-bulk-approve-onupload-label" for="perc-bulk-approve-onupload">Approve assets</label>
+                </div>
+                <br/>
+                <div style="clear: both;"></div>
+                <label class="perc-label" for="perc-bulk-asset-type">Asset type:</label><br />
+                <select id="perc-bulk-asset-type">
+                    <option value="file" selected>File</option>
+                    <option value="flash">Flash</option>
+                    <option value="html">HTML</option>
+                    <option value="image">Image</option>
+                    <option value="richtext">Rich Text</option>
+                    <option value="simpletext">Simple Text</option>
+                </select>
+                <br />
+                <div style="height: 10px;"></div>
+                <div id = "perc-selector-wrapper">
+                    <label class = "perc-label" for="perc-html-selector">Extract HTML from element:</label><br />
+                    <input  title = "Enter any valid CSS3 Selector to specify the element."  type = "text"  id = "perc-html-selector" />
+                    <div style="height: 10px;"></div>
+                    <div id = "perc-selector-options">
+                        <fieldset>
+                            <legend class = "perc-label">Include:</legend><br />
+                            <input id = "perc-html-include-outerhtml" type = 'radio' name = 'htmlselector' value = 'outerhtml'  title = "Select HTML to include the specified element as well as the inner HTML" />Outer HTML
+                            <input id = "perc-html-include-innerhtml" type = 'radio' checked = "checked" name = 'htmlselector' value = 'innerhtml'   title = "Select Inner HTML to extract only the HTML inside the specified element" />Inner HTML
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <!-- File Upload Selectors -->
+        <div id="perc-buttonbar" class="perc-row fileupload-buttonbar">
+            <div class="col-lg-7">
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span id="perc-upload-add" class="btn perc-button btn-primary fileinput-button">
+                    <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                    <span>Add files...</span>
+                    <label for="perc-files-upload" style="display:none;">Add files for upload</label>
+                    <input type="file" id="perc-files-upload" name="files[]" title="" multiple>
+                </span>
+                <button id="perc-upload-start" type="submit" class="btn perc-button btn-primary" aria-label="Start upload">
+                    <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+                    <span>Start upload</span>
+                </button>
+                <!-- invisibile button to trigger upload start -->
+                <button id="perc-upload-trigger" type="button" aria-hidden="true" hidden></button>
+                <br/>
+                <br/>
+                <button id="perc-upload-cancel" type="button" class="btn perc-button btn-primary" aria-label="Cancel upload">
+                    <span aria-hidden="true" class="glyphicon glyphicon-ban-circle"></span>
+                    <span>Cancel upload</span>
+                </button>
+                <button id="perc-upload-clear" type="button" class="btn btn-primary perc-button delete" aria-label="Clear uploads">
+                    <span aria-hidden="true" class="glyphicon glyphicon-trash"></span>
+                    <span>Clear All</span>
+                </button>
+            </div>
+            <!-- The global progress state -->
+            <div id="perc-global-progress" class="col-lg-5 fileupload-progress fade">
+                <!-- The global progress bar -->
+                <div id="progress" class="progress active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="bar progress-bar" style="width:0%;"></div>
+                </div>
+                <!-- The extended global progress state -->
+                <div class="progress-extended">&nbsp;</div>
+            </div>
+        </div>
+        <div id="perc-buttonbar2" class="perc-row fileupload-buttonbar">
+            <div class="col-lg-7" style="margin-top:10px">
+                <a class="perc-bulk-expand" title="Expand upload details" id="perc-bulk-details-collapser" href="#" aria-label="Expand upload details"></a>
+                <label id="perc-bulk-details-label" class="perc-label">Details:</label><span id="perc-bulk-status">0 file(s) queued for upload</span>
+            </div>
+            <div class="col-lg-7">
+                <div id="perc-bulk-details-section" style="display: none;">
+                    <!-- The table listing the files available for upload/download -->
+                    <table id="perc-added-files" role="presentation" style="display:none;" class="table table-striped">
+                        <tbody class="files">
+                            <tr>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th colspan="2">Type</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    ]]>
+    </Content>
+</Module>

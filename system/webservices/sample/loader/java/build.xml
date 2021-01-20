@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="Loader Sample" default="all" basedir="../../..">
+
+   
+   <property name="project.dir" location="${basedir}/sample/loader/java"/>
+   <property name="lib.dir" location="${project.dir}/lib"/>
+   <property name="src.dir" location="${project.dir}/src"/>
+   <property name="output.dir" location="${project.dir}/build"/>
+   <property name="classes.dir" location="${project.dir}/build/classes"/>
+   <property name="dist.dir" location="${project.dir}/build/dist"/>
+   <property name="javadoc.dir" location="${project.dir}/build/javadoc"/>
+   <property name="src.loader.package.dir" location="${src.dir}/com/percussion/webservices/sample/loader"/>
+   <property name="webservicesdir" location="${project.dir}/webservices" />
+   <property name="webservices.design.dir" location="${basedir}/design" />
+   <property name="output.loader.package.dir" location="${classes.dir}/com/percussion/webservices/sample/loader"/>
+	
+
+   <!-- Defaults -->   
+   <property name="DEBUG" value="true" />
+   <property name="JVM_TARGET" value="1.5" />
+   <property name="JAVA_SOURCE" value="1.5" />
+   <property name="NO_WARN" value="true" />
+
+
+   <!-- Define the loader classpath -->
+   <path id="class.path">
+      <pathelement location="${lib.dir}/axis-1.4.1.jar" />
+      <pathelement location="${lib.dir}/axis-jaxrpc-1.4.1.jar" />
+      <pathelement location="${lib.dir}/axis-saaj-1.4.1.jar"/>
+      <pathelement location="${lib.dir}/wsdl4j-1.6.2.jar"/>
+      <pathelement location="${lib.dir}/mail.jar"/>
+      <pathelement location="${lib.dir}/activation.jar"/>
+      <pathelement location="${lib.dir}/commons-logging-1.0.4.jar"/>
+      <pathelement location="${lib.dir}/commons-discovery-0.5.jar"/>
+   </path>
+	
+	<path id="runtime.class.path">
+		<path refid="class.path" />
+		<pathelement location="${classes.dir}" />
+	</path>
+	
+	<path id="axis.class.path">
+		<path refid="class.path" />
+		<pathelement location="${lib.dir}/axis-ant-1.4.1.jar" />
+	</path>
+	
+   <!-- Define the vedit ui project source path -->
+   <path id="source.path">
+      <pathelement location="${src.dir}" />
+      <pathelement location="${webservicesdir}/generated" />
+   </path>
+	
+   <!-- Initialize the build -->
+   <target name="init">
+      <!-- create required directories -->
+      <mkdir dir="${classes.dir}" />
+      <mkdir dir="${webservicesdir}/generated" />
+   </target>
+
+   <!-- Copy all data files to the classes directory -->
+   <target name="copyresources">
+      <echo>Copying data files to build....</echo>
+      <copy todir="${output.loader.package.dir}">
+         <fileset dir="${src.loader.package.dir}" casesensitive="false">
+            <include name="*.xml"/>
+         </fileset>
+      </copy>
+   </target>
+
+   <!-- Compile the java source code -->
+   <target name="compile" depends="init, copyresources">
+ 
+      <!-- Compile the vedit ui project -->
+      <javac destdir="${classes.dir}" classpathref="class.path" debug="${DEBUG}" debuglevel="vars,lines,source" fork="yes" target="${JVM_TARGET}" source="${JAVA_SOURCE}" memoryInitialSize="300m" memoryMaximumSize="300m" nowarn="${NO_WARN}">
+         <src refid="source.path" />
+      </javac>
+   </target>
+
+   <target name="javadoc">
+      <mkdir dir="${javadoc.dir}"/>
+      <javadoc destdir="${javadoc.dir}" classpathref="class.path">
+         <packageset dir="${src.dir}" defaultexcludes="yes">
+            <exclude name="com/percussion/webservices/sample/loader"/>
+         </packageset>
+         <packageset dir="${webservicesdir}/generated" defaultexcludes="yes"/>
+      </javadoc>
+   </target>
+
+   <target name="dist" depends="compile"
+           description="Generates the distribution">
+      <mkdir dir="${dist.dir}"/>
+      <jar jarfile="${dist.dir}/rxwebserviceclient.jar" basedir="${classes.dir}">
+        <exclude name="com/percussion/webservices/sample/loader/**"/>
+      </jar>
+   </target>
+
+   <target name="all" depends="dist, javadoc"/>
+
+   <taskdef resource="axis-tasks.properties" classpathref="axis.class.path" />
+	
+   <!-- Version 6.x WSDL2Java code generation -->
+   <target name="wsdl2java_6" depends="init"
+      description="This target is for creating the java files used for the Axis web services based on the WSDL files and schemas in the webservices/design directory.">
+   	<axis-wsdl2java output="${webservicesdir}/generated"
+         nowrapped="true" serverside="true" skeletondeploy="false" 
+         deployscope="Request" testcase="true" url="${webservices.design.dir}/rhythmyx.wsdl" 
+         typemappingversion="1.2">
+         <mapping namespace="urn:www.percussion.com/6.0.0/common" package="com.percussion.webservices.common" />
+         <mapping namespace="urn:www.percussion.com/6.0.0/faults" package="com.percussion.webservices.faults" />
+
+         <mapping namespace="urn:www.percussion.com/6.0.0/assembly" package="com.percussion.webservices.assembly" />
+         <mapping namespace="urn:www.percussion.com/6.0.0/assemblyServices" package="com.percussion.webservices.assembly.data" />
+
+         <mapping namespace="urn:www.percussion.com/6.0.0/content" package="com.percussion.webservices.content" />
+         <mapping namespace="urn:www.percussion.com/6.0.0/contentServices" package="com.percussion.webservices.content.data" />
+
+         <mapping namespace="urn:www.percussion.com/6.0.0/security" package="com.percussion.webservices.security" />
+         <mapping namespace="urn:www.percussion.com/6.0.0/securityServices" package="com.percussion.webservices.security.data" />
+
+         <mapping namespace="urn:www.percussion.com/6.0.0/system" package="com.percussion.webservices.system" />
+         <mapping namespace="urn:www.percussion.com/6.0.0/systemServices" package="com.percussion.webservices.system.data" />
+
+         <mapping namespace="urn:www.percussion.com/6.0.0/ui" package="com.percussion.webservices.ui" />
+         <mapping namespace="urn:www.percussion.com/6.0.0/uiDesign" package="com.percussion.webservices.uidesign" />
+         <mapping namespace="urn:www.percussion.com/6.0.0/uiServices" package="com.percussion.webservices.ui.data" />
+
+         <mapping namespace="urn:www.percussion.com/6.0.0/rhythmyx" package="com.percussion.webservices.rhythmyx" />
+      </axis-wsdl2java>
+
+      <delete>
+         <fileset dir="${webservicesdir}/generated/com/percussion/webservices/assembly">
+            <include name="*SOAPImpl.java"/>
+         </fileset>
+         <fileset dir="${webservicesdir}/generated/com/percussion/webservices/content">
+            <include name="*SOAPImpl.java"/>
+         </fileset>
+         <fileset dir="${webservicesdir}/generated/com/percussion/webservices/security">
+            <include name="*SOAPImpl.java"/>
+         </fileset>
+         <fileset dir="${webservicesdir}/generated/com/percussion/webservices/system">
+            <include name="*SOAPImpl.java"/>
+         </fileset>
+         <fileset dir="${webservicesdir}/generated/com/percussion/webservices/ui">
+            <include name="*SOAPImpl.java"/>
+         </fileset>
+         <fileset dir="${webservicesdir}/generated/com/percussion/webservices/rhythmyx">
+            <include name="*SOAPImpl.java"/>
+            <include name="*TestCase.java"/>
+         </fileset>
+      </delete>
+   </target>
+
+   <target name="clean">
+      <delete dir="${output.dir}"/>
+   </target>
+</project>

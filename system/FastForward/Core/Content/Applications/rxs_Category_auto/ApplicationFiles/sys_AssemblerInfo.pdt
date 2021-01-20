@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT sys_AssemblerInfo (RelatedContent, AssemblerProperties, InlineLink, VariantURL )>
+<!ELEMENT VariantURL EMPTY>
+<!ATTLIST  VariantURL url CDATA #REQUIRED>
+<!ELEMENT InlineLink EMPTY>
+<!ATTLIST  InlineLink url CDATA #REQUIRED>
+<!ELEMENT Property (Value )>
+<!ATTLIST  Property name CDATA #REQUIRED>
+<!ELEMENT AssemblerProperties (Property* )>
+<!ELEMENT RelatedContent (infourls, linkurl* )>
+<!ELEMENT Value EMPTY>
+<!ATTLIST  Value current CDATA #REQUIRED>
+<!ELEMENT linkurl (Value )>
+<!ATTLIST  linkurl contentid CDATA #REQUIRED>
+<!ATTLIST  linkurl relateditemid CDATA #REQUIRED>
+<!ATTLIST  linkurl rxcontext CDATA #REQUIRED>
+<!ATTLIST  linkurl slotid CDATA #REQUIRED>
+<!ATTLIST  linkurl slotname CDATA #REQUIRED>
+<!ATTLIST  linkurl sys_folderid CDATA #IMPLIED>
+<!ATTLIST  linkurl sys_originalSiteid CDATA #IMPLIED>
+<!ATTLIST  linkurl sys_siteid CDATA #IMPLIED>
+<!ATTLIST  linkurl variantid CDATA #REQUIRED>
+<!ELEMENT infourls EMPTY>
+<!ATTLIST  infourls UserAgent CDATA #REQUIRED>
+<!ATTLIST  infourls actionlisturl CDATA #REQUIRED>
+<!ATTLIST  infourls activeiteminfourl CDATA #REQUIRED>
+<!ATTLIST  infourls contentstatusurl CDATA #REQUIRED>
+<!ATTLIST  infourls rxinboxurl CDATA #REQUIRED>
+<!ATTLIST  infourls userstatusurl CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo previewurl CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo sys_siteid CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo pssessionid CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo sys_command CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo sys_contentid CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo sys_variantid CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo sys_revision CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo sys_context CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo sys_authtype CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo type CDATA #REQUIRED>
+<!ATTLIST  sys_AssemblerInfo outputformat CDATA #REQUIRED>

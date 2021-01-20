@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_app_dialogs_Perc__CommentsGadget__ViewComments-jsp">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\app\dialogs\Perc_CommentsGadget_ViewComments.jsp</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_app_dialogs_Perc__CommentsGadget__ViewComments-jsp\Perc_CommentsGadget_ViewComments.jsp</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_rejectedOff-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\images\rejectedOff.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_rejectedOff-png\rejectedOff.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_commentsIcon-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\images\commentsIcon.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_commentsIcon-gif\commentsIcon.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_Perc__CommentsGadget__ViewComments-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\Perc_CommentsGadget_ViewComments.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_Perc__CommentsGadget__ViewComments-js\Perc_CommentsGadget_ViewComments.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_perc__comments__gadget-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\perc_comments_gadget.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_perc__comments__gadget-js\perc_comments_gadget.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_deletedOff-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\images\deletedOff.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_deletedOff-png\deletedOff.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_app_dialogs_PercCommentsGadgetSetDefaultCommentModeration-jsp">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\app\dialogs\PercCommentsGadgetSetDefaultCommentModeration.jsp</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_app_dialogs_PercCommentsGadgetSetDefaultCommentModeration-jsp\PercCommentsGadgetSetDefaultCommentModeration.jsp</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_PercCommentsGadgetSetDefaultCommentModeration-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\PercCommentsGadgetSetDefaultCommentModeration.css</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_PercCommentsGadgetSetDefaultCommentModeration-css\PercCommentsGadgetSetDefaultCommentModeration.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_PercCommentsGadgetService-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\PercCommentsGadgetService.js</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_PercCommentsGadgetService-js\PercCommentsGadgetService.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_approvedOn-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\images\approvedOn.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_approvedOn-png\approvedOn.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_gadgetIconComments-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\images\gadgetIconComments.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_gadgetIconComments-png\gadgetIconComments.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_deletedOn-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\images\deletedOn.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_deletedOn-png\deletedOn.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_approvedOff-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\images\approvedOff.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_approvedOff-png\approvedOff.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_perc__comments__gadget-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\perc_comments_gadget.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_perc__comments__gadget-xml\perc_comments_gadget.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_rejectedOn-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\images\rejectedOn.png</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_images_rejectedOn-png\rejectedOn.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_perc__comments__gadget-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\perc_comments_gadget.css</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_perc__comments__gadget-css\perc_comments_gadget.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_Perc__CommentsGadget__ViewComments-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\cm1\dev\cm\gadgets\repository\perc_comments_gadget\Perc_CommentsGadget_ViewComments.css</RxFile>
+         <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__comments__gadget_Perc__CommentsGadget__ViewComments-css\Perc_CommentsGadget_ViewComments.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

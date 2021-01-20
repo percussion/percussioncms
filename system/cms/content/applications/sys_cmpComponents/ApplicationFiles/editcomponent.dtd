@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editcomponent (relatedlinks, pagename, componentname, cmpname, componentid, componentdesc, componenturl, componenttype, cancelurl, viewparenturl, childlookupurl, propertylookupurl, componentdisplayname )>
+<!ELEMENT componentdisplayname (#PCDATA)>
+<!ELEMENT propertylookupurl (#PCDATA)>
+<!ELEMENT childlookupurl (#PCDATA)>
+<!ELEMENT viewparenturl (#PCDATA)>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT componenttype (#PCDATA)>
+<!ELEMENT componenturl (#PCDATA)>
+<!ELEMENT componentdesc (#PCDATA)>
+<!ELEMENT componentid (#PCDATA)>
+<!ELEMENT cmpname (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

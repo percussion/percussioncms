@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<info primitiveTypes="element">
+  <element>
+    <element name="choices">
+       <element name="choice" property="choices" updater="addChoice" forceAccessible="true"/>
+    </element>
+    <addDefaults/>
+  </element>
+</info>

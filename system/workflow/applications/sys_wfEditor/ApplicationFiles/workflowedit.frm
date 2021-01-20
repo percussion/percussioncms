@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXParam (workflowid, requiredname, requiredadministrator, requiredstate, description, DBActionType )>
+<!ELEMENT DBActionType (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT requiredstate (#PCDATA)>
+<!ELEMENT requiredadministrator (#PCDATA)>
+<!ELEMENT requiredname (#PCDATA)>
+<!ELEMENT workflowid (#PCDATA)>

@@ -1,0 +1,91 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<link href="PercSimpleMenu.css" rel="stylesheet" type="text/css"/>
+<script src="../../jslib/jquery.js"></script>
+<script src="../../jslib/jquery-ui.js"></script>
+<script src="PercSimpleMenu.js"></script>
+<script>
+    $(function(){
+        var menu1 = { title : "", menuItemsAlign : "left",  items : [
+            {label : "Open",    callback : open,    data : "page-id-1"},
+            {label : "asdf asdf asdf Preview", callback : preview, data : "page-path-1"}
+        ]};
+        $("#myMenu1").PercSimpleMenu(menu1);
+
+        var menu2 = { title : "", items : [
+            {label : "Open",    callback : open,    data : "page-id-2"},
+            {label : "Preview", callback : preview, data : "page-path-2"}
+        ]};
+        $("#myMenu2").PercSimpleMenu(menu2);
+
+        var menu3 = { menuItemsAlign : "left",  stayInsideOf : "#theTable", items : [
+            {label : "Open",    callback : open,    data : "page-id-3"},
+            {label : "Preview", callback : preview}
+        ]};
+        $("#myMenu3").PercSimpleMenu(menu3);
+    })
+    
+    function open(pageId) {
+        console.log("open " + pageId);
+    }
+    
+    function preview(pagePath) {
+        console.log("preview " + pagePath);
+    }
+    
+</script>
+
+<table border="1" id="theTable">
+    <tr>
+        <td id="myMenu2">
+        </td>
+        <td>
+            dkfj ghsdkfjgh skdjfh gksdjg sdfg
+        </td>
+        <td>
+            dkfj ghsdkfjgh skdjfh gksdjg sdfg
+        </td>
+    </tr>
+    <tr>
+        <td>
+            dkfj ghsdkfjgh skdjfh gksdjg sdfg
+        </td>
+        <td id="myMenu1">
+        </td>
+        <td>
+            dkfj ghsdkfjgh skdjfh gksdjg sdfg
+        </td>
+    </tr>
+    <tr>
+        <td>
+            dkfj ghsdkfjgh skdjfh gksdjg sdfg
+        </td>
+        <td>
+            dkfj ghsdkfjgh skdjfh gksdjg sdfg
+        </td>
+        <td id="myMenu3" align="right">
+        </td>
+    </tr>
+</table>

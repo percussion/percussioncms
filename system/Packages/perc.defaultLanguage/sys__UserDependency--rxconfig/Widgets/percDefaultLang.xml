@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percDefaultLang - Version 2.0]
+-->
+<Widget>
+   <WidgetPrefs title="Default Language"
+                contenttype_name="percDefaultLanguage"
+                description="For SEO with International sites. When added to a Page or a Template adds the necessary href-lang markup for Google."
+                author="Nate Chadwick"
+                thumbnail="/rx_resources/widgets/percDefaultLang/images/percDefaultLangIcon.png"
+                preferred_editor_width="780"
+                preferred_editor_height="600"/>
+    <Code type="jexl">
+    <!-- This section is used to set up data that will be used in the content section -->
+     <![CDATA[
+    $linkContext = $perc.linkContext;
+
+    $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+    $perc.setWidgetContents($assets);
+    $pagelink="";
+    if ( ! $assets.isEmpty())
+    {
+        $assetItem = $assets.get(0);
+        $data = $assetItem.Node.getProperty('rx:defaultLangData').getString();
+        $json = $rx.pageutils.createJsonObject($data);
+        $jsonArray = $json.getJSONArray("config");
+        $headContent = "";
+
+        $configured = "";
+        $sites = $rx.string.stringToMap(null);
+        $headLinks = $rx.string.stringToMap(null);
+
+        $percPageID = $perc.getPage().getId();
+
+        if( $percPageID != null && $percPageID != "" ){
+            for($j : $jsonArray){
+                if ($j.has("protocol")) {
+                    $protocol = $j.getString("protocol");
+                } else {
+                    $protocol = "";
+                }
+                $sitename = $j.getString("sitename");
+                $lang = $j.getString("lang");
+                $country = $j.getString("country");
+                $default = $j.getString("defLang");
+
+                if($country != null && $country != ""){
+                    $countryLang = $lang + "-" + $country;
+                } else {
+                    $countryLang = $lang;
+                }
+
+                if($default == null){
+                    $default = false;
+                }
+
+                $pageName = $perc.page.name;
+                $folderName = $perc.page.folderPaths.get(0);
+                $temp = $folderName.replace("//Sites/","");
+                if($temp.startsWith("/")){$temp = $temp.substring(1);}
+                $iPos = $temp.indexOf("/");
+
+                if($temp.indexOf("/") == -1){
+                    $temp = $sitename + "/" + $perc.page.name;
+                    $path = $sitename;
+                } else {
+                    $path = $sitename + $temp.substring($iPos);
+                    $temp = $sitename + $temp.substring($iPos) + "/" + $perc.page.name;
+                }
+                $livePagePath =  $temp;
+
+                $query = "select rx:sys_contentid, rx:sys_folderid from rx:percPage where jcr:path like '//Sites/" + $path + "' and rx:sys_title='" + $pageName + "'";
+                $params = $rx.string.stringToMap(null);
+                $params.put('max_results', 1);
+                $params.put('query', $query);
+                $finderName  = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
+                $relresults = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+                if($relresults != null && $relresults.size()>0){
+                        $relalt= "<link rel='alternate' hreflang='" + $countryLang + "' href='" + $protocol + "://" + $livePagePath.toLowerCase() + "'/>";
+                        $headLinks.put($relalt,$relalt);
+                        if($default){
+                                $xdefault = "<link rel='alternate' hreflang='x-default' href='" + $protocol + "://" + $livePagePath.toLowerCase() + "'/>";
+                                $headLinks.put($xdefault,$xdefault);
+                        } else {
+                            $xdefault = "";
+                        }
+                    $sites.put($sitename,$sitename);
+                }
+            }
+
+            for($site : $sites.values()){
+                $configured = $configured + " " + $site + " ";
+            }
+        }
+    }
+    ]]>
+    </Code>
+    <Content type="velocity"><![CDATA[#if($perc.isEditMode())##
+<div style="height: 32px;background: transparent url(/Rhythmyx/rx_resources/widgets/percDefaultLang/images/percDefaultLangPlaceholder.png) no-repeat scroll center center;filter: alpha(opacity=50);opacity: .50;" title="Default Language Widget">
+#if( "$!configured}" != "" && "$!{percPageID}" != "" )##
+<b>Configured International Sites:</b> ($!{configured})
+#end##
+</div>
+#end##
+#set( $newline="
+")##
+#foreach($l in $headLinks)##
+#set($addlHead = $perc.page.getAdditionalHeadContent())##
+$perc.page.setAdditionalHeadContent("$!{addlHead}$!{newline}$!{l}")##
+#end##
+]]>
+</Content>
+</Widget>

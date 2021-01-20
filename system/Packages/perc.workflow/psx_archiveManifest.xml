@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="WorkflowDef-6">
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\DefaultWorkflow.workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-6\DefaultWorkflow.workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\DefaultWorkflow(1).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-6\DefaultWorkflow(1).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\DefaultWorkflow(2).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-6\DefaultWorkflow(2).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\DefaultWorkflow(3).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-6\DefaultWorkflow(3).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\DefaultWorkflow(4).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-6\DefaultWorkflow(4).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\DefaultWorkflow(5).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-6\DefaultWorkflow(5).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\DefaultWorkflow(6).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-6\DefaultWorkflow(6).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\DefaultWorkflow(7).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-6\DefaultWorkflow(7).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--564235209499738001">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\LocalContent.workflowDef.aclDef</RxFile>
+         <ArchiveFile>AclDef--564235209499738001\LocalContent.workflowDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-2032955291330412657">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\DefaultWorkflow.workflowDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-2032955291330412657\DefaultWorkflow.workflowDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="WorkflowDef-7">
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\LocalContent.workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-7\LocalContent.workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\LocalContent(1).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-7\LocalContent(1).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\LocalContent(2).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-7\LocalContent(2).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\LocalContent(3).workflowDef</RxFile>
+         <ArchiveFile>WorkflowDef-7\LocalContent(3).workflowDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

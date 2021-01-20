@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXMacroDefinitionSet>
+   <PSXMacroDefinition id="1">
+      <Name>$lastPublicRevision</Name>
+      <Class>com.percussion.data.macro.PSLastPublicRevisionExtractor</Class>
+      <Description>Retrieves the last public revision of the current item, returns -1 if the item has never been public. The processed request must supply the contentid as HTML parameter or backend column.</Description>
+   </PSXMacroDefinition>
+   <PSXMacroDefinition id="2">
+      <Name>$contextDependentRevision</Name>
+      <Class>com.percussion.data.macro.PSContextDependentRevisionExtractor</Class>
+      <Description>Retrieves the current revision for the preview context (0). For all other contexts the last public revision of the current item or -1 if the item has never been public is returned. The processed request must supply the contentid as HTML parameter or backend column and the current revision as a backend column. The context is retrieved from the HTML parameters and defaults to preview (0) if not supplied.</Description>
+   </PSXMacroDefinition>
+</PSXMacroDefinitionSet>

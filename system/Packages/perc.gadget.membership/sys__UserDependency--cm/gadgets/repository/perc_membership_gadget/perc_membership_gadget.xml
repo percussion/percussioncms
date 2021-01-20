@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+    <ModulePrefs title="Membership" category="integration" description="This gadget allows administering accounts." thumbnail="images/perc_membership_gadget.png" height="320" adminOnly="true">
+        <Require feature="perc_core"/>
+        <Require feature="settitle" />
+        <Require feature="perc_getDashboardColumn" />
+        <Require feature="minimessage" />
+        <Require feature="perc_jquery_ui"/>
+        <Require feature="setprefs" /> 
+    </ModulePrefs>
+    <UserPref name="site" display_name="Site" required="true" datatype="enum" default_value="">
+    <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+</UserPref>
+    <UserPref name="selectedBlogID" display_name="selectedBlogID" required="false" datatype="hidden" default_value="@null" />
+  	<UserPref name="zrows" display_name="Display height" required="false" datatype="enum" default_value="5">
+        <EnumValue value="5" display_value="5 results"/>
+        <EnumValue value="10" display_value="10 results"/>
+        <EnumValue value="15" display_value="15 results"/>
+        <EnumValue value="20" display_value="20 results"/>
+        <EnumValue value="25" display_value="25 results"/>
+	</UserPref>
+    <Content type="html">
+    <![CDATA[
+     
+    <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
+    <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercDataTable/PercDataTable.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercSimpleMenu/PercSimpleMenu.css" rel="stylesheet" type="text/css" />
+    <link href="/cm/widgets/PercTooltip/PercTooltip.css" rel="stylesheet" type="text/css" />
+
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+
+    <script src="/cm/jslib/tools.scrollable-1.1.2.js" ></script>
+    <script src="/cm/jslib/tools.scrollable.mousewheel-1.0.1.js" ></script>
+    <script src="/cm/jslib/jquery.text-overflow.js" ></script>
+    <script src="/cm/plugins/perc_utils.js" ></script>
+    
+    
+    <script src="/cm/services/PercServiceUtils.js" ></script>
+    <script src="/cm/services/PercMembershipService.js" ></script>
+    
+    <script src="/cm/plugins/perc_path_constants.js" ></script>
+    <script src="/cm/widgets/PercScrollingTemplateBrowser/PercScrollingTemplateBrowser.js" ></script>
+    <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
+    <script src="/cm/widgets/PercTooltip/PercTooltip.js" ></script>
+    <script src="/cm/jslib/jquery.dataTables.js" ></script>
+    <script src="/cm/widgets/PercDataTable/PercDataTable.js" ></script>
+    <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js?" ></script>
+    <script src="/cm/widgets/PercPageDataTable/PercPageDataTable.js?q=1sdds12d" ></script>
+    <script src="/cm/gadgets/repository/perc_membership_gadget/PercEditSiteUser.js" ></script>
+    <script src="/cm/gadgets/repository/perc_membership_gadget/perc_membership_gadget.js" ></script>
+
+    
+   
+    <script>
+        var PercMetadataService = percJQuery.PercMetadataService;
+        var loadingMsg = null;
+        var miniMsg = null;
+        $(document).ready(function() {
+            var prefs    = new gadgets.Prefs(); 
+            var rows     = parseInt(prefs.getString("zrows"));
+             var site = prefs.getString("site");
+			if(!site)
+			site = "";
+            
+            if(rows === NaN)
+               rows = 5;
+
+            miniMsg    = new gadgets.MiniMessage(__MODULE_ID__);
+            loadingMsg = miniMsg.createStaticMessage("Loading...");            
+            
+            $(".perc-membership-gadget").PercMembershipGadget(site,rows);
+        })
+        
+        function _expandNotify(){
+            self.location.reload();
+        }
+
+    </script>
+    <div class="perc-membership-gadget">
+        <div class="perc-membership-table">
+        </div>
+    </div>
+    ]]>
+    </Content> 
+</Module>

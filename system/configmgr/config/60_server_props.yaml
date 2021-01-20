@@ -1,0 +1,13 @@
+- Name: 5dockerproperty
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPropertyUpdate
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+  Parameters:
+    Action: update
+    Key: doSAAS
+    Value: "true"
+    Marker:
+    Placement:
+    Source: rxconfig/Server/server.properties

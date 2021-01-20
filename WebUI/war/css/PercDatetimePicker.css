@@ -1,0 +1,56 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.perc-schedule .ui-datepicker .ui-widget-header { border: 1px solid #aaaaaa; background: #cccccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x; color: #222222; font-weight: bold; }
+.perc-schedule .ui-widget-content { border: 1px solid #aaaaaa; background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #222222; }
+.perc-schedule .ui-datepicker .ui-corner-all { -moz-border-radius: 4px; -webkit-border-radius: 4px; }
+.perc-schedule .ui-datepicker { width: auto; padding: .2em .2em 0; }
+.perc-schedule .ui-widget { font-family: Verdana,Arial,sans-serif; font-size: 11px; }
+
+.perc-schedule .ui-datepicker  .ui-slider { position: relative; text-align: left; }
+.perc-schedule .ui-datepicker  .ui-slider .ui-slider-handle { position: absolute; z-index: 10000; width: 1.2em; height: 1.2em; cursor: default; }
+.perc-schedule .ui-datepicker  .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; }
+
+.perc-schedule .ui-datepicker  .ui-slider-vertical { width: .8em; height: 100px; }
+.perc-schedule .ui-datepicker  .ui-slider-vertical .ui-slider-handle { left: -.3em; margin-left: 0; margin-bottom: -.6em; }
+.perc-schedule .ui-datepicker  .ui-slider-vertical .ui-slider-range { left: 0; width: 100%; }
+.perc-schedule .ui-datepicker  .ui-slider-vertical .ui-slider-range-min { bottom: 0; }
+.perc-schedule .ui-datepicker  .ui-slider-vertical .ui-slider-range-max { top: 0; }
+.perc-schedule img { cursor: pointer; padding-left: 3px; position: absolute; top: 3px;}
+
+.perc-schedule .ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+.perc-schedule .ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
+.perc-schedule .ui-datepicker td { border: 0; padding: 1px; }
+.perc-schedule .ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
+.perc-schedule .ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+.perc-schedule .ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+.perc-schedule .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+.perc-datetime-picker{   background-color: #CCCCCC; border: 1px inset #999999; color: #333333; font-family: Verdana; font-size: 11px; font-weight: normal;}
+#perc_removal_date, #perc_publish_date{width:120px; padding: 4px 0px 4px 4px;    }
+.perc-schedule  .ui-widget-content .ui-priority-secondary { font-weight: bold; opacity: 1;}
+.perc-schedule  .ui-widget-content .ui-state-active { background: url("images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% #FFFFFF; border: 1px solid #AAAAAA; color: #212121; font-weight: normal; outline: medium none; }
+.perc-schedule input, .perc-schedule select, .perc-schedule textarea, .perc-schedule .ui-widget button{font-family: 'Open Sans',sans-serif !important;}
+#ui-datepicker-div.ui-datepicker select.ui-datepicker-month{width: 47%;}
+#ui-datepicker-div.ui-datepicker select.ui-datepicker-year{width: 52%;}
+

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<stylesheetCleanupFilter>
+   <allowedNamespace name="" uri="http://www.w3.org/TR/html4/" declAllowed="true " declValue="*xhtml*">
+      <allowedElement name="*"/>
+      <allowedAttribute name="*"/>
+   </allowedNamespace>
+   <allowedNamespace name="xml" uri="http://www.w3.org/TR/xmlbase/" declAllowed="false ">
+      <allowedAttribute name="lang"/>
+      <allowedAttribute name="space"/>
+   </allowedNamespace>
+   <allowedNamespace name="xsl" uri="http://www.w3.org/1999/XSL/Transform" 
+   	declAllowed="false ">
+      <allowedAttribute name="*"/>
+      <allowedAttribute name="*"/>
+   </allowedNamespace>   
+   <!-- Uncomment the following to allow jsp tags -->
+   <!--
+   <allowedNamespace name="jsp" declAllowed="false ">
+      <allowedElement name="*"/>
+      <allowedAttribute name="*"/>
+   </allowedNamespace>
+   -->
+</stylesheetCleanupFilter>

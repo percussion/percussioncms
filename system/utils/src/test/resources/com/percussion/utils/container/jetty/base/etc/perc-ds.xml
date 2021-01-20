@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE Configure
+        PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+<Configure class="org.eclipse.jetty.server.Server" id="Server">
+
+
+    <New class="org.eclipse.jetty.plus.jndi.Resource" id="perc.ds.1">
+
+        <Arg/>
+
+        <Arg>java:jdbc/RhythmyxData</Arg>
+
+        <Arg>
+
+            <New class="com.zaxxer.hikari.HikariDataSource">
+
+                <Arg>
+
+                    <New class="com.zaxxer.hikari.HikariConfig">
+
+                        <Set name="poolName">Hikari <Property name="perc.ds.1.name"/> Pool</Set>
+
+                        <Set name="connectionTimeout">120000</Set>
+
+                        <Set name="minimumIdle">
+                            <Property default="50" name="perc.ds.1.connections.min"/>
+                        </Set>
+
+                        <Set name="maximumPoolSize">
+                            <Property default="50" name="perc.ds.1.connections.max"/>
+                        </Set>
+
+                        <Set name="idleTimeout">
+                            <Property default="600000" name="perc.ds.1.idle.ms"/>
+                        </Set>
+
+                        <Set name="transactionIsolation">TRANSACTION_READ_COMMITTED</Set>
+
+                        <Set name="ConnectionTestQuery">
+
+                            <Call class="com.percussion.utils.container.PSStaticContainerUtils" name="connectionTestQuery">
+                                <Arg>
+                                    <Property name="perc.ds.1.driver.name"/>
+                                </Arg>
+                                <Arg>
+                                    <Property name="perc.ds.1.connectiontest"/>
+                                </Arg>
+
+                            </Call>
+
+                        </Set>
+
+                        <Set name="driverClassName">
+                            <Property name="perc.ds.1.driver.class"/>
+                        </Set>
+
+                        <Set name="jdbcUrl">jdbc:<Property name="perc.ds.1.driver.name"/>:<Property name="perc.ds.1.server"/>
+                        </Set>
+
+                        <Set name="username">
+                            <Property name="perc.ds.1.uid"/>
+                        </Set>
+
+                        <Set name="password">
+
+                            <Call class="com.percussion.utils.container.PSStaticContainerUtils" name="decrypt">
+
+                                <Arg>
+                                    <Property name="perc.ds.1.pwd"/>
+                                </Arg>
+
+                                <Arg>
+                                    <Property name="perc.ds.1.pwd.encrypted"/>
+                                </Arg>
+
+                            </Call>
+
+                        </Set>
+
+                    </New>
+
+                </Arg>
+
+            </New>
+
+        </Arg>
+
+    </New>
+</Configure>

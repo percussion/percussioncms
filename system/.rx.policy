@@ -1,0 +1,11 @@
+/* AUTOMATICALLY GENERATED ON Mon Jul 10 20:41:42 EDT 2000*/
+/* DO NOT EDIT */
+
+grant codeBase "file://lib/-" {
+  permission java.security.AllPermission;
+};
+
+grant codeBase "file://jdbc/-" {
+  permission java.security.AllPermission;
+};
+

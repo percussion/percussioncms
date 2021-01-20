@@ -1,0 +1,19 @@
+{
+  "name": "widgel",
+  "version": "0.1.1",
+  "main": [
+    "dist/widgel-base.js",
+    "dist/extras/event.js"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "knockoutjs": "~3.1.0",
+    "requirejs": "~2.1.14"
+  }
+}

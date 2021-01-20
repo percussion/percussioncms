@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tree label="Products">
+   <Node id="generic" label="Generic">
+      <Node id="a" label="Aaaa" selectable="yes"/>
+      <Node id="b" label=" Bbbb" selectable="yes"/>
+   </Node>
+   <Node id="special" label="Special">
+      <Node id="extra" label="Extra">
+         <Node id="c" label="Cccc" selectable="yes"/>
+      </Node>
+      <Node id="d" label="Dddd" selectable="yes"/>
+   </Node>
+</Tree>

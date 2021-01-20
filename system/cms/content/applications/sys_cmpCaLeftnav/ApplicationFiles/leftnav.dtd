@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT leftnav (userrolesurl, x, newcontenturl, allcontenturl, mycontenturl, contexturl )>
+<!ELEMENT contexturl (#PCDATA)>
+<!ELEMENT mycontenturl (#PCDATA)>
+<!ELEMENT allcontenturl (#PCDATA)>
+<!ELEMENT newcontenturl (#PCDATA)>
+<!ELEMENT x (#PCDATA)>
+<!ELEMENT userrolesurl (#PCDATA)>

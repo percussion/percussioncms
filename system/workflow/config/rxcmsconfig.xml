@@ -1,0 +1,617 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<rxcmsconfig>
+   <backend>This configures the backend database source information</backend>
+   <publisher>This configures Rhythmyx publisher configuration</publisher>
+  <serverversions>
+    <version major="2" minor="0"/>
+    <version major="3" minor="0"/>
+  </serverversions>
+   <tables>
+      <table name="WORKFLOWAPPS">
+         <row>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPNAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="ADMINISTRATOR">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="INITIALSTATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPDESC">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>WORKFLOWAPPID</name>
+	</primarykey>
+      </table>
+      <table name="STATES">
+         <row>
+            <column name="STATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="STATENAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="CONTENTVALID">
+               <jdbctype>CHAR</jdbctype>
+               <params>1</params>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="STATEDESC">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>STATEID</name>
+		<name>WORKFLOWAPPID</name>
+	</primarykey>
+      </table>
+      <table name="ROLES">
+         <row>
+            <column name="ROLEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="ROLENAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="ROLEDESC">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>ROLEID</name>
+		<name>WORKFLOWAPPID</name>
+	</primarykey>
+      </table>
+      <table name="TRANSITIONS">
+         <row>
+            <column name="TRANSITIONID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="TRANSITIONLABEL">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONPROMPT">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONFROMSTATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONTOSTATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONACTIONTRIGGER">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONAPPROVALSREQUIRED">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONDESC">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>TRANSITIONID</name>
+		<name>WORKFLOWAPPID</name>
+	</primarykey>
+      </table>
+      <table name="STATEROLES">
+         <row>
+            <column name="STATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="ROLEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="ASSIGNMENTTYPE">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="ADHOCTYPE">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="ISNOTIFYON">
+               <jdbctype>CHAR</jdbctype>
+               <params>1</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>STATEID</name>
+		<name>ROLEID</name>
+		<name>WORKFLOWAPPID</name>
+	</primarykey>
+      </table>
+      <table name="CONTENTADHOCUSERS">
+         <row>
+            <column name="CONTENTID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="USERNAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="ASSIGNMENTTYPE">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+      </table>
+      <table name="NOTIFICATIONS">
+         <row>
+            <column name="NOTIFICATIONID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="STATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="SUBJECT">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CCLIST">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="URL">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="BODY">
+               <jdbctype>LONGVARCHAR</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="INCLUDESTATISTICS">
+               <jdbctype>CHAR</jdbctype>
+               <params>1</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>NOTIFICATIONID</name>
+		<name>WORKFLOWAPPID</name>
+	</primarykey>
+      </table>
+      <table name="CONTENTSTATUS">
+         <row>
+            <column name="CONTENTID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="CONTENTSTATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTCHECKOUTUSERNAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTLASTMODIFIER">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTLASTMODIFIEDDATE">
+               <jdbctype>TIMESTAMP</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTTYPEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTCREATEDDATE">
+               <jdbctype>TIMESTAMP</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTCREATEDBY">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTSTARTDATE">
+               <jdbctype>DATE</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTEXPIRYDATE">
+               <jdbctype>DATE</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTAGINGTIME">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTPUBLISHDATE">
+               <jdbctype>DATE</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTPATHNAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTSUFFIX">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>CONTENTID</name>
+	</primarykey>
+      </table>
+      <table name="CONTENTAPPROVALS">
+         <row>
+            <column name="CONTENTID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="STATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="USERNAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+      </table>
+      <table name="CONTENTSTATUSHISTORY">
+         <row>
+            <column name="CONTENTSTATUSHISTORYID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="CONTENTID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="SESSIONID">
+               <jdbctype>CHAR</jdbctype>
+               <params>40</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="ACTOR">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="VALID">
+               <jdbctype>CHAR</jdbctype>
+               <params>1</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="STATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="ROLENAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CHECKOUTUSERNAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="LASTMODIFIERNAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="LASTMODIFIEDDATE">
+               <jdbctype>TIMESTAMP</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="EVENTTIME">
+               <jdbctype>TIMESTAMP</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>CONTENTSTATUSHISTORYID</name>
+	</primarykey>
+      </table>
+      <table name="CONTENTTYPES">
+         <row>
+            <column name="CONTENTTYPEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="CONTENTTYPEUPDATEREQUEST">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTTYPENEWREQUEST">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTTYPEQUERYREQUEST">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTTYPENAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTTYPEDESC">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>CONTENTTYPEID</name>
+	</primarykey>
+      </table>
+      <table name="CONTENT">
+         <row>
+            <column name="CONTENTID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="CONTENTTITLE">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>255</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="CONTENTBODY">
+               <jdbctype>LONGVARCHAR</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>CONTENTID</name>
+	</primarykey>
+      </table>
+      <table name="AGINGNOTIFYROLES">
+         <row>
+            <column name="AGINGID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="ROLEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+      </table>
+      <table name="NEXTNUMBER">
+         <row>
+            <column name="KEYNAME">
+               <jdbctype>VARCHAR</jdbctype>
+               <params>50</params>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="NEXTNR">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>KEYNAME</name>
+	</primarykey>
+      </table>
+      <table name="AGING">
+         <row>
+            <column name="AGINGID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+            <column name="AGINGTYPE">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="AGINGDURATION">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="AGINGON">
+               <jdbctype>DATE</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="STATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONONAGING">
+               <jdbctype>CHAR</jdbctype>
+               <params>1</params>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONTOSTATEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="TRANSITIONUSINGROLEID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>yes</allowsnull>
+            </column>
+            <column name="WORKFLOWAPPID">
+               <jdbctype>INTEGER</jdbctype>
+               <params/>
+               <allowsnull>no</allowsnull>
+            </column>
+         </row>
+	 <primarykey>
+		<name>WORKFLOWAPPID</name>
+		<name>AGINGID</name>
+	</primarykey>
+      </table>
+   </tables>
+</rxcmsconfig>

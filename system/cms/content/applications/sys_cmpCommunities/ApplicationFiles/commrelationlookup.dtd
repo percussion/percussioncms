@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT commrelationlookup (reltypename, Addurl, list* )>
+<!ELEMENT list (name, id, deleteurl )>
+<!ELEMENT deleteurl (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT Addurl (#PCDATA)>
+<!ELEMENT reltypename (#PCDATA)>

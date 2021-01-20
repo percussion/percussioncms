@@ -1,0 +1,107 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.percussion</groupId>
+    <artifactId>core</artifactId>
+    <version>8.0.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>CMLite-PCM-PkgMgtUI</artifactId>
+  <version>8.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source/>
+          <target/>
+        </configuration>
+      </plugin>
+       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <configuration>
+            <webappDirectory>${project.build.directory}/classes/META-INF/resources/sys_resources/ui/gwt</webappDirectory>
+            <extraJvmArgs>-Xmx2048M -Xss1024k</extraJvmArgs>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>generateAsync</goal>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+   <dependencies>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-servlet</artifactId>
+      <version>2.8.2</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>2.8.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <!--
+    <dependency>
+    <groupId>com.smartgwt</groupId>
+    <artifactId>smartgwt</artifactId>
+    <version>2.4</version>
+    </dependency>
+    -->
+       <dependency>
+           <groupId>com.isomorphic.smartgwt.lgpl</groupId>
+           <artifactId>smartgwt</artifactId>
+           <version>12.0-p20200227</version>
+           <classifier>p20200227</classifier>
+       </dependency>
+       <dependency>
+           <groupId>com.isomorphic.smartgwt.lgpl</groupId>
+           <artifactId>smartgwt-skins</artifactId>
+           <version>12.0-p20200227</version>
+           <classifier>p20200227</classifier>
+       </dependency>
+  </dependencies>
+  
+</project>

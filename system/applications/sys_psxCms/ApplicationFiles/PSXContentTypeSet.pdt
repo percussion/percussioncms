@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXContentType (PSXKey, NewRequest?, QueryRequest?, UpdateRequest?, Description? )>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT UpdateRequest (#PCDATA)>
+<!ELEMENT QueryRequest (#PCDATA)>
+<!ELEMENT NewRequest (#PCDATA)>
+<!ELEMENT CONTENTTYPEID (#PCDATA)>
+<!ELEMENT PSXKey (CONTENTTYPEID )>
+<!ATTLIST PSXKey isPersisted (yes | no ) "yes">
+<!ATTLIST PSXKey needGenerateId (yes | no ) "no">
+<!ATTLIST  PSXContentType name CDATA #REQUIRED>
+<!ATTLIST  PSXContentType objectType CDATA #REQUIRED>
+<!ATTLIST PSXContentType hideFromMenu (true | false ) "false">
+<!ELEMENT PSXContentTypeSet (PSXContentType* )>
+<!ATTLIST  PSXContentTypeSet state CDATA #REQUIRED>
+<!ATTLIST  PSXContentTypeSet ordered CDATA #REQUIRED>
+<!ATTLIST  PSXContentTypeSet className CDATA #REQUIRED>

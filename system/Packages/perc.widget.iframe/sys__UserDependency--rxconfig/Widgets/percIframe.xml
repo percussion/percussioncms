@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+	<WidgetPrefs title="Iframe"
+				 contenttype_name=""
+				 category="integration"
+				 description="Embed an external web page within a Percussion page"
+				 author="Percussion Software Inc"
+				 thumbnail= "/rx_resources/widgets/iframe/images/widgetIconIframe.jpg"
+				 is_responsive="true"/>
+
+	<UserPref name="title"
+			  display_name="Title"
+			  default_value=""
+			  datatype="string" />
+
+	<UserPref name="iframeurl"
+			  display_name="URL"
+			  default_value=""
+			  datatype = "string" />
+
+	<UserPref name="height"
+			  display_name="Height in pixels or percent"
+			  datatype="string" />
+
+	<UserPref name="width"
+			  display_name="Width in pixels or percent"
+			  datatype="string" />
+
+	<UserPref name="marginheight"
+			  display_name="Top and Bottom margin in pixels"
+			  default_value=""
+			  datatype="string" />
+
+	<UserPref name="marginwidth"
+			  display_name="Left and Right margin in pixels"
+			  default_value=""
+			  datatype="string" />
+
+	<UserPref name="frameborder"
+			  display_name="Frame border"
+			  default_value="disable"
+			  datatype="enum">
+		<EnumValue value="disable" display_value="Disable border" />
+		<EnumValue value="enable" display_value="Enable border" />
+	</UserPref>
+
+	<UserPref name="referalPolicy"
+			  display_name="Referrer-Policy"
+			  datatype="enum">
+		<EnumValue value="no-referrer" display_value="no-referrer" />
+        <EnumValue value="no-referrer-when-downgrade" display_value="no-referrer-when-downgrade" />
+        <EnumValue value="origin" display_value="origin" />
+        <EnumValue value="origin-when-cross-origin" display_value="origin-when-cross-origin" />
+        <EnumValue value="same-origin" display_value="same-origin" />
+        <EnumValue value="strict-origin" display_value="strict-origin" />
+        <EnumValue value="strict-origin-when-cross-origin" display_value="strict-origin-when-cross-origin" />
+        <EnumValue value="unsafe-url" display_value="unsafe-url" />
+</UserPref>
+
+	<UserPref name="scrollbar"
+			  display_name="Scrolling"
+			  default_value="auto"
+			  datatype="enum">
+		<EnumValue value="auto" display_value="Auto" />
+		<EnumValue value="no" display_value="No" />
+		<EnumValue value="yes" display_value="Yes" />
+	</UserPref>
+
+	<UserPref name="ariaLabel"
+			  display_name="Aria Label"
+			  datatype="string" />
+
+	<UserPref name="alternateContent"
+			  display_name="Alternate Content"
+			  datatype="string" />
+
+	<CssPref name="rootclass"
+			 display_name="CSS Root Class"
+			 datatype="string" />
+
+	<Code type="jexl">
+		<![CDATA[
+			$rootclass = $perc.widget.item.cssProperties.get('rootclass');
+			if(!empty($rootclass)) {
+				$rootclass = $rootclass;
+			}
+			$props = $perc.widget.item.properties;
+			$iframeurl = $props.get("iframeurl");
+			$referalPolicy = $props.get("referalPolicy");
+			if($iframeurl.startsWith("www"))
+				$iframeurl = "http://" + $iframeurl;
+			$height = $props.get("height");
+			$defaultHeight = $props.get("height");
+			$width = $props.get("width");
+			$defaultWidth = $props.get("width");
+			$frameborder = $props.get("frameborder");
+			$scrollbar = $props.get("scrollbar");
+			$iframeid="perc-iframe-" + $perc.widget.item.id;
+			$title = $props.get("title");
+			$marginheight = $props.get("marginheight");
+			$marginwidth = $props.get("marginwidth");
+			$ariaLabel = $props.get("ariaLabel");
+			$alternateContent = $props.get("alternateContent");
+
+			if($frameborder == "disable"){
+				$frameborder = "0";
+			}
+			else{
+				$frameborder = "1";
+			}
+			$overflow = "auto";
+			if($scrollbar == "yes"){
+				$overflow='visible';
+			}
+			else if($scrollbar == "no"){
+				$overflow='hidden';
+			}
+
+			if(empty($height)){
+				$height='100%';
+			}
+			if(empty($width)){
+				$width='100%';
+			}
+
+			if(empty($marginheight)){
+				$marginheight = '0px';
+			}
+			if(empty($marginwidth)){
+				$marginwidth = '0px';
+			}
+
+			if($width.indexOf('p') == -1 && $width.indexOf('%') == -1){
+				$width = $width + 'px';
+			}
+			if($height.indexOf('p') == -1 && $height.indexOf('%') == -1){
+				$height = $height + 'px';
+			}
+
+            $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+        	if ($dsUrl.indexOf("http://localhost") != -1 )
+			    $dsUrl = "";
+            $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
+		]]>
+	</Code>
+
+	<Content type="velocity">
+		<![CDATA[
+			<div class = "perc-iframe $!{rootclass}" data="$!{dynamicListData}">
+				#if ($perc.isEditMode())
+					#if($iframeurl.isEmpty())
+                        #createEmptyWidgetContent("iframe-sample-content", "This iframe widget is showing sample content.")
+					#else
+						#if($defaultHeight.isEmpty()|| $defaultWidth.isEmpty() )
+                            #createEmptyWidgetContent("iframe-edit-content", "Preview the page or asset to view this iframe.")
+						#else
+                            #createEmptyWidgetContent("iframe-edit-content", "Preview the page or asset to view this iframe.", "width:$!{width} ; height:$!{height}")
+						#end
+                    #end
+
+				#else
+                    ## Absolute paths must be start with http:// or https://
+                    #if($perc.isPreviewMode() && (!$iframeurl.isEmpty() && !$iframeurl.startsWith("http://") && !$iframeurl.startsWith("https://")))
+                        <div style = "width:$!{width}; height:$!{height}; border: $!{frameborder}px solid" class="iframe-relative-url" title="$!{title}">
+						#if("$!alternateContent" != "")<p #if("$!ariaLabel" != "")aria-label="$ariaLabel"#end>$alternateContent</p>#end
+
+                            <p>Relative page urls are not supported in preview mode</p>
+                        </div>
+                    #else
+                        <iframe src = "$!{iframeurl}"   referrerpolicy="$!{referalPolicy}" style = "width: $!{width}; height: $!{height}; overflow: $!{overflow} !important; border: $!{frameborder}; margin-top: $!{marginheight}; margin-bottom: $!{marginheight}; margin-left: $!{marginwidth}; margin-right: $!{marginwidth};" title="$!{title}" #if($title.isEmpty() && "$!ariaLabel" != "")aria-label="$!{ariaLabel}"#end >
+
+						#if("$!alternateContent" != "")<p #if("$!ariaLabel" != "")aria-label="$ariaLabel"#end>$alternateContent</p>#end
+
+							<p>Your browser does not support frames or is currently configured
+                            not to display frames. However, you may browse the content of frames by
+                            <a href="$!{iframeurl}">clicking here.</a></p>
+                        </iframe>
+                    #end
+			   #end
+			</div>
+		]]>
+	</Content>
+</Widget>

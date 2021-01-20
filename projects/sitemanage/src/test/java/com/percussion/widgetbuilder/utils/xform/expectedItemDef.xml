@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<ItemDefData appName="psx_ceMyWidget" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_ceMyWidget/MyWidget.html" id="0" label="MyWidget" name="MyWidget" typeId="668"/>
+   <PSXContentEditor contentType="668" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
+      <PSXDataSet id="768">
+         <name>MyWidget</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <InputDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="1004">
+                     <name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>Article</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2Ktidy.properties</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2KserverPageTags.xml</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>yes</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <ResultDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="0">
+                     <name>Java/global/percussion/content/sys_manageLinksPostProcessor</name>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </ResultDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_MYWIDGET" name="CT_MYWIDGET"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="CT_MYWIDGET" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="Article" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_MYWIDGET</tableAlias>
+                           <column>ARTICLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageLinksConverter</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>Article</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupNamespaces">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="Author" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_MYWIDGET</tableAlias>
+                           <column>AUTHOR</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="ContentAbstract" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_MYWIDGET</tableAlias>
+                           <column>CONTENTABSTRACT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="ContentDate" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_MYWIDGET</tableAlias>
+                           <column>CONTENTDATE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>date</DataType>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="ImageField" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_MYWIDGET</tableAlias>
+                           <column>IMAGEFIELD</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldOutputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnEdit</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>ImageField</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>ImageField_linkId</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXFieldTranslation>
+                        </FieldOutputTranslation>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="ImageField_linkId" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_MYWIDGET</tableAlias>
+                           <column>IMAGEFIELD_LINKID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <FieldInputTranslation>
+                           <PSXFieldTranslation>
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_manageItemPathOnUpdate</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>ImageField</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>ImageField_linkId</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXFieldTranslation>
+                        </FieldInputTranslation>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_MYWIDGET" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Name:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="0" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentpostdate</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>Author</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Author:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1000" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Author:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>ContentDate</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Content Date:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1001" name="sys_CalendarSimple"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Content Date:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>ContentAbstract</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Content Abstract:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1002" name="sys_TextArea">
+                              <PSXParam name="requirescleanup">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>yes</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Content Abstract:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>Article</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Article:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1003" name="sys_tinymce">
+                              <PSXParam name="requirescleanup">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>yes</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Article:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>ImageField</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>ImageField:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1005" name="sys_ImagePath"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>ImageField:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>ImageField_linkId</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>ImageField_linkId:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="1006" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>ImageField_linkId:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+            <userProperties>
+               <userProperty name="Control1003_DependencyIds">1004</userProperty>
+               <userProperty name="Control1003_Dependency1004">sys_xdTextCleanup</userProperty>
+            </userProperties>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>MyWidget</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations>
+         <PSXConditionalExit maxErrorsToStop="10">
+            <PSXExtensionCallSet id="0">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/content/sys_cleanReservedHtmlClasses</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>Article</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </PSXConditionalExit>
+         <PSXConditionalExit maxErrorsToStop="10">
+            <PSXExtensionCallSet id="0">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/content/sys_managedItemPathPreProcessor</name>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </PSXConditionalExit>
+      </PSXInputTranslations>
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="4,5,6,7"/>
+   </PSXContentEditor>
+</ItemDefData>

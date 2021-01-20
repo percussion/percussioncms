@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:sys="urn:www.percussion.com/6.0.0/system" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="urn:www.percussion.com/6.0.0/securityServices" xmlns:ns4="urn:www.percussion.com/6.0.0/assemblyServices" xmlns:ns1="urn:www.percussion.com/6.0.0/uiServices" xmlns:com="urn:www.percussion.com/6.0.0/common" name="system" targetNamespace="urn:www.percussion.com/6.0.0/system" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import schemaLocation="../faults.xsd" namespace="urn:www.percussion.com/6.0.0/faults" />
+    </xsd:schema>
+    <xsd:schema>
+      <xsd:import schemaLocation="system.xsd" namespace="urn:www.percussion.com/6.0.0/system" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="AuthenticationHeader">
+    <wsdl:part name="Session" element="com:PSAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="empty" />
+  <wsdl:message name="SwitchCommunityRequest">
+    <wsdl:part name="SwitchCommunityRequest" element="sys:SwitchCommunityRequest" />
+  </wsdl:message>
+  <wsdl:message name="SwitchLocaleRequest">
+    <wsdl:part name="SwitchLocaleRequest" element="sys:SwitchLocaleRequest" />
+  </wsdl:message>
+  <wsdl:message name="CreateRelationshipRequest">
+    <wsdl:part name="CreateRelationshipRequest" element="sys:CreateRelationshipRequest" />
+  </wsdl:message>
+  <wsdl:message name="CreateRelationshipResponse">
+    <wsdl:part name="CreateRelationshipResponse" element="sys:CreateRelationshipResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadRelationshipsRequest">
+    <wsdl:part name="LoadRelationshipsRequest" element="sys:LoadRelationshipsRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadRelationshipsResponse">
+    <wsdl:part name="LoadRelationshipsResponse" element="sys:LoadRelationshipsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveRelationshipsRequest">
+    <wsdl:part name="SaveRelationshipsRequest" element="sys:SaveRelationshipsRequest" />
+  </wsdl:message>
+  <wsdl:message name="DeleteRelationshipsRequest">
+    <wsdl:part name="DeleteRelationshipsRequest" element="sys:DeleteRelationshipsRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindDependentsRequest">
+    <wsdl:part name="FindDependentsRequest" element="sys:FindDependentsRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindDependentsResponse">
+    <wsdl:part name="FindDependentsResponse" element="sys:FindDependentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindOwnersRequest">
+    <wsdl:part name="FindOwnersRequest" element="sys:FindOwnersRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindOwnersResponse">
+    <wsdl:part name="FindOwnersResponse" element="sys:FindOwnersResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadRelationshipTypesRequest">
+    <wsdl:part name="LoadRelationshipTypesRequest" element="sys:LoadRelationshipTypesRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadRelationshipTypesResponse">
+    <wsdl:part name="LoadRelationshipTypesResponse" element="sys:LoadRelationshipTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadAuditTrailsRequest">
+    <wsdl:part name="LoadAuditTrailsRequest" element="sys:LoadAuditTrailsRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadAuditTrailsResponse">
+    <wsdl:part name="LoadAuditTrailsResponse" element="sys:LoadAuditTrailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransitionItemsRequest">
+    <wsdl:part name="TransitionItemsRequest" element="sys:TransitionItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="TransitionItemsResponse">
+    <wsdl:part name="TransitionItemsResponse" element="sys:TransitionItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadWorkflowsRequest">
+    <wsdl:part name="LoadWorkflowsRequest" element="sys:LoadWorkflowsRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadWorkflowsResponse">
+    <wsdl:part name="LoadWorkflowsResponse" element="sys:LoadWorkflowsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllowedTransitionsRequest">
+    <wsdl:part name="GetAllowedTransitionsRequest" element="sys:GetAllowedTransitionsRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetAllowedTransitionsResponse">
+    <wsdl:part name="GetAllowedTransitionsResponse" element="sys:GetAllowedTransitionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ContractViolationFaultMessage">
+    <wsdl:part name="fault" element="flt:PSContractViolationFault" />
+  </wsdl:message>
+  <wsdl:message name="InvalidSessionFaultMessage">
+    <wsdl:part name="fault" element="flt:PSInvalidSessionFault" />
+  </wsdl:message>
+  <wsdl:message name="NotAuthorizedFaultMessage">
+    <wsdl:part name="fault" element="flt:PSNotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="ErrorResultsFaultMessage">
+    <wsdl:part name="fault" element="flt:PSErrorResultsFault" />
+  </wsdl:message>
+  <wsdl:message name="ErrorsFaultMessage">
+    <wsdl:part name="fault" element="flt:PSErrorsFault" />
+  </wsdl:message>
+  <wsdl:message name="UserNotMemberOfCommunityFaultMessage">
+    <wsdl:part name="fault" element="flt:PSUserNotMemberOfCommunityFault" />
+  </wsdl:message>
+  <wsdl:message name="InvalidLocaleFaultMessage">
+    <wsdl:part name="fault" element="flt:PSInvalidLocaleFault" />
+  </wsdl:message>
+  <wsdl:message name="UnknownRelationshipTypeFaultMessage">
+    <wsdl:part name="fault" element="flt:PSUnknownRelationshipTypeFault" />
+  </wsdl:message>
+  <wsdl:message name="UseSpecificMethodsFaultMessage">
+    <wsdl:part name="fault" element="flt:PSUseSpecificMethodsFault" />
+  </wsdl:message>
+  <wsdl:portType name="system">
+    <wsdl:operation name="SwitchCommunity">
+      <wsdl:input message="sys:SwitchCommunityRequest" />
+      <wsdl:output message="sys:empty" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="UserNotMemberOfCommunityFault" message="sys:UserNotMemberOfCommunityFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SwitchLocale">
+      <wsdl:input message="sys:SwitchLocaleRequest" />
+      <wsdl:output message="sys:empty" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="InvalidLocaleFault" message="sys:InvalidLocaleFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateRelationship">
+      <wsdl:input message="sys:CreateRelationshipRequest" />
+      <wsdl:output message="sys:CreateRelationshipResponse" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="UnknownRelationshipTypeFault" message="sys:UnknownRelationshipTypeFaultMessage" />
+      <wsdl:fault name="UseSpecificMethodsFault" message="sys:UseSpecificMethodsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadRelationships">
+      <wsdl:input message="sys:LoadRelationshipsRequest" />
+      <wsdl:output message="sys:LoadRelationshipsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="sys:NotAuthorizedFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveRelationships">
+      <wsdl:input message="sys:SaveRelationshipsRequest" />
+      <wsdl:output message="sys:empty" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="sys:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRelationships">
+      <wsdl:input message="sys:DeleteRelationshipsRequest" />
+      <wsdl:output message="sys:empty" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="sys:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindDependents">
+      <wsdl:input message="sys:FindDependentsRequest" />
+      <wsdl:output message="sys:FindDependentsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindOwners">
+      <wsdl:input message="sys:FindOwnersRequest" />
+      <wsdl:output message="sys:FindOwnersResponse" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadRelationshipTypes">
+      <wsdl:input message="sys:LoadRelationshipTypesRequest" />
+      <wsdl:output message="sys:LoadRelationshipTypesResponse" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="sys:NotAuthorizedFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadAuditTrails">
+      <wsdl:input message="sys:LoadAuditTrailsRequest" />
+      <wsdl:output message="sys:LoadAuditTrailsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="sys:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TransitionItems">
+      <wsdl:input message="sys:TransitionItemsRequest" />
+      <wsdl:output message="sys:TransitionItemsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="sys:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadWorkflows">
+      <wsdl:input message="sys:LoadWorkflowsRequest" />
+      <wsdl:output message="sys:LoadWorkflowsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="sys:NotAuthorizedFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllowedTransitions">
+      <wsdl:input message="sys:GetAllowedTransitionsRequest" />
+      <wsdl:output message="sys:GetAllowedTransitionsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="sys:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="sys:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="systemSOAP" type="sys:system">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SwitchCommunity">
+      <soap:operation soapAction="urn:SwitchCommunity" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UserNotMemberOfCommunityFault">
+        <soap:fault use="literal" name="UserNotMemberOfCommunityFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SwitchLocale">
+      <soap:operation soapAction="urn:SwitchLocale" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidLocaleFault">
+        <soap:fault use="literal" name="InvalidLocaleFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateRelationship">
+      <soap:operation soapAction="urn:CreateRelationship" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnknownRelationshipTypeFault">
+        <soap:fault use="literal" name="UnknownRelationshipTypeFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UseSpecificMethodsFault">
+        <soap:fault use="literal" name="UseSpecificMethodsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadRelationships">
+      <soap:operation soapAction="urn:LoadRelationships" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SaveRelationships">
+      <soap:operation soapAction="urn:SaveRelationships" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRelationships">
+      <soap:operation soapAction="urn:DeleteRelationships" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindDependents">
+      <soap:operation soapAction="urn:FindDependents" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindOwners">
+      <soap:operation soapAction="urn:FindOwners" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadRelationshipTypes">
+      <soap:operation soapAction="urn:LoadRelationshipTypes" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadAuditTrails">
+      <soap:operation soapAction="urn:LoadAuditTrails" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="TransitionItems">
+      <soap:operation soapAction="urn:TransitionItems" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadWorkflows">
+      <soap:operation soapAction="urn:LoadWorkflows" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllowedTransitions">
+      <soap:operation soapAction="urn:GetAllowedTransitions" />
+      <wsdl:input>
+        <soap:header message="sys:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+</wsdl:definitions>

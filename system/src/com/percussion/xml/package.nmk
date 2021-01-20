@@ -1,0 +1,87 @@
+ ############################################################################
+ #
+ # COPYRIGHT (c) 1999 - 2003 by Percussion Software, Inc., Stoneham, MA USA.
+ # All rights reserved. This material contains unpublished, copyrighted
+ # work including confidential and proprietary information of Percussion.
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.xml
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+	PSDtdTreeTest \
+	PSDtdTreeParentTest \
+	PSXPathEvaluatorTest
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES =
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+	IPSXmlErrors \
+	PSDtdAttribute \
+	PSDtdDataElement \
+	PSDtdElement \
+	PSDtdElementEntry \
+	PSDtdGenerator \
+	PSDtdNode \
+	PSDtdNodeList \
+	PSDtdTree \
+	PSDtdTreeMergeManager \
+	PSDtdTreeVisitor \
+	PSSaxParserFactoryImpl \
+	PSNodePrinter \
+	PSXmlUtils \
+	PSXPathEvaluator \
+	PSDtdBuilder \
+	PSCM1op \
+	PSCM2op \
+	PSCMLeaf \
+	PSDtd \
+	PSDtdParser \
+	PSXmlAttributeDecl \
+	PSXmlElementDecl \
+	PSSaxDtdParser
+
+#
+# Properties files
+#
+PROPERTIES =
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)
+

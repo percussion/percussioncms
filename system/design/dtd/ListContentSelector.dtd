@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This DTD describes a content list as used by list content 
+   selectors of the Rhythmyx Content Loader. The idea is to have
+   a crawler producing this list and dumping the results into an
+   XML file of this format. Our selector will tehn read the list 
+   and walk all servers, roots and links to fetch the content 
+   found by the crawler.
+   
+   name - the name of this list content selector.
+-->
+<!ELEMENT ListContentSelector (Servers)>
+<!ATTLIST ListContentSelector
+   name CDATA #REQUIRED
+>
+<!--
+   A collection of servers from where to collect the content.
+-->
+<!ELEMENT Servers (Server+)>
+<!--
+   Each server specifies the root and a list of links that were found 
+   by the crawler.
+   Optional user name and password can be supplied if login to
+   the specified server is required.
+   
+   name - the server name.
+   post - the server port.
+-->
+<!ELEMENT Server (Roots, User?, Password?)>
+<!ATTLIST Server
+   name CDATA #REQUIRED
+   port CDATA #REQUIRED
+>
+<!--
+   A collection of roots found by the crawler.
+-->
+<!ELEMENT Roots (Root+)>
+<!--
+   The site root that was crawled.
+   Required root attribs
+   
+   url - the root URL for all the links elements
+-->
+<!ELEMENT Root (Links)>
+<!ATTLIST Root
+   url CDATA #REQUIRED
+>
+<!--
+   A user name that can be used to login to pages.
+-->
+<!ELEMENT User (#PCDATA)>
+<!--
+   A password that can be used to login to pages.
+   
+   encrypted - specifies whether or not the supplied password is
+      encrypted.
+-->
+<!ELEMENT Password (#PCDATA)>
+<!ATTLIST Password
+   encrypted (yes | no) "no"
+>
+<!--
+   A collection of links that were found by the crawler.
+-->
+<!ELEMENT Links (Link+)>
+<!--
+   A link found by the crawler.
+   
+   full - if 'yes', the attached url if provided as fully qualified URL.
+      If 'no' the attached url together with the server name, port and 
+      protocol will build the fully qualifiedd URL.
+   
+   protocol - the protocol to use if not the full URL is provided.
+-->
+<!ELEMENT Link (Url)>
+<!ATTLIST Link
+   full (yes | no) "no"
+   protocol (http | https | ftp | file) "http"
+>
+<!--
+   The resource url found by the crawler.
+-->
+<!ELEMENT Url (#PCDATA)>

@@ -1,0 +1,1203 @@
+  <workflow id="1">
+    <guid>0-23-6</guid>
+    <administrator-role>Admin</administrator-role>
+    <description>This workflow requires two approvals before content is published.  It is the default for most content types and is assigned to all communities.</description>
+    <initial-state-id>1</initial-state-id>
+    <label>Default Workflow</label>
+    <name>Default Workflow</name>
+    <notification-defs>
+      <notification-def id="2">
+        <guid>0-24-3</guid>
+        <body>Please click the following link to view content that is awaiting your approval:</body>
+        <description>Notification for the ldap users with editor role.</description>
+        <subject>Content is awaiting your approval</subject>
+        <workflow-id>6</workflow-id>
+      </notification-def>
+    </notification-defs>
+    <roles>
+      <role id="3">
+        <guid>0-25-9</guid>
+        <description/>
+        <name>Admin</name>
+        <workflow-id>6</workflow-id>
+      </role>
+      <role id="4">
+        <guid>0-25-10</guid>
+        <description>Content Contributor</description>
+        <name>Contributor</name>
+        <workflow-id>6</workflow-id>
+      </role>
+      <role id="5">
+        <guid>0-25-11</guid>
+        <description/>
+        <name>Editor</name>
+        <workflow-id>6</workflow-id>
+      </role>
+      <role id="6">
+        <guid>0-25-12</guid>
+        <description/>
+        <name>System</name>
+        <workflow-id>6</workflow-id>
+      </role>
+      <role id="7">
+        <guid>0-25-102</guid>
+        <description>TestNofifyRole</description>
+        <name>TestNofifyRole</name>
+        <workflow-id>6</workflow-id>
+      </role>
+    </roles>
+    <states>
+      <state id="8">
+        <guid>0-26-1</guid>
+        <adhoc-enabled>false</adhoc-enabled>
+        <aging-transitions/>
+        <assigned-roles>
+          <assigned-role id="9">
+            <guid>0-25-12</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>1</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="10">
+            <guid>0-25-9</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>1</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="11">
+            <guid>0-25-10</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>1</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="12">
+            <guid>0-25-11</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>1</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="13">
+            <guid>0-25-102</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>1</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+        </assigned-roles>
+        <content-valid-value>n</content-valid-value>
+        <description>Where draft content is first created</description>
+        <label>Draft</label>
+        <name>Draft</name>
+        <publishable>false</publishable>
+        <sort-order>10</sort-order>
+        <state-id>1</state-id>
+        <transitions>
+          <transition id="14">
+            <guid>0-27-5</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Publish the item</description>
+            <label>Publish</label>
+            <name>Publish</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>1</state-id>
+            <to-state>4</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="15">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>5</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Publish</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="16">
+            <guid>0-27-4</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Move to pending state for publishing.</description>
+            <label>Approve</label>
+            <name>Approve</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>1</state-id>
+            <to-state>4</to-state>
+            <transition-action>Java/global/percussion/extensions/general/perc_LockLocalContent</transition-action>
+            <transition-roles>
+              <transition-role id="17">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>4</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="18">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>4</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Approve</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="19">
+            <guid>0-27-6</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>true</default-transition>
+            <description>Submit for Review</description>
+            <label>Submit</label>
+            <name>Submit</name>
+            <notifications>
+              <notification id="20">
+                <ccrecipients/>
+                <guid>0-150-1</guid>
+                <notification-id>3</notification-id>
+                <recipients/>
+                <state-role-recipient-type>TO_STATE_RECIPIENTS</state-role-recipient-type>
+                <transition-id>6</transition-id>
+                <workflow-id>6</workflow-id>
+              </notification>
+            </notifications>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>1</state-id>
+            <to-state>102</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="21">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>6</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="22">
+                <guid>0-25-10</guid>
+                <role-id>10</role-id>
+                <transition-id>6</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="23">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>6</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Submit</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+        </transitions>
+        <workflow-id>6</workflow-id>
+      </state>
+      <state id="24">
+        <guid>0-26-2</guid>
+        <adhoc-enabled>false</adhoc-enabled>
+        <aging-transitions/>
+        <assigned-roles>
+          <assigned-role id="25">
+            <guid>0-25-9</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>2</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="26">
+            <guid>0-25-10</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>2</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="27">
+            <guid>0-25-11</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>2</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="28">
+            <guid>0-25-12</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>2</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="29">
+            <guid>0-25-102</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>2</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+        </assigned-roles>
+        <content-valid-value>n</content-valid-value>
+        <description>Content is reviewed here</description>
+        <label>Review</label>
+        <name>Review</name>
+        <publishable>false</publishable>
+        <sort-order>30</sort-order>
+        <state-id>2</state-id>
+        <transitions>
+          <transition id="30">
+            <guid>0-27-19</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Publish the item</description>
+            <label>Publish</label>
+            <name>Publish</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>2</state-id>
+            <to-state>4</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="31">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>19</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Publish</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="32">
+            <guid>0-27-18</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>true</default-transition>
+            <description>approve content to pending</description>
+            <label>Approve</label>
+            <name>Approve</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>2</state-id>
+            <to-state>4</to-state>
+            <transition-action>Java/global/percussion/extensions/general/perc_LockLocalContent</transition-action>
+            <transition-roles>
+              <transition-role id="33">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>18</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="34">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>18</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Approve</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="35">
+            <guid>0-27-20</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Send it back to draft for reworking.</description>
+            <label>Reject</label>
+            <name>Reject</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>2</state-id>
+            <to-state>102</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="36">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>20</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="37">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>20</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Reject</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+        </transitions>
+        <workflow-id>6</workflow-id>
+      </state>
+      <state id="38">
+        <guid>0-26-4</guid>
+        <adhoc-enabled>false</adhoc-enabled>
+        <aging-transitions>
+          <aging-transition id="39">
+            <guid>0-27-10</guid>
+            <description>Unpublishes item on expiry date</description>
+            <interval>1</interval>
+            <label>AutoUnPublishItem</label>
+            <name>AutoUnPublishItem</name>
+            <notifications/>
+            <state-id>4</state-id>
+            <system-field>CONTENTEXPIRYDATE</system-field>
+            <to-state>6</to-state>
+            <transition-action>Java/global/percussion/cms/publisher/sys_AutoUnPublishItem</transition-action>
+            <trigger>AutoUnPublishItem</trigger>
+            <type>SYSTEM_FIELD</type>
+            <workflow-id>6</workflow-id>
+          </aging-transition>
+          <aging-transition id="40">
+            <guid>0-27-9</guid>
+            <description>Publishes items on startdate</description>
+            <interval>1</interval>
+            <label>AutoPublishItem</label>
+            <name>AutoPublishItem</name>
+            <notifications/>
+            <state-id>4</state-id>
+            <system-field>CONTENTSTARTDATE</system-field>
+            <to-state>4</to-state>
+            <transition-action>Java/global/percussion/cms/publisher/sys_AutoPublishItem</transition-action>
+            <trigger>AutoPublishItem</trigger>
+            <type>SYSTEM_FIELD</type>
+            <workflow-id>6</workflow-id>
+          </aging-transition>
+        </aging-transitions>
+        <assigned-roles>
+          <assigned-role id="41">
+            <guid>0-25-9</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>4</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="42">
+            <guid>0-25-10</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>4</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="43">
+            <guid>0-25-11</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>4</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="44">
+            <guid>0-25-12</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>4</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="45">
+            <guid>0-25-102</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>4</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+        </assigned-roles>
+        <content-valid-value>y</content-valid-value>
+        <description>Items that have publishing pending</description>
+        <label>Pending</label>
+        <name>Pending</name>
+        <publishable>true</publishable>
+        <sort-order>50</sort-order>
+        <state-id>4</state-id>
+        <transitions>
+          <transition id="46">
+            <guid>0-27-11</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Quick Edit content from pending</description>
+            <label>Edit</label>
+            <name>Edit</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>4</state-id>
+            <to-state>6</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="47">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>11</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="48">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>11</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Quick Edit</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="49">
+            <guid>0-27-12</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>true</default-transition>
+            <description>Automatic transition to move items to live state.</description>
+            <label>Live</label>
+            <name>Live</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>4</state-id>
+            <to-state>5</to-state>
+            <transition-action>Java/global/percussion/extensions/general/sys_TouchParentItems</transition-action>
+            <transition-roles>
+              <transition-role id="50">
+                <guid>0-25-12</guid>
+                <role-id>12</role-id>
+                <transition-id>12</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>forcetolive</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+        </transitions>
+        <workflow-id>6</workflow-id>
+      </state>
+      <state id="51">
+        <guid>0-26-5</guid>
+        <adhoc-enabled>false</adhoc-enabled>
+        <aging-transitions>
+          <aging-transition id="52">
+            <guid>0-27-7</guid>
+            <description>Unpublishes item on expiry date</description>
+            <interval>1</interval>
+            <label>AutoUnPublishItem</label>
+            <name>AutoUnPublishItem</name>
+            <notifications/>
+            <state-id>5</state-id>
+            <system-field>CONTENTEXPIRYDATE</system-field>
+            <to-state>6</to-state>
+            <transition-action>Java/global/percussion/cms/publisher/sys_AutoUnPublishItem</transition-action>
+            <trigger>AutoUnPublishItem</trigger>
+            <type>SYSTEM_FIELD</type>
+            <workflow-id>6</workflow-id>
+          </aging-transition>
+        </aging-transitions>
+        <assigned-roles>
+          <assigned-role id="53">
+            <guid>0-25-9</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>5</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="54">
+            <guid>0-25-10</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>5</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="55">
+            <guid>0-25-11</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>5</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="56">
+            <guid>0-25-12</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>5</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="57">
+            <guid>0-25-102</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>5</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+        </assigned-roles>
+        <content-valid-value>y</content-valid-value>
+        <description>Items that are published to production server</description>
+        <label>Live</label>
+        <name>Live</name>
+        <publishable>true</publishable>
+        <sort-order>60</sort-order>
+        <state-id>5</state-id>
+        <transitions>
+          <transition id="58">
+            <guid>0-27-8</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Quick Edit content from public</description>
+            <label>Edit</label>
+            <name>Edit</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>5</state-id>
+            <to-state>6</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="59">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>8</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="60">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>8</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Quick Edit</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+        </transitions>
+        <workflow-id>6</workflow-id>
+      </state>
+      <state id="61">
+        <guid>0-26-6</guid>
+        <adhoc-enabled>false</adhoc-enabled>
+        <aging-transitions/>
+        <assigned-roles>
+          <assigned-role id="62">
+            <guid>0-25-9</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>6</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="63">
+            <guid>0-25-10</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>6</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="64">
+            <guid>0-25-11</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>6</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="65">
+            <guid>0-25-12</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>6</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="66">
+            <guid>0-25-102</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>6</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+        </assigned-roles>
+        <content-valid-value>i</content-valid-value>
+        <description>Quick editing items from publish state</description>
+        <label>Quick Edit</label>
+        <name>Quick Edit</name>
+        <publishable>false</publishable>
+        <sort-order>70</sort-order>
+        <state-id>6</state-id>
+        <transitions>
+          <transition id="67">
+            <guid>0-27-16</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Remove the item</description>
+            <label>Remove</label>
+            <name>Remove</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>6</state-id>
+            <to-state>7</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="68">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>16</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Remove</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="69">
+            <guid>0-27-17</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Send the item back to Draft</description>
+            <label>Resubmit</label>
+            <name>Resubmit</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>6</state-id>
+            <to-state>1</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="70">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>17</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="71">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>17</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Resubmit</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="72">
+            <guid>0-27-15</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Publish the item</description>
+            <label>Publish</label>
+            <name>Publish</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>6</state-id>
+            <to-state>4</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="73">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>15</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Publish</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="74">
+            <guid>0-27-13</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>true</default-transition>
+            <description>returns item to pending state</description>
+            <label>Approve</label>
+            <name>Approve</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>6</state-id>
+            <to-state>4</to-state>
+            <transition-action>Java/global/percussion/extensions/general/sys_TouchParentItems</transition-action>
+            <transition-roles>
+              <transition-role id="75">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>13</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="76">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>13</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Approve</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="77">
+            <guid>0-27-14</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Moves to archive</description>
+            <label>Archive</label>
+            <name>Archive</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>6</state-id>
+            <to-state>7</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="78">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>14</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="79">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>14</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Archive</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+        </transitions>
+        <workflow-id>6</workflow-id>
+      </state>
+      <state id="80">
+        <guid>0-26-7</guid>
+        <adhoc-enabled>false</adhoc-enabled>
+        <aging-transitions/>
+        <assigned-roles>
+          <assigned-role id="81">
+            <guid>0-25-12</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>7</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="82">
+            <guid>0-25-9</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>7</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="83">
+            <guid>0-25-10</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>7</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="84">
+            <guid>0-25-11</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>7</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="85">
+            <guid>0-25-102</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>7</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+        </assigned-roles>
+        <content-valid-value>u</content-valid-value>
+        <description>Unpublished items are stored here</description>
+        <label>Archive</label>
+        <name>Archive</name>
+        <publishable>false</publishable>
+        <sort-order>80</sort-order>
+        <state-id>7</state-id>
+        <transitions>
+          <transition id="86">
+            <guid>0-27-2</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Publish the item</description>
+            <label>Publish</label>
+            <name>Publish</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>7</state-id>
+            <to-state>4</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="87">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>2</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Publish</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="88">
+            <guid>0-27-1</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Send it back to pending for republishing.</description>
+            <label>Approve</label>
+            <name>Approve</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>7</state-id>
+            <to-state>4</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="89">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>1</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="90">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>1</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Approve</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="91">
+            <guid>0-27-3</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>true</default-transition>
+            <description>returns item back to review</description>
+            <label>Resubmit</label>
+            <name>Resubmit</name>
+            <notifications>
+              <notification id="92">
+                <ccrecipients/>
+                <guid>0-150-2</guid>
+                <notification-id>3</notification-id>
+                <recipients/>
+                <state-role-recipient-type>TO_STATE_RECIPIENTS</state-role-recipient-type>
+                <transition-id>3</transition-id>
+                <workflow-id>6</workflow-id>
+              </notification>
+            </notifications>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>7</state-id>
+            <to-state>1</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="93">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>3</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role id="94">
+                <guid>0-25-11</guid>
+                <role-id>11</role-id>
+                <transition-id>3</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Resubmit</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+        </transitions>
+        <workflow-id>6</workflow-id>
+      </state>
+      <state id="95">
+        <guid>0-26-102</guid>
+        <adhoc-enabled>false</adhoc-enabled>
+        <aging-transitions/>
+        <assigned-roles>
+          <assigned-role id="96">
+            <guid>0-25-9</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>ASSIGNEE</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>102</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="97">
+            <guid>0-25-10</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>102</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="98">
+            <guid>0-25-11</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>102</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="99">
+            <guid>0-25-12</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>false</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>102</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+          <assigned-role id="100">
+            <guid>0-25-102</guid>
+            <adhoc-type>DISABLED</adhoc-type>
+            <assignment-type>READER</assignment-type>
+            <do-notify>true</do-notify>
+            <show-in-inbox>true</show-in-inbox>
+            <state-id>102</state-id>
+            <workflow-id>6</workflow-id>
+          </assigned-role>
+        </assigned-roles>
+        <content-valid-value>n</content-valid-value>
+        <description>test</description>
+        <label>test</label>
+        <name>test</name>
+        <publishable>false</publishable>
+        <sort-order>20</sort-order>
+        <state-id>102</state-id>
+        <transitions>
+          <transition id="101">
+            <guid>0-27-106</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Publish</description>
+            <label>Publish</label>
+            <name>Publish</name>
+            <notifications>
+              <notification id="102">
+                <ccrecipients/>
+                <guid>0-150-106</guid>
+                <notification-id>3</notification-id>
+                <recipients/>
+                <state-role-recipient-type>TO_STATE_RECIPIENTS</state-role-recipient-type>
+                <transition-id>106</transition-id>
+                <workflow-id>6</workflow-id>
+              </notification>
+            </notifications>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>102</state-id>
+            <to-state>4</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="103">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>106</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Publish</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="104">
+            <guid>0-27-107</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Approve</description>
+            <label>Approve</label>
+            <name>Approve</name>
+            <notifications>
+              <notification id="105">
+                <ccrecipients/>
+                <guid>0-150-107</guid>
+                <notification-id>3</notification-id>
+                <recipients/>
+                <state-role-recipient-type>TO_STATE_RECIPIENTS</state-role-recipient-type>
+                <transition-id>107</transition-id>
+                <workflow-id>6</workflow-id>
+              </notification>
+            </notifications>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>102</state-id>
+            <to-state>4</to-state>
+            <transition-action>Java/global/percussion/extensions/general/perc_LockLocalContent</transition-action>
+            <transition-roles>
+              <transition-role id="106">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>107</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Approve</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="107">
+            <guid>0-27-108</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>true</default-transition>
+            <description>Submit</description>
+            <label>Submit</label>
+            <name>Submit</name>
+            <notifications>
+              <notification id="108">
+                <ccrecipients/>
+                <guid>0-150-108</guid>
+                <notification-id>3</notification-id>
+                <recipients/>
+                <state-role-recipient-type>TO_STATE_RECIPIENTS</state-role-recipient-type>
+                <transition-id>108</transition-id>
+                <workflow-id>6</workflow-id>
+              </notification>
+            </notifications>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>102</state-id>
+            <to-state>2</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="109">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>108</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Submit</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="110">
+            <guid>0-27-109</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Notify</description>
+            <label>Notify</label>
+            <name>Notify</name>
+            <notifications>
+              <notification id="111">
+                <ccrecipients/>
+                <guid>0-150-109</guid>
+                <notification-id>3</notification-id>
+                <recipients/>
+                <state-role-recipient-type>TO_STATE_RECIPIENTS</state-role-recipient-type>
+                <transition-id>109</transition-id>
+                <workflow-id>6</workflow-id>
+              </notification>
+            </notifications>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>102</state-id>
+            <to-state>0</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="112">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>109</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Notify</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+          <transition id="113">
+            <guid>0-27-110</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Reject</description>
+            <label>Reject</label>
+            <name>Reject</name>
+            <notifications>
+              <notification id="114">
+                <ccrecipients/>
+                <guid>0-150-110</guid>
+                <notification-id>3</notification-id>
+                <recipients/>
+                <state-role-recipient-type>TO_STATE_RECIPIENTS</state-role-recipient-type>
+                <transition-id>110</transition-id>
+                <workflow-id>6</workflow-id>
+              </notification>
+            </notifications>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>102</state-id>
+            <to-state>1</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role id="115">
+                <guid>0-25-9</guid>
+                <role-id>9</role-id>
+                <transition-id>110</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Reject</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
+        </transitions>
+        <workflow-id>6</workflow-id>
+      </state>
+    </states>
+    <version>3</version>
+  </workflow>

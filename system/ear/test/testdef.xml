@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<tables>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="PSX_TEMPLATE">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="TEMPLATE_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="LABEL">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="STYLESHEETNAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ASSEMBLYURL">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>2100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ASSEMBLER">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>64</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="OUTPUTFORMAT">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="AATYPE">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TEMPLATE_TYPE">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="DESCRIPTION">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="PUBLISHWHEN">
+            <jdbctype>CHAR</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="LOCATIONPREFIX">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>10</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="LOCATIONSUFFIX">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>10</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TEMPLATE">
+            <jdbctype>CLOB</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="MIME_TYPE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>64</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="CHARSET">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>64</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="GLOBAL_TEMPLATE_USAGE">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="GLOBAL_TEMPLATE">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>TEMPLATE_ID</name>
+      </primarykey>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="PSX_CONTENTTYPE_TEMPLATE">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="TEMPLATE_TYPE_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="CONTENTTYPEID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TEMPLATE_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>TEMPLATE_TYPE_ID</name>
+      </primarykey>
+      <foreignkey action="c">
+         <fkColumn>
+            <name>CONTENTTYPEID</name>
+            <externalTable>CONTENTTYPES</externalTable>
+            <externalColumn>CONTENTTYPEID</externalColumn>
+         </fkColumn>
+         <fkColumn>
+            <name>TEMPLATE_ID</name>
+            <externalTable>PSX_TEMPLATE</externalTable>
+            <externalColumn>TEMPLATE_ID</externalColumn>
+         </fkColumn>
+      </foreignkey>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="PSX_TEMPLATE_BINDING">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="BINDING_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="EXECUTION_ORDER">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TEMPLATE_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VARIABLE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>64</size>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="EXPRESSION">
+            <jdbctype>CLOB</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>BINDING_ID</name>
+      </primarykey>
+      <foreignkey action="c">
+         <fkColumn>
+            <name>TEMPLATE_ID</name>
+            <externalTable>PSX_TEMPLATE</externalTable>
+            <externalColumn>TEMPLATE_ID</externalColumn>
+         </fkColumn>
+      </foreignkey>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="RXVARIANTCOMMUNITY">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="VARIANTID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="COMMUNITYID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>VARIANTID</name>
+         <name>COMMUNITYID</name>
+      </primarykey>
+      <indexdefinitions>
+         <index action="c" isUnique="n" name="IX_VARCOMM_CID">
+            <name>COMMUNITYID</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="PSX_ITEM_FILTER">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="FILTER_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="PARENT_FILTER_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>64</size>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="DESCRIPTION">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>1023</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="LEGACY_AUTHTYPE">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>FILTER_ID</name>
+      </primarykey>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="PSX_ITEM_FILTER_RULE">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="FILTER_RULE_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="FILTER_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>256</size>
+            <allowsnull>no</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>FILTER_RULE_ID</name>
+      </primarykey>
+      <foreignkey action="c">
+         <fkColumn>
+            <name>FILTER_ID</name>
+            <externalTable>PSX_ITEM_FILTER</externalTable>
+            <externalColumn>FILTER_ID</externalColumn>
+         </fkColumn>
+      </foreignkey>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="PSX_ITEM_FILTER_RULE_PARAM">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="FILTER_RULE_PARAM_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="FILTER_RULE_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>64</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VALUE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>256</size>
+            <allowsnull>no</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>FILTER_RULE_PARAM_ID</name>
+      </primarykey>
+      <foreignkey action="c">
+         <fkColumn>
+            <name>FILTER_RULE_ID</name>
+            <externalTable>PSX_ITEM_FILTER_RULE</externalTable>
+            <externalColumn>FILTER_RULE_ID</externalColumn>
+         </fkColumn>
+      </foreignkey>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="RXSLOTTYPE">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="SLOTID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="LABEL">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SLOTNAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SLOTDESC">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SYSTEMSLOT">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SLOTTYPE">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="RELATIONSHIPNAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="FINDER">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>1023</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>SLOTID</name>
+      </primarykey>
+      <indexdefinitions>
+         <index action="c" isUnique="n" name="IX_SLOTTYPE_NAME">
+            <name>SLOTNAME</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="PSX_SLOT_FINDER_PARAM">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="PARAM_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>64</size>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VALUE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>1023</size>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SLOTID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>PARAM_ID</name>
+      </primarykey>
+      <foreignkey action="c">
+         <fkColumn>
+            <name>SLOTID</name>
+            <externalTable>RXSLOTTYPE</externalTable>
+            <externalColumn>SLOTID</externalColumn>
+         </fkColumn>
+      </foreignkey>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="RXCONTENTLIST">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="CONTENTLISTID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="DESCRIPTION">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="URL">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>2100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="EDITIONTYPE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>100</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="GENERATOR">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>256</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="EXPANDER">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>256</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="FILTER_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="PUB_FILTER_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>CONTENTLISTID</name>
+      </primarykey>
+      <foreignkey action="c">
+         <fkColumn>
+            <name>FILTER_ID</name>
+            <externalTable>PSX_ITEM_FILTER</externalTable>
+            <externalColumn>FILTER_ID</externalColumn>
+         </fkColumn>
+      </foreignkey>
+      <indexdefinitions>
+         <index action="c" isUnique="y" name="IX_CONLIST_NAME">
+            <name>NAME</name>
+         </index>
+         <index action="c" isUnique="n" name="IX_CONLIST_EDN">
+            <name>EDITIONTYPE</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="PSX_CONTENTLIST_GENERATOR_PARAM">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="PARAM_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="CONTENT_LIST_ID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>64</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VALUE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>256</size>
+            <allowsnull>no</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>PARAM_ID</name>
+      </primarykey>
+      <foreignkey action="c">
+         <fkColumn>
+            <name>CONTENT_LIST_ID</name>
+            <externalTable>RXCONTENTLIST</externalTable>
+            <externalColumn>CONTENTLISTID</externalColumn>
+         </fkColumn>
+      </foreignkey>
+   </table>
+   <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="PSX_CONTENTLIST_EXPANDER_PARAM">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="PARAM_ID">
+            <jdbctype>BIGINT</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="CONTENT_LIST_ID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>64</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VALUE">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>256</size>
+            <allowsnull>no</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>PARAM_ID</name>
+      </primarykey>
+      <foreignkey action="c">
+         <fkColumn>
+            <name>CONTENT_LIST_ID</name>
+            <externalTable>RXCONTENTLIST</externalTable>
+            <externalColumn>CONTENTLISTID</externalColumn>
+         </fkColumn>
+      </foreignkey>
+   </table>
+</tables>

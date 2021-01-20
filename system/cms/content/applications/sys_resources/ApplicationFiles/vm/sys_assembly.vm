@@ -1,0 +1,1200 @@
+## Customers should not modify the velocity macros in this file. If necessary, create new
+## macros by creating new macros in rx_resources/*.vm files. You may also include other velocity libraries in your
+## assembly templates by using velocity directives
+## Note for developers: Please do not pretty print or indent the macros. That will introduce unwanted white spaces in the output. Make sure
+## to end lines with a comment start to avoid whitespace.
+## This file must be encoded using UTF-8.
+#macro(inner)##
+#__startAaPageDiv()##
+#__addAaPageImg()##
+$sys.innercontent##
+#__endAaPageDiv()##
+#end
+
+#macro(displayfield $fieldname)##
+$sys.item.getProperty($fieldname).String##
+#end
+
+#macro(fieldLink $fieldname $pagelink)##
+#startAAField($fieldname $pagelink)##
+#if ($sys.part.render)##
+$sys.item.getProperty($fieldname).String##
+#end##
+#endAAField($fieldname)##
+#end
+
+#macro(field $fieldname)##
+#startAAField($fieldname "")##
+#if ($sys.part.render)##
+$sys.item.getProperty($fieldname).String##
+#end#endAAField($fieldname)##
+#end
+
+#macro(displaydatefield $fieldname $fieldformat)##
+#if($sys.item.hasProperty($fieldname))##
+$tools.date.format($fieldformat,$sys.item.getProperty($fieldname).Date)##
+#end##
+#end
+
+#macro(datefield $fieldname $fieldformat)##
+#startAAField($fieldname "")##
+#if($sys.item.hasProperty($fieldname))##
+$tools.date.format($fieldformat,$sys.item.getProperty($fieldname).Date)##
+#end##
+#endAAField($fieldname)##
+#end
+
+#macro(field_if_set $before $field $after)##
+#if($sys.item.hasProperty($field))##
+$before##
+#field($field)##
+$after##
+#else##
+#field($field)##
+#end##
+#end
+
+#macro(datefield_if_set $before $field $format $after)##
+#if($sys.item.hasProperty($field))##
+$before##
+#datefield($field $format)##
+$after##
+#else##
+#__handlefieldaa($field)##
+#end##
+#end
+
+#macro(children $childname $templatename $header $before $after $footer)##
+#set($childresults = $rx.asmhelper.assembleChildren($sys.assemblyItem,$sys.item,$childname,$templatename))##
+#if($childresults.size() > 0)##
+$header##
+#foreach( $child in $childresults )##
+$before##
+$rx.doc.extractBody($child)##
+$after##
+#end##
+$footer##
+#end##
+#end
+
+#macro(slot $slotname $header $before $after $footer $params)##
+#initslot($slotname $params)##
+#if ($sys.part.render)##
+#if($sys.currentslot.slot)##
+#__addAaSlotImg($slotname)##
+#__startAaSlotDiv($slotname)##
+#if($sys.currentslot.relresults.size() > 0)##
+$header##
+#end##
+#foreach($relresult in $sys.currentslot.relresults )##
+$before##
+#__startAaSnippetDiv($relresult $slotname)##
+#__addAaSnippetImg($relresult $slotname)##
+#set($body = "$rx.doc.extractBody($relresult)")##
+$body##
+#__endAaSnippetDiv()##
+$after##
+#end##
+#if($sys.currentslot.relresults.size() > 0)##
+$footer##
+#end##
+#__endAaSlotDiv()##
+#end##
+#end##
+#endslot($slotname)##
+#end
+
+## slot_page macro displays the content of a paged slot, with parameters, with text specified for before and after each slot's content,
+## and with header and footer text. The header and footer are omitted if the contents of the slot is empty.
+## Note, $sys.pagecount must be specified as one of the binding variables in the Template; otherwise additional pages may not be published.
+## For example, $sys.pagecount=$rx.paginate.slotContentPageCount($sys.assemblyItem,$slotname,$pagesize,$sys.params)
+
+#macro(slot_page $slotname $header $before $after $footer $params $itemsPerPage $pageNumber)##
+#initslot_page($slotname $params $itemsPerPage $pageNumber)
+#if($sys.currentslot.slot && $sys.currentslot.relresults.size() > 0)
+$header
+#foreach($relresult in $sys.currentslot.relresults )
+$before
+#slotItem($relresult)
+$after
+#end
+$footer
+#end
+#end
+
+#macro(slot_wrapped $slotname $startslottext $endslottext)#slot($slotname "" $startslottext $endslottext "" "")#end
+
+#macro(slot_simple $slotname)#slot($slotname "" "" "" "" "")#end
+
+#macro(node_slot $node $slotname $header $before $after $footer $params)##
+#__slotsetup($slotname $params)##
+#set($cloneditem = $sys.assemblyItem.clone())##
+$cloneditem.setNode($node)##
+#set($sys.currentslot.relresults = $rx.asmhelper.assemble($cloneditem,$sys.currentslot.slot,$completeparams))##
+#if($sys.currentslot.relresults.size() > 0)##
+$header##
+#foreach( $relresult in $sys.currentslot.relresults )##
+$before##
+#set($body = "$rx.doc.extractBody($relresult)")##
+$body##
+$after##
+#end##
+$footer##
+#end##
+#end
+
+#macro(pager $count $page $previous_markup $pagetext $next_markup)##
+#set($last = $page - 1)##
+#set($next = $page + 1)##
+#set($template = $sys.assemblyItem.Template.Name)##
+#if($page > 1)##
+<a href="$rx.location.generateToPage($sys.assemblyItem,$template,$last)">##
+$previous_markup</a>##
+#end##
+#if ($count > 1)##
+$pagetext##
+#end##
+#if($page < $count)##
+<a href="$rx.location.generateToPage($sys.assemblyItem,$template,$next)">##
+$next_markup</a>##
+#end##
+#end
+
+## Initializes the slot information. The information is stored in
+## $sys.currentslot to enable communication to other macros.
+
+#macro(initslot $slotname $params)##
+#__renderpartstart($slotname 'slot')##
+#__slotsetup($slotname $params)##
+#if ($sys.currentslot.slot)##
+#set($sys.currentslot.active = $sys.activeAssembly && $sys.currentslot.isrelationshipfinder)##
+#set($sys.currentslot.relresults = $rx.asmhelper.assemble($sys.assemblyItem,$sys.currentslot.slot,$completeparams))##
+#end##
+#end
+
+#macro(__slotsetup $slotname $params)##
+#set($sys.currentslot.slotname = $slotname)##
+#set($sys.currentslot.slot = $sys.asm.findSlotByName($slotname))##
+#if ($sys.currentslot.slot)##
+#set($sys.currentslot.isrelationshipfinder = $rx.asmhelper.isAASlot($sys.currentslot.slot))##
+#set($completeparams = $rx.asmhelper.combine($sys.params,$params))##
+#else##
+<h3 style="color: red">Cannot find slot: $slotname</h3>##
+#end##
+#end
+
+#macro(initslot_page $slotname $params $itemsPerPage $pageNumber)##
+#set($sys.currentslot.slot = $sys.asm.findSlotByName($slotname))
+#if ($sys.currentslot.slot)
+#set($sys.currentslot.active = false)##
+#set($completeparams = $rx.asmhelper.combine($sys.params,$params))
+#set($sys.currentslot.relresults = $rx.paginate.getSlotPage($sys.assemblyItem,$slotname,$itemsPerPage,$pageNumber,$completeparams))
+#else
+<h3 style="color: red">Cannot find slot: $slotname</h3>
+#end
+#end
+
+## Handle the slot item AA presentation information
+
+#macro(slotItem $relresult)##
+#set($slotname = $sys.currentslot.slotname)##
+#__startAaSnippetDiv($relresult $slotname)##
+#__addAaSnippetImg($relresult $slotname)##
+#set($body = "$rx.doc.extractBody($relresult)")##
+$body##
+#__endAaSnippetDiv()##
+#end
+
+##
+## Link Back
+##
+
+#macro(linkback_head)##
+<meta name="perc_linkback" id="perc_linkback" content="$rx.linkback.encode($sys.params)"/>##
+#end
+
+##
+## Handling for field and slot extraction
+##
+
+#macro(__handlefieldaa $fieldname)#startAAField($fieldname "")#end
+
+#macro(startAAField $fieldname $pagelink)##
+#__addAaFieldImage($fieldname)##
+#__startAaFieldDiv($fieldname $pagelink)##
+#__renderpartstart($fieldname 'field')##
+#end
+
+#macro(__renderpartstart $name $part)##
+#set($sys.part.render = true)##
+#set($sys.part.end = false)##
+#if ($sys.part.active)##
+#set($fn = $rx.string.extractFieldName($name))##
+#if ($sys.part.type == $part && $sys.part.name == $fn)##
+<?psx-start-$part $fn?>##
+#set($sys.part.end = true)##
+#else##
+#set($sys.part.render = false)##
+#end##
+#end##
+#end
+
+#macro(__renderpartend $name $part)##
+#if ($sys.part.end)##
+<?psx-end-$part $rx.string.extractFieldName($name)?>##
+#end##
+#set($sys.part.end = false)##
+#end
+
+#macro(endAAField $name)##
+#__renderpartend($name 'field')##
+#__endAaFieldDiv()##
+#end
+
+#macro(endslot $name)##
+#__renderpartend($name 'slot')##
+#end
+
+#*************************************************************************************
+Active assembly macros.
+There are four major components in active asembly.
+Local template called as Page
+Slots on the page
+Snippets inside slots
+Fields on main page and snippets
+For each of the above components for there are three macros, one for starting div
+one for ending div and one for showing an image with anchor link around it.
+*************************************************************************************#
+##For page templates without a global template, call this macro at the begining of the template.
+#macro(startAAPage)##
+#__startAaPageDiv()##
+#__addAaPageImg()##
+#end
+
+##For page templates without a global template, call this macro at the end of the template.
+#macro(endAAPage)##
+#__endAaPageDiv()##
+#end
+
+##Call this macro at the begining of the slot to get the active assembly decoration.
+#macro(startAASlot $slotname)##
+#__addAaSlotImg($slotname)##
+#__startAaSlotDiv($slotname)##
+#end
+
+##Call this macro at the end of the slot to get the active assembly decoration.
+#macro(endAASlot)##
+#__endAaSlotDiv()##
+#end
+
+##Call this macro at the begining of the snippet to get the active assembly decoration.
+#macro(startAASnippet $relresult $slotname)##
+#__startAaSnippetDiv($relresult $slotname)##
+#__addAaSnippetImg($relresult $slotname)##
+#end
+
+##Call this macro at the end of the snippet to get the active assembly decoration.
+#macro(endAASnippet)##
+#__endAaSnippetDiv()##
+#end
+
+##Macro for page start
+#macro(__startAaPageDiv)##
+#if($sys.ltActiveAssembly || $sys.activeAssembly)##
+<div class="PsAaPage" psAaLabel="$sys.item.getProperty('sys_title').String" id='$sys.aautils.getPageObjectId($sys.assemblyItem)'>##
+#end##
+#end
+
+##Macro for page end
+#macro(__endAaPageDiv)##
+#if($sys.ltActiveAssembly || $sys.activeAssembly)</div>##
+#end##
+#end
+
+##Macro for page image
+#macro(__addAaPageImg)#if($sys_aamode != 1 && ($sys.ltActiveAssembly || $sys.activeAssembly))<a href="javascript:void(0)" id='img.$sys.aautils.getPageObjectId($sys.assemblyItem)' onclick="ps.aa.controller.activate(this)"><img class="PsAaObjectImage" src="../sys_resources/images/aa/page_0.gif" title="Page"/></a>#end#end
+
+##Macro for slot start
+#macro(__startAaSlotDiv $slotname)#if ($sys.currentslot.active)<div class="PsAaSlot" psAaLabel="$sys.currentslot.slot.label" id='$sys.aautils.getSlotObjectId($sys.assemblyItem, $slotname)' #if($sys_aamode == 1)onmouseover="ps.DivActionHelper.handleDivHover(this, true)" onmouseout="ps.DivActionHelper.handleDivHover(this,  false)"#end>#end#end
+
+##Macro for slot end
+#macro(__endAaSlotDiv)#if ($sys.currentslot.active)</div>#end#end
+
+##Macro for slot image
+#macro(__addAaSlotImg $slotname)#if ($sys_aamode != 1 && $sys.currentslot.active)#set($slotid = $sys.asm.findSlotByName($slotname).GUID.UUID)#set($title = $sys.item.getProperty("rx:sys_title").String)<a href="javascript:void(0)"id='img.$sys.aautils.getSlotObjectId($sys.assemblyItem, $slotname)' onmousedown="ps.aa.controller.activate(this)"><img class="PsAaObjectImage" src="../sys_resources/images/aa/slot_0.gif" title='Slot'/></a>#set($sys_activeitemid = $rx.asmhelper.getSingleParamValue($sys.params,"sys_activeitemid"))$sys.currentslot.slot.label#end#end
+
+##Macro for snippet start
+#macro(__startAaSnippetDiv $relresult $slotname)#if ($sys.currentslot.active)#set($id = $relresult.Id)#set($title = $rx.asmhelper.getTitle($id))<div class="PsAaSnippet" psAaLabel="$title" id='$sys.aautils.getSnippetObjectId($relresult, $slotname)' #if($sys_aamode == 1)onmouseover="ps.DivActionHelper.handleDivHover(this, true)" onmouseout="ps.DivActionHelper.handleDivHover(this, false)"#end>#end#end
+
+##Macro for snippet end
+#macro(__endAaSnippetDiv)#if ($sys.currentslot.active)</div>#end#end
+
+##Macro for snippet image
+#macro(__addAaSnippetImg $relresult $slotname)#if ($sys_aamode != 1 && $sys.currentslot.active)#set($id = $relresult.Id)#set($title = $rx.asmhelper.getTitle($id))<a href="javascript:void(0)" id='img.$sys.aautils.getSnippetObjectId($relresult, $slotname)' onclick="ps.aa.controller.activate(this)"><img class="PsAaObjectImage" src="../sys_resources/images/aa/snippet_0.gif"title="Snippet"/></a>#end#end
+
+##Macro for field start
+#macro(__startAaFieldDiv $fieldname $pagelink)#if ($sys.activeAssembly)#set($fn = $rx.string.extractFieldName($fieldname) )<div id='$sys.aautils.getFieldObjectId($sys.assemblyItem, $fn)' fieldLink="$pagelink" class="PsAaField" onclick="return ps.aa.controller.fieldEdit.editField(this, event);" onmouseover="ps.DivActionHelper.handleDivHover(this, true)" onmouseout="ps.DivActionHelper.handleDivHover(this, false)">#end#end
+
+##Macro for field end
+#macro(__endAaFieldDiv)#if ($sys.activeAssembly)</div> #end#end
+
+##Macro for field image
+#macro (__addAaFieldImage $fieldname)#if ($sys_aamode != 1 && $sys.activeAssembly)#set($fn = $rx.string.extractFieldName($fieldname) )<a href="javascript:void(0)" id='img.$sys.aautils.getFieldObjectId($sys.assemblyItem, $fn)' onclick="ps.aa.controller.activate(this)"><img align="absmiddle" class="PsAaObjectImage" src="../sys_resources/images/aa/field_0.gif" title="Field"/></a>#end#end
+
+#******************************************************************************
+The following four macros give the javascript escaped objectids
+******************************************************************************#
+##Macro to generate javascript escaped page object id
+#macro(__pageObjectId)$tools.esc.javascript($sys.aautils.getPageObjectId($sys.assemblyItem))#end
+
+##Macro to generate javascript escaped slot object id
+#macro(__slotObjectId $slotname)$tools.esc.javascript($sys.aautils.getSlotObjectId($sys.assemblyItem, $slotname))#end
+
+##Macro to generate  javascript escaped snippet object id
+#macro(__snippetObjectId $relresult $slotname)$tools.esc.javascript($sys.aautils.getSnippetObjectId($relresult, $slotname))#end
+
+##Macro to generate  javascript escaped field object id
+#macro(__fieldObjectId $fn)$tools.esc.javascript($sys.aautils.getFieldObjectId($sys.assemblyItem, $fn))#end
+
+#******************************************************************************
+The following macros are used by CM1
+******************************************************************************#
+## Used to get the Nav Image Url
+#macro(imageurl $image $status)#if ($status == "rollover" )#imghelp($image "rffBnRolloverImage")#elseif ($status=="active")#imghelp($image "rffBnActiveImage")#else#imghelp($image "rffBnInactiveImage")#end#end
+
+## helper macro ... context=0 needs to be dynamic
+#macro(imghelp $image $template)$rx.location.generate($template, $image, $rx.location.folderPath($image),$sys.assemblyItem.getFilter().getName(), $sys.assemblyItem.getSiteId().longValue(), $tools.number.toNumber($tools.list.get($sys.params.get('sys_context'), 0)) )#end
+
+#macro(region $regionId $header $before $after $footer)##
+##
+#if($perc.regions.get($regionId))##
+##
+$header##
+#foreach($result in $perc.regions.get($regionId))##
+$before##
+#if($result.getType() == "WIDGET")##
+## compute the tool-tip for the asset in the widget, which is the full path for an shared asset, but 'Local content' for local asset
+#set($owner_id = "")##
+#set($asset_id = "")##
+#set($tooltip = "")##
+#if($result.widget.ownerAssetIds.size() > 0)##
+#set($owner_id = $result.widget.ownerAssetIds.get(0).getFirst())##
+#set($asset_id = $result.widget.ownerAssetIds.get(0).getSecond())##
+#set($sharedPath = $rx.pageutils.getItemPath($result.widget.ownerAssetIds.get(0).getSecond()))##
+#if($sharedPath != "")##
+#set($tooltip = $sharedPath)##
+#else##
+#set($tooltip = "Local content")##
+#end##
+#end##
+#set($widgetName = $!result.widget.item.name)##
+#if(!${widgetName})##
+#set($widgetName = "")##
+#end##
+#set($widgetDescr = $!result.widget.item.description)##
+#if($tooltip == "" && $widgetDescr != "")##
+#set($tooltip = $widgetDescr)##
+#end##
+#if($widgetName != "" && $tooltip != "")##
+#set($widgetName = $widgetName + ": ")##
+#end##
+#set($tooltip = $widgetName + $tooltip)##
+    #set($isRecycled = $rx.pageutils.isInRecycler($asset_id))##
+    #if("$isRecycled" == "true")##
+        #set($class = "perc-widget perc-recycled-asset")##
+        #set($tooltip = "Asset is in Recycle Bin")##
+    #else
+        #set($class = "perc-widget")##
+    #end##
+<div class="$class" #if($perc.editMode)widgetId="$result.widget.item.id" widgetDefId="$result.widget.definition.id" assetId="$asset_id" ownerId="$owner_id" title="$tooltip" widgetName="$!result.widget.item.name"#end>
+#end##
+#perc_displayText("$result")##
+#if($result.getType() == "WIDGET")##
+</div>
+#end##
+$!{after}##
+#end##
+$!{footer}##
+#end##
+#end##
+
+
+## Loads widget contents (items) for the current page / template  with the specified finder and its parameters.
+## It defaults to related finder if the finder is not specified.
+#macro(loadWidgetContents $finder $params)##
+$perc.setWidgetContents($rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finder, $params))
+#end##
+
+## Loads widget contents (items) that are related to current page / template through the current widget instance
+#macro(loadRelatedWidgetContents)##
+#loadWidgetContents($NULL, $NULL)##
+#end##
+
+## Common header for all base templates
+#macro(perc_templateHeader)##
+#set($selectedDoctype = $perc.template.docType.selected)##
+#foreach($option in $perc.template.docType.options)##
+#if($option.option.equals($selectedDoctype))##
+#perc_displayText("$!option.value")##
+#end##
+#end##
+<head>
+##See IE10 Required for drag drop CMS-79 and CMS-3403
+#if($perc.isEditMode())
+<meta http-equiv="X-UA-Compatible" content="IE=10"/>
+#else
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+#end
+<meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+<script>
+var percGlobalErrors = [];
+window.onerror=function(msg, url, linenumber){
+var jsErrorMsg = 'JavaScript error -- ' + msg;
+percGlobalErrors.push(jsErrorMsg);
+return false;
+}
+</script> ##
+#set($percPageID = $perc.getPage().getId())##
+#if($perc.linkContext.getSite().isCanonical() && "$!{percPageID}" != "")##
+#set($renderCanonical = true)##
+#if($perc.linkContext.getSite().isCanonicalReplace())##
+#set($stripCustomCanonical = true)##
+#elseif($rx.pageutils.checkLinkCanonical($!perc.page.additionalHeadContent) || $rx.pageutils.checkLinkCanonical($!perc.template.additionalHeadContent))##
+#set($renderCanonical = false)##
+#end##
+#if($renderCanonical)##
+#set($canLink = $rx.pageutils.itemLink($perc.linkContext, $perc.getPage()).toString())##
+#if($perc.linkContext.getMode().name() == "PREVIEW")##
+#set($linkPref = "/Sites/${perc.linkContext.getSite().getName()}")##
+#set($canLink = $canLink.substring($linkPref.length()))##
+#end##
+<link rel="canonical" href="${perc.linkContext.getSite().getSiteProtocol()}://${perc.linkContext.getSite().getName()}${canLink}" />
+#set($defaultDocument = ${perc.linkContext.getSite().getDefaultDocument()})##
+<script>
+function percCanonicalRedirect(defaultDocument){
+if(document.querySelector("link[rel='canonical']"))
+canonicalLink=document.querySelector("link[rel='canonical']").getAttribute("href")
+}
+requestUrl=window.location.href;lastUrlElement=window.location.pathname.split('/').pop();urlPartsQueryString=requestUrl.split('?');urlPartsHash=requestUrl.split('#');
+if(typeof(canonicalLink)!='undefined'&&lastUrlElement==defaultDocument){
+if(urlPartsQueryString.length>1||urlPartsHash.length>1){
+if(urlPartsQueryString.length>1){
+redirectUrl=canonicalLink+'?'+urlPartsQueryString[1]
+}
+else if(urlPartsHash.length>1){
+redirectUrl=canonicalLink+'#'+urlPartsHash[1]
+}
+}else{
+redirectUrl=canonicalLink
+}
+window.location.replace(redirectUrl)
+}
+
+</script>
+#if(${perc.linkContext.getSite().getCanonicalDist()} == "sections" && $perc.linkContext.getMode().name() != "PREVIEW")##
+<script>
+percCanonicalRedirect('${defaultDocument}');
+</script>
+#end##
+#end##
+#end##
+<title>$tools.esc.html($!perc.page.title)</title>
+#set($instancesUI = $rx.pageutils.findWidgetInstances($sys.assemblyItem, $NULL, "percJQueryUIWidget"))##
+#foreach($css_link in $rx.pageutils.cssLinks($perc.linkContext, $sys.assemblyItem))##
+## Write CSS unless the current loop is jQuery UI css AND we have enabled the jQuery UI override OR write the file regardless as long as we are in edit mode##
+#if($css_link.toString().contains('jquery-ui'))## if found jquery-ui.css then need to check if jquery UI widget is added on this page or not if yes then need to load provided jquery-ui.css depends local or CDN
+#if($instancesUI.size() > 0)##
+#set($instanceUI = $instancesUI.get(0))##
+#set($widgetitemUI = $instanceUI.getItem())##
+#set($includeUIOnPublishedPage = $widgetitemUI.getProperties().get("includeUIOnPublishedPage"))##
+#set($jQueryUICSSTheme = $widgetitemUI.getProperties().get("jQueryUICSSTheme"))##
+#if("$!{jQueryUICSSTheme}" != "" )## load the jquery-ui.css provided by the user on jquery ui widget
+<link rel="preload" as="style" href="$jQueryUICSSTheme" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="$jQueryUICSSTheme"></noscript>
+#else## if user has not provided jquery-ui.css then load default css
+<link rel="preload" as="style" href="$css_link" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="$css_link"></noscript>
+#end##
+#else## in this case load default jquery-ui.css file
+#if($perc.linkContext.site.overrideSystemJQueryUI==false || $perc.isEditMode())##
+<link rel="preload" as="style" href="$css_link" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="$css_link"></noscript>
+#end##
+#end##
+#else## if the css file is other than jquery-ui.css
+<link rel="preload" as="style" href="$css_link" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="$css_link"></noscript>
+#end##
+#end##
+<link rel="preload" as="style" href="$rx.pageutils.themeLink($perc.linkContext, $perc.template.theme)" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="$rx.pageutils.themeLink($perc.linkContext, $perc.template.theme)"></noscript>
+#set($__perc_region_css = $rx.pageutils.themeRegionCssLink($perc.linkContext, $perc.template.theme, $perc.editMode, $perc.editType).toString().trim())##
+#if("$!__perc_region_css" != "")##
+<link rel="preload" as="style" href="${__perc_region_css}" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="${__perc_region_css}"></noscript>
+#end##
+#set($__style="")##
+#set($__style = $perc.template.cssRegion.replaceAll("$tools.esc.q", "").trim())##
+#cssPreload()##
+#if("$!__style" != "" )##
+<style>
+$__style
+</style>
+#end##
+#set($__style = $perc.template.cssOverride.replaceAll("$tools.esc.q", "").trim())##
+#if("$!__style" != "")##
+<style>
+$__style
+</style>
+#end##
+#if("$!perc.page.noindex" == "true")##
+<meta name="robots" content="noindex" />
+#end##
+#if("$!perc.page.description" != "")##
+<meta name="description" content="$tools.esc.html($!perc.page.description)" />
+#end##
+#if($sys.item.hasProperty('rx:page_authorname') && $sys.item.getProperty('rx:page_authorname').getString() != "")##
+<meta property="dcterms:author" content="$tools.esc.html($sys.item.getProperty('rx:page_authorname').getString())" />
+## Use the correct dcterms property
+<meta property="dcterms:creator" content="$tools.esc.html($sys.item.getProperty('rx:page_authorname').getString())" />
+#end##
+<meta property="dcterms:type" content="page"/>
+<meta property="dcterms:source" content="$tools.esc.html($!perc.template.name)"/>
+<meta property="dcterms:created" content="#perc_displayXdsDateTime('rx:sys_contentpostdate')"/>
+#set( $postDateTz = $sys.item.getProperty('rx:sys_contentpostdatetz').String )##
+#if($postDateTz != "Default" && $postDateTz != "")##
+<meta property="dcterms:contentpostdatetz" content="$sys.item.getProperty('rx:sys_contentpostdatetz').String"/>
+#end##
+<meta property="dcterms:modified" content="#perc_displayXdsDateTime('rx:sys_contentlastmodifieddate')"/>
+<meta property="dcterms:alternative" content="$tools.esc.html($!perc.page.linkTitle)"/>
+#if($sys.item.hasProperty("page_tags"))##
+#set( $tagValues = $sys.item.getProperty('page_tags').getValues() )##
+#foreach($tag in $tagValues)##
+<meta property="perc:tags" content="$tools.esc.html($tag.String)"/>
+#end##
+#end##
+#if($sys.item.hasProperty("page_categories_tree"))##
+#set( $categoryValues = $sys.item.getProperty('page_categories_tree').getValues() )##
+#foreach($category in $categoryValues)##
+#set($categoryLabel = $rx.pageutils.getCategoryLabel($category.String))##
+<meta property="perc:category" content="$tools.esc.html($!{categoryLabel})"/>
+#end##
+#end##
+#if($sys.item.hasProperty("page_calendar"))##
+#set( $calendarValues = $sys.item.getProperty('page_calendar').getValues())##
+#foreach($calendar in $calendarValues)##
+<meta property="perc:calendar" content="$tools.esc.html($calendar.String)"/>
+#end##
+#end##
+#if($sys.item.hasProperty("page_start_date"))##
+<meta property="perc:start_date" content="#perc_displayXdsDateTime('page_start_date')"/>
+#end##
+#if($sys.item.hasProperty("page_end_date"))##
+<meta property="perc:end_date" content="#perc_displayXdsDateTime('page_end_date')"/>
+#end##
+
+##Print JQuery and JQuery-UI scripts on top and rest below them##
+#perc_displayText("$!perc.linkContext.site.siteAdditionalHeadContent")##
+#foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
+#if($js_link.getUrl().endsWith("/jquery.js"))##
+#if($perc.isEditMode() || $perc.isPreviewMode())##
+<script src="/cm/jslib/jquery.js"></script>
+#else##
+#if($perc.linkContext.site.overrideSystemJQuery==false)##
+#print_jquery("additionalHeadContent")##
+#end##
+#end##
+#end##
+#end##
+
+#if ($stripCustomCanonical)##
+#set($tmplAdditionalHeadContent = $rx.pageutils.stripLinkCanonical($!perc.template.additionalHeadContent))##
+#set($pageAdditionalHeadContent = $rx.pageutils.stripLinkCanonical($!perc.page.additionalHeadContent))##
+#perc_displayText("$!tmplAdditionalHeadContent")##
+#perc_displayText("$!pageAdditionalHeadContent")##
+#else##
+#perc_displayText("$!perc.template.additionalHeadContent")##
+#perc_displayText("$!perc.page.additionalHeadContent")##
+#end##
+
+#suppressCatalogedLinks()##
+#addMobilePreviewToolbar()##
+#addResponsiveResources()##
+</head>
+
+<body>
+<input type="hidden" id="perc_linkback_id" value="$perc.page.id"/>
+<h3 style="display:none;">$tools.esc.html($!perc.page.title)</h3>
+#if($perc.linkContext.mode == "PUBLISH" && $perc.template.protectedRegion && $perc.template.protectedRegion.String != "")##
+#set($loginPage = $rx.pageutils.getSiteLoginPage($perc.linkContext.site.name))##
+<div id="protectedRegionInformation" data="{&quot;protectedRegion&quot;:&quot;$!perc.template.protectedRegion&quot;,&quot;protectedRegionText&quot;:&quot;$!perc.template.protectedRegionText&quot;,&quot$
+#if("" != "$!{perc.template.protectedRegion}"))##
+<style>
+#$!perc.template.protectedRegion{
+display:none;
+}
+</style>
+#end##
+#end##
+##
+#if($perc.page.name && $sys.item.getProperty("rx:page_summary").String != "")##
+#set($summaryField=$sys.item.getProperty('rx:page_summary').String)##
+#set($summaryField2=$summaryField.replace("<!-- morelink -->",'<a class="perc-more-link"></a>'))##
+<div property="dcterms:abstract" style="display:none" datatype="rdf:XMLLiteral">$summaryField2</div>
+#end##
+##
+#print_jquery("afterBodyStart")##
+#print_jqueryUI("afterBodyStart")##
+#perc_displayText("$!perc.linkContext.site.siteAfterBodyOpenContent")##
+#perc_displayText("$!perc.template.afterBodyStartContent")##
+#perc_displayText("$!perc.page.afterBodyStartContent")##
+#end##
+
+## Common footer for all base templates
+
+#macro(perc_templateFooter)##
+#print_jquery("beforeBodyClose")##
+#print_jqueryUI("beforeBodyClose")##
+#if ($perc.template.sourceTemplateName.startsWith("perc.resp") && $perc.linkContext.site.overrideSystemFoundation==false)##
+#if($perc.linkContext.mode == "PUBLISH")##
+<script defer src="/web_resources/cm/foundation/js/foundation.min.js"></script>
+#else##
+<script defer src="/Rhythmyx/web_resources/cm/foundation/js/foundation.min.js"></script>
+#end##
+#end##
+
+#perc_displayText("$!perc.linkContext.site.siteBeforeBodyCloseContent")##
+#perc_displayText("$!perc.page.beforeBodyCloseContent")##
+#perc_displayText("$!perc.template.beforeBodyCloseContent")##
+
+#set($jqueryUIwidget = $rx.pageutils.findWidgetInstances($sys.assemblyItem, $NULL, "percJQueryUIWidget"))##
+#foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
+#if($js_link.getUrl().endsWith("/jquery-ui.js"))##
+#if($perc.isEditMode())##
+<script src="/cm/jslib/jquery-ui.js"></script>
+#elseif ($perc.isPreviewMode() && ($perc.linkContext.site.overrideSystemJQueryUI==false) && ($jqueryUIwidget.size()==0) )##
+<script src="/cm/jslib/jquery-ui.js"></script>
+#else##
+#print_jqueryUI("additionalHeadContent")##
+#end##
+#end##
+#end##
+#perc_addDeliveryJSFunctions()##
+#foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
+#if(! $js_link.getUrl().endsWith("/jquery.js") && !($js_link.getUrl().endsWith("/jquery-ui.js")) )##
+<script src="$js_link"></script>
+#end##
+#end##
+</body>
+</html>
+#end##
+
+## Display the supplied text as is if it is not in edit mode;
+## otherwise, strip javascript from the source, then display it
+#macro(perc_displayText $source)##
+#if($perc.scriptsOff)##
+$rx.pageutils.stripJavascripts("$source")##
+#else##
+$!{source}
+#end##
+#end##
+
+
+## Display date filed in xsd:dateTime with given format;
+## Do not indent - the whitespace is getting rendered
+#macro(perc_displayXdsDateTimeWithFormat $format $field)###
+#set($validFormat = $rx.pageutils.parseDateFormat($format,"EEE MMM d, yyyy 'at' hh:mm a"))##
+#if($sys.item.hasProperty("$field") && $sys.item.getProperty("$field").String != "")##
+$tools.date.format($validFormat, $sys.item.getProperty("$field").Date.Time)##
+#else##
+$tools.date.format($validFormat, $tools.date.getDate())##
+#end##
+#end##
+
+
+## Display date filed in xsd:dateTime;
+## Do not indent - the whitespace is getting rendered
+#macro(perc_displayXdsDateTime $field)##
+#perc_displayXdsDateTimeWithFormat("yyyy-MM-dd'T'HH:mm:ss", $field)##
+#end##
+
+## Add Google Analytics javascript Async tracking tags if setup via the
+## Google Setup gadget in the dashboard. Only adds this script if the
+## current mode is 'PUBLISH'.
+#macro(perc_addGoogleAnalyticsScript)##
+#if($perc.linkContext.mode == "PUBLISH")##
+#set($wpId = $rx.pageutils.getWebPropertyId($perc.linkContext.site.name))##
+#set($apiKey = $rx.pageutils.getGoogleApiKey($perc.linkContext.site.name))##
+#if($wpId != "")##
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', '$wpId', 'auto');
+ga('send', 'pageview');
+</script>
+#end##
+#end##
+#end##
+
+
+#macro(suppressCatalogedLinks)##
+#if ($perc.isPreviewMode())##
+#if($perc.isEditMode())##
+#else##
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+(function($){$(document).ready(function(){$('a[href*="/.system/PageCatalog"]').attr('cataloged', 'true' );$('a[href*="/.system/PageCatalog"]').click(function(e) {alert('This page has not yet been imported. It will be available for preview after import is complete.');e.preventDefault();});})    })(jQuery);
+});
+</script>
+#end##
+#end##
+#end##
+
+
+#macro(addMobilePreviewToolbar)##
+#if ($perc.isPreviewMode())##
+#if($perc.isEditMode())##
+#else##
+<script src="/Rhythmyx/sys_resources/mobilepreview/js/PercMobilePreview.js" defer></script>
+#end##
+#end##
+#end##
+
+
+##Adds responsive template resources, if the source template name starts with perc.resp. string.
+#macro(addResponsiveResources)##
+## Skip this section if override system foundation is enabled ##
+#if ($perc.template.sourceTemplateName.startsWith("perc.resp") && $perc.linkContext.site.overrideSystemFoundation==false)##
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+#if($perc.linkContext.mode == "PUBLISH")##
+<link rel="preload" as="style" href="/web_resources/cm/foundation/css/foundation.min.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="/web_resources/cm/foundation/css/foundation.min.css"></noscript>
+<link rel="preload" as="style" href="/web_resources/cm/foundation/css/normalize.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="/web_resources/cm/foundation/css/normalize.cs"></noscript>
+#else##
+<link rel="preload" as="style" href="/Rhythmyx/web_resources/cm/foundation/css/foundation.min.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/foundation.min.css"></noscript>
+<link rel="preload" as="style" href="/Rhythmyx/web_resources/cm/foundation/css/normalize.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/normalize.css"></noscript>
+#end##
+#end##
+#end##
+
+
+## Add the delivery service base function to the page
+#macro(perc_addDeliveryJSFunctions)##
+#set($dServiceBase = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId))##
+#set($cm1Version = $rx.pageutils.productVersion())##
+#if(! $cm1Version )##
+#set($cm1Version = "")##
+#end
+<script>(function() { jQuery.getDeliveryServiceBase = function(){ return '$dServiceBase';};jQuery.getCm1License = function(){ return '';};jQuery.getCm1Version = function(){ return '$!{cm1Version}';};})();</script>
+#end##
+
+
+## Macro, perc_processCategoryNodeExpanded, used by Category List widget, recursively renders a list of lists of categories for Expanded hierarchy option
+## categories: List of nodes
+## maxRow: limit the rows of the tree. (0 = no limit)
+## nRow: used to chek the current count of row in the recursive call.
+## nLevel: depth level of the tree.
+#macro(perc_processCategoryNodeExpanded $categories $maxRow $nRow $nLevel)
+#if($maxRow > $nRow || $maxRow == 0)##
+<ul class="perc-category-elements perc-category-level$nLevel">
+#set($nLevel = $nLevel + 1)##
+#foreach ($category in $categories)##
+#if($maxRow > $nRow || $maxRow == 0)##
+#set($_countTotal = $category.getCount().getFirst() + $category.getCount().getSecond())##
+<li class="perc-category-element">
+<a title="$category.getCategory() ($_countTotal)" href="#">$category.getCategory() ($_countTotal)</a>
+#if($category.getChildren().size() > 0)##
+#set($nRow = $nRow + 1)##
+#perc_processCategoryNodeExpanded($category.getChildren(), $maxRow, $nRow, $nLevel)##
+#end##
+</li>
+#end##
+#end##
+#set($nLevel = $nLevel - 1)##
+</ul>
+#end##
+#end##
+
+## Macro, perc_processCategoryNodeCollapsible, used by Category List widget, recursively renders a list of lists of categories for Collapsible option
+## categories: List of nodes
+## maxRow: limit the number of top levels under root (0 = no limit)
+## nLevel: depth level of the tree.
+#macro(perc_processCategoryNodeCollapsible $categories $maxRow $nLevel)
+<ul class="perc-category-elements">
+#set($nLevel = $nLevel + 1)##
+#foreach ($category in $categories)##
+#if($nLevel == 1)##
+#set($nRow = $nRow + 1)##
+#end##
+#if(($nLevel != 1 || $nRow <= $maxRow) || $maxRow == 0)##
+#set($_countTotal = $category.getCount().getFirst() + $category.getCount().getSecond())##
+<li class="perc-category-element">
+<a title="$category.getCategory() ($_countTotal)" href="#">$category.getCategory() ($_countTotal)</a>
+#if($category.getChildren().size() > 0)##
+#perc_processCategoryNodeCollapsible($category.getChildren(), $maxRow, $nLevel)##
+#end##
+</li>
+#end##
+#end##
+#set($nLevel = $nLevel - 1)##
+</ul>
+#end##
+
+##create sample content for empty widgets.
+##class: determine the container class.
+##text: determine the tooltip.
+#macro(createEmptyWidgetContent $class $text $style)
+##the tooltip will be generated if we have name or description.
+#if((${perc.widget.item.name} && $perc.widget.item.name != "") || (${perc.widget.item.description} && $perc.widget.item.description != ""))##
+#set($title = "")##
+#else##
+#set($title = $!{text})##
+#end##
+<div class="$!{class}" style="$!{style}" title="$!{title}"></div>
+#end##
+
+##Render the Page Content in XML
+#macro(generateXMLContent)
+<content>
+#foreach($regionId in $perc.regions.keySet())##
+<region name="$regionId">
+#foreach($result in $perc.regions.get($regionId))##
+<widget name="$!result.widget.item.name" id="$result.widget.item.id" type="$result.widget.definition.Id">
+<![CDATA[#if($result.getType() == "WIDGET")<div class="perc-widget">#end##
+#perc_displayText("$result")##
+#if($result.getType() == "WIDGET")</div>#end]]></widget>
+#end##
+</region>
+#end##
+</content>
+#end##
+
+##Render the Page Metadatat in XML
+#macro(generateXMLMetadata)
+<metadata>
+<sys_title type="string">$!perc.page.name</sys_title>
+<resource_link_title type="string">$tools.esc.html($!perc.page.linkTitle)</resource_link_title>
+<page_summary type="string">#displayCDataField($!perc.page.summary)</page_summary>
+<sys_contentpostdate type="dateTime">#perc_displayXdsDateTime("rx:sys_contentpostdate")</sys_contentpostdate>
+<page_title type="string">$tools.esc.html($!perc.page.title)</page_title>
+<page_description type="string">#displayCDataField($!sys.item.getProperty("page_description").String)</page_description>
+<page_noindex type="boolean">$!sys.item.getProperty("page_noindex").Boolean</page_noindex>
+#if($sys.item.hasProperty("page_tags"))##
+#set( $tagValues = $sys.item.getProperty('page_tags').getValues() )##
+#if ($tagValues.size() > 0)##
+<tags>
+#end##
+#foreach($tag in $tagValues)##
+<page_tags type="string">$tools.esc.html($tag.String)</page_tags>
+#end##
+#if ($tagValues.size() > 0)##
+</tags>
+#end##
+#end##
+#if($sys.item.hasProperty("page_categories_tree"))##
+#set( $categoryValues = $sys.item.getProperty('page_categories_tree').getValues() )##
+#if ($categoryValues.size() > 0)##
+<categories>
+#end##
+#foreach($category in $categoryValues)##
+#set($categoryLabel = $rx.pageutils.getCategoryLabel($category.String))##
+<page_categories type="string">$tools.esc.html($!{categoryLabel})</page_categories>
+#end##
+#if ($categoryValues.size() > 0)##
+</categories>
+#end##
+#end##
+#if($sys.item.hasProperty("page_calendar"))##
+#set( $calendarValues = $sys.item.getProperty('page_calendar').getValues())##
+#if ($calendarValues.size() > 0)##
+<calendars>
+#end##
+#foreach($calendar in $calendarValues)##
+<page_calendar type="string">$tools.esc.html($calendar.String)</page_calendar>
+#end##
+#if ($calendarValues.size() > 0)##
+</calendars>
+#end##
+#end##
+<page_start_date type="dateTime">#perc_displayXdsDateTime("page_start_date")</page_start_date>
+<page_end_date type="dateTime">#perc_displayXdsDateTime("page_end_date")</page_end_date>
+<additional_head_content type="string">#displayCDataField($!perc.page.additionalHeadContent)</additional_head_content>
+<code_insert_after_body_start type="string">#displayCDataField($!perc.page.afterBodyStartContent)</code_insert_after_body_start>
+<code_insert_before_body_close type="string">#displayCDataField($!perc.page.beforeBodyCloseContent)</code_insert_before_body_close>
+<sys_workflow type="string">$rx.pageutils.findWorkflow($perc.page.workflowId).getName()</sys_workflow>
+<template_name type="string">$tools.esc.html($!perc.template.name)</template_name>
+</metadata>
+#end##
+
+#macro(displayCDataField $value)
+#if($value)##
+<![CDATA[$value]]>
+#end##
+#end##
+
+
+##
+##Utility macro for outputing css class attributes
+##it will insure that class atrributes are single spaced with no extra spaces.
+#macro(cleanClass $value)
+$value.trim().replaceAll(" +"," ")##
+#end##
+
+## Print the supplied jQuery <script> tag if page has jQuery Widget present.
+## Determines if mode is quick edit, preview, or publish and uses logic
+## based on fields on the widget itself.
+## $location_name is a reference to additionalHeadContent, beforeBodyClose,
+## or afterBodyStart, etc.
+#macro(print_jquery $location_name)##
+#set($instances = $rx.pageutils.findWidgetInstances($sys.assemblyItem, $NULL, "percJQueryWidget"))##
+#if($instances.size() > 0)##
+#set($instance = $instances.get(0))##
+#set($widgetitem = $instance.getItem())##
+#set($scriptLocation = $widgetitem.getProperties().get("scriptLocation"))##
+#set($includeOnPublishedPage = $widgetitem.getProperties().get("includeOnPublishedPage"))##
+#if("${includeOnPublishedPage}" == "")##
+#set($includeOnPublishedPage = "yes")## Default to publishing
+#end##
+#set($isDeferred = $widgetitem.getProperties().get("isDeferred"))##
+#set($jQueryLocation = $widgetitem.getProperties().get("jQueryLocation"))##
+#if("${jQueryLocation}" == "" )##
+#set($jQueryLocation = "/web_resources/cm/jslib/jquery.js")##
+#end##
+#set($jQuerySRIHash = $widgetitem.getProperties().get("jQueryLocationIntegrity"))##
+#set($jQueryCrossOrigin = $widgetitem.getProperties().get("jQueryLocationCrossOrigin"))##
+#set($jQueryMigrateLocation = $widgetitem.getProperties().get("jQueryMigrateLocation"))##
+#set($jQueryMigrateSRIHash = $widgetitem.getProperties().get("jQueryMigrateLocationIntegrity"))##
+#set($jQueryMigrateCrossOrigin = $widgetitem.getProperties().get("jQueryMigrateLocationCrossOrigin"))##?
+#set($dummy = ("$!{scriptLocation}" == "$!{location_name}"))##
+#if("$!{scriptLocation}" == "$!{location_name}")##
+#set($mode = $perc.linkContext.mode.toString() )##
+#if($!{mode} == "")##
+#set($mode="PUBLISH")##
+#end##
+#set($dontcache=false)##
+#if($mode == "PREVIEW" || $rx.pageutils.isEditMode)##
+#set($dontcache=true)##
+#else##
+#set($dontcache=false)##
+#end##
+#if(!$rx.pageutils.isLinkGood("$!{jQueryLocation}",$mode,$dontcache))##
+## The jQueryLink link provided is no good
+<!-- Unable to verify CDN link - defaulting to system jquery version -->
+#if($perc.linkContext.mode.toString() == "PUBLISH")##
+#set($jQueryLocation = "/web_resources/cm/jslib/jquery.js")##
+#else##
+#set($jQueryLocation = "/cm/jslib/jquery.js")##
+#end##
+#end##
+#if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($includeOnPublishedPage != "no")) || (($perc.linkContext.mode.toString() == "PREVIEW") && ($includeOnPublishedPage != "no")))##
+<script src="$!{jQueryLocation}"
+#if($isDeferred == "yes")
+defer
+#end
+#if("$!{jQuerySRIHash}" != "")
+integrity="$!{jQuerySRIHash}"
+#end
+#if("$!{jQueryCrossOrigin}" != "")
+crossorigin="$!{jQueryCrossOrigin}"
+#end>
+</script>
+#if("$!{jQueryMigrateLocation}" != "")##
+<script src="$!{jQueryMigrateLocation}"
+#if($isDeferred == "yes")
+defer
+#end
+#if("$!{jQueryMigrateSRIHash}" != "")
+integrity="$!{jQueryMigrateSRIHash}"
+#end
+#if("$!{jQueryMigrateCrossOrigin}" != "")
+crossorigin="$!{jQueryMigrateCrossOrigin}"
+#end>
+</script>
+#end##
+#end##
+#end##
+#elseif($perc.linkContext.mode.toString() == "PUBLISH" && $location_name == "additionalHeadContent")##
+<script src="$js_link"></script>
+#end##
+#end##
+
+## Print the supplied jQuery-ui <script> tag if page has jQuery UI Widget present.
+## Determines if mode is quick edit, preview, or publish and uses logic
+## based on fields on the widget itself.
+## $location_name is a reference to additionalHeadContent, beforeBodyClose,
+## or afterBodyStart, etc.
+#macro(print_jqueryUI $location_name)##
+#set($instances = $rx.pageutils.findWidgetInstances($sys.assemblyItem, $NULL, "percJQueryUIWidget"))##
+#if($instances.size() > 0)##
+#set($instance = $instances.get(0))##
+#set($widgetitem = $instance.getItem())##
+#set($scriptLocation = $widgetitem.getProperties().get("scriptUILocation"))##
+#set($includeUIOnPublishedPage = $widgetitem.getProperties().get("includeUIOnPublishedPage"))##
+#if("${includeUIOnPublishedPage}"  ==  "")##
+#set($includeUIOnPublishedPage = "yes")## Default to publishing
+#end##
+#set($isDeferred = $widgetitem.getProperties().get("isUIDeferred"))##
+#set($jQueryLocation = $widgetitem.getProperties().get("jQueryUILocation"))##
+#if("${jQueryLocation}"  ==  "" )##
+#if($perc.linkContext.mode == "PUBLISH")##
+#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
+#else##
+#set($jQueryLocation = "/cm/jslib/jquery-ui.js")##
+#end##
+#end##
+#set($jQuerySRIHash = $widgetitem.getProperties().get("jQueryUILocationIntegrity"))##
+#set($jQueryCrossOrigin = $widgetitem.getProperties().get("jQueryUILocationCrossOrigin"))##
+#set($dummy = ("$!{scriptLocation}" == "$!{location_name}"))##
+#if("$!{scriptLocation}"  ==  "$!{location_name}")##
+#set($mode = $perc.linkContext.mode.toString() )##
+#if($!{mode}  ==  "")##
+#set($mode="PUBLISH")##
+#end##
+#set($dontcache=false)##
+#if($mode == "PREVIEW" || $rx.pageutils.isEditMode)##
+#set($dontcache=true)##
+#else##
+#set($dontcache=false)##
+#end##
+#if(!$rx.pageutils.isLinkGood("$!{jQueryLocation}",$mode,$dontcache))##
+## The jQueryLink link provided is no good
+<!-- Unable to verify CDN link - defaulting to system jquery version -->
+#if($perc.linkContext.mode.toString() == "PUBLISH")##
+#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
+#else##
+#set($jQueryLocation = "/cm/jslib/jquery-ui.js")##
+#end##
+#end##
+#if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($includeOnPublishedPage  !=  "no")) || (($perc.linkContext.mode.toString()  ==  "PREVIEW") && ($includeOnPublishedPage  !=  "no")))##
+<script src="$!{jQueryLocation}"
+#if($isDeferred == "yes")
+defer
+#end
+#if("$!{jQuerySRIHash}"  !=  "")
+integrity="$!{jQuerySRIHash}"
+#end
+#if("$!{jQueryCrossOrigin}"  !=  "")
+crossorigin="$!{jQueryCrossOrigin}"
+#end>
+</script>
+#end##
+#end##
+#elseif($perc.linkContext.mode.toString() == "PUBLISH" && $location_name == "additionalHeadContent")##
+#if($js_link.getUrl().endsWith("/jquery-ui.js"))##
+#if ($perc.linkContext.site.overrideSystemJQueryUI==false)##
+<script src="/web_resources/cm/jslib/jquery-ui.1.12.1.js"></script>
+#end##
+#else##
+<script src="$js_link"></script>
+#end##
+#end##
+#end##
+##
+## Macro to preload css
+##
+#macro(cssPreload)
+<script>
+/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/
+(function( w ){
+"use strict";
+// rel=preload support test
+if( !w.loadCSS ){
+w.loadCSS = function(){};
+}
+// define on the loadCSS obj
+var rp = loadCSS.relpreload = {};
+// rel=preload feature support test
+// runs once and returns a function for compat purposes
+rp.support = (function(){
+var ret;
+try {
+ret = w.document.createElement( "link" ).relList.supports( "preload" );
+} catch (e) {
+ret = false;
+}
+return function(){
+return ret;
+};
+})();
+// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+// then change that media back to its intended value on load
+rp.bindMediaToggle = function( link ){
+// remember existing media attr for ultimate state, or default to 'all'
+var finalMedia = link.media || "all";
+function enableStylesheet(){
+link.media = finalMedia;
+}
+// bind load handlers to enable media
+if( link.addEventListener ){
+link.addEventListener( "load", enableStylesheet );
+} else if( link.attachEvent ){
+link.attachEvent( "onload", enableStylesheet );
+}
+// Set rel and non-applicable media type to start an async request
+// note: timeout allows this to happen async to let rendering continue in IE
+setTimeout(function(){
+link.rel = "stylesheet";
+link.media = "only x";
+});
+// also enable media after 3 seconds,
+// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+setTimeout( enableStylesheet, 3000 );
+};
+
+// loop through link elements in DOM
+rp.poly = function(){
+// double check this to prevent external calls from running
+if( rp.support() ){
+return;
+}
+var links = w.document.getElementsByTagName( "link" );
+for( var i = 0; i < links.length; i++ ){
+var link = links[ i ];
+// qualify links to those with rel=preload and as=style attrs
+if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+// prevent rerunning on link
+link.setAttribute( "data-loadcss", true );
+// bind listeners to toggle media back
+rp.bindMediaToggle( link );
+}
+}
+};
+
+// if unsupported, run the polyfill
+if( !rp.support() ){
+// run once at least
+rp.poly();
+// rerun poly on an interval until onload
+var run = w.setInterval( rp.poly, 500 );
+if( w.addEventListener ){
+w.addEventListener( "load", function(){
+rp.poly();
+w.clearInterval( run );
+} );
+} else if( w.attachEvent ){
+w.attachEvent( "onload", function(){
+rp.poly();
+w.clearInterval( run );
+} );
+}
+}
+// commonjs
+if( typeof exports !== "undefined" ){
+exports.loadCSS = loadCSS;
+}
+else {
+w.loadCSS = loadCSS;
+}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+#end

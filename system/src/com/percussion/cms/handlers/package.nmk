@@ -1,0 +1,80 @@
+ ############################################################################
+ #
+ #
+ ############################################################################
+PACKAGE=com.percussion.cms.handlers
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+  PSModifyCommandHandlerTest
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = \
+	IPSCloneHandler \
+	IPSCopyHandler \
+	IPSInternalCommandRequestHandler \
+	IPSInternalCommandRequestHandlerEx \
+	PSActiveAssemblyRequestHandler \
+	PSRelationshipCommandHandler \
+	IPSRelationshipHandlerCallback \
+	PSBinaryCommandHandler \
+	PSCloneCommandHandler \
+	PSCloneHandler \
+	PSCloneHandlerFactory \
+	PSCommandHandler \
+	PSConditionalCloneHandler \
+	PSContentEditorHandler \
+	PSCopyHandler \
+	PSEditCommandHandler \
+   PSGlobalTemplateUpdateHandler \
+   PSModifyCommandHandler \
+	PSPreviewCommandHandler \
+	PSQueryCommandHandler \
+   PSSearchCommandHandler \
+	PSWorkflowCommandHandler
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = 
+
+#
+# Properties files
+#
+PROPERTIES =
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)
+
+all :
+	[-@
+	]
