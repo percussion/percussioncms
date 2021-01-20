@@ -17,13 +17,8 @@ Our goal is to empower the developer and the marketer. Smart architecture, smart
 
 ## How do I get it?
 
-Download links are available on our Releases page for Windows and Linux.
+Download links are available on the project [Releases page](https://github.com/percussion/percussioncms/releases)
 
-**Windows**
-TODO: LINK
-git 
-**Linux**
-TODO: LINK
 
 ## Is this thing commercially supported?
 
@@ -32,8 +27,12 @@ Yes it is.
 ### Commercial Providers
 * [Percussion](https://www.percussion.com) offers Percussion CMS under a dual license, AGPL3 or commercial for paid Support & Maintenance subscriptions. Percussion also offers cloud hosting and management of Percussion CMS.
 
+## I am a Percussion customer, is this where I download updates?
+Commercial customers should acess the release distribution on the Percussion Support portal.
+
+
 ## Wait so do I need a license or not?
-No - not if you don't care about a support SLA or project Maintenance.  Checkout the [licensing F.A.Q. page](https://www.percussion.com/Percussion-CMS/licensing-and-open-source-faq/index.html) for more details.
+No - not if you don't care about a support SLA or project Maintenance.  Checkout the [licensing F.A.Q. page](https://www.percussion.com/percussion-cms/licensing-and-open-source-faq/index.html) for more details.
 
 ## Interested in Contributing?
 
