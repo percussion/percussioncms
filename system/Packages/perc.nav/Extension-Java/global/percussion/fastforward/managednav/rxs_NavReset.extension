@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="managednav" context="global/percussion/fastforward/managednav/" deprecated="no" handler="Java" name="rxs_NavReset" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Resets the managed navigation. The naviagtion xml is cached and any operation on navigation related items or slots or variants will not get affected till resetting it.</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="className">com.percussion.fastforward.managednav.PSNavReset</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

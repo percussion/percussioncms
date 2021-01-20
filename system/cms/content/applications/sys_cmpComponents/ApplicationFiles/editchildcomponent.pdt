@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editchildcomponent (relatedlinks, componentid, componentname, componentlookup, childcomponentid, slotname, sortorder, cancelurl )>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT sortorder (#PCDATA)>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT childcomponentid (#PCDATA)>
+<!ELEMENT componentlookup (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT componentid (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

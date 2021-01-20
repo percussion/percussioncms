@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="assembly" context="global/percussion/assembly/" deprecated="no" handler="Java" name="pageVariantAssembler" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Assemble a page content using a velocity template. It is similar with 'pageAssembler', but this uses specified template to render page content, not use page related template. All files with extension '.vm' in both directories, sys_resources/vm and rx_resources/vm, will be picked up by the velocity engine.</initParam>
+      <initParam name="com.percussion.extension.version">59</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.pagemanagement.assembler.PSPageVariateAssembler</initParam>
+      <initParam name="com.percussion.extension.assembly.fileSuffix">.vm</initParam>
+      <initParam name="com.percussion.extension.assembly.autoReload">yes</initParam>
+      <interface name="com.percussion.services.assembly.IPSAssembler"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

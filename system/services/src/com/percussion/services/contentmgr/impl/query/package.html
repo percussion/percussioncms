@@ -1,0 +1,99 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<html>
+<head>
+<title>Query subsystem</title>
+</head>
+<body>
+<h1>Organization</h1>
+<p>The query engine is built in several pieces. The front-end parsers
+for SQL and XPath produce a PSQuery object. That object contains the
+following pieces of information:
+<ul>
+	<li>The projection, which is a list of fields or the value <q>*</q> to
+	indicate that nodes should be returned
+	<li>The list of zero or more content types. Zero indicates that all
+	content types should be searched
+	<li>The sort specification, which is zero or more fields, each
+	specified to sort in ascending or descending order
+	<li>A query node tree
+</ul>
+The query node tree is passed through a transformer, which replaces the
+properties jcr:path, jcr:primaryType and jcr:mixinType with an
+equivalent check that can be evaluated. The initial transformer also
+does a small measure of checking to see that no functions are used -
+functions are not implemented at this time.
+<p>
+Note that the nodes are intentionally immutable. The transformers replace nodes
+as required. 
+<h2>Building HQL</h2>
+<p>Once the query node tree has been transformed, it is changed into an
+HQL query. This is done in pieces. The hql transformer creates an HQL
+where clause. Each use of the HQL carefully maps each implementation
+class (that maps the legacy content type into content items) to the same
+alias. With the addition to the legacy content type of a reference to
+the content summary object, this is sufficient to do all queries that
+are needed.
+<h2>Performing a Query</h2>
+<p>When the query is actually performed, the HQL is assembled for each
+content type being searched. The results are aggregated and then sorted
+according to the sort definition given. The results are then packaged
+into a query results object.
+<h2>Efficiencies</h2>
+<p>There are really two kinds of searches: property projection searches
+and node searches. They differ in the projection portion of the HQL
+created.
+<h2>Ordering</h2>
+<p>The transformers are called in a specific order. The following table
+discusses which need to be called and omissions for testing.
+<table>
+	<tr>
+		<th>Transformer</th>
+		<th>Notes</th>
+	</tr>
+	<tr>
+		<td>PSQueryTransformer</td>
+		<td>This transformer replaces jcr: properties</td>
+	</tr>
+	<tr>
+		<td>PSQueryInternalizeProperties</td>
+		<td>This transformer substitutes real object properties for the field
+		names. These are the same for the legacy class, but different for 
+		properties on the component summary (this is due to the object structure, 
+		with the component summary being a separate object)</td>
+	</tr>
+	<tr>
+		<td>PSQueryWhereBuilder</td>
+		<td>This takes the where clause and creates an appropriate HQL where
+		clause.</td>
+	</tr>
+</table>
+<h2>Sorting</h2>
+<p>
+The results are sorted according to the spec. This consists of either 
+ordering the projection (which will have the sort properties included), or
+ordering the result nodes.
+</body>
+</html>

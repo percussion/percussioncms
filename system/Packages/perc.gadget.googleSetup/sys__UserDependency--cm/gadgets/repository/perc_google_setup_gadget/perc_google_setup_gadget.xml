@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+    <ModulePrefs title="Google Setup" category="analytics" description="This gadget allows an administrator to configure Google Analytics to use the correct account and profile for each site managed by CMS." thumbnail="images/gadgetConfigGoogle.png" height="448" adminOnly="true">
+        <Require feature="perc_core"/>
+        <Require feature="perc_jquery_ui"/>
+    </ModulePrefs>
+    <Content type="html">
+        <![CDATA[
+        <style type="text/css">
+
+           .perc-ga-config-gadget {
+               width: 100%;
+           }
+
+           fieldset {
+              margin-top: 5px;
+              margin-bottom: 5px;
+              max-width: 440px;
+           }
+
+           label {
+              font-size: 11px;
+              font-weight: normal;
+              padding-right: 10px;
+           }
+
+           .perc-ga-textfield {
+              width: 100%;
+              font-size: 11px
+              padding-top: 10px;
+              margin-top: 5px;
+              margin-bottom: 10px;
+           }
+
+           .perc-ga-profile-list {
+                width: 100%;
+                margin-bottom: 10px;
+           }
+
+           .perc-ga-apikey-field{
+              width: 100%;
+              font-size: 11px
+           }
+
+           #perc-ga-site-profile-container {
+              height: 215px;
+              padding-right: 5px;
+              margin-bottom: 10px;
+              margin-left: 1px;
+              margin-top: 10px;
+              overflow-y: auto;
+           }
+
+           #perc-ga-site-profile-container td {
+              font-size: 11px;
+           }
+
+           #perc-ga-connect{
+             float: right;
+             border: 0px;
+             background-image: url("/Rhythmyx/sys_resources/images/ButtonConnectFlat.png");
+             margin-bottom: 10px;
+             height: 22px;
+             width: 63px;
+             cursor: pointer;
+           }
+
+           #perc-ga-delete{
+             float: left;
+             margin-bottom: 10px;
+             cursor: pointer;
+             color: #0099CC;
+             font-size: 11px;
+             text-decoration:none;
+           }
+
+           #perc-ga-connect:hover{
+              background-image:url("/Rhythmyx/sys_resources/images/ButtonConnectFlatOver.png");
+           }
+
+           #perc-ga-connect.perc-inactive{
+             background-image:url("/Rhythmyx/sys_resources/images/ButtonConnectFlat_Disable.png") !important;
+             cursor: default;
+           }
+           #perc-ga-delete.perc-inactive{
+                color: #777;
+                cursor:default;
+           }
+           #perc-ga-cancel{
+             float:right;
+             border: 0px;
+             background-image:url("/cm/gadgets/repository/perc_google_setup_gadget/images/buttonCancel.gif");
+             height:29px;
+             width:78px;
+             cursor: pointer;
+             margin-left: 1px;
+           }
+
+           #perc-ga-cancel:hover{
+              background-image:url("/cm/gadgets/repository/perc_google_setup_gadget/images/buttonCancelOver.gif");
+           }
+
+           #perc-ga-save{
+             float:right;
+             border: 0px;
+             background-image:url("/cm/gadgets/repository/perc_google_setup_gadget/images/buttonSave.png");
+             height:29px;
+             width:78px;
+             cursor: pointer;
+             margin-left: 3px;
+           }
+
+           #perc-ga-save:hover{
+              background-image:url("/cm/gadgets/repository/perc_google_setup_gadget/images/buttonSaveOver.png");
+           }
+
+           #perc-ga-save.perc-inactive{
+             background-image:url("/cm/gadgets/repository/perc_google_setup_gadget/images/buttonSaveInactive.png") !important;
+             cursor: default;
+           }
+
+           #perc-ga-info{
+              font-size: 11px;
+              max-width: 440px;
+              margin-left: 3px;
+              margin-top: 5px;
+              margin-bottom: 0px;
+           }
+
+           #perc-ga-site-profile-container .odd
+           {
+              background-image: url("/cm/gadgets/repository/common/dashboardListLineOdd.png");
+              background-repeat: repeat;
+              height: 44px;
+           }
+
+           #perc-ga-site-profile-container .even
+           {
+              background-image: url(/cm/gadgets/repository/common/dashboardListLineEven.png);
+              background-repeat: repeat;
+              height: 44px;
+           }
+
+           .perc-ga-disabled {
+              background-color: #f0f0f0;
+           }
+
+           #perc-ga-site-profile-label {
+
+           }
+
+           #perc-ga-top-label {
+              margin-bottom: 10px;
+           }
+
+           #perc-ga-user, #perc-ga-pwd{
+              font-size: 11px;
+           }
+           body * {
+              font-family: 'Open Sans', sans-serif;
+           }
+        </style>
+        <script  src="/cm/plugins/perc_utils.js"></script>
+        <script  src="/cm/plugins/perc_path_constants.js"></script>
+        <script  src="/cm/services/PercServiceUtils.js"></script>
+        <script  src="/cm/services/PercMetadataService.js"></script>
+        <script  src="/cm/services/PercPathService.js"></script>
+        <script >
+            // Grab the Perc utils
+            var perc_utils = percJQuery.perc_utils;
+
+
+           //Globals
+           var _sites = [];
+           var _storedConfig = null;
+           var _hasStoredPwd = false;
+           var _validCreds = false;
+           var _profileList = [];
+           var _metakey = "perc.ga.profile.list.persisted";
+           var _originalValues = {};
+
+           /**
+            * Load site list from server.
+            * @param callback {function} callback function to be executed when the site list is loaded.
+            */
+           function _loadSites(callback){
+
+              $.PercPathService.getFolderPathItem("/Sites", function(status, result){
+                 if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                 {
+                    var sList = result.PathItem;
+                    for(i = 0; i < sList.length; i++)
+                    {
+                       _sites[i] = sList[i].name;
+                    }
+                    if(typeof(callback) == 'function')
+                       callback();
+                 }
+                 else
+                 {
+                    perc_utils.alert_dialog({title: 'Error', content: result, "id": "perc-ga-loadSites-error"});
+                 }
+              });
+           }
+
+           /**
+            * Loads the provider configuration from the server.
+            * @param callback {function} callback function to be executed when the config is loaded.
+            */
+           function _loadConfig(callback){
+              $.PercServiceUtils.makeJsonRequest(
+                 $.perc_paths.ANALYTICS_GET_CONFIG,
+                 $.PercServiceUtils.TYPE_GET,
+                 false,
+                 function(status, result)
+                 {
+                     if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                     {
+                         if(result.data && typeof(result.data.providerConfig) == 'object')
+                         {
+                            _storedConfig = result.data.providerConfig;
+                            _hasStoredPwd = true;
+                         }
+                     }
+                     else
+                     {
+                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                         perc_utils.alert_dialog({title: 'Error', content:  defaultMsg, "id": "perc-ga-loadConfig-error"});
+                     }
+                     if(typeof(callback) == 'function')
+                        callback();
+                 }
+              );
+
+           }
+
+           /**
+            * Saves the provider configuration to the server.
+            * @param callback {function} callback function to be executed when the config is saved.
+            */
+           function _saveConfig(callback){
+
+              var extraParams = _getExtraParams();
+              var obj = {providerConfig:{
+                 "extraParams" : extraParams
+                 }
+              };
+              $.PercServiceUtils.makeJsonRequest(
+                 $.perc_paths.ANALYTICS_STORE_CONFIG,
+                 $.PercServiceUtils.TYPE_POST,
+                 false,
+                 function(status, result)
+                 {
+                     if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                     {
+                         _storedConfig = obj.providerConfig;
+                         _cacheOriginalValues();
+                         _handleClearCredsLinkState();
+                     }
+                     else
+                     {
+                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                         perc_utils.alert_dialog({title: 'Error', content:  defaultMsg, "id": "perc-ga-saveConfig-error"});
+                     }
+                     if(typeof(callback) == 'function')
+                        callback();
+                 },
+                 obj
+              );
+           }
+
+           /**
+            * Deletes the provider configuration from the server.
+            * @param callback {function} callback function to be executed when the config is deleted.
+            */
+           function _deleteConfig(callback){
+              $.PercServiceUtils.makeRequest(
+                 $.perc_paths.ANALYTICS_DELETE_CONFIG,
+                 $.PercServiceUtils.TYPE_DELETE,
+                 false,
+                 function(status, result)
+                 {
+                     var retSt = true;
+                     var retMsg = "Successfully deleted configuration";
+                     if(status != $.PercServiceUtils.STATUS_SUCCESS)
+                     {
+                         retSt = false;
+                         retMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                     }
+                     if($.isFunction(callback)){
+                         callback(retSt, retMsg);
+                     }
+                 }
+              );
+           }
+
+           /**
+            * Helper function to create the extra params object from the selected profiles.
+            * @return {object} may be <code>null</code>.
+            */
+           function _getExtraParams(){
+              var entries = {entry:[]};
+              var sVal = "";
+              var apiKey = "";
+              var site = "";
+              $('.perc-ga-site-container').each(function(){
+                 var self = $(this);
+                 sVal = self.find('option:selected').val();
+                 apiKey  = self.find('.perc-ga-apikey-field').val();
+                 apiKey = (apiKey == "Enter API Key for this Google Analytics Profile")? "" : apiKey;
+
+                 if(sVal != 'none')
+                 {
+                    site = self.find(".perc-ga-profile-list").attr("id").substr(21);
+                    entries.entry.push({"key": site, "value": sVal + "|" + apiKey});
+                 }
+              });
+              if(entries.entry.length > 0)
+                 return entries;
+              return null;
+           }
+
+           /**
+            * Collects current data to be used later to restore the UI back to the persisted
+            * state if cancel is called.
+            */
+           function _cacheOriginalValues(){
+               _originalValues = {};
+               _originalValues['config'] = $.extend(true, {}, _storedConfig);
+               _originalValues['hasStoredPwd'] = _hasStoredPwd;
+               _originalValues['profileList'] = $.extend(true, [], _profileList);
+               _originalValues['sites'] = $.extend(true, [], _sites);
+               _originalValues['validCreds'] = _validCreds;
+
+           }
+
+           /**
+            * Loads the persisted profiles list from the server.
+            * @param callback {function} callback function to be executed when the profiles list is loaded.
+            */
+           function _loadPersistedProfiles(callback){
+              $.PercMetadataService.find(_metakey, function(status, result){
+                 if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                 {
+                    if(result && typeof(result.metadata) == 'object')
+                    {
+                       eval("_profileList = " + result.metadata.data);
+                    }
+                 }
+                 if(typeof(callback) == 'function')
+                    callback();
+              });
+           }
+
+           /**
+            * Saves profile list to the server for later use.
+            * @param callback {function} callback function to be executed when the profile list is persisted.
+            */
+           function _savePersistedProfiles(callback){
+              $.PercMetadataService.save(_metakey, _profileList, function(status, result){
+                 if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                 {
+
+                 }
+                 if(typeof(callback) == 'function')
+                    callback();
+                 percJQuery.unblockUI();
+              });
+           }
+
+           /**
+            * Calls testConnection from the provider service to test the creds.
+            * @param userid {string} the user id, cannot be <code>null</code> or empty.
+            * @param password {string} the user password, may be <code>null</code> in which
+            * case it will attempt to use the stored password on the server.
+            * @param callback {function} callback function to be executed when testConnection returns.It will
+            * be passed the single argument status.
+            */
+           function _testConnection(userid, password, callback){
+
+
+              percJQuery.PercBlockUI();
+
+	      var formData = new FormData($('.testConnectionForm')[0]);
+
+
+              $.ajax({
+        url: "/Rhythmyx/services/analytics/provider/testConnection/" + encodeURIComponent(userid),  //Server script to process data
+        type: 'POST',
+        xhr: function() {  // Custom XMLHttpRequest
+            var myXhr = $.ajaxSettings.xhr();
+            if(myXhr.upload){ // Check if upload property exists
+                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+            }
+            return myXhr;
+        },
+        //Ajax events
+     //   beforeSend: beforeSendHandler,\
+
+        success: function(data, status){
+	 perc_utils.alert_dialog({title: 'Success',
+                            content:"Connection to Google Analytics was successful.", "id": "perc-ga-test-connect-success"});
+
+	   if(typeof(callback) == 'function')
+                        callback(status);
+                     percJQuery.unblockUI();
+	},
+        error: function(request,status, error){
+	 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(request);
+
+                        if(defaultMsg.indexOf('Captcha') != -1) // Replace needs captcha error which users will not understand
+                           defaultMsg = "Invalid credentials";
+
+                        perc_utils.alert_dialog({title: 'Error', content:defaultMsg, "id": "perc-ga-test-connect-error"});
+
+	   if(typeof(callback) == 'function')
+                        callback(status);
+                     percJQuery.unblockUI();
+	},
+        // Form data
+        data: formData,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+    }
+	function progressHandlingFunction(e){
+    if(e.lengthComputable){
+        $('progress').attr({value:e.loaded,max:e.total});
+    }
+
+           }
+
+           /**
+            * Load profiles from the provider.
+            * @param userid {string} the user id for the provider account. May be <code>null</code>
+            * or empty in which case it will attempt to use stored credentials.
+            * @param password {string} the password for the provider account. May be <code>null</code>
+            * or empty in which case it will attempt to use stored credentials.
+            * @param callback {function} the callback function to be executed when profiles are loaded, status
+            * is passed as the only argument.
+            */
+           function _loadProfiles(userid, password, callback){
+              $.PercServiceUtils.makeJsonRequest(
+                 $.perc_paths.ANALYTICS_GET_PROFILES,
+                 $.PercServiceUtils.TYPE_GET,
+                 false,
+                 function(status, result)
+                 {
+                     if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                     {
+                         _profileList = $.perc_utils.convertCXFArray(result.data.psmap.entries.entry);
+                     }
+                     else
+                     {
+                        var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                        perc_utils.alert_dialog({title: 'Error', content:defaultMsg});
+                     }
+                     if(typeof(callback) == 'function')
+                        callback(status);
+
+                 }
+              );
+           }
+
+           /**
+            * Initializes the UI.
+            */
+           function _init()
+           {
+              _initButtons();
+              _initFields();
+              _addSiteRows();
+              _updateProfiles();
+              _handleButtonState();
+              _cacheOriginalValues();
+              _handleClearCredsLinkState();
+           }
+
+           function __gup( name )
+           {
+               name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+               var regexS = "[\\?&]"+name+"=([^&#]*)";
+               var regex = new RegExp( regexS );
+               var results = regex.exec( window.location.href );
+               if( results == null )
+                   return "";
+               else
+                   return results[1];
+           }
+
+           getDashboardColumn = function() {
+               var __mid = __gup("mid");
+               var __gad = percJQuery("#gid_" + __mid);
+               var __columnRawId = __gad.parent().attr("id");
+               return parseInt(__columnRawId.substr(4));
+           }
+
+           /**
+           * Build the rows for each site in the system and add them to the site/profile table.
+           */
+           function _addSiteRows(){
+              var sitesContainer = $("#perc-ga-site-profile-container");
+              sitesContainer.empty();
+              var oddEvenBorder = "";
+
+              if(_sites.length > 0)
+              {
+                 for(i = 0; i < _sites.length; i++)
+                 {
+                     oddEvenBorder = i % 2 != 0 ? "" : "border: 1px solid #F0F0F0; background-color:#F0F0F0;";
+                     siteRow = $(
+                        '<div class="perc-ga-site-container" style="' + oddEvenBorder + 'padding: 10px 10px 14px 10px">' +
+                        '    <div class="perc-ga-site" title="' + _sites[i] + '" style="font-size: 11px; margin-bottom: 10px;">' + _sites[i] + '</div>' +
+                        '    <div style="width:100%; vertical-align: middle;">' +
+                        '        <select id="perc-ga-site-profile-' + _sites[i] + '" class="perc-ga-profile-list"><option value="none">Select Google Analytics Profile</option></select>' +
+                        '        <input type="text" disabled="disabled" style="color: #CCCCCC" id="perc_ga_apikey_' + _sites[i] + '" class="perc-ga-apikey-field" value="Enter API Key for this Google Analytics Profile">' +
+                        '    </div>' +
+                        '</div>');
+
+                        if(getDashboardColumn() == 1){
+                            $(siteRow).find(".perc-ga-apikey-field").css("margin-left", "16px");
+                            $(siteRow).find(".perc-ga-profile-list").css("width", "49%");
+                            $(siteRow).find(".perc-ga-apikey-field").css("width", "49%");
+                            $(siteRow).css("white-space", "nowrap");
+                        }
+
+                        sitesContainer.append(siteRow);
+                 }
+                 // Add select change event bindings
+                 sitesContainer.find(".perc-ga-profile-list").each(function(){
+                    $(this).bind("change.sitelists", function(){
+                        var site = $(this).attr('id').substr(21);
+                       $(this).children("option").each(function(){
+                          var self = $(this);
+                          if(this.selected)
+                          {
+                             self.addClass("perc-selected");
+                             if(self.val() == "none")
+                                $("input[id='perc_ga_apikey_" + site + "']").css("color", "#CCCCCC").val("Enter API Key for this Google Analytics Profile").attr("disabled", "disabled");
+                             else
+                                $("input[id='perc_ga_apikey_" + site + "']").removeAttr("disabled");
+                          }
+                          else
+                          {
+                             self.removeClass("perc-selected");
+                          }
+                       });
+                    });
+                 });
+
+                 sitesContainer.find(".perc-ga-apikey-field").each(function(){
+                    $(this).focus(apiKeyFocus).blur(apiKeyBlur)
+                })
+              }
+              else
+              {
+                 sitesContainer.append("<table width='100%' cellspacing='0' cellpadding='3'><tr class='odd'><td align='center'>No Sites Found</td></tr></tbody></table>");
+              }
+           }
+
+           function apiKeyFocus(){
+               var self = $(this)
+               if(self.val() == "" || self.val() == "Enter API Key for this Google Analytics Profile")
+                   self.css("color", "black").val("");
+           }
+
+           function apiKeyBlur(){
+              var self = $(this)
+              if(self.val() == "")
+                  self.css("color", "#CCCCCC").val("Enter API Key for this Google Analytics Profile");
+           }
+
+           /**
+            * Updates the the profile lists for each site.
+            */
+           function _updateProfiles(){
+             var opt = "";
+             var eParams = [];
+             if(_storedConfig != null && typeof(_storedConfig.extraParams) != 'undefined')
+             {
+
+                eParams = $.perc_utils.convertCXFArray(_storedConfig.extraParams.entry);
+             }
+             var paramsMap = {};
+             for(i = 0; i < eParams.length; i++)
+             {
+                var current = eParams[i];
+                paramsMap[current['key']] = current['value'];
+             }
+
+             $('.perc-ga-profile-list-option').remove();
+             $('.perc-ga-profile-list').each(function(){
+                var site = $(this).attr('id').substr(21);
+                var apiKey = "";
+                var selectedProfileId = "";
+                if (typeof(paramsMap[site]) != "undefined"){
+                    var valueArray = paramsMap[site].split("|");
+                    selectedProfileId = valueArray.splice(0,2).join("|");
+                    apiKey = valueArray.pop();
+                    if(apiKey != ""){
+                        $("input[id='perc_ga_apikey_" + site + "']").css("color", "black").val(apiKey);
+                   }
+                }
+                for(i = 0; i < _profileList.length; i++)
+                {
+                   var temp = _profileList[i];
+                   var hasSelection = typeof(paramsMap[site]) != 'undefined';
+                   var selectedClass = (hasSelection && temp['key'] == selectedProfileId) ? ' perc-selected' : '';
+                   var selected = (hasSelection && temp['key'] == selectedProfileId) ? ' selected="selected"' : '';
+                   if (selected != ""){
+                      $("input[id='perc_ga_apikey_" + site + "']").removeAttr("disabled");
+                   }
+                   opt = '<option title="' + temp['value'] + '" class="perc-ga-profile-list-option'
+                      + selectedClass + '" value="' + temp['key'] + '"' + selected + '>' + temp['value'] + '</option>';
+                   $(this).append($(opt));
+                }
+
+             });
+             var profileWidth = (getDashboardColumn() == 1)? "49" : "100";
+             $('.perc-ga-profile-list').css("width", "auto").css("width", profileWidth + "%");
+             _handleButtonState();
+           }
+
+           /**
+            * Bind event handlers to all buttons.
+            */
+           function _initButtons(){
+              var $connect = $("#perc-ga-connect");
+              var $cancel = $("#perc-ga-cancel");
+              var $save = $("#perc-ga-save");
+              var $delete = $("#perc-ga-delete");
+
+              $connect.unbind().bind('click', _onConnect);
+              $cancel.unbind().bind('click', _onCancel);
+              $save.unbind().bind('click', _onSave);
+              $delete.unbind().bind('click', _onDelete);
+
+
+           }
+
+           /**
+            * Bind events to the fields and set initial values from the
+            * stored config.
+            */
+           function _initFields(){
+              var $user = $("#perc-ga-user");
+              var $pwd = $("#perc-ga-pwd");
+
+              if(_storedConfig != null && typeof(_storedConfig.userid) != 'undefined')
+              {
+
+                 $user.val(_storedConfig.userid);
+
+                 _validCreds = true;
+              }
+              else
+              {
+                 $user.val("");
+
+              }
+
+              $user.unbind().bind('blur', _handleButtonState).bind('keyup',
+                 function(){
+                    _validCreds = false;
+                    $pwd.val("");
+                    _hasStoredPwd = false;
+                    _handleButtonState();
+
+                 });
+              $pwd.unbind().bind('blur', _handleButtonState).bind('change',
+                 function(){
+                    _hasStoredPwd = false;
+                    _validCreds = false;
+                    _handleButtonState();
+                 });
+
+           }
+
+           /**
+            * Action called when the connect button is clicked. Tests the
+            * creds against the google provider and if successful loads profiles and
+            * updates the UI.
+            */
+           function _onConnect(){
+              if(!$(this).hasClass("perc-inactive"))
+              {
+                var thePwd = _hasStoredPwd ? "null" : $("#perc-ga-pwd").val();
+                var uid = $("#perc-ga-user").val();
+
+                if($("#perc-ga-user").val().indexOf("/") != -1 ||
+                    thePwd.indexOf("/") != -1)
+                {
+                    perc_utils.alert_dialog({title: 'Error',
+                            content:"Connection error: Invalid credentials."});
+                }
+                else
+                {
+                    _testConnection(uid, thePwd, function(status){
+                       if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                       {
+
+                          _validCreds = true;
+                          _loadProfiles(uid, thePwd, function(){_updateProfiles();});
+                       }
+                       else
+                       {
+                          _validCreds = false;
+                       }
+                       _handleButtonState();
+                    });
+                }
+
+              }
+           }
+
+
+           /**
+            * Action called when the cancel button is clicked. Reverts the UI back
+            * to the persisted state.
+            */
+           function _onCancel(){
+              _storedConfig = _originalValues['config'];
+              _hasStoredPwd = _originalValues['hasStoredPwd'];
+              _profileList = _originalValues['profileList'];
+              _sites = _originalValues['sites'];
+              $("#perc-ga-confirm-pwd").val("").attr('disabled', "disabled").addClass('perc-ga-disabled');
+              _validCreds = _originalValues['validCreds'];
+              _init();
+           }
+
+           /**
+            * Action called when the save button is clicked. Persists config and
+            * profiles to the server.
+            */
+           function _onSave(){
+              if(!$(this).hasClass("perc-inactive"))
+              {
+                percJQuery.PercBlockUI();
+                _saveConfig(_savePersistedProfiles);
+              }
+           }
+
+           /**
+            * Action called when the clear credentials is clicked. Deletes the config.
+            */
+           function _onDelete(){
+              if(!$(this).hasClass("perc-inactive"))
+              {
+                    percJQuery.perc_utils.confirm_dialog({
+                       id: "confirmDelete",
+                       title: 'Warning',
+                       question: 'Please confirm that you wish to remove your Google Analytics credentials from Percussion. Upon next publish, the Google Analytics script code will be removed from all published pages.',
+                       width: 500,
+                       cancel:
+                           function(){},
+                       success:
+                           function(){
+                                percJQuery.PercBlockUI();
+                                _deleteConfig(function(status, msg){
+                                    percJQuery.unblockUI();
+                                    if(status){
+                                        self.location.reload();
+                                    }
+                                    else{
+                                        percJQuery.perc_utils.alert_dialog({title: 'Error', content:  msg, "id": "perc-ga-deleteConfig-error"});
+                                    }
+                                });
+                           }
+                    });
+
+              }
+           }
+
+           /**
+            * Helper function to set the appropriate enable/disable state for the buttons.
+            */
+           function _handleButtonState(){
+              var $user = $("#perc-ga-user");
+              var $pwd = $("#perc-ga-pwd");
+              var hasUser = $user.val().length > 0;
+              var hasPass = $pwd.val().length > 0 || _hasStoredPwd;
+              if(hasUser && hasPass)
+              {
+                 $("#perc-ga-connect").removeClass("perc-inactive");
+              }
+              else
+              {
+                 $("#perc-ga-connect").addClass("perc-inactive");
+              }
+
+              if(hasUser && hasPass && _validCreds)
+              {
+                 $("#perc-ga-save").removeClass("perc-inactive");
+              }
+              else
+              {
+                 $("#perc-ga-save").addClass("perc-inactive");
+              }
+
+           }
+           function _handleClearCredsLinkState(){
+              if(_storedConfig != null){
+                $("#perc-ga-delete").removeClass("perc-inactive");
+              }
+           }
+           $(document).ready(function(){
+              // Preload the over images
+              $.perc_utils.preLoadImages(
+                 "/cm/gadgets/repository/perc_google_setup_gadget/images/buttonSaveOver.png",
+                 "/cm/gadgets/repository/perc_google_setup_gadget/images/buttonCancelOver.gif",
+                 "/cm/gadgets/repository/perc_google_setup_gadget/images/buttonConnectOver.png"
+              );
+              //Get site list
+              _loadSites(
+                 //Load existing config
+                 function(){
+
+                    _loadConfig(
+                       //Load any persisted profiles
+                       function(){
+
+                          _loadPersistedProfiles(
+                             // Initialize the dialog
+                             function(){
+
+                               _init();
+                             }
+                          );
+                       }
+                    );
+                 }
+              );
+
+
+           });
+        </script>
+        <div class="perc-gadget perc-ga-config-gadget">
+           <div id="perc-ga-provider-creds">
+           <div id="perc-ga-top-label"><label>Connect to Google:</label></div>
+
+           <label>Google Service Account email:</label><br/><input class="perc-ga-textfield" id="perc-ga-user" type="text"/>
+           <form class="testConnectionForm" enctype="multipart/form-data">
+		<label>Google Service Account .json credentials file:</label>
+		<br/>
+		<input name="file" class="perc-ga-textfield" id="perc-ga-pwd" type="file" accept=".json"/>
+           </form>
+              <a href="javascript:void(0);" id="perc-ga-connect" class="perc-inactive" title="Test the credentials by attempting to connect to Google Analytics. If successful the profile lists will be updated."></a>
+              <a href="javascript:void(0);" id="perc-ga-delete" class="perc-inactive" title="Clear the credentials.">Clear credentials</a>
+              <div style="clear: both;"></div>
+           </div>
+           <div id="perc-ga-site-profile-mappings">
+          <label id="perc-ga-site-profile-label">Select a Google profile for each site:</label>
+            <div id="perc-ga-site-profile-container">
+            </div>
+           </div>
+           <div id="perc-ga-command-panel">
+             <a href="javascript:void(0);" id="perc-ga-save" class="perc-inactive" title="Save analytics settings to the server."></a>
+             <a href="javascript:void(0);" id="perc-ga-cancel" title="Revert any unsaved changes."></a>
+           </div>
+           <div style="clear: both;"></div>
+        </div>
+     ]]>
+    </Content>
+</Module>

@@ -1,0 +1,120 @@
+/******************************************************************************
+ *
+ * [TreeIcon.css ]
+ *
+ * COPYRIGHT (c) 1999 - 2007 by Percussion Software, Inc., Woburn, MA USA.
+ * All rights reserved. This material contains unpublished, copyrighted
+ * work including confidential and proprietary information of Percussion.
+ *
+ *****************************************************************************/
+ 
+/* CSS for TreeDocIconExtension */
+
+
+/* long vertical line under docIcon, connecting w/ children */
+/*
+.TreeStateChildrenYes-ExpandOpen .TreeIconContent {
+    background-image : url('../templates/images/TreeV3/i_long.gif');
+    background-repeat : no-repeat;
+    background-position: 18px 9px;
+}
+*/
+
+/* close has higher priority */
+.TreeStateChildrenYes-ExpandClosed .TreeIconContent {
+    background-image : url();
+}
+
+/* higher priotity: same length and appear after background-definition */
+.TreeStateChildrenNo-ExpandLeaf .TreeIconContent {
+    background-image : url();
+}
+
+.TreeStateChildrenNo-ExpandClosed .TreeIconContent {
+    background-image : url();
+}
+
+.TreeStateChildrenNo-ExpandOpen .TreeIconContent {
+    background-image : url();
+}
+
+
+/* highest priority */
+.TreeIconDocument {
+    background-image: url('../../images/aa/page_0.gif');
+}
+
+.TreeExpandOpen .TreeIconFolder {
+    background-image: url('../../images/aa/slot_0.gif');
+}
+
+.TreeExpandClosed .TreeIconFolder {
+    background-image: url('../../images/aa/slot_1.gif');
+}
+
+/* highest priority */
+.TreeIconPage0 {
+    background-image: url('../../images/aa/page_0.gif');
+}
+
+.TreeIconPage1 {
+    background-image: url('../../images/aa/page_1.gif');
+}
+
+.TreeIconPage2 {
+    background-image: url('../../images/aa/page_2.gif');
+}
+
+.TreeIconField0 {
+    background-image: url('../../images/aa/field_0.gif');
+}
+
+.TreeIconField1 {
+    background-image: url('../../images/aa/field_1.gif');
+}
+
+.TreeIconField2 {
+    background-image: url('../../images/aa/field_2.gif');
+}
+
+
+.TreeIconSlot0 {
+    background-image: url('../../images/aa/slot_0.gif');
+}
+
+.TreeIconSlot1 {
+    background-image: url('../../images/aa/slot_1.gif');
+}
+
+.TreeIconSlot2 {
+    background-image: url('../../images/aa/slot_2.gif');
+}
+
+
+
+.TreeIconSnippet0 {
+    background-image: url('../../images/aa/snippet_0.gif');
+}
+
+.TreeIconSnippet1 {
+    background-image: url('../../images/aa/snippet_1.gif');
+}
+
+.TreeIconSnippet2 {
+    background-image: url('../../images/aa/snippet_2.gif');
+}
+
+
+
+/* generic class for docIcon */
+.TreeIcon {
+    width: 18px;
+    height: 18px;
+    float: left;
+    display: inline;
+    background-repeat : no-repeat;
+}
+
+div.TreeContent {
+    margin-left: 36px;
+}

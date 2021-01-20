@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="441" startPriority="0" version="2.0">
+	<name>sys_cmpRxAdmin</name>
+	<description/>
+	<requestRoot>sys_cmpRxAdmin</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_JB_1001336561671/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:Admin1</agent>
+			<description>Saved</description>
+			<time>20010924T090806859</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="8">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20040617T175602798</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>Anonymous</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="no" dataDelete="no" dataQuery="no" dataUpdate="no" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+	</PSXAcl>
+	<maxThreads>0</maxThreads>
+	<maxRequestTime>0</maxRequestTime>
+	<maxRequestsInQueue>0</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>0</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="182">
+		<name>Dataset2696</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="139">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="134">
+				<PSXBackEndTable id="133">
+					<alias>RXDUAL</alias>
+					<table>RXDUAL</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="137" returnEmptyXml="no">
+				<PSXDataMapping groupId="0" id="0">
+					<PSXXmlField id="0">
+						<name>help/componentname</name>
+					</PSXXmlField>
+					<PSXHtmlParameter id="0">
+						<name>sys_componentname</name>
+					</PSXHtmlParameter>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="0" id="0">
+					<PSXXmlField id="0">
+						<name>help/pagename</name>
+					</PSXXmlField>
+					<PSXHtmlParameter id="0">
+						<name>sys_pagename</name>
+					</PSXHtmlParameter>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="135" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="181">
+			<schemaSource>file:rxAdmin.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>rxAdmin</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="183">
+				<styleSheet>file:rxAdmin.xsl</styleSheet>
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+		<PSXResultPager id="136">
+			<maxRowsPerPage>-1</maxRowsPerPage>
+			<maxPages>-1</maxPages>
+			<maxPageLinks>10</maxPageLinks>
+		</PSXResultPager>
+	</PSXDataSet>
+	<PSXDataSet id="186">
+		<name>Dataset132</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="180">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="176">
+				<PSXBackEndTable id="175">
+					<alias>RXDUAL</alias>
+					<table>RXDUAL</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="178" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>rxadmin/componentname</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXDUAL</tableAlias>
+						<column>GB</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="177" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="184">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/general/sys_AddPluginProperties</name>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="185">
+			<schemaSource>file:rxAdmin.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>rxAdminApplet</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="187">
+				<styleSheet>file:rxAdminApplet.xsl</styleSheet>
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="173" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="174">
+		<providerType>SMTP</providerType>
+		<server>//erikserating</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="locationX174">16</userProperty>
+	<userProperty name="locationX173">16</userProperty>
+	<userProperty name="resultPageFilePath183">F:\sys_cmpRxAdmin\rxAdmin.xsl</userProperty>
+	<userProperty name="locationX172">16</userProperty>
+	<userProperty name="locationY187">172</userProperty>
+	<userProperty name="locationY186">153</userProperty>
+	<userProperty name="175sizewidth">120</userProperty>
+	<userProperty name="locationY185">0</userProperty>
+	<userProperty name="locationY184">22</userProperty>
+	<userProperty name="locationY183">65</userProperty>
+	<userProperty name="locationY182">53</userProperty>
+	<userProperty name="schemaSourceReadOnly179">true</userProperty>
+	<userProperty name="locationY181">0</userProperty>
+	<userProperty name="locationY180">20</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="locationY179">0</userProperty>
+	<userProperty name="locationY178">24</userProperty>
+	<userProperty name="locationY177">24</userProperty>
+	<userProperty name="locationY176">0</userProperty>
+	<userProperty name="locationY174">100</userProperty>
+	<userProperty name="locationY173">55</userProperty>
+	<userProperty name="pageDatatankFilePath185">E:\Rhythmyx50_200405Q10\sys_cmpRxAdmin\rxAdmin.dtd</userProperty>
+	<userProperty name="locationY172">10</userProperty>
+	<userProperty name="pageDatatankFilePath181">E:\Rhythmyx50_200405Q10\sys_cmpRxAdmin\rxAdmin.dtd</userProperty>
+	<userProperty name="175readonly">true</userProperty>
+	<userProperty name="175sizeheight">200</userProperty>
+	<userProperty name="pageDatatankSrcType185">2</userProperty>
+	<userProperty name="locationX187">246</userProperty>
+	<userProperty name="pageDatatankSrcType181">2</userProperty>
+	<userProperty name="locationX186">60</userProperty>
+	<userProperty name="locationX185">353</userProperty>
+	<userProperty name="locationX184">56</userProperty>
+	<userProperty name="locationX183">233</userProperty>
+	<userProperty name="locationX182">45</userProperty>
+	<userProperty name="locationX181">353</userProperty>
+	<userProperty name="locationX180">11</userProperty>
+	<userProperty name="pageDatatankFilePath179">E:\Rhythmyx50_200405Q10\sys_cmpRxAdmin\rxAdmin.dtd</userProperty>
+	<userProperty name="175locationy">20</userProperty>
+	<userProperty name="175locationx">20</userProperty>
+	<userProperty name="schemaSourceReadOnly185">true</userProperty>
+	<userProperty name="schemaSourceReadOnly181">true</userProperty>
+	<userProperty name="pageDatatankSrcType179">2</userProperty>
+	<userProperty name="locationX179">353</userProperty>
+	<userProperty name="locationX178">211</userProperty>
+	<userProperty name="locationX177">77</userProperty>
+	<userProperty name="locationX176">0</userProperty>
+	<userProperty name="resultPageFilePath187">E:\Rhythmyx50_200405Q10\sys_cmpRxAdmin\rxAdminApplet.xsl</userProperty>
+</PSXApplication>

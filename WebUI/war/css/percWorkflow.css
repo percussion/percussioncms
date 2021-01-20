@@ -1,0 +1,1651 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+#perc-tab-users,li.ui-tabs-selected #perc-tab-users,#perc-tab-users:hover,#perc-tab-roles,li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover,#perc-tab-workflow,li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
+{
+    /*width:115px;
+   background:transparent url(../images/text/workflowTabs.png);*/
+}
+
+.ui-tabs-selected #perc-tab-category {
+    margin-top: 0px !important;
+    height: 31px;
+    padding-top: 8px;
+}
+.ui-tabs-selected #perc-tab-users{
+    margin-top: 0px !important;
+    height: 31px;
+    padding-top: 8px;
+}
+.ui-tabs-selected #perc-tab-roles{
+    margin-top: 0px !important;
+    height: 31px;
+    padding-top: 8px;
+}
+.ui-tabs-selected #perc-tab-workflow{
+    margin-top: 0px !important;
+    height: 31px;
+    padding-top: 8px;
+}
+
+
+#perc-tab-category
+{
+    display: block;
+    width:150px;
+    text-align:center;
+    vertical-align:middle;
+    border-radius:5px 5px 0px 0px;
+    color: #f5f7f8;
+    background-color: #6c707a;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    font-stretch: expanded;
+    height: 22.5px;
+    padding-top: 7px;
+    margin-top: 0px !important;
+    letter-spacing: 1px;
+}
+#perc-tab-users{
+    display: block;
+    width:150px;
+    text-align:center;
+    vertical-align:middle;
+    border-radius:5px 5px 0px 0px;
+    color: #f5f7f8;
+    background-color: #6c707a;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    font-stretch: expanded;
+    height: 22.5px;
+    padding-top: 7px;
+    margin-top: 0px !important;
+    letter-spacing: 1px;
+}
+#perc-tab-roles{
+    display: block;
+    width:150px;
+    text-align:center;
+    vertical-align:middle;
+    border-radius:5px 5px 0px 0px;
+    color: #f5f7f8;
+    background-color: #6c707a;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    font-stretch: expanded;
+    height: 22.5px;
+    padding-top: 7px;
+    margin-top: 0px !important;
+    letter-spacing: 1px;
+}
+#perc-tab-workflow{
+    display: block;
+    width:150px;
+    text-align:center;
+    vertical-align:middle;
+    border-radius:5px 5px 0px 0px;
+    color: #f5f7f8;
+    background-color: #6c707a;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    font-stretch: expanded;
+    height: 22.5px;
+    padding-top: 7px;
+    margin-top: 0px !important;
+    letter-spacing: 1px;
+}
+
+li.ui-tabs-selected #perc-tab-category,#perc-tab-category:hover
+{
+    color:black;
+    background-color:#E6E6E6;
+    font-size:16px;
+}
+
+li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
+{
+    color:black;
+    background-color:#E6E6E6;
+    font-size:16px;
+}
+
+li.ui-tabs-selected #perc-tab-users,#perc-tab-users:hover
+{
+    color:black;
+    background-color:#E6E6E6;
+    font-size:16px;
+}
+
+li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover
+{
+    color:black;
+    background-color:#E6E6E6;
+    font-size:16px;
+}
+
+#perc-tab-roles:focus{
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+
+#perc-tab-users:focus{
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+
+#perc-tab-workflow:focus{
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+
+#perc-tab-category:focus{
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+
+#perc-tab-users
+{
+    background-position:0 -104px;
+}
+
+#perc-tab-roles
+{
+    background-position:0 -2px;
+}
+
+#perc-tab-workflow
+{
+    background-position:0 -208px;
+}
+
+li.ui-tabs-selected #perc-tab-category,#perc-tab-category:hover
+{
+    background-position:0 -108px;
+}
+
+li.ui-tabs-selected #perc-tab-users,#perc-tab-users:hover
+{
+    background-position:0 -157px;
+}
+
+li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover
+{
+    background-position:0 -52px;
+}
+
+li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
+{
+    background-position:0 -260px;
+}
+
+.perc-required-label
+{
+    position:relative;
+    float:right;
+    margin-right:10px;
+    margin-top:-15px;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+}
+
+#perc-users-list
+{
+    width:240px;
+    float:left;
+    text-align:left;
+    margin-top:10px;
+    padding:0;
+}
+
+#perc-users-details
+{
+    float:left;
+    margin-left:20px;
+    margin-top:10px;
+    height:100%;
+    min-width:700px;
+    background-color:#E6E6E9;
+}
+
+#perc-users-roles-editor
+{
+    border-top:7px solid #FFF;
+    height:230px;
+    background:#E6E6E9;
+}
+
+.perc-user-list-label
+{
+    margin-top:13px;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:bold;
+    color:#000;
+}
+
+#perc-users-add-user-button
+{
+    width:19px;
+    height:16px;
+    float:right;
+    margin-right:8px;
+    background-image:url(../images/images/buttonAddUser.gif);
+    cursor:pointer;
+}
+
+#perc-users-add-user-button:hover
+{
+    background-image:url(../images/images/buttonAddUserOver.gif);
+}
+
+#perc-username-list
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    color:#006F94;
+    text-decoration:none;
+    margin-top:6px;
+    max-height:370px;
+    overflow:auto;
+}
+
+#perc-username-list li
+{
+    border-top:2px solid #FFF;
+    background-color:#E6E6E9;
+    padding:5px 6px;
+}
+
+.perc-username
+{
+    cursor:pointer;
+    /*  height:16px; */
+    margin:auto;
+}
+
+.perc-user-delete
+{
+    float:right;
+    width:22px;
+    height:22px;
+    margin-top:-3px;
+    background-image:url(../images/icons/editor/deleteFull.png);
+    cursor:pointer;
+}
+
+.perc-user-delete:hover
+{
+    background-image:url(../images/icons/editor/deleteFullOver.png);
+}
+
+.perc-users-selected
+{
+    color:#000;
+    font-size:normal;
+    background-color:#caf589;
+}
+
+.perc-user-delete-disabled
+{
+    float:right;
+    width:22px;
+    height:22px;
+    margin-top:-3px;
+    background-image:url(../images/icons/editor/deleteFullInactive.png);
+    cursor:default;
+}
+
+#perc-users-username-label,#perc-users-password-label,#perc-users-password-confirm-label,#perc-users-external-user-label,#perc-users-email-label
+{
+    margin-left:27px;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    color:#000;
+}
+
+#perc-users-username-field,#perc-users-password-field,#perc-users-email-field,#perc-users-password-confirm-field
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:bold;
+    color:#000;
+    width:300px;
+    margin-top:5px;
+}
+
+.perc-users-password-field-view-user
+{
+    background-color:transparent;
+    border:none;
+    width:450px;
+}
+
+#perc-users-available-roles,#perc-users-roles-add-remove-buttons,#perc-users-assigned-roles
+{
+    margin-top:30px;
+    margin-left:30px;
+    float:left;
+}
+
+#perc-users-assigned-roles
+{
+    margin-left:15px;
+}
+
+#perc-users-available-roles,#perc-users-assigned-roles
+{
+    height:273px;
+}
+
+#perc-users-available-roles > select,#perc-users-assigned-roles > select
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    width:290px;
+    height:219px;
+    overflow:auto;
+    border:1px solid #E6E6E9;
+}
+
+#perc-users-remove-role-button
+{
+    width:18px;
+    height:19px;
+    background-image:url(../images/icons/editor/buttonLeft.png);
+}
+
+#perc-users-remove-role-button:hover
+{
+    background-image:url(../images/icons/editor/buttonLeftOver.png);
+}
+
+#perc-users-add-role-button
+{
+    width:18px;
+    height:19px;
+    background-image:url(../images/icons/editor/buttonRight.png);
+    margin-bottom:10px;
+}
+
+#perc-users-add-role-button:hover
+{
+    background-image:url(../images/icons/editor/buttonRightOver.png);
+}
+
+#perc-users-roles-add-remove-buttons
+{
+    margin-top:100px;
+    margin-left:15px;
+}
+
+#perc-users-import-users-dialog
+{
+    overflow:hidden;
+    margin-left:-14px;
+    margin-right:-15px;
+}
+
+#perc-users-import-users-dialog input
+{
+    width:auto;
+    z-index:5000;
+}
+
+#perc-users-directory-users-list
+{
+    height:300px;
+    overflow:auto;
+    background-color:#FFF;
+    margin-bottom:5px;
+    padding:5px;
+}
+
+#perc-users-import-users-button
+{
+    width:19px;
+    height:16px;
+    float:right;
+    margin-right:8px;
+}
+
+.perc-users-import-users-button-enabled
+{
+    background-image:url(../images/images/buttonImportDirectoryUsers.png);
+    cursor:pointer;
+}
+
+.perc-users-import-users-button-enabled:hover
+{
+    background-image:url(../images/images/buttonImportDirectoryUsersOver.png);
+}
+
+.perc-users-import-users-button-disabled
+{
+    background-image:url(../images/images/buttonImportDirectoryUsersDisabled.png);
+}
+
+.perc-users-directory-users-import-button-enabled
+{
+    height:29px;
+    width:100px;
+    float:right;
+    margin-left:8px;
+    background-image:url(../images/images/blueButtonImport.png);
+}
+
+.perc-users-directory-users-import-button-enabled:hover
+{
+    background-image:url(../images/images/blueButtonImportOver.png);
+}
+
+.perc-users-directory-users-import-button-disabled
+{
+    height:29px;
+    width:100px;
+    float:right;
+    margin-left:8px;
+    background-image:url(../images/images/blueButtonImportDisabled.png);
+}
+
+#ui-dialog-title-perc-users-import-users-dialog
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:16px;
+    color:#666;
+    margin-top:6px;
+}
+
+#perc-users-import-warning-scrollpane
+{
+    height:200px;
+    overflow:auto;
+}
+
+.perc-users-table-header,.perc-users-row
+{
+    width:200px;
+    height:20px;
+}
+
+#perc-users-external-user-label
+{
+    margin-left:30px;
+}
+
+#perc-users-import-users-dialog .ui-dialog-content
+{
+    padding-left:12px;
+    padding-top:20px;
+}
+
+#perc-users-directory-users-cancel-button
+{
+    height:29px;
+    width:78px;
+    float:right;
+    background-image:url(../images/images/buttonCancel.gif);
+}
+
+#perc-users-directory-users-cancel-button:hover
+{
+    background-image:url(../images/images/buttonCancelOver.gif);
+}
+
+#perc-users-search-button
+{
+    height:29px;
+    width:100px;
+    float:right;
+    margin-top:0;
+    background-image:url(../images/images/blueButtonSearch.png);
+}
+
+#perc-users-search-button:hover
+{
+    background-image:url(../images/images/blueButtonSearchOver.png);
+}
+
+#perc-users-directory-users-buttons
+{
+    position:absolute;
+    bottom:15px;
+    right:20px;
+}
+
+#perc-roles-list,#perc-workflows-list,#perc-workflows-assigned-sites-folders,#perc-category-tree
+{
+    width:240px;
+    float:left;
+    clear:left;
+    text-align:left;
+    padding:0;
+}
+
+#perc-workflows-list,#perc-workflows-assigned-sites-folders
+{
+    padding-right:25px;
+}
+
+#perc-roles-details,#perc-category-details
+{
+    float:left;
+    margin-left:20px;
+    margin-top:10px;
+    height:100%;
+    width:700px;
+    background-color:#E6E6E9;
+}
+
+#perc-roles-users-editor
+{
+    border-top:7px solid #FFF;
+    height:100%;
+    background:#E6E6E9;
+}
+
+.perc-wf-action-wrapper
+{
+    float:right;
+}
+
+#perc-wf-edit.perc-wf-edit-disable,#perc-wf-edit.perc-wf-edit-disable:hover
+{
+    background-image:url(../images/icons/editor/editFullDisable.png);
+    cursor:default;
+}
+
+#perc-roles-name-label,#perc-roles-description-label,#perc-roles-homepage-label
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    color:#000;
+    margin:0 27px;
+}
+
+#perc-roles-homepage-label
+{
+    margin-bottom:27px;
+}
+
+#perc-category-selectable-field,#perc-category-show-in-page-field
+{
+    width:50px;
+}
+
+#perc-roles-name-field,#perc-new-workflow-name,#perc-update-workflow-name
+{
+    font-weight:bold;
+    width:300px;
+}
+
+#perc-publish-now-roles-control,#perc-ui-permission-plusbutton
+{
+    margin-top:0px;
+}
+
+#perc-roles-homepage-field
+{
+    font-weight:normal;
+    width:300px;
+}
+#perc-roles-description-field
+{
+    height:55px;
+    resize:none;
+    overflow:auto;
+    width:643px;
+}
+
+#perc-roles-assigned-users
+{
+    margin-top:27px;
+    margin-left:27px;
+    margin-bottom:27px;
+    float:left;
+    height:100%;
+}
+
+.perc-roles-addusers-button,#perc-categories-add-category-button
+{
+    cursor:pointer;
+    float:right;
+    height:20px;
+    background-image:url(../images/images/buttonAddSmall.png);
+    margin-bottom:5px;
+    margin-right:5px;
+    width:20px;
+}
+
+.perc-roles-addusers-button,#perc-categories-add-child-category-button
+{
+    cursor:pointer;
+    float:right;
+    height:20px;
+    background-image:url(../images/images/buttonRight.gif);
+    margin-bottom:5px;
+    margin-right:5px;
+    width:20px;
+}
+
+
+
+.perc-roles-addusers-button:hover,#perc-categories-add-category-button:hover
+{
+    background-image:url(../images/images/buttonAddSmallOver.png);
+}
+
+.perc-roles-addusers-button.perc-item-disabled
+{
+    cursor:default;
+    float:right;
+    height:20px;
+    background-image:url(../images/images/buttonAddSmallDisabled.png);
+    margin-bottom:5px;
+    margin-right:5px;
+    width:20px;
+}
+
+.perc-roles-addusers-button.perc-item-disabled:hover
+{
+    background-image:url(../images/images/buttonAddSmallDisabled.png);
+}
+
+.perc-roles-removeusers-button,#perc-categories-delete-category-button
+{
+    cursor:pointer;
+    float:right;
+    height:20px;
+    background-image:url(../images/images/buttonDeleteSmall.png);
+    margin-bottom:5px;
+    width:20px;
+}
+
+.perc-roles-removeusers-button:hover,#perc-categories-delete-category-button:hover
+{
+    background-image:url(../images/images/buttonDeleteSmallOver.png);
+}
+
+.perc-roles-removeusers-button.perc-item-disabled,#perc-categories-delete-category-button-disabled
+{
+    cursor:default;
+    float:right;
+    height:20px;
+    background-image:url(../images/images/buttonDeleteSmallDisabled.png);
+    margin-bottom:5px;
+    width:20px;
+}
+
+.perc-roles-removeusers-button.perc-item-disabled:hover
+{
+    background-image:url(../images/images/buttonDeleteSmallDisabled.png);
+}
+
+.perc-roles-assigned-users-list
+{
+    background-color:#F5F5F6;
+    border:1px solid #E6E6E9;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    height:219px;
+    overflow:auto;
+    width:290px;
+    padding:4px 0 2px;
+}
+
+.perc-assigned-users
+{
+    display:inline-block;
+    min-width:100%;
+}
+
+.perc-assigned-user-entry
+{
+    border-bottom:3px solid #E6E6E9;
+    color:#000;
+    display:inline-block;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    padding-left:15px;
+    padding-top:5px;
+    padding-bottom:5px;
+    text-decoration:none;
+    white-space:nowrap;
+    width:100%;
+}
+
+.perc-assigned-user-entry span
+{
+    padding-left:15px;
+    padding-right:15px;
+}
+
+.perc-assigned-user-selected
+{
+    background-color:#CAF589;
+}
+
+#perc-roles-name-field.perc-roles-field-readonly,#perc-roles-description-field.perc-roles-field-readonly,#perc-roles-description-field.perc-roles-homepage-field
+{
+    background-color:transparent;
+    border:none;
+}
+
+.perc-category-value
+{
+    background-color:transparent;
+    border:none;
+}
+
+.perc-category-label
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    color:#000;
+    margin:0 27px;
+}
+
+#tooltip.pretty
+{
+    font-family: 'Open Sans', sans-serif;
+    border:none;
+    width:210px;
+    height:135px;
+    opacity:0.8px;
+    background:url(../images/images/tooltip-shadow.png);
+    padding:20px;
+}
+
+#perc-workflow-steps-container
+{
+    padding-left:25px;
+    float:left;
+    padding-right:25px;
+    min-width:594px;
+}
+
+#perc-workflow-wrapper
+{
+    background-color:#FFF;
+    overflow:auto;
+    height:auto;
+    margin:20px auto auto;
+    padding:7px 2px 7px 20px;
+}
+
+#perc-wf-action-wrapper
+{
+    margin-right:20px;
+}
+
+#perc-workflow-name
+{
+    margin-bottom:20px;
+}
+
+#perc-wf-name-wrapper
+{
+    color:74747b;
+    font-size:18px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight:normal;
+    border:0;
+    cursor:default;
+}
+
+.perc-wf-editor
+{
+    background-color:#E6E6E9;
+    width:700px;
+    margin-bottom:25px;
+    padding:27px 0 0 27px;
+}
+
+.perc-workflow-step-label
+{
+    color:#000;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:bold;
+    cursor:default;
+    width:91px;
+    float:left;
+    padding:15px 10px 8px;
+}
+
+.perc-step-config-button
+{
+    display:inline-block;
+    background:url(../images/images/buttonConfigurePage.gif);
+    background-repeat:none;
+    width:21px;
+    height:22px;
+    cursor:pointer;
+}
+
+.perc-reserved-step-config-bttn
+{
+    display:inline-block;
+    background:url(../images/images/buttonConfigStandalone.png);
+    background-repeat:none;
+    width:22px;
+    float:right;
+    margin-right:10px;
+    height:22px;
+    cursor:pointer;
+}
+
+.perc-reserved-step-config-bttn:hover
+{
+    background:url(../images/images/buttonConfigStandaloneOver.png);
+}
+
+.perc-reserved-step-config-disable,.perc-reserved-step-config-disable:hover
+{
+    background:url(../images/images/buttonConfigStandaloneInactive.png);
+    background-repeat:none;
+    width:22px;
+    float:right;
+    margin-right:10px;
+    height:22px;
+    cursor:default;
+}
+
+.perc-step-readonly
+{
+    border:0;
+    cursor:default;
+    background:transparent;
+    font-weight:bold;
+}
+
+.perc-step-config-button:hover
+{
+    background:url(../images/images/buttonConfigurePageOver.gif);
+}
+
+.perc-step-config-disable,.perc-step-config-disable:hover
+{
+    display:inline-block;
+    background:url(../images/icons/editor/configureInactive.png);
+    background-repeat:none;
+    width:21px;
+    height:22px;
+    cursor:default;
+}
+
+.perc-step-delete-button
+{
+    background:url(../images/images/buttonDeletePage.gif);
+    background-repeat:none;
+    width:20px;
+    height:22px;
+    display:inline-block;
+    cursor:pointer;
+}
+
+.perc-step-delete-button:hover
+{
+    background:url(../images/images/buttonDeletePageOver.gif);
+}
+
+.perc-step-delete-disable,.perc-step-delete-disable:hover
+{
+    background:url(../images/icons/editor/deleteInactive.png);
+    background-repeat:none;
+    width:20px;
+    height:22px;
+    display:inline-block;
+    cursor:default;
+}
+
+.perc-workflow-step
+{
+    min-height:173px;
+    text-align:left;
+    vertical-align:top;
+    width:162px;
+    background-color:#E6E6E9;
+    display:inline-block;
+    margin-bottom:35px;
+    position:relative;
+    padding:0 0 10px;
+}
+
+#perc-workflow-archive.perc-workflow-step
+{
+    margin-bottom:0;
+}
+
+.perc-workflow-step-roles
+{
+    color:#007EA8;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    margin-top:0;
+    overflow:auto;
+    text-decoration:none;
+    margin-bottom:21px;
+    clear:both;
+    padding:0 10px;
+}
+
+.perc-workflow-step-spacer
+{
+    min-width:36px;
+    display:inline-block;
+    height:183px;
+}
+
+.perc-workflow-step-roles li
+{
+    background-color:#fff;
+    margin-top:2px;
+    cursor:default;
+    padding:5px 5px 5px 8px;
+}
+
+#perc-workflow-edit-button
+{
+    cursor:pointer;
+    float:right;
+    height:22px;
+    margin-right:2px;
+    width:21px;
+    background-image:url(../images/images/buttonAddUser.gif);
+}
+
+.perc-workflow-add-step-button
+{
+    height:20px;
+    margin-top:100px;
+    width:20px;
+}
+
+#perc-workflow-menu
+{
+    height:54px;
+}
+
+#perc-archive-action-text
+{
+    width:91px;
+    height:183px;
+    background:url(../images/images/archive.png);
+    background-position:center 151px;
+    background-repeat:no-repeat;
+    display:inline-block;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.perc-action-label
+{
+    color:#FFF;
+    font-weight:bold;
+    position:absolute;
+    bottom:5px;
+    width:100%;
+    left:0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.perc-action-label-span-stepup
+{
+    float:right;
+    margin-right:10px;
+    display:inline-block;
+    text-align:right;
+}
+
+.perc-action-label-span-stepdown
+{
+    float:left;
+    margin-left:10px;
+    display:inline-block;
+}
+
+.perc-twoheaded-arrow
+{
+    background:url(../images/images/twohead.png);
+    background-repeat:no-repeat;
+    background-position:center 162px;
+    width:36px;
+}
+
+.perc-broken-arrow
+{
+    background:url(../images/images/brokenArrow.png);
+    background-repeat:no-repeat;
+    background-position:center 4px;
+    height:34px;
+    width:36px;
+}
+
+.perc-create-new-step
+{
+    background:url(../images/images/plusButton.png);
+    background-repeat:no-repeat;
+    background-position:center center;
+    height:22px;
+    margin-top:78px;
+    width:36px;
+    cursor:pointer;
+}
+
+.perc-step-disable
+{
+    background:url(../images/images/plusButton-deselect.png);
+    background-repeat:no-repeat;
+    background-position:center center;
+    height:22px;
+    margin-top:78px;
+    width:36px;
+    cursor:default;
+}
+
+.perc-default-wf-marker
+{
+    background:url(../images/images/defaultWfBall.png) no-repeat center right;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    padding-right:12px;
+    float:left;
+    margin-top:3px;
+}
+
+.perc-default-wf-list-marker
+{
+    background:url(../images/images/defaultWfBall.png);
+    background-repeat:no-repeat;
+    background-position:left center;
+}
+
+#perc-wfconfig-roles-wrapper
+{
+    width:550px;
+    background-color:#fff;
+    overflow:auto;
+    max-height:285px;
+    height:100%;
+    overflow-x:hidden;
+}
+
+#perc-wfconfig-roles-wrapper table th
+{
+    color:#fff;
+    background-color:#A1A1A4;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    padding-top:5px;
+    padding-bottom:5px;
+    cursor:default;
+    text-align:center;
+    width:80px;
+}
+
+#perc-wfconfig-roles-wrapper table tr td
+{
+    background-color:#fff;
+    color:#000;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    border-top:2px solid #E6E6E9;
+    height:20px;
+    text-align:center;
+    width:80px;
+}
+
+.perc-roleName-wrapper
+{
+    display:block;
+    width:210px;
+    cursor:default;
+}
+
+#perc-wfconfig-roles-wrapper input[type=checkbox]
+{
+    height:15px;
+    width:20px;
+    margin:0;
+}
+
+#perc-wfconfig-roles-table
+{
+    width:100%;
+}
+
+#perc-wfconfig-roles-wrapper th input[type=checkbox]
+{
+    width:20px;
+}
+
+#perc-wfconfig-roles-wrapper table tr td.perc-column-0,#perc-wfconfig-roles-wrapper table tr th.perc-column-0
+{
+    text-align:left;
+    padding-left:10px;
+}
+
+#perc-workflows-list .perc-itemname-list
+{
+    height:auto;
+    max-height:auto;
+}
+
+#perc-workflows-list .perc-itemname-list li
+{
+    padding-left:21px;
+}
+
+#perc-assign-workflow-sites-tree-wrapper,#perc-assign-workflow-assets-tree-wrapper
+{
+    position:relative;
+    background-color:#E6E6E9;
+    border-bottom:30px solid #E6E6E9;
+}
+
+#perc-assign-workflow-sites-tree,#perc-assign-workflow-assets-tree
+{
+    background-color:#E6E6E9;
+    margin:0 34px;
+}
+
+.perc-assign-workflow-expand-image
+{
+    background-image:url(../images/images/buttonBluePlusOver.png);
+    background-position:center left;
+}
+
+.perc-assign-workflow-close-image
+{
+    background-image:url(../images/images/buttonBlueMinusOver.png);
+    background-position:center left;
+}
+
+.perc-assign-workflow-with-border
+{
+    border-top:10px solid #FFF;
+}
+
+#datatree-workflow-sites span.dynatree-checkbox,#datatree-workflow-assets span.dynatree-checkbox
+{
+    background-repeat:no-repeat;
+    background-image:url(../css/dynatree/skin/icons2.gif);
+    display:inline-block;
+    float:left;
+    height:16px;
+    vertical-align:top;
+    width:16px;
+    background-position:0 -32px;
+    margin:5px 0 0 3px;
+}
+
+#datatree-workflow-sites span.dynatree-custom-checkbox,#datatree-workflow-assets span.dynatree-custom-checkbox
+{
+    background-repeat:no-repeat;
+    background-image:url(../css/dynatree/skin/icons2.gif);
+    float:right;
+    height:16px;
+    vertical-align:top;
+    width:16px;
+    display:inline-block;
+    background-position:0 -32px;
+    margin:5px 10px 0 0;
+}
+
+#datatree-workflow-sites li,#datatree-workflow-assets li
+{
+    background-color:#F5F5F6;
+    border-top-color:#E6E6E9;
+}
+
+#datatree-workflow-sites span.dynatree-custom-checkbox-container,#datatree-workflow-assets span.dynatree-custom-checkbox-container
+{
+    border-left:3px solid #E6E6E9;
+    display:inline-block;
+    float:right;
+    height:24px;
+    padding-left:10px;
+}
+
+#datatree-workflow-sites .dynatree-partsel span.dynatree-checkbox,#datatree-workflow-assets .dynatree-partsel span.dynatree-checkbox
+{
+    background-position:-64px -32px;
+}
+
+#datatree-workflow-sites .dynatree-partsel span.dynatree-checkbox:hover,#datatree-workflow-assets .dynatree-partsel span.dynatree-checkbox:hover
+{
+    background-position:-80px -32px;
+}
+
+#datatree-workflow-sites .perc-item-disabled,#datatree-workflow-assets .perc-item-disabled
+{
+    color:#ACACAF;
+}
+
+#datatree-workflow-sites .perc-item-all-same-workflow,#datatree-workflow-assets .perc-item-all-same-workflow
+{
+    font-weight:bold;
+}
+
+#perc-assign-workflow-wrapper
+{
+    background-color:#FFF;
+    overflow-x:hidden;
+    padding:0;
+}
+
+#datatree-workflow-sites ul.dynatree-container li,#datatree-workflow-assets ul.dynatree-container li,#perc-category-tree ul.dynatree-container li
+{
+    border-top-color:#E6E6E9;
+    background-color:#F5F5F6;
+}
+
+#datatree-workflow-sites,#datatree-workflow-assets
+{
+    margin-top:0;
+}
+
+#perc-assign-workflow-sites-title,#perc-assign-workflow-assets-title
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    color:#007D9F;
+    text-decoration:none;
+    background-color:#E6E6E9;
+    background-repeat:no-repeat;
+    padding:8px 0 6px;
+}
+
+#perc-assign-workflow-assets-title-wrapper
+{
+    border-top:4px solid #FFF;
+    cursor:default;
+}
+
+.perc-assign-workflow-expander-image
+{
+    background-image:url(../images/images/buttonBluePlus.png);
+    background-position:center left;
+    background-repeat:no-repeat;
+    cursor:pointer;
+    display:inline-block;
+    width:16px;
+    margin:0 6px 0 18px;
+}
+
+.perc-assign-workflow-expander-image.collapsed
+{
+    background-image:url(../images/images/buttonBlueMinus.png);
+}
+
+.perc-assign-workflow-expander-image:hover
+{
+    background-image:url(../images/images/buttonBluePlusOver.png);
+}
+
+.perc-assign-workflow-expander-image.collapsed:hover
+{
+    background-image:url(../images/images/buttonBlueMinusOver.png);
+}
+
+#perc-assign-workflow-sites-folder-dialog
+{
+    top:145px;
+}
+
+#datatree-instance1 .dynatree-expander,#perc-assign-workflow-sites-tree .dynatree-expander,#perc-assign-workflow-assets-tree .dynatree-expander
+{
+    background-position:center center;
+}
+
+#perc-assign-workflow-sites-title-wrapper .perc-assign-workflow-sites-apply-top,#perc-assign-workflow-assets-title-wrapper .perc-assign-workflow-assets-apply-top
+{
+    float:right;
+    position:relative;
+    right:37px;
+    color:#6C717C;
+}
+
+#perc-assign-workflow-sites-title-wrapper .perc-assign-workflow-sites-apply-top-icon,#perc-assign-workflow-assets-title-wrapper .perc-assign-workflow-assets-apply-top-icon
+{
+    background-image:url(../images/images/iconHelp2.gif);
+    height:16px;
+    width:16px;
+    position:absolute;
+    right:-30px;
+    top:0;
+    display:inline-block;
+}
+
+#perc-assign-workflow-sites-tree .perc-assign-workflow-sites-apply-bottom,#perc-assign-workflow-assets-tree .perc-assign-workflow-assets-apply-bottom
+{
+    position:absolute;
+    right:37px;
+    bottom:-20px;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    color:#6C717C;
+}
+
+.perc-assign-workflow-warning
+{
+    margin-right:-10px;
+    margin-top:3px;
+    text-align:right;
+    color:#900;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:normal;
+    display:none;
+}
+
+.perc-datatree-label
+{
+    color:#007EA8;
+    cursor:default;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:bold;
+    height:20px;
+    margin-top:13px;
+}
+
+.perc-itemname-treelist
+{
+    margin-top:5px;
+    overflow:auto;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.perc-itemname-treelist li
+{
+    background-color:#E6E6E9;
+    border-top:2px solid #FFF;
+    padding:0;
+}
+
+.perc-children-other-workflow
+{
+    color:#808797;
+}
+
+.perc-itemname-treelist li span.dynatree-title
+{
+    text-overflow:ellipsis;
+    padding:4px 0 4px 1px;
+}
+
+/* NEW */
+#perc-category-tree li .dynatree-title
+{
+    font-size: 12px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.perc-itemname-treelist .dynatree-has-children span.dynatree-expander
+{
+    background-image:url(/cm/images/images/buttonBlueSmallPlus.gif);
+    background-position:3px 2px;
+    background-repeat:no-repeat;
+    display:inline-block;
+    height:11px;
+    vertical-align:middle;
+    width:13px;
+}
+
+.perc-itemname-treelist .dynatree-expanded span.dynatree-expander
+{
+    background-image:url(/cm/images/images/buttonBlueSmallMinus.gif);
+    background-position:3px 2px;
+    background-repeat:no-repeat;
+    display:inline-block;
+    height:11px;
+    vertical-align:middle;
+    width:13px;
+}
+
+#perc-category-save-cancel-block>.btn-primary {
+    height: 23px !important;
+    color: #ffffff !important;
+    padding-top: 3px !important;
+}
+
+div#perc-category-info {
+    font-size: 11px;
+    margin-left: 15px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+select, input, textarea {
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+#perc-users-wrapper,#perc-roles-wrapper,#perc-category-wrapper
+{
+    background-color:#FFF;
+    padding:7px 7px 7px 20px;
+}
+
+#perc-users-info,#perc-roles-info,#perc-category-info
+{
+    height:auto;
+    background-color:#E6E6E9;
+}
+
+#perc-users-edit-user-button,#perc-roles-edit-role-button,#perc-wf-edit,#perc-categories-edit-category-button
+{
+    width:22px;
+    height:22px;
+    float:right;
+    margin-right:15px;
+    margin-top:-15px;
+    background-image:url(../images/icons/editor/editFull.png);
+    cursor:pointer;
+}
+
+#perc-categories-delete-category-button
+{
+    float:left;
+    margin-right:3px;
+    margin-top:-22px;
+}
+
+#perc-categories-edit-category-button,#perc-categories-add-child-category-button,#perc-categories-add-category-button,#perc-categories-up-category-button,#perc-categories-down-category-button
+{
+    float:left;
+    margin-top:-22px;
+}
+
+#perc-wf-edit
+{
+    margin-left:15px;
+    margin-right:34px;
+    margin-top:-1px;
+}
+
+#perc-users-edit-user-button:hover,#perc-roles-edit-role-button:hover,#perc-wf-edit:hover,#perc-categories-edit-category-button:hover
+{
+    background-image:url(../images/icons/editor/editFullOver.png);
+}
+
+#perc-users-username-label,#perc-roles-name-label
+{
+    margin-top:27px;
+}
+
+#perc-users-available-roles > select,#datatree-workflow-sites .perc-children-other-workflow,#datatree-workflow-assets .perc-children-other-workflow
+{
+    color:#000;
+}
+
+#perc-users-available-roles > select > option,#perc-users-assigned-roles > select > option,#perc-roles-assigned-users > select > option
+{
+    margin-top:9px;
+    margin-bottom:9px;
+}
+
+#perc-users-available-roles-label,#perc-users-assigned-roles-label,#perc-roles-assigned-users-label
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:bold;
+    color:#000;
+    margin-bottom:8px;
+}
+
+.perc-users-highlighted-user,.perc-roles-highlighted-role
+{
+    background-color:#caf589;
+}
+
+#perc-users-roles-add-remove-buttons div,#perc-wf-min-max
+{
+    cursor:pointer;
+}
+
+#perc-roles-list,.perc-wf-default,.perc-action-button,#perc-category-tree
+{
+    margin-top:10px;
+}
+
+#perc-roles-name-field,#perc-roles-description-field,#perc-new-workflow-name,#perc-update-workflow-name,#perc-update-wf-name-label,#perc-new-wf-name-label,#perc-roles-homepage-field,#perc-roles-homepage-field-readonly
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    color:#000;
+    margin-top:5px;
+}
+
+.perc-item-list-label,#perc-assign-workflow-sites-title-wrapper
+{
+    cursor:default;
+}
+
+#datatree-workflow-sites span.dynatree-checkbox:hover,#datatree-workflow-assets span.dynatree-checkbox:hover,#datatree-workflow-sites span.dynatree-custom-checkbox:hover,#datatree-workflow-assets span.dynatree-custom-checkbox:hover
+{
+    background-position:-16px -32px;
+}
+
+#datatree-workflow-sites span.perc-item-disabled span.dynatree-checkbox,#datatree-workflow-assets span.perc-item-disabled span.dynatree-checkbox,#datatree-workflow-sites span.perc-item-disabled span.dynatree-checkbox:hover,#datatree-workflow-assets span.perc-item-disabled span.dynatree-checkbox:hover,#datatree-workflow-sites span.perc-item-disabled span.dynatree-custom-checkbox,#datatree-workflow-assets span.perc-item-disabled span.dynatree-custom-checkbox,#datatree-workflow-sites span.perc-item-disabled span.dynatree-custom-checkbox:hover,#datatree-workflow-assets span.perc-item-disabled span.dynatree-custom-checkbox:hover
+{
+    background-position:-96px -32px;
+}
+
+#datatree-workflow-sites .dynatree-selected span.dynatree-checkbox,#datatree-workflow-assets .dynatree-selected span.dynatree-checkbox,#datatree-workflow-sites span.dynatree-custom-checkbox-selected,#datatree-workflow-assets span.dynatree-custom-checkbox-selected
+{
+    background-position:-32px -32px;
+}
+
+#datatree-workflow-sites .dynatree-selected span.dynatree-checkbox:hover,#datatree-workflow-assets .dynatree-selected span.dynatree-checkbox:hover,#datatree-workflow-sites span.dynatree-custom-checkbox-selected:hover,#datatree-workflow-assets span.dynatree-custom-checkbox-selected:hover
+{
+    background-position:-48px -32px;
+}
+
+#datatree-instance1 .dynatree-title,#perc-assign-workflow-sites-tree .dynatree-title,#perc-assign-workflow-assets-tree .dynatree-title,#perc-category-tree .dynatree-title
+{
+    vertical-align:middle;
+}
+.perc-loading-warning-message{
+    margin-left:20px;
+    margin-bottom:5px;
+}
+.perc-loading-warning-message-hidden, .perc-sa-loading-warning-message-hidden{
+    display:none;
+}
+#perc-workflow-wrapper.perc-workflow-unavailale-message-table{
+    display: table;
+    height: 90%;
+}
+div.perc-workflow-unavailale-message{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+#perc-category-title{
+    position: relative;
+    width: 240px;
+    margin-top: 10px;
+    float: left;
+}
+
+#perc-category-title-hover{
+    position: relative;
+    margin-top: 5px;
+    font-size: x-small;
+    cursor: pointer;
+    display:none;
+}
+
+#perc-category-title:hover #perc-category-title-hover{
+    display : block;
+}
+
+
+.dynatree-container ul {position: relative; margin-left: 12px;}
+
+#perc-categories-publish {
+    padding-top: 8px;
+    padding-right: 115px;
+}
+
+#perc-categories-publish-dropdown-menu {
+    text-align: left;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#perc-categories-publish-staging {
+    padding-left: 13px;
+}
+
+#perc-categories-publish-production {
+    padding-left: 13px;
+}
+
+#perc-categories-publish-both {
+    padding-left: 13px;
+}
+
+
+label {
+    display: inline !important;
+}
+
+*:not(input):not(button), *:before, *:after {
+    -webkit-box-sizing: content-box !important;
+    -moz-box-sizing: content-box !important;
+    box-sizing: content-box !important;
+}
+.gadgets-gadget-user-prefs-dialog label, input, select {
+    font-size: 11px !important;
+    font-family: 'Open Sans', sans-serif;
+    vertical-align: middle !important;
+}

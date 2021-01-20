@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Node (Node* )>
+<!ATTLIST Node selectable (yes | no ) "no">
+<!ATTLIST  Node label CDATA #REQUIRED>
+<!ATTLIST  Node id CDATA #REQUIRED>
+<!ELEMENT Tree (Node* )>
+<!ATTLIST  Tree label CDATA #REQUIRED>

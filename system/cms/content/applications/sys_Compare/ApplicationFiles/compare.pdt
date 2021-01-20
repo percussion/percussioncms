@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT compare (sys_contentid1, sys_contentid2, sys_revision1, sys_revision2, sys_variantid1, sys_variantid2, leftframeurl, rightframeurl )>
+<!ELEMENT rightframeurl (#PCDATA)>
+<!ELEMENT leftframeurl (#PCDATA)>
+<!ELEMENT sys_variantid2 (#PCDATA)>
+<!ELEMENT sys_variantid1 (#PCDATA)>
+<!ELEMENT sys_revision2 (#PCDATA)>
+<!ELEMENT sys_revision1 (#PCDATA)>
+<!ELEMENT sys_contentid2 (#PCDATA)>
+<!ELEMENT sys_contentid1 (#PCDATA)>
+<!ATTLIST  compare xml:lang CDATA #IMPLIED>

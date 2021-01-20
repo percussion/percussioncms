@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CT_PAGE">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PAGE_TITLE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>512</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ADDL_HEAD_CONTENT">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="AFTER_BODY_START">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="BEFORE_BODY_CLOSE">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REGION_OVERRIDES">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DATA">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="RESOURCE_LINK_TITLE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>512</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="TEMPLATEID">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PAGE_SUMMARY">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PAGE_DESCRIPTION">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PAGE_NOINDEX">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="AUTO_GENERATE_SUMMARY">
+         <jdbctype>VARCHAR</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="AUTHOR_BYLINE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>512</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PAGE_START_DATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PAGE_END_DATE">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="TEMPLATE_CONTENT_MIGRATION_VERSION">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="MIGRATIONEMPTYWIDGETS">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SOCIAL_PROMOTION_METADATA">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+   </row>
+   <primarykey action="c">
+      <name>CONTENTID</name>
+      <name>REVISIONID</name>
+   </primarykey>
+   <indexdefinitions>
+      <index action="c" isUnique="n" name="IX_PAGE_TEMPLATEID">
+         <name>TEMPLATEID</name>
+      </index>
+   </indexdefinitions>
+</table>

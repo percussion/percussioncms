@@ -1,0 +1,116 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="installDropIndexes" default="installDropIndexes">
+    <path id="ant.deps">
+        <fileset dir="${customer.jdbc.drivers}"  erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${install.src}/jetty/defaults/lib/perc" erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+
+    <classloader classpathref="ant.deps" parentfirst="true" name="ant.loader.ant.deps"/>
+
+    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
+
+    <target name="installDropIndexes">
+        <echo>Dropping selected indexes...</echo>
+        <!-- Cleanup to make sure new FK can be created -->
+        <PSExecSQLStmt rootDir="${install.dir}"
+                       printExceptionStackTrace="true"
+                       qualifyViewNames="PSX_CONTENTCHANGEEVENT,CONTENTSTATUS"
+                       sql="DELETE FROM PSX_CONTENTCHANGEEVENT where CONTENTID not in (SELECT CONTENTID from CONTENTSTATUS)"
+                       failonerror="false"
+                       silenceerrors="true"
+        />
+
+        <PSExecSQLStmt rootDir="${install.dir}"
+                       printExceptionStackTrace="true"
+                       qualifyViewNames="PSX_CONTENTCHANGEEVENT,RXSITES"
+                       sql="DELETE FROM PSX_CONTENTCHANGEEVENT where SITEID  not in (SELECT SITEID  from RXSITES)"
+                       failonerror="false"
+                       silenceerrors="true"
+        />
+
+        <echo>dropping views..</echo>
+        <PSExecSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                       qualifyViewNames="" sql="DROP VIEW RXSITEITEMS"
+                       failonerror="false"
+                       silenceerrors="true"/>
+
+        <PSDropView view="RXSITEITEMS"
+                    failonerror="false"
+                    silenceerrors="true"
+        />
+
+        <echo>renaming PSX_PUBLICATION_SITE_ITEM</echo>
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM"
+                        qualifyViewNames="" sql="RENAME TABLE PSX_PUBLICATION_SITE_ITEM TO PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                        sqlSqlServer="EXEC sp_rename 'PSX_PUBLICATION_SITE_ITEM', 'PSX_PUBLICATION_SITE_ITEM_BAK_PATCH';"
+                        failonerror="false"
+                        silenceerrors="true"/>
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                        qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF_1"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                        qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                        qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT PK_PSX_PUBLICATION_SITE_ITEM"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
+                        qualifyViewNames="" sqlDerby="DROP INDEX IX_SITE_ITEMS"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
+                        qualifyViewNames="" sqlDerby="DROP INDEX IX_REF_SERV_CONTXT"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
+                        qualifyViewNames="" sqlDerby="DROP INDEX IX_WORKING_CONTXT"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+    </target>
+</project>

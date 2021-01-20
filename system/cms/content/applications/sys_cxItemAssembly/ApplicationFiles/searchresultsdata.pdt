@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT searchresultsdata (contentid, revision, slotname, variantid, slotid, mode )>
+<!ELEMENT mode (#PCDATA)>
+<!ELEMENT slotid (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT revision (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ATTLIST  searchresultsdata xml:lang CDATA #REQUIRED>

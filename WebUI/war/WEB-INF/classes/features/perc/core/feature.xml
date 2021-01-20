@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/******************************************************************************
+ *
+ * [ feature.xml ]
+ *
+ * COPYRIGHT (c) 1999 - 2010 by Percussion Software, Inc., Woburn, MA USA.
+ * All rights reserved. This material contains unpublished, copyrighted
+ * work including confidential and proprietary information of Percussion.
+ *
+ ******************************************************************************
+ -->
+<feature>
+    <name>perc_core</name>
+    <gadget>
+        <!-- fix bug in 1.1 beta 5 missing html-sanitizer-minified -->
+        <script src="res://com/google/caja/plugin/html-sanitizer-minified.js"></script>
+        <script src="perc_core.js"/>
+    </gadget>
+</feature>

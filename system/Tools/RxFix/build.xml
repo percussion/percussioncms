@@ -1,0 +1,114 @@
+<project basedir="." name="rxfix" default="package">
+
+<!-- 
+	This build file assumes that the project has been built. Note that you may
+	always override the property values in build files by passing in values from
+	the outside. For example, the classdir property below.
+-->
+
+
+<property name="projdir" value="../../" />
+<property name="classdir" value="${projdir}/build/classes"/>
+
+<target name="init">
+	<tstamp/>
+	<echo>Build RxFix</echo>
+	<mkdir dir="dist"/>
+	<mkdir dir="dist/lib"/>
+</target>
+
+<target name="package" depends="init">
+        <!-- copy rxOrphanedDataCleanupPlugins.xml file into the rxfix/dbfixes -->
+	<copy todir="${projdir}/build/classes/com/percussion/rxfix/dbfixes">
+		<fileset dir="${projdir}/release/src/com/percussion/rxupgrade">
+			<include name="rxOrphanedDataCleanupPlugins.xml"/>
+		</fileset>
+	</copy>
+	<jar jarfile="rxfix.jar">
+		<manifest>
+		  <attribute name="Built-By" value="${user.name}"/>
+		  <attribute name="Main-Class" value="com.percussion.rxfix.PSRxFix"/>
+		  <attribute name="Class-Path" value="lib/log4j.jar lib/xmlParserAPIs.jar lib/swt.jar lib/xercesImpl.jar lib/rxtablefactory.jar lib/db2jcc.jar lib/db2jcc_license_cu.jar lib/runtime.zip lib/sqlj.zip lib/classes12.jar lib/jtds.jar lib/Sprinta2000.jar lib/rxinstall.jar"/>
+		</manifest>
+		<fileset dir="${classdir}">
+			<include name="com/percussion/rxfix/**/*.class" />
+			<include name="com/percussion/rxfix/**/*.xml" />
+                        <include name="com/percussion/tools/**/*.class" />
+			<include name="com/percussion/security/encryption/*.class" />
+			<include name="com/percussion/util/*.class" />
+			<include name="com/percussion/xml/*.class" />
+			<include name="com/percussion/error/PSRuntimeException.class" />
+			<include name="com/percussion/error/IPSException.class" />
+			<include name="org/eclipse/swt/widgets/**/*.class" />
+		</fileset>
+		<fileset dir="src" includes="com/percussion/rxfix/log4j.properties" />
+	</jar>
+	
+	<jar jarfile="rxverifyqa.jar">
+		      <manifest>
+			<attribute name="Built-By" value="${user.name}"/>
+			<attribute name="Main-Class" value="com.percussion.rxverify.PSVerify"/>
+			<attribute name="Class-Path" value="lib/log4j.jar lib/xmlParserAPIs.jar lib/xercesImpl.jar lib/rxtablefactory.jar lib/db2jcc.jar lib/db2jcc_license_cu.jar lib/runtime.zip lib/sqlj.zip lib/classes12.jar lib/jtds.jar lib/Sprinta2000.jar lib/rxinstall.jar lib/saxon.jar lib/rxutils.jar lib/commons-lang-2.4.jar lib/commons-logging-1.1.1.jar lib/rxservices.jar lib/spring.jar lib/jboss.jar"/>
+		      </manifest>
+		      <fileset dir="${classdir}">
+				<include name="com/percussion/rxverify/**/*.class" />
+	         		<include name="com/percussion/tools/**/*.class" />
+				<include name="com/percussion/security/encryption/*.class" />
+				<include name="com/percussion/util/*.class" />
+				<include name="com/percussion/xml/*.class" />
+				<include name="com/percussion/error/PSRuntimeException.class" />
+				<include name="com/percussion/error/IPSException.class" />
+				<include name="org/eclipse/swt/widgets/**/*.class" />
+			</fileset>
+			<fileset dir="src" includes="com/percussion/rxverify/log4j.properties" />
+	</jar>	
+	
+	<jar jarfile="rxverifytable.jar">
+	      <manifest>
+		<attribute name="Built-By" value="${user.name}"/>
+		<attribute name="Main-Class" value="com.percussion.rxverify.PSVerifyTable"/>
+		<attribute name="Class-Path" value="lib/log4j.jar lib/xmlParserAPIs.jar lib/xercesImpl.jar lib/rxtablefactory.jar lib/db2jcc.jar lib/db2jcc_license_cu.jar lib/runtime.zip lib/sqlj.zip lib/classes12.jar lib/jtds.jar lib/Sprinta2000.jar lib/rxinstall.jar lib/saxon.jar lib/rxutils.jar lib/commons-lang-2.4.jar lib/commons-logging-1.1.1.jar lib/rxservices.jar lib/spring.jar lib/jboss.jar"/>
+	      </manifest>
+	      <fileset dir="${classdir}">
+			<include name="com/percussion/rxverify/**/*.class" />
+         		<include name="com/percussion/tools/**/*.class" />
+			<include name="com/percussion/security/encryption/*.class" />
+			<include name="com/percussion/util/*.class" />
+			<include name="com/percussion/xml/*.class" />
+			<include name="com/percussion/error/PSRuntimeException.class" />
+			<include name="com/percussion/error/IPSException.class" />
+			<include name="org/eclipse/swt/widgets/**/*.class" />
+		</fileset>
+		<fileset dir="src" includes="com/percussion/rxverify/log4j.properties" />
+	</jar>	
+	
+	<copy todir="dist">
+		<fileset dir=".">
+			<include name="rx*.jar"/>
+			<include name="*README*"/>
+		</fileset>
+		<fileset dir="${projdir}/Tools/SWT" includes="*.dll" />
+	</copy>
+	
+	<copy todir="dist/lib">
+		<!-- 
+			extend the packaged jars as needed
+			don't forget to modify the classpath 
+			in the manifest 
+		-->
+		<fileset dir="${projdir}/jdbc/DB2" includes="*.zip, *.jar" />
+		<fileset dir="${projdir}/jdbc/oracle9/oracle-pre-9.2.0.3" includes="*.jar" />
+		<fileset dir="${projdir}/jdbc/Sprinta" includes="*.jar" />
+		<fileset dir="${projdir}/jdbc/jtds" includes="*.jar" />
+		<fileset dir="${projdir}/Tools/log4j" includes="log4j.jar" />
+		<fileset dir="${projdir}/build/dist/lib" includes="rxtablefactory.jar, rxinstall.jar, rxutils.jar, rxservices.jar" />
+		<fileset dir="${projdir}/Tools/SWT" includes="*.jar" />
+		<fileset dir="${projdir}/Tools/xerces" includes="*.jar" />
+		<fileset dir="${projdir}/Tools/saxon" includes="saxon.jar" />
+		<fileset dir="${projdir}/Tools/Commons" includes="commons-lang-2.4.jar, commons-logging-1.1.1.jar" />
+		<fileset dir="${projdir}/Tools/Spring" includes="spring.jar" />
+		<fileset dir="${projdir}/Tools/JBoss" includes="jboss.jar" />
+	</copy>
+</target>
+
+</project>

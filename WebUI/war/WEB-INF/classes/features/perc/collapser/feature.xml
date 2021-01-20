@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/******************************************************************************
+ *
+ * [ feature.xml ]
+ *
+ * COPYRIGHT (c) 1999 - 2010 by Percussion Software, Inc., Woburn, MA USA.
+ * All rights reserved. This material contains unpublished, copyrighted
+ * work including confidential and proprietary information of Percussion.
+ *
+ ******************************************************************************
+ -->
+<feature>
+  <name>perc_collapser</name>
+  <dependency>perc_jquery_ui</dependency>
+  <gadget>
+    <script src="jquery.collapser.js"/>
+  </gadget>
+</feature>

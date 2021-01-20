@@ -1,0 +1,923 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/* Sample content and styles for form widget */
+.form-sample-content
+{
+    height: 100px;
+    background: transparent url(/Rhythmyx/rx_resources/widgets/form/images/widgetformSampleBackground.png) no-repeat scroll center center;
+    filter: alpha(opacity=50);
+    opacity: .50;
+}
+
+/* Edit mode content and styles for form widget */
+.form-edit-content{
+
+}
+
+
+#perc-form-container{
+    width:690px;
+    height: 700px;
+    background-color:#ffffff;
+}
+#perc-form{
+    font-size: 11px;
+    font-weight: normal;
+}
+#perc-main-form{
+    padding:15px 0px 15px 50px;
+    background-color:#E6E6E9;
+
+}
+#perc-content-edit-metadata-link {
+    background-color: #E6E6E9;
+    background-repeat: no-repeat;
+    color: #0099CC;
+    font-size: 11px;
+    font-weight: normal;
+    padding: 10px 30px 10px 32px;
+    text-decoration: none;
+}
+.perc-spacer {
+    background-image: url("../images/buttonBluePlusOver.gif");
+    background-position: 13px 14px;
+    border-bottom: 7px solid #FFFFFF;
+}
+#perc-form-fields, #perc-form-title-field{
+    margin-bottom:15px;
+}
+.form-widget-label, #perc-form-help-text, .field-name {
+    color: #000000;
+    font-size: 11px;
+    font-weight: normal;
+}
+.form-radio-default{
+    color:#E6E6E9;
+    font-size: 11px;
+    font-weight: normal;
+}
+#perc-form-field-name{
+    height:19px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+.perc-form-datadisplay{
+    font-size: 11px;
+    font-weight: normal;
+    margin-bottom: 12px;
+    margin-top: 6px;
+    width:310px;
+    padding-left: 3px;
+}
+.field-editor-basic .perc-form-datadisplay, #perc-form-metadata-save-to-url-text-readonly, #perc-formbuild-success-url-readonly, #perc-formbuild-error-url-readonly, #perc-formbuild-mail-to-readonly, #perc-form-meta-readonly-mail-subject, .perc-form-header-datadisplay, .perc-form-meta-datadisplay, #perc-form-meta-readonly-description{
+    background-color: #CCCCCC;
+    border: 1px inset #999999;
+    color: #333333;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: normal;
+    margin-top: 5px;
+    margin-bottom:0px;
+    overflow: hidden;
+    line-height:16px;
+    padding: 3px 3px 0;
+    width: 310px;
+}
+
+.field-editor-basic-hidden{
+    background-color: #CCCCCC;
+    border: 1px inset grey;
+    color: #333333;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: normal;
+    margin-top: 5px;
+    margin-bottom:0px;
+    overflow: hidden;
+    line-height:16px;
+    padding: 3px 3px 0;
+    width: 310px;
+}
+
+#perc-form-meta-readonly-description, #perc-form-meta-readonly-mail-subject{
+    height:55px;
+    width:350px;
+    overflow:auto;
+}
+
+.field-editor-basic div.perc-form-datadisplay, #perc-form-metadata-save-to-url-text-readonly, .perc-form-header-datadisplay,  #perc-formbuild-success-url-readonly, #perc-formbuild-error-url-readonly, #perc-formbuild-mail-to-readonly{
+    height: 19px;
+}
+
+#perc-formbuild-success-url-readonly, #perc-formbuild-error-url-readonly, #perc-formbuild-mail-to-readonly{
+    margin-left:10px;
+    width: 350px;
+
+}
+.field-editor-basic .perc-form-date-datadisplay
+{
+    background-color: #CCCCCC;
+    border: 1px inset #999999;
+    color: #333333;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: normal;
+    margin-top: 7px;
+    height: 17px;
+    overflow: hidden;
+    width:115px;
+    padding: 3px 3px 0;
+
+}
+.PercFormWidgetReadOnly .form-widget-label{
+
+    margin:10px 0px;
+}
+.perc-form-date-datadisplay
+{
+    font-size: 11px;
+    font-weight: normal;
+    margin-bottom: 12px;
+    margin-top: 6px;
+    width:115px;
+    padding-left: 3px;
+
+}
+.perc-form-field-wrapper{
+    border: 1px dashed #33C9ED;
+    padding: 8px;
+    width:508px;
+    margin-bottom:14px;
+    display:block;
+    position:relative;
+    cursor:move;
+}
+.perc-form-region-title-puff {
+    border: 1px dashed #33C9ED;
+    padding: 10px;
+    width:535px;
+    margin-bottom:8px;
+    margin-top:7px;
+    position:relative;
+}
+.perc-form-ui-menu {
+    z-index: 500;
+    top:8px;
+    right:8px;
+    width:39px;
+    position:absolute;
+    cursor:pointer;
+}
+.control-img-button{
+    cursor: pointer;
+    vertical-align: middle;
+    padding-left:5px;
+    margin-top:-5px;
+}
+.perc-form-ui-menu-icon {
+    cursor: pointer;
+}
+.perc-form-title{
+    font-weight:bold;
+    font-size:15px;
+    padding-left:10px;
+}
+.perc-form-region{
+    padding:10px;
+    background-color:#A7AAB0;
+    width:515px;
+}
+.perc-control-label{
+    font-size: 11px;
+    font-weight: normal;
+}
+
+#perc-table-control-wrapper{
+    display:none;
+}
+.control-img, .perc-table-row-control{
+    cursor: pointer;
+    padding-left:12px;
+}
+.perc-form-sample-text{
+    padding-left:10px;
+}
+#perc-control-menu-button{
+    position:absolute;
+    right:10px;
+    top:10px;
+    cursor:pointer;
+}
+
+#perc-form-control-wrapper{
+    border-top: 7px solid white;
+    margin-left: -35px;
+    padding-left: 50px;
+    position: relative;
+}
+.perc-control-top-image{
+    float:right;
+    display:none;
+}
+ul#perc-control-menu-container{
+    padding:0px;
+    margin-top:-5px;
+    width:145px;
+}
+.perc-control-top-image{
+    width:150px;
+}
+#perc-control-menu-container li{
+    background-color:#3288B0;
+    padding-top:6px;
+    padding-bottom:6px;
+    border-bottom:1px solid #99C4D8;
+    padding-left:55px;
+    margin:0px;
+    list-style:none;
+}
+.form-text-label{
+    background-image: url("../images/heading-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+}
+
+.form-heading-label{
+    background-image: url("../images/heading-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 1px;
+
+}
+
+.form-textarea-label{
+    background-image: url("../images/text-box-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 1px;
+
+}
+
+.form-hidden-field-label{
+    background-image: url("../images/hidden-field-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 7px;
+}
+
+.form-perc-honeypot-label{
+    background-image: url("../images/perc-honeypot-field-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+}
+
+.form-perc-recaptcha-label{
+    background-image: url("../images/perc-recaptcha-field-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+}
+
+.form-radio-buttons-label{
+    background-image: url("../images/radio-button-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+}
+
+.form-submit-buttons-label{
+    background-image: url("../images/button-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+}
+
+.form-check-boxes-label{
+    background-image: url("../images/check-box-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+}
+
+.form-entry-field-label{
+    background-image: url("../images/entry-field-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+}
+
+.form-drop-down-label{
+    background-image: url("../images/drop-down-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+}
+
+.form-data-drop-down-label{
+    background-image: url("../images/db.png");
+    background-repeat:no-repeat;
+    background-position: 15px 6px;
+}
+
+.form-date-field-label{
+    background-image: url("../images/date.png");
+    background-repeat:no-repeat;
+    background-position: 15px 1px;
+}
+#perc-control-menu-wrapper{
+    display:none;
+    position: absolute;
+    right: 16px;
+    top: 14px;
+    z-index: 100000;
+}
+
+.perc-form-header{
+    padding-left:15px;
+}
+.ui-state-highlight {
+    height: 3px;
+    width:555px;
+    background-color:#CAF589;
+}
+#perc-form-fields{
+    cursor:move;
+
+}
+#perc-form-top-row{
+    z-index:500000;
+}
+
+.configure-icon{
+    margin-right:-1px;
+    padding-left: 1px;
+    display:block;
+}
+.delete-icon{
+    margin-right:0px;
+    padding-left: 1px;
+    display:block;
+}
+.edit-icon{
+    margin-right:-1px;
+    padding-left: 1px;
+    display:block;
+}
+.perc-save {
+    height: 29px;
+    margin-bottom: 13px;
+    margin-right: 10px;
+    margin-top: 12px;
+    padding: 0;
+    background-image: url("../images/buttonSave.png");
+    width: 78px;
+    float:right;
+    cursor:pointer;
+}
+.perc-cancel{
+    background-image: url("../images/buttonCancel.gif");
+    height: 29px;
+    margin-bottom: 13px;
+    margin-right: 8px;
+    margin-top: 12px;
+    padding: 0;
+    width: 78px;
+    float:right;
+    cursor:pointer;
+}
+
+.form-radio-button-label{
+    margin-right:10px;
+}
+#form-check-boxes-label{
+
+    padding-top:4px;
+}
+#perc-form-fields input{
+    border-color: #CECFCE #CECFCE #D6D7DE #D6D7DE;
+    border-style: solid;
+    height:19px;
+    vertical-align:middle;
+    border-width: 1px;
+}
+.field-editor{
+}
+.field-editor-ext
+{
+    padding:10px;
+    width:488px;
+    background-color:#A7AAB0;
+}
+
+.field-editor-basic .perc-form-ui-menu{
+    top:-1px;
+    right:-1px;
+}
+
+#perc-form-dnd-fields{
+    position:relative;
+    margin-right: 60px;
+    padding-top:35px;
+}
+
+#perc-content-edit-content{
+    position:relative;
+}
+
+#perc-form-edit-metadata-link {
+    background-color: #E6E6E9;
+    background-repeat: no-repeat;
+    color: #0099CC;
+    font-size: 11px;
+    font-weight: normal;
+    padding: 15px 30px 15px 32px;
+    text-decoration: none;
+    border-top: 7px solid #FFFFFF;
+    margin-left:-35px;
+    cursor:pointer;
+}
+
+.perc-form-meta-tab-open {
+    background-image: url("../images/buttonBlueMinusOver.gif");
+    background-position: 13px 14px;
+
+}
+
+#perc-form-metadata-content {
+    background-color: #E6E6E9;
+    padding: 9px 10px 0 35px;
+}
+
+.perc-form-spacer {
+    background-image: url("../images/buttonBluePlusOver.gif");
+    background-position: 13px 14px;
+}
+.perc-form-meta-textarea{
+    vertical-align:top;
+    margin-left:10px;
+    overflow: auto;
+    /*     width: 100%; */
+    width: auto;
+}
+
+.perc-align-meta-fields{
+    /*width:147px;
+    height:65px;
+    float:left;*/
+}
+.perc-form-meta-radio-option{
+    margin-top:-6px;
+    height:71px;
+}
+.perc-form-metaradio{
+    margin-left:10px;
+    margin-top: 5px;
+}
+
+.checkBoxDefault{
+    color:#E6E6E9;
+    float:left;
+    margin-left:auto;
+    margin-right:auto;
+    padding-right:10px;
+
+}
+
+.control-img-button{
+    cursor: pointer;
+    vertical-align:middle;
+}
+.perc-div-container {
+    font-size: 9px;
+    font-weight: normal;
+    float:left;
+    padding-right:12px;
+    margin-bottom: 1px;
+    margin-top: 4px;
+}
+.perc-div-container-button {
+    margin-bottom: 2px;
+    margin-top: 12px;
+}
+
+.perc-div-rowOption{
+    /*float: left;
+    clear: left;*/
+    line-height: 21px;
+    height: 21px;
+    margin-top:5px;
+}
+
+.perc-div-rowOption img,
+.perc-div-rowOption input
+{
+    margin: 0 5px;
+    cursor:default;
+}
+.perc-div-rowOption input[type="radio"]{
+
+    margin: 0px 5px 0px 0px;
+    cursor:default;
+}
+.add-control,
+.perc-div-rowOption .delete-control{
+    margin: 0px 5px;
+}
+
+.perc-div-rowOption .datadisplay {
+
+}
+.add-control {
+    margin:0;
+    padding-top:0px;
+}
+.delete-control {
+    margin-right: 2px;
+}
+.table-layout{
+    display: table;
+}
+.table-layout > div {
+    display: table-row;
+}
+.table-layout > div > div{
+    display: table-cell;
+    position: relative;
+    padding: 5px 0px;
+    vertical-align: top;
+    white-space:nowrap;
+}
+#perc-form-metadata-save-to-url-text{
+    margin-left: -30%;
+    width: 133%;
+}
+#perc-form-metadata-content .table-layout {
+    width: 100%;
+}
+
+#perc-form-negative-expander{
+    padding: 0;
+}
+
+#perc-form-help-text {
+
+    margin-bottom:10px;
+    margin-right:25px;
+    padding-left:15px;
+}
+
+#perc-form-metadata-save-to-url-text-readonly{
+    margin-left:-37px;
+    width:300px;
+}
+
+.perc-form-datepicker{
+    position:relative;
+}
+.perc-form-datepicker img
+{
+    top:5px;
+    padding-left: 3px;
+    position:absolute;
+    cursor:pointer;
+}
+.perc-div-rowOption input[type="checkbox"]{
+    vertical-align:middle;
+}
+
+.form-editor-config{
+    padding-bottom:10px;
+}
+.perc-div-rowOption{
+    position:relative;
+}
+
+form input[type="text"], form textarea {
+    border-color: #CECFCE #CECFCE #D6D7DE #D6D7DE;
+    border-style: solid;
+    border-width: 1px;
+    color: #000000;
+    font-size: 11px;
+    font-weight: normal;
+}
+form input[type="text"]{
+    padding: 3px 3px 5px 3px;
+}
+input {
+  display: block;
+}
+
+.field-editor-basic input[type="button"]{
+    margin: 10px 0px;
+}
+.delete-field{
+    float:right;
+}
+.perc-required-form-legend {
+    right:10px;
+    top: 0px;
+    position: absolute;
+}
+
+.ui-widget-overlay
+{
+    position: absolute;
+    top: 0;
+    width:760px;
+    filter: alpha(opacity=0);
+    opacity:0;
+    background-color:grey;
+}
+
+#perc-formbuild-success-url-browse, #perc-formbuild-error-url-browse{
+    background-image : url("../images/ButtonBrowse.png");
+    width:63px;
+    height:22px;
+    text-indent:-10000px;
+    border:0px;
+    display:block;
+    position:absolute;
+    cursor:pointer;
+}
+#perc-formbuild-success-url-browse{
+    top: 0px;
+    left: 105%;
+}
+
+#perc-formbuild-error-url-browse{
+    top: 0px;
+    left: 105%;
+}
+
+#perc-formbuild-success-url-browse:hover, #perc-formbuild-error-url-browse:hover{
+    background-image : url("../images/ButtonBrowseOver.png");
+}
+
+
+/* Datepicker
+----------------------------------*/
+.ui-datepicker { width: 17em; padding: .2em .2em 0; }
+.ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }
+.ui-datepicker .ui-datepicker-prev { left:2px; }
+.ui-datepicker .ui-datepicker-next { right:2px; }
+.ui-datepicker .ui-datepicker-prev-hover { left:1px; }
+.ui-datepicker .ui-datepicker-next-hover { right:1px; }
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
+.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
+.ui-datepicker .ui-datepicker-title select { float:left; font-size:1em; margin:1px 0; }
+.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year { width: 49%;}
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
+.ui-datepicker td { border: 0; padding: 1px; }
+.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
+.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+
+/* with multiple calendars */
+.ui-datepicker.ui-datepicker-multi { width:auto; }
+.ui-datepicker-multi .ui-datepicker-group { float:left; }
+.ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
+.ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
+.ui-datepicker-multi-3 .ui-datepicker-group { width:33.3%; }
+.ui-datepicker-multi-4 .ui-datepicker-group { width:25%; }
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-buttonpane { clear:left; }
+.ui-datepicker-row-break { clear:both; width:100%; }
+
+/* RTL support */
+.ui-datepicker-rtl { direction: rtl; }
+.ui-datepicker-rtl .ui-datepicker-prev { right: 2px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next { left: 2px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-prev:hover { right: 1px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next:hover { left: 1px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane { clear:right; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button { float: left; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+
+/* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
+.ui-datepicker-cover {
+    display: none; /*sorry for IE5*/
+    display/**/: block; /*sorry for IE5*/
+    position: absolute; /*must have*/
+    z-index: -1; /*must have*/
+    filter: mask(); /*must have*/
+    top: -4px; /*must have*/
+    left: -4px; /*must have*/
+    width: 200px; /*must have*/
+    height: 200px; /*must have*/
+}
+
+#ui-datepicker-div {
+    border: 1px solid #AAAAAA;
+}
+
+.ui-datepicker td span, .ui-datepicker td a{
+    display:inline;
+}
+
+#ui-datepicker-div{
+    background-color:white;
+}
+.ui-icon-circle-triangle-w {
+    background-position: -80px -192px;
+}
+
+.ui-widget-header .ui-icon {
+    background-image: url("../images/ui-icons_222222_256x240.png");
+}
+
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
+    display: block;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    position: absolute;
+    top: 50%;
+    text-indent:-99999px;
+}
+
+.ui-icon-circle-triangle-w {
+    background-position: -80px -192px;
+}
+
+.ui-icon {
+    height: 16px;
+    width: 16px;
+}
+
+.ui-icon-circle-triangle-e {
+    background-position: -48px -192px;
+}
+
+.ui-datepicker td span, .ui-datepicker td a {
+
+    padding: 0.2em;
+    text-align: right;
+    text-decoration: none;
+    display: block;
+    width:18px;
+    height:16px;
+}
+.ui-state-default, .ui-widget-content .ui-state-default {
+    background: url("../images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #E6E6E6;
+    border: 1px solid #D3D3D3;
+    color: #555555;
+    font-weight: normal;
+    outline: medium none;
+}
+.ui-datepicker th {
+    border: 0 none;
+    font-weight: bold;
+    padding: 0.7em 0.3em;
+    text-align: center;
+}
+
+.ui-corner-all {
+    -moz-border-radius: 4px 4px 4px 4px;
+}
+
+.ui-widget-content {
+    background: none;
+    border: none;
+}
+
+.ui-datepicker td {
+    border: 0 none;
+    padding: 1px;
+}
+.ui-datepicker {
+    padding: 0.2em 0.2em 0;
+    width: 17em;
+}
+
+.ui-widget-content .ui-state-highlight {
+    background: url("../images/ui-bg_glass_55_fbf9ee_1x400.png") repeat-x scroll 50% 50% #FBF9EE;
+    border: 1px solid #FCEFA1;
+    color: #363636;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus {
+    background: none;
+    border: none;
+    color: #212121;
+    font-weight: normal;
+    outline: medium none;
+}
+.ui-helper-hidden-accessible{
+    display:none;
+}
+.ui-icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
+.perc-prefs-dialog { position: relative; width: 100px; background-color: #3288B0;
+    box-shadow: 2px 2px #818181;
+    -webkit-box-shadow: 2px 2px #818181;
+    -moz-box-shadow: 2px 2px #818181;
+    filter: progid:DXImageTransform.Microsoft.dropShadow(color=#818181, offX=2, offY=2, positive=true);
+}
+.perc-prefs-dialog .ui-dialog-titlebar { padding: .9em .3em .3em 1em; position: relative;}
+.perc-prefs-dialog .ui-dialog-title { float: left; margin: .1em 0 .2em; }
+.perc-prefs-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 6px; width: 19px; margin: -5px -10px 0 0; padding: 1px; height: 9px; }
+.perc-prefs-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
+.perc-prefs-dialog .ui-dialog-content { border: 0; background: none; overflow: auto; zoom: 1; }
+.perc-prefs-dialog .ui-dialog-buttonpane { text-align: left;border-width: 1px 0 0; background-image: none; margin: 0px; padding: 0px; height:46px; }
+.perc-prefs-dialog .ui-dialog-buttonpane div { float: right; margin: 0.5em -0.5em; cursor: pointer; padding:.2em  .6em  .3em;line-height:1.4em; width:auto; overflow:visible;}
+.ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }
+
+.perc-prefs-dialog .ui-dialog-content {
+    background-color: #3288B0;
+    font-size: 11px;
+}
+
+.perc-prefs-dialog .ui-dialog-titlebar{
+    background-color: #3288B0;
+}
+
+.perc-prefs-dialog .ui-widget-header .ui-icon {
+    background-image: url("../images/ButtonClosePreference.png");
+}
+
+.perc-prefs-dialog .ui-widget-header .ui-icon:hover {
+    background-image: url("../images/ButtonClosePreferenceOver.png");
+}
+
+.perc-prefs-dialog .ui-dialog-buttonpane .ui-icon {
+    background-image: url("../images/ButtonApply.png");
+    cursor: pointer;
+    border: 0;
+    width: 50px;
+    height: 27px;
+    margin-right: 0px;
+    margin-left: 245px;
+    margin-bottom: 4px;
+}
+
+.perc-prefs-dialog .ui-dialog-buttonpane .ui-icon:hover {
+    background-image: url("../images/ButtonApplyOver.png");
+}
+.perc-prefs-dialog .ui-dialog-buttonpane .ui-icon:visited {
+    border: 0;
+}
+
+.perc-pref-text{
+    font-size: 11px;
+    width: 40px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.perc-pref-text-longer{
+    width: 200px;
+}
+
+.perc-pref-entry{
+   padding-top: 5px;
+   height: 28px;
+   padding-bottom: 15px;
+}
+#perc-field-max-char-enabled{
+    margin: -3px 10px 0 0;
+    vertical-align: middle;
+    width: 13px;
+}
+#perc-formbuild-success-url, #perc-formbuild-error-url, #perc-formbuild-mail-to
+{
+    margin-left: 10px;
+    width:98.5%;
+}
+#perc-form-metadata-email-notification
+{
+    margin:0px 10px 0px 0px;
+    vertical-align: middle;
+}
+#perc-formbuild-success-url-readonly, #perc-formbuild-error-url-readonly, #perc-formbuild-mail-to-readonly, #perc-form-meta-readonly-mail-subject, #perc-form-meta-readonly-description, #perc-form-metadata-save-to-url-text-readonly{
+    margin-top:0px;
+}
+
+.PercFormWidget + br {
+    display:none;
+}
+body * {
+    font-family: 'Open Sans', sans-sans-serif, serif;
+}

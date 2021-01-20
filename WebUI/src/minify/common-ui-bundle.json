@@ -1,0 +1,54 @@
+{
+  "bundles": [
+    {
+      "type": "js",
+      "name": "perc_common_ui.js",
+      "files": [
+        "jslib/jquery.jsonp-2.1.4.js",
+        "jslib/simpledateformat.js",
+        "jslib/jquery.timeago.js",
+        "jslib/moment-with-locales.js",
+        "jslib/moment-jdateformatparser.js",
+        "jslib/jquery.bbq.js",
+        "jslib/jquery.jfeed.js",
+        "../../delivery/common/js/plugins/PercResultsPaging.js",
+        "../../delivery/common/js/services/PercPageListService.js",
+        "../../delivery/common/js/services/PercBlogListService.js",
+        "../../delivery/common/js/services/PercLikedService.js",
+        "../../delivery/common/js/services/PercTagListService.js",
+        "../../delivery/common/js/services/PercCategoryListService.js",
+        "../../delivery/common/js/services/PercResultService.js",
+        "../../delivery/common/js/services/PercArchiveListService.js",
+        "../../delivery/common/js/services/PercBlogPostService.js",
+        "../../delivery/common/js/services/PercCookieConsentService.js",
+        "../../delivery/common/js/services/PercRssService.js",
+        "../../delivery/common/js/services/PercMembershipService.js",
+        "../../delivery/common/js/services/PercMostReadBlogPostsService.js",
+        "../../delivery/common/js/views/PercPageListView.js",
+        "../../delivery/common/js/views/PercBlogListView.js",
+        "../../delivery/common/js/views/PercMostReadBlogPostsView.js",
+        "../../delivery/common/js/views/PercLikedView.js",
+        "../../delivery/common/js/views/PercCommentsView.js",
+        "../../delivery/common/js/views/PercTagListView.js",
+        "../../delivery/common/js/views/PercCategoryListView.js",
+        "../../delivery/common/js/views/PercArchiveListView.js",
+        "../../delivery/common/js/views/PercResultView.js",
+        "../../delivery/common/js/views/PercBlogPostView.js",
+        "../../delivery/common/js/views/PercShareThisView.js",
+        "../../delivery/common/js/views/PercRssView.js",
+        "../../delivery/common/js/views/PercRegistrationView.js",
+        "../../delivery/common/js/views/PercLoginView.js",
+        "../../delivery/common/js/views/PercSecureLoginView.js",
+        "../../delivery/common/js/views/PercProtectedRegion.js"
+      ]
+    },
+    {
+      "type": "js",
+      "name": "perc_common_ui_slim.js",
+      "files": [
+        "jslib/jquery.jsonp-2.1.4.js",
+        "services/PercServiceUtils.js"
+      ]
+    }
+  ]
+}

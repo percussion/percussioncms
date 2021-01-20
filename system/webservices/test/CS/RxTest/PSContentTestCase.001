@@ -1,0 +1,376 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using RxTest.RxWebServices;
+
+namespace RxTest
+{
+   public class PSContentTestCase : PSContentTestBase
+   {
+      public PSContentTestCase(PSTest test) : base(test)
+      {
+      }
+
+      public void testLoadKeywords()
+      {
+          string[] keywordNames = { "Checkout_St*",
+                                    "Checkout_Status_types" };
+
+          string[] keywordChoices = { "Checked In", "Checked Out", "Checked Out by Me" };
+
+          LoadKeywordsRequest request = null;
+          PSKeyword[] keywords = null;
+
+          PSTest.ConsoleMessage("Testing Keywords ... \n");
+
+          // load all keywords
+          request = new LoadKeywordsRequest();
+          request.Name = null;
+          keywords = m_test.m_contService.LoadKeywords(request);
+
+          // make sure there are  at least 25
+          PSFileUtils.RxAssert(keywords.Length > 25,
+                               String.Format("To many Keywords found {0}", keywords.Length));
+
+          // Check wild card and full name search
+          // Will use the final result as a keyword we are going to look at further
+          for (int inc = 0 ; inc < keywordNames.Length ; ++inc)
+          {
+              request.Name = keywordNames[inc];
+              keywords = m_test.m_contService.LoadKeywords(request);
+              PSFileUtils.RxAssert(keywords.Length == 1,
+                                   String.Format("Wrong Number ({0}) of Keywords found for {1}", keywords.Length, request.Name));
+          }
+
+          // Test to make sure we have correct keyword values
+          PSFileUtils.RxAssert(keywords[0].Choices.Length == keywordChoices.Length,
+                                   String.Format("Wrong Number ({0}) of Keyword Choices found for {1}", keywords[0].Choices.Length, request.Name));
+
+          for( int inc = 0 ; inc < keywordChoices.Length ; ++inc ) {
+               PSFileUtils.RxAssert(keywords[0].Choices[inc].value == keywordChoices[inc],
+                                   String.Format("{0} Choice \"{1}\" is not \"{2}\"", request.Name, keywords[0].Choices[inc].value, keywordChoices[inc]));
+           }
+
+          PSTest.ConsoleMessage("Keywords Passed.\n");
+      }
+
+      public void testAaRelationship()
+      {
+          PSTest.ConsoleMessage("Testing Active Assembly Relationships ... \n");
+          switchToIECommunity();
+
+          PSAaRelationship[] rels;
+
+
+          int ContentID = 335;    // get AA relationships which do not contain site or folder ids
+          PSTest.ConsoleMessage(String.Format("Testing ContentID {0} to make sure it does not have site or folders", ContentID));
+          rels = loadAaRelationshipsByOwner(ContentID);
+          PSTest.ConsoleMessage(String.Format("Found {0} relationships for Content ID {1}", rels.Length, ContentID));
+          PSFileUtils.RxAssert(rels.Length > 0, "Unable to load AA relationships by owner");
+
+          for (int inc = 0; inc < rels.Length; ++inc)
+          {
+              PSFileUtils.RxAssert(rels[inc].Folder == null, String.Format("Found Folder relationship rels[{0}] on Content ID {1}", inc, ContentID));
+              PSFileUtils.RxAssert(rels[inc].Site == null, String.Format("Found Folder relationship rels[{0}] on Content ID {1}", inc, ContentID));
+          }
+          PSTest.ConsoleMessage(String.Format("Testing ContentID {0} Passed\n", ContentID));
+
+          ContentID = 634;    // get AA relationships which contain site or folder ids
+          PSTest.ConsoleMessage(String.Format("Testing ContentID {0} to make sure it has sites or folders", ContentID));
+          rels = loadAaRelationshipsByOwner(ContentID);
+          PSTest.ConsoleMessage(String.Format("Found {0} relationships for Content ID {1}", rels.Length, ContentID));
+          PSFileUtils.RxAssert(rels.Length > 0, "Unable to load AA relationships by owner");
+
+          bool FoundSite = false;
+          bool FoundFolder = false;
+          for (int inc = 0; inc < rels.Length; ++inc)
+          {
+              if(rels[inc].Folder != null) {
+                  String name = rels[inc].Folder.name;
+                  String path = rels[inc].Folder.path;
+                  PSFileUtils.RxAssertTrue(String.IsNullOrEmpty(name), String.Format("Folder name missing for {0} of Content ID {1}", rels[inc].id, ContentID));
+                  PSFileUtils.RxAssertTrue(String.IsNullOrEmpty(path), String.Format("Folder name missing for {0} of Content ID {1}", rels[inc].id, ContentID));
+
+                  PSTest.ConsoleMessage(String.Format("Found Folder {0} in Path {1} for Relationship {2}", name, path, inc));
+
+                  FoundFolder = true;
+              }
+              if(rels[inc].Site != null) {
+                  String name = rels[inc].Site.name;
+                  PSFileUtils.RxAssertTrue(String.IsNullOrEmpty(name), String.Format("Site name missing for {0} of Content ID {1}", rels[inc].id, ContentID));
+
+                  PSTest.ConsoleMessage(String.Format("Found Site {0} for Relationship {1}", name, inc));
+
+                  FoundSite = true;
+              }
+          }
+
+          PSFileUtils.RxAssert(FoundSite, String.Format("Unable to find site for Content ID {0}", ContentID));
+          PSFileUtils.RxAssert(FoundFolder, String.Format("Unable to find Found for Content ID {0}", ContentID));
+
+          PSTest.ConsoleMessage(String.Format("Testing ContentID {0} Passed\n", ContentID));
+
+
+          // testing addContentRelationships
+          const String SLOT_NAME = "rffContacts";
+          const String TEMPLATE_NAME = "rffSnFlash";
+
+          PSTest.ConsoleMessage(String.Format("Testing adding a Content Relationship for Slot {0} and Template {1}", SLOT_NAME, TEMPLATE_NAME));
+
+          // has to check out the owner
+          PSItemStatus itemStatus335 = checkoutItem(335);
+
+          AddContentRelationsRequest areq = new AddContentRelationsRequest();
+          //Sites/EnterpriseInvestments/AboutEnterpriseInvestments/Page - About Enterprise Investments
+          long ownerId335         = PSGetGuidFromContentID(335);
+          long dependentId2       = PSGetGuidFromContentID(460);
+          long dependentId3       = PSGetGuidFromContentID(461);
+          areq.Id                 = ownerId335;
+          areq.RelatedId          = new long[] { dependentId2, dependentId3 };
+          areq.Slot               = SLOT_NAME;
+          areq.Template           = TEMPLATE_NAME;
+          areq.RelationshipConfig = "ActiveAssembly";
+          areq.Index              = "11";
+          rels = m_test.m_contService.AddContentRelations(areq);
+          PSFileUtils.RxAssert(rels.Length == 2, String.Format("Unable to add Content Relations for Content ID 335, length = {0}", rels.Length));
+
+          PSTest.ConsoleMessage(String.Format("Save created ID's {0} and {1}", rels[0].id, rels[1].id));
+          // save created ids, which will be used for cleanup later
+          long[] createdIds = { rels[0].id, rels[1].id };
+
+          PSTest.ConsoleMessage("Checking Sort ranks");
+          // sort-rank(s) are 11 right now
+          PSAaRelationship rel = loadAaRelationshipsByRid(createdIds[0], true);
+          PSFileUtils.RxAssert(rel.SortRank == "11", String.Format("Sort Rank is not 11 but {0}", rel.SortRank));
+          rel = loadAaRelationshipsByRid(createdIds[1], true);
+          PSFileUtils.RxAssert(rel.SortRank == "11", String.Format("Sort Rank is not 11 but {0}", rel.SortRank));
+
+
+          PSTest.ConsoleMessage("Testing Reordering");
+          // test reordering
+          m_test.m_contService.ReorderContentRelations(createdIds);
+          rel = loadAaRelationshipsByRid(createdIds[0], true);
+          PSFileUtils.RxAssert(rel.SortRank.CompareTo("0") == 0, String.Format("Sort Rank is not 0 but {0}", rel.SortRank));
+          rel = loadAaRelationshipsByRid(createdIds[1], true);
+          PSFileUtils.RxAssert(rel.SortRank.CompareTo("1") == 0, String.Format("Sort Rank is not 1 but {0}", rel.SortRank));
+
+
+          PSTest.ConsoleMessage("Testing loadContentRelations");
+          // testing loadContentRelations
+          rel = loadAaRelationshipsByRid(createdIds[0], true);
+          PSFileUtils.RxAssert(rel.id == rels[0].id, String.Format("Relationship do not match {0} != {1}", rel.id, rels[0].id));
+          PSFileUtils.RxAssert(rel.Slot.name.CompareTo(SLOT_NAME) == 0, String.Format("Slot Name is wrong {0}", rel.Slot.name));
+          PSFileUtils.RxAssert(rel.Template.name.CompareTo(TEMPLATE_NAME) == 0, String.Format("Template Name is wrong {0}", rel.Template.name));
+
+
+          PSTest.ConsoleMessage("Testing saveContentRelations");
+          // testing saveContentRelations
+          LoadAssemblyTemplatesRequest latReq = new LoadAssemblyTemplatesRequest();
+          latReq.Name = TEMPLATE_NAME;
+          PSAssemblyTemplate[] templates = m_test.m_assService.LoadAssemblyTemplates(latReq);
+          PSFileUtils.RxAssert(templates.Length == 1, String.Format("Wrong number ({0}) of Templates found for {1}", latReq.Name, templates.Length));
+
+          long templateID = templates[0].id;
+          rel.Template = new Reference();
+          rel.Template.id = templateID;
+          rel.SortRank = "0";
+          m_test.m_contService.SaveContentRelations(new PSAaRelationship[] { rel });
+
+          // validate the save operation on templateId
+          rel = loadAaRelationshipsByRid(rel.id, true);
+          PSFileUtils.RxAssert(rel.Template.id == templateID, "Template did not save");
+
+
+          PSTest.ConsoleMessage("Checking Children");
+          // find child items
+          FindChildItemsRequest fcreq = new FindChildItemsRequest();
+          fcreq.Id                        = ownerId335;
+          fcreq.loadOperations            = true;
+          fcreq.PSAaRelationshipFilter    = new PSAaRelationshipFilter();
+          PSItemSummary[] children        = m_test.m_contService.FindChildItems(fcreq);
+          PSFileUtils.RxAssert(children.Length > 0, String.Format("No children found for {0}", fcreq.Id));
+          PSFileUtils.RxAssert(children[0].Operation != null, String.Format("Child has no operation for {0}", fcreq.Id));
+
+          for(int inc = 0 ; inc < children.Length ; ++inc) {
+              PSFileUtils.RxAssert(children[inc].Operation.Length == 3, String.Format("Child {0} has bad Operation Length {1}",
+                                                                              inc, children[inc].Operation.Length));
+          }
+
+
+          PSTest.ConsoleMessage("Checking Parents");
+          // find parent items
+          FindParentItemsRequest fpreq = new FindParentItemsRequest();
+          fpreq.Id                        = dependentId2;
+          fpreq.PSAaRelationshipFilter    = new PSAaRelationshipFilter();
+          PSItemSummary[] parents = m_test.m_contService.FindParentItems(fpreq);
+          PSFileUtils.RxAssert(parents.Length > 0, String.Format("No parents found for {0}", fcreq.Id));
+          PSFileUtils.RxAssert(parents[0].Operation == null, String.Format("Parent has operations for {0}", fcreq.Id));
+
+
+          PSTest.ConsoleMessage("Testing Deletes");
+          // testing deleteContentRelationships
+          m_test.m_contService.DeleteContentRelations(createdIds);
+
+
+          PSFileUtils.RxAssert(loadAaRelationshipsByRid(createdIds[0], false) == null,
+                                   String.Format("Unable to delete Content Relationship {0}", createdIds[0]));
+          PSFileUtils.RxAssert(loadAaRelationshipsByRid(createdIds[1], false) == null,
+                                   String.Format("Unable to delete Content Relationship {0}", createdIds[1]));
+
+          checkinItem(itemStatus335); // cleanup
+          PSTest.ConsoleMessage("Active Assembly Relationships Passed.\n");
+      }
+
+      /**
+       * Test loading the content types.
+       *
+       */
+      public void testLoadContentTypes()
+      {
+          PSTest.ConsoleMessage("Testing Loading Content Types ...\n");
+
+          PSContentTypeSummary[] sums;
+
+          sums = loadContentTypeSummaries(null);
+
+          PSFileUtils.RxAssert(sums.Length > 15, String.Format("Not enough content types found ({0})\n", sums.Length));
+
+          sums = loadContentTypeSummaries(ContentTypeName);
+
+          PSFileUtils.RxAssert(sums.Length == 1, String.Format("Unable to find Content Type {0}\n", ContentTypeName));
+
+          PSFileUtils.RxAssert(sums[0].name == ContentTypeName, String.Format("Name field {0} does not match for Content Type {1}\n", sums[0].name, ContentTypeName));
+
+          PSTest.ConsoleMessage("Testing Loading Content Types Passed\n");
+      }
+
+
+      /**
+       * Test the item creation service.
+       *
+       */
+      public void testCreateItem()
+      {
+         PSTest.ConsoleMessage("Testing creating a content Item ...\n");
+
+
+         PSContentTypeSummary[] Types = loadContentTypeSummaries(ContentTypeName);
+         PSFileUtils.RxAssert(Types.Length == 1, String.Format("Unable to find Content Type {0}\n", ContentTypeName));
+
+         PSItem[] itemsToDelete = new PSItem[4];
+
+         // by default we create 1 item
+         CreateItemsRequest request = new CreateItemsRequest();
+         request.ContentType = Types[0].name;
+         PSItem[] items = m_test.m_contService.CreateItems(request);
+         PSFileUtils.RxAssert(items != null && items.Length == 1, String.Format("Unable to create a content item of type {0}", ContentTypeName));
+          /*
+//          items[0].Fields
+
+          SaveItemsRequest req = new SaveItemsRequest();
+        //  req.
+        //  m_test.m_contService.SaveItems(
+
+         itemsToDelete[0] = items[0];
+
+         // create 3 items
+         request = new CreateItemsRequest();
+         request.ContentType = Types[0].name;
+         request.Count = 3;
+         items = m_test.m_contService.CreateItems(request);
+         PSFileUtils.RxAssert(items != null && items.Length == 3, String.Format("Unable to create 3 content items of Type {0}", ContentTypeName));
+         itemsToDelete[1] = items[0];
+         itemsToDelete[2] = items[1];
+         itemsToDelete[3] = items[2];
+
+         long[] DeleteItemsRequest = { itemsToDelete[0].id, itemsToDelete[1].id, itemsToDelete[2].id, itemsToDelete[3].id };
+
+         m_test.m_contService.DeleteItems(DeleteItemsRequest); */
+
+         PSTest.ConsoleMessage("Testing creating a content Item Passed\n");
+      }
+
+      /**
+      * Tests AddFolderTree operation.
+      *
+      * @throws Exception if any error occurs.
+      */
+      public void testAddFolderTree()
+      {
+         // create a test folder
+         AddFolderTreeRequest atreq = new AddFolderTreeRequest();
+         String path = "//Folders/TestFolder_1_" + DateTime.Today.Ticks + "/TestFolder_2";
+         atreq.Path = path;
+         PSFolder[] folders = m_test.m_contService.AddFolderTree(atreq);
+         PSFileUtils.RxAssert(folders.Length == 2, String.Format("Unable to create folder {0}", path));
+
+         // delete the test folders
+          long[] FolderIds = { folders[1].id, folders[0].id };
+         DeleteFoldersRequest dreq = new DeleteFoldersRequest();
+         dreq.Id = FolderIds;
+         m_test.m_contService.DeleteFolders(dreq);
+      }
+
+       /**
+        * Test loading and saving auto translations
+        * 
+        * @throws Exception if the test fails
+        */
+       public void testAutoTranslations()
+       {
+           List<PSAutoTranslation> ats = new List<PSAutoTranslation>();
+           ats = createTestTranslations();
+
+           List<PSAutoTranslation> curTrans;
+           Boolean saved = false;
+
+           try
+           {
+               // load current locked in case we have some
+               curTrans = loadAutoTranslations();
+           }
+           finally
+           {
+           }
+       }
+           /*
+
+         ats.addAll(curTrans);
+         saveAutoTranslations(ats, m_session, false);
+         saved = true;
+      }
+      finally
+      {
+         if (!saved)
+         {
+            PSDesignGuid guid = new PSDesignGuid(
+               com.percussion.services.content.data.PSAutoTranslation
+                  .getAutoTranslationsGUID());
+            PSTestUtils.releaseLocks(m_session, new long[] { guid.getValue() });
+         }
+      }
+
+      try
+      {
+         assertEquals(loadAutoTranslations(m_session), ats);
+      }
+      catch (com.percussion.webservices.faults.PSInvalidSessionFault e1)
+      {
+         throw new AssertionFailedError(
+            "InvalidSessionFault Exception caught: " + e1);
+      }
+      catch (Exception e2)
+      {
+         throw new AssertionFailedError("Unexpected Exception caught: " + e2);
+      }
+      finally
+      {
+         if (saved)
+         {
+            // save just what we had
+            loadAutoTranslations(m_session, true, null, null);
+            saveAutoTranslations(curTrans, m_session, true);
+         }
+      } */
+    }
+}

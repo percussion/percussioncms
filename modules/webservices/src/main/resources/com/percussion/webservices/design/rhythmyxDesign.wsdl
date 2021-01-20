@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<wsdl:definitions name="rhythmyxDesign" targetNamespace="urn:www.percussion.com/6.0.0/rhythmyxDesign" xmlns:rxd="urn:www.percussion.com/6.0.0/rhythmyxDesign" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:asmd="urn:www.percussion.com/6.0.0/assemblyDesign" xmlns:cond="urn:www.percussion.com/6.0.0/contentDesign" xmlns:secd="urn:www.percussion.com/6.0.0/securityDesign" xmlns:sysd="urn:www.percussion.com/6.0.0/systemDesign" xmlns:uid="urn:www.percussion.com/6.0.0/uiDesign" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/assemblyDesign" location="assembly/assemblyDesign.wsdl">
+   </wsdl:import>
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/contentDesign" location="content/contentDesign.wsdl">
+   </wsdl:import>
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/securityDesign" location="security/securityDesign.wsdl">
+   </wsdl:import>
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/systemDesign" location="system/systemDesign.wsdl">
+   </wsdl:import>
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/uiDesign" location="ui/uiDesign.wsdl">
+   </wsdl:import>
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="common.xsd">
+         </xsd:import>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:service name="assemblyDesign">
+      <wsdl:port name="assemblyDesignSOAP" binding="asmd:assemblyDesignSOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/designwebservices/assemblyDesignSOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="contentDesign">
+      <wsdl:port name="contentDesignSOAP" binding="cond:contentDesignSOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/designwebservices/contentDesignSOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="securityDesign">
+      <wsdl:port name="securityDesignSOAP" binding="secd:securityDesignSOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/designwebservices/securityDesignSOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="systemDesign">
+      <wsdl:port name="systemDesignSOAP" binding="sysd:systemDesignSOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/designwebservices/systemDesignSOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="uiDesign">
+      <wsdl:port name="uiDesignSOAP" binding="uid:uiDesignSOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/designwebservices/uiDesignSOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

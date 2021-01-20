@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="1086" startPriority="0" version="2.0">
+	<name>sys_variantsCloning</name>
+	<description>Support application for variants cloning.
+</description>
+	<requestRoot>sys_variantsCloning</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_jbr_1106003035931/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050117T180124853</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="6">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050120T113729845</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>admin1</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior/>
+	</PSXAcl>
+	<maxThreads>-1</maxThreads>
+	<maxRequestTime>-1</maxRequestTime>
+	<maxRequestsInQueue>-1</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>1</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="3727">
+		<name>QueryVariantSlots</name>
+		<description>Query resource to get the Variant Slot relations for the supplied Variant.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3713">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3709">
+				<PSXBackEndTable id="3708">
+					<alias>RXVARIANTSLOTTYPE</alias>
+					<table>RXVARIANTSLOTTYPE</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3711" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneVaraintSlots/Slot/SlotId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTSLOTTYPE</tableAlias>
+						<column>SLOTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneVaraintSlots/Slot/VariantId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTSLOTTYPE</tableAlias>
+						<column>VARIANTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3710" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXVARIANTSLOTTYPE</tableAlias>
+									<column>VARIANTID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_variantid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3726">
+			<schemaSource>file:CloneVaraintSlots.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryVariantSlots</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3729">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="3731">
+		<name>UpdateVariantSlots</name>
+		<description>Update resource to set the Variant Slot for the supplied Variant.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3719">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3718">
+				<PSXBackEndTable id="3717">
+					<alias>RXVARIANTSLOTTYPE</alias>
+					<table>RXVARIANTSLOTTYPE</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3715" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneVaraintSlots/Slot/SlotId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTSLOTTYPE</tableAlias>
+						<column>SLOTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneVaraintSlots/Slot/VariantId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTSLOTTYPE</tableAlias>
+						<column>VARIANTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3716">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTSLOTTYPE</tableAlias>
+						<column>VARIANTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXVARIANTSLOTTYPE</tableAlias>
+						<column>SLOTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3730">
+			<schemaSource>file:CloneVaraintSlots.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateVariantSlots</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3733">
+		<name>UpdateVariantSites</name>
+		<description>Update resource to set the Variant Sites for the supplied Variant.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="3725">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3724">
+				<PSXBackEndTable id="3723">
+					<alias>PSX_VARIANT_SITE</alias>
+					<table>PSX_VARIANT_SITE</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3721" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneVaraintSites/Site/SiteId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_VARIANT_SITE</tableAlias>
+						<column>SITEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneVaraintSites/Site/VariantId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_VARIANT_SITE</tableAlias>
+						<column>VARIANTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="3722">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_VARIANT_SITE</tableAlias>
+						<column>SITEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_VARIANT_SITE</tableAlias>
+						<column>VARIANTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="3732">
+			<schemaSource>file:CloneVaraintSites.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateVariantSites</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="3735">
+		<name>QueryVariantSites</name>
+		<description>Query resource to get the Variant Sites relations for the supplied Variant.</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3704">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3700">
+				<PSXBackEndTable id="3699">
+					<alias>PSX_VARIANT_SITE</alias>
+					<table>PSX_VARIANT_SITE</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3702" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneVaraintSites/Site/SiteId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_VARIANT_SITE</tableAlias>
+						<column>SITEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>CloneVaraintSites/Site/VariantId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_VARIANT_SITE</tableAlias>
+						<column>VARIANTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3701" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>PSX_VARIANT_SITE</tableAlias>
+									<column>VARIANTID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_variantid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3734">
+			<schemaSource>file:CloneVaraintSites.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>QueryVariantSites</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage allowNamespaceCleanup="false" id="3729">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="yes" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="3706" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="3707">
+		<providerType>SMTP</providerType>
+		<server>&lt;Unspecified&gt;</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="locationY3709">0</userProperty>
+	<userProperty name="locationY3707">100</userProperty>
+	<userProperty name="locationY3706">55</userProperty>
+	<userProperty name="locationY3705">10</userProperty>
+	<userProperty name="locationX3719">10</userProperty>
+	<userProperty name="locationX3718">357</userProperty>
+	<userProperty name="locationX3716">236</userProperty>
+	<userProperty name="locationX3715">169</userProperty>
+	<userProperty name="locationX3714">0</userProperty>
+	<userProperty name="locationX3713">10</userProperty>
+	<userProperty name="locationX3712">357</userProperty>
+	<userProperty name="locationX3711">237</userProperty>
+	<userProperty name="locationX3710">103</userProperty>
+	<userProperty name="pageDatatankSrcType3734">2</userProperty>
+	<userProperty name="pageDatatankSrcType3732">2</userProperty>
+	<userProperty name="pageDatatankSrcType3730">2</userProperty>
+	<userProperty name="locationX3709">0</userProperty>
+	<userProperty name="locationX3707">16</userProperty>
+	<userProperty name="locationX3706">16</userProperty>
+	<userProperty name="locationX3705">16</userProperty>
+	<userProperty name="3708readonly">false</userProperty>
+	<userProperty name="pageDatatankSrcType3726">2</userProperty>
+	<userProperty name="pageDatatankSrcType3720">2</userProperty>
+	<userProperty name="3717sizeheight">200</userProperty>
+	<userProperty name="3717sizewidth">120</userProperty>
+	<userProperty name="3717readonly">false</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="pageDatatankSrcType3714">2</userProperty>
+	<userProperty name="pageDatatankSrcType3712">2</userProperty>
+	<userProperty name="3708sizewidth">120</userProperty>
+	<userProperty name="3708sizeheight">200</userProperty>
+	<userProperty name="schemaSourceReadOnly3734">true</userProperty>
+	<userProperty name="3717locationy">20</userProperty>
+	<userProperty name="3717locationx">20</userProperty>
+	<userProperty name="schemaSourceReadOnly3732">true</userProperty>
+	<userProperty name="schemaSourceReadOnly3730">true</userProperty>
+	<userProperty name="locationY3735">193</userProperty>
+	<userProperty name="locationY3734">0</userProperty>
+	<userProperty name="locationY3733">191</userProperty>
+	<userProperty name="locationY3732">0</userProperty>
+	<userProperty name="locationY3731">68</userProperty>
+	<userProperty name="pageDatatankFilePath3734">C:\CodeTemp\MartinCloningFiles\CloneVaraintSites.dtd</userProperty>
+	<userProperty name="locationY3730">0</userProperty>
+	<userProperty name="pageDatatankFilePath3732">C:\CodeTemp\MartinCloningFiles\CloneVaraintSites.dtd</userProperty>
+	<userProperty name="3723sizewidth">120</userProperty>
+	<userProperty name="pageDatatankFilePath3730">C:\CodeTemp\MartinCloningFiles\CloneVaraintSlots.dtd</userProperty>
+	<userProperty name="3708locationy">20</userProperty>
+	<userProperty name="3708locationx">20</userProperty>
+	<userProperty name="schemaSourceReadOnly3726">true</userProperty>
+	<userProperty name="schemaSourceReadOnly3720">true</userProperty>
+	<userProperty name="locationY3729">133</userProperty>
+	<userProperty name="locationY3728">133</userProperty>
+	<userProperty name="locationY3727">59</userProperty>
+	<userProperty name="locationY3726">0</userProperty>
+	<userProperty name="locationY3725">10</userProperty>
+	<userProperty name="locationY3724">0</userProperty>
+	<userProperty name="pageDatatankFilePath3726">C:\CodeTemp\MartinCloningFiles\CloneVaraintSlots.dtd</userProperty>
+	<userProperty name="3723locationy">20</userProperty>
+	<userProperty name="locationY3722">24</userProperty>
+	<userProperty name="3723locationx">20</userProperty>
+	<userProperty name="locationY3721">24</userProperty>
+	<userProperty name="locationY3720">0</userProperty>
+	<userProperty name="locationX3735">28</userProperty>
+	<userProperty name="locationX3734">357</userProperty>
+	<userProperty name="locationX3733">334</userProperty>
+	<userProperty name="locationX3732">0</userProperty>
+	<userProperty name="pageDatatankFilePath3720">C:\CodeTemp\MartinCloningFiles\CloneVaraintSites.dtd</userProperty>
+	<userProperty name="locationX3731">330</userProperty>
+	<userProperty name="locationX3730">0</userProperty>
+	<userProperty name="schemaSourceReadOnly3714">true</userProperty>
+	<userProperty name="schemaSourceReadOnly3712">true</userProperty>
+	<userProperty name="locationY3719">10</userProperty>
+	<userProperty name="locationY3718">0</userProperty>
+	<userProperty name="locationY3716">24</userProperty>
+	<userProperty name="locationY3715">24</userProperty>
+	<userProperty name="locationX3729">227</userProperty>
+	<userProperty name="locationY3714">0</userProperty>
+	<userProperty name="locationX3728">227</userProperty>
+	<userProperty name="locationY3713">10</userProperty>
+	<userProperty name="locationX3727">33</userProperty>
+	<userProperty name="locationY3712">0</userProperty>
+	<userProperty name="locationX3726">357</userProperty>
+	<userProperty name="locationY3711">24</userProperty>
+	<userProperty name="pageDatatankFilePath3714">C:\CodeTemp\MartinCloningFiles\CloneVaraintSlots.dtd</userProperty>
+	<userProperty name="locationX3725">10</userProperty>
+	<userProperty name="locationY3710">24</userProperty>
+	<userProperty name="locationX3724">357</userProperty>
+	<userProperty name="pageDatatankFilePath3712">C:\CodeTemp\MartinCloningFiles\CloneVaraintSlots.dtd</userProperty>
+	<userProperty name="3723sizeheight">200</userProperty>
+	<userProperty name="locationX3722">236</userProperty>
+	<userProperty name="locationX3721">169</userProperty>
+	<userProperty name="locationX3720">0</userProperty>
+	<userProperty name="3723readonly">false</userProperty>
+</PSXApplication>

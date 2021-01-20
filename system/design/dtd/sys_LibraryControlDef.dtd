@@ -1,0 +1,215 @@
+<?xml encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This file contains the DTD that specifies the meta data for the
+   controls in a control library. The meta data can be used by designers and
+   agents when creating content editors.
+   
+   $Id: sys_LibraryControlDef.dtd 1.5 2002/08/23 17:03:06Z ScottMorales Exp $
+-->
+<!-- Include the shared definitions -->
+<!ENTITY % BasicObjects SYSTEM "sys_BasicObjects.dtd">
+%BasicObjects;
+<!--
+
+   Attributes:
+   name - The internal name of the control.
+
+   displayName - The name to show the user in control lists. If not supplied,
+         the name is used.
+
+   dimension - An enumeration describing what form the data takes. There are
+         3 forms. Either it's a single value, multiple values or a 2D array.
+         Describes the form of data expected by the control. A control for
+         single data expects 0 or 1 value. A control for array data expects
+         0 or more values. Both types return values. A control for a table
+         is not expected to return any data, it is read only. It is expected
+         that controls that take array data use choice lists.
+
+   choiceset - Provided as a hint as to whether this control uses a set of
+         choices from which the user can choose 1 or more values. 'required'
+         means that a set of choices must be provided (see sys_ContentEditor.dtd
+         for details) or it is an error condition. 'optional' means they will be
+         used if they are present. 'none' means they are not needed and will be
+         ignored if provided. This property is only applicable if the dimension
+         property is single or array.
+         
+   deprecate - Indicates if this control is deprecated.
+   
+   replacedwith - Used in conjunction with deprecated, this attribute indicates 
+         which control should be used in placed of the deprecated control. 
+-->
+<!ELEMENT LibraryControlMetaData (psxctl:ControlMeta*)>
+<!ELEMENT psxctl:ControlMeta (psxctl:Description?, psxctl:ParamList?, psxctl:AssociatedFileList?, psxctl:Dependencies?)>
+<!ATTLIST psxctl:ControlMeta
+   name CDATA #REQUIRED
+   displayName CDATA #IMPLIED
+   dimension (single | array | table) "single"
+   choiceset (none | required | optional) "none"
+   deprecate %Boolean; %False;
+   replacewith CDATA #IMPLIED
+>
+<!--
+   This element should include a full description of the control's behavior
+   and any allowed parameters (names and allowed values). If the allowed
+   parameter set is large, then a description of the params without Param
+   elements is ok (e.g. if all attributes for HTML buttons are allowed).
+   Submitted params that are passed through should set the type attribute of
+   the Param element to 'html'.
+-->
+<!ELEMENT psxctl:Description (#PCDATA)>
+<!--
+   The file list for things like script files that need to be included in the
+   output.  Typically, these files are referenced by the control template.
+-->
+<!ELEMENT psxctl:AssociatedFileList (psxctl:FileDescriptor+)>
+<!--
+   Attributes:
+   name - the name of the file (base and extension)
+
+   type - a general descriptor for the type of content in the file
+
+   mimetype - A more specific descriptor of the type of content in the file.
+
+   originalLocation - The fully qualified path to the file where it was read
+         when uploaded to the server from the designer's agent. If unknown,
+         it will not be present. This will only be used by the agent to aid
+         the user in tracking src files.
+-->
+<!ELEMENT psxctl:FileDescriptor (psxctl:FileLocation, psxctl:Timestamp)>
+<!ATTLIST psxctl:FileDescriptor
+   name CDATA #REQUIRED
+   type (script | image | include | css | other) "other"
+   mimetype CDATA #IMPLIED
+   originalLocation CDATA #IMPLIED
+>
+<!--
+   The relative path to the file. It will be validated when the control is
+   added to the library to guarantee it does not reference a file outside the
+   scope of allowed file locations.
+-->
+<!ELEMENT psxctl:FileLocation (#PCDATA)>
+<!--
+   The date/time of the file when it was stored on the server's disk,
+   in international format (YYYYMMDD HH:MM:SS).
+-->
+<!ELEMENT psxctl:Timestamp (#PCDATA)>
+<!ELEMENT psxctl:ParamList (psxctl:Param+)>
+<!--
+   Typically used for custom parameters that are used to modify the behavior
+   of the control. HTML params that are passed through typically won't include
+   a Param element. In any case, the server will allow any param, regardless
+   of whether it is included here or not. This is used by an agent such as
+   the workbench to ease the designer's burden.
+   If the property only allows a fixed set of values, include those in the
+   ChoiceList.
+
+   Attributes:
+   name - the name of the parameter as it is passed to the control by the
+         server
+
+   datatype - a descriptive term for the type of the expected data. Recommend
+         one of: String, Date, Time, Datetime, Number
+
+   required - flag to indicate if this parameter is required. All required
+         parameters must have a Param element.
+
+   paramtype - specifies what type of parameter this is.  The possible values
+         are control specific.
+-->
+<!ELEMENT psxctl:Param (psxctl:Description, psxctl:ChoiceList?, psxctl:DefaultValue?)>
+<!ATTLIST psxctl:Param
+   name CDATA #REQUIRED
+   datatype CDATA #REQUIRED
+   required (yes | no) "no"
+   paramtype CDATA #REQUIRED
+>
+<!ELEMENT psxctl:ChoiceList (psxctl:Entry+)>
+<!--
+   Content:
+   The content is the display value.
+
+   Attributes:
+   internalName - the actual name of the parameter as required by the control.
+         If not present, the display value is used as the name. If the display
+         name has spaces or disallowed characters, they will be replaced with
+         the underscore before use.
+-->
+<!ELEMENT psxctl:Entry (#PCDATA)>
+<!ATTLIST psxctl:Entry
+   internalName CDATA #IMPLIED
+>
+<!--
+   The default value to use for the parameter if no value is supplied.  This
+   may be specified for any parameter in any control.
+-->
+<!ELEMENT psxctl:DefaultValue (#PCDATA)>
+<!ELEMENT psxctl:Dependencies (psxctl:Dependency+)>
+<!--
+   A dependency is a content editor component (such as a pre-exit) whose 
+   presence is required for the control to operate correctly.  Dependencies
+   are enumerated in the metadata so the workbench can automatically add
+   and configure them.
+   
+   Attributes:
+   status - do the dependendent objects require (or allow) any additional
+         setup? readyToGo means there are no settings for the designer to use.
+         setupRequired means there are 1 or more parameters that must be set
+         in order for the dependent object to function correctly. setupOptional
+         means there are 1 or more parameters that may need to be setup
+         depending on the situation. If setupRequired is specified, there may be
+         parameters that are optional. This case can be handled with exits
+         using the description for the parameter. For links, there's not much
+         to be done except describe it in the controls description.
+
+   occurrence - if this control appears more than once in a single content
+         editor, should this dependent object be added for each occurrence or
+         once for all occurrences. Setting this to 'single' means exactly one
+         instance of this dependent object should be added to the content editor
+         for 1 or more instances of this control. If set to 'multiple', then
+         an object should be added for each instance of this control.
+-->
+<!ELEMENT psxctl:Dependency (psxctl:Default)>
+<!ATTLIST psxctl:Dependency
+   status (readyToGo | setupRequired | setupOptional) "readyToGo"
+   occurrence (single | multiple) "single"
+>
+<!--
+   The default element defines the type and name of the dependent object and
+   provides default values for the parameters to the dependent object.
+   
+   The workbench supports a simple macro facility for customizing parameter
+   values based on the usage of the control.  A parameter value that is part of
+   a multiple occurrence dependency may consist of a single macro.  That macro 
+   will be evaluated when the parameter supplies its value.
+   
+   All macros use the format $(macroName); the following macros are currently 
+   supported:
+   
+      $(fieldName) - will be replaced by the html field name that this control
+         is associated with
+-->
+<!ELEMENT psxctl:Default (PSXUrlRequest | PSXExtensionCall)>

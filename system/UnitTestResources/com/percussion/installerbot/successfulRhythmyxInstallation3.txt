@@ -1,0 +1,954 @@
+#this file contains log of successful Rhythmyx installation
+#See com.percussion.installerbot.PSRxInstallerBotTest for details about format of this file
+#The easiest way to create such file is to take log of installation session and compare it
+#to these logs
+#
+#Installation configuration - update 6.0 to 6.0 on MS SQL-based server,
+#publisher is not installed. 
+#Note, sometimes installer asks whether it should overwrite JVM.
+#This log contains data to test such situation (search for XXX string below).
+-------------------------------------------------------------------------------
+Welcome to the InstallShield wizard for Rhythmyx.
+
+The InstallShield wizard will guide you through the installation steps.
+
+Press 1 for Next, 3 to Cancel or 4 to Redisplay [1] >>>
+
+-------------------------------------------------------------------------------
+Please read the following license agreement carefully.
+
+SOFTWARE LICENSE AND SUPPORT AGREEMENT
+
+This Software License and Support Agreement (the "Agreement")
+establishes the terms and conditions regarding the licensure
+and use of Rhythmyx software products, support, and
+accompanying documentation.
+
+1.      Definitions of Terms Used:
+
+        A. "PERCUSSION" means PERCUSSION Software, Inc. and
+        subsidiary, the owner or licensor of the Software
+        licensed hereunder.
+        B. "LICENSEE" means the individual or the business
+        entity licensing the copy of the Software described
+        in this Agreement, as evidenced by an appropriate
+        purchase order and delivery of Software by
+        PERCUSSION.  Only those persons in LICENSEE's
+        organization having a need to use the Software in
+        the normal course of their employment are authorized
+        to use the Software in the operation of the business
+
+Press ENTER to read the text [Type q to quit] >>>q
+
+
+Please choose from the following options:
+
+[ ] 1 - I accept the terms of the license agreement.
+[X] 2 - I do not accept the terms of the license agreement.
+
+To select an item enter its number, or 0 when you are finished: [0] >>>1
+
+
+[X] 1 - I accept the terms of the license agreement.
+[ ] 2 - I do not accept the terms of the license agreement.
+
+To select an item enter its number, or 0 when you are finished: [0] >>>
+
+
+
+Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+
+-------------------------------------------------------------------------------
+Choose Installation Type
+
+   Choose Installation Type
+
+      1. New install
+      2. Upgrade existing install
+
+   Enter one of the options above: [1] >>>2
+
+   Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+
+-------------------------------------------------------------------------------
+Installation Directory
+
+   Directory:
+
+      1. C:\Rhythmyx
+      2. C:\rx\5.7
+      3. C:\rx\6.0_db2
+      4. C:\rx\6.0_ora
+      5. C:\rx\crimson1
+      6. C:\rx\crimson3
+      7. C:\rx\findlaw
+      8. c:\rx\rx3
+      9. Other...
+
+   [1] >>>9
+
+   Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+
+   Please wait...
+
+-------------------------------------------------------------------------------
+Installation Directory
+
+   Enter a directory: [C:\Rhythmyx] >>>c:\rx\rx3
+
+   Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+
+   Please wait...
+
+-------------------------------------------------------------------------------
+Select the products you would like to install:
+
+   To select/deselect a product or to change its setup type, type its number:
+
+   Product                                          Setup Type
+   ------------------------------------------------ ------------------------
+    1. [x] Rhythmyx Repository Database              Typical
+    2. [x] Rhythmyx Server                           Typical
+    3. [x] Rhythmyx Publisher                        Custom
+    4. [x] Rhythmyx Development Tools                Typical
+    5. [x] Rhythmyx Enterprise Content Connector     Typical
+    6. [x] Rhythmyx Full Text Search                 Typical
+    7. [ ] Rhythmyx FastForward (New Install Only)
+
+   Other options:
+
+    0. Continue installing
+
+   Enter command [0] >>>
+
+
+Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+
+-------------------------------------------------------------------------------
+Select the features for "Rhythmyx Publisher" you would like to install:
+
+   Rhythmyx Publisher
+
+   To select/deselect a feature or to view its children, type its number:
+
+     1.  [ ] Database Publisher
+     2.  [ ] BEA Connector
+
+   Other options:
+
+     0. Continue installing
+
+   Enter command [0] >>>
+
+
+Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+
+-------------------------------------------------------------------------------
+   Rhythmyx Server Type
+
+      1. System Master
+      2. Publishing Hub
+
+   [1] >>>
+
+   Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+CPU Counting Utility
+Version 1.4
+Copyright (C) 2001 Intel Corporation.  All Rights Reserved
+
+Hyper-threading technology disabled
+Number of logical processors per physical processor: 1
+Number of physical processors: 2
+
+-------------------------------------------------------------------------------
+Rhythmyx Content Manager Installation Information
+
+   Enter your license number. [B-BAIC-HWWWVC-VUES-01] >>>B-BAIC-HWWWVC-VUES-01
+   Enter your installation code. [B-BAIC-HWWWVC-VUES-01] >>>B-BAIC-HWWWVC-VUES-01
+
+   Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+
+-------------------------------------------------------------------------------
+Welcome to Rhythmyx Development setup.
+
+You are licensed to install Rhythmyx Development with the following parts:
+
+Document Management
+Test/Development Server
+Workstation
+Word Connector
+Portal Connector for Oracle 9iAS Portal
+Portal Connector for BEA WebLogic Portal
+Digital Asset Manager Connector for MediaBin
+Imaging Connector for Kofax Ascent Capture
+Site Migration
+Syndication Connector
+Enterprise Content Connector
+File Publisher
+Database Publisher
+Sprinta JDBC Driver for MS SQL
+Multi-Server Manager
+Portal Connector for IBM Websphere Portal
+Full Text Search
+Ektron eWebEditPro+XML
+Ektron WebImageFX
+
+[Press Enter] >>>
+
+Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+
+-------------------------------------------------------------------------------
+Suite will be installed in the following location:
+
+c:\rx\rx3
+
+with the following features:
+
+Rhythmyx Repository Database
+Rhythmyx Server
+Rhythmyx Publisher
+Rhythmyx Development Tools
+Rhythmyx Enterprise Content Connector
+Rhythmyx Full Text Search
+
+for a total size:
+
+ 718.8 MB
+
+Press 1 for Next, 2 for Previous, 3 to Cancel or 4 to Redisplay [1] >>>
+
+
+Querying Rhythmyx Service status...
+
+
+Querying Rhythmyx Service status... - 4 seconds remaining
+
+
+Querying Rhythmyx Service status... - 3 seconds remaining
+
+
+Querying Rhythmyx Service status... - 2 seconds remaining
+
+
+Querying Rhythmyx Service status... - 1 seconds remaining
+
+
+Querying Rhythmyx Service status... - 0 seconds remaining
+
+
+Querying Rhythmyx Application Server Service status...
+
+
+Querying Rhythmyx Application Server Service status... - 7 seconds remaining
+
+
+Querying Rhythmyx Application Server Service status... - 6 seconds remaining
+
+
+Querying Rhythmyx Application Server Service status... - 5 seconds remaining
+
+
+Querying Rhythmyx Application Server Service status... - 4 seconds remaining
+
+
+Querying Rhythmyx Application Server Service status... - 3 seconds remaining
+
+
+Querying Rhythmyx Application Server Service status... - 2 seconds remaining
+
+
+Querying Rhythmyx Application Server Service status... - 1 seconds remaining
+
+
+Querying Rhythmyx Application Server Service status... - 0 seconds remaining
+Connecting to : jdbc:jtds:sqlserver://localhost
+
+
+|-----------|-----------|-----------|------------|
+0%         25%         50%         75%        100%
+|||||||||||||||||||||||||||||||||||||||||||||||||
+Installing Rhythmyx Repository Database. Please wait...
+
+
+|-----------|-----------|-----------|------------|
+0%         25%         50%         75%        100%
+|||Updating extension: ExtensionHandler/Handlers/Java
+Updating extension: ExtensionHandler/Handlers/JavaScript
+Updating extension: Java/global/percussion/filter/defaultPasswordFilter
+Updating extension: Java/global/percussion/contentassembler/sys_casGenericAssemb
+lyLocation
+Updating extension: Java/global/percussion/contentassembler/sys_JexlAssemblyLoca
+tion
+Updating extension: Java/global/percussion/xmldom/sys_xdMultiTextToTree
+Updating extension: Java/global/percussion/contentassembler/sys_casAddChildInfo
+Updating extension: Java/global/percussion/extensions/general/sys_CascadeDelete
+Updating extension: Java/global/percussion/system/sys_GetSecurityProviders
+Updating extension: Java/global/percussion/system/sys_GetFolderPermissions
+Updating extension: Java/global/percussion/udf/dateAdjust
+Updating extension: Java/global/percussion/exit/modifyXmlHierarchy
+Updating extension: Java/global/percussion/udf/toProperCase
+Updating extension: Java/global/percussion/generic/sys_ToHash
+Updating extension: Java/global/percussion/exit/setCookie
+Updating extension: Java/global/percussion/udf/multiply
+Updating extension: Java/global/percussion/udf/literal
+Updating extension: Java/global/percussion/udf/replace
+Updating extension: Java/global/percussion/udf/concat
+Updating extension: Java/global/percussion/exit/setEmptyXmlStyleSheet
+Updating extension: Java/global/percussion/udf/divide
+Updating extension: Java/global/percussion/udf/add
+Updating extension: Java/global/percussion/udf/dateFormat
+Updating extension: Java/global/dateFormatEx
+Updating extension: Java/global/percussion/udf/subtract
+Updating extension: Java/global/percussion/udf/toUpperCase
+Updating extension: Java/global/percussion/udf/toLowerCase
+Updating extension: Java/global/MakeLink
+Updating extension: Java/global/MakeAbsLink
+Updating extension: Java/global/Base64Decoder
+Updating extension: Java/global/superConcat
+Updating extension: Java/global/percussion/exit/sys_paramStringListToParamArray
+Updating extension: Java/global/collapseHTMLParameter
+Updating extension: Java/global/uploadFileAttributes
+Updating extension: Java/global/percussion/generic/sys_UploadFileAttributes
+Updating extension: Java/global/percussion/generic/sys_MakeLink
+Updating extension: Java/global/percussion/generic/sys_MakeAbsLink
+Updating extension: Java/global/percussion/generic/sys_MakeIntLink
+Updating extension: Java/global/percussion/generic/sys_GetBase64Encoded
+Updating extension: Java/global/percussion/generic/sys_GetBase64EncodedBody
+Updating extension: Java/global/percussion/generic/sys_GetFileSize
+Updating extension: Java/global/percussion/generic/sys_MakeAbsLinkSecure
+Updating extension: Java/global/percussion/generic/sys_MakeAbsLinkSecureEx
+Updating extension: Java/global/percussion/generic/sys_Trim
+Updating extension: Java/global/percussion/generic/sys_DateAdjust
+Updating extension: Java/global/percussion/generic/sys_ModifyXmlHierarchy
+Updating extension: Java/global/percussion/generic/sys_ToProperCase
+Updating extension: Java/global/percussion/generic/sys_SetCookie
+Updating extension: Java/global/percussion/generic/sys_InlineLinkCleanup
+Updating extension: Java/global/percussion/generic/sys_Multiply
+Updating extension: Java/global/percussion/generic/sys_Literal
+Updating extension: Java/global/percussion/generic/sys_Replace
+Updating extension: Java/global/percussion/generic/sys_Concat
+Updating extension: Java/global/percussion/generic/sys_Base64Decoder
+Updating extension: Java/global/percussion/generic/sys_Base64Encoder
+Updating extension: Java/global/percussion/generic/sys_SetEmptyXmlStyleSheet
+Updating extension: Java/global/percussion/generic/sys_Divide
+Updating extension: Java/global/percussion/generic/sys_Add
+Updating extension: Java/global/percussion/generic/sys_DateFormat
+Updating extension: Java/global/percussion/generic/sys_DateFormatEx
+Updating extension: Java/global/percussion/generic/sys_Subtract
+Updating extension: Java/global/percussion/generic/sys_DecodeURL
+Updating extension: Java/global/percussion/generic/sys_ToUpperCase
+Updating extension: Java/global/percussion/generic/sys_ToLowerCase
+Updating extension: Java/global/percussion/filter/sys_DefaultPasswordFilter
+Updating extension: Java/global/percussion/generic/sys_CollapseHTMLParameter
+Updating extension: Java/global/percussion/content/sys_ValidateUniqueName
+Updating extension: Java/global/percussion/exit/sys_ValidateSlotName
+Updating extension: Java/global/percussion/generic/sys_ParameterTokenizer
+Updating extension: Java/global/percussion/generic/sys_FormatFileTree
+Updating extension: Java/global/percussion/generic/sys_FileInfo
+Updating extension: Java/global/percussion/xmldom/sys_xdTextCleanup
+Updating extension: Java/global/percussion/xmldom/sys_xdFileToTree
+Updating extension: Java/global/percussion/xmldom/sys_xdTextToTree
+Updating extension: Java/global/percussion/xmldom/sys_xdProcessRelatedLinks
+Updating extension: Java/global/percussion/xmldom/sys_xdTextToDom
+Updating extension: Java/global/percussion/xmldom/sys_xdTransformDom
+Updating extension: Java/global/percussion/xmldom/sys_XdMoveInputDocument
+Updating extension: Java/global/percussion/xmldom/sys_xdDomToParams
+Updating extension: Java/global/percussion/xmldom/sys_xdCopyDom
+Updating extension: Java/global/percussion/xmldom/sys_xdDomToText
+Updating extension: Java/global/percussion/xmldom/sys_xdDomToFile
+Updating extension: Java/global/percussion/xmldom/sys_xdRemoveElements
+Updating extension: Java/global/percussion/xmldom/sys_xdTransformDomToText
+Updating extension: Java/global/percussion/generic/sys_PrepareInClause
+Updating extension: Java/global/percussion/generic/sys_AddCurrentDateTime
+Updating extension: Java/global/percussion/contenteditor/sys_ceDependencyTree
+Updating extension: Java/global/percussion/contenteditor/sys_removeControlChars
+Updating extension: Java/global/percussion/generic/sys_SetSessionVariable
+Updating extension: Java/global/percussion/generic/sys_GetSessionVariable
+Updating extension: Java/global/percussion/system/sys_SetProviderTypeInstance
+Updating extension: Java/global/percussion/extensions/components/sys_cmpMenuTree
+
+Updating extension: Java/global/percussion/contentassembler/sys_casAddAssemblerI
+nfo
+Updating extension: Java/global/percussion/contentassembler/sys_casModifyRelated
+Content
+Updating extension: Java/global/percussion/extensions/general/sys_cmpAddAllParam
+sToUrl
+Updating extension: Java/global/percussion/general/sys_MakeDeleteTableRowsXMLDoc
+
+Updating extension: Java/global/percussion/contentassembler/sys_casGeneratePubLo
+cation
+Updating extension: Java/global/percussion/contentassembler/sys_casDefaultAssemb
+lyLocation
+Updating extension: Java/global/percussion/contentassembler/sys_casConcatAssembl
+yLocation
+Updating extension: Java/global/percussion/contentassembler/sys_casConcatWithIdA
+ssemblyLocation
+Updating extension: Java/global/percussion/ca/sys_caDeleteContent
+Updating extension: Java/global/percussion/usersearch/sys_ServerUserRoleSearch
+Updating extension: Java/global/percussion/extensions/general/sys_TouchParentIte
+ms
+Updating extension: Java/global/percussion/extensions/general/sys_TouchContentAn
+dParentItems
+Updating extension: Java/global/percussion/extensions/general/sys_SetHtmlParamet
+er
+Updating extension: Java/global/percussion/extensions/general/sys_CopyParameter
+Updating extension: Java/global/percussion/extensions/general/sys_BinaryChooser
+Updating extension: Java/global/percussion/general/sys_AppendUserRoles
+Updating extension: Java/global/percussion/extensions/components/sys_cmpDeleteCh
+ildCompRelations
+Updating extension: Java/global/percussion/communities/sys_commAuthenticateUser
+Updating extension: Java/global/percussion/system/sys_psxOverrideCommunity
+Updating extension: Java/global/percussion/extensions/general/sys_ReplaceResultD
+ocument
+Updating extension: Java/global/percussion/communities/sys_commAddCommunitiesEna
+bledFlag
+Updating extension: Java/global/percussion/contentassembler/sys_templateToVarian
+tid
+Updating extension: Java/global/percussion/contentassembler/sys_DatabasePublishe
+r
+Updating extension: Java/global/percussion/uicontext/sys_uiMakeActions
+Updating extension: Java/global/percussion/assemblers/sys_casInsertAsRelatedItem
+
+Updating extension: Java/global/percussion/system/sys_emptyDoc
+Updating extension: Java/global/percussion/system/sys_idgen
+Updating extension: Java/global/percussion/system/sys_FlushAssemblerCache
+Updating extension: Java/global/percussion/system/sys_FlushCache
+Updating extension: Java/global/percussion/communities/sys_comAddDefaultCommunit
+y
+Updating extension: Java/global/percussion/exit/sys_casAutoRelatedContent
+Updating extension: Java/global/percussion/contentassembler/sys_casCacheBySessio
+nRule
+Updating extension: Java/i18n/sys_FormatDateToLocale
+Updating extension: Java/i18n/sys_LocalizedTextLookup
+Updating extension: Java/i18n/sys_FormatDateToUserLocale
+Updating extension: Java/i18n/sys_LocalizedTextLookupUser
+Updating extension: Java/i18n/sys_ConvertDateLocale
+Updating extension: Java/global/percussion/relationship/effect/sys_TouchParentFo
+lderEffect
+Updating extension: Java/global/percussion/relationship/effect/sys_UnpublishMand
+atory
+Updating extension: Java/global/percussion/relationship/effect/sys_NotifyEffect
+Updating extension: Java/global/percussion/relationship/effect/sys_Promote
+Updating extension: Java/global/percussion/relationship/effect/sys_Validate
+Updating extension: Java/global/percussion/relationship/effect/sys_PublishMandat
+ory
+Updating extension: Java/global/percussion/relationship/sys_TranslationConstrain
+t
+Updating extension: Java/global/percussion/exit/sys_OptionAccessorPersister
+Updating extension: Java/global/percussion/exit/sys_TranslationKeyValueLookup
+Updating extension: Java/global/percussion/extensions/general/sys_ParamsToXml
+Updating extension: Java/global/percussion/workflow/sys_ComputeAssignees
+Updating extension: Java/global/percussion/workflow/sys_ComputeCheckoutStatus
+Updating extension: Java/global/percussion/workflow/sys_ComputeUserCheckoutStatu
+s
+Updating extension: Java/global/percussion/workflow/sys_ComputeAssignmenType
+Updating extension: Java/global/percussion/cx/sys_addNewItemToFolder
+Updating extension: Java/global/percussion/cms/sys_getRelationshipProps
+Updating extension: Java/global/percussion/cms/sys_CmsObjectNameLookup
+Updating extension: Java/global/percussion/cx/sys_cxPurgeContent
+Updating extension: Java/global/percussion/system/sys_loadChildData
+Updating extension: Java/global/percussion/cx/sys_CreateTranslations
+Updating extension: Java/global/percussion/system/sys_psxAddServerConfigParams
+Updating extension: Java/global/percussion/cx/sys_addAllowableWorkflowsForConten
+tType
+Updating extension: Java/global/percussion/cx/sys_checkOutSlotItem
+Updating extension: Java/global/percussion/contentassembler/sys_casPublishableCo
+ntent
+Updating extension: Java/global/percussion/generic/sys_IncrementalContentFilter
+Updating extension: Java/global/percussion/extensions/general/sys_NullIf
+Updating extension: Java/global/percussion/extensions/general/sys_ExtractHtmlPar
+amsFromInputDoc
+Updating extension: Java/global/percussion/extensions/general/sys_MakeIntRequest
+
+Updating extension: Java/global/percussion/assemblers/sys_casAddPortalProperties
+
+Updating extension: Java/global/percussion/general/sys_AddServerProperties
+Updating extension: Java/global/percussion/general/sys_AddIsManagedNavUsed
+Updating extension: Java/global/percussion/general/sys_AddPluginProperties
+Updating extension: Java/global/percussion/generic/sys_RhythmyxRoot
+Updating extension: Java/global/percussion/assemblers/sys_casCreatePortalPropert
+yList
+Updating extension: Java/global/percussion/exit/sys_imageInfoExtractor
+Updating extension: Java/global/percussion/assemblers/sys_casGenerateAssemblerLi
+nk
+Updating extension: Java/global/percussion/contenteditor/sys_InlineImageSizeExtr
+actor
+Updating extension: Java/global/percussion/generic/sys_TextToXml
+Updating extension: Java/global/percussion/cms/sys_cloneOverrideField
+Updating extension: Java/global/percussion/relationship/effect/sys_AttachTransla
+tedFolder
+Updating extension: Java/global/percussion/workflow/sys_createTranslations
+Updating extension: Java/global/percussion/relationship/effect/sys_isCloneExists
+
+Updating extension: Java/global/percussion/relationship/sys_CloneTitle
+Updating extension: Java/global/percussion/contenteditor/sys_textExtraction
+Updating extension: Java/global/percussion/cms/sys_getModifiedInlineItems
+Updating extension: Java/global/percussion/cms/sys_getInlineVariantBody
+Updating extension: Java/global/percussion/search/sys_generateSearchResults
+Updating extension: Java/global/percussion/search/sys_generateSearchQuery
+Updating extension: Java/global/percussion/cx/sys_ConvertCustomSearchOperator
+Updating extension: Java/global/percussion/relationship/effect/sys_AddCloneToFol
+der
+Updating extension: Java/global/percussion/extensions/general/sys_queryExtension
+s
+Updating extension: Java/global/percussion/cms/publisher/sys_PublishContent
+Updating extension: Java/global/percussion/cms/publisher/sys_PublishEditionForPr
+eview
+Updating extension: Java/global/percussion/uicontext/sys_uiFilterActionList
+Updating extension: Java/global/percussion/assemblers/sys_casAuthtypeDispatcher
+Updating extension: Java/global/percussion/contentassembler/sys_casSiteFolderAut
+hTypeFilter
+Updating extension: Java/global/percussion/assemblers/sys_casGetSiteBaseUrl
+Updating extension: Java/global/percussion/assemblers/sys_casFixRelatedUrlForPub
+licRevision
+Updating extension: Java/global/percussion/extensions/general/sys_SplitDateToPar
+ams
+Updating extension: Java/global/percussion/contenteditor/sys_WepFixImages
+Updating extension: Java/global/percussion/clone/sys_clonePublisherEdition
+Updating extension: Java/global/percussion/fastforward/sys_catalogGlobalTemplate
+s
+Updating extension: Java/global/percussion/clone/sys_cloneVariants
+Updating extension: Java/global/percussion/clone/sys_cloneCommunity
+Updating extension: Java/global/percussion/clone/sys_cloneWorkflow
+Updating extension: Java/global/percussion/clone/sys_cloneSites
+Updating extension: Java/global/percussion/generic/sys_OverrideLiteral
+Updating extension: Java/global/percussion/search/sys_AddVariantSiteFolder
+Updating extension: Java/global/percussion/search/sys_cleanFolderSearchResults
+Updating extension: Java/global/percussion/search/sys_AddThumbnailURL
+Updating extension: Java/global/percussion/report/sys_PubTimeStatistics
+Updating extension: Java/global/percussion/system/sys_modifySiteDefs
+Updating extension: Java/global/percussion/system/sys_copySiteDef
+Updating extension: Java/global/percussion/cms/sys_checkIfVariantIsInUse
+Updating extension: Java/global/percussion/generic/sys_validateString
+Updating extension: Java/global/percussion/system/sys_SelectAASlots
+Updating extension: Java/global/percussion/content/sys_ValidateNumberRange
+Updating extension: Java/global/percussion/content/sys_ValidateStringLength
+Updating extension: Java/global/percussion/content/sys_ValidateDateRange
+Updating extension: Java/global/percussion/content/sys_ValidateJexlFieldExpressi
+on
+Updating extension: Java/global/percussion/content/sys_ValidateStringPattern
+Updating extension: Java/global/percussion/content/sys_ValidateRequiredField
+Updating extension: Java/global/percussion/content/sys_NormalizeDate
+Updating extension: Java/global/percussion/content/sys_FormatDate
+Updating extension: Java/global/percussion/content/sys_MapInputValue
+Updating extension: Java/global/percussion/content/sys_MapOutputValue
+Updating extension: Java/global/percussion/content/sys_TranslateJexlExpressionVa
+lue
+Updating extension: Java/global/percussion/content/sys_TrimString
+Updating extension: Java/global/percussion/assembly/debugAssembler
+Updating extension: Java/global/percussion/assembly/velocityAssembler
+Updating extension: Java/global/percussion/assembly/legacyAssembler
+Updating extension: Java/global/percussion/assembly/binaryAssembler
+Updating extension: Java/global/percussion/assembly/dispatchAssembler
+Updating extension: Java/global/percussion/assembly/databaseAssembler
+Updating extension: Java/global/percussion/itemfilter/sys_filterByFolderPaths
+Updating extension: Java/global/percussion/itemfilter/sys_filterByPublishableFla
+g
+Updating extension: Java/global/percussion/itemfilter/sys_filterBySiteFolder
+Updating extension: Java/global/percussion/slotcontentfinder/sys_RelationshipCon
+tentFinder
+Updating extension: Java/global/percussion/slotcontentfinder/sys_ManagedNavConte
+ntFinder
+Updating extension: Java/global/percussion/slotcontentfinder/sys_LegacyAutoSlotC
+ontentFinder
+Updating extension: Java/global/percussion/slotcontentfinder/sys_AutoSlotContent
+Finder
+Updating extension: Java/global/percussion/system/string
+Updating extension: Java/global/percussion/system/guid
+Updating extension: Java/global/percussion/system/doc
+Updating extension: Java/global/percussion/system/location
+Updating extension: Java/global/percussion/system/ext
+Updating extension: Java/global/percussion/system/codec
+Updating extension: Java/global/percussion/system/date
+Updating extension: Java/global/percussion/system/link
+Updating extension: Java/global/percussion/system/i18n
+Updating extension: Java/global/percussion/system/db
+Updating extension: Java/global/percussion/system/asmhelper
+Updating extension: Java/global/percussion/system/nav
+Updating extension: Java/global/percussion/system/cond
+Updating extension: Java/global/percussion/system/keyword
+Updating extension: Java/global/percussion/system/sys_SearchGenerator
+Updating extension: Java/global/percussion/system/sys_SelectedItemsGenerator
+Updating extension: Java/global/percussion/system/sys_SiteTemplateExpander
+Updating extension: Java/global/percussion/system/sys_ListTemplateExpander
+Updating extension: Java/global/percussion/generic/sys_DateDifference
+Updating extension: Java/global/percussion/extensions/general/sys_SetArrayHtmlPa
+rameter
+Updating extension: Java/global/percussion/exit/sys_SearchCommunityHandler
+Updating extension: Java/global/percussion/system/sys_createCommunityAcl
+Updating extension: Java/global/percussion/system/sys_deleteObjectAcl
+Updating extension: JavaScript/global/sysPubContentValid
+Updating extension: JavaScript/global/sysPubMakePubLocation
+Updating extension: JavaScript/global/sys_pubMakeLocation
+Updating extension: JavaScript/global/sysPubMakePubAddress
+Updating extension: JavaScript/global/sysPubMakePubAddress
+Updating extension: JavaScript/global/concatLabel
+Updating extension: JavaScript/global/InsertSelected
+Updating extension: JavaScript/global/concatRelated
+Updating extension: JavaScript/global/xr_makePubLink
+Updating extension: JavaScript/global/xr_makeImagePubLink
+Updating extension: JavaScript/global/sys_setSecurityInfo
+Updating extension: Java/global/percussion/exit/preExitDebugger
+Updating extension: Java/global/percussion/exit/postExitDebugger
+Updating extension: Java/global/percussion/exit/previewWorkflow
+Updating extension: Java/global/percussion/exit/authenticateUser
+Updating extension: Java/global/percussion/exit/disallowUpdatePublished
+Updating extension: Java/global/percussion/exit/sendNotifications
+Updating extension: Java/global/percussion/exit/prepareQueryFilter
+Updating extension: Java/global/percussion/exit/updateHistory
+Updating extension: Java/global/percussion/exit/addPossibleTransitions
+Updating extension: Java/global/percussion/exit/performTransition
+Updating extension: Java/global/percussion/exit/nextNumber
+Updating extension: Java/global/percussion/exit/nextNumberMaxPP
+Updating extension: Java/global/percussion/workflow/sys_wfPreviewWorkflow
+Updating extension: Java/global/percussion/workflow/sys_wfAuthenticateUser
+Updating extension: Java/global/percussion/workflow/sys_wfDisallowUpdatePublishe
+d
+Updating extension: Java/global/percussion/workflow/sys_wfSendNotifications
+Updating extension: Java/global/percussion/workflow/sys_wfPrepareQueryFilter
+Updating extension: Java/global/percussion/workflow/sys_wfUpdateHistory
+Updating extension: Java/global/percussion/workflow/sys_wfAddPossibleTransitions
+
+Updating extension: Java/global/percussion/workflow/sys_wfPerformTransition
+Updating extension: Java/global/percussion/workflow/sys_wfNextNumber
+Updating extension: Java/global/percussion/workflow/sys_wfNextNumberSecondary
+Updating extension: Java/global/percussion/workflow/sys_wfGetCheckOutUserStatus
+Updating extension: Java/global/percussion/workflow/sys_wfExecuteActions
+Updating extension: Java/global/percussion/workflow/sys_wfAppendWorkflowActions
+Updating extension: Java/global/percussion/workflow/sys_wfAddEditAuthFlag
+Updating extension: Java/global/percussion/cms/publisher/sys_pubCreatePublisherConfig
+# XXX
+# sometimes installer asks whether it should overwrite JVM.
+# this is a confirmation of default choice (No), so the bot
+# won't have to recognize this conditional interaction
+>>>
+|||||||||||||||||||||||||||||||||||||||||||||||
+
+Creating uninstaller...
+
+
+Installing Rhythmyx Development Tools. Please wait...
+
+
+Creating uninstaller...
+
+
+Installing Rhythmyx Enterprise Content Connector. Please wait...
+
+
+Installing Rhythmyx Full Text Search. Please wait...
+
+
+Creating uninstaller...
+Fix: com.percussion.rxfix.dbfixes.PSFixNextNumberTable
+Failed to load Cp1252
+
+-------------------------------------------------------------------------------
+Please read the information below.
+
+************************************************************
+** README for Percussion Rhythmyx Beta Build              **
+************************************************************
+Build: 200605B01
+Version: 6.0 Beta
+Support Status: Current
+Expires: July, 2006
+
+Always read the Installation Instructions section below
+before any install.
+
+************************************************************
+** About the Beta Release                                 **
+************************************************************
+
+This is a beta release of Rhythmyx Version 6.0.  The
+software may contain features whose implementation is not
+yet complete, and also contains a number of known bugs that
+will be resolved before the final release.
+
+************************************************************
+** Important Information About the Beta Release           **
+************************************************************
+
+1.  Debug Assembler
+        The list of Assemblers available for use in
+        Templates includes the Debug Assembler.  This
+        Assembler should not be used as a Template
+        Assembler.  Only the Velocity Assembler, Binary
+        Assembler, and Dispatch Assembler should be used.
+        The correct way to debug Templates is to add the
+        string "sys_debug=true" to the assembly URL of a
+        previewed Content Item.
+
+2.  Logging Configurations in Upgrades
+        The new Rhythmyx server container uses Log4j for all
+        logging.  Default logging configurations are
+        installed with the Rhythmyx server.  During
+        installation, the logging.properties file is saved
+        as a backup, but configurations are not migrated
+        from logging.properties to the new Log4j
+        configurations.  You must migrate these
+        configurations manually.
+
+3.  Internationalization
+        Internationalization functionality has not been
+        quality-assurance tested in this release.
+
+4.  Remote Publishers
+        The Rhythmyx Publisher now runs in the same
+        container as the Rhythmyx server and both use the
+        same port.  The Port parameter of Publisher
+        registrations is not updated during upgrade.  You
+        must manually reconfigure Publisher registrations to
+        specify the Rhythmyx server port.
+
+5.  Content Explorer Java Plugin
+        In the beta release, Content Explorer must use JRE
+        1.5.
+
+6.  Port Settings
+        The new Rhythmyx server container uses a number of
+        additional ports beyond those used earlier.  The
+        installation wizard displays a dialog listing all of
+        the ports that will be used by default, but the
+        wizard does not validate that these ports are not
+        already in use by another application.  During
+        upgrades, the wizard does not validate that the
+        ports were not already specified for full-text
+        search.
+
+7.  Case-sensitivity issues on MS SQL Server 2005
+        A number of errors have been observed when using MS
+        SQL Server 2005 if the database server was installed
+        with case-sensitivity enabled.  The workaround is to
+        use a database server that does not have
+        case-sensitivity enabled.
+
+8.  Using XSL Variants and Velocity Templates Together
+        Customers upgrading from earlier versions of
+        Rhythmyx may want to implement some Velocity
+        Templates to improve assembly and publishing
+        performance while continuing to use XSL Variants.
+        For instructions about using XSL Variants and
+        Velocity Templates together, see XSL to Velocity
+        Migration.pdf.
+
+9.  Temporary graphics
+        Many of the graphics and icons in this beta release
+        are temporary placeholders.  These graphics and
+        icons will change in the final Rhythmyx 6.0 release.
+
+10.  Generic Word Content Type
+        The FastForward Generic Word Content Type is not
+        supported in this beta release.
+
+11.  Error Connecting Workbench to Server
+        When initially connecting the Rhythmyx Workbench to
+        the Rhythmyx server, an intermittent
+        java.net.SocketException has been observed.  A
+        additional attempts to connect are usually
+        successful.
+        Percussion Software is investigating the cause of
+        this exception.  If you encounter this exception,
+        try to connect again.
+
+12.  Updating Assembly to Use Velocity Templates
+        Re-implementing XSLT Variants to use Velocity
+        Templates does not modify the data in Content Items
+        that already use XSLT Variants.  Existing
+        ActiveAssembly Relationships will continue to use
+        existing Variants unless you manually update the
+        Content Items to use the new Veolcity Templates.
+
+        Also note that when you re-implement these XSLT
+        Variants as Velocity Templates, you must be sure to
+        update any Slots to allow the use of the new
+        Template.
+
+13.  Case-sensitivity issue on Oracle for upgraded systems
+        When upgrading Installations that use Oracle as the
+        RDBMS for the Repository, the server fails to start
+        in some cases.  In the server log, errors similar to
+        the following have been observed:
+
+                <application name> is not valid:
+                java.sql.SQLException: ORA-01702: a view is
+                not appropriate here
+
+                java.lang.RuntimeException: no such column
+                CONTENTPATHNAME
+
+        In these cases, the database origin has been
+        specified using incorrect casing.  Check the correct
+        casing in your RDBMS, then go to the following file:
+
+                <Rhythmyxroot>AppServer\server\rx\deploy\
+                rxapp.ear\rxapp.war\WEB-INF\config\
+                spring\server-beans.xml
+
+        and find the following XML entry:
+
+               <bean class="com.percussion.services.
+               datasource.PSDatasourceConfig"
+                        id="RhythmyxData">
+                <property name="name" value="RhythmyxData"/>
+                <property name="dataSource"
+                        value="jdbc/RhythmyxData"/>
+                <property name="database" value=""/>
+                <property name="origin" value="rxmaster"/>
+            </bean>
+
+        and confirm that the value of the "origin" property
+        ("rxmaster" in the example XML snippet above) uses
+        the same case as the the database origin in your
+        RDMBS.
+
+14.  Default Locale and the Rhythmyx 6.0 Workbench
+        If the default Locale for the system is any value
+        other en-us (US Engish), the Workbench will not
+        start.  If you upgrade and have any other Locale set
+        as the default, change the default to en-us to
+        ensure that the Workbench will start.
+
+15.  Logging in to the Workbench
+        If no connection is designated as the default
+        connection for the Workbench, connecting will fail.
+        Be sure you have specified a default connection.
+
+16.  Java Runtime Engine
+        Rendering problems were noticed in Rhythmyx Help
+        files when using certain release of the Java
+        Runetime Engine (JRE) 1.5 (specifically in the
+        initial release, 1.5.0).  In particular, certain
+        text was rendered incorrectly and at an unreadable
+        size.  Percussion Software has confirmed though
+        testing that these rendering problems are resolved
+        in relase 7 of JRE 1.5 (JRE 1.5.0_07).  If you
+        notice rendering problems when using JRE 1.5,
+        upgrade to JRE 1.5.0_07.
+
+        Note that these rendering issues were not noted in
+        any release of JRE Version 1.4.
+
+************************************************************
+** Known Issues in the Beta Release                       **
+************************************************************
+
+BugID:  Rx-06-04-0384
+Problem:  Cannot modify a Slot in which a Content Finder has
+been specified.
+Workaround:  Specify "None" as the Content Finder, then
+change the Content Finder to the desired value.
+
+BugID:  Rx-06-04-0166
+Problem:  Content Explorer fails when attempting to log in
+to a new Locale.
+
+BugID:  Rx-06-04-0489
+Problem:  The [Cancel] button on the Object ACL dialog does
+not work.
+Workaround:  Use the close window button.
+
+BugID:  Rx-06-04-0580
+Problem:  Cannot view associated Content Types on first
+access of the Assembly Design View
+Workaround:  Go to Content Design View and expand the
+Content Types Node, then return to the Assembly Design View
+and expand the Slots node again.
+
+BugID:  Rx-06-05-0050
+Problem:  Content Items in the Category Slot on the Category
+Page are not sorted alphabetically.
+
+BugID:  Rx-06-04-0178
+Problem:  Templates cannot be deleted.
+
+BugID:  Rx-06-04-0551
+Problem:  Using the Enterprise Active Assembly Menu throws
+an exception.
+
+BugID:  Rx-06-04-0481
+Problem:  The Content tab in Content Explorer is activated
+incorrectly after creating or modifying certain options in
+the Publishing and Workflows tabs.
+
+BugID: Rx-06-04-0574
+Problem:  XSL Variants do not work with Velocity Templates.
+
+BugID:  Rx-05-07-0081
+Problem:  Navon Content Items can be copied from a non-Admin
+Community, putting the copy of the Navon in the Community
+from which the Copy was initiated.
+
+BugID:  Rx-05-12-0025
+Problem:  Search Index error occurs when creating a new
+Content Item or Folder.
+
+BugID:  Rx-06-04-0187
+Problem:  Changing the name of a Datasource referenced by
+the Rhythmyx server causes the server to fail when starting.
+
+BugID:  Rx-06-05-0043
+Problem:  Upgrade installation wizard requests full-text
+search data that cannot change on upgrade.
+Workaround:  Do not change this data.
+
+BugID:  Rx-06-05-0027
+Problem:  A series of benign Hibernate errors are logged on
+the server terminal window during server startup.
+
+BugID:  Rx-06-05-0052
+Problem:  If you log in to the Workbench with a user that is
+not authorized in the system, you will be connected to the
+Rhythmyx Workbench, but none of the functionality will work.
+
+BugID:  Rx-06-05-0077
+Problem:  Deleting a Security Provider causes a null pointer
+exception and causes the Rhythmyx server to crash when
+restarted.
+Workaround:  Do not delete security providers.
+
+BugID:  Rx-06-05-0126
+Problem:  Users cannot log in to the Server Administrator
+from the Workflow tab of Content Explorer.
+Workaround:  Use the standalone Server Administrator client.
+
+BugID:  Rx-06-05-0136
+Problem:  Content Explorer presents invalid options for
+opening DocuComp.
+Workaround:  Use only the "Compare" option, not the "EI
+Compare" or "CI Compare" options.
+
+BugID:  Rx-06-06-0029
+Problem:  The installation process does not shut down the
+Rhythmyx server.
+Workaround:  Shut down the server before launching the
+installation process.
+
+BugID:  Rx-06-06-0080
+Problem:  If you attempt to save a Content Editor, then make
+a change and save it again, the save fails.
+Workaround:  Close the Content Editor after each save, then
+re-open the Content Editor to make additional changes.
+
+************************************************************
+** Beta Documentation                                     **
+************************************************************
+
+Due to ongoing interface development, wireframes and
+placeholder screenshots have been used in a number of
+documents.  These wireframes and placeholders may not
+conform to the text of the documentation.  Where there is a
+conflict between a placeholder and the text, the text should
+be considered definitive.  Graphics will be corrected and up
+to date in the final release.
+
+[Press Enter] >>>
+
+Press 1 for Next, 2 for Previous or 4 to Redisplay [1] >>>
+
+-------------------------------------------------------------------------------
+The InstallShield Wizard has successfully installed Suite. Choose Finish to
+exit the wizard.
+
+Press 3 to Finish or 4 to Redisplay [3] >>>

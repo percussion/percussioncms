@@ -1,0 +1,181 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   $Id: package.html 1.2 1999/01/13 15:54:23Z Administrator Release $
+
+   Version Labels  : $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 20000724_2_0 20000522_1_1 20000501_1_1 20000327_1_1 20000111_1_0 991227_1_0 991214_1_0 991213_1_0 991202_1_0 Release_1_0_Intl Release_10_1 Release_10 $
+
+   Locked By       : $Locker: $
+
+   Revision History:
+                     $Log: package.html $
+                     Revision 1.2  1999/01/13 15:54:23Z  Administrator
+                      added RCS headers
+-->
+
+<BODY>
+
+This specification defines the E2 server internals. These are the classes
+used by the server to handle requests.
+
+<H2>Implementation Phases</H2>
+<UL>
+<LI>???</LI>
+</UL>
+
+<H2>Request Mechanisms</H2>
+
+To understand how the E2 server works, we first need to look at how the
+request process works. A hook is defined which intercepts requests on the
+web server. This hook may be one of the following:
+<UL>
+<LI><A HREF="doc-files/IsapiFilter.html">ISAPI Filter</A> - 
+uses the ISAPI to support Microsoft IIS. Filters are
+incorporated into the IIS core. When a request is received by the server,
+our hook can catch the request and process it accordingly.</LI>
+<LI><A HREF="doc-files/IsapiExtension.html">ISAPI Extension</A> - 
+uses the ISAPI to support Microsoft IIS and Apache.
+Extensions are called directly be the requestor to handle the request.</LI>
+<LI>NSAPI - in a future version, support for Netscape servers will be added
+through the NSAPI. NSAPI programs are incorporated into the Netscape server's
+core. When a request is received by the server, our hook can catch the
+request and process it accordingly.</LI>
+<LI>Java Servlet - in a future version, support for a Java servlet
+will be added. Web servers supporting Java can use our servlet for handling
+requests. Our servlet can also be extended, allowing customers to add
+custom pre or post processing to E2 requests.</LI>
+<LI>Common Gateway Interface (CGI) - in a future version, support for CGI
+will be added. This is supported by most (I dare say all) web servers. The
+E2 CGI executable program is called directly be the requestor to handle the
+request.</LI>
+</UL>
+
+When the request is received through a request filter mechanism, we must
+verify that the request is indeed for E2. The first step is to check the
+E2 server root against the request URL. If the URL does not begin with the
+server root, it is not an E2 request. The request is returned to the web
+server untouched. If the server root matches, the appropriate application
+must now be found. This is done by running the list of application roots
+against the request URL. Once a matching application root is found, the
+appropriate data set must be found. Each data set may contain the page name
+for the URL. If so, this is checked against the request URL. Since more than
+one data set may process the "same" page, the selection conditionals are also
+checked. The selection conditions are run against the parameters passed as
+the query string in the URL (GET requests) or request body (POST requests).
+If they match, the request is processed by the specified data set. If a
+data set is not found, the request is given back to the web server untouched.
+If the server does not know how to handle the request, an error will be
+returned. For instance:
+<pre><code>
+   http://webserver/E2/ProductCatalog/products.xml&mfr=3M
+</code></pre>
+
+When the request is sent directly to an E2 resource (eg, CGI), a slightly
+different path is followed. Since E2 is being called directly, if a matching
+data set to handle the reqeust is not found, an error is returned. To
+determine the data set to use, a special parameter named 
+<code>psrequrl</code> must be defined which contains the URL server request
+root, application request root and request page as defined for hooks above.
+Any other parameters should be added to the request URL (not the
+<code>psrequrl</code> parameter). For instance:
+<pre><code>
+   http://webserver/psisapie.dll?psrequrl=/E2/ProductCatalog/products.xml&mfr=3M
+</code></pre>
+
+
+<H2>Request Processing</H2>
+
+The request information used in the steps noted above must be stored
+somewhere the hook can quickly and easily access it. To do this, the hook
+mechanisms store the information in shared memory. A listener thread is
+created by the hook which registers for changes with the E2 server. Whenever
+a change is made in the object store, the E2 server notifies the listener
+thread which locks the shared memory and updates it. This model works for
+hooks such as ISAPI filters and NSAPI programs which are part of the web
+server's core. It is not necessary when E2 is called as a resource (ISAPI
+filters, CGI and Java servlets). In the resource hooks, E2 is called
+directly, which does the request pre-processing.
+
+Once the pre-processing is done and the request is definitely for E2, the
+request is sent to the server. The server immediately hands the request of
+to the application handler. It checks if authentication or encryption is
+required. If encryption is required and a secure connection is not being
+used, an error will be returned. If authentication is required and the user
+has not logged in, the appropriate login page will be returned. At this
+point, the request is ready for processing. The application handler now
+passes the request to the appropriate request handler. A request handler is
+defined for query, data modification and cataloging.
+
+<H2>Special E2 Request Parameters</H2>
+
+<UL>
+<LI>psrequrl - when a request is submitted using the E2 hook as a resource,
+the request page must be specified using this parameter.</LI>
+<LI>psaction - perform a special action. This may be:
+   <UL>
+   <LI>login - log onto the E2 server using the loginid parameter as the
+   login id, the loginpw parameter as the password and the logintype
+   parameter as the authentication scheme to use. The scheme may be "OS" or
+   "ODBC". In the future, "E2" and "LDAP" will also be supported.</LI>
+   <LI>logout - logout from the E2 server</LI>
+   <LI>serveradmin - this is a server administration request</LI>
+   </UL></LI>
+</UL>
+
+<H2>Special E2 Cookies</H2>
+
+<UL>
+<LI>pssessid - once a user logs in, E2 creates a session to track various
+pieces of user information. The session ID is returned to the user in the
+form of a cookie.</LI>
+</UL>
+
+<H2>Server Tasks</H2>
+
+When the server comes up, it performs the following actions:
+<OL>
+<LI>loads its configuration info from the configuration file</LI>
+<LI>loads all applications from the object store. The object store location
+is defined in the configuration file.</LI>
+<LI>registers the object store listener (PSObjectStoreListener). The
+object store listener is a hook into the object store which allows
+applications to be modified on the fly.</LI>
+<LI>creates an application handler for each application</LI>
+<LI>initializes the user thread pool (PSUserThreadPool). All threads which
+can be used to handle requests are managed by the thread pool. When a request
+comes in, it is assigned to an idle thread.</LI>
+<LI>initializes the request queue (PSRequestQueue), including the request
+queue handler thread. When there are no more available user threads in the
+pool, the request can be queued through the request queue. The handler 
+thread waits for threads to become available. When a thread becomes
+available, it is handed the request. If the request is in queue for too
+long, it is timed out.</LI>
+<LI>starts the request listener thread (PSRequestListener). The request
+listener thread catches incoming connection requests from the hook. It then
+hands off the request to a user thread or the request queue.</LI>
+</OL>
+
+</BODY>
+

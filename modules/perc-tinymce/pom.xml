@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>core</artifactId>
+        <groupId>com.percussion</groupId>
+        <version>8.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>perc-tinymce</artifactId>
+
+    <licenses>
+        <license>
+            <name>LGPL-2.1</name>
+            <url>http://www.tinymce.com/js/tinymce4/js/tinymce/license.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <old.source.root>../..</old.source.root>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <tinymce.url>https://download.tiny.cloud/tinymce/community/tinymce_${tinymce.version}.zip</tinymce.url>
+        <destDir>${project.build.outputDirectory}/META-INF/resources/sys_resources/tinymce/js/tinymce</destDir>
+        <download-folder>${basedir}/target/tinymce-download</download-folder>
+        <download-file>tinymce-${tinymce.version}.zip</download-file>
+    </properties>
+<profiles>
+    <profile>
+        <id>populate-nexus</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <executions>
+
+                        <execution>
+                            <phase>process-resources</phase>
+                            <id>import-jetty-installs</id>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <mkdir dir="${download-folder}"/>
+                                    <echo message="download archive"/>
+                                    <get src="${tinymce.url}" dest="${download-folder}"/>
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>copy-dependencies</id>
+                            <phase>none</phase>
+                        </execution>
+                        <execution>
+                            <id>analyze</id>
+                            <goals>
+                                <goal>analyze-only</goal>
+                            </goals>
+                            <configuration>
+                                <failOnWarning>false</failOnWarning>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <executions>
+
+
+
+                        <execution>
+                            <id>default-deploy</id>
+                            <phase>none</phase>
+                        </execution>
+                        <execution>
+                            <id>phantomjs-nexus-deploy-win</id>
+                            <phase>deploy</phase>
+                            <goals>
+                                <goal>deploy-file</goal>
+                            </goals>
+                            <configuration>
+                                <repositoryId>repo-man</repositoryId>
+                                <file>${download-folder}/download-file</file>
+                                <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty</url>
+                                <groupId>com.tiny</groupId>
+                                <artifactId>tinymce</artifactId>
+                                <packaging>zip</packaging>
+                                <generatePom>true</generatePom>
+                            </configuration>
+                        </execution>
+
+
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+
+                <executions>
+                    <execution>
+                        <id>copy-tinymce-archive</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${download-folder}
+                            </outputDirectory>
+                            <includeArtifactIds>tinymce</includeArtifactIds>
+                            <stripVersion>false</stripVersion>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
+                        </configuration>
+                    </execution>
+
+                </executions>
+                <dependencies>
+
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+
+                <executions>
+
+                    <execution>
+                        <phase>process-resources</phase>
+                        <id>import-upstream</id>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <target>
+                                <echo message="unzip archive" />
+                                <unzip src="${download-folder}/${download-file}" dest="${project.build.directory}" />
+                                <echo message="moving resources" />
+                                <move todir="${destDir}">
+                                    <fileset dir="${project.build.directory}/tinymce/js/tinymce" />
+                                </move>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+            <groupId>com.samaxes.maven</groupId>
+            <artifactId>minify-maven-plugin</artifactId>
+            <version>1.7.6</version>
+            <executions>
+            <execution>
+                <id>min-common</id>
+                <phase>prepare-package</phase>
+
+                <goals>
+                    <goal>minify</goal>
+                </goals>
+                <configuration>
+                    <!-- <yuiDisableOptimizations>true</yuiDisableOptimizations>-->
+                    <webappSourceDir>${basedir}/src/main/resources/META-INF/resources</webappSourceDir>
+                    <webappTargetDir>${project.build.outputDirectory}/META-INF/resources</webappTargetDir>
+                    <skipMerge>true</skipMerge>
+                    <skipMinify>false</skipMinify>
+                    <jsSourceDir>sys_resources/tinymce/plugins</jsSourceDir>
+                    <jsSourceIncludes>
+                        <jsSourceInclude>**/plugin.js</jsSourceInclude>
+                    </jsSourceIncludes>
+                    <jsEngine>YUI</jsEngine>
+                    <yuiPreserveSemicolons>true</yuiPreserveSemicolons>
+
+                </configuration>
+            </execution>
+            </executions>
+            </plugin>
+
+        </plugins>
+
+
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>com.tiny</groupId>
+            <artifactId>tinymce</artifactId>
+            <version>${tinymce.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rxutils</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

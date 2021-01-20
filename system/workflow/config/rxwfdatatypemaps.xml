@@ -1,0 +1,92 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<DataTypeMaps>
+   <DataTypeMap for="MSACCESS" os="">
+    <DataType jdbc="BIT" native="YesNo"/>
+    <DataType jdbc="TINYINT" native="Number"/>
+    <DataType jdbc="SMALLINT" native="Number"/>
+    <DataType jdbc="INTEGER" native="Integer"/>
+    <DataType jdbc="FLOAT" native="Number"/>
+    <DataType jdbc="REAL" native="Number"/>
+    <DataType jdbc="DOUBLE" native="Number"/>
+    <DataType jdbc="NUMERIC" native="Number"/>
+    <DataType jdbc="DECIMAL" native="Number"/>
+    <DataType jdbc="CHAR" native="Text"/>
+    <DataType jdbc="VARCHAR" native="Text"/>
+    <DataType jdbc="LONGVARCHAR" native="Memo"/>
+    <DataType jdbc="DATE" native="DateTime"/>
+    <DataType jdbc="TIME" native="DateTime"/>
+    <DataType jdbc="TIMESTAMP" native="DateTime"/>
+    <DataType jdbc="BINARY" native="OleObject"/>
+    <DataType jdbc="VARBINARY" native="OleObject"/>
+    <DataType jdbc="LONGVARBINARY" native="OleObject"/>
+    <DataType jdbc="BLOB" native="OleObject"/>
+    <DataType jdbc="CLOB" native="Memo"/>
+   </DataTypeMap >
+   <DataTypeMap for="MSSQL" os="Windows NT">
+    <DataType jdbc="BIT" native="BIT"/>
+    <DataType jdbc="TINYINT" native="TINYINT"/>
+    <DataType jdbc="SMALLINT" native="SMALLINT"/>
+    <DataType jdbc="INTEGER" native="INT"/>
+    <DataType jdbc="FLOAT" native="REAL"/>
+    <DataType jdbc="REAL" native="REAL"/>
+    <DataType jdbc="DOUBLE" native="FLOAT"/>
+    <DataType jdbc="NUMERIC" native="NUMERIC"/>
+    <DataType jdbc="DECIMAL" native="DECIMAL"/>
+    <DataType jdbc="CHAR" native="CHAR"/>
+    <DataType jdbc="VARCHAR" native="VARCHAR"/>
+    <DataType jdbc="LONGVARCHAR" native="TEXT"/>
+    <DataType jdbc="DATE" native="SMALLDATETIME"/>
+    <DataType jdbc="TIME" native="DATETIME"/>
+    <DataType jdbc="TIMESTAMP" native="DATETIME"/>
+    <DataType jdbc="BINARY" native="BINARY"/>
+    <DataType jdbc="VARBINARY" native="VARBINARY"/>
+    <DataType jdbc="LONGVARBINARY" native="IMAGE"/>
+    <DataType jdbc="BLOB" native="IMAGE"/>
+    <DataType jdbc="CLOB" native="TEXT"/>
+   </DataTypeMap>
+   <DataTypeMap for="ORACLE" os="Windows NT;SunOS">
+    <DataType jdbc="BIT" native="CHAR(1)"/>
+    <DataType jdbc="TINYINT" native="SMALLINT"/>
+    <DataType jdbc="SMALLINT" native="SMALLINT"/>
+    <DataType jdbc="INTEGER" native="INT"/>
+    <DataType jdbc="FLOAT" native="NUMBER"/>
+    <DataType jdbc="REAL" native="REAL"/>
+    <DataType jdbc="DOUBLE" native="DOUBLE PRECISION"/>
+    <DataType jdbc="NUMERIC" native="NUMBER"/>
+    <DataType jdbc="DECIMAL" native="NUMBER"/>
+    <DataType jdbc="CHAR" native="CHAR"/>
+    <DataType jdbc="VARCHAR" native="VARCHAR2"/>
+    <DataType jdbc="LONGVARCHAR" native="LONG"/>
+    <DataType jdbc="DATE" native="DATE"/>
+    <DataType jdbc="TIME" native="DATE"/>
+    <DataType jdbc="TIMESTAMP" native="DATE"/>
+    <DataType jdbc="BINARY" native="RAW"/>
+    <DataType jdbc="VARBINARY" native="RAW"/>
+    <DataType jdbc="LONGVARBINARY" native="LONG RAW"/>
+    <DataType jdbc="BLOB" native="BLOB"/>
+    <DataType jdbc="CLOB" native="CLOB"/>
+   </DataTypeMap>
+</DataTypeMaps>

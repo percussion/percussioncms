@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- Include the shared definitions -->
+<!ENTITY % BasicObjects SYSTEM "sys_BasicObjects.dtd">
+%BasicObjects;
+<!--
+   This element reflects the status of a content item. The status
+   includes all CONTENTSTATUS table entries and the current workflow
+   status.
+-->
+<!ELEMENT sys_ContentItemStatus (ContentStatus, WorkflowApps, States)>
+<!--
+   The CONTENTSTATUS table for the current content id.
+-->
+<!ELEMENT ContentStatus EMPTY>
+<!ATTLIST ContentStatus
+   contentId CDATA #IMPLIED
+   currentRevision CDATA #IMPLIED
+   workflowAppId CDATA #IMPLIED
+   contentStateId CDATA #IMPLIED
+   contentTypeId CDATA #IMPLIED
+   contentAgingTime CDATA #IMPLIED
+   contentCheckoutUserName CDATA #IMPLIED
+   contentCreatedBy CDATA #IMPLIED
+   contentCreatedDate CDATA #IMPLIED
+   contentExpiryDate CDATA #IMPLIED
+   contentLastModifiedDate CDATA #IMPLIED
+   contentLastModifier CDATA #IMPLIED
+   contentPathName CDATA #IMPLIED
+   contentPublishDate CDATA #IMPLIED
+   contentStartDate CDATA #IMPLIED
+   contentSuffix CDATA #IMPLIED
+   lastTransitionDate CDATA #IMPLIED
+   locale CDATA #IMPLIED
+   nextAgingDate CDATA #IMPLIED
+   nextAgingTransition CDATA #IMPLIED
+   reminderDate CDATA #IMPLIED
+   repeatedAgingTransStartDate CDATA #IMPLIED
+   revisionLock CDATA #IMPLIED
+   title CDATA #IMPLIED
+   tipRevision CDATA #IMPLIED
+   editRevision CDATA #IMPLIED
+   clonedParent CDATA #IMPLIED
+   communityId CDATA #IMPLIED
+   stateEnteredDate CDATA #IMPLIED
+>
+<!--
+   The WORKFLOWAPPS table for the current content id.
+-->
+<!ELEMENT WorkflowApps EMPTY>
+<!ATTLIST WorkflowApps
+   workflowAppId CDATA #IMPLIED
+   workflwoAppName CDATA #IMPLIED
+   administrator CDATA #IMPLIED
+   initialStateId CDATA #IMPLIED
+>
+<!--
+   The STATES table for the current content id.
+-->
+<!ELEMENT States EMPTY>
+<!ATTLIST States
+   stateId CDATA #IMPLIED
+   stateName CDATA #IMPLIED
+   workflowAppId CDATA #IMPLIED
+   sortOrder CDATA #IMPLIED
+>

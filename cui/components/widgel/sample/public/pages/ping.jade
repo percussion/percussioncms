@@ -1,0 +1,18 @@
+doctype 5
+html
+    head
+        title= title
+    body.body
+        form#config
+            input(type='hidden', name='pingUri', value='#{pingUri}')
+            input(type='hidden', name='isDebug', value='#{isDebug}')
+            
+        #application
+        
+        script(src='/pages/_bootstrap.js');
+        script(src='/components/requirejs/require.js')
+        
+        script.
+            requirejs.config(requireJsConfig);
+            requirejs(["pages/ping"]);
+            

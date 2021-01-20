@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/js/percQueryControl.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percQueryControl.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\js\percQueryControl.js\percQueryControl.js</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\js\percQueryControl.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percTagListControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percTagListControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percTagListControl.xsl\percTagListControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percTagListControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/itemfilter/perc_publicAssetFilter">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_publicAssetFilter.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\itemfilter\perc_publicAssetFilter\perc_publicAssetFilter.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="FilterDef-824888837594415115">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_public.filterDef</RxFile>
+         <ArchiveFile>FilterDef-824888837594415115\perc_public.filterDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="FilterDef--4365344806205915123">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_staging.filterDef</RxFile>
+         <ArchiveFile>FilterDef--4365344806205915123\perc_staging.filterDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__55__fbf9ee__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-bg_glass_55_fbf9ee_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__55__fbf9ee__1x400-png\ui-bg_glass_55_fbf9ee_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/generic/perc_AssetRename">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_AssetRename.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\generic\perc_AssetRename\perc_AssetRename.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/widgetcontentfinder/perc_DefaultWidgetContentFinder">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_DefaultWidgetContentFinder.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\widgetcontentfinder\perc_DefaultWidgetContentFinder\perc_DefaultWidgetContentFinder.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/extensions/general/percCategoryTreeXml">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percCategoryTreeXml.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\extensions\general\percCategoryTreeXml\percCategoryTreeXml.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percCalendarControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percCalendarControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percCalendarControl.xsl\percCalendarControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percCalendarControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/system/perc_ResourceTemplateExpander">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_ResourceTemplateExpander.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\system\perc_ResourceTemplateExpander\perc_ResourceTemplateExpander.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Schema-CT_PAGE_PAGE_CATEGORIES_SET">
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\CT_PAGE_PAGE_CATEGORIES_SET.schema</RxFile>
+         <ArchiveFile>Schema-CT_PAGE_PAGE_CATEGORIES_SET\CT_PAGE_PAGE_CATEGORIES_SET.schema</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/task/perc_AntEditionTask">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_AntEditionTask.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\task\perc_AntEditionTask\perc_AntEditionTask.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="RelationshipDef-Widget-Assembly">
+      <PSXDependencyFile fileType="COMPONENT_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\Widget-Assembly.relationshipDef</RxFile>
+         <ArchiveFile>RelationshipDef-Widget-Assembly\Widget-Assembly.relationshipDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__flat__75__ffffff__40x100-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-bg_flat_75_ffffff_40x100.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__flat__75__ffffff__40x100-png\ui-bg_flat_75_ffffff_40x100.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/system/pageutils">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\pageutils.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\system\pageutils\pageutils.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/task/perc_StagingPostEditionTask">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_StagingPostEditionTask.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\task\perc_StagingPostEditionTask\perc_StagingPostEditionTask.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-608">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.pageXml.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-608\perc.pageXml.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/assembly/pageVariantAssembler">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\pageVariantAssembler.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\assembly\pageVariantAssembler\pageVariantAssembler.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-604">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.pageDatabase.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-604\perc.pageDatabase.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-319">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageTemplate.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-319\percPageTemplate.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageTemplate.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-319\percPageTemplate.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageTemplate.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-319\percPageTemplate.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-606">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.pageDispatcher.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-606\perc.pageDispatcher.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-602">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.page.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-602\perc.page.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="RelationshipDef-Widget-Content">
+      <PSXDependencyFile fileType="COMPONENT_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\Widget-Content.relationshipDef</RxFile>
+         <ArchiveFile>RelationshipDef-Widget-Content\Widget-Content.relationshipDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Application-percPageSupport">
+      <DBMSInfoList/>
+      <PSXDependencyFile fileType="APPLICATION_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageSupport.application</RxFile>
+         <ArchiveFile>Application-percPageSupport\percPageSupport.application</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageSupport(1).application</RxFile>
+         <ArchiveFile>Application-percPageSupport\percPageSupport(1).application</ArchiveFile>
+         <OriginalFile>sys_BasicObjects.dtd</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageSupport(2).application</RxFile>
+         <ArchiveFile>Application-percPageSupport\percPageSupport(2).application</ArchiveFile>
+         <OriginalFile>sys_CheckboxTreeControl.dtd</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageSupport(3).application</RxFile>
+         <ArchiveFile>Application-percPageSupport\percPageSupport(3).application</ArchiveFile>
+         <OriginalFile>sys_CheckboxTreeControl.pdt</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageSupport(4).application</RxFile>
+         <ArchiveFile>Application-percPageSupport\percPageSupport(4).application</ArchiveFile>
+         <OriginalFile>sys_Lookup.dtd</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageSupport(5).application</RxFile>
+         <ArchiveFile>Application-percPageSupport\percPageSupport(5).application</ArchiveFile>
+         <OriginalFile>sys_Lookup.pdt</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/css/percTagListControl.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percTagListControl.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\css\percTagListControl.css\percTagListControl.css</ArchiveFile>
+         <OriginalFile>css\percTagListControl.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009819">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percUserProfile.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009819\percUserProfile.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__95__fef1ec__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-bg_glass_95_fef1ec_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__95__fef1ec__1x400-png\ui-bg_glass_95_fef1ec_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/js/percTagListControl.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percTagListControl.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\js\percTagListControl.js\percTagListControl.js</ArchiveFile>
+         <OriginalFile>js\percTagListControl.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-321">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percUserProfile.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-321\percUserProfile.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percUserProfile.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-321\percUserProfile.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percUserProfile.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-321\percUserProfile.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-401">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\Time_Zones.keyword</RxFile>
+         <ArchiveFile>Keyword-401\Time_Zones.keyword</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009821">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\Time_Zones.keyword.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009821\Time_Zones.keyword.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009820">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPageTemplate.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009820\percPageTemplate.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__75__e6e6e6__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-bg_glass_75_e6e6e6_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__75__e6e6e6__1x400-png\ui-bg_glass_75_e6e6e6_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-612">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.widget.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-612\perc.widget.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__454545__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-icons_454545_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__454545__256x240-png\ui-icons_454545_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-614">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.widgetDispatcher.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-614\perc.widgetDispatcher.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__65__ffffff__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-bg_glass_65_ffffff_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__65__ffffff__1x400-png\ui-bg_glass_65_ffffff_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_AutoWidgetContentFinder.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\widgetcontentfinder\perc_AutoWidgetContentFinder\perc_AutoWidgetContentFinder.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__highlight--soft__75__cccccc__1x100-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-bg_highlight-soft_75_cccccc_1x100.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__highlight--soft__75__cccccc__1x100-png\ui-bg_highlight-soft_75_cccccc_1x100.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="RelationshipDef-LocalContent">
+      <PSXDependencyFile fileType="COMPONENT_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\LocalContent.relationshipDef</RxFile>
+         <ArchiveFile>RelationshipDef-LocalContent\LocalContent.relationshipDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-610">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.sys.resource.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-610\perc.sys.resource.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__222222__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-icons_222222_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__222222__256x240-png\ui-icons_222222_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Schema-CT_PAGE_PAGE_TAGS_SET">
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\CT_PAGE_PAGE_TAGS_SET.schema</RxFile>
+         <ArchiveFile>Schema-CT_PAGE_PAGE_TAGS_SET\CT_PAGE_PAGE_TAGS_SET.schema</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Schema-CT_PERCCALENDARASSET">
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\CT_PERCCALENDARASSET.schema</RxFile>
+         <ArchiveFile>Schema-CT_PERCCALENDARASSET\CT_PERCCALENDARASSET.schema</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/itemfilter/perc_stagingFilter">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_stagingFilter.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\itemfilter\perc_stagingFilter\perc_stagingFilter.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="FilterDef-2112874350557265921">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_publishNow.filterDef</RxFile>
+         <ArchiveFile>FilterDef-2112874350557265921\perc_publishNow.filterDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__888888__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-icons_888888_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__888888__256x240-png\ui-icons_888888_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009827">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.pageDispatcher.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009827\perc.pageDispatcher.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-317">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPage.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-317\percPage.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPage.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-317\percPage.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPage.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-317\percPage.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPage(1).contentType</RxFile>
+         <ArchiveFile>ContentType-317\percPage(1).contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPage(2).contentType</RxFile>
+         <ArchiveFile>ContentType-317\percPage(2).contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPage(3).contentType</RxFile>
+         <ArchiveFile>ContentType-317\percPage(3).contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPage(4).contentType</RxFile>
+         <ArchiveFile>ContentType-317\percPage(4).contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009826">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.pageXml.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009826\perc.pageXml.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009829">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.page.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009829\perc.page.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009828">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.pageDatabase.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009828\perc.pageDatabase.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009823">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.widgetDispatcher.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009823\perc.widgetDispatcher.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percQueryControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percQueryControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percQueryControl.xsl\percQueryControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percQueryControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009822">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPage.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009822\percPage.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__cd0a0a__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-icons_cd0a0a_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__cd0a0a__256x240-png\ui-icons_cd0a0a_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009825">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.sys.resource.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009825\perc.sys.resource.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--3461056922550009824">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc.widget.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef--3461056922550009824\perc.widget.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/widgetcontentfinder/perc_NavWidgetContentFinder">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_NavWidgetContentFinder.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\widgetcontentfinder\perc_NavWidgetContentFinder\perc_NavWidgetContentFinder.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/task/perc_WorkflowEditionTask">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_WorkflowEditionTask.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\task\perc_WorkflowEditionTask\perc_WorkflowEditionTask.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/assembly/pageAssembler">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\pageAssembler.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\assembly\pageAssembler\pageAssembler.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__flat__0__aaaaaa__40x100-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-bg_flat_0_aaaaaa_40x100.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__flat__0__aaaaaa__40x100-png\ui-bg_flat_0_aaaaaa_40x100.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/contentassembler/perc_ResourceAssemblyLocation">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_ResourceAssemblyLocation.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\contentassembler\perc_ResourceAssemblyLocation\perc_ResourceAssemblyLocation.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/css/percQueryControl.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percQueryControl.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\css\percQueryControl.css\percQueryControl.css</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\css\percQueryControl.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/images/calendar.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\calendar.gif</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\images\calendar.gif\calendar.gif</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\images\calendar.gif</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/images/buttonBlueMinus.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\buttonBlueMinus.gif</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\images\buttonBlueMinus.gif\buttonBlueMinus.gif</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\images\buttonBlueMinus.gif</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/images/buttonBlueMinusOver.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\buttonBlueMinusOver.gif</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\images\buttonBlueMinusOver.gif\buttonBlueMinusOver.gif</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\images\buttonBlueMinusOver.gif</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/images/buttonBluePlus.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\buttonBluePlus.gif</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\images\buttonBluePlus.gif\buttonBluePlus.gif</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\images\buttonBluePlus.gif</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/images/buttonBluePlusOver.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\buttonBluePlusOver.gif</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\images\buttonBluePlusOver.gif\buttonBluePlusOver.gif</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\images\buttonBluePlusOver.gif</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/images/ButtonBrowse.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\ButtonBrowse.png</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\images\ButtonBrowse.png\ButtonBrowse.png</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\images\ButtonBrowse.png</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/images/ButtonBrowseOver.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\ButtonBrowseOver.png</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\images\ButtonBrowseOver.png\ButtonBrowseOver.png</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\images\ButtonBrowseOver.png</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/images/collapsable.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\collapsable.gif</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\images\collapsable.gif\collapsable.gif</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\images\collapsable.gif</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/controls/percQueryControl/images/expandable.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\expandable.gif</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\controls\percQueryControl\images\expandable.gif\expandable.gif</ArchiveFile>
+         <OriginalFile>controls\percQueryControl\images\expandable.gif</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__2e83ff__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-icons_2e83ff_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--icons__2e83ff__256x240-png\ui-icons_2e83ff_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/extensions/general/perc_LockLocalContent">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\perc_LockLocalContent.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\extensions\general\perc_LockLocalContent\perc_LockLocalContent.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__75__dadada__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\cm1\dev\modules\perc-distribution-tree\target\classes\distribution\jetty\..\web_resources\cm\themes\smoothness\images\ui-bg_glass_75_dadada_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_images_ui--bg__glass__75__dadada__1x400-png\ui-bg_glass_75_dadada_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

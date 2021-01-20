@@ -1,0 +1,804 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project default="test-deploy" name="serverEar" basedir="..">
+   <!-- Portions cribbed from rxInstallUpdate -->
+   <property name="builddir" value="${basedir}/build" />
+   <property name="extrasdir" value="${builddir}/dist/extras" />
+   <property name="libdir" value="${builddir}/lib" />
+   <property name="classdir" value="${builddir}/classes" />
+   <property name="appdir" value="${builddir}/app" />
+   <property name="toolsdir" value="${basedir}/Tools" />
+   <property name="springdir" value="${toolsdir}/Spring" />
+   <property name="helpdir" value="${toolsdir}/JavaHelp" />
+   <property name="eardir" value="${basedir}/ear" />
+   <property name="testdir" value="${eardir}/test" />
+   <property name="buildtemp" value="${builddir}/temp" />
+   <property name="exts.store" value="${buildtemp}/ext" />
+   <property name="wardir" value="${builddir}/tomcat/InstallableApps" />
+   <property name="releasedir" value="${basedir}/release" />
+   <property name="releasedir.jboss" value="${releasedir}/jboss/config" />
+   
+        <!-- specify to skip extension installation -->
+        <!--property name="skipextensions" value="true"/-->
+
+   <!-- Filter values, override the properties as needed when invoking this -->
+	<!-- See build.xml for more explanation for some of these properties -->
+   <property name="rxport" value="9992" />
+   <property name="db.driver" value="net.sourceforge.jtds.jdbc.Driver" />
+   <property name="db.name" value="rxrhino" />
+   <property name="db.database" value="jtds:sqlserver" />
+   <property name="db.url" value="jdbc:${db.database}" />
+   <property name="db.host" value="//localhost" />
+   <property name="db.user" value="sa" />
+   <property name="db.password" value="demo" />
+	<!-- For Oracle it's Oracle8 -->
+   <property name="db.type" value="MS SQLSERVER2000" />
+   <property name="db.origin" value="dbo" />
+
+   <property name="configdir" value="rx" />
+   <property name="rxdeploydir" value="C:/RxRhino" />
+   <property name="jbossdir" value="${rxdeploydir}/AppServer" />
+   <property name="deploydir" value="${jbossdir}/server/${configdir}/" />
+
+   <!-- Repository properties for use with the table factory 
+      you may need to override some values here -->
+	<!-- For Oracle the value is ORACLE -->
+   <property name="DB_BACKEND" value="MSSQL" />
+   <condition property="DB_NAME" value="${db.name}">
+      <not>
+         <equals arg1="${db.name}" arg2="null" />
+      </not>
+   </condition>
+   <property name="DB_DRIVER_NAME" value="${db.database}" />
+   <property name="DB_SCHEMA" value="${db.origin}" />
+   <property name="DB_SERVER" value="${db.host}" />
+   <property name="DB_DRIVER_CLASS_NAME" value="${db.driver}" />
+
+   <filterset id="installfilter">
+      <filter token="DB" value="${db.name}" />
+      <filter token="DRIVER" value="${db.driver}" />
+      <filter token="DBURL" value="${db.url}:${db.host}" />
+      <filter token="RXDIR" value="${rxdeploydir}" />
+      <filter token="USER" value="${db.user}" />
+      <filter token="PASSWORD" value="${db.password}" />
+      <filter token="DBTYPE" value="${db.type}" />
+      <filter token="INSTALLDIR" value="${rxdeploydir}" />
+      <filter token="ORIGIN" value="${db.origin}" />
+      <filter token="DB_DRIVER_NAME" value="${db.database}" />
+      <filter token="HOST" value="${db.host}" />
+   </filterset>
+
+   <property name="extdir" value="${rxdeploydir}/Extensions" />
+
+   <!-- Convert classpath for 5.0 -->
+   <path id="RX.CONVERT.CLASSPATH">
+      <pathelement path="${basedir}/build/classes" />
+      <fileset dir="${basedir}/Tools/Commons" includes="*.jar" />
+      <fileset dir="${basedir}/Tools/log4j" includes="*.jar" />
+      <pathelement path="${basedir}/Tools/saxon/saxon.jar" />
+      <fileset dir="${basedir}/Tools/Spring" includes="*.jar" />
+      <pathelement path="${basedir}/Tools/xerces/xmlParserAPIs.jar" />
+      <pathelement path="${basedir}/Tools/xerces/xercesImpl.jar" />
+      <pathelement path="${basedir}/jdbc/oracle9/ojdbc14.jar" />
+      <pathelement path="${basedir}/jdbc/Sprinta/Sprinta2000.jar" />
+      <pathelement path="${basedir}/jdbc/jtds/jtds.jar" />
+      <fileset dir="${basedir}/Tools/Hibernate" includes="*.jar" />
+      <fileset dir="${basedir}/Tools/Asm" includes="*.jar" />
+      <fileset dir="${basedir}/Tools/JSR-170" includes="jcr-1.0.jar" />
+      <fileset dir="${basedir}/Tools/junit" includes="jboss-j2ee-3.2.3.jar" />
+      <fileset dir="${basedir}/Tools/servlet" includes="*.jar" />
+   </path>
+
+   <property name="repository.properties" location="${rxdeploydir}/rxrepository.properties" />
+
+   <macrodef name="tablefactory">
+      <attribute name="def" />
+      <attribute name="data" />
+      <attribute name="flags" default="mld" />
+      <attribute name="log" default="${rxdeploydir}/tablefactory.log" />
+      <sequential>
+         <echo>table factory for @{def} and @{data}</echo>
+         <property name="rxprops" location="${repository.properties}" />
+         <java classname="com.percussion.tablefactory.PSJdbcTableFactory" classpathref="RX.CONVERT.CLASSPATH" dir="${rxdeploydir}" fork="true">
+            <arg value="-dbprops" />
+            <arg value="${rxprops}" />
+            <arg value="-def" />
+            <arg value="@{def}" />
+            <arg value="-data" />
+            <arg value="@{data}" />
+            <arg value="-options" />
+            <arg value="@{flags}" />
+            <arg value="-log" />
+            <arg value="@{log}" />
+         </java>
+      </sequential>
+   </macrodef>
+
+   <macrodef name="tablefactoryff">
+      <attribute name="cmsdef" />
+      <attribute name="def" />
+      <attribute name="data" />
+      <attribute name="flags" default="mld" />
+      <attribute name="log" default="${rxdeploydir}/tablefactory.log" />
+      <sequential>
+         <echo>table factory for @{def} and @{data}</echo>
+         <property name="rxprops" location="${repository.properties}" />
+         <java classname="com.percussion.tablefactory.PSJdbcTableFactory" classpathref="RX.CONVERT.CLASSPATH" dir="${rxdeploydir}" fork="true" maxmemory="512m">
+            <arg value="-dbprops" />
+            <arg value="${rxprops}" />
+            <arg value="-def" />
+            <arg value="@{cmsdef}" />
+            <arg value="-def" />
+            <arg value="@{def}" />
+            <arg value="-data" />
+            <arg value="@{data}" />
+            <arg value="-options" />
+            <arg value="@{flags}" />
+            <arg value="-log" />
+            <arg value="@{log}" />
+         </java>
+      </sequential>
+   </macrodef>
+
+   <macrodef name="catalogTableData">
+      <attribute name="tables" />
+      <attribute name="def" />
+      <attribute name="data" />
+      <sequential>
+         <echo>catalog data to for @{def} and @{data}</echo>
+         <property name="rxprops" location="${repository.properties}" />
+         <java classname="com.percussion.tablefactory.tools.PSCatalogTableData" classpathref="RX.CONVERT.CLASSPATH" dir="${rxdeploydir}" fork="true" maxmemory="512m">
+            <arg value="${rxprops}" />
+            <arg value="@{tables}" />
+            <arg value="@{def}" />
+            <arg value="@{data}" />
+         </java>
+      </sequential>
+   </macrodef>
+
+   <macrodef name="updateExtensions">
+      <attribute name="extdir" />
+      <sequential>
+         <echo>Running the extension install tool for JAVA server extensions...</echo>
+         <copy file="@{extdir}/Extensions.xml" tofile="${exts.store}/ext4.xml" />
+         <java classname="com.percussion.util.PSExtensionInstallTool" classpathref="RX.CONVERT.CLASSPATH" fork="yes">
+            <arg value="${rxdeploydir}" />
+            <arg value="@{extdir}" />
+         </java>
+      </sequential>
+   </macrodef>
+
+   <!-- detects OS, architecture it is running on -->
+   <target name="detectPlatform">
+      <condition property="isLinux">
+         <os name="Linux"/>
+      </condition>
+
+      <!-- recognizes Solaris Sparc -->
+      <condition property="isUnix">
+         <and>
+            <not><isset property="isLinux"/></not>
+            <os family="unix" arch="sparc"/>
+         </and>
+      </condition>
+
+      <condition property="isWindows">
+         <os family="windows"/>
+      </condition>
+
+      <!-- asserts one and only one platform is recognized -->
+      <fail message="Unrecognized platform.">
+         <condition>
+            <not>
+               <or>
+                  <isset property="isLinux"/>
+                  <isset property="isUnix"/>
+                  <isset property="isWindows"/>
+               </or>
+            </not>
+         </condition>
+      </fail>
+   </target>
+
+   <target name="init" depends="detectPlatform">
+      <mkdir dir="${buildtemp}" />
+      <mkdir dir="${rxdeploydir}" />
+      <mkdir dir="${rxdeploydir}/ObjectStore" />
+      <mkdir dir="${rxdeploydir}/rxconfig" />
+      <uptodate property="JAVA.SERVER.EXTS.ARE.UPTODATE" targetfile="${exts.store}/ext1.xml" srcfile="${basedir}/Exits/Java/Extensions.xml" />
+      <uptodate property="JAVASCRIPT.SERVER.EXTS.ARE.UPTODATE" targetfile="${exts.store}/ext2.xml" srcfile="${basedir}/Exits/JavaScript/Extensions.xml" />
+      <uptodate property="JAVA.WORKFLOW.EXTS.ARE.UPTODATE" targetfile="${exts.store}/ext3.xml" srcfile="${basedir}/workflow/Exits/Java/Extensions.xml" />
+      <uptodate property="JAVA.PUB.EXTS.ARE.UPTODATE" targetfile="${exts.store}/ext4.xml" srcfile="${basedir}/cms/publisher/Exits/Java/Extensions.xml" />
+      <uptodate property="JAVA.FFPub.EXTS.ARE.UPTODATE" targetfile="${exts.store}/ext5.xml" srcfile="${basedir}/FastForward/SiteFolderPublishing/Exits/Java/Extensions.xml" />
+      <uptodate property="JAVA.FFMN.EXTS.ARE.UPTODATE" targetfile="${exts.store}/ext6.xml" srcfile="${basedir}/FastForward/ManagedNav/Exits/Java/Extensions.xml" />
+      <uptodate property="JAVA.FFDT.EXTS.ARE.UPTODATE" targetfile="${exts.store}/ext7.xml" srcfile="${basedir}/FastForward/DefaultTemplate/Exits/Java/Extensions.xml" />
+
+      <!-- Create a cactus properties file for this configuration -->
+      <echo file="${builddir}/classes/cactus.properties">
+         cactus.contextURL = http://localhost:${rxport}/Rhythmyx
+      </echo>
+   </target>
+
+   <target name="ObjectStore" depends="init">
+      <mkdir dir="${rxdeploydir}/ObjectStore" />
+      <copy todir="${rxdeploydir}/ObjectStore" flatten="true">
+         <fileset dir="${basedir}/applications">
+            <include name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/agenthandler/applications">
+            <include name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/Designer/applications">
+            <include name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/cms/content/applications">
+            <include name="*/*.xml" />
+            <exclude name="*/texteditor.xml" />
+         </fileset>
+         <fileset dir="${basedir}/cms/publisher/applications">
+            <include name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/workflow/applications">
+            <include name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/Core/Content/Applications">
+            <include name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/Core/Content/Applications/Editors">
+            <include name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/ManagedNav/Applications/Editors">
+            <include name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/ManagedNav/Applications">
+            <include name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/SiteFolderPublishing/Applications">
+            <include name="*/*.xml" />
+         </fileset>
+      </copy>
+   </target>
+   <target name="appfiles" depends="init">
+      <copy todir="${rxdeploydir}">
+         <fileset dir="${basedir}/applications">
+            <exclude name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/agenthandler/applications">
+            <exclude name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/Designer/applications">
+            <exclude name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/cms/content/applications">
+            <exclude name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/cms/publisher/applications">
+            <exclude name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/workflow/applications">
+            <exclude name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/Core/Content/Applications">
+            <exclude name="*/*.xml" />
+            <exclude name="Editors/**/*.*" />
+            <exclude name="Editors/**/*" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/Core/Content/Applications/Editors">
+            <exclude name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/ManagedNav/Applications">
+            <exclude name="*/*.xml" />
+            <exclude name="Editors/**/*.*" />
+            <exclude name="Editors/**/*" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/ManagedNav/Applications/Editors">
+            <exclude name="*/*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/FastForward/SiteFolderPublishing/Applications">
+            <exclude name="*/*.xml" />
+         </fileset>
+         <mapper type="regexp" from="^(.*)ApplicationFiles(.*)$$" to="\1\2" />
+      </copy>
+   </target>
+
+   <target name="config" depends="init">
+      <mkdir dir="${rxdeploydir}/rxconfig/Server/ContentEditors/Shared" />
+      <mkdir dir="${rxdeploydir}/rxconfig/Server/requestHandlers/DTD" />
+      <mkdir dir="${rxdeploydir}/sys_MultiServerManager/server/cfg" />
+      <copy todir="${rxdeploydir}/sys_MultiServerManager/server/cfg">
+         <fileset dir="${basedir}/config/Deployment" includes="*.*" />
+      </copy>
+      <copy todir="${rxdeploydir}/rxconfig/Server">
+         <fileset dir="${basedir}/config" includes="*.*" />
+         <filterset refid="installfilter" />
+      </copy>
+      <copy todir="${rxdeploydir}/rxconfig/Server">
+         <fileset dir="${basedir}/FastForward/Core/Config/Server" includes="*.*" />
+      </copy>
+      <copy todir="${rxdeploydir}/rxconfig">
+         <fileset dir="${basedir}/config" includes="*/**/*.*">
+            <exclude name="ContentEditors/*.*" />
+            <exclude name="Deployment/*.*" />
+            <exclude name="requestHandlers/*.*" />
+         </fileset>
+      </copy>
+      <copy todir="${rxdeploydir}/rxconfig/Server/ContentEditors">
+         <fileset dir="${basedir}/config/ContentEditors" includes="ContentEditorSystemDef.xml" />
+      </copy>
+      <copy todir="${rxdeploydir}/rxconfig/Server/ContentEditors/Shared">
+         <fileset dir="${basedir}/FastForward/Core/Config/ContentEditors/Shared" includes="*.xml" />
+      </copy>
+      <mkdir dir="${rxdeploydir}/rxconfig/Workflow" />
+      <copy todir="${rxdeploydir}/rxconfig/Workflow">
+         <fileset dir="${basedir}/workflow/config" />
+      </copy>
+      <copy todir="${rxdeploydir}/rxconfig/Server/requestHandlers">
+         <fileset dir="${basedir}/config/requestHandlers" />
+      </copy>
+      <copy todir="${rxdeploydir}/rxconfig/Server/requestHandlers/DTD">
+         <fileset dir="${basedir}/design/dtd">
+            <include name="sys_BasicObjects.dtd" />
+            <include name="sys_StoredActions.dtd" />
+         </fileset>
+      </copy>
+      <copy todir="${rxdeploydir}">
+         <fileset dir="${basedir}/release/installer/config">
+            <include name="rxW2KserverPageTags.xml" />
+            <include name="rxW2Ktidy.properties" />
+         </fileset>
+      </copy>
+      <mkdir dir="${rxdeploydir}/rxconfig/XSpLit" />
+      <copy todir="${rxdeploydir}/rxconfig/XSpLit">
+         <fileset dir="${basedir}/htmlconverter/config" />
+      </copy>
+   </target>
+
+   <!-- stores native libraries archive name to rware.jar property  -->
+   <target name="findRwareJar" depends="init">
+      <condition property="rware.jar" value="rware_linux.jar">
+         <isset property="isLinux"/>
+      </condition>
+      <condition property="rware.jar" value="rware_solaris.jar">
+         <isset property="isUnix"/>
+      </condition>
+      <condition property="rware.jar" value="rware_win32.jar">
+         <isset property="isWindows"/>
+      </condition>
+
+      <fail message="Did not find rware libraries">
+         <condition>
+            <not>
+               <isset property="rware.jar"/>
+            </not>
+         </condition>
+      </fail>
+   </target>
+
+   <target name="search" depends="init,findRwareJar">
+      <mkdir dir="${rxdeploydir}/sys_search" />
+      <unjar src="${basedir}/Tools/Convera/rware70/native_jars/${rware.jar}" dest="${rxdeploydir}/sys_search">
+         <patternset>
+            <include name="rware/**" />
+         </patternset>
+      </unjar>
+      <copy todir="${rxdeploydir}/sys_search/rware/">
+         <fileset dir="${basedir}/Tools/Convera/rware70/Common/" />
+      </copy>
+   </target>
+
+   <target name="extensions" depends="init" unless="skipextensions">
+      <mkdir dir="${rxdeploydir}/ext" />
+      <mkdir dir="${extdir}" />
+      <!-- Run the extension install tool -->
+      <antcall target="updateJavaServerExts" inheritRefs="yes" />
+      <antcall target="updateJavaScriptServerExts" inheritRefs="yes" />
+      <antcall target="updateJavaWorkflowExts" inheritRefs="yes" />
+      <antcall target="updateJavaFFPubExts" inheritRefs="yes" />
+      <antcall target="updateJavaFFMNExts" inheritRefs="yes" />
+      <antcall target="updateJavaFFDefaultTemplateExts" inheritRefs="yes" />
+      <updateExtensions extdir="${basedir}/cms/publisher/Exits/Java" />
+   </target>
+
+   <target name="db" depends="init" unless="SKIP_DB">
+      <!-- write out repository properties -->
+      <echoproperties destfile="${repository.properties}" prefix="DB_" />
+      <echo file="${repository.properties}" append="true">PWD=${db.password}${line.separator}</echo>
+      <echo file="${repository.properties}" append="true">UID=${db.user}${line.separator}</echo>
+      <echo file="${repository.properties}" append="true">PWD_ENCRYPTED=N${line.separator}</echo>
+
+      <!-- Build the database -->
+      <property name="release" value="${basedir}/release/config" />
+      <tablefactory data="${release}/cmstableData.xml" def="${release}/cmstableDef.xml" />
+      <property name="ff" value="${basedir}/FastForward" />
+      <property name="ff.coredata" value="${ff}/Core/Config/Data" />
+      <tablefactoryff data="${ff.coredata}/RxffTableData.xml" cmsdef="${release}/cmstableDef.xml" def="${ff.coredata}/RxffTableDef.xml" />
+      <property name="ff.sampledata" value="${ff}/SampleContent/Config/Data" />
+      <tablefactoryff data="${ff.sampledata}/RxffSampleTableData.xml" cmsdef="${release}/cmstableDef.xml" def="${ff.coredata}/RxffTableDef.xml" />
+      <antcall target="fixnextnumbertable" inheritRefs="yes" />
+   </target>
+
+   <target name="fixnextnumbertable" depends="init">
+      <java classname="com.percussion.rxfix.PSRxFixCmd" classpathref="RX.CONVERT.CLASSPATH" fork="yes">
+         <arg value="-user" />
+         <arg value="${db.user}" />
+         <arg value="-password" />
+         <arg value="${db.password}" />
+         <arg value="-driver" />
+         <arg value="${db.driver}" />
+         <arg value="-schema" />
+         <arg value="${db.origin}" />
+         <arg value="-name" />
+         <arg value="${db.name}" />
+         <arg value="-host" />
+         <arg value="${db.host}" />
+         <arg value="-url" />
+         <arg value="${db.url}" />
+         <arg value="com.percussion.rxfix.dbfixes.PSFixNextNumberTable" />
+      </java>
+   </target>
+
+   <target name="extracttestdata">
+      <catalogTableData tables="${testdir}/testTablesToExport.xml" data="${testdir}/testdata_unprocessed.xml" def="${testdir}/testdef.xml" />
+      <xslt style="${testdir}/fixdata.xsl" out="${testdir}/testdata.xml" in="${testdir}/testdata_unprocessed.xml" />
+   </target>
+
+   <target name="webservices">
+      <copy todir="${rxdeploydir}/WebServices/6.0.0/design">
+         <fileset dir="${basedir}/webservices/design">
+            <include name="*.wsdl" />
+            <include name="*.xsd" />
+         </fileset>
+      </copy>
+   </target>
+   
+   <target name="eclipse">
+      <copy todir="${rxdeploydir}/eclipse/plugins/com.percussion.client_1.0.0/lib">   
+         <fileset dir="${libdir}">
+            <include name="rxclient.jar"/>
+            <include name="rxdesignercore.jar"/>
+            <include name="rxi18n.jar"/>
+            <include name="rxmisctools.jar"/>
+            <include name="rxservices.jar"/>
+            <include name="rxtablefactory.jar"/>
+            <include name="rxutils.jar"/>
+            <include name="rxwebservices.jar"/>
+         </fileset>
+      </copy>
+      <copy todir="${rxdeploydir}/eclipse/plugins/com.percussion.workbench_1.0.0/lib">   
+         <fileset dir="${libdir}">
+            <include name="rxservices.jar"/>
+            <include name="rxutils.jar"/>
+            <include name="rxworkbench.jar"/>
+         </fileset>
+      </copy>
+   </target>
+
+   <!-- finds DocuComp directory and stores to docuComp.dir property -->
+   <target name="findDocuCompDir" depends="init">
+      <condition property="docuComp.dir" value="linux">
+         <isset property="isLinux"/>
+      </condition>
+      <condition property="docuComp.dir" value="solaris">
+         <isset property="isUnix"/>
+      </condition>
+      <condition property="docuComp.dir" value="win32">
+         <isset property="isWindows"/>
+      </condition>
+
+      <fail message="Did not find DocuComp directory">
+         <condition>
+            <not>
+               <isset property="docuComp.dir"/>
+            </not>
+         </condition>
+      </fail>
+   </target>
+
+   <target name="maybeCopyInstallerSo" unless="isWindows">
+      <mkdir dir="${rxdeploydir}/bin"/>
+      <condition property="installer.dir" value="Linux">
+         <isset property="isLinux"/>
+      </condition>
+      <condition property="installer.dir" value="unix">
+         <isset property="isUnix"/>
+      </condition>
+
+      <fail message="Coud not identify installer directory">
+         <condition>
+            <not>
+               <isset property="installer.dir"/>
+            </not>
+         </condition>
+      </fail>
+      
+      <copy todir="${rxdeploydir}/bin">
+         <fileset dir="${basedir}/release/installer/${installer.dir}">
+            <include name="libPSInstaller.so"/>
+         </fileset>
+      </copy>
+   </target>
+
+   <target name="test-deploy"
+         depends="ObjectStore,appfiles,config,extensions,db,webservices,eclipse,findDocuCompDir,maybeCopyInstallerSo">
+      <mkdir dir="${rxdeploydir}/rx_resources" />
+      <mkdir dir="${rxdeploydir}/sys_resources" />      
+      <mkdir dir="${rxdeploydir}/rx_resources/webimagefx" />
+
+   	<ant antfile="ear/install-dojo.xml" dir="." inheritAll="false">
+   		<property name="RXROOT" value="${deploydir}"/>
+   		<property name="OVERWRITE" value="true"/>
+      	<propertyset>
+      		<propertyref name="DEBUG_DOJO"/>
+      	</propertyset>
+   	</ant>
+
+      <unjar src="${toolsdir}/Ektron/webimagefx.jar" dest="${rxdeploydir}/rx_resources/webimagefx" />
+      <copy todir="${rxdeploydir}/rx_resources/webimagefx">
+         <fileset dir="${rxdeploydir}/sys_resources/webimagefx" />
+      </copy>      
+      <!-- -->
+      <mkdir dir="${rxdeploydir}/DTD" />
+      <copy todir="${rxdeploydir}/DTD">
+         <fileset dir="${basedir}/DTD" />
+         <fileset dir="${basedir}/design/dtd" />
+      </copy>
+      <mkdir dir="${rxdeploydir}/sys_MultiServerManager/server/objectstore" />
+      <mkdir dir="${rxdeploydir}/sys_MultiServerManager/server/cfg" />
+      <copy todir="${rxdeploydir}/sys_MultiServerManager">
+         <fileset dir="${basedir}/FastForward/Core/MSM/sys_MultiServerManager" />
+      </copy>
+      <copy todir="${rxdeploydir}/sys_MultiServerManager/server/cfg">
+         <fileset dir="${basedir}/config/Deployment">
+            <include name="sys_DependencyMap*.xml" />
+         </fileset>
+         <fileset dir="${basedir}/config/Deployment">
+            <include name="featureset*.xml" />
+         </fileset>
+      </copy>
+      <copy file="${basedir}/release/config/cmstableDef.xml"
+            tofile="${rxdeploydir}/rxconfig/Server/sys_cmstableDef.xml" />
+      <mkdir dir="${rxdeploydir}/sys_resources/AppletJars" />
+      <copy todir="${rxdeploydir}/sys_resources/AppletJars">
+         <fileset dir="${libdir}">
+            <include name="help.jar" />
+            <include name="rxCheckboxTree.jar" />
+            <include name="rxcx.jar" />
+         </fileset>
+         <fileset dir="${helpdir}" includes="jh.jar" />
+      </copy>
+      <mkdir dir="${rxdeploydir}/bin" />
+      <copy todir="${rxdeploydir}/bin">
+         <fileset dir="${basedir}/bin" />
+         <fileset dir="${toolsdir}/DocuComp/bin/${docuComp.dir}" />
+      </copy>
+      <copy todir="${rxdeploydir}">
+         <fileset dir="${basedir}" includes="Default/**/*.*" />
+         <fileset dir="${toolsdir}/DatasourceConverter" />
+      </copy>
+      <mkdir dir="${rxdeploydir}/rxconfig/Workflow" />
+      <copy todir="${deploydir}/deploy" overwrite="true">
+         <fileset dir="${eardir}/jboss-4.0/datasources" />
+         <fileset dir="${eardir}/jboss-4.0/jms" includes="rx-service.xml" />
+         <filterset refid="installfilter" />
+      </copy>
+
+   	<!-- JMS -->
+   	<copy todir="${deploydir}/deploy/jms" overwrite="true">   	
+	   	<fileset dir="${eardir}/jboss-4.0/jms" includes="hsqldb-jdbc2-service.xml" />
+	   	<fileset dir="${eardir}/jboss-4.0/jms" includes="persistence-service.xml" />
+     	</copy>
+   	
+      <!-- JDBC drivers -->
+      <copy todir="${deploydir}/lib" flatten="true">
+         <fileset dir="${basedir}/jdbc">
+            <include name="jtds/*.jar" />
+            <include name="oracle9/*.jar" />
+            <include name="DB2/*.jar" />
+         </fileset>
+      </copy>
+      <!-- Now copy over the ear -->
+      <mkdir dir="${deploydir}/deploy/rxapp.ear" />
+      <mkdir dir="${deploydir}/deploy/rxapp.ear/temp" />
+      <delete file="${deploydir}/deploy/rxapp/rxapp.war" failonerror="false" />
+      <delete dir="${deploydir}/deploy/rxapp.ear/rxapp.war" failonerror="false" />
+      <unwar src="${appdir}/rxapp.ear" dest="${deploydir}/deploy/rxapp.ear" overwrite="true" />
+      <!-- Unjar the war -->
+      <unwar src="${deploydir}/deploy/rxapp.ear/rxapp.war" dest="${deploydir}/deploy/rxapp.ear/temp" overwrite="true" />
+      <delete file="${deploydir}/deploy/rxapp.ear/rxapp.war" />
+      <mkdir dir="${deploydir}/deploy/rxapp.ear/rxapp.war" />
+      <copy todir="${deploydir}/deploy/rxapp.ear/rxapp.war">
+         <fileset dir="${deploydir}/deploy/rxapp.ear/temp" includes="**/*.xml" />
+         <filterset refid="installfilter" />
+      </copy>
+      <copy todir="${deploydir}/deploy/rxapp.ear/rxapp.war">
+         <fileset dir="${deploydir}/deploy/rxapp.ear/temp" excludes="**/*.xml" />
+      </copy>
+      <delete dir="${deploydir}/deploy/rxapp.ear/temp" />
+      <copy todir="${deploydir}/conf">
+         <fileset dir="${eardir}/jboss-4.0/conf">
+            <exclude name="jboss-service-tokens.xml" />
+         </fileset>
+      </copy>
+   	<delete failonerror="false" 
+   		file="${deploydir}/deploy/jbossweb-tomcat55.sar/ROOT.war/index.html" />
+   	<copy todir="${deploydir}/deploy/jbossweb-tomcat55.sar/ROOT.war">
+   		<fileset dir="${eardir}/jboss-4.0/tomcat/ROOT.war"/>
+   	</copy>
+
+      <!-- set the Rhythmyx base directory within web.xml -->
+      <replace file="${deploydir}/deploy/rxapp.ear/rxapp.war/WEB-INF/web.xml" token="@@rxDir@@" value="${rxdeploydir}" />
+
+      <delete failonerror="false">
+         <fileset dir="${deploydir}/lib">
+            <include name="log4j*.jar" />
+            <include name="cglib*.jar" />
+            <include name="asm*.jar" />
+         </fileset>
+      	<fileset dir="${deploydir}/jms">
+      		<include name="jbossmq-destinations-service.xml" />
+      	</fileset>
+      </delete>
+      <copy todir="${deploydir}/lib">
+         <fileset dir="${toolsdir}/Hibernate">
+            <include name="hibernate*.jar" />
+            <include name="ehcache*.jar" />
+         </fileset>
+         <fileset dir="${springdir}" includes="*.jar" />
+         <fileset dir="${libdir}">
+            <include name="rxlogin.jar" />
+            <include name="rxutils.jar" />
+         </fileset>
+         <fileset dir="${toolsdir}/soap" />
+         <fileset dir="${toolsdir}/saxon" includes="*.jar" />
+         <fileset dir="${toolsdir}/log4j" includes="*.jar"/>
+         <fileset dir="${toolsdir}/Asm" includes="*.jar" />
+         <fileset dir="${toolsdir}/cglib" includes="*.jar" />
+      </copy>
+
+      <!-- Now copy over and unjar the servlet wars -->
+      <delete file="${deploydir}/deploy/RxServices.war" failonerror="false" />
+      <delete dir="${deploydir}/deploy/RxServices.war" failonerror="false" />
+      <mkdir dir="${deploydir}/deploy/RxServices.war" />
+      <!-- Unjar the war -->
+      <unwar src="${wardir}/RxServices.war" dest="${deploydir}/deploy/RxServices.war" overwrite="true" />
+      <copy todir="${deploydir}/deploy/RxServices.war/WEB-INF">
+         <fileset dir="${releasedir.jboss}/RxServices" />
+      </copy>
+
+      <!-- Remove some bits from the JBoss server -->
+      <delete failonerror="false" includeemptydirs="true">
+      	<!-- causes problems with hibernate -->
+         <fileset dir="${deploydir}/deploy/jboss-hibernate.deployer" />
+      	<!-- not needed for jms configuration -->
+      	<fileset dir="${deploydir}/deploy/jms/jbossmq-destinations-service.xml" />
+      </delete>
+   	
+      <!--
+         Remove the JBoss ws4ee because we want to use Axis and they cannot 
+         coexist in the same server environment.
+      -->
+      <delete failonerror="false" includeemptydirs="true">
+         <fileset dir="${jbossdir}/server/all/deploy/jboss-ws4ee.sar" />
+         <fileset dir="${jbossdir}/server/all/lib">
+            <include name="jboss-jaxrpc.jar" />
+            <include name="jboss-saaj.jar" />
+         </fileset>
+         <fileset dir="${jbossdir}/server/default/deploy/jboss-ws4ee.sar" />
+         <fileset dir="${jbossdir}/server/default/lib">
+            <include name="jboss-jaxrpc.jar" />
+            <include name="jboss-saaj.jar" />
+         </fileset>
+         <fileset dir="${deploydir}/deploy/jboss-ws4ee.sar" />
+         <fileset dir="${deploydir}/lib">
+            <include name="jboss-jaxrpc.jar" />
+            <include name="jboss-saaj.jar" />
+         </fileset>
+      </delete>
+   </target>
+
+   <!--==========================================================-->
+   <!-- updateJavaServerExts                                     -->
+   <!--==========================================================-->
+   <target name="updateJavaServerExts" unless="JAVA.SERVER.EXTS.ARE.UPTODATE">
+      <echo>Running the extension install tool for JAVA server extensions...</echo>
+      <copy file="${basedir}/Exits/Java/Extensions.xml" tofile="${exts.store}/ext1.xml" />
+      <java classname="com.percussion.util.PSExtensionInstallTool" classpathref="RX.CONVERT.CLASSPATH" fork="yes">
+         <arg value="${rxdeploydir}" />
+         <arg value="${basedir}/Exits/Java" />
+      </java>
+   </target>
+
+   <!--==========================================================-->
+   <!-- updateJavaScriptServerExts                               -->
+   <!--==========================================================-->
+   <target name="updateJavaScriptServerExts" unless="JAVASCRIPT.SERVER.EXTS.ARE.UPTODATE">
+      <echo>Running the extension install tool for JAVASCRIPT server extensions...</echo>
+      <copy file="${basedir}/Exits/JavaScript/Extensions.xml" tofile="${exts.store}/ext2.xml" />
+      <java classname="com.percussion.util.PSExtensionInstallTool" classpathref="RX.CONVERT.CLASSPATH" fork="yes">
+         <arg value="${rxdeploydir}" />
+         <arg value="${basedir}/Exits/JavaScript" />
+      </java>
+   </target>
+
+   <!--==========================================================-->
+   <!-- updateJavaWorkflowExts                                   -->
+   <!--==========================================================-->
+   <target name="updateJavaWorkflowExts" unless="JAVA.WORKFLOW.EXTS.ARE.UPTODATE">
+      <echo>Running the extension install tool for JAVA workflow extensions...</echo>
+      <copy file="${basedir}/workflow/Exits/Java/Extensions.xml" tofile="${exts.store}/ext3.xml" />
+      <java classname="com.percussion.util.PSExtensionInstallTool" classpathref="RX.CONVERT.CLASSPATH" fork="yes">
+         <arg value="${rxdeploydir}" />
+         <arg value="${basedir}/workflow/Exits/Java" />
+      </java>
+   </target>
+
+   <!--==========================================================-->
+   <!-- updateJavaPubExts                                   -->
+   <!--==========================================================-->
+   <target name="updateJavaPubExts" unless="JAVA.PUB.EXTS.ARE.UPTODATE">
+      <echo>Running the extension install tool for JAVA workflow extensions...</echo>
+      <copy file="${basedir}/cms/publisher/Exits/Java/Extensions.xml" tofile="${exts.store}/ext4.xml" />
+      <java classname="com.percussion.util.PSExtensionInstallTool" classpathref="RX.CONVERT.CLASSPATH" fork="yes">
+         <arg value="${rxdeploydir}" />
+         <arg value="${basedir}/cms/publisher/Exits/Java" />
+      </java>
+   </target>
+
+   <!--==========================================================-->
+   <!-- updateJavaFFSFPExts                                   -->
+   <!--==========================================================-->
+   <target name="updateJavaFFPubExts" unless="JAVA.FFPub.EXTS.ARE.UPTODATE">
+      <echo>Running the extension install tool for JAVA workflow extensions...</echo>
+      <copy file="${basedir}/FastForward/SiteFolderPublishing/Exits/Java/Extensions.xml" tofile="${exts.store}/ext5.xml" />
+      <java classname="com.percussion.util.PSExtensionInstallTool" classpathref="RX.CONVERT.CLASSPATH" fork="yes">
+         <arg value="${rxdeploydir}" />
+         <arg value="${basedir}/FastForward/SiteFolderPublishing/Exits/Java" />
+      </java>
+   </target>
+
+   <!--==========================================================-->
+   <!-- updateJavaFFMNExts                                   -->
+   <!--==========================================================-->
+   <target name="updateJavaFFMNExts" unless="JAVA.FFMN.EXTS.ARE.UPTODATE">
+      <echo>Running the extension install tool for JAVA workflow extensions...</echo>
+      <copy file="${basedir}/FastForward/ManagedNav/Exits/Java/Extensions.xml" tofile="${exts.store}/ext6.xml" />
+      <java classname="com.percussion.util.PSExtensionInstallTool" classpathref="RX.CONVERT.CLASSPATH" fork="yes">
+         <arg value="${rxdeploydir}" />
+         <arg value="${basedir}/FastForward/ManagedNav/Exits/Java" />
+      </java>
+   </target>
+
+   <!--==========================================================-->
+   <!-- updateJavaFFDefaultTemplateExts                          -->
+   <!--==========================================================-->
+   <target name="updateJavaFFDefaultTemplateExts" unless="JAVA.FFDT.EXTS.ARE.UPTODATE">
+      <echo>Running the extension install tool for JAVA workflow extensions...</echo>
+      <copy file="${basedir}/FastForward/DefaultTemplate/Exits/Java/Extensions.xml" tofile="${exts.store}/ext7.xml" />
+      <java classname="com.percussion.util.PSExtensionInstallTool" classpathref="RX.CONVERT.CLASSPATH" fork="yes">
+         <arg value="${rxdeploydir}" />
+         <arg value="${basedir}/FastForward/DefaultTemplate/Exits/Java" />
+      </java>
+   </target>
+</project>

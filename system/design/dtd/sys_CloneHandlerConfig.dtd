@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This DTD describes the configuration needed for each clone handler. 
+   The document element is a collection of all defined clone handler
+   configurations.
+   This is the DTD how clone handler configurations are stored in the 
+   database.
+-->
+<!-- Include the shared definitions -->
+<!ENTITY % BasicObjects SYSTEM "sys_BasicObjects.dtd">
+%BasicObjects;
+<!--
+   A collection of clone handler configurations. This is how clone
+   handler configurations are stored in the repository.
+-->
+<!ELEMENT PSXCloneHandlerConfigSet (PSXCloneHandlerConfig*)>
+<!--
+   This specifies the clone handler configuration how its represented in the
+   object store.
+   
+   name - the clone handler name, must be unique accross all clone handlers 
+      in the system.
+-->
+<!ELEMENT PSXCloneHandlerConfig (ProcessChecks?)>
+<!ATTLIST PSXCloneHandlerConfig
+   name CDATA #REQUIRED
+>
+<!--
+   A collection of process checks.
+-->
+<!ELEMENT ProcessChecks (PSXProcessCheck+)>
+<!--
+   Conditional clone handlers use process checks to decide things like
+   clone at all, should a deep or shallow clone be made, etc. The
+   clone handler needs to know all checks it uses upfront. The checks are
+   addressed through the name attribute.
+   
+   name - a configuration wide unique name for the process check. This
+      name is used by conditional clone handlers to decide what 
+      processing steps to take.
+   
+   context - specifies the context in which the specified checks are
+      processed. For we have 2 contexts, object and relationship.
+      
+   sequence - defines the order in which the process checks are 
+      executed. If 2 checks have the same sequence number, they
+      will be processed in the order they are specified.
+-->
+<!ELEMENT PSXProcessCheck (Conditions)>
+<!ATTLIST PSXProcessCheck
+   name CDATA #REQUIRED
+   context CDATA #REQUIRED
+   sequence CDATA #REQUIRED
+>

@@ -1,0 +1,490 @@
+<?xml version="1.0"?>
+<project name="rxAppsCopy" default="copyAllApps" basedir=".">
+   <!--==========================================================-->
+   <!-- Set Globals                                              -->
+   <!--==========================================================-->
+   <property name="CMS.APPS.DIR" value="${basedir}/cms/content/applications"/>
+
+   <property name="WORKFLOW.APPS.DIR" value="${basedir}/workflow/applications"/>
+   <property name="AGENT.APPS.DIR" value="${basedir}/agenthandler/applications"/>
+   <property name="DESIGNER.APPS.DIR" value="${basedir}/Designer/applications"/>
+   <property name="ROOT.APPS.DIR" value="${basedir}/applications"/>
+   <property name="APPS_DIR" value="${basedir}/build/dist/RxApps"/>
+   <property name="OBJECTSTORE_DIR" value="${APPS_DIR}/ObjectStore"/>
+   <property name="SYSAPPSUPPORT_DIR" value="${APPS_DIR}/sysAppSupport"/>
+   <property name="RXAPPSUPPORT_DIR" value="${APPS_DIR}/rxAppSupport"/>
+   <property name="WEB.RESOURCES_DIR" value="${SYSAPPSUPPORT_DIR}/web_resources"/>
+   <property name="APPFILES.DIR" value="ApplicationFiles"/>
+   <property name="ASSEMBLERS.DIR" value="Assemblers"/>
+   <property name="EDITORS.DIR" value="Editors"/>
+   <property name="TOOLS.DIR" value="${basedir}/Tools"/>
+   <property name="TOMCAT.ENDORSED.DIR" value="${basedir}/release/tomcat/Tomcat/common/endorsed"/>
+   <property name="FF_DIR" value="${basedir}/FastForward"/>
+   <property name="FF_CORE" value="${FF_DIR}/Core"/>
+   <property name="FF_SAMPLECONTENT" value="${FF_DIR}/SampleContent"/>
+   <property name="FF_CORE_APPS" value="${FF_DIR}/Core/Content/Applications"/>
+   <property name="FF_MANAGEDNAV" value="${FF_DIR}/ManagedNav"/>
+   <property name="FF_MANAGEDNAV_APPS" value="${FF_DIR}/ManagedNav/Applications"/>
+   <property name="FF_SITEFOLDER" value="${FF_DIR}/SiteFolderPublishing"/>
+   <property name="FF_DEFAULTTEMPLATE" value="${FF_DIR}/DefaultTemplate"/>
+   <property name="FF_DIST_APPS_DIR" value="${basedir}/build/dist/RxFastForward"/>
+   <property name="FF_DIST_EDITORS_DIR" value="${FF_DIST_APPS_DIR}/Editors"/>
+   <property name="FF_DIST_CORE_DIR" value="${FF_DIST_APPS_DIR}/Core"/>
+   <property name="FF_DIST_MANAGEDNAV_DIR" value="${FF_DIST_APPS_DIR}/ManagedNav"/>
+   <property name="FF_DIST_SAMPLECONTENT_DIR" value="${FF_DIST_APPS_DIR}/SampleContent"/>
+   <property name="FF_DIST_SITEFOLDER_DIR" value="${FF_DIST_APPS_DIR}/SiteFolderPublishing"/>
+   <property name="FF_DIST_DEFAULTTEMPLATE_DIR" value="${FF_DIST_APPS_DIR}/DefaultTemplate"/>
+   <property name="FF_CORE_APPSUPPORT_DIR" value="${FF_DIST_CORE_DIR}/rxsAppSupport"/>
+   <property name="FF_MANAGEDNAV_APPSUPPORT_DIR" value="${FF_DIST_MANAGEDNAV_DIR}/rxsAppSupport"/>
+   <property name="FF_CORE_OBJECTSTORE_DIR" value="${FF_DIST_CORE_DIR}/rxsObjectStore"/>
+   <property name="FF_MANAGEDNAV_OBJECTSTORE_DIR" value="${FF_DIST_MANAGEDNAV_DIR}/rxsObjectStore"/>
+   <property name="FF_SITEFOLDER_OBJECTSTORE_DIR" value="${FF_DIST_SITEFOLDER_DIR}/rxsObjectStore"/>
+   <property name="FF_CORE_RX_RESOURCES_DIR" value="${FF_DIST_CORE_DIR}/rx_resources"/>
+   <property name="FF_CORE_WEB_RESOURCES_DIR" value="${FF_DIST_CORE_DIR}/web_resources"/>
+   <property name="FF_MANAGEDNAV_WEB_RESOURCES_DIR" value="${FF_DIST_MANAGEDNAV_DIR}/web_resources"/>
+   <property name="FF_LIB_DIR" value="${FF_DIST_APPS_DIR}/lib"/>
+   <property name="FIX_APPLICATION_ACLS" value="buildResources/fixApplicationAcls.xsl"/>
+   <!-- Define all pattern sets -->
+   <patternset id="APPS_SUPPORT_PATTERN">
+      <include name="**/${APPFILES.DIR}/*.*"/>
+      <exclude name="**/${APPFILES.DIR}/*.xml"/>
+      <exclude name="**/${ASSEMBLERS.DIR}/**"/>
+      <exclude name="**/${APPFILES.DIR}/src/*.*"/>
+      <exclude name="**/${EDITORS.DIR}/**"/>
+      <exclude name="**/Administration/**"/>
+      <exclude name="**.xsl"/>
+   </patternset>
+   <patternset id="APPS_XSL_SUPPORT_PATTERN">
+      <include name="**/${APPFILES.DIR}/*.xsl"/>
+      <exclude name="**/${ASSEMBLERS.DIR}/**"/>
+      <exclude name="**/${APPFILES.DIR}/src/*.*"/>
+      <exclude name="**/${EDITORS.DIR}/**"/>
+      <exclude name="**/Administration/**"/>
+   </patternset>
+   <patternset id="EDITOR_CAS_PATTERN">
+      <include name="**/${APPFILES.DIR}/**/*.*"/>
+      <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+      <exclude name="**/${APPFILES.DIR}/**/src/*.*"/>
+   </patternset>
+   <patternset id="OBJECTSTORE_EXCLUDES">
+      <exclude name="**/rx_ceTemplates/**"/>
+      <exclude name="**/sys_psxTemplates/**"/>
+   </patternset>
+   <patternset id="RESOURCES1_PATTERN">
+      <include name="**/${APPFILES.DIR}/*/*.*"/>
+   </patternset>
+   <patternset id="RESOURCES2_PATTERN">
+      <include name="**/${APPFILES.DIR}/*/*/*.*"/>
+   </patternset>
+   <patternset id="RESOURCES3_PATTERN">
+      <include name="**/${APPFILES.DIR}/*/*/*/*.*"/>
+   </patternset>
+   <path id="xslt.classpath">
+      <pathelement location="Tools/saxon/saxon.jar"/>
+   </path>
+   <!--==========================================================-->
+   <!-- CopyAllApps                                              -->
+   <!--==========================================================-->
+   <target name="init">
+      <tstamp/>
+      <property name="doFF" value="true"/>
+      <condition property="doFF">
+         <or>
+            <isset property="FFONLY"/>
+            <isset property="WITHFF"/>
+         </or>
+      </condition>
+      <condition property="doRxApps">
+         <not>
+            <isset property="FFONLY"/>
+         </not>
+      </condition>
+   </target>
+   <!--==========================================================-->
+   <!-- CopyAllApps                                              -->
+   <!--==========================================================-->
+   <target name="copyAllApps" depends="init, copyAllFastFowardApps" if="doRxApps">
+      <echo>Cleaning out existing apps...</echo>
+      <delete dir="${APPS_DIR}"/>
+      <mkdir dir="${APPS_DIR}"/>
+      <mkdir dir="${OBJECTSTORE_DIR}"/>
+      <mkdir dir="${SYSAPPSUPPORT_DIR}"/>
+      <mkdir dir="${RXAPPSUPPORT_DIR}"/>
+      <!-- Hack to force empty web_resources dir to get created -->
+      <mkdir dir="${WEB.RESOURCES_DIR}"/>
+      <!-- Set token replacement filters -->
+    
+  	  <tstamp>
+  	      <format property="year" pattern="YYYY"/>
+  	  </tstamp>
+   	
+   	  <filterset id="default-filters">
+   		   	    <filter token="COPYRIGHTYEAR" value="${year}"/>
+   	  </filterset>
+   	
+      <!-- Copy all the app support files to the appropriate location -->
+      <echo>Copying all "sys" application support files...</echo>
+      <copy todir="${SYSAPPSUPPORT_DIR}" overwrite="yes" filtering="false">
+         <fileset dir="${CMS.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+         <fileset dir="${ROOT.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+
+         <fileset dir="${WORKFLOW.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+         <fileset dir="${AGENT.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+         <fileset dir="${DESIGNER.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3" handledirsep="true" />
+      </copy>
+      <copy todir="${SYSAPPSUPPORT_DIR}" overwrite="yes" filtering="true">
+         <fileset dir="${CMS.APPS.DIR}">
+            <patternset refid="APPS_XSL_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+         <fileset dir="${ROOT.APPS.DIR}">
+            <patternset refid="APPS_XSL_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+
+         <fileset dir="${WORKFLOW.APPS.DIR}">
+            <patternset refid="APPS_XSL_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+         <fileset dir="${AGENT.APPS.DIR}">
+            <patternset refid="APPS_XSL_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+         <fileset dir="${DESIGNER.APPS.DIR}">
+            <patternset refid="APPS_XSL_SUPPORT_PATTERN"/>
+            <exclude name="**/rx_*/**"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3" handledirsep="true" />
+      </copy>
+      <!-- Hack to force copy a dtd that starts with "rx_" prefix -->
+      <copy todir="${SYSAPPSUPPORT_DIR}" overwrite="yes">
+         <fileset dir="${CMS.APPS.DIR}">
+            <include name="**/rx_20021017b_RXDUAL.dtd"/>
+            <include name="**/rx_20021017b_RXDUAL.pdt"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3" handledirsep="true" />
+      </copy>
+      <!-- Copy all "rx" app files to the appropriate location -->
+      <echo>Copying all "rx" application support files...</echo>
+      <copy todir="${RXAPPSUPPORT_DIR}" overwrite="yes">
+         <fileset dir="${CMS.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/sys_*/**"/>
+         </fileset>
+         <fileset dir="${ROOT.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/sys_*/**"/>
+         </fileset>
+         <fileset dir="${WORKFLOW.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/sys_*/**"/>
+         </fileset>
+         <fileset dir="${AGENT.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/sys_*/**"/>
+         </fileset>
+         <fileset dir="${DESIGNER.APPS.DIR}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+            <exclude name="**/sys_*/**"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3" handledirsep="true" />
+      </copy>
+      <copy todir="${RXAPPSUPPORT_DIR}" overwrite="yes">
+         <fileset dir="${CMS.APPS.DIR}">
+            <include name="**/${APPFILES.DIR}/**/src/*.*"/>
+            <exclude name="**/sys_*/**"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)/(.*)/(.*)$$" to="\2/\4/\5" handledirsep="true"/>
+      </copy>
+      <!-- Copy each app dataset xml to the ObjectStore -->
+      <echo>Copying all objectstore files...</echo>
+         <copy todir="${OBJECTSTORE_DIR}" overwrite="yes">
+            <fileset dir="${CMS.APPS.DIR}">
+               <include name="**/*.xml"/>
+               <exclude name="**/texteditor.xml"/>
+               <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+               <patternset refid="OBJECTSTORE_EXCLUDES"/>
+            </fileset>
+            <fileset dir="${ROOT.APPS.DIR}">
+               <include name="**/*.xml"/>
+               <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+               <patternset refid="OBJECTSTORE_EXCLUDES"/>
+            </fileset>
+            <fileset dir="${WORKFLOW.APPS.DIR}">
+               <include name="**/*.xml"/>
+               <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+               <patternset refid="OBJECTSTORE_EXCLUDES"/>
+            </fileset>
+            <fileset dir="${AGENT.APPS.DIR}">
+               <include name="**/*.xml"/>
+               <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+               <patternset refid="OBJECTSTORE_EXCLUDES"/>
+            </fileset>
+            <fileset dir="${DESIGNER.APPS.DIR}">
+               <include name="**/*.xml"/>
+               <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+               <patternset refid="OBJECTSTORE_EXCLUDES"/>
+            </fileset>
+            <mapper type="flatten"/>
+      </copy>
+      <!-- Fix application acls -->
+      <echo>Fix application ACLs</echo>
+      <mkdir dir="${OBJECTSTORE_DIR}/temp"/>
+         <xslt basedir="${OBJECTSTORE_DIR}" destdir="${OBJECTSTORE_DIR}/temp" style="${FIX_APPLICATION_ACLS}" extension=".xml" classpathref="xslt.classpath">
+            <include name="*.xml"/>
+            <exclude name="sys_persistent.xml"/>
+            <exclude name="sys_roleCataloger.xml"/>
+            <exclude name="sys_psxWebServices.xml"/>
+            <exclude name="sys_psxAnonymousCataloger.xml"/>
+            <exclude name="sys_reports.xml"/>
+            <exclude name="rx_reports.xml"/>
+			<exclude name="sys_wfEditor.xml"/>
+		 </xslt>
+         <copy todir="${OBJECTSTORE_DIR}">
+            <fileset dir="${OBJECTSTORE_DIR}/temp"/>
+         </copy>
+      <delete dir="${OBJECTSTORE_DIR}/temp"/>
+      <!-- RXOBJECTSTORE -->
+      <!-- Handle some specific copying -->
+      <echo>Copying misc files...</echo>
+         <copy todir="${OBJECTSTORE_DIR}" overwrite="yes">
+            <fileset dir="${CMS.APPS.DIR}">
+               <include name="web_resources/web_resources.xml"/>
+               <include name="sys_resources/sys_resources.xml"/>
+               <include name="rx_resources/rx_resources.xml"/>
+               <include name="cm/cm.xml"/>
+            </fileset>
+            <fileset dir="${ROOT.APPS.DIR}">
+               <include name="DTD/DTD.xml"/>
+               <include name="Docs/Docs.xml"/>
+               <include name="Administration/Administration.xml"/>
+            </fileset>
+            <mapper type="flatten"/>
+         </copy>
+      <antcall target="copyXercesToAppServer"/>
+   </target>
+   <!-- Copy Xerces file to tomcat -->
+   <target name="copyXercesToAppServer">
+      <mkdir dir="${TOMCAT.ENDORSED.DIR}"/>
+      <echo>Copying xerces files to tomcat...</echo>
+      <copy todir="${TOMCAT.ENDORSED.DIR}" overwrite="true" force="true" failonerror="true" verbose="true">
+         <fileset dir="${TOOLS.DIR}/xerces">
+            <include name="xercesImpl.jar"/>
+            <include name="xmlParserAPIs.jar"/>
+         </fileset>
+      </copy>
+   </target>
+   <!--==========================================================-->
+   <!-- copyAllFastFowardApps                                    -->
+   <!--==========================================================-->
+   <target name="copyAllFastFowardApps" if="doFF">
+      <echo>Cleaning out existing FastForward apps...</echo>
+      <delete dir="${FF_DIST_APPS_DIR}"/>
+      <mkdir dir="${FF_DIST_APPS_DIR}"/>
+      <mkdir dir="${FF_DIST_CORE_DIR}"/>
+      <mkdir dir="${FF_DIST_EDITORS_DIR}"/>
+      <mkdir dir="${FF_DIST_MANAGEDNAV_DIR}"/>
+      <mkdir dir="${FF_DIST_SITEFOLDER_DIR}"/>
+      <mkdir dir="${FF_CORE_APPSUPPORT_DIR}"/>
+      <mkdir dir="${FF_MANAGEDNAV_APPSUPPORT_DIR}"/>
+      <mkdir dir="${FF_CORE_OBJECTSTORE_DIR}"/>
+      <mkdir dir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}"/>
+      <mkdir dir="${FF_SITEFOLDER_OBJECTSTORE_DIR}"/>
+      <mkdir dir="${FF_CORE_RX_RESOURCES_DIR}"/>
+      <mkdir dir="${FF_CORE_WEB_RESOURCES_DIR}"/>
+      <mkdir dir="${FF_MANAGEDNAV_WEB_RESOURCES_DIR}"/>
+      <mkdir dir="${FF_LIB_DIR}"/>
+      <!-- Copy all the Editors, Assemblers and "rxs" app files to the appropriate location -->
+      <echo>Copying all "rxs" application support files...</echo>
+      <copy todir="${FF_CORE_APPSUPPORT_DIR}" overwrite="yes">
+         <fileset dir="${FF_CORE_APPS}/${EDITORS.DIR}">
+            <patternset refid="EDITOR_CAS_PATTERN"/>
+         </fileset>
+         <fileset dir="${FF_CORE_APPS}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3"  handledirsep="true" />
+      </copy>
+      <copy todir="${FF_MANAGEDNAV_APPSUPPORT_DIR}" overwrite="yes">
+         <fileset dir="${FF_MANAGEDNAV_APPS}/${EDITORS.DIR}">
+            <patternset refid="EDITOR_CAS_PATTERN"/>
+         </fileset>
+         <fileset dir="${FF_MANAGEDNAV_APPS}">
+            <patternset refid="APPS_SUPPORT_PATTERN"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3" handledirsep="true" />
+      </copy>
+      <copy todir="${FF_CORE_APPSUPPORT_DIR}" overwrite="yes">
+         <fileset dir="${FF_CORE_APPS}">
+            <include name="**/${APPFILES.DIR}/**/src/*.*"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)/(.*)/(.*)$$" to="\2/\4/\5" handledirsep="true" />
+      </copy>
+      <copy todir="${FF_MANAGEDNAV_APPSUPPORT_DIR}" overwrite="yes">
+         <fileset dir="${FF_MANAGEDNAV_APPS}">
+            <include name="**/${APPFILES.DIR}/**/src/*.*"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)/(.*)/(.*)$$" to="\2/\4/\5" handledirsep="true" />
+      </copy>
+      <!-- RXSOBJECTSTORE -->
+      <echo>Copying all "psx" objectstore files...</echo>
+      <copy todir="${FF_CORE_OBJECTSTORE_DIR}" overwrite="yes">
+         <fileset dir="${FF_CORE_APPS}">
+            <include name="**/psx*.xml"/>
+            <include name="**/rx*.xml"/>
+            <include name="**/cas*.xml"/>
+            <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+            <patternset refid="OBJECTSTORE_EXCLUDES"/>
+         </fileset>
+         <mapper type="flatten"/>
+      </copy>
+      <!-- Fix application acls -->
+      <echo>Fix core fast forward application ACLs</echo>
+      <mkdir dir="${FF_CORE_OBJECTSTORE_DIR}/temp"/>
+      <xslt basedir="${FF_CORE_OBJECTSTORE_DIR}" destdir="${FF_CORE_OBJECTSTORE_DIR}/temp" style="${FIX_APPLICATION_ACLS}" extension=".xml" classpathref="xslt.classpath">
+         <include name="*.xml"/>
+		 <exclude name="psx_cerff*.xml"/>
+      </xslt>
+      <copy todir="${FF_CORE_OBJECTSTORE_DIR}">
+         <fileset dir="${FF_CORE_OBJECTSTORE_DIR}/temp"/>
+      </copy>
+      <delete dir="${FF_CORE_OBJECTSTORE_DIR}/temp"/>
+      <copy todir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}" overwrite="yes">
+         <fileset dir="${FF_MANAGEDNAV_APPS}">
+            <include name="**/psx*.xml"/>
+            <include name="**/rx*.xml"/>
+            <include name="**/cas*.xml"/>
+            <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+            <patternset refid="OBJECTSTORE_EXCLUDES"/>
+         </fileset>
+         <mapper type="flatten"/>
+      </copy>
+      <!-- Fix application acls -->
+      <echo>Fix managed nav fast forward application ACLs</echo>
+      <mkdir dir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}/temp"/>
+      <xslt basedir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}" destdir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}/temp" style="${FIX_APPLICATION_ACLS}" extension=".xml" classpathref="xslt.classpath">
+         <include name="*.xml"/>
+      </xslt>
+      <copy todir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}">
+         <fileset dir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}/temp"/>
+      </copy>
+      <delete dir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}/temp"/>
+      <!-- Fix application acls -->
+      <echo>Fix site folder fast forward application ACLs</echo>
+      <mkdir dir="${FF_SITEFOLDER_OBJECTSTORE_DIR}/temp"/>
+      <xslt basedir="${FF_SITEFOLDER_OBJECTSTORE_DIR}" destdir="${FF_SITEFOLDER_OBJECTSTORE_DIR}/temp" style="${FIX_APPLICATION_ACLS}" extension=".xml" classpathref="xslt.classpath">
+         <include name="*.xml"/>
+      </xslt>
+      <copy todir="${FF_SITEFOLDER_OBJECTSTORE_DIR}">
+         <fileset dir="${FF_SITEFOLDER_OBJECTSTORE_DIR}/temp"/>
+      </copy>
+      <delete dir="${FF_SITEFOLDER_OBJECTSTORE_DIR}/temp"/>
+      <!-- Copy Editor defs for extraction -->
+      <copy todir="${FF_DIST_EDITORS_DIR}" overwrite="yes">
+         <fileset dir="${FF_CORE_APPS}/Editors">
+            <include name="**/*ce.xml"/>
+            <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+         </fileset>
+         <fileset dir="${FF_MANAGEDNAV_APPS}/Editors">
+            <include name="**/*ce.xml"/>
+            <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
+         </fileset>
+         <mapper type="flatten"/>
+      </copy>
+      <!-- Fix application acls -->
+      <xslt basedir="${FF_DIST_EDITORS_DIR}" destdir="${FF_DIST_EDITORS_DIR}" style="${FIX_APPLICATION_ACLS}" extension=".xml" classpathref="xslt.classpath">
+         <include name="**/*.xml"/>
+      </xslt>
+      <!-- WEB RESOURCES -->
+     
+      <copy todir="${FF_CORE_WEB_RESOURCES_DIR}" overwrite="yes">
+         <fileset dir="${FF_CORE_APPS}/web_resources">
+            <patternset refid="RESOURCES1_PATTERN"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\2/\3" handledirsep="true" />
+      </copy>
+      <copy todir="${FF_CORE_WEB_RESOURCES_DIR}" overwrite="yes">
+         <fileset dir="${FF_CORE_APPS}/web_resources">
+            <patternset refid="RESOURCES2_PATTERN"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)/(.*)$$" to="\2/\3/\4" handledirsep="true" />
+      </copy>
+      <copy todir="${FF_CORE_WEB_RESOURCES_DIR}" overwrite="yes">
+         <fileset dir="${FF_CORE_APPS}/web_resources">
+            <patternset refid="RESOURCES3_PATTERN"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)/(.*)/(.*)$$" to="\2/\3/\4/\5" handledirsep="true" />
+      </copy>
+    <!-- UNCOMMENT IF WEB RESOURCES FOLDER IS RE-ADDED UNDER FF CORE-->
+    <!--
+      <copy todir="${FF_MANAGEDNAV_WEB_RESOURCES_DIR}" overwrite="yes">
+         <fileset dir="${FF_MANAGEDNAV_APPS}/web_resources">
+            <patternset refid="RESOURCES1_PATTERN"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\2/\3"/>
+      </copy>
+      <copy todir="${FF_MANAGEDNAV_WEB_RESOURCES_DIR}" overwrite="yes">
+         <fileset dir="${FF_MANAGEDNAV_APPS}/web_resources">
+            <patternset refid="RESOURCES2_PATTERN"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)/(.*)$$" to="\2/\3/\4"/>
+      </copy>
+      <copy todir="${FF_MANAGEDNAV_WEB_RESOURCES_DIR}" overwrite="yes">
+         <fileset dir="${FF_MANAGEDNAV_APPS}/web_resources">
+            <patternset refid="RESOURCES3_PATTERN"/>
+         </fileset>
+         <regexpmapper from="^(.*)/(.*)/(.*)/(.*)/(.*)$$" to="\2/\3/\4/\5"/>
+      </copy>
+      -->
+      <!-- CONFIG -->
+      <mkdir dir="${FF_DIST_CORE_DIR}/Config"/>
+      <copy todir="${FF_DIST_CORE_DIR}/Config">
+         <fileset dir="${FF_CORE}/Config"/>
+      </copy>
+      <!-- Copy sample content -->
+      <mkdir dir="${FF_DIST_SAMPLECONTENT_DIR}"/>
+      <copy todir="${FF_DIST_SAMPLECONTENT_DIR}">
+         <fileset dir="${FF_SAMPLECONTENT}"/>
+      </copy>
+      <!-- EXITS -->
+      <mkdir dir="${FF_DIST_MANAGEDNAV_DIR}/Exits"/>
+      <copy todir="${FF_DIST_MANAGEDNAV_DIR}/Exits">
+         <fileset dir="${FF_MANAGEDNAV}/Exits"/>
+      </copy>
+      <mkdir dir="${FF_DIST_SITEFOLDER_DIR}/Exits"/>
+      <copy todir="${FF_DIST_SITEFOLDER_DIR}/Exits">
+         <fileset dir="${FF_SITEFOLDER}/Exits"/>
+      </copy>
+      <mkdir dir="${FF_DIST_DEFAULTTEMPLATE_DIR}/Exits"/>
+      <copy todir="${FF_DIST_DEFAULTTEMPLATE_DIR}/Exits">
+         <fileset dir="${FF_DEFAULTTEMPLATE}/Exits"/>
+      </copy>
+      <available property="libExists" file="${basedir}/build/lib" type="dir"/>
+      <antcall target="copyJars" inheritRefs="true"/>
+   </target>
+   <!-- COPY FF JARS INTO LIB -->
+   <target name="copyJars" if="libExists">
+      <copy todir="${FF_LIB_DIR}">
+         <fileset dir="${basedir}/build/lib">
+            <include name="rxff*.jar"/>
+         </fileset>
+         <mapper type="flatten"/>
+      </copy>
+   </target>
+</project>

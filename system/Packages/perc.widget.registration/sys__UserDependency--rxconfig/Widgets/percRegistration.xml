@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!DOCTYPE Widget [
+<!ENTITY defaultDateFormat "D M d, yy 'at' hh:nn">
+]>
+<Widget>
+    <WidgetPrefs title="Registration"
+        contenttype_name="percRegistrationAsset"
+        category="integration"
+        description="Widget to build and render a registration form"
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/registration/images/widgetIconRegistration.gif"
+        preferred_editor_width="800"
+        preferred_editor_height="450"
+		is_responsive="true"/>
+          
+    <UserPref name="perc-label-layout" 
+        display_name="Label layout"
+        default_value="align_above"
+        datatype="enum">
+        <EnumValue value="align_above" display_value="Align above the field" />       
+        <EnumValue value="align_left" display_value="Align to the left of the field" /> 
+    </UserPref>
+    <UserPref name="perc-registration-mode" 
+        display_name="Registration mode"
+        default_value="registration"
+        datatype="enum">
+        <EnumValue value="registration" display_value="Registration" />       
+        <EnumValue value="password_request" display_value="Password request" /> 
+        <EnumValue value="password_reset" display_value="Password reset" /> 
+    </UserPref>
+    <UserPref name="perc-email-verification-required" 
+      display_name="Email verification required"
+      default_value="true"
+      datatype="bool"/>
+    <!-- CssPrefs are input fields exposed in the CSS config for a widget -->  
+    <CssPref name="rootclass"
+        display_name="CSS root class" 
+        datatype="string" />
+    
+    <Code type="jexl">
+    <!-- This section is used to set up data that will be used in the content section -->
+    <![CDATA[
+        $pageId = $perc.page.id;
+        $widgetId = $perc.widget.item.id;
+        $widgetProps =  $perc.widget.item.properties;
+        $percLabelLayout = $widgetProps.get('perc-label-layout');
+        $percregMode = $widgetProps.get('perc-registration-mode');
+        $percEmailConfirmRequired = $widgetProps.get('perc-email-verification-required');
+        $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+        if (!empty($rootclass)) 
+        {
+            $rootclass = $rootclass + " ";
+        }
+        ## If we are in a template it doesn't have a $pageId
+        $siteName = "";
+        if (!empty($pageId)) 
+        {
+            $finderPath = $rx.pageutils.getItemPath($pageId);
+            $pathParts = $finderPath.split("\/");
+            $siteName = $pathParts[2];
+            $percConfirmationPage  = $rx.pageutils.getSiteRegistrationConfirmationPage($pathParts[2]);
+        }
+        
+        ## Set default values for some variables if they are empty
+        if (empty($percConfirmationPage)) {
+            $percConfirmationPage = "";
+        }
+        
+        $data = "";
+        $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+        $perc.setWidgetContents($assetItems);
+        if ( ! $assetItems.isEmpty())
+        {
+            $assetItem = $assetItems.get(0);
+            $percEmailLabel = $rx.pageutils.html($assetItem, 'email_label');
+            $percPasswordLabel = $rx.pageutils.html($assetItem, 'password_label');
+            $percConfirmPasswordLabel = $rx.pageutils.html($assetItem, 'confirm_password_label');
+            $percSubmitLabel = $rx.pageutils.html($assetItem, 'submit_label');
+            $pwResetPage = "";
+            if(!empty($siteName))
+            {
+                $pwResetPage = $rx.pageutils.getSiteResetPage($siteName);
+            }
+
+            ## If the user didn't configure the Confirmation page, we must redirect to the home page
+            $finder="Java/global/percussion/widgetcontentfinder/perc_NavWidgetContentFinder"; 
+            $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finder, null, true);
+            if ( ! $assetItems.isEmpty() ) {
+                $linkContext = $perc.linkContext;
+                $nav = $assetItems.get(0).getNode();
+                $homePageLink = $tools.esc.html($rx.pageutils.navLink($linkContext, $nav));
+            }
+        }
+		$dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+        if ($dsUrl.indexOf("http://localhost") != -1 )
+			$dsUrl = "";
+    ]]>
+    </Code>
+    
+    <Content type="velocity">
+    <!-- This section defines the rendered content -->
+    <![CDATA[
+    <div class="$!{rootclass} percRegistration" data="{&quot;homePageLink&quot;:&quot;$homePageLink&quot;,&quot;deliveryurl&quot;:&quot;$dsUrl&quot;}">
+        #if( ! $perc.widgetContents.isEmpty())
+            #if($percregMode == "registration")
+            <div class="perc-registration-mode">
+                    #if($percEmailConfirmRequired)
+                        <form name="perc-registration-cform" id="perc-registration-cform" method="post" action="#">
+                    #else
+                        <form name="perc-registration-form" id="perc-registration-form" method="post" action="#">
+                    #end
+                        <input value="$percConfirmationPage" name="perc-confirmation-page" id="perc-confirmation-page" type="hidden" />
+                        
+                        <div class = "perc-registration-mode">
+                            <div class="field-row">
+                                <div class="field-label-container $percLabelLayout fixed-width">
+                                    <span class="perc-form-error-asterisk">*</span>
+                                    <label for="perc-registration-email-field">$percEmailLabel</label>
+                                </div>
+                                <div class="field-input-container">
+                                    <input value="" name="perc-registration-email-field" id="perc-registration-email-field" type="text"/>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-label-container $percLabelLayout fixed-width">
+                                    <span class="perc-form-error-asterisk">*</span>
+                                    <label for="perc-registration-password-field">$percPasswordLabel</label>
+                                </div>
+                                <div class="field-input-container">
+                                    <input value="" name="perc-registration-password-field" id="perc-registration-password-field" type="password" />
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-label-container $percLabelLayout fixed-width">
+                                    <span class="perc-form-error-asterisk">*</span>                        
+                                    <label for="perc-registration-password-confirm-field">$percConfirmPasswordLabel</label>
+                                </div>
+                                <div class="field-input-container">
+                                    <input value="" name="perc-registration-password-confirm-field" id="perc-registration-password-confirm-field" type="password"/>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <input value="$percSubmitLabel" type="submit" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="perc-reg-confirmation-mode" style="display:none">
+                    <div class="perc-reg-confirmation-message">
+                        Please wait while your registration is confirmed...
+                    </div>
+                </div>
+            #elseif($percregMode == "password_request")
+                <form name="perc-password-request" id="perc-password-request" method="post" action="#">
+                    <input type="hidden" name="perc_password_reset_page" value="$pwResetPage"/>
+                    <div class = "perc-reset-mode">
+                        <div class="field-row">
+                            <div class="field-label-container $percLabelLayout fixed-width">
+                                <span class="perc-form-error-asterisk">*</span>
+                                <label for="perc-registration-email-field">$percEmailLabel</label>
+                            </div>
+                            <div class="field-input-container">
+                                <input value="" name="perc-registration-email-field" id="perc-registration-email-field" type="text"/>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <input value="$percSubmitLabel" type="submit" />
+                        </div>                    
+                    </div>
+                </form>
+            #elseif($percregMode == "password_reset")
+                <form name="perc-password-reset" id="perc-password-reset" method="post" action="#" style = "display:none">
+                    <div class = "perc-update-mode">
+                        <div class="field-row">
+                            <div class="field-label-container $percLabelLayout fixed-width">
+                                <span class="perc-form-error-asterisk">*</span>
+                                <label for="perc-registration-email-field">$percEmailLabel</label>
+                            </div>
+                            <div class="field-input-container">
+                                <input disabled = '' readonly = "" class = "datadisplay" value="" name="perc-registration-email-field" id="perc-registration-email-field" type="text"/>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-label-container $percLabelLayout fixed-width">
+                                <span class="perc-form-error-asterisk">*</span>
+                                <label for="perc-registration-password-field">$percPasswordLabel</label>
+                            </div>
+                            <div class="field-input-container">
+                                <input value="" name="perc-registration-password-field" id="perc-registration-password-field" type="password" />
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-label-container $percLabelLayout fixed-width">
+                                <span class="perc-form-error-asterisk">*</span>                        
+                                <label for="perc-registration-password-confirm-field">$percConfirmPasswordLabel</label>
+                            </div>
+                            <div class="field-input-container">
+                                <input value="" name="perc-registration-password-confirm-field" id="perc-registration-password-confirm-field" type="password"/>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <input value="$percSubmitLabel" type="submit" />
+                        </div>
+                    </div>
+                </form>
+            #end
+                <div class = "perc-reg-error-message" style = "display:none"></div>
+                <div class = "perc-confirmation-message" style = "display:none">
+                    <p>An email has been sent to the account provided. Please follow the link in your email to reset your password.</p>
+                </div>
+        #elseif ($perc.isEditMode())
+            #createEmptyWidgetContent("registration-sample-content", "This registration widget is showing sample content.")
+        #end
+        #if($perc.isPreviewMode() || $perc.linkContext.mode == "PUBLISH")
+            <script>
+            window.addEventListener('DOMContentLoaded', function() {
+             #if($perc.isPreviewMode())
+                    jQuery("#perc-registration-form, #perc-registration-cform, #perc-password-request, #perc-password-reset").submit(function(){return false;});
+                    jQuery("#perc-registration-form, #perc-registration-cform, #perc-password-request, #perc-password-reset").find("input[type = 'submit']").attr('disabled', 'disabled');
+                #end
+                jQuery("#perc-password-request, #perc-password-reset").show();
+                //var urlParams = jQuery.deparam.querystring();
+			});
+            </script>
+        #end
+    </div>]]>
+    </Content>    
+</Widget>

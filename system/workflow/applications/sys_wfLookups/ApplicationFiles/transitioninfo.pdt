@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT transitioninfo (transitionlink, statelink, workflowlink, workflowslink )>
+<!ELEMENT workflowslink (#PCDATA)>
+<!ELEMENT workflowlink (#PCDATA)>
+<!ELEMENT statelink (#PCDATA)>
+<!ELEMENT transitionlink (#PCDATA)>
+<!ATTLIST  transitioninfo transitionid CDATA #IMPLIED>
+<!ATTLIST  transitioninfo statename CDATA #IMPLIED>
+<!ATTLIST  transitioninfo stateid CDATA #IMPLIED>
+<!ATTLIST  transitioninfo workflowid CDATA #IMPLIED>
+<!ATTLIST  transitioninfo transitionlabel CDATA #IMPLIED>
+<!ATTLIST  transitioninfo workflowname CDATA #IMPLIED>

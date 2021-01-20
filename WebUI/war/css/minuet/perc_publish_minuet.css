@@ -1,0 +1,307 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/* Styles for initial site selection */
+body {
+    overflow-y: scroll;
+}
+
+.perc-body-background {
+    padding-top:100px;
+    padding-bottom:35px;
+}
+
+.perc-site-card {
+    border: 1px solid #133c55;
+    border: 1px solid var(--perc-branded-dark);
+    min-height: 100px;
+    cursor: pointer;
+}
+
+.perc-site-card-icon-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.perc-site-card-name {
+    background-color: #133c55;
+    background-color: var(--perc-branded-dark);
+    color: #ffffff;
+    color: var(--perc-text-light);
+    font-weight: 600;
+}
+
+.perc-site-card-icon {
+    color: #133c55;
+    color: var(--perc-branded-dark);
+}
+
+#percSiteCardOption {
+    color: #ffffff;
+    color: var(--perc-text-light);
+}
+
+#percSiteListOption {
+    color: #ffffff;
+    color: var(--perc-text-light);
+}
+
+.perc-site-view-toggle-button {
+    width: 50%;
+}
+
+label.btn.btn-secondary.perc-site-view-toggle-button.active, label.btn.btn-secondary.perc-site-view-toggle-button:hover {
+    background-color: #133c55;
+    background-color: var(--perc-branded-dark);
+}
+
+label.btn.btn-secondary.perc-site-view-toggle-button.focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 126, 168, 0.5);
+}
+
+.perc-site-filter-field:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 126, 168, 0.5);
+}
+
+.perc-site-view-toggle-button {
+    background-color: #d22f12;
+    background-color: var(--perc-branded-inverse);
+    border: none;
+}
+
+.perc-site-filter-field {
+    border: 1px solid #133c55;
+    border: 1px solid var(--perc-branded-dark);
+}
+
+.perc-site-select {
+    cursor: pointer;
+}
+
+#percPublishStatusList, #percSitePublishingLogList, #percSitePublishingLogDetails, #percIncrementalPreviewList, #percIncrementalRelatedPreviewList {
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.perc-publish-details-container {
+    max-height: 30vh;
+    overflow-y: scroll;
+}
+
+#percServerSection {
+    margin-bottom: 35px;
+}
+
+#percServerStatusSectionCard {
+    margin-bottom: 20px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+#percServerLogSectionCard {
+    margin-bottom: 20px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+#percPublishStatusTarget {
+    padding-bottom: 25px;
+}
+
+.perc-publish-section-title {
+    display: inline;
+}
+
+.perc-add-server:hover{
+    cursor: pointer;
+}
+
+.perc-site-instruction {
+    font-size: 24px;
+    font-weight: 800;
+    color: #133c55;
+    color: var(--perc-branded-dark);
+    padding-bottom: 30px;
+}
+
+/* Styles for server details */
+
+.perc-publish-state-nav {
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.perc-site-name-container {
+    color: #133c55;
+    color: var(--perc-branded-dark);
+    font-weight: 800;
+}
+
+.perc-site-logo-small {
+    margin-right:20px;
+}
+
+.perc-site-name-header {
+    display: inline;
+    font-size: 24px;
+}
+
+.perc-server-card {
+    border: 1px solid #133c55;
+    border: 1px solid var(--perc-branded-dark);
+}
+
+.perc-server-list-name {
+    font-size: 1rem;
+}
+
+.perc-publish-button-group {
+    width: 75%;
+}
+
+.perc-server-list-col {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.perc-publish-button {
+    width: 100%;
+}
+
+/*  This style is a fix to prevent the incremental publish button from
+*   appearing on top of the Incremental Preview overlay
+*/
+button.btn.perc-btn-primary.perc-publish-button {
+    z-index: 0;
+}
+
+/* This padding compensates for the size difference between "incremental" and "full" */
+button#percIncrementalPublish {
+    padding-left: 35px;
+}
+
+.dropdown-toggle-split:hover {
+    background-color: #007ea8;
+    background-color: var(--perc-branded);
+}
+
+.perc-publish-server-row {
+    margin-bottom: 5px;
+    padding: 10px 0px 10px 0px;
+}
+
+.perc-publish-server-row:nth-of-type(even) {
+    background-color: #eeeeee;
+    background-color: var(--perc-light-background);
+}
+
+/* Styles for forms */
+
+.perc-stacked-form-input {
+    padding-bottom: 20px;
+}
+
+/* Styles for logs */
+.perc-log-details-body {
+    font-size: 13px;
+}
+
+.perc-sortable-header:hover {
+    cursor: pointer;
+}
+
+.perc-progress-bar {
+    background-color: #133c55;
+    background-color: var(--perc-branded-dark);
+    font-weight: 900;
+}
+
+.perc-progress {
+    background-color: #d22f12;
+    background-color: var(--perc-branded-inverse);
+}
+
+#percPublishLogDetails {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1020 !important;
+    background-color: #ffffff;
+    padding-top: 100px;
+    padding-bottom: 35px;
+    overflow-y: scroll;
+    font-size: 14px;
+}
+
+#percIncrementalPublishPreviewOverlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1020 !important;
+    background-color: #ffffff;
+    padding-top: 100px;
+    padding-bottom: 35px;
+    overflow-y: scroll;
+    font-size: 14px;
+}
+
+#percIncrementalPublishQueueList, #percIncrementalPreviewList {
+  max-height: 25px;
+  overflow-y: scroll;
+}
+
+.perc-incremental-publish-content-container, .perc-incremental-publish-related-content-container {
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
+#percIncrementalPreviewList th, #percIncrementalPublishRelatedItemsList th {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+}
+
+.perc-publish-details-title-container {
+    color: #133c55;
+    color: var(--perc-branded-dark);
+    font-weight: 800;
+    font-size: 24px;
+}
+
+.perc-publish-item-details-title {
+    color: #133c55;
+    color: var(--perc-branded-dark);
+}
+
+#percPublishLogDetails p {
+    margin-bottom: .5rem;
+}
+
+#percToggleSelectAllLogs {
+    margin-top: 3px;
+}

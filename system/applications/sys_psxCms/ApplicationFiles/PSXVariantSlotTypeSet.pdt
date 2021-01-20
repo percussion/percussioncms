@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXKey (VARIANTID, SLOTID )>
+<!ELEMENT SLOTID (#PCDATA)>
+<!ELEMENT VARIANTID (#PCDATA)>
+<!ATTLIST PSXKey isPersisted (yes | no ) "yes">
+<!ATTLIST PSXKey needGenerateId (yes | no ) "no">
+<!ELEMENT PSXVariantSlotType (PSXKey )>
+<!ATTLIST  PSXVariantSlotType state CDATA #REQUIRED>
+<!ELEMENT PSXVariantSlotTypeSet (PSXVariantSlotType* )>
+<!ATTLIST  PSXVariantSlotTypeSet state CDATA #REQUIRED>
+<!ATTLIST  PSXVariantSlotTypeSet ordered CDATA #REQUIRED>
+<!ATTLIST  PSXVariantSlotTypeSet className CDATA #REQUIRED>

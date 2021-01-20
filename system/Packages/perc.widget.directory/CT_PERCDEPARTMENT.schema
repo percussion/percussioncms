@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CT_PERCDEPARTMENT">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTNAME">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTADDRESS2">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTCITY">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTSTATE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTZIP">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTWEBSITE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTWEBSITE_LINKID">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTWEBSITEEXT">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTPHONE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTFAX">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTORGANIZATION">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTEMAIL">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTCOUNTRY">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DPTADDRESS1">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+   </row>
+</table>

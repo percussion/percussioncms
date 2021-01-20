@@ -1,0 +1,75 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet  author="Santosh (generated)"  id="updateDataTypes-PSMetadataProperties">
+        <modifyDataType     columnName="NAME"
+                            newDataType="NVARCHAR(100)"
+                            tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+        <modifyDataType     columnName="VALUE_HASH"
+                            newDataType="NVARCHAR(40)"
+                            tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+        <modifyDataType     columnName="STRINGVALUE"
+                            newDataType="NVARCHAR(4000)"
+                            tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+        <modifyDataType     columnName="ENTRY_ID"
+                            newDataType="NVARCHAR(40)"
+                            tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+    </changeSet>
+    <changeSet  author="Santosh (generated)"  id="addForeignKeyConstraint-PSMetadataProperties">
+        <preConditions onFail="MARK_RAN" >
+            <tableExists tableName="PERC_PAGE_METADATA" />
+        </preConditions>
+        <addForeignKeyConstraint  baseColumnNames="ENTRY_ID"
+                                  baseTableName="PERC_PAGE_METADATA_PROPERTIES"
+                                  constraintName="fk_Metadata_property"
+                                  onDelete="CASCADE"
+                                  onUpdate="RESTRICT"
+                                  referencedColumnNames="PAGEPATHHASH"
+                                  referencedTableName="PERC_PAGE_METADATA"
+                                  validate="true"/>
+    </changeSet>
+    <changeSet  author="Santosh (generated)"  id="createIndex-PSMetadataProperties">
+        <createIndex  clustered="false"
+                      indexName="idx_entryid"
+                      tableName="PERC_PAGE_METADATA_PROPERTIES"
+                      unique="false">
+            <column  name="ENTRY_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet  author="Santosh (generated)"  id="createCompositeIndex-PSMetadataProperties">
+        <sql>
+            CREATE INDEX idx_name_Date ON
+            PERC_PAGE_METADATA_PROPERTIES(NAME, DATEVALUE);
+
+            CREATE INDEX idx_name_Valuehash ON
+            PERC_PAGE_METADATA_PROPERTIES(NAME, VALUE_HASH);
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>
+

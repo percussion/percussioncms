@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-577">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.invertedLRight.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-577\perc.base.invertedLRight.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-575">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.invertedLLeftFullSidebar.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-575\perc.base.invertedLLeftFullSidebar.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-579">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.invertedLRightFullSidebar.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-579\perc.base.invertedLRightFullSidebar.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-cClampLeft__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.cClampLeft_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-cClampLeft__Thumb-png\perc.base.cClampLeft_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-invertedLLeft__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.invertedLLeft_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-invertedLLeft__Thumb-png\perc.base.invertedLLeft_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-573">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.invertedLLeft.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-573\perc.base.invertedLLeft.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-571">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.headerFooter.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-571\perc.base.headerFooter.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-headerFooter__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.headerFooter_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-headerFooter__Thumb-png\perc.base.headerFooter_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-header__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.header_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-header__Thumb-png\perc.base.header_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-585">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.lLeftFullSidebar.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-585\perc.base.lLeftFullSidebar.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-cClampTop__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.cClampTop_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-cClampTop__Thumb-png\perc.base.cClampTop_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-587">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.lRight.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-587\perc.base.lRight.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-589">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.lRightFullSidebar.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-589\perc.base.lRightFullSidebar.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754400">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.lRightFullSidebar.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754400\perc.base.lRightFullSidebar.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754401">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.invertedLRightFullSidebar.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754401\perc.base.invertedLRightFullSidebar.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-footer__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.footer_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-footer__Thumb-png\perc.base.footer_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-581">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.leftSidebar.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-581\perc.base.leftSidebar.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-583">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.lLeft.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-583\perc.base.lLeft.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-rightLeftSidebar__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.rightLeftSidebar_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-rightLeftSidebar__Thumb-png\perc.base.rightLeftSidebar_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754388">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.headerFooter.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754388\perc.base.headerFooter.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754387">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.footer.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754387\perc.base.footer.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754386">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.header.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754386\perc.base.header.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-cClampBottom__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.cClampBottom_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-cClampBottom__Thumb-png\perc.base.cClampBottom_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-invertedLLeftFullSidebar__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.invertedLLeftFullSidebar_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-invertedLLeftFullSidebar__Thumb-png\perc.base.invertedLLeftFullSidebar_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754385">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.rightLeftSidebar.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754385\perc.base.rightLeftSidebar.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754389">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.invertedLLeft.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754389\perc.base.invertedLLeft.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754384">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.plain.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754384\perc.base.plain.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-561">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.cClampLeft.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-561\perc.base.cClampLeft.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754383">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.rightSidebar.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754383\perc.base.rightSidebar.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754382">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.leftSidebar.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754382\perc.base.leftSidebar.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-cClampRight__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.cClampRight_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-cClampRight__Thumb-png\perc.base.cClampRight_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-565">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.cClampTop.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-565\perc.base.cClampTop.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-lRightFullSidebar__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.lRightFullSidebar_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-lRightFullSidebar__Thumb-png\perc.base.lRightFullSidebar_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-595">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.rightSidebar.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-595\perc.base.rightSidebar.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-lLeftFullSidebar__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.lLeftFullSidebar_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-lLeftFullSidebar__Thumb-png\perc.base.lLeftFullSidebar_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-563">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.cClampRight.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-563\perc.base.cClampRight.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-593">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.rightLeftSidebar.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-593\perc.base.rightLeftSidebar.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-569">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.header.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-569\perc.base.header.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-591">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.plain.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-591\perc.base.plain.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-567">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.footer.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-567\perc.base.footer.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-plain__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.plain_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-plain__Thumb-png\perc.base.plain_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754397">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.Box.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754397\perc.base.Box.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-invertedLRight__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.invertedLRight_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-invertedLRight__Thumb-png\perc.base.invertedLRight_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754396">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.cClampRight.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754396\perc.base.cClampRight.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754399">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.invertedLLeftFullSidebar.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754399\perc.base.invertedLLeftFullSidebar.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754398">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.lLeftFullSidebar.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754398\perc.base.lLeftFullSidebar.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754391">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.cClampTop.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754391\perc.base.cClampTop.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754390">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.invertedLRight.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754390\perc.base.invertedLRight.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-lRight__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.lRight_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-lRight__Thumb-png\perc.base.lRight_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754393">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.lRight.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754393\perc.base.lRight.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-leftSidebar__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.leftSidebar_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-leftSidebar__Thumb-png\perc.base.leftSidebar_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754392">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.lLeft.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754392\perc.base.lLeft.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754395">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.cClampLeft.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754395\perc.base.cClampLeft.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-1914316887181754394">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.cClampBottom.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-1914316887181754394\perc.base.cClampBottom.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-rightSidebar__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.rightSidebar_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-rightSidebar__Thumb-png\perc.base.rightSidebar_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-Box__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.Box_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-Box__Thumb-png\perc.base.Box_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-lLeft__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.lLeft_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-lLeft__Thumb-png\perc.base.lLeft_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-557">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.Box.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-557\perc.base.Box.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-559">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\perc.base.cClampBottom.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-559\perc.base.cClampBottom.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-invertedLRightFullSidebar__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\images\TemplateImages\AnySite\perc.base.invertedLRightFullSidebar_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-base-invertedLRightFullSidebar__Thumb-png\perc.base.invertedLRightFullSidebar_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

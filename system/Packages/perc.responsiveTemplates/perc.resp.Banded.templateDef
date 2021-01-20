@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings/>
+    <template-slot-ids/>
+    <guid>0-4-597</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/pageAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description>Banded responsive template.</description>
+    <global-template/>
+    <global-template-usage>Default</global-template-usage>
+    <label>Banded</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/html</mime-type>
+    <name>perc.resp.Banded</name>
+    <output-format>Page</output-format>
+    <publish-when>Default</publish-when>
+    <style-sheet-path/>
+    <template>#perc_templateHeader()
+&lt;div id="perc-resp-container" class="row perc-region"&gt;
+    &lt;div id="perc-resp-top-column" class="large-12 columns perc-region"&gt;
+        &lt;div id="perc-resp-header" class="row perc-region"&gt;
+            &lt;div id="perc-resp-header-left" class="large-3 columns perc-region"&gt;
+                #region("perc-resp-header-left" '' '' '' '')
+            &lt;/div&gt;
+            &lt;div id="perc-resp-header-right" class="large-9 columns perc-region"&gt;
+                #region("perc-resp-header-right" '' '' '' '')
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id="perc-resp-banner" class="row perc-region"&gt;
+            &lt;div id="perc-resp-banner-content" class="large-12 columns perc-region"&gt;
+                #region("perc-resp-banner-content" '' '' '' '')
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id="perc-resp-content-top" class="row perc-region"&gt;
+            &lt;div id="perc-resp-content-top-left" class="large-4 columns perc-region"&gt;
+                #region("perc-resp-content-top-left" '' '' '' '')
+            &lt;/div&gt;
+            &lt;div id="perc-resp-content-top-right" class="large-8 columns perc-region"&gt;
+                #region("perc-resp-content-top-right" '' '' '' '')
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id="perc-resp-content-bottom" class="row perc-region"&gt;
+            &lt;div id="perc-resp-content-bottom-left" class="large-8 columns perc-region"&gt;
+                #region("perc-resp-content-bottom-left" '' '' '' '')
+            &lt;/div&gt;
+            &lt;div id="perc-resp-content-bottom-right" class="large-4 columns perc-region"&gt;
+                #region("perc-resp-content-bottom-right" '' '' '' '')
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id="perc-resp-footer" class="row perc-region"&gt;
+            &lt;div id="perc-resp-footer-content" class="large-12 columns perc-region"&gt;
+                #region("perc-resp-footer-content" '' '' '' '')
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+#perc_templateFooter()</template>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

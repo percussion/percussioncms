@@ -1,0 +1,1815 @@
+<!-- Build file for Rhythmyx server install -->
+<project name="Rhythmyx Server" default="install" basedir="..">
+
+	<condition property="VERSION_1_TO_2">
+		<PSVersionBuildNumberProdCondition buildFrom="-1" buildTo="-1" majorVersionFrom="1" majorVersionTo="2" minorVersionFrom="0" minorVersionTo="0" />
+  </condition>
+  
+	<condition property="VERSION_1_TO_2_6">
+		<PSVersionBuildNumberProdCondition buildFrom="-1" buildTo="-1" majorVersionFrom="1" majorVersionTo="2" minorVersionFrom="0" minorVersionTo="6" />
+	</condition>
+	<condition property="VERSION_1_TO_2_7">
+		<PSVersionBuildNumberProdCondition buildFrom="-1" buildTo="-1" majorVersionFrom="1" majorVersionTo="2" minorVersionFrom="0" minorVersionTo="7" />
+          </condition>
+  <condition property="EVAL_CONDITION">
+    <PSEvalCondition/>
+  </condition>
+    
+	<!-- The main install target -->
+	<target name="install">
+		<antcall target="fuseWars" inheritrefs="true" />
+		<if>
+			<and>
+				<equals arg1="${install.type}" arg2="upgrade" />
+				<isSet property="VERSION_1_TO_2" />
+			</and>
+			<then>
+				<antcall target="moveDerbyFiles" inheritrefs="true" />
+			</then>
+		</if>
+
+  
+		<if>
+			<and>
+				<equals arg1="${install.type}" arg2="upgrade" />
+				<isSet property="VERSION_1_TO_2_7" />
+			</and>
+			<then>
+				<antcall target="cleanCommonUI" inheritrefs="true" />
+			</then>
+		</if>
+	                
+    <if>
+      <equals arg1="${server.core}" arg2="yes"/>
+      <then>
+        <!-- Call Server Core Install Target -->
+        <antcall target="serverCore" inheritrefs="true"/>
+      </then>
+    </if>
+
+		<!-- Call Post-Install Target -->
+		<antcall target="postInstall" inheritrefs="true" />
+		<antcall target="fuseWars" inheritrefs="true" />
+	</target>
+
+	<target name="fuseWars">
+    <if>
+			<available file="${install.dir}/AppServer/server/rx/deploy/cm.war/jsp" type="dir" />
+      <then>
+				<echo>Starting Fusion of WAR Files: CM to RX</echo>
+				<!-- CM JSP FILES-->
+    <if>
+					<available file="${install.dir}/AppServer/server/rx/deploy/cm.war/jsp" type="dir" />
+      <then>
+						<echo>WAR Fusion: Fusing CM JSP files</echo>
+						<!-- CM JSP FILES-->
+						<copy todir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/cm/jsp" overwrite="true" verbose="true">
+							<fileset dir="${install.dir}/AppServer/server/rx/deploy/cm.war/jsp" />
+						</copy>
+						<delete dir="${install.dir}/AppServer/server/rx/deploy/cm.war/jsp" includeemptydirs="true" />
+      </then>
+					<else>
+						<echo>WAR Fusion: JSP Library not present - Ignoring Fusion</echo>
+					</else>
+    </if>
+				<!-- CM STATIC CONTENT -->
+     <if>
+					<available file="${install.dir}/AppServer/server/rx/deploy/cm.war" type="dir" />
+      <then>
+						<echo>WAR Fusion: Fusing Static Content</echo>
+						<move todir="${install.dir}/cm" overwrite="true" verbose="true">
+							<fileset dir="${install.dir}/AppServer/server/rx/deploy/cm.war" />
+						</move>
+						<echo>WAR Fusion: Cleaning META-INF</echo>
+						<delete dir="${install.dir}/cm/META-INF" verbose="true" />
+      </then>
+					<else>
+						<echo>WAR Fusion: Static Content not present - Ignoring Fusion</echo>
+					</else>
+    </if>    
+
+				<!-- WEB-INF -->
+    <if>
+					<available file="${install.dir}/cm/WEB-INF" type="dir" />
+      <then>
+						<echo>WAR Fusion: Fusing WEB-INF</echo>
+						<copy todir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF" overwrite="true" verbose="true">
+							<fileset dir="${install.dir}/cm/WEB-INF" />
+						</copy>
+						<echo>WAR Fusion: Cleaning WEB-INF</echo>
+						<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/servlet-api.jar" verbose="true" />
+						<delete dir="${install.dir}/cm/WEB-INF" verbose="true" />
+      </then>
+					<else>
+						<echo>WAR Fusion: WEB-INF not present - Ignoring Fusion</echo>
+					</else>
+  	</if>   
+				<echo>WAR Fusion: removing duplicate JARs</echo>
+
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-collections-3.2.1.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-digester-1.7.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-fileupload-1.4.jar" verbose="true" failonerror="false" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-fileupload-1.1.1.jar" verbose="true" failonerror="false" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-io-1.4.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/ehcache-1.4.1.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/google-collections-1.0-rc2.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/htmlparser-1.0.7.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jaxb-api.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jaxb-impl.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jericho-html-1.2.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jettison.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/joda-time-1.6.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/json.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/json_simple.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jsr311-api.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jstl-1.1.0.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/nekohtml-0.9.1.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/sanselan-0.97-incubator-sources.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/xml-apis.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/xstream.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/xpp3.jar" verbose="true" />
+				<delete file="${install.dir}/AppServer/server/rx/lib/el-api.jar" verbose="true" />
+				<delete verbose="true">
+					<fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib" includes="jersey*1.5*.jar" />
+				</delete>
+				
+				<move todir="${install.dir}/AppServer/server/rx/lib" overwrite="true" verbose="true">
+					<fileset file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/el-api-2.2.jar" />
+					<fileset file="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/el-impl-2.2.jar" />
+				</move>
+
+
+				<echo>WAR Fusion: Handling pathing rule exceptions</echo>
+				<move todir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/cm/widgetbuilder/templates" overwrite="true" verbose="true">
+					<fileset dir="${install.dir}/cm/widgetbuilder/templates" />
+				</move>
+
+  	
+			</then>
+			<else>
+				<echo>WAR Fusion not needed at this time</echo>
+			</else>
+		</if>
+  </target>
+  
+	<target name="moveDerbyFiles">
+		<mkdir dir="${dep.derbydata.dir}" />
+		<if>
+			<available file="${install.dir}/JRE/bin/derby.log" />
+			<then>
+				<move file="${install.dir}/JRE/bin/derby.log" tofile="${dep.derbydata.dir}/derby.log" />
+			</then>
+		</if>
+		<if>
+			<available file="${install.dir}/JRE/bin/perccomments" />
+			<then>
+				<move file="${install.dir}/JRE/bin/perccomments" tofile="${dep.derbydata.dir}/perccomments" />
+			</then>
+		</if>
+		<if>
+			<available file="${install.dir}/JRE/bin/percfeeds" />
+			<then>
+				<move file="${install.dir}/JRE/bin/percfeeds" tofile="${dep.derbydata.dir}/percfeeds" />
+			</then>
+		</if>
+		<if>
+			<available file="${install.dir}/JRE/bin/percforms" />
+			<then>
+				<move file="${install.dir}/JRE/bin/percforms" tofile="${dep.derbydata.dir}/percforms" />
+			</then>
+		</if>
+		<if>
+			<available file="${install.dir}/JRE/bin/percmetadata" />
+			<then>
+				<delete dir="${install.dir}/JRE/bin/percmetadata" />
+			</then>
+		</if>
+	
+  </target>
+
+  <!-- Server Core Install Sequence -->
+  <target name="serverCore">
+    <!-- EnterpriseMgrToMulti-ServerMgr -->
+    <if>
+      <available file="${install.dir}/sys_EnterpriseManager"/>
+      <then>
+        <move file="${install.dir}/sys_EnterpriseManager" tofile="${install.dir}/sys_MultiServerManager"/>
+      </then>
+    </if>
+
+		<!-- Add widget folder -->
+		<mkdir dir="${install.rxconfig}/Widgets" />
+
+		<!-- Add ssh-keys folder for sftp with keys publishing -->
+		<mkdir dir="${install.rxconfig}/ssh-keys" />
+
+    <!-- RxFiles -->
+    <mkdir dir="${install.lib}"/>
+    <PSCopy todir="${install.lib}" file="${libdir}/rxinstall.jar"/>
+    <PSCopy todir="${install.lib}">
+      <fileset dir="${toolsdir}">
+        <include name="xerces/xml-apis.jar"/>
+        <include name="xerces/xercesImpl.jar"/>
+        <include name="log4j/log4j.jar"/>
+      </fileset>
+    </PSCopy>
+    
+		<!-- Files for packager -->
+		<echo>Installing Packager</echo>
+		<mkdir dir="${install.dir}/lib" />
+		<PSCopy todir="${install.dir}/lib" flatten="true">
+			<fileset dir="${libdir}">
+				<include name="pspackagerui.jar" />
+			</fileset>
+			<fileset dir="build/dist/Tools/thirdpartytools">
+				<include name="miglayout-3.6.3-swing.jar" />
+				<include name="substance.jar" />
+			</fileset>
+		</PSCopy>
+
+    <!-- DTD Files -->
+    <mkdir dir="${install.DTD}"/>
+    <PSCopy todir="${install.DTD}">
+      <fileset dir="${design.dtddir}"/>
+    </PSCopy>
+    
+    <!-- MSM System Files -->
+    <mkdir dir="${install.sys_msm}/server/cfg"/>
+    <PSCopy todir="${install.sys_msm}/server/cfg" file="${configdir}/Deployment/sys_DependencyMap.xml"/>
+    <PSCopy todir="${install.sys_msm}/server/cfg" file="${configdir}/Deployment/featureset.xml"/>
+
+    <!-- Deployer System Files -->
+    <mkdir dir="${install.sys_packager}/server/cfg"/>
+    <mkdir dir="${install.sys_packager}/schema"/>
+    <PSCopy todir="${install.sys_packager}/server/cfg" file="${configdir}/Deployer/sys_PackageConfiguration.xml"/>
+    <PSCopy todir="${install.sys_packager}/schema">
+       <fileset dir="${deployer.dir}/schema"/>
+    </PSCopy>
+    
+    <!-- Error Pages -->
+    <mkdir dir="${install.ErrorPages}"/>
+    <PSCopy todir="${install.ErrorPages}">
+      <fileset dir="${errorpagesdir}"/>
+    </PSCopy>
+    
+    <!-- Default StyleSheets -->
+    <mkdir dir="${install.StyleSheets}"/>
+    <PSCopy todir="${install.StyleSheets}">
+      <fileset dir="${stylesheetsdir}"/>
+    </PSCopy>
+    
+    <!-- JDBC Drivers -->
+    <mkdir dir="${install.jtds}"/>
+    <PSCopy todir="${install.jtds}" file="${jdbcdir}/jtds/jtds.jar"/>
+    <mkdir dir="${install.oracle}"/>
+		<PSCopy todir="${install.oracle}" file="${jdbcdir}/oracle9/ojdbc14.jar" />
+    <mkdir dir="${install.db2}"/>
+    <PSCopy todir="${install.db2}">
+      <fileset dir="${jdbcdir}/DB2">
+        <include name="*.jar"/>
+      </fileset>
+    </PSCopy>
+    
+    <!-- Brander -->
+    <mkdir dir="${install.bin}"/>
+    <if>
+      <not>
+        <isSet property="DEVELOPMENT"/>
+      </not>
+      <then>
+        <if>
+          <equals arg1="${os}" arg2="windows"/>
+          <then>
+            <PSCopy todir="${install.bin}" file="${releasedir}/InstallAnywhere/Projects/configuration/brand_Build_Output/Web_Installers/InstData/Windows/VM/RxBrander.exe"/>
+          </then>
+        </if>         
+        <if>
+	  <equals arg1="${os}" arg2="solaris"/>
+	  <then>
+	    <PSCopy todir="${install.bin}" file="${releasedir}/InstallAnywhere/Projects/configuration/brand_Build_Output/Web_Installers/InstData/Solaris/VM/RxBrander.bin"/>
+	  </then>
+        </if>
+        <if>
+	  <equals arg1="${os}" arg2="linux"/>
+	  <then>
+	    <PSCopy todir="${install.bin}" file="${releasedir}/InstallAnywhere/Projects/configuration/brand_Build_Output/Web_Installers/InstData/Linux/VM/RxBrander.bin"/>
+	  </then>
+        </if>
+      </then>
+    </if>
+    
+    <!-- Applet Jar Files -->
+    <mkdir dir="${install.AppletJars}"/>
+    <PSCopy todir="${install.AppletJars}">
+      <fileset dir="${libdir}">
+        <include name="help.jar"/>
+        <include name="rxCheckboxTree.jar"/>
+        </fileset>
+    </PSCopy>
+
+
+    <PSCopy todir="${install.AppletJars}" file="${toolsdir}/JavaHelp/jh.jar"/>
+    
+    <!-- Upgrade Files -->
+    <PSCopy todir="${install.upgrade}">
+      <fileset dir="${releasedir}/src/com/percussion/rxupgrade"/>
+    </PSCopy>
+    
+    <!-- Upgrade DTD Files -->
+    <mkdir dir="${install.upgrade}/DTD"/>
+    <PSCopy todir="${install.upgrade}/DTD">
+      <fileset dir="${design.dtddir}">
+        <include name="sys_BasicObjects.dtd"/>
+        <include name="sys_ContentEditorSystemDef.dtd"/>
+        <include name="sys_StoredActions.dtd"/>
+      </fileset>
+    </PSCopy>
+    
+    <!-- Initialize Spring Config -->
+		<echo>Initializing spring configuration...</echo>
+    <PSCopy todir="${install.spring}">
+      <fileset dir="${eardir}/config/spring">
+        <include name="beans.xml"/>
+		<include name="deployer-beans.xml"/>
+				<include name="install-beans.xml" />
+      </fileset>
+    </PSCopy>
+    <PSCopy todir="${install.classes}">
+      <fileset dir="${eardir}/config/hibernate"/>
+    </PSCopy>
+    <PSUpgrade upgradeFileNames="rxPreUpgradePlugins3.xml"/>
+		<echo>Spring configuration initialization complete...</echo>
+
+    <!-- WebServices Files 6.0 -->
+    <!-- WebServices Schema/WSDL 6.0 -->
+    <mkdir dir="${install.WebServices}/6.0.0/design"/>
+    <PSCopy todir="${install.WebServices}/6.0.0/design">
+      <fileset dir="${webservices.designdir}"/>
+    </PSCopy>
+    
+	<!-- Delete Previous Devtools installer files -->
+	<if>
+      <available file="${install.Administration}/DeveloperTools"/>
+      <then>
+        <delete>
+          <fileset dir="${install.Administration}/DeveloperTools" includes="**/*"/>
+        </delete>
+      </then>
+    </if>
+
+    <!-- Delete Non-public WSDL and Schema -->
+    <delete>
+      <fileset dir="${install.WebServices}/6.0.0/design">
+        <include name="rhythmyxDesign.wsdl"/>
+        <include name="assembly/assemblyDesign.wsdl"/>
+        <include name="assembly/assemblyDesign.xsd"/>
+        <include name="content/contentDesign.wsdl"/>
+        <include name="content/contentDesign.xsd"/>
+        <include name="security/securityDesign.wsdl"/>
+        <include name="security/securityDesign.xsd"/>
+        <include name="system/systemDesign.wsdl"/>
+        <include name="system/systemDesign.xsd"/>
+        <include name="ui/uiDesign.wsdl"/>
+        <include name="ui/uiDesign.xsd"/>
+      </fileset>
+    </delete>
+    
+    <!-- Sample Loader Files -->
+    <mkdir dir="${install.WebServices}/6.0.0/sample/loader"/>
+    <PSCopy todir="${install.WebServices}/6.0.0/sample/loader">
+      <fileset dir="${webservices.loaderdir}"/>
+    </PSCopy>
+
+    <!-- Always Replace Files -->
+    <!-- Server System Files -->
+    <PSCopy todir="${install.Server}">
+      <fileset dir="${configdir}">
+        <include name="csmaps.xml"/>
+        <include name="featureset.xml"/>
+        <include name="sys_DatabaseFunctionDefs.xml"/>
+        <include name="sys_macros.xml"/>
+        <include name="sys_library_loader.xml"/>
+				<include name="startupProcessManager.properties" />
+      </fileset>
+    </PSCopy>
+    
+    <!-- ContentEditor DTD Files -->
+    <mkdir dir="${install.Server}/ContentEditors/DTD"/>
+    <PSCopy todir="${install.Server}/ContentEditors/DTD">
+      <fileset dir="${design.dtddir}">
+        <include name="sys_ContentEditorSystemDef.dtd"/>
+        <include name="sys_BasicObjects.dtd"/>
+      </fileset>
+    </PSCopy>
+    
+    <!-- RequestHandler DTD Files -->
+    <mkdir dir="${install.Server}/requestHandlers/DTD"/>
+    <PSCopy todir="${install.Server}/requestHandlers/DTD">
+      <fileset dir="${design.dtddir}">
+        <include name="sys_StoredActions.dtd"/>
+        <include name="sys_BasicObjects.dtd"/>
+      </fileset>
+    </PSCopy>
+    
+    <!-- Rx FF Samples -->
+    <mkdir dir="${install.Samples}/ffsamples"/>
+    <PSCopy todir="${install.Samples}/ffsamples">
+      <fileset dir="${samplesdir}/ffsamples"/>
+    </PSCopy>
+    
+    <!-- Rx Portal Publishing Samples -->
+    <PSCopy todir="${install.Samples}">
+      <fileset dir="${builddir}/portal"/>
+    </PSCopy>
+
+		<PSCopy todir="${install.dir}">
+      <fileset dir="${releasedir}/installer/config" includes="rxW2KserverPageTags.xml,rxW2Ktidy.properties"/>
+    </PSCopy>
+    
+    <!-- Server Config Files -->
+    <PSCopy todir="${install.Server}" replaceType="never">
+      <fileset dir="${configdir}">
+        <include name="config.xml"/>
+        <include name="RequestHandlers.xml"/>
+        <include name="mimemap.properties"/>
+        <include name="objectstore.properties"/>
+        <include name="server.properties"/>
+        <include name="rw_processes.xml"/>
+        <include name="sys_library_loader.xml"/>
+        <include name="authtypes.properties"/>
+        <include name="stylesheetCleanupFilter.xml"/>
+        <include name="addThumbnailURL.properties"/>
+			</fileset>
+		</PSCopy>
+
+		<!-- Always overwrite mimemap.properties, no need for users to edit -->
+		<PSCopy todir="${install.Server}">
+			<fileset dir="${configdir}">
+				<include name="mimemap.properties" />
+      </fileset>
+    </PSCopy>
+
+		<PSCopy todir="${install.Server}/ContentEditors">
+      <fileset dir="${configdir}/ContentEditors"/>
+    </PSCopy>
+    <PSCopy todir="${install.Server}/requestHandlers" replaceType="never">
+      <fileset dir="${configdir}/requestHandlers"/>
+    </PSCopy>
+
+		<!-- Categories -->
+		<mkdir dir="${install.Categories}" />
+		<PSCopy todir="${install.Categories}" file="${configdir}/Categories/default.xml" replaceType="never" />
+
+		<!-- Proxy configuration -->
+		<mkdir dir="${install.Proxy}" />
+		<PSCopy todir="${install.Proxy}" file="${basedir}/config/proxy-config.xml" replaceType="never" />
+		<!-- CM1 Config Files -->
+		<mkdir dir="${install.rxconfig}/DeliveryServer" />
+		<mkdir dir="${install.LDAP}" />
+		<PSCopy todir="${install.LDAP}" file="${configdir}/LDAP/ldapserver.xml" replaceType="never" />
+
+		<!-- Package Installer config -->
+		<if>
+			<isset property="DEVELOPMENT" />
+			<then>
+				<PSCopy tofile="${install.Installer}/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.dev.xml" />
+			</then>
+			<elseif>
+				<equals arg1="${install.type}" arg2="new" />
+				<then>
+					<PSCopy tofile="${install.Installer}/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.new.xml" />
+				</then>
+			</elseif>
+			<else>
+				<PSCopy tofile="${install.Installer}/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.upgrade.xml" />
+			</else>
+		</if>
+
+		<if>
+			<and>
+				<isset property="delivery.target" />
+				<equals arg1="${delivery.target}" arg2="dev" />
+			</and>
+			<then>
+				<PSCopy tofile="${install.rxconfig}/DeliveryServer/delivery-servers.xml" file="${configdir}/delivery-servers.xml.dev" replaceType="always" />
+			</then>
+			<elseif>
+				<and>
+					<isset property="delivery.target" />
+					<equals arg1="${delivery.target}" arg2="qa" />
+				</and>
+				<then>
+					<PSCopy tofile="${install.rxconfig}/DeliveryServer/delivery-servers.xml" file="${configdir}/delivery-servers.xml.qa" replaceType="always" />
+				</then>
+			</elseif>
+			<else>
+				<PSCopy todir="${install.rxconfig}/DeliveryServer" file="${configdir}/delivery-servers.xml" replaceType="never" />
+			</else>
+		</if>
+
+    <mkdir dir="${install.Server}/ContentEditors/shared"/>
+    
+    <!-- I18n Config Files -->
+    <mkdir dir="${install.I18n}"/>
+		<PSCopy tofile="${install.I18n}/sys_createTranslations.properties" file="${configdir}/I18n/sys_createTranslations.properties" replaceType="never" />
+      
+    <!-- XSpLit Config Files -->
+    <mkdir dir="${install.XSplit}"/>
+    <PSCopy todir="${install.XSplit}" replaceType="never">
+      <fileset dir="${htmlconverterdir}/config"/>
+    </PSCopy>
+   
+    <!-- Linux Binaries -->
+    <if>
+      <equals arg1="${os}" arg2="linux"/>
+      <then>
+        <PSCopy todir="${install.bin}">
+          <fileset dir="${releasedir}/installer/Linux">
+            <include name="libPSInstaller.so"/>
+            <include name="RhythmyxDaemon"/>
+						<include name="phantomjs" />
+          </fileset>
+          <fileset dir="${nativedir}/prebuilt/linux"/>
+        </PSCopy>
+      </then>
+    </if>
+
+    <!-- Windows Binaries -->
+    <if>
+      <equals arg1="${os}" arg2="windows"/>
+      <then>
+        <PSCopy todir="${install.bin}">
+          <fileset dir="${basedir}/bin">
+            <include name="MSVCP60.DLL"/>
+            <include name="js32.dll"/>
+            <include name="libnspr21.dll"/>
+            <include name="msvcrt.dll"/>
+						<include name="phantomjs.exe" />
+          </fileset>
+          <fileset dir="${nativedir}/prebuilt/windows" excludes="RxDB2Svc.DLL"/>
+        </PSCopy>
+      </then>
+   </if>
+
+    <!-- RXLT -->
+    <mkdir dir="${install.rxlt}/DTD"/>
+    <PSCopy todir="${install.rxlt}/DTD">
+      <fileset dir="${design.dtddir}">
+        <include name="sys_BasicObjects.dtd"/>
+        <include name="sys_ContentEditorSharedDef.dtd"/>
+        <include name="sys_ContentEditorSystemDef.dtd"/>
+      </fileset>
+    </PSCopy>
+
+    <!-- Solaris Shell Scripts -->
+    <if>
+      <equals arg1="${os}" arg2="solaris"/>
+      <then>
+        <PSCopy todir="${install.dir}">
+          <fileset dir="${releasedir}/installer/unix">
+            <include name="StartServer.sh"/>
+            <include name="InstallDaemon.sh"/>
+            <include name="doStart.sh"/>
+          </fileset>
+        </PSCopy>
+        <PSCopy todir="${install.Installer}" file="${releasedir}/installer/unix/S15RhythmyxD"/>
+      </then>
+    </if>
+
+    <!-- Linux Shell Scripts -->
+    <if>
+      <equals arg1="${os}" arg2="linux"/>
+      <then>
+        <PSCopy todir="${install.dir}">
+          <fileset dir="${releasedir}/installer/unix">
+            <include name="StartServer.sh"/>
+            <include name="doStart.sh"/>
+          </fileset>
+        </PSCopy>
+        <PSCopy todir="${install.dir}" file="${releasedir}/installer/Linux/InstallDaemon.sh"/>
+				<PSCopy todir="${install.dir}" file="${releasedir}/installer/Linux/InstallDaemon.awk" />
+        <PSCopy todir="${install.Installer}" file="${releasedir}/installer/Linux/S15RhythmyxD"/>
+      </then>
+    </if>
+
+		<!-- Sprinta Production -->
+		<condition property="SPRINTA_CONDITION">
+			<PSSprintaCondition />
+		</condition>
+
+		<if>
+			<and>
+				<isSet property="SPRINTA_CONDITION" />
+				<not>
+					<isSet property="EVAL_CONDITION" />
+				</not>
+			</and>
+			<then>
+				<mkdir dir="${install.sprinta}" />
+				<PSCopy todir="${install.sprinta}">
+					<fileset dir="${sprintadir}">
+						<include name="SPRINTA2000_Application_License.htm" />
+						<include name="Sprinta2000.jar" />
+						<include name="readme.txt" />
+					</fileset>
+				</PSCopy>
+			</then>
+		</if>
+
+		<!-- Sprinta Eval -->
+		<if>
+			<and>
+				<isSet property="SPRINTA_CONDITION" />
+				<isSet property="EVAL_CONDITION" />
+			</and>
+			<then>
+				<PSCopy todir="${install.sprinta}/eval">
+					<fileset dir="${sprintadir}/eval" />
+				</PSCopy>
+			</then>
+		</if>
+
+		<!-- Sprinta External Eval Jar -->
+		<if>
+			<and>
+				<isSet property="SPRINTA_CONDITION" />
+				<isSet property="EVAL_CONDITION" />
+				<available file="${install.sprinta}/eval/Sprinta2000.jar" />
+			</and>
+			<then>
+				<PSCopy todir="${install.sprinta}/eval" file="${sprintadir}/eval/Sprinta2000.jar" />
+			</then>
+		</if>
+
+		<!-- Sprinta External Eval Jar Readme-->
+		<if>
+			<and>
+				<isSet property="SPRINTA_CONDITION" />
+				<isSet property="EVAL_CONDITION" />
+				<available file="${install.sprinta}/eval/readme.txt" />
+			</and>
+			<then>
+				<PSCopy todir="${install.sprinta}/eval" file="${sprintadir}/eval/readme.txt" />
+			</then>
+		</if>
+
+    <!-- Deployment Table Definition -->
+    <PSCopy todir="${install.Server}" file="${releasedir}/config/cmstableDef.xml"/>
+    <move file="${install.Server}/cmstableDef.xml" tofile="${install.Server}/sys_cmstableDef.xml"/>
+
+    <!-- Applications -->
+    <PSCopy todir="${install.ObjectStore}">
+      <fileset dir="${objectstoredir}"/>
+    </PSCopy>
+    
+    <!-- System Applications and Supporting Files-->
+    <PSCopy todir="${install.DTD}">
+      <fileset dir="${dtd.appfilesdir}"/>
+    </PSCopy>
+    <PSCopy todir="${install.dir}">
+      <fileset dir="${sysAppSupportdir}"/>
+    </PSCopy>
+        
+    <!-- Administration Files -->
+    <PSCopy todir="${install.Administration}" flatten="true">
+      <fileset dir="${sysAdminSupportdir}"/>
+    </PSCopy>
+    <PSCopy todir="${install.Administration}">
+      <fileset dir="${libdir}">
+				<include name="rhythmyx.jar" />
+				<include name="percbeans.jar" />
+				<include name="rxclient.jar" />
+				<include name="rxtablefactory.jar" />
+				<include name="help.jar" />
+				<include name="serveruicomp.jar" />
+				<include name="rxutils.jar" />
+				<include name="rxmisctools.jar" />
+				<include name="rxservices.jar" />
+			</fileset>
+		</PSCopy>
+		<PSCopy todir="${install.Administration}" flatten="true">
+			<fileset dir="${toolsdir}">
+				<include name="saxon/saxon.jar" />
+				<include name="xerces/xml-apis.jar" />
+				<include name="xerces/xercesImpl.jar" />
+				<include name="log4j/log4j.jar" />
+				<include name="JavaHelp/jh.jar" />
+				<include name="jndi/nis.jar" />
+				<include name="Commons/commons-lang-2.4.jar" />
+				<include name="Commons/commons-codec-1.11.jar" />
+      </fileset>
+    </PSCopy>
+    
+    <!-- Application Docs -->
+    <PSApplicationFiles srcDir="${docs.appfilesdir}" destDir="${install.Docs}"/>
+    
+    <!-- sys_resources -->
+    <defaultexcludes remove="**/.DS_Store"/>
+    <PSCopy todir="${install.sys_resources}">
+      <fileset dir="${sys_resources.appfilesdir}"/>
+    </PSCopy>
+    <defaultexcludes default="true"/>
+    
+    <!-- PCM-PkgMgtUI to sys_resources -->
+    <property name="pkgMgtUi.name" value="com.percussion.gwt.pkgmgtui.PkgMgtUI"/>
+    <mkdir dir="${install.sys_resources}/ui/gwt/${pkgMgtUi.name}"/>
+    <PSCopy todir="${install.sys_resources}/ui/gwt/${pkgMgtUi.name}">
+       <fileset dir="${pcm-pkgmgtui.dir}/${pkgMgtUi.name}"/>
+    </PSCopy>
+
+		<!-- cmlite war to deploy folder -->
+		<mkdir dir="${install.deploy}/${webuiwarname}.war" />
+		<unzip src="${webui.wardir}/${webuiwarname}.war" dest="${install.deploy}/${webuiwarname}.war" />
+		<mkdir dir="${install.dir}/web_resources/cm" />
+		<unzip src="${webui.wardir}/${webuiwarname}.war" dest="${install.dir}/web_resources/cm">
+			<patternset>
+				<include name="themes/" />
+				<include name="css/" />
+				<include name="jslib/" />
+				<include name="jslibMin/" />
+			</patternset>
+		</unzip>
+		<if>
+			<not>
+				<available file="${install.deploy}/${webuiwarname}.war/WEB-INF/classes/features/perc_features.txt" />
+			</not>
+			<then>
+				<!-- create an empty perc features file to eliminate errors in server.log on initial startup -->
+				<touch file="${install.deploy}/${webuiwarname}.war/WEB-INF/classes/features/perc_features.txt" />
+			</then>
+		</if>
+    
+		<mkdir dir="${install.dir}/web_resources/cm/common/js" />
+		<unzip src="${basedir}/../delivery/common/build/dist/perc-common-ui.zip" dest="${install.dir}/web_resources/cm/common/js/">
+			<patternset>
+				<include name="**/perc_common_ui*.js" />
+			</patternset>
+		</unzip>
+		<move file="${install.dir}/web_resources/cm/common/js/perc-common-ui/js/perc_common_ui.js" tofile="${install.dir}/web_resources/cm/common/js/perc_common_ui.js" />
+		<move file="${install.dir}/web_resources/cm/common/js/perc-common-ui/js/perc_common_ui.uncompressed.js" tofile="${install.dir}/web_resources/cm/common/js/perc_common_ui.uncompressed.js" />
+  		<move file="${install.dir}/web_resources/cm/common/js/perc-common-ui/js/perc_common_ui_slim.js" tofile="${install.dir}/web_resources/cm/common/js/perc_common_ui_slim.js" />
+  		<move file="${install.dir}/web_resources/cm/common/js/perc-common-ui/js/perc_common_ui_slim.uncompressed.js" tofile="${install.dir}/web_resources/cm/common/js/perc_common_ui_slim.uncompressed.js" />	
+		<delete dir="${install.dir}/web_resources/cm/common/js/perc-common-ui" />
+    
+		<mkdir dir="${install.dir}/web_resources/categories" />
+		<PSCopy todir="${install.dir}/web_resources/categories" file="${configdir}/Categories/tree.xml" replaceType="never" />
+  	    
+		<!-- Create a directory called 'AnySite' for sharing custom template icons across the sites -->
+		<mkdir dir="${install.dir}/web_resources/templateImages/AnySite" />
+
+    <!-- Rx Applications and Supporting Files-->
+		<PSCopy todir="${install.dir}">
+      <fileset dir="${rxAppSupportdir}"/>
+    </PSCopy>
+    <PSCopy todir="${install.rx_resources}" replaceType="never">
+      <fileset dir="${rx_resources.appfilesdir}"/>
+    </PSCopy>
+
+	<!-- Create custom controls directory -->
+	<mkdir dir="${install.rx_resources}/stylesheets/controls"/>
+        
+        <!-- Copy tinymce from sys_resources to rx_resources -->
+
+		<!-- tinymce -->
+		<unzip src="${extrasdir}/perc_tinymcedist.zip" dest="${install.sys_resources}/tinymce"/>
+		<mkdir dir="${install.sys_resources}/tinymce/config/"/>        
+        <PSCopy todir="${install.rx_resources}/tinymce/config" overwrite="false">
+          <fileset file="${install.sys_resources}/tinymce/config/customer_config_override.json"/>
+        </PSCopy>
+  	
+        <!-- Upgrade rx_ephox.js 
+    <if>
+      <and>
+        <available file="${install.rx_resources}/ephox/rx_ephox.js"/>
+        <equals arg1="${install.type}" arg2="upgrade"/>
+      </and>
+      <then>
+        <PSCopy todir="${install.rx_resources}/ephox" file="${install.sys_resources}/ephox/rx_ephox.js"/>
+      </then>
+    </if>
+
+    <if>
+      <and>
+        <available file="${install.rx_resources}/ephox/editlivejava"/>
+        <equals arg1="${install.type}" arg2="upgrade"/>
+      </and>
+      <then>
+        <PSCopy todir="${install.rx_resources}/ephox/editlivejava">
+          <fileset dir="${install.sys_resources}/ephox/editlivejava"/>
+        </PSCopy>
+      </then>
+    </if>
+     <if>
+      <and>
+        <available file="${install.rx_resources}/ephox/plugins"/>
+        <equals arg1="${install.type}" arg2="upgrade"/>
+      </and>
+      <then>
+       <copy todir="${install.rx_resources}/ephox/plugins">
+     <fileset dir="${install.sys_resources}/ephox/plugins">
+       <include name="**/*.jar"/>
+     </fileset>
+    </copy>
+     </then>
+    </if> 
+    <if>
+      <and>
+        <not>
+          <available file="${install.rx_resources}/ephox/elj_config_dynamic.xml"/>
+        </not>
+        <equals arg1="${install.type}" arg2="upgrade"/>
+      </and>
+      <then>
+        <PSCopy todir="${install.rx_resources}/ephox" file="${install.sys_resources}/ephox/elj_config_dynamic.xml"/>
+      </then>
+    </if>
+-->	
+    <!-- rx_BackupAndCopy webimagefx -->
+    <condition property="WEBIMAGEFX_1104">
+      <PSPropertyCondition
+        compareOperator="=="
+        isCaseSensitive="false"
+        leftSideValue="1,1,0,4"
+        propertyFile="rx_resources/webimagefx/sys_webimagefx.properties"
+        propertyName="cVERSION"/>
+    </condition>
+    <if>
+      <not>
+        <isSet property="WEBIMAGEFX_1104"/>
+      </not>
+      <then>
+        <PSBackupFiles backupFiles="${install.rx_resources}/webimagefx"/>
+        <PSCopy todir="${install.rx_resources}/webimagefx">
+          <fileset dir="${install.sys_resources}/webimagefx"/>
+        </PSCopy>
+      </then>
+    </if>
+
+		<!-- Create rx_resources/default_theme and web_resources/themes/percussion -->
+		<mkdir dir="${install.dir}/web_resources/themes/percussion" />
+		<PSCopy todir="${install.dir}/web_resources/themes/percussion">
+			<fileset dir="${install.rx_resources}/default_theme" />
+		</PSCopy>
+
+	<if>
+			<available file="${install.rx_resources}/default_theme" />
+	<then>
+				<move tofile="${install.dir}/web_resources/themes/percussion/perc_theme.css" file="${install.dir}/web_resources/themes/percussion/theme.css" />
+				<move tofile="${install.dir}/web_resources/themes/percussion/perc_theme.png" file="${install.dir}/web_resources/themes/percussion/theme.png" />
+    </then>
+	</if>
+
+		<!-- AppServer -->
+	  <PSUnzip srcFile="${toolsdir}/JBoss/jboss.zip" destDir="${install.dir}">
+        <neverReplaceFilter>
+          <patternset>
+					<exclude name="**/*-ds.xml" />
+              <exclude name="**/login-config.xml"/>
+              <exclude name="**/server.xml"/>
+					<exclude name="**/jboss-service.xml" />
+              <exclude name="**/uil2-service.xml"/>
+              <exclude name="**/run.bat"/>
+              <exclude name="**/run.sh"/>
+              <exclude name="**/shutdown.bat"/>
+              <exclude name="**/shutdown.sh"/>
+              <exclude name="**/jmx-console-users.properties"/>
+              <exclude name="**/jmx-console-roles.properties"/>
+              <exclude name="**/web-console-users.properties"/>
+              <exclude name="**/web-console-roles.properties"/>
+            </patternset>
+        </neverReplaceFilter>
+      </PSUnzip>
+   
+		<!-- Move web-console properties -->
+	  <if>
+	      <and>
+	        <equals arg1="${install.type}" arg2="upgrade" />
+				<isSet property="VERSION_60" />
+	      </and>
+	    <then>	
+				<move file="${install.deploy}/management/console-mgr.sar/web-console.war/WEB-INF/classes/web-console-roles.properties" tofile="${install.rxconf}/props/web-console-roles.properties" />
+				<move file="${install.deploy}/management/console-mgr.sar/web-console.war/WEB-INF/classes/web-console-users.properties" tofile="${install.rxconf}/props/web-console-users.properties" />
+			</then>
+		</if>
+
+		<!-- JBoss Files -->
+		<PSCopy todir="${install.deploy}" file="${jbossdir}/jms/rx-service.xml" />
+          <PSCopy todir="${install.deploy}/jms">
+            <fileset dir="${jbossdir}/jms">
+              <include name="hsqldb-jdbc2-service.xml"/>
+              <include name="persistence-service.xml"/>
+            </fileset>
+          </PSCopy>
+    <delete>
+      <fileset dir="${install.deploy}/jms">
+        <include name="jbossmq-destinations-service.xml" />
+      </fileset>
+    </delete>
+    <PSCopy todir="${install.rxlib}" flatten="true">
+      <fileset dir="${jdbcdir}">
+        <include name="jtds/jtds.jar"/>
+				<include name="oracle9/ojdbc14.jar" />
+        <include name="DB2/db2jcc.jar"/>
+        <include name="DB2/db2jcc_license_cu.jar"/>
+      </fileset>
+    </PSCopy>
+  	
+		<PSCopy todir="${install.rxlib}">
+			<fileset dir="${toolsdir}/xerces">
+				<include name="xml-apis.jar" />
+				<include name="xercesImpl.jar" />
+	</fileset>
+  </PSCopy>
+  	
+  	<!-- MySQL JDBC driver for development env only -->
+    <if>
+			<isset property="DEVELOPMENT"/>
+      <then>
+        <!-- Copy MySQL driver for development use -->
+        <echo>Copy mysql JDBC driver for development use only</echo>
+        <PSCopy todir="${install.rxlib}">
+          <fileset dir="${jdbcdir}/mysql" includes="*.jar"/>
+        </PSCopy>
+      </then>
+	</if>
+  	
+		<!-- Sprinta -->
+		<if>
+			<isSet property="SPRINTA_CONDITION" />
+			<then>
+				<PSCopy todir="${install.rxlib}" file="${sprintadir}/Sprinta2000.jar" />
+			</then>
+		</if>
+  	
+    <!-- InstallableApps War Files -->
+    <delete file="${install.AllInOne}/Rhythmyx.war"/>
+    <delete file="${install.RemotePublisher}/Rhythmyx.war"/>
+    <mkdir dir="${install.RxApp}"/>
+    <PSCopy todir="${install.RxApp}" file="${builddir}/app/rxapp.ear"/>
+
+    <!-- Deploy rxapp -->
+    <!-- Install rxapp.ear -->
+    <mkdir dir="${install.deploy}/rxapp.ear"/>
+  	<unzip src="${install.RxApp}/rxapp.ear" dest="${install.RxApp}"/>
+    
+    <!-- Backup faces-config.xml -->
+    <move tofile="${install.war}/WEB-INF/config/user/faces/faces-config.xml.bak" file="${install.war}/WEB-INF/config/user/faces/faces-config.xml" failonerror="false"/>
+    
+    <!-- Install rxapp.war -->
+    <PSUnzip srcFile="${install.RxApp}/rxapp.war" destDir="${install.war}">
+      <neverReplaceFilter>
+        <patternset>
+          <exclude name="**/server-beans.xml"/>
+          <exclude name="**/workbench-beans.xml"/>
+          <exclude name="**/RxWebDAVConfigCIFiles.xml"/>
+          <exclude name="**/RxWebDAVConfigCIImages.xml"/>
+          <exclude name="**/RxWebDAVConfigEIFiles.xml"/>
+          <exclude name="**/RxWebDAVConfigEIImages.xml"/>
+          <exclude name="**/rxwebdav-servlet.xml"/>
+          <exclude name="**/UserDispatcher-servlet.xml"/>
+          <exclude name="**/user-security-conf.xml"/>
+        </patternset>
+      </neverReplaceFilter>
+    </PSUnzip>
+	
+		<!-- Always overwrite publisher-beans -->
+        <unzip src="${install.RxApp}/rxapp.war" dest="${install.war}">
+          <patternset>
+            <include name="**/publisher-beans.xml"/>
+          </patternset>
+        </unzip>
+
+    <if>
+      <not>
+        <available file="${install.rxappconfig}/user/spring/touchItemConfig.xml"/>
+      </not>
+      <then>
+        <unzip src="${install.RxApp}/rxapp.war" dest="${install.war}">
+          <patternset>
+            <include name="**/touchItemConfig.xml"/>
+          </patternset>
+        </unzip>
+      </then>
+    </if>
+
+    <!-- Restore faces-config.xml -->
+    <move tofile="${install.webinf}/config/user/faces/faces-config.xml" file="${install.webinf}/config/user/faces/faces-config.xml.bak" failonerror="false"/>
+  	    
+    <!-- Install META-INF Files -->
+    <mkdir dir="${install.ear}/META-INF"/>
+    <move todir="${install.ear}/META-INF" file="${install.RxApp}/META-INF/application.xml"/>
+    <move todir="${install.ear}/META-INF" file="${install.RxApp}/META-INF/MANIFEST.MF"/>
+    
+    <!-- User Pages -->
+    <mkdir dir="${install.war}/user/pages"/>
+    
+		<!-- Install Thirdparty Tools  -->
+		<PSCopy todir="${install.rxapplib}" flatten="true">
+			<fileset dir="build/dist/Tools/thirdpartytools/">
+				<include name="**/*.jar" />
+			</fileset>
+		</PSCopy>
+  	
+    <!-- AppServer/rx/lib Files -->
+    <delete failonerror="false">
+      <fileset dir="${install.rxlib}">
+        <include name="cglib*.jar"/>
+        <include name="asm*.jar"/>
+      </fileset>
+    </delete>
+
+		<PSCopy todir="${install.rxlib}" flatten="true">
+			<fileset dir="${toolsdir}">
+				<include name="Hibernate/hibernate-annotations.jar" />
+				<include name="Hibernate/hibernate-commons-annotations.jar" />
+				<include name="Hibernate/ejb3-persistence.jar" />
+				<include name="Hibernate/hibernate3.jar" />
+				<include name="Ehcache/ehcache-1.4.1.jar" />
+				<include name="Ehcache/jsr107cache-1.0.jar" />
+				<include name="Ehcache/backport-util-concurrent.jar" />
+				<include name="saxon/saxon.jar" />
+				<include name="Commons/commons-collections-3.2.2.jar" />
+				<include name="Commons/commons-httpclient-3.1.jar" />
+				<include name="Commons/commons-logging-1.1.1.jar" />
+				<include name="Quartz/quartz-all-1.6.0.jar" />
+				<include name="Commons/commons-codec-1.11.jar" />
+			</fileset>
+			<fileset dir="${toolsdir}/Spring" excludes="*.zip" />
+			<fileset dir="${toolsdir}/soap" />
+			<fileset dir="${libdir}" includes="rxlogin.jar, rxutils.jar" />
+			<fileset dir="${toolsdir}/Asm" />
+			<fileset dir="${toolsdir}/cglib" />
+			<fileset dir="${toolsdir}/TwelveMonkeysImageIo" excludes="*.zip" />
+		</PSCopy>
+  	
+		<!-- Rhythmyx Jar Files -->
+		<PSCopy todir="${install.rxapplib}" flatten="true">
+			<fileset dir="${libdir}">
+				<include name="rxclient.jar" />
+				<include name="rxserver.jar" />
+				<include name="rxinstall.jar" />
+				<include name="rxmisctools.jar" />
+				<include name="rxagent.jar" />
+				<include name="deploy.jar" />
+				<include name="rxtablefactory.jar" />
+				<include name="percbeans.jar" />
+				<include name="rxi18n.jar" />
+				<include name="help.jar" />
+				<include name="rxextensions.jar" />
+				<include name="rxworkflow.jar" />
+				<include name="rxpublisher.jar" />
+				<include name="serveruicomp.jar" />
+				<include name="htmlConverter.jar" />
+				<include name="rxsimple.jar" />
+				<include name="image-widget-1.0.jar" />
+				<!-- Servlet and Supporting code for the Image Widget -->
+			</fileset>
+			<fileset dir="${toolsdir}">
+				<include name="jndi/*.jar" />
+				<include name="rhino/*.jar" />
+				<include name="servlet/*.jar" />
+				<include name="Tidy/9.0/jtidy-r938.jar" />
+				<include name="JavaHelp/jh.jar" />
+				<include name="jai/lib/*.jar" />
+				<include name="Solr/*.jar" />
+				<include name="Any23/*.jar" />
+				<include name="Jericho-html/jericho-html-1.2.jar" />
+				<include name="HTMLparser/lib/htmlparser.jar" />
+				<include name="regex/jakarta-oro-2.0.8.jar" />
+                <include name="ion-java-1.0.2/*.jar" />
+                <include name="jmespath-java-1.11.405/*.jar" />
+                <include name="regex/jakarta-oro-2.0.8.jar" />
+			</fileset>
+			<fileset dir="${misctoolsdir}/HTTPClient_origianl" includes="HTTPClient.jar" />
+		</PSCopy>
+
+  	
+		<!-- Cleanup Files & Directories -->
+  	<delete quiet="true">
+      <fileset dir="${install.rxlib}">
+        <include name="commons-collections.jar"/>
+      	<include name="commons-collections-3.2.1.jar"/>
+        <include name="commons-httpclient.jar"/>
+        <include name="commons-logging.jar"/>      	
+        <include name="ehcache-1.2.3.jar"/>
+        <include name="aopalliance.jar"/>
+        <include name="jboss-jaxrpc.jar"/>
+        <include name="jboss-saaj.jar"/>
+        <include name="log4j.jar"/>
+        <include name="spring-beans.dtd"/>
+        <include name="spring.ftl"/>
+        <include name="spring.vm"/>
+        <include name="spring-aop.jar"/>
+        <include name="spring-beans.jar"/>
+        <include name="spring-context.jar"/>
+        <include name="spring-core.jar"/>
+        <include name="spring-dao.jar"/>
+        <include name="spring-hibernate3.jar"/>
+        <include name="spring-jdbc.jar"/>
+        <include name="spring-jms.jar"/>
+        <include name="spring-remoting.jar"/>
+        <include name="spring-support.jar"/>
+        <include name="spring-web.jar"/>
+        <include name="spring-mock.jar"/>
+				<include name="commons-codec.jar" />
+        <include name="commons-codec-1.3.jar" />
+      </fileset>
+      <fileset dir="${install.rxapplib}">
+				<include name="commons-collections-3.2.1.jar" />
+        <include name="mail.jar"/>
+        <include name="activation.jar"/>
+        <include name="ehcache-1.2.3.jar"/>
+        <include name="antlr-2.7.6rc1.jar"/>
+        <include name="aopalliance.jar"/>
+        <include name="commons-codec-1.3.jar"/>
+				<include name="jackson-core-asl-1.5.8.jar" />
+				<include name="jackson-jaxrs-1.5.8.jar" />
+				<include name="jackson-mapper-asl-1.5.8.jar" />
+				<include name="jackson-xc-1.5.8.jar" />
+				<include name="jackson-core-asl-1.5.5.jar" />
+				<include name="jackson-jaxrs-1.5.5.jar" />
+				<include name="jackson-mapper-asl-1.5.5.jar" />
+        <include name="aws-java-sdk-1.9.4.jar" />
+        <include name="asm-1.5.3.jar"/>
+        <include name="asm-util-1.5.3.jar"/>
+      	<include name="asm-2.2.2.jar"/>
+      	<include name="asm-attrs-2.2.2.jar"/>
+        <include name="asm-commons-2.2.2.jar"/>
+      	<include name="asm-util-2.2.2.jar"/>
+        <include name="aspectjrt-1.2.1.jar"/>
+        <include name="cglib-2.1.3.jar"/>
+        <include name="commons-httpclient-2.0.2.jar"/>
+		  <include name="commons-jexl-1.0-patched.jar"/>
+        <include name="commons-logging-1.0.4.jar"/>
+		  <include name="commons-logging-1.1.jar"/>
+ 		  <include name="commons-lang-2.1.jar"/>
+ 		  <include name="commons-collections-3.1.jar"/>
+				<include name="commons-collections-testframework-3.1.jar" />
+				<include name="commons-io.jar" />
+        <include name="ehcache-1.1.jar"/>
+		  <include name="jsr173_1.0_api.jar"/>
+        <include name="jsr173_1.0_ri.jar"/>
+		  <include name="jstl.jar"/>
+		<include name="jsch-0.1.40.jar"/>
+		<include name="jsch-0.1.48.jar"/>
+        <include name="junit-3.8.1.jar"/>
+		  <include name="myfaces-api.jar"/>
+		  <include name="myfaces-impl.jar"/>
+      	<include name="servlet.jar"/>
+        <include name="spring-aop.jar"/>
+        <include name="spring-beans.jar"/>
+        <include name="spring-context.jar"/>
+        <include name="spring-core.jar"/>
+        <include name="spring-dao.jar"/>
+        <include name="spring-hibernate3.jar"/>
+        <include name="spring-jdbc.jar"/>
+        <include name="spring-jms.jar"/>
+        <include name="spring-remoting.jar"/>
+        <include name="spring-support.jar"/>
+        <include name="spring-mock.jar"/>
+		<include name="tomahawk.jar"/>
+	    <include name="velocity-1.4.jar"/>
+	    <include name="velocity-1.5.jar"/>
+	    <include name="velocity-tools-1.2.jar"/>
+				<include name="jsoup-1.5.2.jar" />
+      	<include name="jsoup-1.6.3.jar" />
+				<include name="Tidy.jar" />
+      	<!-- cleanup old PDFBox jar files-->
+        <include name="FontBox-0.1.0.jar"/>
+	    <include name="PDFBox-0.7.3.jar"/>
+	    <include name="fontbox-0.8.0-incubating.jar"/>
+	    <include name="jempbox-0.8.0-incubating.jar"/>
+	    <include name="pdfbox-0.8.0-incubating.jar"/>
+	    <include name="fontbox-1.4.0.jar"/>
+	    <include name="jempbox-1.4.0.jar"/>
+	    <include name="pdfbox-1.4.0.jar"/>
+      	
+      	<!-- cleanup old PDFBox dependency jar files-->
+	    <include name="bcmail-jdk13-139.jar"/>
+	    <include name="bcmail-jdk14-139.jar"/>
+	    <include name="bcmail-jdk15-139.jar"/>
+	    <include name="bcmail-jdk16-139.jar"/>
+	    <include name="bcpg-jdk12-139.jar"/>
+	    <include name="bcpg-jdk13-139.jar"/>
+	    <include name="bcpg-jdk14-139.jar"/>
+	    <include name="bcpg-jdk15-139.jar"/>
+	    <include name="bcpg-jdk16-139.jar"/>
+	    <include name="bcprov-jdk12-139.jar"/>
+	    <include name="bcprov-jdk13-139.jar"/>
+	    <include name="bcprov-jdk14-139.jar"/>
+	    <include name="bcprov-jdk15-139.jar"/>
+	    <include name="bcprov-jdk16-139.jar"/>
+	    <include name="bctest-jdk12-139.jar"/>
+	    <include name="bctest-jdk13-139.jar"/>
+	    <include name="bctest-jdk14-139.jar"/>
+	    <include name="bctest-jdk15-139.jar"/>
+	    <include name="bctest-jdk16-139.jar"/>
+	    <include name="bctsp-jdk13-139.jar"/>
+	    <include name="bctsp-jdk14-139.jar"/>
+	    <include name="bctsp-jdk15-139.jar"/>
+	    <include name="bctsp-jdk16-139.jar"/>
+	    <include name="jce-jdk12-139.jar"/>
+	    <include name="jce-jdk13-139.jar"/>
+	    <include name="bcmail-jdk15-145.jar"/>
+	    <include name="bcmail-jdk16-145.jar"/>
+	    <include name="bcpg-jdk15-145.jar"/>
+	    <include name="bcpg-jdk16-145.jar"/>
+	    <include name="bcprov-jdk15-145.jar"/>
+	    <include name="bcprov-jdk16-145.jar"/>
+	    <include name="bctest-jdk15-145.jar"/>
+	    <include name="bctest-jdk16-145.jar"/>
+	    <include name="bctsp-jdk15-145.jar"/>
+	    <include name="bctsp-jdk16-145.jar"/>
+	    <include name="bcprov-ext-jdk16-1.45.jar"/>
+	    <include name="bcprov-ext-jdk16-145.jar"/>
+		<include name="bcprov-jdk15on-159.jar"/>
+      	<include name="bcprov-ext-jdk15on-159.jar"/>
+      	<include name="bcmail-jdk15on-159.jar"/>
+		<include name="bcpg-jdk15on-159.jar"/>
+		<include name="bctls-jdk15on-159.jar"/>
+		<include name="bcpkix-jdk15on-159.jar"/>
+		      	
+				<include name="scala-reflect-2.10.0.jar" />
+				<include name="swagger-annotations_2.10-1.3.0.jar" />
+				<include name="swagger-core_2.10-1.3.0.jar" />
+				<include name="swagger-jaxrs_2.10-1.3.0.jar" />
+				<include name="swagger-jersey-jaxrs_2.10-1.3.0.jar" />
+				<include name="json4s-ast_2.10-3.2.4.jar" />
+				<include name="json4s-core_2.10-3.2.4.jar" />
+				<include name="json4s-ext_2.10-3.2.4.jar" />
+				<include name="json4s-jackson_2.10-3.2.4.jar" />
+				<include name="json4s-native_2.10-3.2.4.jar" />
+																
+				<!-- cleanup old poi jars -->
+	    <include name="poi-3.0.1-FINAL-20070705.jar"/>
+      	<include name="poi-scratchpad-3.0.1-FINAL-20070705.jar"/>
+      	<include name="poi-contrib-3.0.1-FINAL-20070705.jar"/>
+
+				<!-- cleanup unused jspell jar -->
+				<include name="jspellEvolutionServer.jar" />
+      	
+				<!-- war fusion bug, only issue for upgrades from v4.0.1/2/3 to v4.0.4+ -->
+				<include name="google-collections-1.0-rc2.jar" />
+      	
+                <!-- cleanup unused joda time 1.6.2 jar -->
+                <include name="joda-time-1.6.2.jar" />
+				<include name="junit-4.1.jar" />
+				
+				<include name="bcmail-jdk15on-147.jar"/>
+				<include name="bcpg-jdk15on-147.jar"/>
+				<include name="bcpkix-jdk15on-147.jar"/>
+				<include name="bcpprov-jdk15on-147.jar"/>
+				<include name="bctest-jdk15on-147.jar"/>
+        
+        <!-- upgrading aws, remove old jar -->
+        <include name="aws-java-sdk-1.9.4.jar"/>
+        <!-- old http component jars -->
+        <include name="httpclient-4.3.6.jar"/>
+        <include name="httpcore-4.3.3.jar"/>
+        <include name="httpmime-4.3.1.jar"/>
+        <include name="httpcore-4.4.1.jar"/>
+        <include name="httpclient-cache-4.3.6.jar"/>
+        <!-- upgrading s3-sdk  requires newer jackson -->
+        <include name="jackson-annotations-2.1.5.jar"/>
+        <include name="jackson-core-2.1.5.jar"/>
+        <include name="jackson-databind-2.1.5.jar"/>
+        <include name="joda-time-2.5.jar"/>
+        
+      </fileset>
+      <fileset dir="${install.jbossweb}/ROOT.war" includes="index.html"/>
+			<fileset dir="${install.dir}/cm/jslib" includes="perc_membership.js" />
+    </delete>  	
+  	
+
+		<PSCopy todir="${install.rxapplib}">
+			<fileset dir="${ant1.8dir}" includes="*.jar" />
+    </PSCopy>
+    
+    <PSCopy todir="${install.rxlib}" file="${toolsdir}/log4j/log4j.jar"/>
+  	<delete quiet="true" dir="${install.deploy}/jboss-ws4ee.sar"/>
+    
+		<!-- CMS-1903 Remove files to avoid jboss Invoker Vulnerability -->
+  	<delete quiet="true" dir="${install.deploy}/http-invoker.sar"/>
+    <delete quiet="true" dir="${install.deploy}/jmx-console.war"/>
+    <delete quiet="true" dir="${install.deploy}/management"/>
+
+		<replace file="${install.dir}/AppServer/server/rx/deploy/jms/uil2-service.xml" token="${jboss.bind.address}" value="127.0.0.1"/>
+		<replace file="${install.dir}/AppServer/server/rx/conf/jboss-service.xml" token="${jboss.bind.address}" value="127.0.0.1"/>
+
+		<!-- remove unused jspell web app-->
+		<delete quiet="true" dir="${install.deploy}/jspellEvolution.war" />
+  	
+    <!-- Rhythmyx Index Page -->
+    <PSCopy todir="${install.jbossweb}/ROOT.war" file="${eardir}/jboss-4.0/tomcat/ROOT.war/index.jsp"/>
+
+    <!-- JBoss Files Upgrade 5.X / New Install -->
+    <if>
+      <or>
+        <and>
+          <equals arg1="${install.type}" arg2="upgrade"/>
+          <isSet property="VERSION_50_TO_57"/>
+        </and>
+        <equals arg1="${install.type}" arg2="new"/>
+      </or>
+      <then>
+				<delete file="${install.rxconf}/jboss-log4j.xml" />
+        <PSCopy todir="${install.rxconf}">
+          <fileset dir="${jbossdir}/conf"/>
+        </PSCopy>
+        <delete file="${install.rxconf}/jboss-service.xml"/>
+        <move tofile="${install.rxconf}/jboss-service.xml" file="${install.rxconf}/jboss-service-tokens.xml"/>
+        <PSCopy todir="${install.deploy}" file="${jbossdir}/datasources/rx-ds.xml"/>
+        <PSCopy todir="${install.deploy}/jms" file="${jbossdir}/jms/uil2-service.xml"/>
+        <PSCopy todir="${install.jbossweb}" file="${jbossdir}/tomcat/server.xml"/>
+      </then>
+			<else>
+				<!-- Update log4j.xml -->
+				<PSCopy todir="${install.rxconf}" file="${jbossdir}/conf/log4j.xml" />
+				<!-- Update rewrite.properties -->
+				<PSCopy todir="${install.rxconf}/jboss.web/localhost" file="${jbossdir}/conf/jboss.web/localhost/rewrite.properties" />
+			</else>
+    </if>
+
+    <!-- Configure Datasource -->
+    <if>
+      <equals arg1="${install.type}" arg2="new"/>
+      <then>
+      	<echo>TODO Need perc-ds file added *************************************************************</echo>
+      	<touch mkdirs="true" file="C:\DevEnv\Installs\dev\jetty\base\etc\perc-ds.xml"/>
+        <PSConfigureDatasource name="${ds.name}"/>
+      </then>
+    </if>
+
+    <!-- Delete JBoss temp directories on upgrade -->
+    <if>
+      <equals arg1="${install.type}" arg2="upgrade"/>
+      <then>
+        <delete dir="${install.rx}/tmp" quiet="true"/>
+        <delete dir="${install.rx}/work" quiet="true"/>
+      </then>
+    </if>
+
+    <!-- Configure Port -->
+    <if>
+      <equals arg1="${install.type}" arg2="new"/>
+      <then>
+        <PSConfigurePort serverPort="${port}"/>
+      </then>
+    </if>
+
+    <!-- Linux Files -->
+    <if>
+      <equals arg1="${os}" arg2="linux"/>
+      <then>
+        <delete>
+          <fileset dir="${install.AppServer}/bin" includes="*.bat"/>
+        </delete>
+      </then>
+    </if>
+
+    <!-- Solaris Files -->
+    <if>
+      <equals arg1="${os}" arg2="solaris"/>
+      <then>
+      	<delete>
+          <fileset dir="${install.AppServer}/bin" includes="*.bat"/>
+        </delete>
+      </then>
+    </if>
+
+    <!-- Windows Files -->
+    <if>
+      <equals arg1="${os}" arg2="windows"/>
+      <then>
+        <delete>
+          <fileset dir="${install.AppServer}/bin" includes="*.sh"/>
+        </delete>
+      </then>
+    </if>
+
+    <!-- Unix Files run/shutdown New Install / Upgrade 5.X -->
+    <if>
+      <and>
+        <or>
+          <equals arg1="${os}" arg2="linux"/>
+          <equals arg1="${os}" arg2="solaris"/>
+        </or>
+        <or>
+          <equals arg1="${install.type}" arg2="new"/>
+          <and>
+            <equals arg1="${install.type}" arg2="upgrade"/>
+            <isSet property="VERSION_50_TO_57"/>
+          </and>
+        </or>
+      </and>
+      <then>
+        <move tofile="${install.AppServer}/bin/jboss_run.sh" file="${install.AppServer}/bin/run.sh"/>
+        <move tofile="${install.AppServer}/bin/jboss_shutdown.sh" file="${install.AppServer}/bin/shutdown.sh"/>
+        <PSCopy todir="${install.AppServer}/bin">
+          <fileset dir="${releasedir}/installer/unix" includes="run.sh,shutdown.sh"/>
+        </PSCopy>
+        <PSCopy todir="${install.dir}" file="${releasedir}/installer/unix/StopServer.sh"/>
+      </then>
+    </if>
+
+    <!-- Windows Files run/shutdown New Install / Upgrade 5.X -->
+    <if>
+      <and>
+        <equals arg1="${os}" arg2="windows"/>
+        <or>
+          <equals arg1="${install.type}" arg2="new"/>
+          <and>
+            <equals arg1="${install.type}" arg2="upgrade"/>
+            <isSet property="VERSION_50_TO_57"/>
+          </and>
+        </or>
+      </and>
+      <then>
+        <move tofile="${install.AppServer}/bin/jboss_run.bat" file="${install.AppServer}/bin/run.bat"/>
+        <move tofile="${install.AppServer}/bin/jboss_shutdown.bat" file="${install.AppServer}/bin/shutdown.bat"/>
+        <PSCopy todir="${install.AppServer}/bin">
+          <fileset dir="${releasedir}/installer/windows" includes="run.bat,shutdown.bat,shutdown_service.bat"/>
+        </PSCopy>
+      </then>
+    </if>
+
+    <!-- Datasource Converter -->
+    <PSCopy todir="${install.dir}">
+      <fileset dir="${toolsdir}/DatasourceConverter"/>
+    </PSCopy>
+
+		<!-- Derby scripts -->
+		<var name="os.bitness" value="unknown" />
+		<if>
+			<equals arg1="${os}" arg2="windows" />
+			<then>
+				<exec dir="." executable="cmd" outputproperty="command.ouput">
+					<arg line="/c SET ProgramFiles(x86)" />
+				</exec>
+				<if>
+					<contains string="${command.ouput}" substring="Program Files (x86)" />
+					<then>
+						<var name="os.bitness" value="64" />
+					</then>
+					<else>
+						<var name="os.bitness" value="32" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<available file="${install.dir}/Repository" />
+			<then>
+				<if>
+					<equals arg1="${os}" arg2="windows" />
+					<then>
+						<if>
+							<equals arg1="${os.bitness}" arg2="64" />
+							<then>
+								<PSCopy todir="${install.dir}">
+									<fileset dir="${toolsdir}/Derby/scripts/JRE64">
+										<exclude name="**/*.sh" />
+									</fileset>
+								</PSCopy>
+							</then>
+						</if>
+						<if>
+							<equals arg1="${os.bitness}" arg2="32" />
+							<then>
+								<PSCopy todir="${install.dir}">
+									<fileset dir="${toolsdir}/Derby/scripts">
+										<exclude name="**/*.sh" />
+										<include name="DatabaseShutdown.bat" />
+										<include name="DatabaseStartup.bat" />
+									</fileset>
+								</PSCopy>
+							</then>
+						</if>
+					</then>
+				</if>
+				<if>
+					<or>
+						<equals arg1="${os}" arg2="linux" />
+						<equals arg1="${os}" arg2="solaris" />
+					</or>
+					<then>
+						<PSCopy todir="${install.dir}">
+							<fileset dir="${toolsdir}/Derby/scripts">
+								<exclude name="**/*.bat" />
+							</fileset>
+						</PSCopy>
+					</then>
+				</if>
+			</then>
+		</if>
+
+		<!-- swapping 64 bit shutdown scripts -->
+		<if>
+			<and>
+				<equals arg1="${os.bitness}" arg2="64" />
+			</and>
+			<then>
+				<PSCopy todir="${install.AppServer}/bin">
+					<fileset dir="${releasedir}/installer/windows/JRE64" includes="shutdown.bat,shutdown_service.bat" />
+				</PSCopy>
+			</then>
+		</if>
+    <!-- Servlet Wars -->
+    <delete dir="${install.deploy}/jboss-hibernate.deployer"/>
+
+    <!-- InlineLinkConverter Replace Files -->
+    <mkdir dir="${install.InlineLinkConverter}"/>
+    <PSCopy tofile="${install.InlineLinkConverter}/inlinelinkconverter.xsl" file="${toolsdir}/InlineLinkConverter/inlinelinkconverter.xsl"/>
+    <PSCopy tofile="${install.InlineLinkConverter}/InlineLinkConverter.jar" file="${libdir}/InlineLinkConverter.jar"/>	    	    
+  
+    <!-- InlineLinkConverter Do Not Replace Files -->
+    <PSCopy todir="${install.InlineLinkConverter}" replaceType="never">
+      <fileset dir="${toolsdir}/InlineLinkConverter" includes="inlinelinkconverter.properties,variantmap.xml"/>
+    </PSCopy>
+        
+    <!-- VariantConverter Files -->
+    <mkdir dir="${install.VariantConverter}"/>
+    <PSCopy todir="${install.VariantConverter}">
+      <fileset dir="${toolsdir}/Converters/src/com/percussion/converters/variantconverter">
+        <include name="variantsconverter.xsl"/>
+        <include name="variantsconverter.properties"/>
+      </fileset>
+    </PSCopy>
+    <PSCopy todir="${install.VariantConverter}" file="${libdir}/VariantConverter.jar"/>
+        
+    <!-- VariantConverter Unix Files -->
+    <if>
+      <or>
+        <equals arg1="${os}" arg2="linux"/>
+        <equals arg1="${os}" arg2="solaris"/>
+      </or>
+      <then>
+        <PSCopy todir="${install.VariantConverter}" file="${releasedir}/installer/unix/RhythmyxVariantConverter.sh"/>
+      </then>
+    </if>
+    
+    <!-- Install the patch install toolkit -->
+	<PSInstallPatchToolkit/>
+
+    <!-- CI_Home -->
+    <mkdir dir="${install.deploy}/CI_Home.war/resources"/>
+    <PSCopy todir="${install.deploy}/CI_Home.war/resources">
+      <fileset dir="${fastforward.coredir}/Content/Applications/web_resources/ApplicationFiles/corporate_investments"/>
+    </PSCopy>
+    <PSCopy todir="${install.deploy}/CI_Home.war/WEB-INF" file="${release.tomcatdir}/Tomcat/webapps/CI_Home/WEB-INF/web.xml"/>
+      
+    <!-- EI_Home -->
+    <mkdir dir="${install.deploy}/EI_Home.war/resources"/>
+    <PSCopy todir="${install.deploy}/EI_Home.war/resources">
+      <fileset dir="${fastforward.coredir}/Content/Applications/web_resources/ApplicationFiles/enterprise_investments"/>
+    </PSCopy>
+    <PSCopy todir="${install.deploy}/EI_Home.war/WEB-INF" file="${release.tomcatdir}/Tomcat/webapps/EI_Home/WEB-INF/web.xml"/>
+    
+    <!-- publogs -->
+    <mkdir dir="${install.deploy}/publogs.war/WEB-INF"/>
+    <PSCopy todir="${install.deploy}/publogs.war/WEB-INF" file="${release.tomcatdir}/Tomcat/webapps/publogs/WEB-INF/web.xml"/>
+    
+    <!-- jboss-web -->
+    <PSCopy todir="${install.jbossweb}/conf" file="${release.tomcatdir}/Tomcat/webapps/jboss-web/conf/web.xml"/>
+  	<mkdir dir="${install.jbossweb}/myfaces-lib"/>
+    <PSCopy todir="${install.jbossweb}/myfaces-lib">
+      <fileset dir="${toolsdir}/Commons">
+        <include name="commons-beanutils-1.7.0.jar"/>
+        <include name="commons-digester-1.8.jar"/>
+        <include name="commons-el-1.0.jar"/>
+        <include name="commons-lang-2.4.jar"/>
+      </fileset>
+      <fileset dir="${toolsdir}/JSF">
+        <include name="myfaces-api-1.1.5.jar"/>
+        <include name="myfaces-impl-1.1.5.jar"/>
+      </fileset>
+    </PSCopy>
+    
+    <!-- Install packages -->
+    <antcall target="installPackages" inheritrefs="true"/>
+
+    <!-- runTd tool -->
+    <if>
+      <equals arg1="${os}" arg2="windows"/>
+      <then>
+        <PSCopy todir="${install.AppServer}/bin" file="${release.tomcatdir}/TomcatWindowsFiles/bin/runTd.bat"/>
+      </then>
+    </if>
+    
+    <if>
+      <or>
+        <equals arg1="${os}" arg2="linux"/>
+        <equals arg1="${os}" arg2="solaris"/>
+      </or>
+      <then>
+        <PSCopy todir="${install.AppServer}/bin" file="${release.tomcatdir}/TomcatSolarisFiles/bin/runTd.sh"/>
+      </then>
+    </if>
+    
+    <!-- Database Publisher -->
+    <!-- DTD -->
+    <PSCopy todir="${install.DTD}">
+      <fileset dir="${basedir}/cms/dbpublisher/dtd" includes="sys_DatabasePublisher.dtd, aliasmap.dtd"/>
+      <fileset dir="${toolsdir}/TableFactory/dtd" includes="sys_Tabledata.dtd, sys_Tabledef.dtd"/>
+    </PSCopy>
+       
+    <!-- Scheduled Publishing Scripts -->
+    <PSCreateScheduledPublishingScript scheduledPublishingFile="ScheduledPublication"/>
+    
+    <!-- Brand Product -->
+    <PSBrandProduct/>
+    
+    <!-- .ja Files -->
+    <PSJaFiles/>
+    
+    <!-- Solutions -->
+    <mkdir dir="${basedir}/Temp"/>
+    <unzip src="${basedir}/Solutions/soln-linkback-dist.zip" dest="${basedir}/Temp"/>
+    <ant inheritAll="false" antfile="${basedir}/Temp/Solution-LinkBack/deploy.xml">
+        <property name="rhythmyx.home" value="${install.dir}"/>
+    </ant>
+		<delete dir="${basedir}/Temp" />
+  	
+		<if>
+			<equals arg1="${INSTALL_PROJECTS}" arg2="yes" />
+			<then>
+				<!-- Install projects -->
+				<antcall target="installProjects" />
+			</then>
+		</if>
+
+       <!-- replace ephox files if its an upgrade -->
+       <if>
+         <and>
+           <equals arg1="${install.type}" arg2="upgrade"/>
+           <isSet property="VERSION_67_TO_710"/>
+         </and>
+       <then>
+         <antcall target="updateEphox" inheritrefs="true"/>
+       </then>
+       </if>  
+  </target>
+  
+    <target name="updateEphox">
+       <PSCopy todir="${install.dir}/rx_resources/ephox/plugins" file="${builddir}/lib/rxEphoxExtensions.jar"/>
+  </target>
+  
+	<!-- Projects Installer sequence -->
+	<target name="installProjects">
+		<property name="tempDir" value="${basedir}/Temp" />
+		<mkdir dir="tempDir" />
+		<unzip src="${basedir}/../projects/cmui/build/packages/perc-cmui.zip" dest="${tempDir}" />
+		<ant inheritAll="false" antfile="${basedir}/Temp/perc-cmui/install.xml">
+			<property name="rhythmyx.home" value="${install.dir}" />
+		</ant>
+		<delete dir="${tempDir}" />
+  </target>
+  
+  <!-- Post install sequence -->
+  <target name="postInstall">
+          	    		
+    <!-- RemoveFiles -->
+    <delete dir="${install.dir}/JRE/ObjectStore"/>
+		<delete>
+			<fileset dir="${install.lib}">
+				<include name="xml-apis.jar" />
+				<include name="xercesImpl.jar" />
+				<include name="log4j.jar" />
+			</fileset>
+		</delete>
+  	
+		<!-- Deploy robots.txt -->
+		<PSCopy todir="${install.jbossweb}/ROOT.war" failonerror="false" file="installResources/robots.txt" />
+  	
+    <!-- Docs HelpSet File -->
+    <PSCopy todir="${install.Docs}/Rhythmyx/Business_Users" failonerror="false">
+      <fileset dir="${releaseddocsdir}/Business_Users" includes="map.jhm,Content_Explorer_Help.hs"/>
+    </PSCopy>
+    <PSCopy todir="${install.Docs}/Rhythmyx/Server_Administrator" failonerror="false">
+      <fileset dir="${releaseddocsdir}/Server_Administrator" includes="map.jhm,Rhythmyx_Server_Administrator.hs"/>
+    </PSCopy>
+    <PSCopy todir="${install.Docs}/Rhythmyx/Server_Properties_Editor" failonerror="false">
+      <fileset dir="${releaseddocsdir}/Server_Properties_Help" includes="map.jhm,Server_Properties_Help.hs"/>
+    </PSCopy>
+    <PSCopy todir="${install.Docs}/Rhythmyx/Word_Connector" failonerror="false">
+      <fileset dir="${releaseddocsdir}/Word_Connector" includes="Rhythmyx_Word_Connector_Help.chm"/>
+    </PSCopy>
+  
+  	<PSCopy todir="${install.dir}/JRE/lib/security" failonerror="false" replaceType="always">
+  	     <fileset dir="installResources/JRE_Files" includes="*.jar,*.security"/>
+  	</PSCopy>
+  		
+  	<PSCopy todir="${install.dir}/JRE/lib/ext" failonerror="false">
+  	     <fileset dir="${toolsdir}/BouncyCastle" includes="bctls-jdk15on-162.jar,bcprov-ext-jdk15on-162.jar,bcprov-jdk15on-162.jar,bcpkix-jdk15on-162.jar"/>
+  	</PSCopy>
+  	     	
+	<PSCopy todir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib" failonerror="false">
+	     <fileset dir="${toolsdir}/BouncyCastle" includes="*.jar"/>
+	</PSCopy>     	
+  	     	
+  	
+  	
+  	      <path id="ant2.deps">
+  	        <fileset dir="${install.rxlib}" includes="*.jar"/>  
+  	        <fileset dir="${install.rxapplib}" includes="*.jar"/>  	    
+  	      </path>
+  	
+          <echo>*********** Setting classloader for Install Extensions *******************</echo>
+  	      <classloader classpathref="ant2.deps"/>
+  	     <!-- Exits -->
+  	    <PSInstallExtensions srcDir="${basedir}/Exits" destDir="Exits" extXml="${basedir}/Exits/Java/Extensions.xml"/>
+  	    
+  	    <!-- Workflow Exits -->
+  	    <PSInstallExtensions srcDir="${basedir}/workflow/Exits" destDir="WorkflowExits" extXml="${basedir}/workflow/Exits/Java/Extensions.xml"/>
+  	    
+  	    <!-- Publisher Exits -->
+  	    <PSInstallExtensions srcDir="${basedir}/cms/publisher/Exits" destDir="PublisherExits" extXml="${basedir}/cms/publisher/Exits/Java/Extensions.xml"/>
+    	
+    	
+  </target>
+
+  <!-- Installs the Percussion package files and system package configuration files -->
+  <target name="installPackages">
+    <!-- Packages -->
+    <mkdir dir="${install.dir}/Packages/Percussion"/>
+    <PSCopy todir="${install.dir}/Packages/Percussion" >
+			<fileset dir="${packagesdir}" includes="*.ppkg" excludes="perc.example.ppkg,perc.exshared.ppkg,perc.Test.ppkg,perc.widgets.lists.ppkg" />
+		</PSCopy>
+
+		<!-- Packages for development only -->
+		<if>
+			<isset property="DEVELOPMENT" />
+			<then>
+				<PSCopy todir="${install.dir}/Packages/Percussion">
+					<fileset dir="${packagesdir}" includes="perc.Test.ppkg,perc.widgets.lists.ppkg" />
+    </PSCopy>
+			</then>
+		</if>
+
+    <!-- System package config files -->
+    <mkdir dir="${install.Packages}/ConfigDefs"/>
+    <mkdir dir="${install.Packages}/DefaultConfigs"/>
+    <mkdir dir="${install.Packages}/LocalConfigs"/>
+
+    <!-- Install the config def.  This file will be overwritten on upgrade-->
+    <PSCopy todir="${install.Packages}/ConfigDefs" file="${pkg.configdir}/perc.SystemObjects_configDef.xml"/>
+
+    <property name="defaultConfig" value="${install.Packages}/DefaultConfigs/perc.SystemObjects_defaultConfig.xml"/>
+    <property name="localConfig" value="${install.Packages}/LocalConfigs/perc.SystemObjects_localConfig.xml"/>
+    <if>
+      <equals arg1="${install.type}" arg2="new"/>
+      <then>
+        <!-- Install the default config -->
+        <PSCopy tofile="${defaultConfig}" file="${pkg.configdir}/perc.SystemObjects_defaultConfig.xml"/>
+
+        <!-- Install the appropriate version of the local config for the type of installation, w/ or w/o fastforward -->
+        <if>
+          <equals arg1="${fastforward}" arg2="yes"/>
+          <then>
+            <PSCopy tofile="${localConfig}" file="${pkg.configdir}/perc.SystemObjects_defaultConfig_FF.xml"/>
+          </then>
+          <else>
+            <PSCopy tofile="${localConfig}" file="${defaultConfig}"/>
+          </else>
+        </if>
+      </then>
+      <else>
+        <!-- For upgrades, if the default or local config does not exist, then the empty version of the default config will be -->
+        <!-- installed.  If either the default or local config is not empty, then the default config will be overwritten.      -->
+        <if>
+          <not>
+            <available file="${defaultConfig}"/>
+          </not>
+          <then>
+            <PSCopy tofile="${defaultConfig}" file="${pkg.configdir}/perc.SystemObjects_defaultConfig_Empty.xml"/>
+          </then>
+        </if>
+        <if>
+          <not>
+            <available file="${localConfig}"/>
+          </not>
+          <then>
+            <PSCopy tofile="${localConfig}" file="${pkg.configdir}/perc.SystemObjects_defaultConfig_Empty.xml"/>
+          </then>
+        </if>
+
+        <if>
+          <or>
+            <not>
+              <PSPkgConfigFileEmptyCondition relativeFilePath="rxconfig/Packages/DefaultConfigs/perc.SystemObjects_defaultConfig.xml"/>
+            </not>
+            <not>
+              <PSPkgConfigFileEmptyCondition relativeFilePath="rxconfig/Packages/LocalConfigs/perc.SystemObjects_localConfig.xml"/>
+            </not>
+          </or>
+          <then>
+            <PSCopy tofile="${defaultConfig}" file="${pkg.configdir}/perc.SystemObjects_defaultConfig.xml"/>
+          </then>
+        </if>
+				<PSCopy tofile="${localConfig}" file="${defaultConfig}" />
+      </else>
+    </if>
+  </target>      
+
+</project>

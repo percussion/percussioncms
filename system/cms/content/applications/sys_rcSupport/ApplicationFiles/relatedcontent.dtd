@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (variant, type )>
+<!ELEMENT type (#PCDATA)>
+<!ATTLIST  type typeid CDATA #REQUIRED>
+<!ELEMENT variant (#PCDATA)>
+<!ATTLIST  variant variantid CDATA #REQUIRED>
+<!ATTLIST  item title CDATA #REQUIRED>
+<!ATTLIST  item itemcontentid CDATA #REQUIRED>
+<!ELEMENT slot (item* )>
+<!ATTLIST  slot slotediturl CDATA #IMPLIED>
+<!ATTLIST  slot slotname CDATA #IMPLIED>
+<!ATTLIST  slot name CDATA #REQUIRED>
+<!ATTLIST  slot slotid CDATA #REQUIRED>
+<!ELEMENT relatedcontent (slot* )>
+<!ATTLIST  relatedcontent contentid CDATA #REQUIRED>
+<!ATTLIST  relatedcontent revision CDATA #REQUIRED>

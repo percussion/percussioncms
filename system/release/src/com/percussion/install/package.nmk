@@ -1,0 +1,200 @@
+ ############################################################################
+ #
+ # package.nmk for package com.percussion.install
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.install
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+	PSNameSpacesUtilTest \
+	PSUpgradePluginConvertCommunityVisibilityTest \
+	PSCreateMenuVisibilityAclsTest \
+	PSUpgradePluginAddMembershipDeliveryServerTest \
+	PSUpgradePluginFixWFNotificationTest \
+	PSUpgradePluginAddDesignerRoleTest \
+	PSUpgradePluginUpdateCategoryTreeTest \
+	PSUpgradePluginUpdateWFNotificationTest \
+	PSUpgradePluginWidgetBuilderWidgetTransformTest \
+	RxFileManagerTest
+	
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+	EXCLUDED_CLASSES = \
+		$(EXCLUDED_CLASSES)
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES = \
+		$(EXCLUDED_CLASSES) \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = \
+Code \
+CodeException \
+InstallUtil \
+InstallUtilTest \
+IPSUpgradePlugin \
+IPSUpgradeConfig \
+IPSUpgradeModule \
+IRxConvert \
+PSLogger \
+PSNameSpacesUtil \
+PSSpringUpgradePluginBase \
+PSSpringUpgradePluginInit \
+PSSystem \
+PSUpgradeAddFeedPostEditionTasks \
+PSUpgradeAddFlushPublicationCachePostEditionTask \
+PSUpgradePluginMoveConfigFiles \
+PSUpgradeDbAndHtmlAndXslFilesForSlotNames \
+PSUpgradeConfig \
+PSUpgradeModule \
+PSUpgradePluginFileOperations \
+PSUpgradePluginAddAmazonS3DeliveryTypes \
+PSUpgradePluginAddDefaultDisplayFormatValues \
+PSUpgradePluginAddMembershipDeliveryServer \
+PSUpgradePluginAddThirdPartyDeliveryServer \
+PSUpgradePluginAddDesignDisplayFormatValues \
+PSUpgradePluginAddWorkflowColumnDefaultDisplayFormat \
+PSUpgradePluginAddDocTypeCEDef \
+PSUpgradePluginAddDocTypeServerBeans \
+PSUpgradePluginAddEktronToXSL \
+PSUpgradePluginAddIncrementalPublishingConfig \
+PSUpgradePluginAddNewVersionToSiteExplorer \
+PSUpgradePluginAddSiteFolderAssemblyCtx \
+PSUpgradePluginCheckDuplicateKeysInTables \
+PSUpgradePluginCleanContentStatus \
+PSUpgradePluginCleanLocationSchemes \
+PSUpgradePluginCommunityViewRelation \
+PSUpgradePluginComponentPropertyTable \
+PSUpgradePluginConvertAppsToUseRxDual \
+PSUpgradePluginConvertCommunityVisibility \
+PSUpgradePluginAddDesignerRole \
+PSUpgradePluginAddWorkflowPublishTransitions \
+PSUpgradePluginConvertContentTypes \
+PSUpgradePluginCopyImagesToLocales \
+PSUpgradePluginCreateCtWfAssociations \
+PSUpgradePluginCreateServerAndServerProperties \
+PSUpgradePluginDeliveryServers \
+PSUpgradePluginDeliveryServersBase \
+PSUpgradePluginFFrxSupportpub \
+PSUpgradePluginFixFormUrl \
+PSUpgradePluginFixGlobalTemplateNames \
+PSUpgradePluginFixWFNotification \
+PSUpgradePluginFixWidgetConfigValues \
+PSUpgradePluginGeneralTables \
+PSUpgradePluginItemFilters \
+PSUpgradePluginLocationSchemeTable \
+PSUpgradePluginModifyColumnBase \
+PSUpgradePluginMoveCatalogerConfigs \
+PSUpgradePluginMgr \
+PSUpgradePluginMigrateControlDependencies \
+PSUpgradePluginModifyCabFileName \
+PSUpgradePluginNextNumberFixup \
+PSUpgradePluginPsxCTTemplate \
+PSUpgradePluginPublisherBeans \
+PSUpgradePluginPublishing \
+PSUpgradePluginRelationship \
+PSUpgradePluginRelationshipProperties \
+PSUpgradePluginRemoveDocTypeFromDTDs \
+PSUpgradePluginRxPubDocs \
+PSUpgradePluginSpaceToUnderscore \
+PSUpgradePluginSpringBeans \
+PSUpgradePluginUniqueNames \
+PSUpgradePluginUniqueContextSchemeName \
+PSUpgradePluginUpdateCategoryTree \
+PSUpgradePluginUpdateConnectors \
+PSUpgradePluginUpdateExtensions \
+PSUpgradePluginUpdateWFNotification \
+PSUpgradePluginUpgradeKeywords \
+PSUpgradePluginUpdateWorkflowAssignmentType \
+PSUpgradePluginUpdateWorkflowTransitions \
+PSUpgradePluginAddLicenseMonitorToDashboard \
+PSUpgradePluginWidgetBuilderWidgetTransform \
+RxAclManager \
+RxAppConverter \
+RxApplicationManager \
+RxDesignerOnlyPostInstaller \
+RxFileManager \
+RxInstallerProperties \
+RxLogTables \
+RxUpgrade \
+RxUpgradeLog \
+PSCheckSum \
+PSUpgradeBackupTable \
+PSBrandCodeUtil \
+PSBrandCodeMapVersion \
+PSBrandCodeElementList \
+IPSBrandCodeMap \
+PSBrandCodeData \
+PSBrandCodeMap \
+PSBrandCodeElement \
+PSCleanup \
+PSJdbcTableMapper \
+PSJdbcTransitionRoles \
+PSOraConvertLONG2LOBTool \
+PSJdbcUniqueColumn \
+PSJdbcNextNumberColumn \
+PSJdbcNonNullColumn \
+PSAddWordControlToRxTemplates \
+PSJarFilter \
+PSJarFilterTest \
+PSAssemblyUpgrade \
+PSPluginResponse \
+PSPreUpgradePluginRelationship \
+PSPreUpgradePluginLocalCreds \
+PSPreUpgradePluginCustomProperty \
+PSPreUpgradePluginDeprecatedSysApps \
+PSPreUpgradePluginCheckOracleVersion \
+PSPreUpgradePluginDeliveryType \
+PSCreateMenuVisibilityAcls \
+PSConnectionObject \
+PSPreUpgradePluginCheckCM1Running \
+Cm1InstallUtilHarness \
+OSEnum 
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = 
+
+
+#
+# Properties files
+#
+PROPERTIES = \
+RxInstaller.properties
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# XML files
+#
+XML = \
+  ComponentMap.xml
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES) \
+	$(XML)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)

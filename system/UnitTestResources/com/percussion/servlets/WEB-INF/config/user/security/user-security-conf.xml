@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityConfiguration forceSecureLogin="yes" >
+   <!-- basic requests -->
+   <path authType="basic">/user/basic*</path>
+   <path authType="anonymous">/user/anon*</path>
+   <path authType="anonymous">/user/*anon.jsp</path>
+   <path authType="basic">/user/*basic.jsp</path>
+</securityConfiguration>

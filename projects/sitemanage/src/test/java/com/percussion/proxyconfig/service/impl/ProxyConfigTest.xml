@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<ProxyConfigurations>
+	<ProxyConfig>
+        <host>localhost</host>
+        <port>1531</port>
+        <user>admin1</user>
+        <password encrypted="false">demo</password>
+        <protocols>
+            <protocol>HTTP</protocol>
+            <protocol>HTTPS</protocol>
+        </protocols>
+    </ProxyConfig>
+	<ProxyConfig>
+        <host>percussion.com</host>
+        <port>1531</port>
+        <user>admin2</user>
+        <password encrypted="false">demo</password>
+        <protocols>
+            <protocol>LDAP</protocol>
+        </protocols>
+    </ProxyConfig>
+	<ProxyConfig>
+        <host>google.com</host>
+        <port>1622</port>
+        <user>admin2</user>
+        <password>demo</password>
+        <protocols>
+            <protocol>LDAPS</protocol>
+        </protocols>
+    </ProxyConfig>        
+</ProxyConfigurations>

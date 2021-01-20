@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT slot (relatedlinks, componentname, cancelurl, contentlookupurl, slotlookupurl, editslot* )>
+<!ELEMENT editslot (slotid, slottypeid, variant*, addvariant )>
+<!ELEMENT addvariant (#PCDATA)>
+<!ELEMENT variant (contentname, slotdelete, contentid, variantid, variantname )>
+<!ELEMENT variantname (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT slotdelete (#PCDATA)>
+<!ELEMENT contentname (#PCDATA)>
+<!ELEMENT slottypeid (#PCDATA)>
+<!ELEMENT slotid (#PCDATA)>
+<!ELEMENT slotlookupurl (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

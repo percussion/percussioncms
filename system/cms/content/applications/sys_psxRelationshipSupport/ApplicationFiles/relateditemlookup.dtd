@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (langstring, id )>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT langstring (#PCDATA)>
+<!ELEMENT relateditemlookup (item* )>

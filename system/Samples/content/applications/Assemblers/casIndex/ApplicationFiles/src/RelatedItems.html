@@ -1,0 +1,104 @@
+<!-- begin XSL -->
+<xsl:output method="xml" omit-xml-declaration="yes" />
+
+<xsl:template match="rxslot[@template='Zigzag Links' and not(linkurl)]" mode="rxslot">
+    <xsl:comment>Empty ZigZag Links Slot</xsl:comment>
+</xsl:template>
+
+<xsl:template match="rxslot[@template='Zigzag Links' and linkurl]" mode="rxslot" >
+    <xsl:comment>Start ZigZag Links Template</xsl:comment>
+    <table width="300" border="1">
+       <xsl:for-each select="linkurl[(position() mod 2) = 1]" >
+          <tr>
+            <td align="left">
+              <xsl:copy-of select="document(Value/@current)/*/body/*" />
+            </td>
+          </tr>
+          <xsl:apply-templates select="following-sibling::linkurl[1]" mode="rightlink" />
+       </xsl:for-each>
+    </table>
+    <xsl:comment>End ZigZag Links Template</xsl:comment>
+</xsl:template>
+
+<xsl:template match="linkurl" mode="rightlink">
+   <tr>
+     <td align="right">
+        <xsl:copy-of select="document(Value/@current)/*/body/*" />
+     </td>
+   </tr>
+</xsl:template>
+
+<!-- end XSL -->
+<html>
+<head>
+<title>Related item Snippet</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td>
+			<table width="750" border="0" cellspacing="0" cellpadding="0" align="left">
+				<tr>
+					<td width="100">&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="750" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="65%" valign="top">
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr valign="top">
+								<td colspan="4">
+									<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										<tr valign="top">
+											<td>
+												<table width="100%" border="0" cellspacing="0" cellpadding="5">
+													<tr>
+														<td>
+															<span psxedit="displaytitle" psxshow="psx-displaytitle">Display Title</span>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<span psxedit="abstractcontent" psxshow="psx-abstractcontent">Abstract</span>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<!-- start slot Related Articles -->
+																<!-- start snippet wrapper -->
+																	<span psxeditslot="yes" slotname="Related Articles" template="SimpleTableSlot">Related Articles</span>
+																<!-- end snippet wrapper -->
+															<!-- end slot Releated Articles -->
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td width="20%" valign="top">
+						<!-- start slot Related Articles -->
+							<!-- start snippet wrapper -->
+								<span psxeditslot="yes" slotname="Related Links" template="Zigzag Links" >Related Links</span>
+							<!-- end snippet wrapper -->
+						<!-- end slot Releated Articles -->
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+</table>
+</body>
+</html>

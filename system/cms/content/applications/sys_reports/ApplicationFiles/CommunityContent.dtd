@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Content (Content_Id, Title, Community, Content_Type, Workflow, State, State_Entered_Date )>
+<!ELEMENT State_Entered_Date (#PCDATA)>
+<!ELEMENT State (#PCDATA)>
+<!ELEMENT Workflow (#PCDATA)>
+<!ELEMENT Content_Type (#PCDATA)>
+<!ELEMENT Community (#PCDATA)>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT Content_Id (#PCDATA)>
+<!ATTLIST  Content_Id type CDATA #IMPLIED>
+<!ELEMENT Content_Community_Details (Content* )>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXTableLocator alias="">
+   <PSXBackEndCredential id="0">
+      <alias>testCredential</alias>
+      <driver>test:nodriver</driver>
+      <server>//Bender</server>
+      <userId>sa</userId>
+      <password encrypted="yes">6yLPrXfzXm/l5dwQWgg75g==</password>
+   </PSXBackEndCredential>
+   <Database>rxrhino</Database>
+   <Origin>dbo</Origin>
+</PSXTableLocator>

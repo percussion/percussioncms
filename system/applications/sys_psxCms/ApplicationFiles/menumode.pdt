@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXMenuMode (PSXKey, Description )>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT MODEID (#PCDATA)>
+<!ELEMENT PSXKey (MODEID )>
+<!ATTLIST  PSXMenuMode displayName CDATA #REQUIRED>
+<!ATTLIST  PSXMenuMode name CDATA #REQUIRED>
+<!ATTLIST  PSXMenuMode state CDATA #REQUIRED>
+<!ELEMENT MenuModes (PSXMenuMode* )>

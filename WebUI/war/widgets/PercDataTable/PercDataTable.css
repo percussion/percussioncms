@@ -1,0 +1,175 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/* Hack for IE height problem (height of the container of dataTables_wrapper must be 100% also to work properly) */
+.perc-membership-gadget, #perc-seo-gadget, #perc-blogs-gadget, #perc-comments-gadget, #perc-formtracker-gadget, #perc-global-variables-gadget, #perc-global-variables-table
+{
+    height:100%;
+}
+
+.dataTables_wrapper
+{
+    height: 100%;
+}
+
+.perc-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dataTables_empty .perc-datatable-columnrow {
+    text-align : center;
+}
+
+.dataTables_empty {
+    padding-top : 10px;
+    text-align : center;
+}
+
+.dataTables_wrapper * {
+    font-size : 11px;
+    font-weight : normal;
+    cursor:default;
+}
+
+.perc-datatable {
+    width : 100%;
+    text-align : center;
+}
+
+.perc-datatable thead * {
+    padding : 5px;
+    cursor : pointer;
+    color : #006B9D;
+}
+
+.perc-datatable thead th.perc-last.perc-datatable-head-column {
+    padding-right : 6px;
+}
+
+.perc-datatable thead *,
+.perc-datatable tbody td {
+    border-bottom : 1px solid lightgrey;
+    color : #000000;
+}
+
+.perc-datatable tbody td .perc-first,
+.perc-datatable-paginator-pages-label {
+    color : #000000;
+    font-weight : bold;
+}
+
+.perc-datatable-columnrow,
+.perc-datatable-head-column {
+    white-space : nowrap;
+    overflow-y : visible;
+}
+
+table.perc-datatable tr.perc-datatable-row td.perc-datatable-column.perc-last {
+}
+
+.perc-sort {
+    height : 10px;
+    width  : 10px;
+    border : none;
+    margin-left : 5px;
+    border-bottom : none;
+}
+
+.sorting_asc .perc-sort {
+    background : transparent url(PercDataTableSortAsc.png) no-repeat scroll 0;
+}
+
+.sorting_desc .perc-sort {
+    background : transparent url(PercDataTableSortDesc.png) no-repeat scroll 0;
+}
+
+.paginate_active {
+    font-weight : bold;
+}
+
+.paginete_active, .paginate_button {
+    color : #006B9D;
+}
+
+td.perc-datatable-column.perc-type-numeric, .perc-datatable-head-row th.perc-type-numeric.perc-datatable-head-column {
+    text-align : right;
+}
+
+.perc-type-numeric * {
+    text-align : right;
+    padding-right : 14px;
+}
+
+.perc-gadget-errormessage {
+    background: none repeat scroll 0 0 #F0F0F0;
+    border-bottom: 1px solid #E6E6E9;
+    color: #777777;
+    font-size: 11px;
+    font-weight: normal;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+table.perc-datatable div.perc-first {
+    padding-top : 10px;
+}
+
+table.perc-datatable div.perc-last {
+    padding-bottom : 7px;
+}
+
+.perc-footer-bar {
+    background-color : lightgray;
+    width : 2000px;
+    height : 20px;
+    position : absolute;
+    bottom : 0px;
+    left : 0px;
+    z-index : -1;
+    display : none;
+}
+
+.perc-datatable-form-tracker-export-action {
+    color : white;
+    text-decoration : none;
+    width : 100%;
+}
+
+a.perc-datatable-form-tracker-export-action:hover {
+    color: black;
+}
+
+a.perc-datatable-form-tracker-export-action:visited {
+    color: white;
+}
+
+a.perc-datatable-form-tracker-export-action:active{
+    color: white;
+}
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

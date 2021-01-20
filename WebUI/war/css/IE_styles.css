@@ -1,0 +1,67 @@
+/*** Overriding  for all anchor tags since
+***IE ignores the margins assigned ***/
+.perc-finder-menu #perc-finder-delete, .perc-finder-menu #perc-finder-new-site, .perc-finder-menu #perc-finder-new-site, #perc-finder-new-site, .perc-finder-menu #mcol-new-page, .perc-finder-menu #mcol-new-asset, .perc-finder-menu #perc-finder-new-folder, .perc-finder-menu #perc-finder-copy-page, .perc-finder-menu #perc-finder-preview, .perc-finder-menu #perc-finder-download, .perc-finder-menu #perc-finder-actions  {        
+    margin-top: -6px !important;
+    position: relative;
+}
+
+#perc-finder-go-action    {
+    float:right;
+    margin-top: -33px !important;
+}
+
+.perc-dialog table tr     {
+    display:block;
+}
+.perc-dialog #perc-page-save, .perc-dialog #perc-page-cancel, .perc-dialog #perc_wizard_back, .perc-dialog #perc_wizard_cancel, .perc-dialog #perc_wizard_next, .perc-dialog #perc_wizard_finish, #perc-content-edit-cancel-button, #perc-content-edit-save-button, .perc-dialog #perc-content-edit-save-button, .perc-dialog #perc-content-edit-cancel-button                {
+    display: block !important;
+    height: 29px !important;
+    width: 78px !important;
+    margin-top: -10px !important;
+    padding: 0px !important;
+}
+
+.perc-dialog #perc_wizard_back, .perc-dialog #perc_wizard_cancel, .perc-dialog #perc_wizard_finish, #perc-content-edit-cancel-button, .perc-dialog #perc-content-edit-save-button, .perc-dialog #perc-content-edit-cancel-button                        {
+    margin-top: 0px !important;
+}
+.perc-dialog #perc_wizard_next, .perc-dialog #perc_wizard_finish, #perc-content-edit-save-button        {
+    margin-top: -18px;
+}
+.perc-dialog #perc-page-cancel, .perc-dialog #perc_wizard_next    {
+    float:left;
+}
+.perc-dialog #perc_wizard_cancel, .perc-dialog #perc_wizard_next, .perc-dialog #perc-page-save, #perc-content-edit-cancel-button    {
+    float:left;
+}
+.perc-dialog .perc-buttons table    {
+    width: 0px;
+}
+#perc_topnav_links     {
+    background-color: #5a5d69;
+}
+div#perc-finder-selected-label{
+    color:#999999;
+    display: none;
+    float:left;
+    font-size:11px;
+    font-weight:normal;
+    padding-left:10px;
+    margin: 17px 0px 0px 5px;
+    text-decoration:none;
+    width:auto;
+    overflow:hidden;
+    white-space:nowrap;
+    text-align:left;
+    text-overflow:ellipsis;
+}
+ul.perc-dropdown-option-list{
+    border:1px solid #CACACA;
+}
+
+.perc-main .perc-header .perc-logo {
+    width: 44px;
+    height: 43px;
+	background: none !important;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/images/headerLogo.png',sizingMethod= 'scale');
+-ms-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/images/headerLogo.png', sizingMethod='scale');
+}

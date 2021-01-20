@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT ResultsPage_wf (stateid*, workflowappid*, DBActionType*, bannerincludeurl*, userstatusincludeurl* )>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT bannerincludeurl (#PCDATA)>
+<!ELEMENT DBActionType (#PCDATA)>
+<!ELEMENT workflowappid (#PCDATA)>
+<!ELEMENT stateid (#PCDATA)>

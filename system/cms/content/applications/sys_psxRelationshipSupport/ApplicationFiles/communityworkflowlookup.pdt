@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT community (name, id, workflow* )>
+<!ELEMENT workflow (name, id )>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT communityworkflowlookup (community* )>

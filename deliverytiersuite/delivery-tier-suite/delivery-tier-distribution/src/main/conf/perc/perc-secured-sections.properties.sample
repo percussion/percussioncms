@@ -1,0 +1,78 @@
+# percLogin - Secure Sections Properties
+#
+# ldap.manager.password (bind password) is initially 
+# entered in clear text, and is encrypted on start 
+ldap.manager.password=ENC(RCLgJj2gNo3HzdE7pU5BDA\=\=)
+#
+# ldap.manager.url is the network location of the user's LDAP instance.
+ldap.manager.url=ldap://10.10.10.33:389/CN=Users,DC=test,DC=local
+#
+# ldap.manager.dn is the distinguished name of the bound user
+ldap.manager.dn=CN=Administrator,CN=Users,DC=test,DC=local
+#
+# ldap.manager.user.search.filter is the attribute being 
+# passed to the authentication framework.
+ldap.manager.user.search.filter=(sAMAccountName={0})
+#
+# ldap.manager.group.role.attribute is the attribute containing 
+# the name of the authority defined in the group.
+ldap.manager.group.role.attribute=cn
+#
+# ldap.manager.group.search.filter is the attribute to be 
+# returned for role/access mapping.
+ldap.manager.group.search.filter=member={0}
+#
+# ldap.manager.group.search.base is the attribute specifying 
+# the base ou to use for searching for ldap groups, empty
+# defaults to the base dn.
+ldap.manager.group.search.base=
+#
+# perc.login.login.page is the published location of the 
+# page containing the login form.
+perc.login.login.page=/login-page
+#
+# perc.login.login.success.page is the location of an 
+# (optional) published page for redirect in cases in which
+# no secure resource has been requested
+perc.login.login.success.page=/login-success
+#
+# membership.service.host is the host name to use to access
+# the membership service for authentication
+membership.service.host=localhost
+#
+# membership.service.protocol is the protocol to use to access
+# the membership service for authentication, either http or https
+membership.service.protocol=http
+#
+# membership.service.port is the port to use to access
+# the membership service for authentication, should be the correct
+# port for the specified membership.service.protocol
+# If using the staging server please change the port, by default
+#	the port for staging is 9970
+membership.service.port=9980
+#
+# perc.webserver.http.port is the HTTP port of the web server
+# which services all published pages.
+# If using the staging server please change the port, by default
+#	the port for staging is 9970
+perc.webserver.http.port=9980
+#
+# perc.webserver.https.port is the HTTPS port of the web server
+# which services all published pages.
+# If using the staging server please change the port, by default
+#	the secure port for staging is 9443
+perc.webserver.https.port=8443
+#
+# perc.use.ldap is the property to define, if the user wants the secure connection through ldap membership or not
+# This property can have value yes / no. Default is no.
+perc.use.ldap=no
+#
+# domain name for the ldap server in use
+#
+ldap.domain.name=test.local
+#
+# url for the ldap server in the format of ldap://adserver.<ldap.domain.name>/
+#
+ldap.url=ldap://adserver.test.local/
+#
+

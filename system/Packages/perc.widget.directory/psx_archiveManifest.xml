@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-372">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPerson.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-372\percPerson.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPerson.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-372\percPerson.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPerson.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-372\percPerson.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percOrganization_css_percOrganization-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percOrganization\css\percOrganization.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percOrganization_css_percOrganization-css\percOrganization.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/AssetFinder/css/AssetFinder.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\AssetFinder.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\AssetFinder\css\AssetFinder.css\AssetFinder.css</ArchiveFile>
+         <OriginalFile>widgets\AssetFinder\css\AssetFinder.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-370">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percOrganization.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-370\percOrganization.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percOrganization.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-370\percOrganization.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percOrganization.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-370\percOrganization.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDepartment_js_percDepartment-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDepartment\js\percDepartment.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDepartment_js_percDepartment-js\percDepartment.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percDepartment-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rxconfig\Resources\percDepartment.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percDepartment-xml\percDepartment.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDirectory_css_percDirectory-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDirectory\css\percDirectory.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDirectory_css_percDirectory-css\percDirectory.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percDirectory-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rxconfig\Resources\percDirectory.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percDirectory-xml\percDirectory.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percOrganization-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percOrganization.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percOrganization-xml\percOrganization.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDepartment_images_percDepartmentIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDepartment\images\percDepartmentIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDepartment_images_percDepartmentIcon-png\percDepartmentIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_directory_js_lodash-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\web_resources\widgets\directory\js\lodash.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_directory_js_lodash-min-js\lodash.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDepartment_images_percDepartmentPlaceholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDepartment\images\percDepartmentPlaceholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDepartment_images_percDepartmentPlaceholder-png\percDepartmentPlaceholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percDirectory/css/directoryDropdown.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\directoryDropdown.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percDirectory\css\directoryDropdown.css\directoryDropdown.css</ArchiveFile>
+         <OriginalFile>widgets\percDirectory\css\directoryDropdown.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percDirectory-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percDirectory.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percDirectory-xml\percDirectory.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_AssetFinder_js_AssetFinder-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\AssetFinder\js\AssetFinder.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_AssetFinder_js_AssetFinder-js\AssetFinder.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-368">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDirectory.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-368\percDirectory.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDirectory.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-368\percDirectory.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDirectory.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-368\percDirectory.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDirectory_js_directoryDropdown-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDirectory\js\directoryDropdown.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDirectory_js_directoryDropdown-js\directoryDropdown.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-366">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDepartment.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-366\percDepartment.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDepartment.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-366\percDepartment.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDepartment.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-366\percDepartment.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_directory_js_perc--directory-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\web_resources\widgets\directory\js\perc-directory.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_directory_js_perc--directory-js\perc-directory.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Schema-CT_PERCORGANIZATION">
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\CT_PERCORGANIZATION.schema</RxFile>
+         <ArchiveFile>Schema-CT_PERCORGANIZATION\CT_PERCORGANIZATION.schema</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percDirectory/js/directoryDropdown.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\directoryDropdown.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percDirectory\js\directoryDropdown.js\directoryDropdown.js</ArchiveFile>
+         <OriginalFile>widgets\percDirectory\js\directoryDropdown.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_directory_js_list-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\web_resources\widgets\directory\js\list.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_directory_js_list-min-js\list.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percOrganization_images_percOrganizationPlaceholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percOrganization\images\percOrganizationPlaceholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percOrganization_images_percOrganizationPlaceholder-png\percOrganizationPlaceholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDirectory_images_percDirectoryIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDirectory\images\percDirectoryIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDirectory_images_percDirectoryIcon-png\percDirectoryIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percOrganization_js_percOrganization-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percOrganization\js\percOrganization.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percOrganization_js_percOrganization-js\percOrganization.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percPerson_css_percPerson-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percPerson\css\percPerson.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percPerson_css_percPerson-css\percPerson.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percPerson_js_percPerson-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percPerson\js\percPerson.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percPerson_js_percPerson-js\percPerson.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percPerson_images_percPersonPlaceholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percPerson\images\percPersonPlaceholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percPerson_images_percPersonPlaceholder-png\percPersonPlaceholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--8878184686346567596">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDirectory.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--8878184686346567596\percDirectory.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/directoryWidgetDropDownControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\directoryWidgetDropDownControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\directoryWidgetDropDownControl.xsl\directoryWidgetDropDownControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\directoryWidgetDropDownControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percPerson_images_percPersonIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percPerson\images\percPersonIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percPerson_images_percPersonIcon-png\percPersonIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--8878184686346567603">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDepartment.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--8878184686346567603\percDepartment.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Application-percDirectorySupport">
+      <DBMSInfoList/>
+      <PSXDependencyFile fileType="APPLICATION_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDirectorySupport.application</RxFile>
+         <ArchiveFile>Application-percDirectorySupport\percDirectorySupport.application</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDirectorySupport(1).application</RxFile>
+         <ArchiveFile>Application-percDirectorySupport\percDirectorySupport(1).application</ArchiveFile>
+         <OriginalFile>sys_Lookup.dtd</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percDirectorySupport(2).application</RxFile>
+         <ArchiveFile>Application-percDirectorySupport\percDirectorySupport(2).application</ArchiveFile>
+         <OriginalFile>sys_Lookup.pdt</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_stylesheets_controls_percAssetFinderControl-xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\stylesheets\controls\percAssetFinderControl.xsl</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_stylesheets_controls_percAssetFinderControl-xsl\percAssetFinderControl.xsl</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percPerson-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percPerson.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percPerson-xml\percPerson.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percOrganization-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rxconfig\Resources\percOrganization.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percOrganization-xml\percOrganization.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--8878184686346567599">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percOrganization.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--8878184686346567599\percOrganization.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/AssetFinder/js/AssetFinder.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\AssetFinder.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\AssetFinder\js\AssetFinder.js\AssetFinder.js</ArchiveFile>
+         <OriginalFile>widgets\AssetFinder\js\AssetFinder.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--8878184686346567609">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percPerson.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--8878184686346567609\percPerson.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDepartment_css_percDepartment-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDepartment\css\percDepartment.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDepartment_css_percDepartment-css\percDepartment.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDirectory_css_directoryDropdown-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDirectory\css\directoryDropdown.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDirectory_css_directoryDropdown-css\directoryDropdown.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDirectory_js_percDirectory-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDirectory\js\percDirectory.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDirectory_js_percDirectory-js\percDirectory.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percDirectory_images_percDirectoryPlaceholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percDirectory\images\percDirectoryPlaceholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percDirectory_images_percDirectoryPlaceholder-png\percDirectoryPlaceholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percAssetFinderControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percAssetFinderControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percAssetFinderControl.xsl\percAssetFinderControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percAssetFinderControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percOrganization_images_percOrganizationIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\percOrganization\images\percOrganizationIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percOrganization_images_percOrganizationIcon-png\percOrganizationIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_directory_css_perc--directory-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\web_resources\widgets\directory\css\perc-directory.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_directory_css_perc--directory-css\perc-directory.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_stylesheets_controls_directoryWidgetDropDownControl-xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\stylesheets\controls\directoryWidgetDropDownControl.xsl</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_stylesheets_controls_directoryWidgetDropDownControl-xsl\directoryWidgetDropDownControl.xsl</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Schema-CT_PERCDEPARTMENT">
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\CT_PERCDEPARTMENT.schema</RxFile>
+         <ArchiveFile>Schema-CT_PERCDEPARTMENT\CT_PERCDEPARTMENT.schema</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_directory_img_person--directory--placeholder--min-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\web_resources\widgets\directory\img\person-directory-placeholder-min.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_directory_img_person--directory--placeholder--min-png\person-directory-placeholder-min.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percPerson-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rxconfig\Resources\percPerson.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percPerson-xml\percPerson.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_AssetFinder_css_AssetFinder-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rx_resources\widgets\AssetFinder\css\AssetFinder.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_AssetFinder_css_AssetFinder-css\AssetFinder.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percDepartment-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percDepartment.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percDepartment-xml\percDepartment.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

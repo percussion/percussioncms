@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication id="438" active="no" hidden="no" enabled="yes" version="2.0">
+	<name>sys_ServerUserRoleSearch</name>
+	<description/>
+	<requestRoot>sys_ServerUserRoleSearch</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/chanak_1001006203359/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20010920T130614531</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="18">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20020807T131552796</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>Anonymous</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="no" dataCreate="no" dataUpdate="no" dataDelete="no" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+	</PSXAcl>
+	<maxThreads>0</maxThreads>
+	<maxRequestTime>0</maxRequestTime>
+	<maxRequestsInQueue>0</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>0</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="4183">
+		<name>Dataset33521</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="4180">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="4176">
+				<PSXBackEndTable id="4175">
+					<alias>RXDUAL</alias>
+					<table>RXDUAL</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="4178" returnEmptyXml="no">
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>rolelist/@id</name>
+					</PSXXmlField>
+					<PSXSingleHtmlParameter id="0">
+						<name>sys_command</name>
+					</PSXSingleHtmlParameter>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>rolelist/@fromRoles</name>
+					</PSXXmlField>
+					<PSXSingleHtmlParameter id="0">
+						<name>fromRoles</name>
+					</PSXSingleHtmlParameter>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="0" id="0">
+					<PSXXmlField id="0">
+						<name>rolelist/@contentid</name>
+					</PSXXmlField>
+					<PSXSingleHtmlParameter id="0">
+						<name>sys_contentid</name>
+					</PSXSingleHtmlParameter>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping id="0" groupId="0">
+					<PSXXmlField id="0">
+						<name>rolelist/@xml:lang</name>
+					</PSXXmlField>
+					<PSXUserContext id="0">
+						<name>User/SessionObject/sys_lang</name>
+					</PSXUserContext>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="4177" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="4181">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/usersearch/sys_ServerUserRoleSearch</name>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="4182">
+			<schemaSource>file:rolelist.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor id="0" directDataStream="no">
+			<requestPage>rolelist</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="4184">
+				<styleSheet>file:usersearch.xsl</styleSheet>
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXLogger id="0" logErrors="no" logServerStartStop="no" logAppStartStop="no" logAppStatistics="no" logExecutionPlan="no" logBasicUserActivity="no" logDetailedUserActivity="no" logFullUserActivity="no" logMultipleHandlers="no"/>
+	<PSXTraceInfo id="0" traceEnabled="no" traceOutputColumnWidth="80" traceTimestampOnlyEnabled="no" traceBasicRequestInfo="yes" traceInitHttpVar="no" traceFileInfo="no" traceAppHandlerProc="yes" traceAppSecurity="yes" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceMapper="no" traceSessionInfo="no" traceDbPool="no" traceExitProc="no" traceExitExec="no" tracePostExitXml="no" tracePostExitCgi="no" traceOutputConv="no" traceResultSet="no" traceConditionalEval="no"/>
+	<PSXErrorWebPages id="4173" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="4174">
+		<providerType>SMTP</providerType>
+		<server>JB</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="locationY4184">27</userProperty>
+	<userProperty name="locationY4183">38</userProperty>
+	<userProperty name="locationY4182">0</userProperty>
+	<userProperty name="locationY4181">22</userProperty>
+	<userProperty name="locationY4180">10</userProperty>
+	<userProperty name="4175locationy">20</userProperty>
+	<userProperty name="4175locationx">20</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="resultPageFilePath4184">F:\sys_ServerUserRoleSearch\usersearch.xsl</userProperty>
+	<userProperty name="locationY4179">0</userProperty>
+	<userProperty name="locationX4184">329</userProperty>
+	<userProperty name="locationY4178">24</userProperty>
+	<userProperty name="locationX4183">69</userProperty>
+	<userProperty name="locationY4177">24</userProperty>
+	<userProperty name="locationX4182">357</userProperty>
+	<userProperty name="locationY4176">0</userProperty>
+	<userProperty name="locationX4181">56</userProperty>
+	<userProperty name="locationX4180">10</userProperty>
+	<userProperty name="locationY4174">100</userProperty>
+	<userProperty name="locationY4173">55</userProperty>
+	<userProperty name="locationY4172">10</userProperty>
+	<userProperty name="pageDatatankSrcType4182">2</userProperty>
+	<userProperty name="4175sizeheight">200</userProperty>
+	<userProperty name="4175sizewidth">120</userProperty>
+	<userProperty name="pageDatatankFilePath4182">C:\rxi18n\sys_ServerUserRoleSearch\rolelist.dtd</userProperty>
+	<userProperty name="4175readonly">false</userProperty>
+	<userProperty name="locationX4179">357</userProperty>
+	<userProperty name="locationX4178">211</userProperty>
+	<userProperty name="locationX4177">77</userProperty>
+	<userProperty name="locationX4176">0</userProperty>
+	<userProperty name="locationX4174">16</userProperty>
+	<userProperty name="locationX4173">16</userProperty>
+	<userProperty name="locationX4172">16</userProperty>
+	<userProperty name="schemaSourceReadOnly4182">true</userProperty>
+	<userProperty name="pageDatatankSrcType4179">2</userProperty>
+	<userProperty name="pageDatatankFilePath4179">C:\rxi18n\sys_ServerUserRoleSearch\rolelist.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly4179">true</userProperty>
+</PSXApplication>

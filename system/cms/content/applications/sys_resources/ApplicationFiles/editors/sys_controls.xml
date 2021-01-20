@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LibraryControlMetaData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="D:\p4\dev\pushpublish\system\design\schemas\sys_LibraryControls.xsd">
+	<ControlMeta name="sys_RadioButtons" dimension="single" choiceset="required" jsf-tag="h:selectOneRadio">
+		<Description>A set of radio buttons for selecting a single value</Description>
+		<ParamList>
+			<Param name="class" datatype="String" paramtype="generic" jsf-attribute="styleClass">
+				<Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.</Description>
+				<DefaultValue>datadisplay</DefaultValue>
+			</Param>
+			<Param name="style" datatype="String" paramtype="generic">
+				<Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</Description>
+			</Param>
+			<Param name="tabindex" datatype="Number" paramtype="generic" >
+				<Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</Description>
+			</Param>
+		</ParamList>
+	</ControlMeta>
+</LibraryControlMetaData>

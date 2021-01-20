@@ -1,0 +1,43 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+   <tx:annotation-driven transaction-manager="sys_transactionManager"/>
+
+   <bean id="sys_catalogers"
+      class="com.percussion.services.security.data.PSCatalogerConfigurations">
+      <property name="roleMgr">
+         <ref bean="sys_roleMgr" />
+      </property>      
+      <property name="subjectCatalogers">
+         <list>
+            <bean id="Test_Subject_Cat_SUBJECT" 
+            	class="com.percussion.services.security.test.PSMockSubjectCataloger">
+               <property name="name" value="Test Subject Cat"/>
+               <property name="description" value="A test subject cataloger"/>
+               <property name="supportsGroups" value="false"/>
+            </bean>
+            <bean id="Test_Subject_Cat_Group_SUBJECT" 
+            	class="com.percussion.services.security.test.PSMockSubjectCataloger">
+               <property name="name" value="Test Subject Cat Group"/>
+               <property name="description" value="A test subject cataloger with group support"/>
+               <property name="supportsGroups" value="true"/>
+            </bean>
+         </list>
+      </property>    
+      <property name="roleCatalogers">
+         <list>
+            <bean id="Test_Role_Cat_ROLE" 
+            	class="com.percussion.services.security.test.PSMockRoleCataloger">
+               <property name="name" value="Test Role Cat"/>
+               <property name="description" value="A test role cataloger"/>
+            </bean>
+         </list>
+      </property>          
+   </bean>  	
+</beans>

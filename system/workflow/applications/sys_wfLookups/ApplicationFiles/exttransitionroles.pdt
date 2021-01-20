@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT exttransitionroles (componentname, transitionroles* )>
+<!ELEMENT transitionroles (roleid, role, deletelink, newlink )>
+<!ELEMENT newlink (#PCDATA)>
+<!ELEMENT deletelink (#PCDATA)>
+<!ELEMENT role (#PCDATA)>
+<!ELEMENT roleid (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>

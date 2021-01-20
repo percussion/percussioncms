@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+  This dtd specifies elements used to define the log created by the
+  tablefactory while processing an XML file conforming to "tabledata.dtd"
+  or "sys_Tabledata.dtd".
+-->
+<!--
+  Specifies the log of processing of a single XML file
+  conforming to "tabledata.dtd" or "sys_Tabledata.dtd".
+-->
+<!ELEMENT LogData (PlanLogData+)>
+<!--
+  Specifies the log of processing of a single data plan.
+-->
+<!ELEMENT PlanLogData (StepLogData+)>
+<!--
+  Specifies the log of processing of a single step 
+  of a data plan.
+-->
+<!ELEMENT StepLogData (connection, dbserver, database, table, query, primarykey, updatecount, successful, message)>
+<!--
+  The serialized form of the connection to the database 
+  used for transaction.
+-->
+<!ELEMENT connection (#PCDATA)>
+<!--
+  The database server used for transaction.
+-->
+<!ELEMENT dbserver (#PCDATA)>
+<!--
+  The database used for transaction.
+-->
+<!ELEMENT database (name, type)>
+<!--
+  The name of the database used for transaction.
+-->
+<!ELEMENT name (#PCDATA)>
+<!--
+  The type of the database (eg. Oracle,MSSql) used for transaction.
+-->
+<!ELEMENT type (#PCDATA)>
+<!--
+  The database table against which this step was executed.
+-->
+<!ELEMENT table (#PCDATA)>
+<!--
+  The sQL query wrapped by this step.
+-->
+<!ELEMENT query (#PCDATA)>
+<!--
+  The primary key columns of the row to be inserted/updated/deleted.
+-->
+<!ELEMENT primarykey (column+)>
+<!--
+  Single primary key column.
+-->
+<!ELEMENT column (name, value)>
+<!--
+  The value of the primary key column.
+-->
+<!ELEMENT value (#PCDATA)>
+<!--
+  The number of rows updated by execution of this step.
+-->
+<!ELEMENT updatecount (#PCDATA)>
+<!--
+  The success or failure of execution of this step.
+-->
+<!ELEMENT successful (#PCDATA)>
+<!--
+  The error message associated with the execution of this step.
+-->
+<!ELEMENT message (#PCDATA)>

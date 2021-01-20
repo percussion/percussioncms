@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-337">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\percSimpleAutoList.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-337\percSimpleAutoList.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\percSimpleAutoList.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-337\percSimpleAutoList.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\percSimpleAutoList.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-337\percSimpleAutoList.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_simplePageAutoList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rxconfig\Widgets\simplePageAutoList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_simplePageAutoList-xml\simplePageAutoList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--7722608960670269336">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\RADHAR~1\AppData\Local\Temp\percSimpleAutoList.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--7722608960670269336\percSimpleAutoList.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_simpleList_images_widgetIconLinkAutoList-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\widgets\simpleList\images\widgetIconLinkAutoList.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_simpleList_images_widgetIconLinkAutoList-png\widgetIconLinkAutoList.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_simpleList_css_style-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\widgets\simpleList\css\style.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_simpleList_css_style-css\style.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_simpleList_images_widgetIconTextAutoList-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rx_resources\widgets\simpleList\images\widgetIconTextAutoList.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_simpleList_images_widgetIconTextAutoList-png\widgetIconTextAutoList.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_simpleTextAutoList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\installs\dev\cm20101130\rxconfig\Widgets\simpleTextAutoList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_simpleTextAutoList-xml\simpleTextAutoList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

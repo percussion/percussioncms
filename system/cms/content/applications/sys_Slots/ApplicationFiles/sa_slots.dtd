@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT sa_slots (contentlookupurl, componentname, category*, relatedlinks )>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT category (newsloturl, slot* )>
+<!ELEMENT slot (ID, sloturl, systemslot, name, slottype, deletsloturl, desc )>
+<!ELEMENT desc (#PCDATA)>
+<!ELEMENT deletsloturl (#PCDATA)>
+<!ELEMENT slottype (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT systemslot (#PCDATA)>
+<!ELEMENT sloturl (#PCDATA)>
+<!ELEMENT ID (#PCDATA)>
+<!ELEMENT newsloturl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>

@@ -1,0 +1,1451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDefData appName="psx_cepercImageAsset" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_cepercImageAsset/percImageAsset.html" id="384" label="Image Asset" name="percImageAsset" typeId="384"/>
+   <PSXContentEditor contentType="384" enableRelatedContent="yes" iconSource="2" iconValue="img_ext" objectType="1" producesResource="yes" workflowId="6">
+      <PSXDataSet id="768">
+         <name>percImageAsset</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <InputDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="10019">
+                     <name>Java/global/percussion/generic/sys_FileInfo</name>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_PERCIMAGEASSET" name="CT_PERCIMAGEASSET"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="CT_percImageAsset" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="alttext" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>ALTTEXT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>200</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="displaytitle" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>DISPLAYTITLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1000</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>displaytitle</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                           <ErrorMessage>
+                              <PSXDisplayText>Title text is required.</PSXDisplayText>
+                           </ErrorMessage>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="filename" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>FILENAME</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>200</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="application/octet-stream" modificationType="user" name="img" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>binary</DataType>
+                     <DataFormat>max</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="yes" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="application/octet-stream" modificationType="user" name="img2" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG2</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>binary</DataType>
+                     <DataFormat>max</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img2</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="yes" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_ext" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG2_EXT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img2_ext</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_filename" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG2_FILENAME</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>512</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img2_filename</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_height" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG2_HEIGHT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img2_height</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_id" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG2_ID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img2_id</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_size" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG2_SIZE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img2_size</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_type" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG2_TYPE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>256</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img2_type</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_width" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG2_WIDTH</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img2_width</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img_ext" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG_EXT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img_ext</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img_filename" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG_FILENAME</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>512</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img_filename</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img_height" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG_HEIGHT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img_height</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img_id" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IM_ID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img_id</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img_size" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG_SIZE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img_size</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img_type" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG_TYPE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>256</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img_type</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="img_width" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>IMG_WIDTH</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateJexlFieldExpression</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>img_width</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXTextLiteral id="0">
+                                             <text>false</text>
+                                          </PSXTextLiteral>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+                  </PSXField>
+                  <PSXField export="yes" fieldvaluetype="meta" forceBinary="no" mimetype="text/plain" modificationType="user" name="resource_link_title" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>RESOURCE_LINK_TITLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>200</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="thumbprefix" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCIMAGEASSET</tableAlias>
+                           <column>THUMBPREFIX</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>thumb_</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>thumbprefix</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                           <ErrorMessage>
+                              <PSXDisplayText>Thumbnail Prefix is required</PSXDisplayText>
+                           </ErrorMessage>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_percImageAsset" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Image name:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10007" name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>displaytitle</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Title text:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10089" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>1000</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Title text</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>resource_link_title</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Link title:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10001" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>200</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Link Title</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>alttext</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Alt text:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10002" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>200</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Alt Text</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>filename</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Filename:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10025" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>200</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Filename:</PSXDisplayText>
+                           </ErrorLabel>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="0">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>thumbprefix</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Thumbnail prefix:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10002" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Thumbnail Prefix</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img_filename</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Img_filename:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10026" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img_filename:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img_ext</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Img_ext:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10027" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img_ext:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img_type</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Img_type:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10028" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img_type:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img2</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Thumbnail:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10091" name="sys_File"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Thumbnail:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img_height</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Img_height:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10117" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img_height:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img_width</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Img_width:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10030" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img_width:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img_size</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Img_size:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10031" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img_size:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img_id</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Img_id:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10122" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Im_id:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img2_filename</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Img2_filename:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10033" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img2_filename:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img2_ext</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Img2_ext:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10034" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img2_ext:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img2_type</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Img2_type:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10118" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img2_type:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img2_height</FieldRef>
+                        <PSXUISet accessKey="E">
+                           <Label>
+                              <PSXDisplayText>Img2_height:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10036" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img2_height:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img2_width</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Img2_width:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10037" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img2_width:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img2_size</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Img2_size:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10038" name="sys_HiddenInput"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img2_size:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img2_id</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Img2_id:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10119" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Img2_id:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef id="10104" name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>img</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef id="10097" name="imageWidgetControl"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Image:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentpostdate</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentexpirydate</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef id="10001" name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentstartdate</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef id="10002" name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+            <userProperties>
+               <userProperty name="Control10091_DependencyIds">10019</userProperty>
+               <userProperty name="Control10091_Dependency10019">sys_FileInfo</userProperty>
+            </userProperties>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>percImageAsset</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations>
+         <PSXConditionalExit maxErrorsToStop="10">
+            <PSXExtensionCallSet id="0">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/widgets/rx_ImageAssetInputTranslation</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>img</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>img2</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </PSXConditionalExit>
+         <PSXConditionalExit maxErrorsToStop="10">
+            <PSXExtensionCallSet id="0">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/generic/perc_AssetRename</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>img_filename</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </PSXConditionalExit>
+      </PSXInputTranslations>
+      <PSXOutputTranslations>
+         <PSXConditionalExit maxErrorsToStop="10">
+            <PSXExtensionCallSet id="0">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/widgets/rx_ImageAssetOutputTranslation</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>img</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>img2</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </PSXConditionalExit>
+      </PSXOutputTranslations>
+      <PSXWorkflowInfo type="inclusionary" values="4,5,6,7"/>
+   </PSXContentEditor>
+</ItemDefData>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  
+<!DOCTYPE PSXContentEditor SYSTEM "/Rhythmyx/DTD/sys_ContentEditorLocalDef.dtd">
+-->
+<PSXContentEditor contentType="0" workflowId="0">
+  <PSXDataSet id="768">
+    <name>test2</name>
+    <description>a test ce</description>
+    <transactionType>none</transactionType>
+    <PSXContentEditorPipe id="0">
+      <name>cePipe</name>
+      <description>This is the ContentEditorLocaDef for test2</description>
+      <PSXContainerLocator>
+	<PSXTableSet>
+	  <PSXTableLocator>
+            <PSXBackEndCredential id="0">
+              <alias>Cred1</alias>
+              <comment/>
+              <datasource/>
+            </PSXBackEndCredential>
+	  </PSXTableLocator>
+	  <PSXTableRef name="RXS_TEST2"/>
+	</PSXTableSet>
+      </PSXContainerLocator>
+      <PSXContentEditorMapper>  
+	<SystemFieldExcludes>
+	  <FieldRef>sys_contentstartdate</FieldRef>
+	  <FieldRef>sys_contentexpirydate</FieldRef>
+	  <FieldRef>sys_reminderdate</FieldRef>
+	  <FieldRef>sys_pubdate</FieldRef>
+	  <FieldRef>sys_pathname</FieldRef>
+      <FieldRef>sys_suffix</FieldRef>
+    </SystemFieldExcludes>
+	<PSXFieldSet name="main_editor">
+       <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="dummy" showInPreview="yes" showInSummary="yes" type="local">
+			<DataLocator>
+				<PSXBackEndColumn id="0">
+					<tableAlias>RXS_TEST2</tableAlias>
+					<column>DUMMY</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<DataType>text</DataType>
+			<DataFormat>100</DataFormat>
+			<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+		</PSXField>
+	</PSXFieldSet> 
+	<PSXUIDefinition>   
+		<PSXDisplayMapper id="0" fieldSetRef="main_editor">
+      		<PSXDisplayMapping>
+				<FieldRef>dummy</FieldRef>
+				<PSXUISet accessKey="L">
+					<Label>
+						<PSXDisplayText>Dummy:</PSXDisplayText>
+					</Label>
+					<PSXControlRef id="305" name="sys_EditBox"/>
+					<ErrorLabel>
+						<PSXDisplayText>Dummy:</PSXDisplayText>
+					</ErrorLabel>
+				</PSXUISet>
+			</PSXDisplayMapping>
+		</PSXDisplayMapper>  
+	</PSXUIDefinition>
+      </PSXContentEditorMapper>
+    </PSXContentEditorPipe>    
+      <PSXRequestor id="0" directDataStream="no">
+      <requestPage>test2</requestPage>
+      <SelectionParams/>
+      <ValidationRules/>
+      <characterEncoding>UTF-8</characterEncoding>
+      <MimeProperties>
+        <htm>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </htm>
+        <html>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </html>
+      </MimeProperties>
+    </PSXRequestor>
+  </PSXDataSet>
+  <PSXValidationRules maxErrorsToStop="10"/>
+  <PSXInputTranslations/>
+  <PSXOutputTranslations/>
+  <PSXWorkflowInfo type="inclusionary" values="4,5"/>
+</PSXContentEditor>

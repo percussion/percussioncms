@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT wordcontenttype (id, ctypename, ctypeurl )>
+<!ELEMENT ctypeurl (#PCDATA)>
+<!ELEMENT ctypename (#PCDATA)>
+<!ELEMENT id (#PCDATA)>

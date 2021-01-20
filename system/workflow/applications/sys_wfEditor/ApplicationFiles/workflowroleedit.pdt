@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflowroleedit (roleid, workflowlinfourl, componentname, serverrolesurl, excluderoles, relatedlinks, workflowid, workflowRoleNew )>
+<!ELEMENT workflowRoleNew (Name, roledesc )>
+<!ELEMENT roledesc (#PCDATA)>
+<!ELEMENT Name (#PCDATA)>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT excluderoles (#PCDATA)>
+<!ELEMENT serverrolesurl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT workflowlinfourl (#PCDATA)>
+<!ELEMENT roleid (#PCDATA)>

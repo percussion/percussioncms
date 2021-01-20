@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT contentitem (title, contenturl, delivery, modifydate, modifyuser, expiredate, contenttype )>
+<!ELEMENT contenttype (#PCDATA)>
+<!ELEMENT expiredate (#PCDATA)>
+<!ELEMENT modifyuser (#PCDATA)>
+<!ELEMENT modifydate (#PCDATA)>
+<!ELEMENT location (#PCDATA)>
+<!ELEMENT delivery (location )>
+<!ELEMENT contenturl (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ATTLIST  contentitem variantid CDATA #REQUIRED>
+<!ATTLIST  contentitem contentid CDATA #REQUIRED>
+<!ATTLIST  contentitem unpublish CDATA #REQUIRED>
+<!ATTLIST  contentitem revision CDATA #REQUIRED>
+<!ELEMENT contentlist (contentitem+ )>
+<!ATTLIST  contentlist deliverytype CDATA #REQUIRED>
+<!ATTLIST  contentlist context CDATA #REQUIRED>

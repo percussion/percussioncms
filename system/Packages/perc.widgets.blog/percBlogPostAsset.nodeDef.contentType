@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description/>
+    <hide-from-menu>false</hide-from-menu>
+    <id>357</id>
+    <internal-name>percBlogPostAsset</internal-name>
+    <label>Blog Post</label>
+    <mandatory>false</mandatory>
+    <name>rx:percBlogPostAsset</name>
+    <new-request>../psx_cepercBlogPostAsset/percBlogPostAsset.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercBlogPostAsset/percBlogPostAsset.html</query-request>
+    <raw-content-type>357</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

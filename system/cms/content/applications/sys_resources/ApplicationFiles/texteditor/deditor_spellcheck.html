@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html>
+<head>
+<META HTTP-EQUIV="expires" CONTENT="0">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<title>Edit Page</title>
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body onload="bLoad=true" style="MARGIN: 0pt" bgcolor="#d4d0c8">
+
+<div class="yToolbar" id="ParaToolbar">
+  <div class="TBHandle"></div>
+  <select id="ParagraphStyle" class="TBGen" title="Paragraph Format" onchange="format('formatBlock',this[this.selectedIndex].value);this.selectedIndex=0">
+    <option class="heading" selected>Paragraph</option>
+    <option value="Normal">Normal</option>
+    <option value="Heading 1">Heading 1 &lt;H1&gt;</option>
+    <option value="Heading 2">Heading 2 &lt;H2&gt;</option>
+    <option value="Heading 3">Heading 3 &lt;H3&gt;</option>
+    <option value="Heading 4">Heading 4 &lt;H4&gt;</option>
+    <option value="Heading 5">Heading 5 &lt;H5&gt;</option>
+    <option value="Heading 6">Heading 6 &lt;H6&gt;</option>
+    <option value="Address">Address &lt;ADDR&gt;</option>
+    <option value="Formatted">Formatted &lt;PRE&gt;</option>
+    <option style="COLOR: darkred" value="removeFormat">Remove 
+  Formatting</option> 
+  </select>
+  <select id="FontName" class="TBGen" title="Font Name"  onchange="format('fontname',this[this.selectedIndex].value);this.selectedIndex=0">
+    <option class="heading" selected>Font</option>
+    <option value="Arial">Arial</option>
+    <option value="Arial Black">Arial Black</option>
+    <option value="Arial Narrow">Arial Narrow</option>
+    <option value="Comic Sans MS">Comic Sans MS</option>
+    <option value="Courier New">Courier New</option>
+    <option value="System">System</option>
+    <option value="Times New Roman">Times New Roman</option>
+    <option value="Verdana">Verdana</option>
+    <option value="Wingdings">Wingdings</option>
+  </select>
+  <select id="FontSize" class="TBGen" title="Font Size"  onchange="format('fontsize',this[this.selectedIndex].value);this.selectedIndex=0">
+    <option class="heading" selected>Size</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+  </select>
+  <div class="TBSep"></div>
+  <div id="EditMode" class="TBGen" style="WIDTH: 150px" title="Editing Mode">
+    <input type=checkbox name="switchMode" onclick="setMode(switchMode.checked)">View HTML source
+  </div>
+</div>
+
+<div class="yToolbar" id="FormatToolbar">
+  <div class="TBHandle"></div>
+  <div class="Btn" title="Cut" onclick="format('cut')">
+    <img alt="Cut" class="Ico" src="cut.gif" />
+  </div>
+  <div class="Btn" title="Copy" onclick="format('copy')">
+    <img alt="Copy" class="Ico" src="copy.gif" />
+  </div>
+  <div class="Btn" title="Paste" onclick="format('paste')">
+    <img alt="Paste" class="Ico" src="paste.gif" />
+  </div>
+  <div class="TBSep"></div>
+  <div class="Btn" title="Bold" onclick="format('bold');">
+    <img alt="Bold" class="Ico" src="bold.gif" />
+  </div>
+  <div class="Btn" title="Italic" onclick="format('italic')">
+    <img alt="Italic" class="Ico" src="italic.gif" />
+  </div>
+  <div class="Btn" title="Underline" onclick="format('underline')">
+    <img alt="Underscore" class="Ico" src="under.gif" />
+  </div>
+  <div class="TBSep"></div>
+  <div class="Btn" title="Foreground Color" onclick="foreColor()">
+    <img alt="Select Foreground Color" class="Ico" src="tpaint.gif" />
+  </div>
+  <div class="Btn" title="Background Color" onclick="backColor()">
+    <img alt="Select Background Color" class="Ico" src="parea.gif" />
+  </div>
+  <div class="TBSep"></div>
+  <div class="Btn" title="Align Left" onclick="format('justifyleft')">
+    <img alt="Align Left" class="Ico" src="aleft.gif" />
+  </div>
+  <div class="Btn" title="Center" onclick="format('justifycenter')">
+    <img alt="Align Center" class="Ico" src="center.gif" />
+  </div>
+  <div class="Btn" title="Align Right" onclick="format('justifyright')">
+    <img alt="Align Right" class="Ico" src="aright.gif" />
+  </div>
+  <div class="TBSep"></div>
+  <div class="Btn" title="Numbered List" onclick="format('insertorderedlist')">
+    <img alt="Numbered List" class="Ico" src="nlist.gif" />
+  </div>
+  <div class="Btn" title="Bulletted List" onclick="format('insertunorderedlist')">
+    <img alt="Bulletted List" class="Ico" src="blist.gif" />
+  </div>
+  <div class="TBSep"></div>
+  <div class="Btn" title="Decrease Indent" onclick="format('outdent')">
+    <img alt="Outdent" class="Ico" src="ileft.gif" />
+  </div>
+  <div class="Btn" title="Increase Indent" onclick="format('indent')">
+    <img alt="Indent" class="Ico" src="iright.gif" />
+  </div>
+  <div class="TBSep"></div>
+  <div class="Btn" title="Create Hyperlink" onclick="createLink()">
+    <img alt="Create Hyperlink" class="Ico" src="wlink.gif" />
+  </div>
+  <div class="TBSep"></div>
+  <div class="Btn" title="Create Inline Link" onclick="createInlineLink('hyperlink')">
+    <img alt="Create Rhythmyx Hyperlink" class="Ico" src="slink.gif" />
+  </div>
+  <div class="Btn" title="Insert Image" onclick="createInlineLink('image')">
+    <img alt="Insert Rhythmyx Image" class="Ico" src="image.gif" />
+  </div>
+  <div class="TBSep"></div>
+  <div class="Btn" title="Spell Check" onclick="spellCheckText()">
+    <img alt="Spell Check" class="Ico" src="spellcheck.gif" />
+  </div>
+  <div class="TBSep"></div>
+</div>
+
+<iframe class="Composition" width="100%" id="Composition" height="190">
+</iframe>
+
+<OBJECT ID="spellcheck" classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+    width="1" height="1" align="baseline"
+    codebase="http://java.sun.com/products/plugin/1.3/jinstall-13-win32.cab#Version=1,3,0,0">
+<PARAM NAME="code" VALUE="com.percussion.tools.spellcheck.PSSpellingApplet">
+<PARAM NAME="archive" VALUE="spell.jar,ssce.jar">
+<PARAM NAME="codebase" VALUE="/Rhythmyx/sys_resources/spellcheck">
+<PARAM NAME="MAYSCRIPT" VALUE="true">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.3">
+<PARAM NAME="scriptable" VALUE="true">
+<COMMENT>
+    <EMBED ID="spellcheck" NAME="spellcheck" type="application/x-java-applet;version=1.3" 
+       align="baseline" code="com.percussion.tools.spellcheck.PSSpellingApplet" 	codebase="/Rhythmyx/sys_resources/spellcheck"
+       archive="spell.jar,ssce.jar" MAYSCRIPT="true"
+       pluginspage="http://java.sun.com/products/plugin/1.3/plugin-install.html">
+    <NOEMBED>
+           No Java 2 SDK, Standard Edition v 1.3 support for APPLET!!
+    </NOEMBED></EMBED>
+    No Java 2 SDK, Standard Edition v 1.3 support for APPLET!!
+</COMMENT>
+</OBJECT>
+
+
+<script src="compose.js"></script>
+<script src="spellcheckcode.js"></script>
+
+<script language="javascript">
+
+var bLoad=false
+var pureText=true
+var bodyTag="<body style=\"font:10pt arial,sans-serif\">"
+var bTextMode=false
+
+public_description=new Editor
+
+function Editor() {
+  this.put_html=SetHtml;
+  this.get_html=GetHtml;
+  this.put_text=SetText;
+  this.get_text=GetText;
+  this.CompFocus=GetCompFocus;
+}
+
+function GetCompFocus() {
+  Composition.focus();
+}
+
+function GetText() {
+  return Composition.document.body.innerText;
+}
+
+function SetText(text) {
+  text = text.replace(/\n/g, "<br>")
+  Composition.document.body.innerHTML=text;
+}
+
+function GetHtml() {
+  if (bTextMode) 
+    return Composition.document.body.innerText;
+  else {
+    cleanHtml();
+    cleanHtml();
+    return Composition.document.body.innerHTML;
+  }
+}
+
+function SetHtml(sVal) {
+  if (bTextMode) Composition.document.body.innerText=sVal;
+  else Composition.document.body.innerHTML=sVal;
+}
+
+</script>
+<script language="javascript">
+<!--
+Composition.document.open();
+Composition.document.write(bodyTag);
+Composition.document.close();
+Composition.document.designMode="On";
+// -->
+</script>
+
+</body>
+</html>

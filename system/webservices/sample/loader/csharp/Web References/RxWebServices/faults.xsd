@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema xmlns:sys="urn:www.percussion.com/6.0.0/system" xmlns:uis="urn:www.percussion.com/6.0.0/uiServices" xmlns:con="urn:www.percussion.com/6.0.0/content" xmlns:asms="urn:www.percussion.com/6.0.0/assemblyServices" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:secs="urn:www.percussion.com/6.0.0/securityServices" xmlns:com="urn:www.percussion.com/6.0.0/common" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="common.xsd" namespace="urn:www.percussion.com/6.0.0/common" />
+  <xsd:import schemaLocation="assembly/assemblyServices.xsd" namespace="urn:www.percussion.com/6.0.0/assemblyServices" />
+  <xsd:import schemaLocation="content/contentServices.xsd" namespace="urn:www.percussion.com/6.0.0/content" />
+  <xsd:import schemaLocation="security/securityServices.xsd" namespace="urn:www.percussion.com/6.0.0/securityServices" />
+  <xsd:import schemaLocation="system/systemServices.xsd" namespace="urn:www.percussion.com/6.0.0/system" />
+  <xsd:import schemaLocation="ui/uiServices.xsd" namespace="urn:www.percussion.com/6.0.0/uiServices" />
+  <xsd:complexType name="Error">
+    <xsd:attribute name="code" type="xsd:int" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The error code as generated from the server. This uniquely identifies a rhythmyx error condition.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="errorMessage" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>A user presentable error message.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="PSError">
+    <xsd:annotation>
+      <xsd:documentation>This errror is returned for all generic rhythmyx errors providing a code, message and stack.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSErrorResultsFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned for requests that operate on multiple inputs with returns. It returns the requested result for successful inputs and the errors otherwise. There is no guarantee that the order of service calls will match the order of the supplied inputs.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Service" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the service that caused this fault.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element maxOccurs="unbounded" name="ServiceCall">
+          <xsd:annotation>
+            <xsd:documentation>A collection of service call results if the call completed successful or errors otherwise.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:choice>
+              <xsd:element minOccurs="0" name="Result">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="Id" type="com:Id" />
+                    <xsd:choice>
+                      <xsd:element minOccurs="0" ref="con:PSItem" />
+                      <xsd:element minOccurs="0" ref="con:PSItemStatus" />
+                      <xsd:element minOccurs="0" ref="con:PSChildEntry" />
+                      <xsd:element minOccurs="0" ref="con:PSAaRelationship" />
+                      <xsd:element minOccurs="0" ref="con:PSFolder" />
+                      <xsd:element minOccurs="0" ref="sys:PSAuditTrail" />
+                      <xsd:element minOccurs="0" name="State" type="xsd:string" />
+                      <xsd:element minOccurs="0" ref="con:PSKeyword" />
+                      <xsd:element minOccurs="0" ref="con:PSLocale" />
+                      <xsd:element minOccurs="0" ref="con:PSAutoTranslation" />
+                      <xsd:element minOccurs="0" ref="con:PSContentType" />
+                      <xsd:element minOccurs="0" ref="asms:PSTemplateSlot" />
+                      <xsd:element minOccurs="0" ref="asms:PSAssemblyTemplate" />
+                      <xsd:element minOccurs="0" ref="sys:PSSharedProperty" />
+                      <xsd:element minOccurs="0" ref="sys:PSRelationshipConfig" />
+                      <xsd:element minOccurs="0" ref="sys:PSAclImpl" />
+                      <xsd:element minOccurs="0" ref="sys:PSItemFilter" />
+                      <xsd:element minOccurs="0" ref="secs:PSCommunity" />
+                      <xsd:element minOccurs="0" ref="uis:PSAction" />
+                      <xsd:element minOccurs="0" ref="uis:PSDisplayFormat" />
+                      <xsd:element minOccurs="0" ref="uis:PSSearchDef" />
+                      <xsd:element minOccurs="0" ref="uis:PSViewDef" />
+                      <xsd:element minOccurs="0" ref="uis:PSHierarchyNode" />
+                      <xsd:element ref="con:PSContentTemplateDesc" />
+                    </xsd:choice>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element minOccurs="0" name="Error">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="Id" type="com:Id" />
+                    <xsd:choice>
+                      <xsd:element minOccurs="0" ref="flt:PSError" />
+                      <xsd:element minOccurs="0" ref="flt:PSLockFault" />
+                    </xsd:choice>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:choice>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSErrorsFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned for requests that operate on multiple inputs but do not return a result. It contains the success or error information for the supplied inputs.  There is no guarantee that the order of ServiceCalls will be in the same order as the supplied inputs.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Service" type="xsd:string" />
+        <xsd:element maxOccurs="unbounded" name="ServiceCall">
+          <xsd:complexType>
+            <xsd:choice>
+              <xsd:element minOccurs="0" name="Success">
+                <xsd:complexType>
+                  <xsd:attribute name="id" type="com:Id" use="required">
+                    <xsd:annotation>
+                      <xsd:documentation>The id of the object that was processed successfully.</xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:attribute>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element minOccurs="0" name="Error">
+                <xsd:complexType>
+                  <xsd:choice>
+                    <xsd:element ref="flt:PSError" />
+                    <xsd:element ref="flt:PSLockFault" />
+                  </xsd:choice>
+                  <xsd:attribute name="id" type="com:Id" use="required" />
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:choice>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSContractViolationFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned if any specified contract is violated as described for each service.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSNotAuthenticatedFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned if a user makes a request to which he cannot be authenticated.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSInvalidSessionFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned if a user makes a request with an invalid rhythmyx session.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSNotAuthorizedFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned if a user makes a request to which he is not authorized..</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSUserNotMemberOfCommunityFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned if the user tries to switch to a community in which he is not a member.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSInvalidLocaleFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned is the user tries to switch to a locale that does not exist or is not enabled.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSUnknownRelationshipTypeFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned with relationship services used for undefind relationship types.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSUseSpecificMethodsFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned for generic calls for which a specific service exists.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSUnknownContentTypeFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned if the user tries to use an undefined content type.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSUnknownChildFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned if the user tries to use an unknown child.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSUnknownConfigurationFault">
+    <xsd:annotation>
+      <xsd:documentation>This error may be returned if the user requests an unknown configuration file.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSLockFault">
+    <xsd:annotation>
+      <xsd:documentation>This error is returned whenever a requested object could not be locked. Besides the standard error information this returns additional lock information.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="flt:Error">
+          <xsd:attribute name="stack" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The stack trace where in the server the error occurred may be used for debugging purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="locker" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>The name or the user that has the requested object locked.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="remainigTime" type="xsd:long" />
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

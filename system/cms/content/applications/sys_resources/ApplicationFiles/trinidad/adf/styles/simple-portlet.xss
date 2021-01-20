@@ -1,0 +1,466 @@
+<?xml version="1.0"?>
+<!--
+  Copyright 2006 The Apache Software Foundation.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!--
+
+  simple-portlet.xss defines the styles used by the  
+  implementation of the Portlet Skin.  The styles defined
+  here are layered on top of the styles defined by the Base 
+  Skin (simple-desktop.xss).
+  In this file we take out the portlet styles defined in 
+  base-desktop.xss.
+  We also clear out the font information so that
+  we can use portlet-font style class instead, 
+  and we keep our padding/borders for alignment so the component
+  still renders properly.
+
+-->
+
+<styleSheetDocument xmlns="http://myfaces.apache.org/uix/style"
+                    version="2.0">
+                    
+  <!-- This may well be changed to import simple-base.xss or
+       something. -->
+  <import href="base-desktop.xss"/>
+  <import href="simple-desktop.xss"/>                    
+
+<styleSheet>
+
+  
+  <!-- clear out portlet styles that are defined in base-desktop-->
+  <style selector=".PortletBodyColor" resetProperties="true"/> 
+  <style selector=".PortletHeaderColor" resetProperties="true"/>
+  <style selector=".PortletHeaderLink" resetProperties="true"/>  
+  <style selector=".PortletHeaderStyle" resetProperties="true"/>   
+  <style selector=".PortletHeaderText" resetProperties="true"/>
+  <style selector=".PortletHeading1" resetProperties="true"/>
+  <style selector=".PortletHeading2" resetProperties="true"/>  
+  <style selector=".PortletHeading3" resetProperties="true"/>
+  <style selector=".PortletHeading4" resetProperties="true"/> 
+  <style selector=".PortletSubHeaderColor" resetProperties="true"/>  
+  <style selector=".PortletSubHeaderLink" resetProperties="true"/>
+  <style selector=".PortletSubHeaderText" resetProperties="true"/>
+  <style selector=".PortletText1" resetProperties="true"/>
+  <style selector=".PortletText2" resetProperties="true"/>  
+  <style selector=".PortletText3" resetProperties="true"/>  
+  <style selector=".PortletText4" resetProperties="true"/>
+  <style selector=".portlet-font" resetProperties="true"/>  
+  <style selector=".portlet-font-dim" resetProperties="true"/> 
+  <style selector=".portlet-msg-info" resetProperties="true"/>
+  <style selector=".portlet-msg-error" resetProperties="true"/>
+  <style selector=".portlet-section-header" resetProperties="true"/>
+  <style selector=".portlet-section-body" resetProperties="true"/>
+  <style selector=".portlet-section-alternate" resetProperties="true"/>
+  <style selector=".portlet-section-selected" resetProperties="true"/>
+  <style selector=".portlet-section-subheader" resetProperties="true"/>
+  <style selector=".portlet-section-footer" resetProperties="true"/>
+  <style selector=".portlet-section-text" resetProperties="true"/>
+  <style selector=".portlet-table-header" resetProperties="true"/>
+  <style selector=".portlet-table-body" resetProperties="true"/>
+  <style selector=".portlet-table-alternate" resetProperties="true"/>
+  <style selector=".portlet-table-selected" resetProperties="true"/>
+  <style selector=".portlet-table-subheader" resetProperties="true"/>
+  <style selector=".portlet-table-subheader" resetProperties="true"/>
+  <style selector=".portlet-table-footer" resetProperties="true"/>
+  <style selector=".portlet-table-text" resetProperties="true"/>
+  <style selector=".portlet-form-label" resetProperties="true"/>
+  <style selector=".portlet-form-input-field" resetProperties="true"/>
+  <style selector=".portlet-form-button" resetProperties="true"/>
+  <style selector=".portlet-icon-label" resetProperties="true"/>
+  <style selector=".portlet-dlg-icon-label" resetProperties="true"/>
+  <style selector=".portlet-form-field-label" resetProperties="true"/>
+  <style selector=".portlet-form-field" resetProperties="true"/>
+
+  <!-- clear out font information. We'll map to portlet-font instead for 
+       the styles that include these font selectors -->
+  <style name="AFDefaultFontFamily" resetProperties="true"/>
+  <style name="AFTextForeground" resetProperties="true"/>
+  <style name="AFDefaultFont" resetProperties="true"/>
+  <style name="AFVerySmallFont" resetProperties="true"/>
+  <style name="AFSmallFont" resetProperties="true"/>
+  <style name="AFMediumFont" resetProperties="true"/>
+  <style name="AFLargeFont" resetProperties="true"/>
+  <style name="AFVeryLargeFont" resetProperties="true"/>
+  <style name="AFActiveLinkForeground" resetProperties="true"/>
+  <style name="AFVisitedLinkForeground" resetProperties="true"/>
+  <style name="AFDisabledLinkForeground" resetProperties="true"/>
+  <style name="AFLinkForeground" resetProperties="true"/>
+  <!-- reset the 'disabled' gray color -->
+  <style name="MediumExtraAccentForeground">
+    <property name="color"/>
+  </style>
+  <style name="AFDarkBackground">
+    <property name="background-color">#606060</property> 
+  </style>
+  <!-- for now, we keep the default colors, but we might want to change -->
+  <!-- our background-color/border-color scheme from green to something -->
+  <!-- else. If we do that, we override AFDarkBackground, etc. The accent -->
+  <!-- colors are grey, so they are ok. -->
+
+  <!--
+    Table Styles. Clear out everything except text-alignment for 
+    number and icon cells
+  -->
+  <style name="AFTableCellDataText" resetProperties="true"/>
+  <style name="AFTableCellDataBackgroundColor" resetProperties="true"/>    
+   <style name="AFTableCellDataBandedBackgroundColor" resetProperties="true"/>    
+  
+  <style name="AFTableCellDataBorderColor" resetProperties="true"/>     
+  <style name="AFTableCellDataVerticalAlign" resetProperties="true"/>
+  <!-- we clear these out simply so that they won't render in the generated
+       css file. We map these to portlet styles in the PortletDesktopSkinExtension file -->
+  <style selector="af|column::header-text" resetProperties="true"/>
+  <style selector="af|column::row-header-text" resetProperties="true"/>
+  <style selector="af|table::detail" resetProperties="true"/>
+  <style selector="af|table::column-footer" resetProperties="true"/>
+  <!-- clear out borders, since portlet styles will add those -->
+  <style selector=".OraTableBorder0001" resetProperties="true"/>
+  <style selector=".OraTableBorder0010" resetProperties="true"/>
+  <style selector=".OraTableBorder0011" resetProperties="true"/>
+  <style selector=".OraTableBorder0100" resetProperties="true"/>
+  <style selector=".OraTableBorder0101" resetProperties="true"/>
+  <style selector=".OraTableBorder0110" resetProperties="true"/>
+  <style selector=".OraTableBorder0111" resetProperties="true"/>
+  <style selector=".OraTableBorder1000" resetProperties="true"/>
+  <style selector=".OraTableBorder1001" resetProperties="true"/>
+  <style selector=".OraTableBorder1010" resetProperties="true"/>
+  <style selector=".OraTableBorder1011" resetProperties="true"/>
+  <style selector=".OraTableBorder1100" resetProperties="true"/>
+  <style selector=".OraTableBorder1101" resetProperties="true"/>
+  <style selector=".OraTableBorder1110" resetProperties="true"/>
+  <style selector=".OraTableBorder1111" resetProperties="true"/>
+
+
+  <!-- for cells containing a total, keep text-align -->
+  <style selector="af|column::total-number">
+    <property name="border-color"/>
+    <property name="font-weight"/>
+    <property name="background-color"/>
+    <property name="color"/>
+  </style>
+
+  <!-- for cells containing a total -->
+  <style selector="af|column::total-text" resetProperties="true"/>
+  <style selector="af|column::sortable-header-text" resetProperties="true"/>
+
+  <!-- make the color picker's borders look ok -->
+    <style selector=".p_OraColorFieldSwatch">
+    <property name="border-color">#ffffff</property>
+  </style>
+
+  <style selector=".p_OraColorPalette">
+    <property name="background-color">#000000</property>
+  </style>
+
+  <style selector=".p_OraColorPaletteEmptyCell">
+    <property name="background-color">#ffffff</property>
+  </style>
+  
+  <style name="AFHeaderText" resetProperties="true"/>
+
+  <!-- get rid of color; keep padding -->
+  <style selector="af|menuButtons::text-selected">
+    <property name="color"/> 
+    <property name="font-weight">bold</property>
+  </style> 
+  <style selector="af|menuButtons::text-disabled">
+    <property name="color"/>  
+  </style>  
+
+  <!-- keep borders and padding only, portlet-menu-item(-selected) can
+       add styles -->
+  <style selector="af|menuTabs::enabled">
+    <property name="background-color"/>  
+  </style>
+  <style selector="af|menuTabs::selected">
+    <property name="background-color"/>
+   </style>
+  <style selector="af|menuTabs::disabled">
+    <property name="background-color"/>
+  </style>
+  <style selector="af|menuTabs::separator" resetProperties="true"/>  
+
+  <style selector="af|menuBar" resetProperties="true"/>
+  <style selector="af|menuBar::body" resetProperties="true"/>
+  <style selector="af|menuBar::title" resetProperties="true"/>
+  <style selector="af|menuBar::empty" resetProperties="true"/>
+  <style selector="af|menuBar::selected-link" resetProperties="true"/>
+  <style selector="af|menuBar::enabled-link" resetProperties="true"/>
+  <style selector="af|menuBar::separator" resetProperties="true"/>
+  <!-- styles taken from minimal-desktop -->
+  <!-- ********************************* -->
+  <!-- ********************************* -->
+
+  <!-- 
+    Train Styles
+  -->
+
+  <!-- We override the AFTrainStation named style to add some
+       padding, and also to display the station indicator
+       using a top border -->
+  <style name="AFTrainStation">  
+    <property name="border-style">solid</property>
+    <property name="border-width">3px 0px 0px 0px</property>
+    <property name="padding">3pt</property>
+  </style>
+
+  <style selector="af|processTrain::visited-link" resetProperties="true" />
+  <style selector="af|processTrain::unvisited-link" resetProperties="true" />
+  <!-- panelBox has pretty mellow background colors, so we'll keep them. -->
+  <!-- another possibility is to inhibit the background-color and use also render a portlet-table
+   style to pick up the background color for that -->
+  <style name="AFPanelBox">
+    <includeStyle name="AFMediumBorder"/>
+    <property name="border-style">solid</property>
+    <property name="border-width">1px</property>
+    <property name="margin">2px</property>
+  </style>
+
+  <!-- Use darker border for dark content containers -->
+  <style selector="af|panelBox::dark">
+    <includeStyle name="AFDarkBorder"/>
+  </style>
+
+  <style name="af|panelBox::content">
+    <includeStyle name="AFMediumBorder"/>
+    <property name="border-style">solid</property>
+    <property name="border-width">1px</property>
+    <property name="margin">2px</property>
+  </style>
+
+  <!-- Use darker border for dark content containers -->
+  <style selector="af|panelBox::content-dark">
+    <includeStyle name="AFDarkBorder"/>
+  </style>
+
+
+  <!-- Adjust the header padding and text size/weight -->
+  <style selector="af|panelBox::header">
+    <property name="padding">0px 3px</property>
+    <includeStyle name="AFMediumFont"/> <!--  TODO inhibit font -->
+    <property name="font-weight">bold</property>
+  </style>
+  <!-- inhibit medium background and text -->
+    <style selector="af|panelBox::light af|panelBox::header">
+      <property name="color"/>  
+      <property name="background-color"/>  
+    </style>
+
+  <!-- Add padding around the body of all content containers -->
+  <style selector="af|panelBox::body">
+    <property name="padding">5px</property>
+
+    <!-- Add a minimum height so that empty content containers
+         occupy some space -->
+    <property name="height">20px</property>
+  </style>  
+
+  <!-- panelForm -->
+  <style selector="af|panelForm::cell">
+    <property name="padding">1px 0px</property>
+  </style>
+
+  <!--
+    Footer Styles
+  -->
+
+  <style name="AFFooterMessageText">
+    <property name="padding">5px</property>
+  </style>
+
+  <!--
+    menuButtons Styles
+  -->
+  
+   <style name="AFMenuButtons">
+    <property name="padding">0px 2px 2px 2px</property>
+  </style>
+  
+  <!-- 
+    menuBar Styles
+  -->
+
+
+  <!-- 
+    Fix up the padding around the MenuBar items and
+    disable word wrapping 
+   -->
+  <style name="AFMenuBarItem">
+    <property name="padding">0px 0px 0px 5px</property>
+    <property name="white-space">nowrap</property> 
+  </style>
+
+  
+  <!--
+    PanelHeader Styles
+  -->
+  <style selector="af|panelHeader">
+    <includeStyle name="AFDarkAccentBorder"/>
+    <property name="border-width">0px 0px 1px 0px</property>
+    <property name="border-style">solid</property>
+    <property name="vertical-align">bottom</property>
+    <property name="margin-bottom">3px</property>
+    <property name="padding">0px 3px</property>
+  </style>
+  
+  <style selector="af|showDetailHeader">
+    <includeStyle name="AFDarkAccentBorder"/>
+    <property name="border-width">0px 0px 1px 0px</property>
+    <property name="border-style">solid</property>
+    <property name="vertical-align">bottom</property>
+    <property name="margin-bottom">3px</property>
+    <property name="padding">0px 3px</property>
+  </style>
+  
+  <style selector="af|messages::header">
+    <includeStyle name="AFDarkAccentBorder"/>
+    <property name="border-width">0px 0px 1px 0px</property>
+    <property name="border-style">solid</property>
+    <property name="vertical-align">bottom</property>
+    <property name="margin-bottom">3px</property>
+    <property name="padding">0px 3px</property>
+  </style>
+   
+
+   <style name="AFHeaderText">
+    <includeStyle name="AFDarkForeground"/>
+    <property name="font-weight">bold</property>
+    <property name="padding">0px</property>   
+    <property name="margin">0px</property> 
+  </style>
+  <!-- if the user sets the icon attribute on panelHeader, -->
+  <!-- this is the style for that icon -->
+  <style selector="af|panelHeader::icon-style">
+    <property name="margin-right">3px</property>
+  </style>
+
+  <!--
+    af:messages Styles
+  -->
+
+  <style selector="af|messages">
+    <includeStyle name="AFVeryDarkAccentBorder"/>
+    <includeStyle name="AFMediumAccentBackground"/>
+    <property name="border-style">solid</property>
+    <property name="border-width">1px</property>
+    <property name="padding">0px</property>
+    <property name="margin">5px 0px 0px</property>
+  </style>
+
+  <!--
+    objectSeparator Styles
+  -->
+  <style selector="af|objectSeparator">
+    <includeStyle name="AFDarkBorder"/>
+    <property name="border-style">dashed none none</property>
+    <property name="border-width">1px 0px 0px</property>
+    <property name="height">1px</property>
+    <property name="margin">-3px 0px -3px 0px</property>
+    <property name="padding">0px</property>
+  </style>  
+
+  <!--
+  panelSideBar styles. adds borders.
+  -->
+  <style selector="af|panelSideBar">
+    <property name="border-width">0px 1px 1px</property>
+    <property name="border-style">solid</property>
+    <property name="padding">0px</property>
+    <property name="margin">0px 5px 0px 0px</property>    
+  </style>
+  <!--
+    SortableHeader Styles
+  -->
+  <style selector=".AFSortableHeaderSortIcon">
+    <property name="padding-left">4px</property>
+    <property name="text-decoration">none</property>
+  </style>
+
+  <!--
+    TabBar Styles
+  -->
+
+  <!-- Add a border and padding to all tabBar items -->
+  <style name="AFTabBarItem">
+    <includeStyle name="AFVeryDarkAccentBorder"/>
+    <property name="border-style">solid</property>
+    <property name="border-width">1px 1px 0px 1px</property>
+    <property name="padding">2px 6px</property>
+  </style>
+
+
+    
+ 
+
+  <!-- showOneTab styles -->
+  
+  <style name="AFShowOneTab">
+    <includeStyle name="AFLightAccentBackground"/>
+    <includeStyle name="AFMediumBorder"/>
+    <property name="border-style">solid</property>
+    <includeStyle name="AFCenterTextAlign"/>
+    <property name="padding">2px 0px</property>  
+    <property name="margin">4px 0px</property>    
+  </style>
+  
+  <style selector="af|showOneTab::orientation-top">
+    <includeStyle name="AFShowOneTab"/>
+    <property name="border-width">1px 0px 0px</property>
+  </style>
+
+  <style selector="af|showOneTab::orientation-bottom">
+    <includeStyle name="AFShowOneTab"/>
+    <property name="border-width">0px 0px 1px</property>
+  </style>    
+
+
+  <!-- 
+    showOnePanel Styles
+  -->
+
+  <style selector="af|showOnePanel::header-disabled">
+    <property name="padding-left">18px</property>
+    <includeStyle name="AFDefaultBoldFont"/>
+  </style>
+  <style selector="af|showOnePanel::header-collapsed">
+    <includeStyle name="AFDefaultBoldFont"/>
+  </style>
+  
+  <style selector="af|showOnePanel::header-expanded">
+    <includeStyle name="AFDefaultBoldFont"/>
+  </style>
+</styleSheet>
+
+<styleSheet direction="rtl">
+
+  <style selector="af|panelHeader::icon-style">
+    <property name="margin-left">3px</property>
+  </style>
+
+  <style selector=".AFSortableHeaderSortIcon">
+    <property name="padding-right">4px</property>
+  </style>
+
+</styleSheet>
+
+<styleSheet browsers="gecko">
+  <style selector="af|objectSeparator">
+    <property name="margin"/>
+  </style>
+</styleSheet>
+
+</styleSheetDocument>

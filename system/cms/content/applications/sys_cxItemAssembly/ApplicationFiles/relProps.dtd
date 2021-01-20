@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT prop (#PCDATA)>
+<!ATTLIST  prop name CDATA #REQUIRED>
+<!ELEMENT relProps (prop* )>
+<!ATTLIST  relProps rid CDATA #REQUIRED>

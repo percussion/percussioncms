@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT ActionList (Params?, Action* )>
+<!ELEMENT Action (Params? )>
+<!ATTLIST  Action name CDATA #REQUIRED>
+<!ATTLIST  Action url CDATA #REQUIRED>
+<!ATTLIST  Action uicontextid CDATA #IMPLIED>
+<!ATTLIST  Action displayname CDATA #REQUIRED>
+<!ATTLIST  Action actionid CDATA #REQUIRED>
+<!ATTLIST  Action modeid CDATA #IMPLIED>
+<!ELEMENT Param (#PCDATA)>
+<!ATTLIST  Param name CDATA #REQUIRED>
+<!ELEMENT Params (Param* )>
+<!ATTLIST  ActionList name CDATA #REQUIRED>
+<!ATTLIST  ActionList url CDATA #REQUIRED>
+<!ATTLIST  ActionList uicontextid CDATA #IMPLIED>
+<!ATTLIST  ActionList displayname CDATA #REQUIRED>
+<!ATTLIST  ActionList actionid CDATA #REQUIRED>
+<!ATTLIST  ActionList modeid CDATA #IMPLIED>

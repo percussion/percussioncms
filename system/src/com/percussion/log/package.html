@@ -1,0 +1,100 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   $Id: package.html 1.2 1999/01/13 15:54:19Z Administrator Release $
+
+   Version Labels  : $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 20000724_2_0 20000522_1_1 20000501_1_1 20000327_1_1 20000111_1_0 991227_1_0 991214_1_0 991213_1_0 991202_1_0 Release_1_0_Intl Release_10_1 Release_10 $
+
+   Locked By       : $Locker: $
+
+   Revision History:
+                     $Log: package.html $
+                     Revision 1.2  1999/01/13 15:54:19Z  Administrator
+                      added RCS headers
+-->
+
+<BODY>
+
+This specification defines the log handling model used by E2. The logging
+mechanism is used internally by the E2 server to record various pieces of
+information during execution which may be useful for debugging problems.
+It can also be used as an audit trail.
+
+<H2>Implementation Phases</H2>
+
+Logging will be fully implemented in phase I due to its value in assisting
+us to debug the product.
+
+
+<H2>Writing to the Log</H2>
+
+When processing an application specific request, the application's log
+handler should be used. This can be accessed by calling the
+{@link com.percussion.server.PSApplicationHandler#getLogHandler getLogHandler}
+method of the appropriate PSApplicationHandler object. When in the context
+of a data request processing component which has access to the
+{@link com.percussion.data.PSExecutionData PSExecutionData} object,
+its {@link com.percussion.data.PSExecutionData#getLogHandler getLogHandler}
+method can be used instead.
+
+
+<H2>Log Management - Behind the Scenes</H2>
+
+<H3>Log Structure</H3>
+
+The log will be stored in the same back-end data store as the object store.
+See the {@link com.percussion.log.PSBackEndLogWriter PSBackEndLogWriter}
+class for a description of the log record structure. A secondary mechanism
+is also supported. If the back-end server is unavailable, the log can be
+written to disk. See the
+{@link com.percussion.log.PSFileLogWriter PSFileLogWriter} class for a
+description of the file format.
+
+<H3>Log Access</H3>
+
+Having too many back-end connections open to the object store is clearly a
+problem we can't afford to run into. The PSBackEndLogWriter class is defined
+which provides serialized access to the log table. To avoid slowing down 
+applications, they do not directly access the PSBackEndLogWriter object. The
+PSLogManager class handles creating the PSBackEndLogWriter and
+managing access to it. The PSLogManager object receives log requests
+from the server and applications through objects extending the
+PSLogInformation abstract class. It will add the object to its in-memory
+queue, and apply them to the back-end. If the back-end server is down,
+causing the in-memory queue to build up, the log messages will be written
+to disk. This is done using the PSFileLogWriter class. The in-memory queue
+is disabled at this point. Once the server is back up, the log messages will
+be read back from disk (using the PSFileLogReader) and written to the
+back-end. The in-memory queue will once again be enabled.
+<p>
+The server and each application may follow different logging rules. As such,
+each has its own PSLogHandler object. This object is used to determine if
+the specified type of action should be logged. It is also used to send
+the log message to the back-end log. The server or application passes the
+PSLogInformation sub-object to the PSLogManager, which does the
+actual write to the log.
+
+</BODY>
+

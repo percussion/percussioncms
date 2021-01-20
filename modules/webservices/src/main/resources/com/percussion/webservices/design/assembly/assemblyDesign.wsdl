@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<wsdl:definitions name="assemblyDesign" targetNamespace="urn:www.percussion.com/6.0.0/assemblyDesign" xmlns:asmd="urn:www.percussion.com/6.0.0/assemblyDesign" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/faults" schemaLocation="../faults.xsd">
+         </xsd:import>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/assemblyDesign" schemaLocation="assemblyDesign.xsd">
+         </xsd:import>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="AuthenticationHeader">
+      <wsdl:part name="Session" element="com:PSAuthenticationHeader"/>
+   </wsdl:message>
+   <wsdl:message name="empty"/>
+   <wsdl:message name="CreateSlotsRequest">
+      <wsdl:part name="CreateSlotsRequest" element="asmd:CreateSlotsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateSlotsResponse">
+      <wsdl:part name="CreateSlotsResponse" element="asmd:CreateSlotsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FindSlotsRequest">
+      <wsdl:part name="FindSlotsRequest" element="asmd:FindSlotsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FindSlotsResponse">
+      <wsdl:part name="FindSlotsResponse" element="asmd:FindSlotsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadSlotsRequest">
+      <wsdl:part name="LoadSlotsRequest" element="asmd:LoadSlotsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadSlotsResponse">
+      <wsdl:part name="LoadSlotsResponse" element="asmd:LoadSlotsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="SaveSlotsRequest">
+      <wsdl:part name="SaveSlotsRequest" element="asmd:SaveSlotsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="DeleteSlotsRequest">
+      <wsdl:part name="DeleteSlotsRequest" element="asmd:DeleteSlotsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateAssemblyTemplatesRequest">
+      <wsdl:part name="CreateAssemblyTemplatesRequest" element="asmd:CreateAssemblyTemplatesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateAssemblyTemplatesResponse">
+      <wsdl:part name="CreateAssemblyTemplatesResponse" element="asmd:CreateAssemblyTemplatesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FindAssemblyTemplatesRequest">
+      <wsdl:part name="FindAssemblyTemplatesRequest" element="asmd:FindAssemblyTemplatesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FindAssemblyTemplatesResponse">
+      <wsdl:part name="FindAssemblyTemplatesResponse" element="asmd:FindAssemblyTemplatesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadAssemblyTemplatesRequest">
+      <wsdl:part name="LoadAssemblyTemplatesRequest" element="asmd:LoadAssemblyTemplatesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadAssemblyTemplatesResponse">
+      <wsdl:part name="LoadAssemblyTemplatesResponse" element="asmd:LoadAssemblyTemplatesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="SaveAssemblyTemplatesRequest">
+      <wsdl:part name="SaveAssemblyTemplatesRequest" element="asmd:SaveAssemblyTemplatesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="DeleteAssemblyTemplatesRequest">
+      <wsdl:part name="DeleteAssemblyTemplatesRequest" element="asmd:DeleteAssemblyTemplatesRequest"/>
+   </wsdl:message>
+   <!--
+      Fault messages
+    -->
+   <wsdl:message name="ContractViolationFaultMessage">
+      <wsdl:part name="fault" element="flt:PSContractViolationFault"/>
+   </wsdl:message>
+   <wsdl:message name="InvalidSessionFaultMessage">
+      <wsdl:part name="fault" element="flt:PSInvalidSessionFault"/>
+   </wsdl:message>
+   <wsdl:message name="NotAuthorizedFaultMessage">
+      <wsdl:part name="fault" element="flt:PSNotAuthorizedFault"/>
+   </wsdl:message>
+   <wsdl:message name="ErrorResultsFaultMessage">
+      <wsdl:part name="fault" element="flt:PSErrorResultsFault"/>
+   </wsdl:message>
+   <wsdl:message name="ErrorsFaultMessage">
+      <wsdl:part name="fault" element="flt:PSErrorsFault"/>
+   </wsdl:message>
+   <wsdl:portType name="assemblyDesign">
+      <wsdl:operation name="CreateSlots">
+         <wsdl:input message="asmd:CreateSlotsRequest"/>
+         <wsdl:output message="asmd:CreateSlotsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="asmd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asmd:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FindSlots">
+         <wsdl:input message="asmd:FindSlotsRequest"/>
+         <wsdl:output message="asmd:FindSlotsResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadSlots">
+         <wsdl:input message="asmd:LoadSlotsRequest"/>
+         <wsdl:output message="asmd:LoadSlotsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="asmd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asmd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="asmd:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="SaveSlots">
+         <wsdl:input message="asmd:SaveSlotsRequest"/>
+         <wsdl:output message="asmd:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="asmd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asmd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="asmd:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteSlots">
+         <wsdl:input message="asmd:DeleteSlotsRequest"/>
+         <wsdl:output message="asmd:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="asmd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asmd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="asmd:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="CreateAssemblyTemplates">
+         <wsdl:input message="asmd:CreateAssemblyTemplatesRequest"/>
+         <wsdl:output message="asmd:CreateAssemblyTemplatesResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="asmd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asmd:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FindAssemblyTemplates">
+         <wsdl:input message="asmd:FindAssemblyTemplatesRequest"/>
+         <wsdl:output message="asmd:FindAssemblyTemplatesResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadAssemblyTemplates">
+         <wsdl:input message="asmd:LoadAssemblyTemplatesRequest"/>
+         <wsdl:output message="asmd:LoadAssemblyTemplatesResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="asmd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asmd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="asmd:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="SaveAssemblyTemplates">
+         <wsdl:input message="asmd:SaveAssemblyTemplatesRequest"/>
+         <wsdl:output message="asmd:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="asmd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asmd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="asmd:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteAssemblyTemplates">
+         <wsdl:input message="asmd:DeleteAssemblyTemplatesRequest"/>
+         <wsdl:output message="asmd:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="asmd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="asmd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="asmd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="asmd:ErrorsFaultMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="assemblyDesignSOAP" type="asmd:assemblyDesign">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="CreateSlots">
+         <soap:operation soapAction="urn:CreateSlots"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FindSlots">
+         <soap:operation soapAction="urn:FindSlots"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="FindSlotsRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadSlots">
+         <soap:operation soapAction="urn:LoadSlots"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault use="literal" name="ErrorResultsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="SaveSlots">
+         <soap:operation soapAction="urn:SaveSlots"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault use="literal" name="ErrorsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteSlots">
+         <soap:operation soapAction="urn:DeleteSlots"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault use="literal" name="ErrorsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="CreateAssemblyTemplates">
+         <soap:operation soapAction="urn:CreateAssemblyTemplates"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FindAssemblyTemplates">
+         <soap:operation soapAction="urn:FindAssemblyTemplates"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="FindAssemblyTemplatesRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadAssemblyTemplates">
+         <soap:operation soapAction="urn:LoadAssemblyTemplates"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault use="literal" name="ErrorResultsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="SaveAssemblyTemplates">
+         <soap:operation soapAction="urn:SaveAssemblyTemplates"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault use="literal" name="ErrorsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteAssemblyTemplates">
+         <soap:operation soapAction="urn:DeleteAssemblyTemplates"/>
+         <wsdl:input>
+            <soap:header message="asmd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault use="literal" name="ErrorsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

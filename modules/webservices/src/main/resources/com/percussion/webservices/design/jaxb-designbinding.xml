@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<jaxb:bindings version="2.1" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+               xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
+>
+
+
+
+    <jaxb:bindings schemaLocation="assembly/assemblyServices.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.assembly.data"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="security/securityServices.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.security.data"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="ui/uiServices.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.ui.data"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="content/contentServices.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.content"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="system/systemServices.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.content"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+    <jaxb:bindings schemaLocation="assembly/assemblyDesign.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.assemblydesign"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="content/contentDesign.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.contentdesign"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+
+    <jaxb:bindings schemaLocation="security/securityDesign.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.securitydesign"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="system/systemDesign.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.systemdesign"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="ui/uiDesign.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.uidesign"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="faults.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.faults"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+    <jaxb:bindings schemaLocation="common.xsd" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.percussion.webservices.common"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+
+
+</jaxb:bindings>

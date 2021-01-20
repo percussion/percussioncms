@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT extstateroles (newlink, componentname, staterole* )>
+<!ELEMENT staterole (rolename, stateid, roleid, assignment, adhoc, notify, link, deletelink )>
+<!ELEMENT deletelink (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT notify (#PCDATA)>
+<!ELEMENT adhoc (#PCDATA)>
+<!ELEMENT assignment (#PCDATA)>
+<!ELEMENT roleid (#PCDATA)>
+<!ELEMENT stateid (#PCDATA)>
+<!ELEMENT rolename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT newlink (#PCDATA)>

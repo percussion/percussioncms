@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT entry EMPTY>
+<!ATTLIST  entry siteid CDATA #REQUIRED>
+<!ELEMENT variantsitelookup (entry* )>

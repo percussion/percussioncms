@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datasources>
+   <local-tx-datasource>
+      <jndi-name>jdbc/RhythmyxData</jndi-name>
+      <connection-url>jdbc:jtds:sqlserver://pfrontiero</connection-url>
+      <driver-class>net.sourceforge.jtds.jdbc.Driver</driver-class>
+      <security-domain>rx.datasource.jdbc_RhythmyxData</security-domain>
+      <min-pool-size>5</min-pool-size>
+      <max-pool-size>100</max-pool-size>
+      <idle-timeout-minutes>15</idle-timeout-minutes>
+      <metadata>
+         <type-mapping>MS SQLSERVER2000</type-mapping>
+      </metadata>
+   </local-tx-datasource>
+</datasources>

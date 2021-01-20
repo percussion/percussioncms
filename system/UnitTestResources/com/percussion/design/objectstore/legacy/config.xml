@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?><PSXServerConfiguration id="1" installType="master" serverType="System Master">
+   <requestRoot>Rhythmyx</requestRoot>
+   <defaultAppName>sys_welcome</defaultAppName>
+   <PSXAcl id="1">
+      <PSXAclEntry id="1" type="user">
+         <name>Default</name>
+         <securityProviderType>Any</securityProviderType>
+         
+         <serverAccessLevel administerServer="no" createApplications="yes" dataAccess="yes" deleteApplications="yes" designAccess="yes"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <securityProviderType>Any</securityProviderType>
+         <serverAccessLevel administerServer="yes" createApplications="yes" dataAccess="yes" deleteApplications="yes" designAccess="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <DataEncryption>
+      <PSXDataEncryptor id="1">
+         <SSLRequired>no</SSLRequired>
+         
+      </PSXDataEncryptor>
+   </DataEncryption>
+   <AdminEncryption>
+      <PSXDataEncryptor id="1">
+         <SSLRequired>no</SSLRequired>
+         
+      </PSXDataEncryptor>
+   </AdminEncryption>
+   <AllowDetailedAuthErrorMsgs>yes</AllowDetailedAuthErrorMsgs>
+   <Performance>
+      <maxThreadsPerApp>-1</maxThreadsPerApp>
+      <minThreadsOnServer>10</minThreadsOnServer>
+      <maxThreadsOnServer>-1</maxThreadsOnServer>
+      <idleThreadTimeout>300000</idleThreadTimeout>
+      <maxRequestsInQueuePerApp>-1</maxRequestsInQueuePerApp>
+      <maxRequestsInQueueOnServer>-1</maxRequestsInQueueOnServer>
+      <maxRequestTime>60</maxRequestTime>
+      <userSessionEnabled>yes</userSessionEnabled>
+      <userSessionTimeout>1800</userSessionTimeout>
+   </Performance>
+   <PSXLogger id="1" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="yes"/>
+   
+   <BackEndConnections>
+      <Pools>
+         <PSXBackEndConnection id="1">
+            <jdbcDriverName>odbc</jdbcDriverName>
+            <jdbcClassName>sun.jdbc.odbc.JdbcOdbcDriver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+         </PSXBackEndConnection>
+         <PSXBackEndConnection id="3">
+            <jdbcDriverName>oracle:thin</jdbcDriverName>
+            <jdbcClassName>oracle.jdbc.OracleDriver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+            <connectionRefreshPeriod>3600</connectionRefreshPeriod>
+         </PSXBackEndConnection>
+         <PSXBackEndConnection id="5">
+            <jdbcDriverName>psxml</jdbcDriverName>
+            <jdbcClassName>com.percussion.data.jdbc.PSXmlDriver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+         </PSXBackEndConnection>
+         <PSXBackEndConnection id="6">
+            <jdbcDriverName>psfilesystem</jdbcDriverName>
+            <jdbcClassName>com.percussion.data.jdbc.PSFileSystemDriver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+         </PSXBackEndConnection>
+         <PSXBackEndConnection id="10">
+            <jdbcDriverName>jtds:sqlserver</jdbcDriverName>
+            <jdbcClassName>net.sourceforge.jtds.jdbc.Driver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+            <connectionRefreshPeriod>3600</connectionRefreshPeriod>
+         </PSXBackEndConnection>
+      </Pools>
+      <Credentials>
+         <PSXBackEndCredential id="0">
+            <alias>Rhythmyx Repository</alias>
+            <comment/>
+            <driver>jtds:sqlserver</driver>
+            <server>//Bender</server>
+            <userId>sa</userId>
+            <password encrypted="yes">6yLPrXfzXm/l5dwQWgg75g==</password>
+         </PSXBackEndCredential>
+         <PSXBackEndCredential id="0">
+            <alias>Lookup DB</alias>
+            <comment/>
+            <driver>jtds:sqlserver</driver>
+            <server>//other</server>
+            <userId>sa</userId>
+            <password encrypted="yes">6yLPrXfzXm/l5dwQWgg75g==</password>
+         </PSXBackEndCredential>         
+      </Credentials>
+      <backEndLoginTimeout>60</backEndLoginTimeout>
+   </BackEndConnections>
+   <JdbcDriverConfigs>
+      <PSXJdbcDriverConfig driverName="oracle:thin" className="oracle.jdbc.OracleDriver" containerTypeMapping="Oracle8"/>
+      <PSXJdbcDriverConfig driverName="jtds:sqlserver" className="net.sourceforge.jtds.jdbc.Driver" containerTypeMapping="MS SQLSERVER2000"/>
+      <PSXJdbcDriverConfig driverName="db2" className="COM.ibm.db2.jdbc.app.DB2Driver" containerTypeMapping="DB2"/>
+   </JdbcDriverConfigs>   
+   <SecurityProviders>
+		
+      <PSXSecurityProviderInstance id="0" type="WebServer">
+			
+         <name>Web Server</name>
+			
+         <Properties>
+				
+            <RoleListDelimiter>;</RoleListDelimiter>
+				
+            <AuthenticatedUserHeader>Auth_User</AuthenticatedUserHeader>
+				
+            <UserRoleListHeader>RxUserRoles</UserRoleListHeader>
+			
+         </Properties>
+		
+      </PSXSecurityProviderInstance>
+      <PSXSecurityProviderInstance id="0" type="BackEndTable">
+         <name>rxmaster</name>
+         <Properties>
+            <tableName>USERLOGIN</tableName>
+            <uidColumn>USERID</uidColumn>
+            <driverName>jtds:sqlserver</driverName>
+            <passwordColumn>PASSWORD</passwordColumn>
+            <loginId>sa</loginId>
+            <databaseName>rx56_200508R01</databaseName>
+            <serverName>//Bender</serverName>
+            <schemaName>dbo</schemaName>
+            <loginPw>6yLPrXfzXm/l5dwQWgg75g==</loginPw>
+         </Properties>
+      </PSXSecurityProviderInstance>
+   </SecurityProviders>
+   <PSXServerCacheSettings agingTime="-1" enabled="yes" id="0" maxDiskSpace="1073741824" maxMemory="104857600" maxPageSize="256000"/>
+   <DisableSandboxSecurity>y</DisableSandboxSecurity>
+   
+   <BrowserUISettings>
+      <ContentActions uiType="actionMenu"/>
+      <SearchSettings useCurrentCommunity="yes"/>
+   </BrowserUISettings>
+   <CxAppletOptions selectiveViewRefresh="yes"/>
+   <PSXJavaPluginConfig>
+      <PSXJavaPlugin browserkey="Any" downloadlocation="http://java.sun.com/update/1.5.0/jinstall-1_5_0_11-windows-i586.cab#Version=1,5,0,11" oskey="Any" versioningtype="dynamic" versiontouse="1.5.0_11"/>
+   </PSXJavaPluginConfig>
+   <PSXSearchConfig adminMaster="yes" fullTextSearchEnabled="yes" maxSearchResult="-1" serverHost="localhost" serverPort="9993" traceEnabled="no">
+      <Properties>
+         <Property name="configDir">C:\RhythmyxTest\56_200508R01/sys_search/rware/rx/config</Property>
+         <Property name="rxqh_expansionlevel">4</Property>
+         <Property name="daemonport">-1</Property>
+      </Properties>
+      <ResultProcessingExits>
+         <PSXExtensionCallSet id="102">
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/search/sys_AddVariantSiteFolder</name>
+            </PSXExtensionCall>
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/search/sys_cleanFolderSearchResults</name>
+            </PSXExtensionCall>
+         </PSXExtensionCallSet>
+      </ResultProcessingExits>
+   </PSXSearchConfig>
+   <CxAppletOptions selectiveViewRefresh="yes"/>
+</PSXServerConfiguration>

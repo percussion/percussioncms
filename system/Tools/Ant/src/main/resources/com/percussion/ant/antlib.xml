@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<antlib>
+    <taskdef name="PSGenerateHelptopicMappingsTask" classname="com.percussion.ant.doc.PSGenerateHelptopicMappingsTask"/>
+    <taskdef name="PSFFTableDataInstallProdCondition" classname="com.percussion.ant.install.PSFFTableDataInstallProdCondition"/>
+    <taskdef name="PSAction" classname="com.percussion.ant.install.PSAction"/>
+    <taskdef name="PSDerbyServer" classname="com.percussion.ant.install.PSDerbyServer"/>
+    <taskdef name="PSBackupFiles" classname="com.percussion.ant.install.PSBackupFiles"/>
+    <taskdef name="PSCleanProps" classname="com.percussion.ant.install.PSCleanProps"/>
+    <taskdef name="PSBrandProduct" classname="com.percussion.ant.install.PSBrandProduct"/>
+    <taskdef name="PSConfigureDatasource" classname="com.percussion.ant.install.PSConfigureDatasource"/>
+    <taskdef name="PSExecSQLStmt" classname="com.percussion.ant.install.PSExecSQLStmt"/>
+    <taskdef name="PSUpdatePropFileWizAction" classname="com.percussion.ant.install.PSUpdatePropFileWizAction"/>
+    <taskdef name="PSCheckRunningServer" classname="com.percussion.ant.install.PSCheckRunningServer"/>
+    <taskdef name="PSUpgradeRepository" classname="com.percussion.ant.install.PSUpgradeRepository"/>
+    <taskdef name="PSCheckInstallLog" classname="com.percussion.ant.install.PSCheckInstallLog"/>
+    <taskdef name="PSRxFix" classname="com.percussion.ant.install.PSRxFix"/>
+    <taskdef name="PSUpdateWebApps" classname="com.percussion.ant.install.PSUpdateWebApps"/>
+    <taskdef name="PSTableViewExistsWizCondition" classname="com.percussion.ant.install.PSTableViewExistsWizCondition"/>
+    <taskdef name="PSUpgradeServerPageTags" classname="com.percussion.ant.install.PSUpgradeServerPageTags"/>
+    <taskdef name="PSMergeXMLAction" classname="com.percussion.ant.install.PSMergeXMLAction"/>
+    <taskdef name="PSTableAction" classname="com.percussion.ant.install.PSTableAction"/>
+    <taskdef name="PSSprintaCondition" classname="com.percussion.ant.install.PSSprintaCondition"/>
+    <taskdef name="PSModifyProviders" classname="com.percussion.ant.install.PSModifyProviders"/>
+    <taskdef name="PSUpgrade" classname="com.percussion.ant.install.PSUpgrade"/>
+    <taskdef name="PSUpdateDTSConfiguration" classname="com.percussion.ant.install.PSUpdateDTSConfiguration"/>
+    <taskdef name="PSUpgradeRemoveTomcatAJP" classname="com.percussion.ant.install.PSUpgradeRemoveTomcatAJP"/>
+    <taskdef name="PSUpdateJettyConfigFromJBoss" classname="com.percussion.ant.install.PSUpdateJettyConfigFromJBoss"/>
+    <taskdef name="PSUpdateRepoProps" classname="com.percussion.ant.install.PSUpdateRepoProps"/>
+    <taskdef name="PSUpdateWarFiles" classname="com.percussion.ant.install.PSUpdateWarFiles"/>
+    <taskdef name="PSPropertyCondition" classname="com.percussion.ant.install.PSPropertyCondition"/>
+    <taskdef name="PSCopy" classname="com.percussion.ant.install.PSCopy"/>
+    <taskdef name="PSCopyProperties" classname="com.percussion.ant.install.PSCopyProperties"/>
+    <taskdef name="PSLicenseProdCondition" classname="com.percussion.ant.install.PSLicenseProdCondition"/>
+    <taskdef name="PSPkgConfigFileEmptyCondition" classname="com.percussion.ant.install.PSPkgConfigFileEmptyCondition"/>
+    <taskdef name="PSCreateScheduledPublishingScript" classname="com.percussion.ant.install.PSCreateScheduledPublishingScript"/>
+    <taskdef name="PSUpdateLoginConfigXML" classname="com.percussion.ant.install.PSUpdateLoginConfigXML"/>
+    <taskdef name="PSTrimRxPubDocs" classname="com.percussion.ant.install.PSTrimRxPubDocs"/>
+    <taskdef name="PSPropertySet" classname="com.percussion.ant.install.PSPropertySet"/>
+    <taskdef name="PSXMLFileUpdate" classname="com.percussion.ant.install.PSXMLFileUpdate"/>
+    <taskdef name="PSCreateTableBackupAction" classname="com.percussion.ant.install.PSCreateTableBackupAction"/>
+    <taskdef name="PSXMLElementCondition" classname="com.percussion.ant.install.PSXMLElementCondition"/>
+    <taskdef name="PSVersionBuildNumberProdCondition" classname="com.percussion.ant.install.PSVersionBuildNumberProdCondition"/>
+    <taskdef name="PSInstallLogTablesAction" classname="com.percussion.ant.install.PSInstallLogTablesAction"/>
+    <taskdef name="PSExtensions" classname="com.percussion.ant.install.PSExtensions"/>
+    <taskdef name="PSStandAloneFlag" classname="com.percussion.ant.install.PSStandAloneFlag"/>
+    <taskdef name="PSCopyFileAction" classname="com.percussion.ant.install.PSCopyFileAction"/>
+    <taskdef name="PSEvalCondition" classname="com.percussion.ant.install.PSEvalCondition"/>
+    <taskdef name="PSConvertOraLongToLOB" classname="com.percussion.ant.install.PSConvertOraLongToLOB"/>
+    <taskdef name="PSExtractJarFiles" classname="com.percussion.ant.install.PSExtractJarFiles"/>
+    <taskdef name="PSRenameDeprecatedApps" classname="com.percussion.ant.install.PSRenameDeprecatedApps"/>
+    <taskdef name="PSConfigurePort" classname="com.percussion.ant.install.PSConfigurePort"/>
+    <taskdef name="PSServerInstallEndPanel" classname="com.percussion.ant.install.PSServerInstallEndPanel"/>
+    <taskdef name="PSViewsExistWizCondition" classname="com.percussion.ant.install.PSViewsExistWizCondition"/>
+    <taskdef name="PSExportDatabase" classname="com.percussion.ant.install.PSExportDatabase"/>
+    <taskdef name="PSMakeLasagna" classname="com.percussion.ant.install.PSMakeLasagna"/>
+    <taskdef name="PSCopyDirectory" classname="com.percussion.ant.packagetool.PSCopyDirectory"/>
+    <taskdef name="PSP4Edit" classname="com.percussion.ant.packagetool.PSP4Edit"/>
+    <taskdef name="PSP4PackageAdd" classname="com.percussion.ant.packagetool.PSP4PackageAdd"/>
+    <taskdef name="PSP4PackageUpdate" classname="com.percussion.ant.packagetool.PSP4PackageUpdate"/>
+
+    <taskdef name="PSUnZipPackage" classname="com.percussion.ant.packagetool.PSUnZipPackage"/>
+    <taskdef name="PSZipPackage" classname="com.percussion.ant.packagetool.PSZipPackage"/>
+    <taskdef name="PSAddJavaDocErrorSupression" classname="com.percussion.ant.PSAddJavaDocErrorSupression"/>
+    <taskdef name="PSCheckManifestsForDuplicateFiles" classname="com.percussion.ant.PSCheckManifestsForDuplicateFiles"/>
+    <taskdef name="PSCheckTmxFile" classname="com.percussion.ant.PSCheckTmxFile"/>
+    <taskdef name="PSCheckVersion" classname="com.percussion.ant.PSCheckVersion"/>
+    <taskdef name="PSCompareFiles" classname="com.percussion.ant.PSCompareFiles"/>
+    <taskdef name="PSCreateSharedClassList" classname="com.percussion.ant.PSCreateSharedClassList"/>
+    <taskdef name="PSDelete" classname="com.percussion.ant.PSDelete"/>
+    <taskdef name="PSGetReleaseDocumentsPath" classname="com.percussion.ant.PSGetReleaseDocumentsPath"/>
+
+
+    <taskdef name="PSLog" classname="com.percussion.ant.PSLog"/>
+
+
+    <taskdef name="PSMakeHelpHints" classname="com.percussion.ant.PSMakeHelpHints"/>
+    <taskdef name="PSP4OpenFileForEdit" classname="com.percussion.ant.PSP4OpenFileForEdit"/>
+
+    <taskdef name="PSP4SubmitChange" classname="com.percussion.ant.PSP4SubmitChange"/>
+    <taskdef name="PSP4Sync" classname="com.percussion.ant.PSP4Sync"/>
+
+    <taskdef name="PSPropagateFile" classname="com.percussion.ant.PSPropagateFile"/>
+    <taskdef name="PSSyncFiles" classname="com.percussion.ant.PSSyncFiles"/>
+    <taskdef name="PSUpgradeDerby" classname="com.percussion.ant.install.PSUpgradeDerby"/>
+    <taskdef name="PSUpgradeEncryption" classname="com.percussion.ant.install.PSUpgradeEncryption"/>
+
+    <typedef name="PSTruncateDirectoryMapper"
+             classname="com.percussion.ant.PSTruncateDirectoryMapper"
+             onerror="ignore"/>
+
+    <taskdef name="PSZip" classname="com.percussion.ant.PSZip"/>
+
+    <!--==========================================================-->
+    <!-- PSDropView                                               -->
+    <!--                                                          -->
+    <!-- Drops the specified view if it exists.                   -->
+    <!--==========================================================-->
+    <macrodef name="PSDropView">
+        <attribute name="view" default=""/>
+        <attribute name="failonerror" default="true"/>
+        <attribute name="silenceerrors" default="false"/>
+
+        <sequential>
+            <if>
+                <PSTableViewExistsWizCondition isView="true" objectName="@{view}"/>
+                <then>
+                    <PSExecSQLStmt
+                            printExceptionStackTrace="true"
+                            qualifyViewNames="@{view}"
+                            sql="DROP VIEW @{view}"
+                            failonerror="@{failonerror}"
+                            silenceerrors="@{silenceerrors}"
+                    />
+                </then>
+            </if>
+        </sequential>
+    </macrodef>
+
+</antlib>

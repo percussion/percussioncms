@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!DOCTYPE Widget [
+<!ENTITY defaultDateFormat "D M d, yy 'at' hh:nn">
+]>
+<Widget>
+    <WidgetPrefs title="Login"
+        contenttype_name="percLoginAsset"
+        category="integration"
+        description="User login for membership services."
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/login/images/widgetIconLogin.gif" 
+        preferred_editor_width="780"
+        preferred_editor_height="500"
+		is_responsive="true"/>
+
+    <UserPref name="perc-label-layout" 
+        display_name="Label layout"
+        default_value="align_above"
+        datatype="enum">
+        <EnumValue value="align_above" display_value="Align above the field" />       
+        <EnumValue value="align_left" display_value="Align to the left of the field" /> 
+    </UserPref>
+    
+    <UserPref name="perc-render-mode" 
+        display_name="Render mode"
+        default_value="show_as_link"
+        datatype="enum">
+        <EnumValue value="show_as_link" display_value="Show as link/text" />       
+        <EnumValue value="show_login_form" display_value="Show login form" /> 
+    </UserPref>
+   
+    <!-- CssPrefs are input fields exposed in the CSS config for a widget -->  
+    <!-- Generally we always provide root and summary class css fields -->     
+    <CssPref name="rootclass"
+      display_name="CSS root class" 
+      datatype="string" />
+
+    <Code type="jexl">
+    <!-- This section is used to set up data that will be used in the content section -->
+    <![CDATA[
+        $pageId = $perc.page.id;
+        $widgetId = $perc.widget.item.id;
+
+        ## Retrieve User prefs (Layout Tab)
+        $percLabelLayout = $perc.widget.item.properties.get('perc-label-layout');
+        $renderMode = $perc.widget.item.properties.get('perc-render-mode');
+        
+        ## Set a default value for $isLoginPage, since we could be in a template, a normal page, the login page, etc
+        $isLoginPage = false;
+        $loginPage = "";
+        $pwresetPage = "";
+        ## This checks if we are in the login page only when we are in a page
+        ## The check is not performed in a template, because it doesn't have a $pageId
+        if (! empty($pageId)) {
+            ## Retrieve loginPage for the current site
+            $finderPath = $rx.pageutils.getItemPath($pageId);
+            $pathParts = $finderPath.split("\/");
+            ## current site name == $pathParts[2]
+            $loginPage = $rx.pageutils.getSiteLoginPage($pathParts[2]);
+            $pwresetPage = $rx.pageutils.getSiteResetRequestPasswordPage($pathParts[2]);
+            if (! empty($loginPage)) {
+                $loginPagePath = $pathParts[0] + '/' + $pathParts[1] + '/' + $pathParts[2] + $loginPage;
+                $isLoginPage = $finderPath.equals($loginPagePath);   
+            }
+        }
+
+        $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+        if (empty($rootclass)) { 
+            $rootclass = "";
+        }
+       
+        $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+
+        if ( ! $assetItems.isEmpty() ) {
+            $assetItem = $assetItems.get(0);
+            $percEmailLabel = $rx.pageutils.html($assetItem, 'email_label');
+            $percPasswordLabel = $rx.pageutils.html($assetItem, 'password_label');
+            $percSubmitLabel = $rx.pageutils.html($assetItem, 'submit_label');
+            $notLoggedInMessage = $rx.pageutils.html($assetItem, 'not_logged_in_message');
+            $loggedInMessage = $rx.pageutils.html($assetItem, 'logged_in_message');
+            $showUsername = $rx.pageutils.html($assetItem, 'show_username'); 
+		}
+            
+		$dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+        if ($dsUrl.indexOf("http://localhost") != -1 )
+			$dsUrl = "";
+    ]]>
+    </Code>
+
+    <!-- This section defines the rendered content -->    
+    <Content type="velocity">
+    <![CDATA[
+        #loadRelatedWidgetContents()
+        <div class="$!{rootclass} percLogin" data="{&quot;notLoggedInMessage&quot;:&quot;$notLoggedInMessage&quot;
+                                                    ,&quot;loggedInMessage&quot;:&quot;$loggedInMessage&quot;
+													,&quot;deliveryurl&quot;:&quot;$dsUrl&quot;
+                                                    ,&quot;showUsername&quot;:&quot;$!showUsername&quot;}">
+        #if( ! $perc.widgetContents.isEmpty() )
+            <div class="login-contents-box">
+            ###############################################################################
+            ## Render the login form only if render preference is set as show_login_form.
+            ###############################################################################
+            #if( $renderMode == "show_login_form" )
+                <form name="perc-login-form" class="perc-login-form" id="perc-login-form" method="post" action="#">                     
+                    <div class="field-row">
+                        <div class="field-label-container $percLabelLayout fixed-width">
+                            <span class="perc-form-error-asterisk">*</span>
+                            <label for="perc-login-email-field">$percEmailLabel</label>
+                        </div>
+                        <div class="field-input-container">
+                            <input value="" name="perc-login-email-field" id="perc-login-email-field" type="text"/>
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-label-container $percLabelLayout fixed-width">
+                            <span class="perc-form-error-asterisk">*</span>
+                            <label for="perc-login-password-field">$percPasswordLabel</label>
+                        </div>
+                        <div class="field-input-container">
+                            <input value="" name="perc-login-password-field" id="perc-login-password-field" type="password" />
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <a href="$pwresetPage">Forgot password?</a>
+                    </div>
+                    <div class="field-row">
+                        <input value="$percSubmitLabel" type="submit" />
+                    </div>
+                </form>
+                <div class="perc-login-error-message form-error-msg" style="display:none"></div>                
+            #################################################################################################
+            ## If the render preference is set to show_link, then show a link to the site's global login page.
+            #################################################################################################
+            #else
+                <a class="perc-login-page-link" href="$!loginPage">$!notLoggedInMessage</a>
+            #end
+            </div>
+        #elseif ($perc.isEditMode())
+            #createEmptyWidgetContent("login-sample-content", "This login widget is showing sample content.")
+        #end
+        #if($perc.isPreviewMode())
+            <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                jQuery(".perc-login-form").submit(function(){return false;});
+                jQuery(".perc-login-form").find("input[type = 'submit']").attr('disabled', 'disabled');
+                });
+            </script>
+        #end
+        </div>
+    ]]>
+    </Content>    
+</Widget>

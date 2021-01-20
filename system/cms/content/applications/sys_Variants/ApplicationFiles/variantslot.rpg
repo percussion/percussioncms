@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (slotid*, slotname*, slotdelete* )>
+<!ELEMENT slotdelete (#PCDATA)>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT slotid (#PCDATA)>
+<!ELEMENT variantslot (item* )>

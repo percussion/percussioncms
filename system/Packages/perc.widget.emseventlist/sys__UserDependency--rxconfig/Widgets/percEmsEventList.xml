@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<Widget>
+   <WidgetPrefs title="EMS Event List"
+        contenttype_name="percEmsEventList"
+        description="Enables integration of Events from EMS Calendars"
+        category="Integrations"
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/percEmsEventList/images/emsEventList-widgetIcon.png"
+        preferred_editor_width="400"
+        preferred_editor_height="600"
+        is_responsive="true"/>
+
+
+    <UserPref name="perc_eventlist_title_tag"
+      display_name="Format for event list title"
+      default_value="h3"
+      datatype="enum">
+      <EnumValue value="p" display_value="Paragraph" />
+      <EnumValue value="h2" display_value="Heading 2" />
+      <EnumValue value="h3" display_value="Heading 3" />
+      <EnumValue value="h4" display_value="Heading 4" />
+      <EnumValue value="h5" display_value="Heading 5" />
+      <EnumValue value="h6" display_value="Heading 6" />
+    </UserPref>
+  
+      <UserPref name="defaultListTitle"
+      display_name="Default List Title"
+      default_value="Events"
+      datatype="string" required="true"/>
+      
+      <UserPref name="showDescription"
+      display_name="Show event description"
+      default_value="true"
+      datatype="bool"/>
+      
+      <UserPref name="showPastEvents"
+      display_name="Show past events"
+      default_value="week"
+      datatype="enum">
+       	<EnumValue value="none" display_value="Hide Past Events" />
+       	<EnumValue value="week" display_value="Show events up to 1 week old" />
+       	<EnumValue value="month" display_value="Show events up to 1 month old" />  
+       	<EnumValue value="three_month" display_value="Show events up to 3 months old" />
+       	<EnumValue value="six_month" display_value="Show events up to 6 months old" />  
+       	<EnumValue value="year" display_value="Show events up to 1 year old" />    	         	   	
+      </UserPref>
+
+      <UserPref name="showFutureEvents"
+      display_name="Show future events"
+      default_value="week"
+      datatype="enum">
+       	<EnumValue value="none" display_value="Hide Future Events" />
+       	<EnumValue value="week" display_value="Show events coming up in 1 week" />
+       	<EnumValue value="month" display_value="Show events coming up in 1 month" />  
+       	<EnumValue value="three_month" display_value="Show events coming up in the next 3 months" />
+       	<EnumValue value="six_month" display_value="Show events coming up in the next 6 months" />  
+       	<EnumValue value="year" display_value="Show events coming up in the next year" />    	     
+      </UserPref>
+      
+      <UserPref name="maxEvents"
+      display_name="Maximum number of Events to List"
+      default_value="5"
+      datatype="number"/>
+	   
+	   <UserPref name="showLocation"
+      display_name="Show Location"
+      default_value="true"
+      datatype="bool"/>
+      
+    <UserPref name="showEventDate"
+      display_name="Show event date"
+      default_value="true"
+      datatype="bool"/>
+
+    <UserPref name="showEventTime"
+      display_name="Show event time"
+      default_value="true"
+      datatype="bool"/>
+
+    <UserPref name="perc_locale" 
+      display_name="Date Format Locale"
+      default_value="en"
+      datatype="enum">
+      <EnumValue value="en" display_value="English United States (US)" />
+      <EnumValue value="ar-ma" display_value="Arabic Morocco (MA)" />
+      <EnumValue value="ar-sa" display_value="Arabic Saudi Arabia (SA)" />
+      <EnumValue value="ar-tn" display_value="Arabic Tunisia (TN)" />
+      <EnumValue value="bg" display_value="Bulgarian Bulgaria (BG)" />
+      <EnumValue value="ca" display_value="Catalan Spain (ES)" />
+      <EnumValue value="cs" display_value="Czech Czech Republic (CZ)" />
+      <EnumValue value="da" display_value="Danish Denmark (DK)" />
+      <EnumValue value="de-at" display_value="German Austria (AT)" />
+      <EnumValue value="de" display_value="German Germany (DE)" />
+      <EnumValue value="el" display_value="Greek Greece (GR)" />
+      <EnumValue value="en-au" display_value="English Australia (AU)" />
+      <EnumValue value="en-ca" display_value="English Canada (CA)" />
+      <EnumValue value="en-gb" display_value="English United Kingdom (GB)" />
+      <EnumValue value="en-ie" display_value="English Ireland (IE)" />
+      <EnumValue value="en-nz" display_value="English New Zealand (NZ)" />
+      <EnumValue value="es" display_value="Spanish Spain (ES)" />
+      <EnumValue value="fi" display_value="Finnish Finland (FI)" />
+      <EnumValue value="fr-ca" display_value="French Canada (CA)" />
+      <EnumValue value="fr-ch" display_value="French Switzerland (CH)" />
+      <EnumValue value="fr" display_value="French France (FR)" />
+      <EnumValue value="he" display_value="Hebrew Israel (IL)" />
+      <EnumValue value="hi" display_value="Hindi India (IN)" />
+      <EnumValue value="hr" display_value="Croatian Croatia (HR)" />
+      <EnumValue value="hu" display_value="Hungarian Hungary (HU)" />
+      <EnumValue value="id" display_value="Indonesian Indonesia (ID)" />
+      <EnumValue value="is" display_value="Icelandic Iceland (IS)" />
+      <EnumValue value="it" display_value="Italian Italy (IT)" />
+      <EnumValue value="ja" display_value="Japanese Japan (JP)" />
+      <EnumValue value="ko" display_value="Korean South Korea (KR)" />
+      <EnumValue value="lb" display_value="Arabic Lebanon (LB)" />
+      <EnumValue value="lt" display_value="Lithuanian Lithuania (LT)" />
+      <EnumValue value="lv" display_value="Latvian Latvia (LV)" />
+      <EnumValue value="nb" display_value="Norwegian Bokmål Norway (NO)" />
+      <EnumValue value="nl" display_value="Dutch Netherlands (NL)" />
+      <EnumValue value="nn" display_value="Norwegian Nynorsk Norway (NO)" />
+      <EnumValue value="pl" display_value="Polish Poland (PL)" />
+      <EnumValue value="pt-br" display_value="Portuguese Brazil (BR)" />
+      <EnumValue value="pt" display_value="Portuguese Portugal (PT)" />
+      <EnumValue value="ro" display_value="Romanian Romania (RO)" />
+      <EnumValue value="ru" display_value="Russian Russia (RU)" />
+      <EnumValue value="sk" display_value="Slovak Slovakia (SK)" />
+      <EnumValue value="sl" display_value="Slovenian Slovenia (SI)" />
+      <EnumValue value="sr" display_value="Serbian Serbia (RS)" />
+      <EnumValue value="sv" display_value="Swedish Sweden (SE)" />
+      <EnumValue value="th" display_value="Thai Thailand (TH)" />
+      <EnumValue value="tr" display_value="Turkish Turkey (TR)" />
+      <EnumValue value="uk" display_value="Ukrainian Ukraine (UA)" />
+      <EnumValue value="vi" display_value="Vietnamese Vietnam (VN)" />
+      <EnumValue value="zh-cn" display_value="Chinese China (CN)" />
+      <EnumValue value="zh-tw" display_value="Chinese Taiwan (TW)" />
+    </UserPref>
+	
+    <UserPref name="enableCalenderIcon"
+      display_name="Enable Calendar Icon"
+      default_value="false"
+      datatype="bool">
+	</UserPref>
+	
+	<UserPref name="baseEmsEventLink"
+		display_name="EMS Event Detail URL"
+		default_value="http://myemsserver/MasterCalendar/EventDetails.aspx?EventDetailId="
+		datatype="string">
+	</UserPref>
+    <Code type="jexl">
+    <![CDATA[
+
+      $widgetProps = $perc.widget.item.properties;
+      $perc_eventlist_title_tag = $widgetProps.get("perc_eventlist_title_tag");
+      $showDescription = $widgetProps.get("showDescription");
+	  $showLocation = $widgetProps.get("showLocation");
+      $showPastEvents = $widgetProps.get("showPastEvents");
+      $showFutureEvents = $widgetProps.get("showFutureEvents");
+      $maxEvents = $widgetProps.get("maxEvents");
+      $showEventDate = $widgetProps.get("showEventDate");
+      $showEventTime = $widgetProps.get("showEventTime");
+      $perc_locale = $widgetProps.get("perc_locale");
+	  $enableCalenderIcon = $perc.widget.item.properties.get("enableCalenderIcon");
+	  $baseEmsEventLink = $perc.widget.item.properties.get("baseEmsEventLink");
+      $defaultListTitle = $widgetProps.get("defaultListTitle");
+	  $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem,$perc.widget,null,null);
+      
+	  $id = "";
+      $perc.setWidgetContents($assetItems);
+      if ( ! $assetItems.isEmpty() ) {
+          $assetItem = $assetItems.get(0);
+		  
+          $listTitle = $assetItem.getNode().getProperty("listTitle").String;
+          $hideEventList = $assetItem.getNode().getProperty("hideEventList").String;
+          $eventTypes = $assetItem.getNode().getProperty("eventTypes");
+          $locationFilter = $assetItem.getNode().getProperty("locationFilter").String;
+		  $calendars = $assetItem.getNode().getProperty("calendars");
+          $limitList = $assetItem.getNode().getProperty("limitList").String;
+		  $eventNameFilter = $assetItem.getNode().getProperty("eventNameFilter").String;
+      }
+
+      $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+
+      if(empty($rootclass)){
+          $rootclass = "";
+      }
+      
+      if($listTitle == null || $listTitle == ""){
+         $listTitle = $defaultListTitle;
+      }
+	 
+		if($eventTypes != null){
+		$eventTypeIds = "";
+		for($eventType : $eventTypes.getValues()){
+			$val = $eventType.getString();
+			if($val != "none"){
+				if($eventTypeIds == ""){
+					$eventTypeIds = $val;
+				}else{
+					$eventTypeIds = $eventTypeIds + "," + $val;
+				}
+			}
+		}
+	  }
+	  if($calendars != null){
+	     $calendarIds = "";
+		for($mc : $calendars.getValues()){
+			$val = $mc.getString();
+			if($val != "none"){
+				if($calendarIds == ""){
+					$calendarIds = $val;
+				}else{
+					$calendarIds = $calendarIds + "," + $val;
+				}
+			}
+		}
+	  }	  
+	  if($locationFilter==null)
+	    $locationFilter = "";
+	  if($eventTypeIds == null)
+		$eventTypeIds = "";
+	  if($calendarIds == null)
+		$calendarIds = "";
+	  if($eventNameFilter == null)
+		$eventNameFilter = "";
+	 
+	 if($showFutureEvents == "none"){
+		$interval = 0;
+	 }else if($showFutureEvents=="week"){
+	    $interval = 7;
+	 }else if($showFutureEvents == "month"){
+	    $interval = 31;
+	 }else if($showFutureEvents == "three_month"){
+		$interval = 90;
+	 }else if($showFutureEvents == "six_month"){
+	    $interval = 180;
+	 }else if($showFutureEvents == "year"){
+	    $interval = 365;
+	 }
+	 
+	 $endDate = $tools.date.getDate();
+	 $endDate = ($endDate.getTime() + $interval * 24 * 3600 * 1000);
+	 
+	if($showPastEvents == "none"){
+		$interval = 0;
+	 }else if($showPastEvents=="week"){
+		$interval = -7;
+	 }else if($showPastEvents == "month"){
+	    $interval = -31;
+	 }else if($showPastEvents == "three_month"){
+	    $interval = -90;
+	 }else if($showPastEvents == "six_month"){
+	    $interval = -180;
+	 }else if($showPastEvents == "year"){
+		$interval = -365;
+	 }	
+	 
+	 $startDate = $tools.date.getDate();
+	 $startDate = ($startDate.getTime() + $interval * 24 * 3600 * 1000);
+	
+	  $startDate = $tools.date.format('yyyy-MM-dd hh:mm:ss',$startDate);
+	  $endDate = $tools.date.format('yyyy-MM-dd hh:mm:ss',$endDate);
+	
+	  $dataQuery = "{&quot;eventName&quot;:&quot;"+ $eventNameFilter +"&quot;,&quot;location&quot;:&quot;" + $locationFilter + "&quot;,&quot;calendars&quot;:[" + $calendarIds + "],&quot;eventTypes&quot;:[" + $eventTypeIds + "],&quot;startDate&quot;:&quot;" + $startDate + "&quot;,&quot;endDate&quot;:&quot;" + $endDate + "&quot;}";
+	  
+	  if($listTitle==null){
+		$listTitle = "";
+	  }
+	  if($hideEventList == null){
+		$hideEventList = false;
+	  }
+	  if($limitList == null){
+		$limitList = $maxEvents;
+	  }
+	  $publish = "PUBLISH";
+	  if($publish.equalsIgnoreCase($perc.linkContext.getMode().name())){
+		$isPublish = true;
+	  }else{
+		$isPublish = false;
+	  }
+
+      	  
+$dataOptions = "{&quot;eventListTitleTag&quot;:&quot;" + $perc_eventlist_title_tag + "&quot;,&quot;showDescription&quot;: " + $showDescription + ",&quot;showLocation&quot;: " + $showLocation + ",&quot;showPastEvents&quot;:&quot;" +  $showPastEvents + "&quot;,&quot;showFutureEvents&quot;: &quot;" + $showFutureEvents + "&quot;,&quot;maxEvents&quot;:" +  $maxEvents +",&quot;showEventDate&quot;:" + $showEventDate + ",&quot;showEventTime&quot;:" + $showEventTime + ",&quot;eventDateLocale&quot;: &quot;" + $perc_locale + "&quot;,&quot;enableCalenderIcon&quot;:" + $enableCalenderIcon + ",&quot;listTitle&quot;: &quot;" + $listTitle + "&quot;,&quot;hideEventListOverride&quot;:&quot;" +  $hideEventList + "&quot;, &quot;eventListLimitOverride&quot;:" +  $limitList + ",&quot;baseEmsEventLink&quot;:&quot;" + $baseEmsEventLink + "&quot;, &quot;publish&quot;:" + $isPublish + "}";
+	 
+      $dsUrl = $rx.pageutils.getDeliveryServer();
+      if ($dsUrl == "http://localhost:9980")
+          $dsUrl = "";
+      $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
+	]]>
+  </Code>
+  <Content type="velocity">
+<![CDATA[
+#if ($perc.isEditMode() )##
+<div class="perc-ems-eventlist-sample-content" style="" title="This Event list widget is showing sample content."></div>
+  #else##
+#if("$!{hideEventList}" != "yes")
+<div class="$!{rootclass} perc-ems-eventlist-container" data-query="$!{dataQuery}" data-options="$!{dataOptions}">
+
+<div style="display:none" role="presentation" class="perc-emseventlist-structure perc-emsevent-list">
+</div>
+</div>
+#end##
+#end##
+]]>
+  </Content>
+</Widget>

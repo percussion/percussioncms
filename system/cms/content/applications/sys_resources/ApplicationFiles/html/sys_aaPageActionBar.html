@@ -1,0 +1,45 @@
+<!-- ATTENTION! Think twice before adding any widgets on page load.
+Each single additional widget takes quite noticeable time on old systems running
+IE6. -->
+
+<div dojoType="TreeBasicControllerV3" widgetId="treeController"></div>
+<div dojoType="ps:TreeSelector" widgetId="treeSelector"></div>
+<div dojoType="ps:TreeIcon" widgetId="treeIcon"></div>
+<div dojoType="TreeEmphasizeOnSelect" selector="treeSelector"></div>
+
+
+<div id="ps.aa.mainSplitPane"
+   dojoType="ps:PSSplitContainer"
+   orientation="vertical"
+   sizerWidth="0"
+   activeSizing="false"
+   sizerEnabled="false"
+   style="background-color:white; border: 0px solid black; float: left; width: 100%; height: 800px;"
+>
+   <div id="actionBar"
+      dojoType="LayoutContainer"
+      sizeMin="25"
+      sizeShare="2"
+      widgetId="actionBar"
+   >
+      <div id="ps.aa.Menubar" dojoType="ps:MenuBar2" layoutAlign="client"></div>
+   </div>
+   <div id="ps.aa.BottomPane"
+      dojoType="SplitContainer"
+      orientation="horizontal"
+      sizerWidth="3"
+      activeSizing="false"
+      style="border: 1px solid #aaaaaa; width: 900px; height: 800px;"
+      width="100%"
+      sizeShare="70"
+   >
+      <div dojoType="ps:Tree" widgetId="pageTree"
+         selector="treeSelector"
+         listeners="treeController;treeSelector;treeIcon"
+         DndMode="between;onto" DndAcceptTypes="pageTree" layoutAlign="client"
+         expandLevel="1" sizeMin="0" sizeShare="25" style="border: 1px solid #aaaaaa;overflow: auto;"></div>
+      <div id="ps.aa.ContentPane" dojoType="ContentPane" sizeMin="500" sizeShare="75" style="width: 100%; overflow: auto; background:#FFF">
+         <div parseWidgets="false">
+         	<div id="ps.aa.PageContent">
+
+

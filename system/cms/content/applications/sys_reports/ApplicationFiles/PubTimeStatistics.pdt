@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Publishing_Time_Statistic (Publish_Status_Id, Content_Type, Variant, Status, Average, Mimimum, Maximum, Sub_Total )>
+<!ELEMENT Sub_Total (#PCDATA)>
+<!ATTLIST  Sub_Total type CDATA #REQUIRED>
+<!ELEMENT Maximum (#PCDATA)>
+<!ATTLIST  Maximum type CDATA #REQUIRED>
+<!ELEMENT Mimimum (#PCDATA)>
+<!ATTLIST  Mimimum type CDATA #REQUIRED>
+<!ELEMENT Average (#PCDATA)>
+<!ATTLIST  Average type CDATA #REQUIRED>
+<!ELEMENT Status (#PCDATA)>
+<!ELEMENT Variant (#PCDATA)>
+<!ELEMENT Content_Type (#PCDATA)>
+<!ELEMENT Publish_Status_Id (#PCDATA)>
+<!ELEMENT Publishing_Time_Statistics (Publishing_Time_Statistic* )>

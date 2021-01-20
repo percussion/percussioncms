@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXExtensionHandlerConfiguration handlerName="ExtensionHandler">
+   <Extension categorystring="" context="Handlers/" deprecated="no" handler="ExtensionHandler" name="JavaScript" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.extension.configFile">Extensions.xml</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.extension.PSJavaScriptExtensionHandler</initParam>
+      <interface name="com.percussion.extension.IPSExtensionHandler"/>
+      <suppliedResources/>
+   </Extension>
+</PSXExtensionHandlerConfiguration>

@@ -1,0 +1,71 @@
+/* Sample content and styles for form widget */
+.poll-sample-content
+{
+    height: 100px;
+    background: transparent url(/Rhythmyx/rx_resources/widgets/percPoll/images/widgetpollSampleBackground.png) no-repeat scroll center center;
+    filter: alpha(opacity=50);
+    opacity: .50;
+}
+
+/*Poll editor styles*/
+.perc-poll-label{
+    color: #000000;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.perc-div-rowOption {
+    position: relative;
+}
+
+.perc-div-rowOption {
+    height: 21px;
+    line-height: 21px;
+    margin-top: 5px;
+}
+
+form input[type="text"] {
+    height: 19px;
+}
+
+form input[type="text"], form textarea {
+    border-color: #CECFCE #CECFCE #D6D7DE #D6D7DE;
+    border-style: solid;
+    border-width: 1px;
+    color: #000000;
+    font-size: 11px;
+    font-weight: normal;
+}
+.perc-div-rowOption img, .perc-div-rowOption input {
+    cursor: default;
+    margin: 0 5px;
+}
+.perc-form-datadisplay {
+    font-size: 11px;
+    font-weight: normal;
+    margin-bottom: 12px;
+    margin-top: 6px;
+    padding-left: 3px;
+    width: 310px;
+}
+.control-img-button {
+    cursor: pointer;
+    margin-top: -5px;
+    padding-left: 5px;
+    vertical-align: middle;
+}
+.perc-div-rowOption .perc-answer-option-type {
+    vertical-align: middle;
+    margin: 0 5px
+}
+#perc-poll-answer-type-multi, #perc-poll-answer-type-single {
+    vertical-align: middle;
+    margin: 0 5px
+}
+
+.perc-poll-answer-choices {
+    padding-bottom: 30px;
+}
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

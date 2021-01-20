@@ -1,0 +1,240 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+#perc-finder-tree {
+	background-image  : url(/cm/images/finderTreeBackground.jpg);
+	background-repeat : repeat;
+}
+
+#perc-finder-tree * {
+	font-weight : normal;
+	white-space : nowrap;
+}
+
+#perc-finder-tree ul li {
+	line-height     : 19px;
+	list-style-type : none;
+}
+
+#perc-finder-tree ul {
+	margin-left  : 0px;
+	padding-left : 0px;
+}
+
+.perc-folder-selector-container{
+	font-family:Verdana;
+	font-size:11px;
+	color:#0099CC;
+	font-weight:normal;
+	padding:0px;
+	white-space:nowrap;
+	margin-top:4px;
+	padding-left : 40px;
+}
+#perc-folder-selector{
+	float:left;
+	height:254px;
+	margin-top:4px;
+	margin-right:30px;
+}	
+
+.perc-folder-selected-item{
+	background-color:#CAF589 !important;
+}
+
+.dynatree-folder{
+	padding:2px;
+	padding-left:8px;
+	display:block;
+}
+
+div.dynatree-container{
+	background-color:#E6E6E9;
+}	
+
+.dynatree-exp-el span.dynatree-expander, .dynatree-exp-edl span.dynatree-expander {
+	background-image:url("../images/collapsable.gif");
+	background-position: 3px 2px;
+}
+
+.dynatree-exp-cl span.dynatree-expander, span.dynatree-expander {
+	background-image:url("../images/expandable.gif");
+	background-position: 3px 2px;
+}
+
+div.dynatree-container a:focus, span.uidyantree-focused a:link{
+}	
+
+span.dynatree-active, span.dynatree-active a {
+	background-color:#CAF589 !important;
+	color:#0099CC !important;
+}
+
+
+.dynatree-exp-e span.dynatree-expander, .dynatree-exp-ed span.dynatree-expander{
+	background-image:url("../images/collapsable.gif");
+	background-position: 3px 2px;
+}
+
+.dynatree-exp-cdl span.dynatree-expander {
+	background-image:url("../images/expandable.gif");
+	background-position: 3px 2px;
+}	
+
+.dynatree-exp-cd span.dynatree-expander {
+	background-image:url("../images/expandable.gif");
+	background-position: 3px 2px;
+}
+
+span.dynatree-expanded a, span.dynatree-active a , span.dynatree-folder a, span.dynatree-has-children a,span.dynatree-has-children a {
+	color:#0099CC;
+	text-decoration:none;
+}
+span.dynatree-vline  {
+	background-image:none;
+}
+
+#perc-resourceautolist-detail td{
+	vertical-align:top;
+}	
+.dynatree-folder img {
+	display:none;
+	}
+
+span.dynatree-empty, span.dynatree-vline, span.dynatree-connector, span.dynatree-icon, span.dynatree-checkbox, span.dynatree-radio {
+	background-position:left center;
+	background-repeat:no-repeat;
+	display:inline-block;
+	height:11px;
+	vertical-align:middle;
+	width:13px;	
+	}
+
+span.dynatree-expander
+{
+	background-repeat:no-repeat;
+	display:inline-block;
+	height:11px;
+	vertical-align:middle;
+	width:13px;	
+}
+
+span.dynatree-document a, span.dynatree-folder a{
+	padding-left:0px;
+}
+#perc-asset-browser-placeholder {
+	background-color:#F5F5F6;
+	padding:17px 15px 17px 15px;
+	float:left;
+	width: 300px;
+	float:left;
+	min-height:250px;
+}
+
+#perc-asset-browser-placeholder a {
+	font-family: Verdana;
+	font-size: 11px;
+	font-weight: normal;
+	color: #0099cc ;
+	text-decoration: none;
+}
+
+#perc-asset-browser-placeholder select{
+	margin-top:0px;
+	background-color:#F5F5F6;
+	width:281px;
+	border:none;
+}	
+
+#imageWidgetPanel {
+	background-color:#E6E6E9;
+	padding:0.5em;
+	border:none;
+}
+#perc-content-form select{
+	margin-top:5px;
+	display:block;
+	margin-bottom:17px;
+}	
+
+.perc-asset-edit-info-line {
+	font-family: Verdana;
+	font-size: 11px;
+	font-weight: normal;
+	color: #000000;
+	margin-bottom:12px;
+}
+
+.imageautolist-expander{
+	font-family: Verdana;
+	font-size: 11px;
+	font-weight: normal;
+	color: #0099cc ;
+	text-decoration: none;
+}
+
+.autolistlabel label{
+	font-family: Verdana;
+	font-size: 11px;
+	font-weight: bold;
+	color: #000000;
+}
+#perc-resourceautolist-detail{
+	margin-top:18px;
+}
+	
+#autolist-title{
+	font-family: Verdana;
+	font-size: 11px;
+	font-weight: normal;
+	color: #0099CC ;
+	text-decoration: none;
+	background-color:#E6E6E9;
+	padding: 15px 30px 15px 21px;
+	background-repeat:no-repeat;
+	margin-left:-21px;
+    cursor:pointer;
+}
+
+.autolist-expand-image{
+	background-image:url('../images/buttonBluePlusOver.gif');
+	background-position:center left;
+}
+.autolist-close-image{
+	background-image:url('../images/buttonBlueMinusOver.gif');
+	background-position:center left;
+}	
+
+#criteria_for_list{
+	padding-bottom:30px;
+}
+#perc-autolist-wrapper{
+	margin-left:-35px;
+	padding-left:35px;
+    border-top:7px solid white;
+}
+
+#perc-autolist-wrapper + br {
+    display:none;
+}

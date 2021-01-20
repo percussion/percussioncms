@@ -1,0 +1,201 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+body
+{
+    margin: 0;
+}
+.perc-gadget-comments-viewComments-commentTitle,
+.perc-gadget-comments-viewComments-commentDate,
+.perc-gadget-comments-viewComments-commentAuthor,
+.perc-gadget-comments-viewComments-commentText
+{
+    display: block;
+    white-space: normal;
+}
+
+.perc-gadget-comments-viewComments-commentDate
+{
+    margin-left: 1em;
+}
+.perc-gadget-comments-viewComments-commentAuthor
+{
+    font-weight: bold;
+}
+#perc-gadget-comments-viewComments-table_paginate,
+#perc-gadget-comments-viewComments-table_info
+{
+    display: none;
+}
+#perc-gadget-comments-viewComments-table
+{
+    background-color: #FFFFFF;
+    margin-bottom:25px;
+    padding-left:5px;
+}
+#perc-gadget-comments-viewComments-table th
+{
+    background-color: #FFFFFF;
+    border-bottom: thin solid #EEEEEE;
+}
+#perc-gadget-comments-viewComments-table td
+{
+    border-top: 2px solid #FFFFFF;
+    border-bottom-width: 0;
+}
+#perc-gadget-comments-viewComments-table th > span
+{
+    color: #6c717c;
+}
+#perc-gadget-comments-viewComments-articleSummary
+{
+    background-color: #FFFFFF;
+    color: #000000;
+}
+#perc-gadget-comments-viewComments-articleSummary > span
+{
+    color : #6C717C;
+    display : block;
+    font-weight : bold;
+}
+#perc-gadget-comments-viewComments-articleSummary > span + span
+{
+    font-weight: normal;
+    color: #000000;
+}
+#perc-gadget-comments-viewComments-numComments
+{
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+.perc-gadget-comments-rejectAction,
+.perc-gadget-comments-approveAction,
+.perc-gadget-comments-deleteAction,
+.perc-gadget-comments-rejectAction-all,
+.perc-gadget-comments-deleteAction-all,
+.perc-gadget-comments-approveAction-all
+{
+    width : 20px;
+    height : 20px;
+    float : left;
+    cursor : pointer;
+}
+
+.perc-gadget-comments-label-all
+{
+    float : left;
+    padding-top : 2px;
+    margin-left : 10px;
+}
+
+.perc-gadget-comments-actionMenu,
+.perc-gadget-comments-actionMenu-all
+{
+    margin-left : 8px;
+}
+
+.perc-gadget-comments-actionMenu
+{
+    margin-top : 6px;
+}
+
+.perc-gadget-comments-actionMenu-all
+{
+    margin-top : 11px;
+}
+
+.perc-gadget-comments-approveAction,
+.perc-gadget-comments-approveAction-all,
+.perc-gadget-comments-deleteAction,
+.perc-gadget-comments-deleteAction-all
+{
+    margin-left : 4px;
+}
+
+td.perc-gadget-comments-viewComments-action {
+    background-color : #eef6f9;
+    padding : 0px;
+}
+
+/*Rejected Off*/
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-default-all .perc-gadget-comments-rejectAction-all,
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-approved-all .perc-gadget-comments-rejectAction-all,
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-deleted-all .perc-gadget-comments-rejectAction-all,
+.perc-gadget-comments-actionMenu.perc-gadget-comments-approved .perc-gadget-comments-rejectAction,
+.perc-gadget-comments-actionMenu.perc-gadget-comments-deleted .perc-gadget-comments-rejectAction {
+    background : url(/cm/gadgets/repository/perc_comments_gadget/images/rejectedOff.png) no-repeat;
+}
+
+/*Approved Off*/
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-default-all .perc-gadget-comments-approveAction-all,
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-rejected-all .perc-gadget-comments-approveAction-all,
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-deleted-all .perc-gadget-comments-approveAction-all,
+.perc-gadget-comments-actionMenu.perc-gadget-comments-deleted .perc-gadget-comments-approveAction,
+.perc-gadget-comments-actionMenu.perc-gadget-comments-rejected .perc-gadget-comments-approveAction {
+    background : url(/cm/gadgets/repository/perc_comments_gadget/images/approvedOff.png) no-repeat;
+}
+
+/*Delete Off*/
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-default-all .perc-gadget-comments-deleteAction-all,
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-rejected-all .perc-gadget-comments-deleteAction-all,
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-approved-all .perc-gadget-comments-deleteAction-all,
+.perc-gadget-comments-actionMenu.perc-gadget-comments-approved .perc-gadget-comments-deleteAction,
+.perc-gadget-comments-actionMenu.perc-gadget-comments-rejected .perc-gadget-comments-deleteAction {
+    background : url(/cm/gadgets/repository/perc_comments_gadget/images/deletedOff.png) no-repeat;
+}
+
+/*Rejected On*/
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-rejected-all .perc-gadget-comments-rejectAction-all,
+.perc-gadget-comments-actionMenu.perc-gadget-comments-rejected .perc-gadget-comments-rejectAction {
+    background : url(/cm/gadgets/repository/perc_comments_gadget/images/rejectedOn.png) no-repeat;
+}
+
+/*Approved On*/
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-approved-all .perc-gadget-comments-approveAction-all,
+.perc-gadget-comments-actionMenu.perc-gadget-comments-approved .perc-gadget-comments-approveAction {
+    background : url(/cm/gadgets/repository/perc_comments_gadget/images/approvedOn.png) no-repeat;
+}
+
+/*Deleted On*/
+.perc-gadget-comments-actionMenu-all.perc-gadget-comments-deleted-all .perc-gadget-comments-deleteAction-all,
+.perc-gadget-comments-actionMenu.perc-gadget-comments-deleted .perc-gadget-comments-deleteAction {
+    background : url(/cm/gadgets/repository/perc_comments_gadget/images/deletedOn.png) no-repeat;
+}
+
+#perc-gadget-comments-viewComments-table_wrapper {
+    min-height : 484px;
+    background : white;
+    border-bottom: thin solid #EEEEEE
+}
+#perc-gadget-comments-viewComments-frame {
+    background : white;
+
+}
+.FixedHeader_Header {
+    height:33px;
+}
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

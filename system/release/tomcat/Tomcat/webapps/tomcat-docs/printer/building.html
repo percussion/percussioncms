@@ -1,0 +1,214 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<html><head><META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container - Building Tomcat</title><meta value="Remy Maucherat" name="author"><meta value="" name="email"></head><body vlink="#525D76" alink="#525D76" link="#525D76" text="#000000" bgcolor="#ffffff"><table cellspacing="4" width="100%" border="0"><!--PAGE HEADER--><tr><td colspan="2"><!--JAKARTA LOGO--><a href="http://jakarta.apache.org/"><img border="0" alt="The Jakarta Project" align="left" src="./../images/jakarta-logo.gif"></a><!--PROJECT LOGO--><a href="http://jakarta.apache.org/tomcat/"><img border="0" alt="
+      The Apache Jakarta Tomcat Servlet/JSP Container
+    " align="right" src="./../images/tomcat.gif"></a></td></tr><!--HEADER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><tr><!--RIGHT SIDE MAIN BODY--><td align="left" valign="top" width="80%"><table cellspacing="4" width="100%" border="0"><tr><td valign="top" align="left"><h1>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container</h1><h2>Building Tomcat</h2></td><td nowrap="true" valign="top" align="right"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Introduction"><strong>Introduction</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>
+Building Tomcat from CVS is very easy, and is the first step to contributing to
+Tomcat. The following is a step by step TODO list.
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Download and install a Java Development Kit 1.4.x or later"><strong>Download and install a Java Development Kit 1.4.x or later</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>
+Earlier releases would also work, but are harder to work with due to the need to
+download additional dependencies. Tomcat also runs much faster on 
+the latest 1.4 JDK.
+</p>
+
+<p>
+The Sun JDK can be downloaded <a href="http://java.sun.com/j2se/">here</a>.
+</p>
+
+<p>
+<b>IMPORTANT</b>: Set an environment variable JAVA_HOME to the pathname of the 
+directory into which you installed the JDK release.
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Install Apache Ant 1.6.x"><strong>Install Apache Ant 1.6.x</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>
+Download a binary distribution of Ant 1.6.x from 
+<a href="http://ant.apache.org/bindownload.cgi">here</a>.
+</p>
+
+<p>
+Unpack the binary distribution into a convenient location so that the
+Ant release resides in its own directory (conventionally named
+"jakarta-ant-1.6.2").  For the purposes of the remainder of this document,
+the symbolic name "${ant.home}" is used to refer to the full pathname of
+ the release directory.
+</p>
+
+<p>
+Create an ANT_HOME environment variable to point the directory ${ant.home}, 
+and modify the PATH environment variable to include directory
+"${ant.home}/bin" in its list.  This makes the "ant" command line script
+available, which will be used to actually perform the build.
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Building Tomcat"><strong>Building Tomcat</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>
+Download the main build.xml script from <a href="build.xml">here</a>.
+</p>
+
+<p>
+Create a new directory, and copy the newly download build.xml to it. This
+  directory will be referred to as the ${tomcat.source} directory in the rest
+  of this document.
+</p>
+
+<p>
+Go to that directory, and do:
+<code><br>
+    cd ${tomcat.source}<br>
+    ant<br>
+</code>
+</p>
+
+<p>
+NOTE: Users accessing the Internet through a proxy must use a properties
+  file to indicate to Ant the proxy configuration. Read below.
+</p>
+
+<p>
+WARNING: Running this command will checkout the Tomcat 5 sources from CVS, as
+  well as download binaries to the <code>/usr/share/java</code> directory. 
+  Make sure this is appropriate to do so on your computer. On Windows, 
+  this usually corresponds to the <code>C:\usr\share\java</code> directory, 
+  unless Cygwin is used. Read below to customize the directory used 
+  to download the binaries.
+</p>
+
+<p>
+The build can be controlled by creating a ${tomcat.source}/build.properties
+  file, and adding the following content to it:
+<code><br>
+    # ----- Proxy setup -----<br>
+    # Uncomment if using a proxy server.<br>
+    #proxy.host=proxy.domain<br>
+    #proxy.port=8080<br>
+    #proxy.use=on<br>
+<br>
+    # ----- Default Base Path for Dependent Packages -----<br>
+    # Replace this path with the directory path where<br>
+    # dependencies binaries should be downloaded.<br>
+    base.path=/usr/share/java<br>
+</code>
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Updating and rebuilding Tomcat sources"><strong>Updating and rebuilding Tomcat sources</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>
+It is recommended to regularly update the downloaded Tomcat 5 sources. 
+To do this, execute the following commands:
+
+<code><br>
+    cd ${tomcat.source}<br>
+    ant checkout<br>
+</code>
+</p>
+
+<p>
+For a quick rebuild of only modified code you can use:
+<code><br>
+    cd ${tomcat.source}<br>
+    ant build<br>
+</code>
+
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Building with Eclipse"><strong>Building with Eclipse</strong></a></font></td></tr><tr><td><blockquote>
+
+<p>
+<b>Important:</b>
+This is not a supported means of building Tomcat; this information is
+provided without warranty :-).
+The only supported means of building Tomcat is with the "ant build"
+described above.
+However, some developers like to work on Java code with a Java IDE,
+and the following steps have been used by some developers.
+</p>
+
+<p>
+Note that you <b>must</b> complete all the above steps to fetch
+the repositories and build some JAR files the first time.
+After you have completed the above steps, you can set up a
+series of Eclipse 3 projects.
+<b>Note</b> that this will not let you build everything under Eclipse;
+the build process requires use of Ant for the many stages that aren't
+simple Java compilations.
+However, it will allow you to view and edit the Java code,
+get warnings, reformat code, perform refactorings, run Tomcat
+under the IDE, and so on.
+</p>
+
+<p>
+Use File-&gt;New Project to create a new Java project 
+for each of the binaries repository (e.g., /usr/share/java), 
+tomcat-connectors, tomcat-catalina, jasper, servletapi.
+Unless you thought ahead to make the ${tomcat.source} directory be under
+your Workspace folder, tell Eclipse the external location.
+The obvious dependencies will be needed; the "repository" project
+needs to export all its jars, and be referred to by the other projects.
+Eclipse will find all source trees and jars, and
+hopefully compile without problems
+You will need to add ${ant-home}/lib/ant.jar as an "External Jar"
+under Project Properties for some of these projects (notably those that fail
+to compile for want of BuildException).
+</p>
+
+<p>
+To run Tomcat without a special IDE plug-in, you can simply use Run-&gt;Run...
+enter "org.apache.catalina.startup.Catalina" as the main class,
+"start" as program arguments, and
+"-Dcatalina.home=..." (with the name of your build directory) 
+as VM arguments.
+</p>
+
+<p>
+Note also that due to the way the Tomcat source is assembled
+from several CVS projects, you may not be able to use the Eclipse
+CVS client to update (nor to commit, if you are a committer).
+Use the external CVS client of your choice, then use the
+Eclipse PackageExplorer or Navigator "Refresh" context menu item
+to tell Eclipse that you've updated the files.
+</p>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Building with other IDEs"><strong>Building with other IDEs</strong></a></font></td></tr><tr><td><blockquote>
+<p>
+The same caveats apply as for Eclipse, above.
+</p>
+
+<p>
+The same general idea should work in most IDEs; it has been reported
+to work in Idea, for example.
+</p>
+
+</blockquote></td></tr></table></td></tr><!--FOOTER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><!--PAGE FOOTER--><tr><td colspan="2"><div align="center"><font size="-1" color="#525D76"><em>
+        Copyright &copy; 1999-2004, Apache Software Foundation
+        </em></font></div></td></tr></table></body></html>

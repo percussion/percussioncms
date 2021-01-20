@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- The WebDAV configuration information
+
+     "root" - the virtual root path of the Rhythmyx for all resource 
+              specified in the request. It must start from "Site" or "Folder"
+              For example, root="//Site/mysite", root="//Folder/myfolder".
+              It must be an existing folder. 
+
+     "communityid" - the name of the community, which is used to communicate
+                     with Rhythmyx Server.
+              
+     "communityname" - the name of the community, this is only a reference
+                       to the communityid, but is not used by the WebDAV.
+
+     "locale" - the locale that is used for the created items
+
+     "deleteas" - an optional attribute, indicating the behavior of the 
+                  DELETE operation (in DELETE, COPY and MOVE method). 
+                  The possible values are:
+                  
+                  "purge":   indicate the DELETE operation will purge the
+                             target items and/or folders. The purged items
+                             will not be able to recovered afterwards.
+                  "remove":  indicate the DELETE operation will remove the
+                             folder relationships with the target items. The
+                             removed items can be recovered afterwards. This
+                             is the default behavior if this attribute is not
+                             specified.
+                             
+      "publicValidTokens"  - comma separated list of chars for public state
+                             default "y"
+ 
+      "QEValidTokens"  - comma separated list of chars for quick-edit state
+                         default "i"        					 
+-->
+<PSXWebdavConfigDef root="//Sites/CorporateInvestments/Images" communityname="Corporate_Investments" communityid="1003" locale="en-us" deleteas="remove"
+ publicValidTokens="y" QEValidTokens="i">
+
+	<!--
+	   Defines one or more supported content type for WebDAV
+	   
+	     "id" - the id of the content type in Rhythmyx
+	     
+	     "name" - the name of the content type in Rhythmyx, this is only used as a
+	              reference to the id above.
+	
+	     "contentfield" - the field name for the content
+	     
+	     "ownerfield" - the field name for the lock owner that is submitted by WebDAV clients
+	
+	     "default" - "true" or "false". There must be only one element with the value "true". 
+	                  If it is "false", must define one or more mime types (hence must define the "Mimetypes" element);
+	                  If it is "true", the "Mimetypes" element is ignored.	                  
+	-->
+	
+	<PSXWebdavContentType id="307" name="Image" contentfield="img1" ownerfield="webdavowner" default="false">
+	
+		<!-- Defines the mime type(s) that be accepted by the current Rhythmyx content type.-->
+
+		<MimeTypes>
+			<MimeType>image/gif</MimeType>
+			<MimeType>image/bmp</MimeType>
+			<MimeType>image/jpeg</MimeType>
+			<MimeType>image/png</MimeType>
+		</MimeTypes>
+		
+		<!--
+		  Defines the mapper between WebDAV properties and its corresponding field name of the current Rhythmyx content type
+		  
+			Required mappings:
+			
+				"getcontenttype" - maps to a Rhythmyx Content Editor field for the mime-type.
+		     
+				"getcontentlength" - maps to a Rhythmyx Content Editor field for the content length.
+
+			Rhythmyx WebDAV automatically maps the following:
+						
+				"displayname" - always maps to Rhythmyx sys_title field
+				
+				"creationdate" - maps to Rhythmyx sys_contentcreatedate field
+
+				"getlastmodified" - maps to Rhythmyx sys_contentlastmodifieddate field
+
+				"getcontentlanguage" - always maps to Rhythmyx sys_lang field
+			
+		-->	
+		
+		<PropertyMap>
+			<PSXPropertyFieldNameMapping name="displayname">
+				<FieldName>displaytitle</FieldName>
+			</PSXPropertyFieldNameMapping>
+			<PSXPropertyFieldNameMapping name="getcontenttype">
+				<FieldName>img1_type</FieldName>
+			</PSXPropertyFieldNameMapping>
+			<PSXPropertyFieldNameMapping name="getcontentlength">
+				<FieldName>img1_size</FieldName>
+			</PSXPropertyFieldNameMapping>
+		</PropertyMap>
+	</PSXWebdavContentType>
+	
+	<PSXWebdavContentType id="309" name="File" contentfield="item" ownerfield="webdavowner" default="true">
+
+		<PropertyMap>
+			<PSXPropertyFieldNameMapping name="displayname">
+				<FieldName>displaytitle</FieldName>
+			</PSXPropertyFieldNameMapping>
+			<PSXPropertyFieldNameMapping name="getcontenttype">
+				<FieldName>item_type</FieldName>
+			</PSXPropertyFieldNameMapping>
+			<PSXPropertyFieldNameMapping name="getcontentlength">
+				<FieldName>item_size</FieldName>
+			</PSXPropertyFieldNameMapping>
+		</PropertyMap>
+	</PSXWebdavContentType>
+	
+	<!--
+	   A list of excluded folder properties when creating a folder in WebDAV. 
+	   A created folder will inherit all properties of its parent folder except
+	   the list of excluded properties and the folder name.
+	-->
+	<ExcludeFolderProperties>
+		<PropertyName>sys_pubFileName</PropertyName>
+	</ExcludeFolderProperties>
+	
+</PSXWebdavConfigDef>

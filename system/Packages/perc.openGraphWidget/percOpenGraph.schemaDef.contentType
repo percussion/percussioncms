@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CT_PERCOPENGRAPH">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SITE_NAME">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="TITLE_OVERRIDE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DESCRIPTION_OVERRIDE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+	   <column action="c" limitSizeForIndex="n" name="IMAGE_HEIGHT_OVERRIDE">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+		 <defaultvalue/>
+      </column>
+	   <column action="c" limitSizeForIndex="n" name="IMAGE_WIDTH_OVERRIDE">
+        <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+		 <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="IMAGE_OVERRIDE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1000</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="URL_OVERRIDE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>1024</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="TYPE_OVERRIDE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="LOCALE_OVERRIDE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>10</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="FB_APP_ID_OVERRIDE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="IMAGE__LINKID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+         <defaultvalue/>
+      </column>
+   </row>
+   <primarykey action="c">
+      <name>CONTENTID</name>
+      <name>REVISIONID</name>
+   </primarykey>
+</table>

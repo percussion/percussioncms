@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>Tag widget</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>347</id>
+    <internal-name>percTagList</internal-name>
+    <label>Tags</label>
+    <mandatory>false</mandatory>
+    <name>rx:percTagList</name>
+    <new-request>../psx_cepercTagList/percTagList.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercTagList/percTagList.html</query-request>
+    <raw-content-type>347</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

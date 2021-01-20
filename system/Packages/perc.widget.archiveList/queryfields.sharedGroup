@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXSharedFieldGroup filename="rxs_ct_queryfields_shared.xml" name="queryfields">
+   <PSXContainerLocator>
+      <PSXTableSet>
+         <PSXTableLocator>
+            <PSXBackEndCredential id="275">
+               <alias>contentCredential</alias>
+               <comment/>
+               <datasource/>
+            </PSXBackEndCredential>
+         </PSXTableLocator>
+         <PSXTableRef alias="QUERYFIELDS_QUERYFIELDS2" name="QUERYFIELDS_QUERYFIELDS2"/>
+      </PSXTableSet>
+   </PSXContainerLocator>
+   <PSXFieldSet name="queryfields" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="query_published_after" showInPreview="yes" showInSummary="yes" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>QUERYFIELDS_QUERYFIELDS2</tableAlias>
+               <column>QUERY_PUBLISHED_AFTER</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>50</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="query_published_before" showInPreview="yes" showInSummary="yes" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>QUERYFIELDS_QUERYFIELDS2</tableAlias>
+               <column>QUERY_PUBLISHED_BEFORE</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>50</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="query_site_path" showInPreview="yes" showInSummary="yes" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>QUERYFIELDS_QUERYFIELDS2</tableAlias>
+               <column>QUERY_SITE_PATH</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>2083</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="query_string" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>QUERYFIELDS_QUERYFIELDS2</tableAlias>
+               <column>QUERY_STRING</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>1000</DataFormat>
+         <DefaultValue>
+            <DataLocator>
+               <PSXTextLiteral id="0">
+                  <text/>
+               </PSXTextLiteral>
+            </DataLocator>
+         </DefaultValue>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="no" fieldvaluetype="content" forceBinary="no" mimetype="text/plain" modificationType="user" name="query_template_list" showInPreview="yes" showInSummary="no" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>QUERYFIELDS_QUERYFIELDS2</tableAlias>
+               <column>QUERY_TEMPLATE_LIST</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>1000</DataFormat>
+         <DefaultValue>
+            <DataLocator>
+               <PSXTextLiteral id="0">
+                  <text/>
+               </PSXTextLiteral>
+            </DataLocator>
+         </DefaultValue>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="query_title_contains" showInPreview="yes" showInSummary="yes" type="shared">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>QUERYFIELDS_QUERYFIELDS2</tableAlias>
+               <column>QUERY_TITLE_CONTAINS</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>text</DataType>
+         <DataFormat>500</DataFormat>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <PSXPropertySet>
+            <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+            <PSXProperty locked="yes" name="mayHaveInlineLinks">
+               <Value type="Boolean">no</Value>
+            </PSXProperty>
+         </PSXPropertySet>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+      </PSXField>
+   </PSXFieldSet>
+   <PSXUIDefinition>
+      <PSXDisplayMapper fieldSetRef="queryfields" id="0">
+         <PSXDisplayMapping>
+            <FieldRef>query_title_contains</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText/>
+               </Label>
+               <PSXControlRef id="10036" name="sys_HiddenInput"/>
+               <ErrorLabel>
+                  <PSXDisplayText/>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>query_published_after</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText/>
+               </Label>
+               <PSXControlRef id="10026" name="sys_HiddenInput"/>
+               <ErrorLabel>
+                  <PSXDisplayText/>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>query_published_before</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText/>
+               </Label>
+               <PSXControlRef id="10029" name="sys_HiddenInput"/>
+               <ErrorLabel>
+                  <PSXDisplayText/>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>query_template_list</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText/>
+               </Label>
+               <PSXControlRef id="10031" name="sys_HiddenInput"/>
+               <ErrorLabel>
+                  <PSXDisplayText/>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>query_site_path</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText/>
+               </Label>
+               <PSXControlRef id="10035" name="sys_HiddenInput"/>
+               <ErrorLabel>
+                  <PSXDisplayText/>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+         <PSXDisplayMapping>
+            <FieldRef>query_string</FieldRef>
+            <PSXUISet>
+               <Label>
+                  <PSXDisplayText/>
+               </Label>
+               <PSXControlRef id="10034" name="percQueryControl"/>
+               <ErrorLabel>
+                  <PSXDisplayText/>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
+      </PSXDisplayMapper>
+   </PSXUIDefinition>
+   <PSXValidationRules maxErrorsToStop="10"/>
+   <PSXInputTranslations/>
+   <PSXOutputTranslations/>
+</PSXSharedFieldGroup>

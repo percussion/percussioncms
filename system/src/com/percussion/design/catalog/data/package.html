@@ -1,0 +1,75 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   $Id: package.html 1.2 1999/01/13 15:50:39Z Administrator Release $
+
+   Version Labels  : $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 20000724_2_0 20000522_1_1 20000501_1_1 20000327_1_1 20000111_1_0 991227_1_0 991214_1_0 991213_1_0 991202_1_0 Release_1_0_Intl Release_10_1 Release_10 $
+
+   Locked By       : $Locker: $
+
+   Revision History:
+                     $Log: package.html $
+                     Revision 1.2  1999/01/13 15:50:39Z  Administrator
+                      added RCS headers
+-->
+
+<BODY>
+
+The data cataloger provides metadata about back-end drivers, tables, etc.
+It follows the specification defined by the cataloger for all catalog
+requests. Data catalog requests are handled internally by the Data
+Manager</P>
+
+<P>The Data Manager supports the following request types, and their
+corresponding handlers:</P>
+
+<TABLE BORDER="1">
+<TR><TH>Request Type</TH><TH>Handler</TH></TR>
+<TR><TD>Driver</TD>
+    <TD>PSDriverCatalogHandler</TD></TR>
+<TR><TD>DriverSupport</TD>
+    <TD>PSDriverSupportCatalogHandler</TD></TR>
+<TR><TD>Server</TD>
+    <TD>PSServerCatalogHandler</TD></TR>
+<TR><TD>Database</TD>
+    <TD>PSDatabaseCatalogHandler</TD></TR>
+<TR><TD>Schema</TD>
+    <TD>PSSchemaCatalogHandler</TD></TR>
+<TR><TD>TableTypes</TD>
+    <TD>PSTableTypesCatalogHandler</TD></TR>
+<TR><TD>Table</TD>
+    <TD>PSTableCatalogHandler</TD></TR>
+<TR><TD>Column</TD>
+    <TD>PSColumnCatalogHandler</TD></TR>
+<TR><TD>UniqueKey</TD>
+    <TD>PSUniqueKeyCatalogHandler</TD></TR>
+<TR><TD>ForeignKey</TD>
+    <TD>PSForeignKeyCatalogHandler</TD></TR>
+<TR><TD>Index</TD>
+    <TD>PSIndexCatalogHandler</TD></TR>
+</TABLE>
+
+</BODY>
+

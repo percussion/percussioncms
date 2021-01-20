@@ -1,0 +1,107 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/workflow/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://www.w3.org/2001/XMLSchema" xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:wp="urn:www.percussion.com/webservices/workflow" targetNamespace="urn:www.percussion.com/webservices/workflow/wsdl">
+	<import location="sys_Header.xsd" namespace="urn:www.percussion.com/webservices/header"/>
+	<import location="sys_WorkflowParameters.xsd" namespace="urn:www.percussion.com/webservices/workflow"/>
+	<message name="header-request">
+		<part name="Authentication" element="hdr:Authentication"/>
+	</message>
+	<message name="header-response">
+		<part name="HeaderResponse" element="hdr:HeaderResponse"/>
+	</message>
+	<message name="auditTrail-request">
+		<part name="parameters" element="wp:auditTrail"/>
+	</message>
+	<message name="auditTrail-response">
+		<part name="parameters" element="wp:AuditTrailResponse"/>
+	</message>
+	<message name="transitionItem-request">
+		<part name="parameters" element="wp:transitionItem"/>
+	</message>
+	<message name="transitionItem-response">
+		<part name="parameters" element="wp:TransitionItemResponse"/>
+	</message>
+	<message name="transitionList-request">
+		<part name="parameters" element="wp:transitionList"/>
+	</message>
+	<message name="transitionList-response">
+		<part name="parameters" element="wp:TransitionListResponse"/>
+	</message>
+	<portType name="WorkflowPort">
+		<operation name="auditTrail">
+			<input message="tns:auditTrail-request"/>
+			<output message="tns:auditTrail-response"/>
+		</operation>
+		<operation name="transitionItem">
+			<input message="tns:transitionItem-request"/>
+			<output message="tns:transitionItem-response"/>
+		</operation>
+		<operation name="transitionList">
+			<input message="tns:transitionList-request"/>
+			<output message="tns:transitionList-response"/>
+		</operation>
+	</portType>
+	<binding name="WorkflowBinding" type="tns:WorkflowPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="auditTrail">
+			<soap:operation soapAction="urn:#auditTrail"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="transitionItem">
+			<soap:operation soapAction="urn:#transitionItem"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="transitionList">
+			<soap:operation soapAction="urn:#transitionList"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="WorkflowServices">
+		<port name="WorkflowPort" binding="tns:WorkflowBinding">
+			<soap:address location="http://localhost:9980/RxServices/servlet/messagerouter"/>
+		</port>
+	</service>
+</definitions>

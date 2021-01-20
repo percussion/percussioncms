@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percSocialButtons - Version 1.0.0]
+
+-->
+<Widget>
+   <WidgetPrefs title="Social Buttons"
+                contenttype_name="percSocialButtons"
+                description=" "
+                category="social"
+                author="http://www.percussion.com"
+                thumbnail="/rx_resources/widgets/percSocialButtons/images/percSocialButtonsIcon.png"
+                preferred_editor_width="1000"
+                preferred_editor_height="600"
+                is_responsive="true"/>
+
+    <!-- User prefs define input needed when in layout config for a widget -->
+    <!-- Available data types are bool, number, enum, string -->
+    <UserPref name="colorScheme"
+              display_name="Button color scheme"
+              required="true"
+              datatype="enum" default_value="standard">
+        <EnumValue value="standard" display_value="Standard" />
+        <EnumValue value="grayscale" display_value="Grayscale" />
+    </UserPref>
+    <UserPref name="desktopButtonLocation"
+              display_name="Desktop button location"
+              required="true"
+              datatype="enum" default_value="inline">
+        <EnumValue value="inline" display_value="Inline" />
+        <EnumValue value="left" display_value="Fixed Left" />
+        <EnumValue value="right" display_value="Fixed Right" />
+        <EnumValue value="bottom" display_value="Fixed Bottom" />
+    </UserPref>
+    <UserPref name="mobileButtonLocation"
+              display_name="Mobile button location"
+              required="true"
+              datatype="enum" default_value="inline">
+        <EnumValue value="inline" display_value="Inline" />
+        <EnumValue value="left" display_value="Fixed Left" />
+        <EnumValue value="right" display_value="Fixed Right" />
+        <EnumValue value="bottom" display_value="Fixed Bottom" />
+    </UserPref>
+    <UserPref name="hideMobile"
+              display_name="Hide buttons on mobile"
+              required="true"
+              datatype="bool" default_value="false">
+    </UserPref>
+    <UserPref name="hideDesktop"
+              display_name="Hide buttons on desktop"
+              required="true"
+              datatype="bool" default_value="false">
+    </UserPref>
+    <UserPref name="desktopVerticalOffset"
+              display_name="Desktop vertical offset (side position only)"
+              required="true"
+              datatype="string" default_value="200px">
+    </UserPref>
+    <UserPref name="mobileVerticalOffset"
+              display_name="Mobile vertical offset (side position only)"
+              required="true"
+              datatype="string" default_value="100px">
+    </UserPref>
+    <UserPref name="mobileButtonSize"
+              display_name="Mobile button size (will not affect inline placement)"
+              required="true"
+              datatype="enum" default_value="small">
+        <EnumValue value="1em" display_value="Small" />
+        <EnumValue value="1.2em" display_value="Medium" />
+        <EnumValue value="1.5em" display_value="Large" />
+    </UserPref>
+    <UserPref name="mobileBreakpoint"
+              display_name="Mobile breakpoint"
+              required="true"
+              datatype="string" default_value="800px">
+    </UserPref>
+
+    <Code type="jexl">
+    <!-- This section is used to set up data that will be used in the content section -->
+        <![CDATA[
+       $pageId = $perc.page.id;
+       $widgetId = $perc.widget.item.id;
+       $rootclass = 'percSocialButtons';
+
+       ## Get asset item(s)
+       $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+       $perc.setWidgetContents($assets);
+
+       if (! $assets.isEmpty())
+       {
+           $assetItem = $assets.get(0); ## Get first item (which may be only item)
+           $colorScheme = $perc.widget.item.properties.get('colorScheme');
+           $desktopButtonLocation = $perc.widget.item.properties.get('desktopButtonLocation');
+           $mobileButtonLocation = $perc.widget.item.properties.get('mobileButtonLocation');
+           $hideMobile = $perc.widget.item.properties.get('hideMobile');
+           $hideDesktop = $perc.widget.item.properties.get('hideDesktop');
+           $desktopVerticalOffset = $perc.widget.item.properties.get('desktopVerticalOffset');
+           $mobileVerticalOffset = $perc.widget.item.properties.get('mobileVerticalOffset');
+           $mobileBreakpoint = $perc.widget.item.properties.get('mobileBreakpoint');
+           $mobileButtonSize = $perc.widget.item.properties.get('mobileButtonSize');
+           $baseUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+
+           ## assign standard colors
+           $standardColor = $rx.string.stringToMap(null);
+           $standardColor.put('facebook', '3b5998');
+           $standardColor.put('twitter', '00a9f1');
+           $standardColor.put('linkedIn', '0077b5');
+           $standardColor.put('pinterest', 'c92228');
+           $standardColor.put('youtube', 'cd201f');
+           $standardColor.put('whatsapp', '25d366');
+           $standardColor.put('email', '787878');
+           $standardColor.put('text', 'ffffff');
+
+           ## assign grayscale colors
+           $grayscaleColor = $rx.string.stringToMap(null);
+           $grayscaleColor.put('facebook', '666666');
+           $grayscaleColor.put('twitter', '666666');
+           $grayscaleColor.put('linkedIn', '666666');
+           $grayscaleColor.put('pinterest', '666666');
+           $grayscaleColor.put('youtube', '666666');
+           $grayscaleColor.put('whatsapp', '666666');
+           $grayscaleColor.put('email', '666666');
+           $grayscaleColor.put('text', 'ffffff');
+
+           $outputColor = $rx.string.stringToMap(null);
+
+           if( $colorScheme == 'standard') {
+            $outputColor = $standardColor;
+           }
+           else {
+            $outputColor = $grayscaleColor;
+           }
+
+          $data = $assetItem.Node.getProperty('rx:buttonConfiguration').getString();
+          $json = $rx.pageutils.createJsonObject($data);
+
+       }
+
+
+    ]]>
+    </Code>
+    <Content type="velocity">
+    <!-- This section defines the rendered content -->
+        <![CDATA[
+       <div class="$!rootclass">
+        #if( ! $perc.widgetContents.isEmpty() )
+        <style>
+
+          .perc-social-button-container-bottom {
+            width: 100% !important;
+            display: flex;
+            bottom: 0;
+            left: 0;
+            position: fixed;
+            margin:0px;
+            padding:0px;
+          }
+
+          .perc-social-button-container-bottom .perc-social-button {
+            display: inline-block;
+            width: 100%;
+          }
+
+          .perc-social-button-container-bottom a {
+            width: 100%;
+          }
+
+          .perc-social-button-container-left {
+            left: 0;
+            top: ${desktopVerticalOffset};
+            position: fixed;
+            margin:0px;
+            padding:0px;
+            height: 100%;
+          }
+
+          .perc-social-button-container-left .perc-social-button {
+            float: left;
+            clear: left;
+            font-size: 2em;
+            padding: 12px;
+          }
+
+          .perc-social-button-container-right {
+            right: 0;
+            top: ${desktopVerticalOffset};
+            position: fixed;
+            margin:0px;
+            padding:0px;
+            height: 100%;
+          }
+
+          .perc-social-button-container-right .perc-social-button {
+            float: right;
+            clear: right;
+            font-size: 2em;
+            padding: 12px;
+          }
+
+          .perc-social-button-container-inline {
+            position: relative;
+            width: 100%;
+            display: inline-block;
+          }
+
+          .perc-social-button-container-inline .perc-social-button {
+            font-size: 2em;
+          }
+
+          .perc-social-button {
+            float:left;
+            text-align: center;
+            border: 0px;
+            margin: 0px;
+            cursor: pointer;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-size: 2em;
+          }
+
+          .perc-social-button:hover {
+            opacity: 0.9;
+            filter: alpha(opacity=90); /* For IE8 and earlier */
+          }
+
+          .perc-facebook-social-button {
+            background-color: #$outputColor.facebook;
+            color: #$outputColor.text;
+          }
+
+          .perc-twitter-social-button {
+            background-color: #$outputColor.twitter;
+            color: #$outputColor.text;
+          }
+
+          .perc-linkedin-social-button {
+            background-color: #$outputColor.linkedIn;
+            color: #$outputColor.text;
+          }
+
+          .perc-pinterest-social-button {
+            background-color: #$outputColor.pinterest;
+            color: #$outputColor.text;
+          }
+
+          .perc-youtube-social-button {
+            background-color: #$outputColor.youtube;
+            color: #$outputColor.text;
+          }
+
+          .perc-whatsapp-social-button {
+            background-color: #$outputColor.whatsapp;
+            color: #$outputColor.text;
+          }
+
+          .perc-email-social-button {
+            background-color: #$outputColor.email;
+            color: #$outputColor.text;
+          }
+
+          #if( $hideDesktop == "true" )##
+          @media (min-width: ${mobileBreakpoint}) {
+            .perc-social-button-container {
+              display: none !important;
+            }
+          }
+          #end##
+
+          #if( $hideMobile == "true" )##
+          @media (max-width: ${mobileBreakpoint}) {
+            .perc-social-button-container {
+              display: none !important;
+            }
+          }
+          #end##
+
+          @media (max-width: ${mobileBreakpoint}) {
+
+            .perc-social-button {
+              font-size: ${mobileButtonSize} !important;
+            }
+
+            .perc-social-button-container-mobile-left {
+              left: 0;
+              top: ${mobileVerticalOffset};
+            }
+
+            .perc-social-button-container-mobile-bottom {
+              width: 100% !important;
+              display: flex;
+              bottom: 0;
+              left: 0;
+              top: auto;
+              height: auto;
+              position: fixed;
+              margin:0px;
+              padding:0px;
+            }
+
+            .perc-social-button-container-mobile-bottom .perc-social-button {
+              display: inline-block;
+              width: 100%;
+              padding-bottom: 10px;
+              padding-top: 10px;
+            }
+
+            .perc-social-button-container-mobile-bottom a {
+              width: 100%;
+            }
+
+            .perc-social-button-container-mobile-left {
+              left: 0;
+              top: ${mobileVerticalOffset};
+              position: fixed;
+              margin:0px;
+              padding:0px;
+              height: 100%;
+              display: block;
+              width: auto !important;
+            }
+
+            .perc-social-button-container-mobile-left .perc-social-button {
+              float: left;
+              clear: left;
+              padding: 12px;
+            }
+
+            .perc-social-button-container-mobile-right {
+              right: 0;
+              left: auto;
+              top: ${mobileVerticalOffset};
+              position: fixed;
+              margin:0px;
+              padding:0px;
+              height: 100%;
+              display: block;
+              width: auto !important;
+            }
+
+            .perc-social-button-container-mobile-right .perc-social-button {
+              float: right;
+              clear: right;
+              padding: 12px;
+            }
+
+            .perc-social-button-container-mobile-inline {
+              position: relative;
+              display: inline-block;
+              width: 100%;
+              top: auto;
+              bottom: auto;
+              left: auto;
+              right: auto;
+            }
+
+            .perc-social-button-container-mobile-inline .perc-social-button {
+              font-size: 1.2em !important;
+              clear: none;
+              float: none;
+              padding: 5px;
+              width: auto;
+            }
+
+          }
+
+        </style>
+
+        <script>
+			window.addEventListener('DOMContentLoaded', function() {
+            // Sets current URL, and then encodes it for use in the share links
+            var percCurrentUrl = $(location).attr('href');
+            var percEncodedCurrentUrl = encodeURIComponent(percCurrentUrl);
+
+            // Sets page title and encodes it for use in the share links
+            var percPageTitle = '$!{perc.page.linkTitle}';
+            var percEncodedPageTitle = encodeURIComponent(percPageTitle);
+            var percPageSummary = '$!perc.page.description';
+            var percEncodedPageSummary = encodeURIComponent(percPageSummary);
+
+            var percSocial = {};
+            var percButtonConfiguration = {};
+            percButtonConfiguration = $json;
+
+            $(document).ready( function() {
+
+              // When social buttons are clicked, there is first a check to make sure that data
+              // push is enabled for that button
+              $(document).on('click', '.perc-social-button', function() {
+                if ( $(this).parent().data('enablepush') == true ) {
+                  dataLayer.push({'event': $(this).parent().data('pushvalue') });
+                }
+              });
+
+              // Constructs a new object of only the enabled social buttons
+              jQuery.each(percButtonConfiguration.config, function(index, value) {
+                if( value.enableButton === true) {
+                  constructSocialObject(value.platform);
+                  percSocial[value.platform]['enableDataPush'] = value.enableDataPush;
+                  percSocial[value.platform]['socialLink'] = value.socialLink;
+                  //percSocial[value.platform]['baseUrl'] = value.baseUrl;
+                }
+              });
+
+              // Creates links and buttons and appends to the button container
+              jQuery.each(percSocial, function(index, value) {
+                $('.perc-social-button-container').append('<a href="" target="_blank" data-enablepush="" data-pushvalue="" ><button class="perc-social-button"><i class="fa fa-fw" aria-hidden="true"></i></button></a>');
+                if( percButtonConfiguration.buttonType == 'share' ) {
+                  $('.perc-social-button-container a').last().attr("href", value.shareLink);
+                }
+                else {
+                  $('.perc-social-button-container a').last().attr("href", value.socialLink);
+                }
+                $('.perc-social-button-container a').last().attr("data-enablepush", value.enableDataPush);
+                $('.perc-social-button-container a').last().attr("data-pushvalue", index + '-' + percButtonConfiguration.buttonType);
+                $('.perc-social-button-container button').last().addClass(value.buttonClass);
+                $('.perc-social-button-container i').last().addClass(value.iconClass);
+              });
+
+            });
+
+            function constructSocialObject(platform) {
+
+              // Initializes the object of enabled buttons
+              percSocial[platform] = {};
+
+              switch (platform) {
+                case 'facebook':
+                  percSocial[platform]['shareLink'] = 'https://www.facebook.com/sharer/sharer.php?u=' + percEncodedCurrentUrl;
+                  percSocial[platform]['buttonClass'] = 'perc-facebook-social-button';
+                  percSocial[platform]['iconClass'] = 'fa-facebook';
+                  break;
+                case 'twitter':
+                  percSocial[platform]['shareLink'] = 'https://twitter.com/intent/tweet?text=' + percEncodedPageSummary + '&url=' + percEncodedCurrentUrl;
+                  percSocial[platform]['buttonClass'] = 'perc-twitter-social-button';
+                  percSocial[platform]['iconClass'] = 'fa-twitter';
+                  break;
+                case 'linkedin':
+                  percSocial[platform]['shareLink'] = 'https://www.linkedin.com/shareArticle?mini=true&url=' + percEncodedCurrentUrl + '&title=' + percEncodedPageTitle + '&summary=' + percEncodedPageSummary;
+                  percSocial[platform]['buttonClass'] = 'perc-linkedin-social-button';
+                  percSocial[platform]['iconClass'] = 'fa-linkedin';
+                  break;
+                case 'pinterest':
+                  percSocial[platform]['shareLink'] = 'http://pinterest.com/pin/create/button/?url=' + percEncodedCurrentUrl + '&name=' + percEncodedPageTitle + '&description=' + percEncodedPageSummary;
+                  percSocial[platform]['buttonClass'] = 'perc-pinterest-social-button';
+                  percSocial[platform]['iconClass'] = 'fa-pinterest';
+                  break;
+                case 'youtube':
+                  percSocial[platform]['shareLink'] = null;
+                  percSocial[platform]['buttonClass'] = 'perc-youtube-social-button';
+                  percSocial[platform]['iconClass'] = 'fa-youtube';
+                  break;
+                case 'whatsapp':
+                  percSocial[platform]['shareLink'] = 'https://api.whatsapp.com/send?text=' + percEncodedPageTitle + ' ' + percEncodedPageSummary + ' ' + percEncodedCurrentUrl;
+                  percSocial[platform]['buttonClass'] = 'perc-whatsapp-social-button';
+                  percSocial[platform]['iconClass'] = 'fa-whatsapp';
+                  break;
+                case 'email':
+                  percSocial[platform]['shareLink'] = 'mailto:?Subject=' + percEncodedPageTitle + '&body' + percEncodedPageSummary + ' ' + percEncodedCurrentUrl;
+                  percSocial[platform]['buttonClass'] = 'perc-email-social-button';
+                  percSocial[platform]['iconClass'] = 'fa-envelope';
+                  break;
+              }
+
+            }
+			});
+        </script>
+        <div class="perc-social-button-container perc-social-button-container-${desktopButtonLocation} perc-social-button-container-mobile-${mobileButtonLocation}">
+        </div>
+        #elseif ($perc.isEditMode())
+            #createEmptyWidgetContent("percSocialButtons-empty-style", "This widget is showing sample content")
+        #end
+       </div>
+    ]]>
+    </Content>
+</Widget>

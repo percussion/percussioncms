@@ -1,0 +1,475 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXExtensionHandlerConfiguration handlerName="JavaScript">
+  <Extension name="sysPubContentValid" context="global/" handler="JavaScript" deprecated="yes">
+    <initParam name="scriptBody"> 
+if(StateValid != &quot;Y&quot; &amp;&amp; StateValid !=&quot;y&quot;) { 
+   return &quot;yes&quot;;
+   }
+
+return &quot;no&quot;; </initParam>
+    <initParam name="com.percussion.user.description"></initParam>
+    <initParam name="com.percussion.extension.version">14</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>StateValid</name>
+      <dataType>String</dataType>
+      <description></description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>Expiredate</name>
+      <dataType>String</dataType>
+      <description></description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="sysPubMakePubLocation" context="global/" handler="JavaScript" deprecated="yes">
+    <initParam name="com.percussion.user.description"/>
+    <initParam name="com.percussion.extension.version">7</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="scriptBody">return pubpath + &quot;/&quot; + BaseURL + contentid + &quot;.&quot; + suffix</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>BaseURL</name>
+      <dataType>String</dataType>
+      <description/>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>contentid</name>
+      <dataType>String</dataType>
+      <description/>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>suffix</name>
+      <dataType>String</dataType>
+      <description/>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>pubpath</name>
+      <dataType>String</dataType>
+      <description/>
+    </PSXExtensionParamDef>
+    <suppliedResources/>
+  </Extension>
+  <Extension name="sys_pubMakeLocation" context="global/" handler="JavaScript" categorystring="publisher" deprecated="yes">
+    <initParam name="com.percussion.user.description">This UDF makes a valid file path for content item for publishing given the path prefix, path suffix, contentid and the publishing context.
+</initParam>
+    <initParam name="com.percussion.extension.version">2</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="scriptBody">	//make sure path is not null
+	if(path == null)
+		path = &quot;&quot;;
+	//make sure contentid is not null
+	if(contentid == null)
+		contentid = &quot;&quot;;
+	//both never be empty however ....
+	if(path == &quot;&quot; &amp;&amp; contentid == &quot;&quot;)
+		path = &quot;dummy&quot;;
+	//make sure the suffix finally starts with a &apos;.&apos;
+	if(suffix == null)
+		suffix = &quot;&quot;;
+	loc = suffix.indexOf(&quot;.&quot;)
+	if(loc != -1)
+		suffix = suffix.substring(loc);
+	if(suffix != &quot;&quot;)
+		suffix = &quot;.&quot; + suffix; //addpend &apos;.&apos; only if suffix is not empty
+	switch(context)
+	{
+	case 2:
+		//ToAdd when required
+	default: //for context = null or 1
+		loc = path.indexOf(&apos;.&apos;);
+		if(loc == -1) //path does not have &apos;.&apos; in it
+		{
+			return path + contentid.toString() + suffix; //append contentid to path and then append the suffex and return
+		}
+		else //path already has a &apos;.&apos;
+		{
+			if(suffix == &quot;&quot;) //suffix is empty
+				return path; //just returm as it is
+			//path has &apos;.&apos; and suffix is not empty, so replace the suffix in the path with the specified one	
+			left = path.substring(0, loc);
+			return left + contentid.toString() + suffix;
+		}
+	}
+</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>path</name>
+      <dataType>String</dataType>
+      <description>File path name</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>suffix</name>
+      <dataType>String</dataType>
+      <description>File extension name</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>contentid</name>
+      <dataType>Number</dataType>
+      <description>Content ID</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>context</name>
+      <dataType>Number</dataType>
+      <description>Publishing context</description>
+    </PSXExtensionParamDef>
+    <suppliedResources/>
+  </Extension>
+  <Extension name="sysPubMakePubAddress" context="global/" handler="JavaScript" deprecated="yes">
+    <initParam name="scriptBody">return PathName + ContentID + Suffix</initParam>
+    <initParam name="com.percussion.user.description"></initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>PathName</name>
+      <dataType>String</dataType>
+      <description></description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>String</dataType>
+      <description></description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>Suffix</name>
+      <dataType>String</dataType>
+      <description></description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="sysPubMakePubAddress" context="global/" handler="JavaScript" deprecated="yes">
+    <initParam name="scriptBody">return PathName + ContentID + Suffix</initParam>
+    <initParam name="com.percussion.user.description"></initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>PathName</name>
+      <dataType>String</dataType>
+      <description></description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>String</dataType>
+      <description></description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>Suffix</name>
+      <dataType>String</dataType>
+      <description></description>
+    </PSXExtensionParamDef>
+  </Extension>
+ <Extension name="concatLabel" context="global/" handler="JavaScript" deprecated="yes">
+    <initParam name="scriptBody">{
+	return(itemtype + &quot;/&quot; + variant + &quot;/&quot; + title + &quot;(&quot; + id + &quot;)&quot;)
+}</initParam>
+    <initParam name="version">3.0</initParam>
+    <initParam name="com.percussion.user.description"></initParam>
+    <initParam name="com.percussion.extension.version">2</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>title</name>
+      <dataType>String</dataType>
+      <description>Title of related content</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>id</name>
+      <dataType>String</dataType>
+      <description>item content id</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>itemtype</name>
+      <dataType>String</dataType>
+      <description>The item type</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>variant</name>
+      <dataType>String</dataType>
+      <description>The variant type</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="InsertSelected" context="global/" handler="JavaScript" deprecated="yes">
+    <initParam name="scriptBody">return("insertSelected('" + itemid + "','" + itemtype + "','" + itemtext + "','" + itemvariant + "')")</initParam>
+    <initParam name="version">3.0</initParam>
+    <initParam name="com.percussion.user.description"></initParam>
+    <initParam name="com.percussion.extension.version">5</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>itemid</name>
+      <dataType>String</dataType>
+      <description>Content ID of selection</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>itemtext</name>
+      <dataType>String</dataType>
+      <description>Title of selection</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>itemtype</name>
+      <dataType>String</dataType>
+      <description>Content Type of selection</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>itemvariant</name>
+      <dataType>String</dataType>
+      <description>Variant of selection</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="concatRelated" context="global/" handler="JavaScript" deprecated="yes">
+    <initParam name="scriptBody">{
+	var part1
+	var part2
+	var spacerstring = &quot;                                                    &quot;
+
+
+	part1 = &quot;@&quot; + relationship;
+
+
+	if(id==&quot;&quot;){
+		part2 = itemtype + &quot;/&quot; + title +  &quot; (&quot; + url + &quot;)&quot;
+	}
+	else{
+		part2 = itemtype + &quot;/&quot; + title +  &quot; (&quot; + id + &quot;)&quot;
+	}	
+
+	var newstring= part1 + &quot; - &quot; + part2
+	x = newstring.length
+ 
+	if(x &lt; 50){
+	addspaces = spacerstring.substr(x)
+	concatstring = newstring + addspaces	
+	}
+	else{
+	concatstring = newstring
+	}
+
+return(concatstring)
+}</initParam>
+    <initParam name="version">3.0</initParam>
+    <initParam name="com.percussion.user.description"></initParam>
+    <initParam name="com.percussion.extension.version">4</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>title</name>
+      <dataType>String</dataType>
+      <description>Title of related content</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>id</name>
+      <dataType>String</dataType>
+      <description>item content id</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>relationship</name>
+      <dataType>String</dataType>
+      <description>relationship</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>url</name>
+      <dataType>String</dataType>
+      <description>The external Url</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>itemtype</name>
+      <dataType>String</dataType>
+      <description>The item type</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="xr_makePubLink" context="global/" handler="JavaScript" categorystring="publisher" deprecated="yes">
+    <initParam name="com.percussion.user.description">This UDF makes a valid file path for content item for publishing given the path prefix, path suffix, contentid and the publishing context.
+</initParam>
+    <initParam name="com.percussion.extension.version">6</initParam>
+    <initParam name="scriptBody">	//make sure path is not null
+	if(path == null)
+		path = &quot;&quot;;
+	//make sure contentid is not null
+	if(contentid == null)
+		contentid = &quot;&quot;;
+	//both never be empty however ....
+	if(path == &quot;&quot; &amp;&amp; contentid == &quot;&quot;)
+		path = &quot;dummy&quot;;
+	//make sure the suffix finally starts with a &apos;.&apos;
+	if(suffix == null)
+		suffix = &quot;&quot;;
+	loc = suffix.indexOf(&quot;.&quot;)
+	if(loc != -1)
+		suffix = suffix.substring(loc);
+	if(suffix != &quot;&quot;)
+		suffix = &quot;.&quot; + suffix; //append &apos;.&apos; only if suffix is not empty
+   var resultpath = &quot;/xroads&quot;; //hardcoded root path
+	switch(context)
+	{
+	case 2:
+		//ToAdd when required
+	default: //for context = null or 1
+		loc = path.indexOf(&apos;.&apos;);
+		if(loc == -1) //path does not have &apos;.&apos; in it
+		{
+         if(path.indexOf(&apos;/&apos;) != 0)
+            resultpath = resultpath + &quot;/&quot;;
+			resultpath = resultpath + path + contentid.toString() + suffix; //append contentid to path and then append the suffex and return
+		}
+		else //path already has a &apos;.&apos;
+		{
+			if(path.indexOf(&apos;/&apos;) != 0)
+				resultpath = resultpath + &quot;/&quot; + path;
+			else
+				resultpath = resultpath + path;
+		}
+      return resultpath;
+	}
+</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>path</name>
+      <dataType>String</dataType>
+      <description>File path name</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>suffix</name>
+      <dataType>String</dataType>
+      <description>File extension name</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>contentid</name>
+      <dataType>Number</dataType>
+      <description>Content ID</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>context</name>
+      <dataType>Number</dataType>
+      <description>Publishing context</description>
+    </PSXExtensionParamDef>
+    <suppliedResources/>
+  </Extension>
+  <Extension name="xr_makeImagePubLink" context="global/" handler="JavaScript" categorystring="publisher" deprecated="yes">
+    <initParam name="com.percussion.user.description">This UDF makes a valid file path for image or thumbnail content item for publishing given the path prefix, path suffix, contentid and the publishing context.
+</initParam>
+    <initParam name="com.percussion.extension.version">7</initParam>
+    <initParam name="scriptBody">	//make sure path is not null
+	if(path == null)
+		path = &quot;&quot;;
+	//make sure contentid is not null
+	if(contentid == null)
+		contentid = &quot;&quot;;
+	//both never be empty however ....
+	if(path == &quot;&quot; &amp;&amp; contentid == &quot;&quot;)
+		path = &quot;dummy&quot;;
+	//make sure the suffix finally starts with a &apos;.&apos;
+	if(suffix == null)
+		suffix = &quot;&quot;;
+	loc = suffix.indexOf(&quot;.&quot;)
+	if(loc != -1)
+		suffix = suffix.substring(loc);
+	if(suffix != &quot;&quot;)
+		suffix = &quot;.&quot; + suffix; //append &apos;.&apos; only if suffix is not empty
+   var resultpath = &quot;/xroads&quot;; //hardcoded root path
+	switch(context)
+	{
+	case 2:
+		//ToAdd when required
+	default: //for context = null or 1
+		loc = path.indexOf(&apos;.&apos;);
+		if(loc == -1) //path does not have &apos;.&apos; in it
+		{
+         if(path.indexOf(&apos;/&apos;) != 0)
+            resultpath = resultpath + &quot;/&quot;;
+		 resultpath = resultpath + path + contentid.toString(); //append contentid to path
+		 //if it is a thumbnail add &apos;_thumb&apos; before suffix
+		 if(thumbnail.toString().toLowerCase() == &quot;yes&quot;)
+			resultpath = resultpath + &quot;_thumb&quot;;
+		 resultpath = resultpath + suffix; //append  suffix to path
+		}
+		else //path already has a &apos;.&apos;
+		{
+			if(path.indexOf(&apos;/&apos;) != 0)
+				resultpath = resultpath + &quot;/&quot; + path;
+			else
+				resultpath = resultpath + path;
+		}
+      return resultpath;
+	}
+</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>path</name>
+      <dataType>String</dataType>
+      <description>File path name</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>suffix</name>
+      <dataType>String</dataType>
+      <description>File extension name</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>contentid</name>
+      <dataType>Number</dataType>
+      <description>Content ID</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>context</name>
+      <dataType>Number</dataType>
+      <description>Publishing context</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>thumbnail</name>
+      <dataType>String</dataType>
+      <description>&apos;yes&apos; if the path is for a thumbnail and &apos;no&apos; for an image</description>
+    </PSXExtensionParamDef>
+    <suppliedResources/>
+  </Extension>
+  <Extension name="sys_setSecurityInfo" context="global/" handler="JavaScript" categorystring="" deprecated="no">
+    <initParam name="com.percussion.user.description">Appends security provider type and instance together separated by &quot;/&quot;. If none of them present returns empty string. If provider alone is present returns provider alone.</initParam>
+    <initParam name="com.percussion.extension.version">3</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="scriptBody">if(provider.length &gt; 0)
+{
+  if(instance.length &gt; 0)
+     return provider + &quot;/&quot; + instance;
+  return provider;
+}
+return &quot;&quot;;
+     </initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>provider</name>
+      <dataType>String</dataType>
+      <description>Security Provider Type</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>instance</name>
+      <dataType>String</dataType>
+      <description>Security Provider Instance</description>
+    </PSXExtensionParamDef>
+    <suppliedResources/>
+  </Extension>
+</PSXExtensionHandlerConfiguration>

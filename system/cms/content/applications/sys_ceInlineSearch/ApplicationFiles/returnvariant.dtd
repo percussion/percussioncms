@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT returnvariant (#PCDATA)>
+<!ATTLIST  returnvariant xml:lang CDATA #IMPLIED>
+<!ATTLIST  returnvariant varianturl CDATA #IMPLIED>
+<!ATTLIST  returnvariant inlinetext CDATA #IMPLIED>
+<!ATTLIST  returnvariant inlineslotid CDATA #IMPLIED>
+<!ATTLIST  returnvariant inlinetype CDATA #IMPLIED>
+<!ATTLIST  returnvariant dependentid CDATA #IMPLIED>
+<!ATTLIST  returnvariant dependentvariantid CDATA #IMPLIED>
+<!ATTLIST  returnvariant linktitle CDATA #IMPLIED>

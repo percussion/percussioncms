@@ -1,0 +1,22 @@
+#******************************************************************************
+#
+# [ perc_feature.txt ]
+#
+# COPYRIGHT (c) 1999 - 2010 by Percussion Software, Inc., Woburn, MA USA.
+# All rights reserved. This material contains unpublished, copyrighted
+# work including confidential and proprietary information of Percussion.
+#
+# To add a new custom feature, simply add its path as another line in this
+# file.
+#
+# ******************************************************************************/
+
+features/perc/core/feature.xml
+features/perc/jquery/feature.xml
+features/perc/jqueryUi/feature.xml
+#features/perc/jquery132/feature.xml
+#features/perc/jqueryUi173/feature.xml
+features/perc/collapser/feature.xml
+features/perc/detectFlash/feature.xml
+features/perc/uploadify/feature.xml
+features/perc/getDashboardColumn/feature.xml

@@ -1,0 +1,5 @@
+*****FULL TEXT SEARCH AS STANDALONE INSTALLATION ONLY*****
+You must now run the InstallFTSDaemon.sh script located 
+in the root of your installation directory to complete 
+the install.  You must have root privileges in order 
+to run this script.

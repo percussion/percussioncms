@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<SolutionConfigurations publisherPrefix="com.percussion" publisherName="Percussion" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+   <SolutionConfig name="RSS">
+
+<!---  ========================================
+        Site        "Corporate_Investments"      
+        =========================================
+-->
+		<!--  Various properties for the "SiteVaraibleSetter" -->
+
+		<property name="ciName" value="Corporate_Investments"/>
+
+		<property name="ciNameList">
+			<pvalues>
+				<pvalue>Corporate_Investments</pvalue>
+			</pvalues>
+		</property>		
+
+		<property name="ci_ei_Names">
+			<pvalues>
+				<pvalue>Corporate_Investments</pvalue>
+				<pvalue>Enterprise_Investments</pvalue>
+			</pvalues>
+		</property>		
+      
+      <property name="siteVariables_CI"> 
+         <propertySet>
+		      <property name="name"  value="rxs_urlroot"/>
+		      <property name="context"  value="Site_Folder_Assembly"/>
+		      <property name="value"  value="BlarBlar-/CI_Home"/>
+         </propertySet>
+<!-- 
+         <propertySet>
+		      <property name="name"  value="rxs_navbase"/>
+		      <property name="context"  value="Preview"/>
+		      <property name="value"  value="../web_resources/corporate_investments"/>
+         </propertySet>
+ -->         
+         <propertySet>
+		      <property name="name"  value="rxs_navbase"/>
+		      <property name="context"  value="Site_Folder_Assembly"/>
+		      <property name="value"  value="BlarBlar-/CI_Home/resources"/>
+         </propertySet>
+
+         <propertySet>
+		      <property name="name"  value="added_sitevar"/>
+		      <property name="context"  value="Site_Folder_Assembly"/>
+		      <property name="value"  value="Added Value"/>
+         </propertySet>
+      </property>
+
+      <property name="siteVariables_All"> 
+         <propertySet>
+		      <property name="name"  value="added_sitevar"/>
+		      <property name="context"  value="Site_Folder_Assembly"/>
+		      <property name="value"  value="Added Value"/>
+         </propertySet>
+      </property>
+
+		<!--  Properties for the CI Site -->
+	
+      <property name="CmsPath" value="//Sites/Blar" />
+      <property name="PublishedPath" value="../Blar.war" />
+      <property name="PublishedUrl" value="http://blar:9992/Blar_Home" />
+      <property name="globalTemplateName" value="rffGtCorporateInvestmentsCommon" />
+      <!-- optionally used a propertySet to group the ftp related params -->
+      <propertySet name="ftp">
+         <property name="IpAddress" value="reznor" />
+         <property name="Port" value="22" />
+         <property name="UserId" value="gbond" />
+         <property name="Password" value="rhythmyx" />
+      </propertySet>
+      <property name="UnpublishFlags" value="n" />
+      <property name="AllowedNamespaces" value="" />
+      <property name="NavTheme" value="" />
+      
+   </SolutionConfig>
+</SolutionConfigurations>

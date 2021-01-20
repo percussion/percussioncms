@@ -1,0 +1,147 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/*
+    root element for the scrollable. 
+    when scrolling occurs this element stays still. 
+*/ 
+div.perc-scrollable { 
+ 
+    /* required settings */ 
+    position:relative; 
+    overflow:hidden; 
+    width: 660px; 
+    height: 142px;
+    margin: 10px 0px 0px 0px; 
+    border:1px solid #939ead;
+} 
+ 
+/* 
+    root element for scrollable items. Must be absolutely positioned 
+    and it should have a extremely large width to accomodate scrollable items. 
+    it's enough that you set width and height for the root element and 
+    not for this element. 
+*/ 
+div.perc-scrollable div.perc-items { 
+    /* this cannot be too large */ 
+    width:20000em; 
+    position:absolute;
+    background-color:#ffffff; 
+} 
+ 
+/* 
+    a single item. must be floated in horizontal scrolling. 
+    typically, this element is the one that *you* will style 
+    the most. 
+*/ 
+div.perc-scrollable div.perc-items div { 
+    float:left; 
+}
+
+div.perc-scrollable div.perc-items .item{
+   margin: 3px;
+   padding: 10px;
+   color:#758496;
+   display:block;
+   font-family:Verdana;
+   font-size:11px;
+   font-weight:normal;
+   width:128px;
+} 
+
+/* Buttons */
+
+/* this makes it possible to add next button beside scrollable */
+.perc-scrollable {
+	float:left;	
+}
+
+div.perc-selected-item {
+    background-color: #CAF589;
+}
+
+/* prev, next, prevPage and nextPage buttons */
+a.browse {
+	
+	display:block;
+	width:21px;
+	height:44px;
+	float:left;
+	margin:62px 10px;
+	cursor:pointer;
+	font-size:11px;
+}
+
+/* right */
+a.right 				{ background:url(../images/images/carousel-scroll-right.png) no-repeat; clear:right; margin-right: 0px; margin-left:0px;}
+a.right:hover 		{ background:url(../images/images/carousel-scroll-right-over.png) no-repeat; }
+
+/* left */
+a.left				{ background:url(../images/images/carousel-scroll-left.png) no-repeat; clear:right; margin-right: 0px;} 
+a.left:hover  		{ background:url(../images/images/carousel-scroll-left-over.png);}
+
+
+
+/* disabled navigational button */
+a.disabled {
+	/* visibility:hidden !important;	*/	
+}
+
+
+/* Asset Dialog Styles */
+.perc-items td{
+    padding-top:7px;
+    padding-left:2px;
+	padding-right:2px;
+}
+.perc-items .items{
+    min-width:107px;
+    margin:auto;
+}
+
+#perc-template-label {
+    clear:both;
+    margin:0px 0px 0px 31px;
+    width:660px;
+    overflow:hidden;
+    color:#6c717c;
+}
+
+.perc-label-right {
+    width:300px;
+    float:right;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    dispaly:inline-block;
+    text-align:right;
+    overflow:hidden;
+}
+
+.perc-label-left {
+    width:300px;
+    float:left;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;    
+}

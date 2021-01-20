@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   [@WIDGETNAME@ - Version 1.0]      
+   
+-->
+<Widget>
+   <WidgetPrefs title="@WIDGETDISPLAYNAME@"
+        contenttype_name=""
+        description="Widget description goes here"
+        author="Widget author name goes here"
+        thumbnail="/rx_resources/widgets/@WIDGETNAME@/images/@WIDGETNAME@Icon.png"
+        preferred_editor_width="800"
+        preferred_editor_height="600"/>  
+    <!-- User prefs define input needed when in layout config for a widget -->
+    <!-- Available data types are bool, number, enum, string -->      
+    <UserPref name="number" 
+      display_name="Example Number"
+      default_value="10"
+      datatype="number" /> 
+    <UserPref name="boolean" 
+      display_name="Boolean"
+      default_value="false"
+      datatype="bool"/> 
+    <UserPref name="enumeration"
+      display_name="Example Enumeration" 
+      required="true"
+      default_value="dog"
+      datatype="enum">
+	  <EnumValue value="none" display_value="None" />
+      <EnumValue value="dog" display_value="Dog" />
+      <EnumValue value="cat" display_value="Cat" />
+      <EnumValue value="hamster" display_value="Hamster" />
+    </UserPref>        
+    <UserPref name="stringpref"
+      display_name="Example String"
+      default_value=""
+      datatype="string" /> 
+    <!-- CssPrefs are input fields exposed in the CSS config for a widget -->  
+    <!-- Generally we always provide root and summary class css fields -->     
+    <CssPref name="rootclass"
+      display_name="CSS root class" 
+      datatype="string" />
+    <CssPref name="summaryclass"
+      display_name="CSS page summary class" 
+      datatype="string" />
+    <Code type="jexl">
+    <!-- This section is used to set up data that will be used in the content section -->
+    <![CDATA[
+    
+       
+       $pageId = $perc.page.id;
+       $widgetId = $perc.widget.item.id;
+       $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+          if (empty($rootclass)) { 
+            $rootclass = "";
+       }
+       
+       ## Put user prefs into variables for convienience 
+       
+       $numberUP = $perc.widget.item.properties.get('number');
+       $booleanUP = $perc.widget.item.properties.get('boolean');
+       $enumUP = $perc.widget.item.properties.get('enumeration');
+       $stringUP = $perc.widget.item.properties.get('stringpref');
+       
+       ###########################################################################
+       ## The following commented code is an example of accessing asset fields
+       ###########################################################################
+       ##
+       ##  ## Get asset item(s)
+       ##  $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget.item.id, null, null);
+       ##  $assetItem = $assetItems.get(0); ## Get first item (which may be only item)
+       ##  
+       ##  ## Let's access a field value
+       ##  $somefield = $assetItem.getNode().getProperty('somefieldname').String
+       ##
+       ###########################################################################
+        
+    ]]>
+    </Code>
+    <Content type="velocity">
+    <!-- This section defines the rendered content -->
+    <![CDATA[   
+       <div class="$!{rootclass} @WIDGETNAME@">
+          #if ($perc.isEditMode())
+             <h1>In Edit Mode</h1>
+          #elseif ($perc.isPreviewMode())
+             <h1>In Preview Mode</h1>
+          #else
+             <h1>In Publish Mode</h1>
+          #end
+          <p>Number: $numberUP</p>
+          <p>Boolean: $booleanUP</p>
+          <p>Enumeration: $enumUP</p>
+          <p>String: $stringUP</p>
+       </div>
+    ]]>
+    </Content>    
+</Widget>

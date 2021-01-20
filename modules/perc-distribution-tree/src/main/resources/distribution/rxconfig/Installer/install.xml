@@ -1,0 +1,917 @@
+<?xml version="1.0"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="Percussion Install"
+         default="install">
+
+    <tstamp>
+        <format property="timestamp" pattern="yyyy-MM-dd_HH-mm-ss"/>
+    </tstamp>
+
+    <property environment="env"/>
+    <property name="port" value="9994"/>
+    <property name="https.port" value="8443"/>
+    <property name="install.type" value="new"/>
+    <property name="install.src" location="../.."/>
+    <property name="install.dir" location="${install.src}"/>
+    <property name="install.dir_parent" location="${install.dir}/.."/>
+    <property name="jetty.base" location="${install.dir}/jetty/base"/>
+    <property name="derby.db.path" location="${install.dir}/Repository"/>
+    <property name="installation.properties" location="${jetty.base}/etc/installation.properties"/>
+    <property name="install.configdir.src" location="${install.src}/rxconfig/Installer"/>
+    <property name="install.configdir" location="${install.dir}/rxconfig/Installer"/>
+    <property name="rxrepository.properties.new" location="install.configdir.src}/rxrepository.properties"/>
+    <property name="rxrepository.properties" location="${install.dir}/rxconfig/Installer/rxrepository.properties"/>
+    <basename property="destination_folder_name" file="${install.dir}"/>
+    <property name="backup_folder" location="${install.dir_parent}/${destination_folder_name}_${timestamp}"/>
+    <property name="customer.jdbc.drivers" value="${install.dir}/jetty/base/lib/jdbc"/>
+    <property name="ds.name" value="RhythmyxData"/>
+    <property name="version" value="1_0_0"/>
+    <property name="clean.install" value="false"/>
+    <property name="install.dts" value="false"/>
+    <property name="install.stage.dts" value="false"/>
+    <property name="install.server" value="true"/>
+    <property name="backup" value="false"/>
+    <property name="build.log.dir" location="${install.configdir}/install_logs"/>
+    <property name="extensions.jar.path" location="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/lib"/>
+    <property name="perc.version" value="${env.percversion}" />
+    <property name="jetty.present" value="false"/>
+    <dirname property="install.src" file="${ant.file}"/>
+
+    <condition property="isMac">
+        <os family="mac" />
+    </condition>
+    <condition property="isWindows">
+        <os family="windows" />
+    </condition>
+    <condition property="isLinux">
+        <os family="unix" />
+    </condition>
+
+    <condition property="installSameSrcDest" value="true" else="false">
+        <equals arg1="${install.dir}" arg2="${install.src}"/>
+    </condition>
+
+    <condition property="do.install" value="true" else="false">
+        <and>
+            <not>
+                <equals arg1="${install.dir}" arg2="${install.src}"/>
+            </not>
+            <or>
+                <not>
+                    <available file="${install.dir}/ObjectStore" type="dir"/>
+                </not>
+                <equals arg1="${clean.install}" arg2="true"/>
+            </or>
+        </and>
+    </condition>
+
+    <condition property="do.upgrade" value="true" else="false">
+        <and>
+            <not>
+                <equals arg1="${install.dir}" arg2="${install.src}"/>
+            </not>
+            <not><equals arg1="true" arg2="${do.install}"/></not>
+        </and>
+    </condition>
+
+    <condition property="do.backup" value="true" else="false">
+        <and>
+            <available file="${install.dir}" type="dir"/>
+
+            <equals arg1="${backup}" arg2="true"/>
+
+        </and>
+    </condition>
+
+    <echo>development install=${DEVELOPMENT}</echo>
+    <echo>clean.install=${clean.install}</echo>
+    <echo>base.dir=${basedir}</echo>
+    <echo>install.src=${install.src}</echo>
+    <echo>install.dir= ${install.dir}</echo>
+    <echo>upgrade=${do.upgrade}</echo>
+    <echo>install=${do.install}</echo>
+
+    <!-- Delete json files here Start-->
+    <!--<condition property="jetty.present" else="false">
+        <available file="${install.dir}/jetty" type="dir"  property="jetty.present"/>
+    </condition> -->
+
+    <path id="ant.deps">
+        <fileset dir="${customer.jdbc.drivers}"  erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${install.src}/jetty/defaults/lib/perc" erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${install.src}/jetty/defaults/lib/perc-logging" erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+    <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
+
+    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
+
+    <echo>Checking jetty directory exists...</echo>
+
+    <if>
+        <available file="${install.dir}/jetty" type="dir"  property="jetty.present"/>
+        <then>
+            <echo>Pages and Assets for startup processing not required</echo>
+        </then>
+        <else>
+            <!-- Flagging Pages & Assets for startup processing -->
+            <echo>Flagging Assets and Pages for startup processing...</echo>
+            <delete file="${install.dir}/upgrade/processedlinks/Assets.json" failonerror="false"/>
+            <delete file="${install.dir}/upgrade/processedlinks/Pages.json" failonerror="false"/>
+        </else>
+    </if>
+
+
+
+
+    <!-- Delete json files here end-->
+
+    <property name="customer.jdbc.drivers" location="${install.dir}/jetty/base/lib/jdbc" />
+    <mkdir dir="${customer.jdbc.drivers}"/>
+    <echo>Checking for existing JDBC Drivers...</echo>
+    <copy verbose="true" todir="${install.dir}/jetty/base/lib/jdbc" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
+        <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib">
+            <include name="mysql*.jar"/>
+        </fileset>
+        <fileset dir="${install.dir}/AppServer/server/rx/lib">
+            <include name="mysql*.jar"/>
+        </fileset>
+    </copy>
+
+    <echo>Checking for existing PSO Toolkit deployment...</echo>
+    <mkdir dir="${install.dir}/jetty/base/lib/extra"/>
+    <copy verbose="true" todir="${install.dir}/jetty/base/lib/extra" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
+        <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib">
+            <include name="PSOToolkit*.jar"/>
+            <include name="pso-toolkit*.jar"/>
+        </fileset>
+        <fileset dir="${install.dir}/AppServer/server/rx/lib">
+            <include name="PSOToolkit*.jar"/>
+            <include name="pso-toolkit*.jar"/>
+        </fileset>
+    </copy>
+
+    <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
+        <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user">
+        </fileset>
+    </copy>
+
+
+    <!--
+    <classloader classpathref="ant.deps"/>
+    <taskdef resource="com/percussion/ant/antlib.xml"/>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+-->
+
+    <target name="setup-logging">
+        <mkdir dir="${install.dir}/rxconfig/Installer"/>
+        <touch file="${install.dir}/rxconfig/Installer/install.log" />
+        <record name="${install.dir}/rxconfig/Installer/install.log"
+                loglevel="verbose"/>
+        <echo message="Build logged to ${install.dir}/rxconfig/Installer/install.log"/>
+    </target>
+
+    <target name="init" depends="setup-logging">
+        <fail message="Property &quot;install.dir&quot; needs to be set">
+            <condition>
+                <istrue value="${installSameSrcDest}"/>
+            </condition>
+        </fail>
+    </target>
+
+    <target name="install_properties">
+        <loadproperties srcFile="${installation.properties}"/>
+        <property name="jetty.http.port" value="9992"/>
+        <property name="jetty.ssl.port" value="8443"/>
+        <property name="jetty.sslContext.keyStorePath" value=""/>
+        <property name="jetty.sslContext.keyStorePassword" value=""/>
+        <property name="jetty.sslContext.trustStorePath" value=""/>
+        <property name="jetty.sslContext.keyManagerPassword" value=""/>
+        <property name="jetty.sslContext.trustStorePassword" value=""/>
+        <property name="perc.ssl.protocols" value=""/>
+        <echoproperties/>
+        <propertyfile file="${installation.properties}">
+            <entry key="jetty.http.port" value="${port}" default="${jetty.http.port}"/>
+            <entry key="jetty.ssl.port" value="${https.port}" default="${jetty.ssl.port}"/>
+            <entry key="jetty.sslContext.keyStorePath" value="" default=""/>
+            <entry key="jetty.sslContext.keyStorePassword" value="" default=""/>
+            <entry key="jetty.sslContext.trustStorePath" value="" default=""/>
+            <entry key="jetty.sslContext.keyManagerPassword" value="" default=""/>
+            <entry key="jetty.sslContext.trustStorePassword" value="" default=""/>
+            <entry key="perc.ssl.protocols" value="" default=""/>
+        </propertyfile>
+    </target>
+
+    <target name="setupDB">
+        <echo>Setting up Database</echo>
+        <ant antfile="installRepository.xml" inheritRefs="true"/>
+    </target>
+
+    <target name="configure_jetty">
+
+        <!-- Add legacy encryption key -->
+        <echo>Copying legacy decryption key...</echo>
+        <mkdir dir="${install.dir}/rxconfig/secure/" />
+        <copy todir="${install.dir}/rxconfig/secure/"
+              failonerror="true" overwrite="true" verbose="true">
+            <fileset dir="${install.src}/rxconfig/secure/" defaultexcludes="no">
+                <include name=".legacy-key"/>
+            </fileset>
+        </copy>
+        <echo>Configuring Datasource...</echo>
+        <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
+        <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}"/>
+
+        <PSConfigurePort rootDir="${install.dir}"/>
+
+    </target>
+
+    <!-- Text files to fix up line endings -->
+    <patternset id="text.files">
+        <include name="**/*.txt"/>
+        <include name="**/*.sh"/>
+        <include name="**/*.bat"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.xsl"/>
+        <include name="**/*.md"/>
+    </patternset>
+
+    <!-- Executable files that require setting execute permission on linux -->
+    <patternset id="executable.files">
+        <include name="**/*.sh"/>
+        <include name="**/*.bin"/>
+    </patternset>
+
+    <patternset id="customer.data">
+        <exclude name="**/*.sh"/>
+    </patternset>
+
+    <!-- Add files here that are runtime files that can be cleaned up freely-->
+    <patternset id="cache.file.excludes">
+        <exclude name="dbg_*.xml"/>
+        <exclude name=".sys*/**"/>
+        <exclude name="*-config.jar"/>
+        <!-- common OS detritus -->
+        <exclude name="**/.DS_Store"/>
+        <exclude name="**/Thumbs.db"/>
+        <exclude name="**/desktop.ini"/>
+        <!-- common temp files -->
+        <exclude name="**/*~"/>
+        <exclude name="**/*.bak"/>
+        <exclude name="**/*.backup"/>
+        <exclude name="**/*.old"/>
+        <exclude name="**/*.swp"/>
+        <exclude name="**/*.debug"/>
+        <exclude name="**/*.dump"/>
+        <exclude name="**/*.log"/>
+        <exclude name="**/~*"/>
+        <!-- common git/scm files -->
+        <exclude name="**/*.orig"/>
+        <exclude name="**/*.diff"/>
+        <exclude name="**/*.patch"/>
+        <exclude name="**/.gitignore"/>
+        <!-- various editor files -->
+        <exclude name="**/*.iml"/>
+        <exclude name="**/*.ipr"/>
+        <exclude name="**/*.iws"/>
+        <exclude name="**/*.idea"/>
+        <exclude name="**/.classpath"/>
+        <exclude name="**/.project"/>
+        <!-- maven dust -->
+        <exclude name="**/*.versionsBackup"/>
+        <exclude name="**/*.releaseBackup"/>
+
+    </patternset>
+
+
+    <!-- Deletes includes folders that should be fully replaced by install -->
+
+    <patternset id="upgrade.replace.folders">
+        <include name="Administration"/>
+        <include name="InlineLinkConverter"/>
+        <include name="cm"/>
+        <include name="Docs"/>
+        <include name="Exits"/>
+        <include name="ManagedNavExits"/>
+        <include name="SiteFolderPublishinExits"/>
+        <include name="WorkflowExits"/>
+        <include name="Packages/Percussion"/>
+        <include name="jetty/upstream"/>
+        <include name="jetty/defaults"/>
+        <include name="rxconfig/Server/requestHandlers/publisherhandler.xml"/>
+        <include name="logs"/>
+        <include name="rxconfig/Installer/data"/>
+        <include name="web_resources/cm"/>
+    </patternset>
+
+
+    <patternset id="upgrade.delete">
+        <include name="cm/**"/>
+        <include name="jdbc/**"/>
+        <include name="dbg_*.xml"/>
+        <include name=".sys*/**"/>
+        <include name="InstallableApps/**"/>
+        <include name="rxconfig/Server/requestHandlers/publisherhandler.xml"/>
+        <include name="Delivery/**"/>
+        <include name="StartServer.*"/>
+        <include name="velocity.log"/>
+        <include name="bin/RhythmyxDaemon"/>
+        <include name="ConvertDatasources.*"/>
+        <include name="DatabaseShutdown.*"/>
+        <include name="JRE-32-bak/**"/>
+        <include name="JRE-32/**"/>
+        <include name="JRE-64/**"/>
+        <include name="logs/**"/>
+        <include name="ObjectStore/psx_cerff*.xml"/>
+        <include name="sys_resources/**" />
+        <!-- Delete any left over translations artifacts -->
+        <include name="tobetranslated.tmx"/>
+        <include name="PercussionCM.exe"/>
+        <include name="PercussionCM.lax"/>
+        <include name="PercussionCM.bin.lax"/>
+        <include name="netstat.tmp"/>
+        <include name="Percussion_DTS_InstallLog.log"/>
+        <include name="Percussion_InstallLog.log"/>
+        <include name="PercussionCMShutdown.bat"/>
+        <include name="PercussionServer.bin"/>
+        <include name="PercussionServer.exe"/>
+        <include name="PercussionServer.lax"/>
+        <include name="PercussionServer.bin.lax"/>
+        <include name="server_run_lock"/>
+        <include name="shutdown.tmp"/>
+        <include name="StartServer.bat"/>
+        <include name="StartServer.sh"/>
+        <include name="StopServer.bat"/>
+        <include name="StopServer.sh"/>
+        <include name="Synchronizer.bin"/>
+        <include name="Synchronizer.exe"/>
+        <include name="Synchronizer.lax"/>
+        <include name="sys_search/lucene/indexes/**"/> <!-- Remove old lucene indexes - file format to old -->
+    </patternset>
+
+    <patternset id="upgrade.overwrite">
+        <include name="rxconfig/Server/RequestHandlers.xml"/>
+        <include name="rxconfig/Server/ContentEditors/ContentEditorSystemDef.xml"/>
+        <include name="rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml"/>
+        <include name="rxconfig/Server/startupProcessManager.properties"/>
+        <include name="rxconfig/Server/sys_DatabaseFunctionDefs.xml"/>
+        <include name="rxconfig/Installer/**"/>
+        <include name="sys_resources/**"/>
+        <include name="Defaults/**"/>
+        <include name="cm/**"/>
+        <include name="DTD"/>
+        <include name="Packages/Percussion/**"/>
+        <include name="jetty/upstream/**"/>
+        <include name="jetty/defaults/**"/>
+        <include name="jetty/base/webapps/**"/>
+        <include name="**/*.bat"/>
+        <include name="**/*.sh"/>
+    </patternset>
+
+    <patternset id="upgrade.excludes">
+        <exclude name="jetty/base/webapps/Rhythmyx/WEB-INF/config/user/**"/>
+        <exclude name="jetty/base/etc/perc-ds.properties"/>
+        <exclude name="jetty/base/etc/perc-ds.xml"/>
+        <exclude name="jetty/base/etc/installation.properties"/>
+        <exclude name="jetty/base/resources/log4j*.xml"/>
+        <exclude name="rxconfig/Installer/rxrepository.properties"/>
+        <exclude name="Repository/**"/>
+        <exclude name="Extensions/**"/>
+        <exclude name="rxconfig/**"/>
+        <exclude name="Deployment"/>
+        <exclude name="Staging"/>
+        <exclude name="logs"/>
+        <exclude name="ObjectStore"/>
+        <exclude name="jetty/base/logs"/>
+        <exclude name="rxconfig/Installer/*.bat"/>
+        <exclude name="ObjectStore/psx_cerff*.xml"/>
+        <exclude name="ObjectStore/psx_cepercNavImage.xml"/>
+        <exclude name="ObjectStore/psx_cepercNavon.xml"/>
+        <exclude name="ObjectStore/psx_cepercNavTree.xml"/>
+    </patternset>
+
+    <patternset id="upgrade.preserve">
+        <include name="**/**"/>
+    </patternset>
+
+    <property name="dir.cache" location="dir.cache"/>
+
+    <target name="clean">
+        <if>
+            <istrue value="do.clean"/>
+            <then>
+                <echo>cleaning installation folder ${install.dir}...</echo>
+                <delete dir="${install.dir}"/>
+            </then>
+        </if>
+    </target>
+
+    <target name="install" depends="init">
+
+        <if>
+            <and>
+                <istrue value="${do.install}"/>
+                <isfalse value="${do.upgrade}"/>
+            </and>
+            <then>
+                <antcall target="install.chain" inheritall="true" inheritrefs="true"/>
+            </then>
+        </if>
+
+        <if>
+            <and>
+                <isfalse value="${do.install}"/>
+                <istrue value="${do.upgrade}"/>
+            </and>
+            <then>
+                <antcall target="upgrade.chain" inheritall="true" inheritrefs="true"/>
+            </then>
+        </if>
+
+        <echo>Installation Complete</echo>
+
+    </target>
+
+
+    <target name="install.chain">
+        <echo>Performing new installation...</echo>
+
+        <antcall target="backup" inheritall="true" inheritrefs="true"/>
+        <antcall target="clean" inheritall="true" inheritrefs="true"/>
+        <antcall target="install_server" inheritall="true" inheritrefs="true"/>
+        <antcall target="configure_jetty" inheritall="true" inheritrefs="true"/>
+        <antcall target="setupDB" inheritall="true" inheritrefs="true"/>
+        <antcall target="updatePackages" inheritall="true" inheritrefs="true"/>
+        <antcall target="updateExtensions" inheritall="true" inheritrefs="true"/>
+        <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
+        <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
+        <antcall target="updateAuditLog" inheritall="true" inheritrefs="true"/>
+
+
+    </target>
+
+    <target name="upgrade.chain">
+        <echo>Performing upgrade installation...</echo>
+        <antcall target="backup" inheritall="true" inheritrefs="true"/>
+        <antcall target="upgrade_server" inheritall="true" inheritrefs="true"/>
+        <antcall target="setupDB" inheritall="true" inheritrefs="true"/>
+        <antcall target="updatePackages" inheritall="true" inheritrefs="true"/>
+        <antcall target="updateAuditLog" inheritall="true" inheritrefs="true"/>
+        <antcall target="updateExtensions" inheritall="true" inheritrefs="true"/>
+        <ant antfile="removeOldPatches.xml" target="removeOldPatches" inheritAll="true" inheritRefs="true" />
+        <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
+        <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
+    </target>
+
+    <target name="backup">
+        <if>
+            <istrue value="${do.backup}"/>
+            <then>
+                <!--<echo>Backing up to ${backup_folder}</echo>
+                 need to maintain customer files -->
+                <!--    <copy todir="${backup_folder}" preservelastmodified="true" filtering="false" overwrite="true" force="true" includeEmptyDirs="true">
+                        <fileset dir="${install.dir}"/>
+                    </copy>-->
+                <!--<move file="${install.dir}" tofile="${backup_folder}" preservelastmodified="true"/>-->
+            </then>
+        </if>
+    </target>
+
+
+    <target name="zip_AppServer">
+        <if>
+            <available file="${install.dir}/AppServer" type="dir"/>
+            <then>
+                <echo>Backing up AppServer folder to ${install.dir}/AppServer_backup_${timestamp}.zip</echo>
+                <zip destfile="${install.dir}/AppServer_backup_${timestamp}.zip">
+                    <fileset dir="${install.dir}/AppServer"/>
+                </zip>
+            </then>
+        </if>
+    </target>
+
+
+    <target name="upgrade_server">
+        <echo>Upgrading ${install.dir}...</echo>
+
+        <echo>Cleaning up folders...</echo>
+        <delete verbose="true" includeEmptyDirs="true">
+            <fileset dir="${install.dir}">
+                <patternset refid="upgrade.replace.folders"/>
+            </fileset>
+        </delete>
+
+        <echo>Deleting files...</echo>
+        <delete verbose="true" includeEmptyDirs="true">
+            <fileset dir="${install.dir}">
+                <patternset refid="upgrade.delete"/>
+            </fileset>
+        </delete>
+
+        <echo>Removing previously backed up JRE...</echo>
+        <delete dir="${install.dir}/JRE_BAK" includeemptydirs="true" failonerror="false" />
+        <echo>Backing up JRE to JRE_BAK...</echo>
+        <copy todir="${install.dir}/JRE_BAK" overwrite="true" failonerror="false" preservelastmodified="true" >
+            <fileset dir="${install.dir}/JRE" followsymlinks="false"/>
+        </copy>
+
+        <echo>Copying updated files...</echo>
+        <copy verbose="true" todir="${install.dir}"  preservelastmodified="true" filtering="false" overwrite="false" force="true" includeEmptyDirs="true">
+
+            <fileset dir="${install.src}">
+                <patternset refid="upgrade.preserve"/>
+                <patternset refid="cache.file.excludes"/>
+                <patternset refid="upgrade.excludes"/>
+                <exclude name="**/Assets.json"/>
+                <exclude name="**/Pages.json"/>
+            </fileset>
+        </copy>
+
+        <echo>Overwrite files</echo>
+        <delete verbose="true" includeEmptyDirs="true" performgconfaileddelete="true" failonerror="false">
+            <fileset dir="${install.dir}">
+                <patternset refid="upgrade.overwrite"/>
+                <patternset refid="cache.file.excludes"/>
+                <patternset refid="upgrade.excludes"/>
+            </fileset>
+        </delete>
+        <copy verbose="true" todir="${install.dir}" preservelastmodified="true" filtering="false" overwrite="true" force="true" includeEmptyDirs="true">
+            <fileset dir="${install.src}">
+                <patternset refid="upgrade.overwrite"/>
+                <patternset refid="cache.file.excludes"/>
+                <patternset refid="upgrade.excludes"/>
+                <exclude name="**/Assets.json"/>
+                <exclude name="**/Pages.json"/>
+            </fileset>
+
+        </copy>
+
+        <echo>Copy any missing files</echo>
+        <copy todir="${install.dir}/rxconfig/Installer/data" overwrite="true">
+            <fileset dir="${install.src}/rxconfig/Installer/data">
+                <include name="**"/>
+            </fileset>
+        </copy>
+        <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
+
+        <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" overwrite="false" failonerror="false">
+            <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user"/>
+            </fileset>
+        </copy>
+        <!-- Always Force replace of image widget xml config files -->
+        <delete verbose="true" failonerror="false" file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/imageWidget-beans.xml"/>
+        <delete verbose="true" failonerror="false" file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/imageWidget-servlet.xml"/>
+
+        <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring" overwrite="true" failonerror="false">
+            <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring" followsymlinks="false" includes="imageWidget*.xml">
+            </fileset>
+        </copy>
+
+        <copy todir="${install.dir}/rxconfig/Installer" failonerror="false" overwrite="false">
+            <fileset dir="${install.src}/rxconfig/Installer" followsymlinks="false" includes="rxrepository.properties">
+                <present present="srconly" targetdir="${install.dir}/rxconfig/Installer"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${install.dir}/Repository" failonerror="false" overwrite="false">
+            <fileset dir="${install.src}/Repository" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/Repository"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="false">
+            <fileset dir="${install.src}/ObjectStore" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/ObjectStore"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" overwrite="false" failonerror="false">
+            <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${install.dir}/jetty/base/logs" failonerror="false" overwrite="false">
+            <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${install.dir}/jetty/base/start.d" failonerror="false" overwrite="false">
+            <fileset dir="${install.src}/jetty/defaults/start.d" followsymlinks="false" includes="jvm.ini">
+                <present present="srconly" targetdir="${install.dir}/jetty/base/start.d"/>
+            </fileset>
+        </copy>
+
+
+
+        <copy todir="${install.dir}/jetty/base/resources" failonerror="false" overwrite="false">
+            <fileset dir="${install.src}/jetty/base/resources" followsymlinks="false" includes="log4j*.xml">
+                <present present="srconly" targetdir="${install.dir}/jetty/base/resources"/>
+            </fileset>
+        </copy>
+
+        <antcall target="zip_AppServer" inheritall="true" inheritrefs="true" />
+
+        <echo>Updating rxrepository.properties</echo>
+        <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
+        <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.properties"/>
+
+        <echo>loading properties ${rxrepository.properties}</echo>
+        <loadproperties>
+            <file file="${rxrepository.properties}"/>
+        </loadproperties>
+
+        <echoproperties/>
+
+        <antcall target="configure_jetty" inheritall="true" inheritrefs="true" />
+
+
+        <copy todir="${install.dir}/jetty/base/etc/" overwrite="false" failonerror="false">
+            <fileset dir="${install.src}/jetty/base/etc/" followsymlinks="false" includes="perc-ds.*,installation.properties">
+                <present present="srconly" targetdir="${install.dir}/jetty/base/etc/"/>
+            </fileset>
+        </copy>
+
+        <echo>Creating jetty work and logs directory..</echo>
+        <mkdir dir="${install.dir}/jetty/base/work"/>
+        <mkdir dir="${install.dir}/jetty/base/logs"/>
+
+        <if>
+            <isset property="${isWindows}"/>
+            <then>
+                <echo>Windows install detected, setting compatibility mode for phantomjs.exe...</echo>
+                <exec executable="reg.exe">
+                    <arg value="Add"/>
+                    <arg value="&quot;HKLM\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers&quot;"/>
+                    <arg value="/v"/>
+                    <arg value="&quot;${install.dir}/bin/phantomjs.exe&quot;"/>
+                    <arg value="/d"/>
+                    <arg value="&quot;WIN7RTM&quot;"/>
+                </exec>
+            </then>
+        </if>
+
+        <echo>Fixing Line Feed</echo>
+        <fixcrlf srcdir="${install.dir}"  preservelastmodified="true">
+            <patternset refid="text.files"/>
+        </fixcrlf>
+
+        <if>
+            <isset property="${isMac}" />
+            <then>
+                <echo>Skipping setting executable permissions on osx</echo>
+            </then>
+            <else>
+                <echo>Setting executable Permissions</echo>
+                <chmod perm="o+x" failifexecutionfails="false" failonerror="false" includes="**/*.sh" dir="${install.dir}"/>
+            </else>
+        </if>
+
+        <delete failonerror="false" includeemptydirs="true" verbose="true" removenotfollowedsymlinks="true">
+            <fileset dir="${install.dir}/ObjectStore/">
+                <include name="psx_cerff*.xml"/>
+            </fileset>
+        </delete>
+
+        <if>
+            <available file="${install.dir}/AppServer/server/rx/deploy/jboss-web.deployer/server.xml" type="file"/>
+            <then>
+                <copy file="${install.dir}/AppServer/server/rx/deploy/jboss-web.deployer/server.xml" tofile="${install.dir}/JBossServerXML_BAK/server.xml" />
+            </then>
+        </if>
+
+        <copy todir="${install.dir}/jetty/base/etc/" overwrite="false" failonerror="false" flatten="true">
+            <fileset dir="${install.dir}/AppServer" casesensitive="false">
+                <include name="**/*.keystore"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+
+        <delete dir="${install.dir}/AppServer" verbose="true" failonerror="false" />
+    </target>
+
+
+    <target name="install_server">
+        <echo>Install to ${install.dir}</echo>
+        <mkdir dir="${install.dir}"/>
+        <echo>Copying ${install.src} to ${install.dir}</echo>
+        <copy todir="${install.dir}" preservelastmodified="true" filtering="false" overwrite="true" force="true" includeEmptyDirs="true">
+
+            <fileset dir="${install.src}">
+                <patternset refid="cache.file.excludes"/>
+                <!-- Exclude Fast Forward Content Types Definitions
+                     must be installed with packages instead.-->
+                <exclude name="psx_cerff*.xml"/>
+                <exclude name="psx_cepercNavImage.xml"/>
+                <exclude name="psx_cepercNavon.xml"/>
+                <exclude name="psx_cepercNavTree.xml"/>
+                <exclude name="**/Assets.json"/>
+                <exclude name="**/Pages.json"/>
+            </fileset>
+        </copy>
+
+        <echo>Fixing Line Feeds</echo>
+        <fixcrlf srcdir="${install.dir}" preservelastmodified="true">
+            <patternset refid="text.files"/>
+        </fixcrlf>
+
+        <if>
+            <isset property="${isMac}" />
+            <then>
+                <echo>Setting property file Permissions...</echo>
+                <chmod perm="ugo+rw" maxparallel="300">
+                    <fileset dir="${install.dir/rx_resources}">
+                        <include name="**/*" />
+                    </fileset>
+                    <fileset dir="${install.dir/web_resources}">
+                        <include name="**/*" />
+                    </fileset>
+                    <fileset dir="${install.dir/rxconfig}">
+                        <include name="**/*" />
+                    </fileset>
+                    <fileset dir="${install.dir/ObjectStore}">
+                        <include name="**/*" />
+                    </fileset>
+                    <fileset dir="${install.dir/jetty/base}">
+                        <include name="**/*" />
+                    </fileset>
+                </chmod>
+                <echo>Setting executable Permissions</echo>
+                <chmod maxparallel="300" perm="ugo+x" failifexecutionfails="false" failonerror="false" includes="**/*.sh" dir="${install.dir}"/>
+            </then>
+            <else>
+                <echo>Setting executable Permissions</echo>
+                <chmod perm="ugo+x" failifexecutionfails="false" failonerror="false" includes="**/*.sh" dir="${install.dir}"/>
+                <echo>Setting property file Permissions...</echo>
+                <chmod perm="ugo+rw">
+                    <fileset dir="${install.dir/rx_resources}">
+                        <include name="**/*" />
+                    </fileset>
+                    <fileset dir="${install.dir/web_resources}">
+                        <include name="**/*" />
+                    </fileset>
+                    <fileset dir="${install.dir/rxconfig}">
+                        <include name="**/*" />
+                    </fileset>
+                    <fileset dir="${install.dir/ObjectStore}">
+                        <include name="**/*" />
+                    </fileset>
+                    <fileset dir="${install.dir/jetty/base}">
+                        <include name="**/*" />
+                    </fileset>
+                </chmod>
+            </else>
+        </if>
+    </target>
+
+    <target name="create_checksum">
+        <mkdir dir="${dir.cache}"/>
+        <for param="file">
+            <path>
+                <fileset dir="${install.src}/." />
+            </path>
+            <sequential>
+                <local name="md5" />
+                <local name="relativeFile" />
+
+                <checksum file="@{file}" algorithm="md5" format="MD5SUM" property="md5"/>
+                <property name="relativeFile" location="@{file}" basedir="${dist}" relative="true" />
+                <echo file="checksums.md5" append="true">${md5} *${relativeFile}
+                </echo>
+            </sequential>
+        </for>
+    </target>
+
+    <target name="updatePackages">
+        <echo>Updating system packages...</echo>
+        <!-- Always replace InstallPackages.xml -->
+        <delete file="${install.dir}/rxconfig/Installer/InstallPackages.xml" failonerror="false" verbose="true" />
+        <if>
+            <istrue value="${do.upgrade}"/>
+            <then>
+                <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/InstallPackages.upgrade.xml" tofile="${install.dir}/rxconfig/Installer/InstallPackages.xml" />
+            </then>
+            <else>
+                <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/InstallPackages.xml" tofile="${install.dir}/rxconfig/Installer/InstallPackages.xml" />
+            </else>
+        </if>
+
+    </target>
+
+    <target name="updateAuditLog">
+        <echo>Updating Audit Log Property file ...</echo>
+        <delete file="${install.dir}/rxconfig/Server/audit-log.properties" failonerror="false" verbose="true" />
+        <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/audit-log.properties" tofile="${install.dir}/rxconfig/Server/audit-log.properties" />
+
+        <propertyfile file="${install.dir}/rxconfig/Server/audit-log.properties">
+            <entry key="filePath" value="${install.dir}/jetty/base/logs"/>
+        </propertyfile>
+        <delete file="${install.dir}/rxconfig/Installer/audit-log.properties" failonerror="false" verbose="true" />
+
+    </target>
+
+
+    <target name="updateExtensions">
+
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-main-8.0.0-SNAPSHOT.jar" destDir="Exits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-workflow-8.0.0-SNAPSHOT.jar" destDir="WorkflowExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-sfp-8.0.0-SNAPSHOT.jar" destDir="SiteFolderPublishinExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-nav-8.0.0-SNAPSHOT.jar" destDir="ManagedNavExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-default-template-8.0.0-SNAPSHOT.jar" destDir="DefaultTemplateExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-linkback-8.0.0-SNAPSHOT.jar" destDir="LinkbackExits"/>
+
+    </target>
+
+    <!--==========================================================-->
+    <!-- PSInstallExtensions                                      -->
+    <!--                                                          -->
+    <!-- Copies source extension files from srcDir to destDir,    -->
+    <!-- then installs/updates the extensions.  Note that destDir -->
+    <!-- is assumed to be relative to the Rhythmyx root directory -->
+    <!-- and extXml is the Extensions.xml source file for this    -->
+    <!-- group of extensions.  In REFRESH mode, extensions        -->
+    <!-- will only be updated if necessary.                       -->
+    <!--==========================================================-->
+    <macrodef name="PSInstallExtensions">
+        <attribute name="extensionJar" default=""/>
+        <attribute name="destDir" default=""/>
+        <sequential>
+
+            <if>
+                <isset property="REFRESH"/>
+                <then>
+                    <uptodate property="EXTS.ARE.UPTODATE" targetfile="${install.dir}/Extensions/@{destDir}-ext.xml" srcfile="@{extXml}" />
+                </then>
+            </if>
+            <if>
+                <not>
+                    <isset property="EXTS.ARE.UPTODATE"/>
+                </not>
+                <then>
+                    <mkdir dir="${install.dir}/Extensions"/>
+
+                    <mkdir dir="${install.dir}/@{destDir}"/>
+                    <unzip src="@{extensionJar}" dest="${install.dir}/@{destDir}">
+                        <patternset>
+                            <exclude name="**/META-INF" />
+                        </patternset>
+                    </unzip>
+                    <copy file="${install.dir}/@{destDir}/Extensions.xml" tofile="C:\\DevEnv\\dev\\modules\\perc-distribution-tree\\target\\classes/distribution/Extensions/@{destDir}-ext.xml"/>
+                    <PSExtensions installLocation="@{destDir}" />
+                </then>
+                <else>
+                    <echo>@{destDir} extensions are up to date, skipping...</echo>
+                </else>
+            </if>
+
+
+        </sequential>
+    </macrodef>
+
+    <target name="alwaysCopyIfMissing">
+        <mkdir dir="${install.dir}/rxconfig/ssh-keys" />
+        <touch file="${install.dir}/rxconfig/ssh-keys/config" />
+        <mkdir dir="${install.dir}/rxconfig/trusted_certificates" />
+        <echo>Refreshing web_resources themes...</echo>
+        <copy todir="${install.dir}/web_resources/themes" failonerror="false" overwrite="false">
+            <fileset dir="${install.src}/web_resources/themes" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/web_resources/themes"/>
+            </fileset>
+        </copy>
+    </target>
+
+</project>

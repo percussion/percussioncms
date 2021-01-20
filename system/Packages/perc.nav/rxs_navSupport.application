@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXApplication active="no" appType="USER" enabled="yes" hidden="no" id="19" startPriority="0" version="2.0">
+   <name>rxs_navSupport</name>
+   <description/>
+   <requestRoot>rxs_navSupport</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/_PHOBOS_1072481712056/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20031226T182609426</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="23">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20041019T093624968</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>0</maxThreads>
+   <maxRequestTime>0</maxRequestTime>
+   <maxRequestsInQueue>0</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>0</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="15">
+      <name>Dataset3030</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="3054">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="3050">
+            <PSXBackEndTable id="3049">
+               <alias>RXSITES</alias>
+               <table>RXSITES</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="3052" returnEmptyXml="no">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>rxsiteinfo/siteid</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>SITEID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>rxsiteinfo/sitename</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>SITENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>rxsiteinfo/folder_root</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>FOLDER_ROOT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="3051" method="whereClause" unique="no">
+            <WhereClauses>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXSITES</tableAlias>
+                           <column>SITEID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>sys_siteid</name>
+                        </PSXSingleHtmlParameter>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </WhereClauses>
+            <Sorting/>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="14">
+         <schemaSource>file:rxsiteinfo.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>rxsiteinfo</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="16">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXDataSet id="18">
+      <name>Dataset4631</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="4652">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="4648">
+            <PSXBackEndTable id="4647">
+               <alias>RXASSEMBLERPROPERTIES</alias>
+               <table>RXASSEMBLERPROPERTIES</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="4650" returnEmptyXml="no">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>sys_Lookup/PSXEntry/PSXDisplayText</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXASSEMBLERPROPERTIES</tableAlias>
+                  <column>PROPERTYNAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="2" id="0">
+               <PSXXmlField id="0">
+                  <name>sys_Lookup/PSXEntry/Value</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXASSEMBLERPROPERTIES</tableAlias>
+                  <column>PROPERTYNAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="4649" method="whereClause" unique="yes">
+            <WhereClauses/>
+            <Sorting/>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="17">
+         <schemaSource>file:sys_Lookup.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>VarSelector</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="19">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXDataSet id="22">
+      <name>Dataset6832</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="7865">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="7861">
+            <PSXBackEndTable id="7860">
+               <alias>RXDUAL</alias>
+               <table>RXDUAL</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="7863" returnEmptyXml="no">
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>_RXDUAL/RXDUALSet/RXDUAL/GB</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXDUAL</tableAlias>
+                  <column>GB</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="7862" method="whereClause" unique="no">
+            <WhereClauses/>
+            <Sorting/>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <InputDataExits>
+            <PSXExtensionCallSet id="20">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/fastforward/managednav/rxs_NavReset</name>
+               </PSXExtensionCall>
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_FlushAssemblerCache</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </InputDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="21">
+         <schemaSource>file:_RXDUAL.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>navreset</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="23">
+            <styleSheet>file:flushed.xsl</styleSheet>
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXDataSet id="25">
+      <name>Dataset7471</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="10">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="6">
+            <PSXBackEndTable id="5">
+               <alias>RXSITES</alias>
+               <table>RXSITES</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="8" returnEmptyXml="no">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>rxnavtheme/nav_theme</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>NAV_THEME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="7" method="whereClause" unique="no">
+            <WhereClauses>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXSITES</tableAlias>
+                           <column>SITEID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>sys_siteid</name>
+                        </PSXSingleHtmlParameter>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </WhereClauses>
+            <Sorting/>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="24">
+         <schemaSource>file:rxnavtheme.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>rxnavtheme</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="26">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+   <PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+   <PSXErrorWebPages id="12" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="13">
+      <providerType>SMTP</providerType>
+      <server>//winkelried</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="pageDatatankSrcType24">2</userProperty>
+   <userProperty name="locationY26">487</userProperty>
+   <userProperty name="locationY25">486</userProperty>
+   <userProperty name="locationY24">0</userProperty>
+   <userProperty name="pageDatatankSrcType21">3</userProperty>
+   <userProperty name="locationY23">252</userProperty>
+   <userProperty name="locationY22">251</userProperty>
+   <userProperty name="locationY20">22</userProperty>
+   <userProperty name="locationX26">296</userProperty>
+   <userProperty name="locationX25">187</userProperty>
+   <userProperty name="locationX24">344</userProperty>
+   <userProperty name="locationX23">259</userProperty>
+   <userProperty name="locationX22">138</userProperty>
+   <userProperty name="schemaSourceReadOnly24">true</userProperty>
+   <userProperty name="locationX20">10</userProperty>
+   <userProperty name="schemaSourceReadOnly21">true</userProperty>
+   <userProperty name="resultPageFilePath26">D:\clients\ManagedNav\Applications\rxs_navSupport\rxnavtheme.dtd</userProperty>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="resultPageFilePath23">D:\clients\ManagedNav\Applications\rxs_navSupport\flushed.html</userProperty>
+   <userProperty name="pageDatatankSrcType17">2</userProperty>
+   <userProperty name="locationY19">377</userProperty>
+   <userProperty name="locationY18">376</userProperty>
+   <userProperty name="pageDatatankSrcType14">2</userProperty>
+   <userProperty name="locationY16">113</userProperty>
+   <userProperty name="locationY15">112</userProperty>
+   <userProperty name="locationY13">100</userProperty>
+   <userProperty name="locationY12">55</userProperty>
+   <userProperty name="locationY11">10</userProperty>
+   <userProperty name="locationX19">274</userProperty>
+   <userProperty name="locationX18">165</userProperty>
+   <userProperty name="locationX16">219</userProperty>
+   <userProperty name="schemaSourceReadOnly17">true</userProperty>
+   <userProperty name="locationX15">110</userProperty>
+   <userProperty name="locationX13">16</userProperty>
+   <userProperty name="schemaSourceReadOnly14">true</userProperty>
+   <userProperty name="pageDatatankFilePath24">D:\clients\ManagedNav\Applications\rxs_navSupport\rxnavtheme.dtd</userProperty>
+   <userProperty name="locationX12">16</userProperty>
+   <userProperty name="resultPageFilePath19">D:\RxRelate\DTD\sys_Lookup.dtd</userProperty>
+   <userProperty name="locationX11">16</userProperty>
+   <userProperty name="resultPageFilePath16">D:\clients\ManagedNav\Applications\rxs_navSupport\rxsiteinfo.dtd</userProperty>
+   <userProperty name="pageDatatankFilePath17">D:\RxRelate\DTD\sys_Lookup.dtd</userProperty>
+   <userProperty name="pageDatatankFilePath14">D:\clients\ManagedNav\Applications\rxs_navSupport\rxsiteinfo.dtd</userProperty>
+   <userProperty name="resultPageDtd23">flushed.rpg</userProperty>
+</PSXApplication>

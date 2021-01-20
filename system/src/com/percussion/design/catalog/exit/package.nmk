@@ -1,0 +1,78 @@
+ ############################################################################
+ #
+ # $Id: package.nmk 1.5 2000/02/11 15:19:07Z jianhuang Release $
+ #
+ # Version Labels	: $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 20000724_2_0 20000522_1_1 20000501_1_1 20000327_1_1 $
+ #
+ # Locked By		: $Locker: $
+ #
+ # Revision History:
+ #	$Log: package.nmk $
+ #	Revision 1.5  2000/02/11 15:19:07Z  jianhuang
+ #	updated files for V1.1
+ #	Revision 1.4  1999/11/19 23:25:22Z  paulhoward
+ #	Fixed infinite recursion on EXCLUDED_CLASSES macro.
+ #	
+ #	Revision 1.3  1999/09/23 14:50:27Z  chadloder
+ #	Fixed shared/default classes
+ #	Revision 1.2  1999/09/22 22:29:33  chadloder
+ #	Fixed minor bugs; added PROPERTIES, IMAGES, RESOURCES, ALL_FILES
+ #	Revision 1.1  1999/09/21 23:49:03  AlexTeng
+ #	Initial revision
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.design.catalog.exit
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES =
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES =
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+	PSExtensionCatalogHandler \
+	PSExtensionHandlerCatalogHandler
+
+#
+# Properties files
+#
+PROPERTIES =
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)
+

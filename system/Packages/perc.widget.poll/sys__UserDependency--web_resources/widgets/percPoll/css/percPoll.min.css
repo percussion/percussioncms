@@ -1,0 +1,106 @@
+/*Poll rendering styles*/
+.perc-polls{
+	padding:10px 10px 10px 30px;
+    font-family: Arial;
+    font-weight: normal;
+}
+.perc-poll-title{
+    font-size: 20px;
+    margin-bottom: 20px;	
+	text-align:center;
+	vertical-align:middle;
+}
+.perc-poll-question{
+    border: 0 none #EEEEEE;
+    color: #000000;
+    font: bold 14px/15px Arial;
+    margin: 0 0 5px;
+    padding: 0;
+    text-align: left;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.3;
+    margin: 0 0 8px;    
+}
+.perc-poll-answer-container{
+    margin-bottom: 10px;	
+}
+.perc-poll-answer{
+    color: #333333;
+    cursor: pointer;
+    font: 13px/13px Arial;
+    text-align: left;
+}
+.poll-submit-button{
+	display:inline-block;
+}
+.poll-submit-button input[type=button]{
+	display:none;
+}
+.perc-poll-submit-button-span{
+    display: inline-block;
+    outline: medium none;
+    color: #183A52;
+    font: bold 14px/24px Arial;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: normal;
+    -moz-box-shadow: 0 0 5px #CCCCCC;
+    background: -moz-linear-gradient(center top , #FFFFFF, #E4E4E4) repeat scroll 0 0 transparent;
+    border: 1px solid #999999;
+    color: #183A52;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: normal;
+    margin: 14px 0 0;
+    padding: 8px 16px;
+    text-align: center;
+    width: auto;    
+}
+.view-results-link{
+    display: inline-block;
+    color: #183A52;
+    font: 11px/11px Arial;
+    padding: 8px 10px 0 0;
+    text-align: left;
+    font-weight: bold;
+    padding: 24px 0 0 24px;    
+    outline: medium none;
+}
+.perc-poll-result-container{
+	margin-bottom: 10px;	
+	height:18px;
+	border:1px solid gray;
+}
+.perc-poll-result-fill{
+	background-color:#183A52;
+	height:18px;
+	display:inline-block;
+}
+.perc-poll-result-empty{
+	background-color:#E4E4E4;
+	height:18px;
+	display:inline-block;
+}
+.perc-poll-result-count{
+	display:inline-block;
+    font: 13px/13px Arial;
+	color:gray;
+	margin-left:10px;
+}
+
+.perc-poll-result-percent{
+	display:inline-block;
+    font: 13px/13px Arial;
+	margin-left:10px;
+}
+
+.poll-validation-text{
+	padding:3px 0 3px 0;
+	font: 11px Arial;
+	color:red;
+}

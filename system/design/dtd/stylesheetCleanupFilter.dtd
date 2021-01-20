@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+Allowed Attribute specifies attributes which are allowed by the
+enclosing namespace. The name attribute can contain Glob type
+wildcards:
+
+   Wildcard characters:
+      * = 0 or more of any char
+      ? = 1 instance of any char
+      
+   Examples:
+   <allowedAttribute name="foo"/>  this will allow the foo attribute for this namespace 
+   <allowedAttribute name="bar*/> this will allow any attribute that starts with bar 
+   <allowedAttribute name="*"/> this will allow any attribute for this namespace  
+-->
+<!ELEMENT allowedAttribute EMPTY>
+<!ATTLIST allowedAttribute
+   name CDATA #REQUIRED
+>
+<!-- 
+Allowed Element specifies elements which are allowed by the
+enclosing namespace. The name attribute can contain Glob type
+wildcards:
+
+   Wildcard characters:
+      * = 0 or more of any char
+      ? = 1 instance of any char
+      
+   Examples:
+   <allowedElement name="foo"/>  this will allow the foo element for this namespace 
+   <allowedElement name="bar*/> this will allow any element that starts with bar 
+   <allowedElement name="*"/> this will allow any element for this namespace  
+-->
+<!ELEMENT allowedElement EMPTY>
+<!ATTLIST allowedElement
+   name CDATA #REQUIRED
+>
+<!--
+Allowed Namspace specifies a namespace which will be allowed by the cleanup filter and
+will therefore not be removed by the namespace cleanup. The name attribute should contain the name
+of the namespace to be allowed, it cannot contain wildcard characters. It may be empty to specify the base namespace.
+
+The declAllowed attribute is a boolean value that specifies if that a namespace declaration is allowed for the namespace
+(i.e xmlns:foo="http://www.foo.com/bar"). If the declAllowed attribute is set to true or yes than the declValue should be specified, this
+is used to make sure the namespace declaration's URI matches, it can contain wildcards.
+
+ Wildcard characters:
+      * = 0 or more of any char
+      ? = 1 instance of any char
+
+Examples:
+
+   The following example allows a namespace declaration for 'foo' as long as it contains
+  'bar' somewhere in the URI:
+   
+   <allowedNamespace name="foo" declAllowed="true" declValue="*bar*">
+      ...
+  </allowedNamespace>    
+  
+  The following example allows a namespace declaration for 'dog' that can have any URI:
+  
+  <allowedNamespace name="dog" declAllowed="true" declValue="*">
+      ...
+  </allowedNamespace>
+  
+  The following example does not allow any namespace declaration for 'xml':
+  
+    <allowedNamespace name="xml" declAllowed="false">
+      ...
+  </allowedNamespace>     
+
+-->
+<!ELEMENT allowedNamespace (allowedElement*, allowedAttribute*)>
+<!ATTLIST allowedNamespace
+   name CDATA #REQUIRED
+   declAllowed CDATA #REQUIRED
+   declValue CDATA #IMPLIED
+>
+<!--
+The stylesheet cleanup filter is used by the stylesheet namespace cleanup to determine what namespaces and namespace
+parts are allowed (will not be removed ) during cleanup.
+-->
+<!ELEMENT stylesheetCleanupFilter (allowedNamespace+)>

@@ -1,0 +1,440 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Bhuvaneshwar Joginipally (Percussion Software) -->
+<rxupgrade>
+    <module name="server" logfile="PSUpgradeAddFeedPostEditionTasks.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="1" minor="9" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradeAddFeedPostEditionTasks">
+            <class>com.percussion.install.PSUpgradeAddFeedPostEditionTasks</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="moveQuartz.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="1" minor="9" micro="-1" build="-1"/>
+      <plugins>
+       <plugin name="PSUpgradePluginSpringBeans">
+        <class>com.percussion.install.PSUpgradePluginSpringBeans</class>
+        <data required-beans="upgrade/quartz-server-beans.xml"          
+         spring-bean-path="AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/spring/server-beans.xml"
+         doConversions="no" 
+         backupSuffix="_quartz"
+         beansToRemove="" />
+       </plugin>
+      </plugins>
+    </module>
+	<module name="server" logfile="PSUpgradePluginCreateServerAndServerProperties.log">
+	  <from major="-1" minor="-1" micro="-1" build="-1"/>
+      <to major="2" minor="7" micro="-1" build="-1"/>
+      <plugins>
+        <plugin name="PSUpgradePluginCreateServerAndServerProperties">
+          <class>com.percussion.install.PSUpgradePluginCreateServerAndServerProperties</class>
+          <data/>
+        </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginDeliveryServers.log">
+      <from major="1" minor="6" micro="-1" build="-1"/>
+      <to major="1" minor="9" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginDeliveryServers">
+            <class>com.percussion.install.PSUpgradePluginDeliveryServers</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginFixWidgetConfigValues.log">
+      <from major="-1" minor="-1" micro="-1" build="-1"/>
+      <to major="1" minor="9" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginFixWidgetConfigValues">
+            <class>com.percussion.install.PSUpgradePluginFixWidgetConfigValues</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module> 
+    <module name="server" logfile="PSPublishPageWithoutScanner.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="2" minor="0" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradeAddFlushPublicationCachePostEditionTask">
+            <class>com.percussion.install.PSUpgradeAddFlushPublicationCachePostEditionTask</class>
+            <data/>
+         </plugin>
+         <plugin name="PSUpgradePluginMoveConfigFiles">
+            <class>com.percussion.install.PSUpgradePluginMoveConfigFiles</class>
+            <data/>
+         </plugin>    
+         <plugin name="PSUpgradePluginFileOperations">
+            <class>com.percussion.install.PSUpgradePluginFileOperations</class>
+            <data>
+                 <file path="Deployment/Server/webapps/perc-metadata-extractor.war" action="delete"/>
+            </data>
+         </plugin>    
+      </plugins>
+    </module>
+   <module name="server" logfile="PSUpgradePluginRelationshipProperties.log">
+      <from major="1" minor="0" micro="-1" build="-1" />
+      <to major="2" minor="6" micro="-1" build="-1" />
+      <plugins>
+         <plugin name="PSUpgradePluginRelationshipProperties">
+            <class>com.percussion.install.PSUpgradePluginRelationshipProperties
+            </class>
+            <data />
+         </plugin>
+      </plugins>
+   </module>
+    <module name="server" logfile="PSUpgradePluginFixFormUrl.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="2" minor="0" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginFixFormUrl">
+            <class>com.percussion.install.PSUpgradePluginFixFormUrl</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginDeleteMetadata.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="2" minor="0" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginDeleteMetadata">
+            <class>com.percussion.install.PSUpgradePluginFileOperations</class>
+            <data>
+                 <file path="Deployment/Server/derbydata/percmetadata" action="delete"/>
+            </data>
+         </plugin>
+      </plugins>
+    </module>
+     <module name="server" logfile="upgradeConfigXmlFiles.log">
+       <from major="1" minor="0" micro="-1" build="-1"/>
+       <to major="2" minor="1" micro="-1"  build="-1"/>
+       <transformfiles>
+            <file path="rxconfig/Server/config.xml" transformxsl="configupgradeFTS.xsl" status="" DTD=""/>
+       </transformfiles>
+    </module>
+    <module name="server" logfile="removeDocucomp.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+        <to major="2" minor="1" micro="-1" build="-1"/>
+          <plugins>
+            <plugin name="removeDocucomp">
+              <class>com.percussion.install.PSUpgradePluginFileOperations</class>
+                <data>
+                  <file path="AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/docucomp.jar" action="delete"/>
+                </data>
+            </plugin>
+          </plugins>
+   </module>
+    <module name="server" logfile="PSUpgradePluginAddDefaultDisplayFormatValues.log">
+      <from major="-1" minor="-1" micro="-1" build="-1"/>
+      <to major="2" minor="2" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginAddDefaultDisplayFormatValues">
+            <class>com.percussion.install.PSUpgradePluginAddDefaultDisplayFormatValues</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginAddDesignDisplayFormatValues.log">
+      <from major="2" minor="2" micro="-1" build="-1"/>
+      <to major="2" minor="4" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginAddDesignDisplayFormatValues">
+            <class>com.percussion.install.PSUpgradePluginAddDesignDisplayFormatValues</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginDeleteMetadataExtractorFile.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="2" minor="2" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginDeleteMetadataExtractorFile">
+            <class>com.percussion.install.PSUpgradePluginFileOperations</class>
+               <data>
+                  <file path="Delivery/perc-metadata-extractor.war" action="delete"/>
+               </data>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginAddNotifyLinkGenExitProp.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="2" minor="2" micro="-1" build="-1"/>
+      <propertyfiles>
+         <file path="rxconfig/Workflow/rxworkflow.properties" status="">
+            <variable name="MAIL_NOTIFY_LINK_GEN_EXIT" action="add" modifyifexist="no">global/percussion/contentassembler/perc_casGenerateReadOnlyLink</variable>
+         </file>
+      </propertyfiles>
+    </module>
+    <module name="server" logfile="percPageUpgrade.log">
+       <from major="2" minor="2" micro="-1" build="-1"/>
+       <to major="2" minor="2" micro="-1"  build="-1"/>
+       <transformfiles>
+            <file path="ObjectStore/psx_cepercPage.xml" transformxsl="percPageUpgrade.xsl" status="" DTD=""/>
+       </transformfiles>
+    </module>
+    <module name="server" logfile="upgradePublisherBeansFile.log">
+       <from major="-1" minor="-1" micro="-1" build="-1"/>
+       <to major="2" minor="3" micro="-1"  build="-1"/>
+       <transformfiles>
+            <file path="AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user/spring/publisher-beans.xml" transformxsl="configupgradePublisherBeans.xsl" status="" DTD=""/>
+       </transformfiles>
+    </module>
+    <module name="server" logfile="deleteSystemContentBeansXml.log">
+      <from major="2" minor="3" micro="-1" build="-1"/>
+      <to major="2" minor="3" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="deleteSystemContentBeansXml">
+            <class>com.percussion.install.PSUpgradePluginFileOperations</class>
+            <data>
+                 <file path="AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/spring/projects/systemcontent-beans.xml" action="delete"/>
+            </data>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginAddWorkflowColumnDefaultDisplayFormat.log">
+      <from major="-1" minor="-1" micro="-1" build="-1"/>
+      <to major="2" minor="4" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginAddWorkflowColumnDefaultDisplayFormat">
+            <class>com.percussion.install.PSUpgradePluginAddWorkflowColumnDefaultDisplayFormat</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginAddDefaultWorkflow.log">
+      <from major="-1" minor="-1" micro="-1" build="-1"/>
+      <to major="2" minor="4" micro="-1" build="-1"/>
+      <propertyfiles>
+         <file path="rxconfig/Workflow/rxworkflow.properties" status="">
+            <variable name="DEFAULT_WORKFLOW" action="add" modifyifexist="no">Default Workflow</variable>
+         </file>
+      </propertyfiles>
+    </module>
+    <module name="server" logfile="PSUpgradePluginWorkflowUpdates.log">
+        <from major="2" minor="4" micro="-1" build="-1"/>
+        <to major="2" minor="4" micro="-1" build="-1"/>
+        <plugins>
+            <plugin name="PSUpgradePluginUpdateWorkflowTransitions">
+                <class>com.percussion.install.PSUpgradePluginUpdateWorkflowTransitions</class>
+                <data/>
+            </plugin>
+            <plugin name="PSUpgradePluginUpdateWorkflowAssignmentType">
+                <class>com.percussion.install.PSUpgradePluginUpdateWorkflowAssignmentType</class>
+                <data/>
+            </plugin>
+            <plugin name="PSUpgradePluginAddWorkflowPublishTransitions">
+                <class>com.percussion.install.PSUpgradePluginAddWorkflowPublishTransitions</class>
+                <data/>
+            </plugin>
+        </plugins>
+    </module>
+    <module name="server" logfile="upgradePublishNow.log">
+        <from major="-1" minor="-1" build="-1"/>
+        <to major="2" minor="4" build="-1"/>
+        <plugins>
+            <plugin name="UpgradePublishNow">
+                <class>com.percussion.install.PSUpgradeBackupTable</class>
+                <data>
+                    <table>
+                        <src>RXEDITION</src>
+                        <dest>RXEDITION_UPG</dest>
+                        <onSuccess>
+                            <sql>
+                                <description>Change the publishing now edition to use "Publish" behavior from "Publish Then Publish".</description>
+                                <statement>UPDATE RXEDITION SET EDITIONTYPE='2' WHERE PRIORITY=5</statement>
+                            </sql>
+                        </onSuccess>
+                    </table>
+                </data>
+            </plugin>
+        </plugins>
+    </module>    
+    <module name="server" logfile="UpgradePublicRevision.log">
+        <from major="-1" minor="-1" micro="-1" build="-1"/>
+        <to major="2" minor="4" micro="-1" build="-1"/>
+        <plugins>
+            <plugin name="UpgradePublicRevision">
+                <class>com.percussion.install.PSUpgradeBackupTable</class>
+                <data>
+                    <table>
+                        <src>CONTENTSTATUS</src>
+                        <dest>CONTENTSTATUS_UPG</dest>
+                        <onSuccess>
+                            <sql>
+                                <description>Reset the PUBLIC_REVISION column to null if the item is not in Pending, Live or Quick Edit</description>
+                                <statement>UPDATE CONTENTSTATUS SET PUBLIC_REVISION = null WHERE PUBLIC_REVISION is not null AND CONTENTSTATEID IN (SELECT STATEID FROM WORKFLOWAPPS W, STATES S WHERE S.CONTENTVALID IN ('u', 'n') AND S.WORKFLOWAPPID = W.WORKFLOWAPPID)</statement>
+                            </sql>
+                        </onSuccess>
+                    </table>
+                </data>
+            </plugin>
+        </plugins>
+    </module>
+    <module name="server" logfile="PSDeleteOldWidgetsResourcesFiles.log">
+      <from major="-1" minor="-1" micro="-1" build="-1"/>
+      <to major="2" minor="4" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginFileOperations">
+            <class>com.percussion.install.PSUpgradePluginFileOperations</class>
+            <data>
+                 <file path="rxconfig/Resources/perc_system.xml" action="delete"/>
+                 <file path="rxconfig/Resources/perc_widgets_category.xml" action="delete"/>
+                 <file path="rxconfig/Resources/perc_widgets_flash.xml" action="delete"/>
+                 <file path="rxconfig/Resources/perc_widgets_form.xml" action="delete"/>
+                 <file path="rxconfig/Resources/perc_widgets_iframe.xml" action="delete"/>
+                 <file path="rxconfig/Resources/perc_widgets_image.xml" action="delete"/>
+                 <file path="rxconfig/Resources/perc_widgets_liked.xml" action="delete"/>
+                 <file path="rxconfig/Resources/perc_widgets_list.xml" action="delete"/>
+                 <file path="rxconfig/Resources/perc_widgets_nav.xml" action="delete"/>
+            </data>
+         </plugin>    
+      </plugins>
+    </module>
+    <module name="server" logfile="DeleteRxResourcesFiles.log">
+      <from major="-1" minor="-1" micro="-1" build="-1"/>
+      <to major="2" minor="4" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginFileOperations">
+            <class>com.percussion.install.PSUpgradePluginFileOperations</class>
+            <data>
+                 <file path="rx_resources/widgets/iframe/css/perc-iframe-widget.css" action="delete"/>
+                 <file path="rx_resources/widgets/flash/css/perc-flash-widget.css" action="delete"/>
+            </data>
+         </plugin>    
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginAddMembershipDeliveryServer.log">
+      <from major="1" minor="6" micro="-1" build="-1"/>
+      <to major="2" minor="5" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginAddMembershipDeliveryServer">
+            <class>com.percussion.install.PSUpgradePluginAddMembershipDeliveryServer</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginAddLicenseMonitorToDashboard.log">
+      <from major="2" minor="6" micro="-1" build="-1"/>
+      <to major="2" minor="7" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginAddLicenseMonitorToDashboard">
+            <class>com.percussion.install.PSUpgradePluginAddLicenseMonitorToDashboard</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginAddThirdPartyDeliveryServer.log">
+      <from major="2" minor="3" micro="-1" build="-1"/>
+      <to major="2" minor="7" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginAddThirdPartyDeliveryServer">
+            <class>com.percussion.install.PSUpgradePluginAddThirdPartyDeliveryServer</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginFixWFNotification.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="3" minor="0" micro="2" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginFixWFNotification">
+            <class>com.percussion.install.PSUpgradePluginFixWFNotification</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginAddDesignerRole.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="3" minor="0" micro="5" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginAddDesignerRole">
+            <class>com.percussion.install.PSUpgradePluginAddDesignerRole</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginUpdateCategoryTree.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="3" minor="1" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginUpdateCategoryTree">
+            <class>com.percussion.install.PSUpgradePluginUpdateCategoryTree</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginAddIncrementalPublishingConfig.log">
+      <from major="1" minor="0" micro="-1" build="-1"/>
+      <to major="4" minor="0" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginAddIncrementalPublishingConfig">
+            <class>com.percussion.install.PSUpgradePluginAddIncrementalPublishingConfig</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+    <module name="server" logfile="PSUpgradePluginUpdateWFNotification.log">
+      <from major="-1" minor="0" micro="-1" build="-1"/>
+      <to major="4" minor="1" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginFixWFNotification">
+            <class>com.percussion.install.PSUpgradePluginUpdateWFNotification</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+	<module name="server" logfile="AddPageOptimizerUrlToServer.log">
+      <from major="-1" minor="0" micro="-1" build="-1"/>
+      <to major="4" minor="2" micro="-1" build="-1"/>
+		<propertyfiles>
+			<file path="rxconfig/Server/server.properties" status="">
+				<variable name="PAGE_OPTIMIZER_URL" action="add" modifyifexist="no">https://optimizer-ui.percussion.com</variable>
+			</file>
+		</propertyfiles>
+	</module>
+	<module name="server" logfile="AddCoudLicenseUrlToServer.log">
+      <from major="-1" minor="0" micro="-1" build="-1"/>
+      <to major="4" minor="3" micro="-1" build="-1"/>
+		<propertyfiles>
+			<file path="rxconfig/Server/server.properties" status="">
+				<variable name="CLOUD_LICENSES_URL" action="add" modifyifexist="no">https://licensing.percussion.com</variable>
+			</file>
+		</propertyfiles>
+	</module>
+    <module name="server" logfile="PSUpgradePluginAddAmazonS3DeliveryTypes.log">
+      <from major="-1" minor="0" micro="-1" build="-1"/>
+      <to major="4" minor="5" micro="-1" build="-1"/>
+      <plugins>
+         <plugin name="PSUpgradePluginAddAmazonS3DeliveryTypes">
+            <class>com.percussion.install.PSUpgradePluginAddAmazonS3DeliveryTypes</class>
+            <data/>
+         </plugin>
+      </plugins>
+    </module>
+</rxupgrade>

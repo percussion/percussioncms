@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>Category widget</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>353</id>
+    <internal-name>percCategoryList</internal-name>
+    <label>Categories</label>
+    <mandatory>false</mandatory>
+    <name>rx:percCategoryList</name>
+    <new-request>../psx_cepercCategoryList/percCategoryList.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercCategoryList/percCategoryList.html</query-request>
+    <raw-content-type>353</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

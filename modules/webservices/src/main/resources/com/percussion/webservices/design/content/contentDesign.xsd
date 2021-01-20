@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/contentDesign" xmlns:cond="urn:www.percussion.com/6.0.0/contentDesign" xmlns:con="urn:www.percussion.com/6.0.0/content" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="../common.xsd"/>
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/content" schemaLocation="contentServices.xsd"/>
+   <xsd:element name="CreateKeywordsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The names for the new keyword definitions, not null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateKeywordsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSKeyword" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The new keyword definition initialized with the supplied 
+                     parameters, never null. The user must call SaveKeywords 
+                     for the returned object to persist the definition to the 
+                     repository.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindKeywordsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The name of the keyword to find, may be null or empty, 
+                     wildcards are accepted. All keyword summaries will be 
+                     returned if the supplied name is null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindKeywordsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array of object summaries of type PSKeyword found for 
+                     the supplied name, never null, may be empty, ordered in 
+                     alpha order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadKeywordsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array of keyword ids to be loaded, not null or empty, 
+                     must be ids of existing keywords.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     True to lock the found results for edit, false to return 
+                     them read-only. 
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadKeywordsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSKeyword" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded keywords in the requested mode 
+                     in the same order as requested, never null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveKeywordsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSKeyword" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all keywords to be saved to the repository, 
+                     not null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeleteKeywordsRequest">
+      <xsd:annotation>
+         <xsd:documentation>Deletes the keyword definitions for all supplied ids. Deletes cannot be reverted. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation> An array with ids of all keywords to be deleted from the repository, not null or empty. We ignore cases where the object for a supplied id does not exist.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignored. If dependency checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that the client can deal with it appropriately.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateLocalesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Code" type="xsd:string" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The locales codes as specified with ISO 639-1, not null 
+                     or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Label" type="xsd:string" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The display labels for the new locales, not null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateLocalesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSLocale" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The new locale definition initialized with the supplied 
+                     parameters, never null. The user must call SaveLocales 
+                     for the returned object to persist the definition.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindLocalesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Code" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The locale code for which to find the locale summary, 
+                     may be null or empty. The locale summaries for all 
+                     locales will be returned if null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The name of the locale for which to find the locale 
+                     summaries, may be null or empty, wildcards are accepted. 
+                     All locale summaries will be returned if null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindLocalesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all summaries of type PSLocale found for 
+                     the supplied parameters, never null, may be empty, 
+                     ordered in alpha order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadLocalesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array of locale ids to be loaded, not null or empty, 
+                     must be ids of existing locales.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     True to lock the found results for edit, false to return 
+                     them read-only.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadLocalesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSLocale" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded locales in the requested mode in 
+                     the same order as requested, never null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveLocalesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSLocale" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all locales to be saved to the repository. 
+                     New locales will be inserted, existing locales are updated.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeleteLocalesRequest">
+      <xsd:annotation>
+         <xsd:documentation>Deletes the locale definitions for all supplied locale ids. Deletes cannot be reverted. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>An array with locale ids for all locales to be deleted from the repository, not null or empty. We ignore cases where the object for a supplied id does not exist.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignoredd. If dependency checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that the client can deal with it appropriately.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadTranslationSettingsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to lock the found results for edit, false to return them read-only.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadTranslationSettingsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSAutoTranslation" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded auto translations in the 
+                     requested mode, never null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveTranslationSettingsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSAutoTranslation" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all auto translations to save, not null or 
+                     empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateContentTypesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The names of the new content types, not null or empty. The names must be unique across all defined content types in the system, names are compared case-insensitive and cannot contain spaces.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateContentTypesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSContentType" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The new content type initialized with the supplied 
+                     parameters, never null. The user must call 
+                     SaveContentTypes for the returned object to persist the 
+                     definition.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindContentTypesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The content type name for which to find the summaries, 
+                     may be null or empty, wildcards are accepted. All object 
+                     summaries will be returned if null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindContentTypesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all found object summaries of type 
+                     PSContentType, never null, may be empty, ordered in alpha 
+                     order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadContentTypesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array of content type ids to be loaded, not null or 
+                     empty, must be ids of existing content types.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     True to lock the found results for edit, false to return 
+                     them read-only. 
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadContentTypesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSContentType" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all loaded content types in the requested 
+                     mode in the same order as requested, never null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveContentTypesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSContentType" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all content types to be persisted to the 
+                     repository, new content types will be inserted, existing 
+                     content types will be updated.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeleteContentTypesRequest">
+      <xsd:annotation>
+         <xsd:documentation>Deletes the content types for the supplied content type ids. Deletes cannot be reverted. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. The caller must have write privileges on the object. Template associations are successfully deleted before the object is deleted. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>An array of ids for which to delete the content types, not null or empty. We ignore cases where the object for a supplied id does not exist.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignored. If dependency checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that the client can deal with it appropriately.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadAssociatedTemplatesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="ContentTypeId" type="com:Id">
+               <xsd:annotation>
+                  <xsd:documentation>The id of the content type for which to get all associated templates, not null, must be an existing content type, or specify -1 to load associated templates for all content types.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to lock the found results for edit, false to return them read-only.  The lock is actually held on the content type(s).</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadAssociatedTemplatesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSContentTemplateDesc" minOccurs="0" maxOccurs="unbounded"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveAssociatedTemplatesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="ContentTypeId" type="com:Id">
+               <xsd:annotation>
+                  <xsd:documentation>The id of the content type for which to save the supplied associated templates, not null, must be an existing content type.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="TemplateId" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>An array of template ids to be associated with the specified content type, not null or empty. All ids must reference existing templates.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadSystemDefinitionRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0"/>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadSystemDefinitionResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSContentEditorDefinition"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveSystemDefinitionRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSContentEditorDefinition"/>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadSharedDefinitionRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Lock" type="xsd:boolean" minOccurs="0"/>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadSharedDefinitionResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSContentEditorDefinition"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveSharedDefinitionRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="con:PSContentEditorDefinition"/>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

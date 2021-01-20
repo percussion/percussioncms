@@ -1,0 +1,1373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="urn:www.percussion.com/6.0.0/systemServices" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:ns3="urn:www.percussion.com/6.0.0/securityServices" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="urn:www.percussion.com/6.0.0/assemblyServices" xmlns:con="urn:www.percussion.com/6.0.0/content" xmlns:ns1="urn:www.percussion.com/6.0.0/uiServices" xmlns:com="urn:www.percussion.com/6.0.0/common" name="content" targetNamespace="urn:www.percussion.com/6.0.0/content" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import schemaLocation="../faults.xsd" namespace="urn:www.percussion.com/6.0.0/faults" />
+    </xsd:schema>
+    <xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/content">
+      <xsd:include schemaLocation="content.xsd" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="AuthenticationHeader">
+    <wsdl:part name="Session" element="com:PSAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="empty" />
+  <wsdl:message name="LoadKeywordsRequest">
+    <wsdl:part name="LoadKeywordsRequest" element="con:LoadKeywordsRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadKeywordsResponse">
+    <wsdl:part name="LoadKeywordsResponse" element="con:LoadKeywordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadLocalesRequest">
+    <wsdl:part name="LoadLocalesRequest" element="con:LoadLocalesRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadLocalesResponse">
+    <wsdl:part name="LoadLocalesResponse" element="con:LoadLocalesResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadTranslationSettingsResponse">
+    <wsdl:part name="LoadTranslationSettingsResponse" element="con:LoadTranslationSettingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadContentTypesRequest">
+    <wsdl:part name="LoadContentTypesRequest" element="con:LoadContentTypesRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadContentTypesResponse">
+    <wsdl:part name="LoadContentTypesResponse" element="con:LoadContentTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateItemsRequest">
+    <wsdl:part name="CreateItemsRequest" element="con:CreateItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="CreateItemsResponse">
+    <wsdl:part name="CreateItemsResponse" element="con:CreateItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindItemsRequest">
+    <wsdl:part name="FindItemsRequest" element="con:FindItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindItemsResponse">
+    <wsdl:part name="FindItemsResponse" element="con:FindItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadItemsRequest">
+    <wsdl:part name="LoadItemsRequest" element="con:LoadItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadItemsResponse">
+    <wsdl:part name="LoadItemsResponse" element="con:LoadItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveItemsRequest">
+    <wsdl:part name="SaveItemsRequest" element="con:SaveItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="SaveItemsResponse">
+    <wsdl:part name="SaveItemsResponse" element="con:SaveItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteItemsRequest">
+    <wsdl:part name="DeleteItemsRequest" element="con:DeleteItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="ViewItemsRequest">
+    <wsdl:part name="ViewItemsRequest" element="con:ViewItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="ViewItemsResponse">
+    <wsdl:part name="ViewItemsResponse" element="con:ViewItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="PrepareForEditRequest">
+    <wsdl:part name="PrepareForEditRequest" element="con:PrepareForEditRequest" />
+  </wsdl:message>
+  <wsdl:message name="PrepareForEditResponse">
+    <wsdl:part name="PrepareForEditResponse" element="con:PrepareForEditResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReleaseFromEditRequest">
+    <wsdl:part name="ReleaseFromEditRequest" element="con:ReleaseFromEditRequest" />
+  </wsdl:message>
+  <wsdl:message name="NewCopiesRequest">
+    <wsdl:part name="NewCopiesRequest" element="con:NewCopiesRequest" />
+  </wsdl:message>
+  <wsdl:message name="NewCopiesResponse">
+    <wsdl:part name="NewCopiesResponse" element="con:NewCopiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewPromotableVersionsRequest">
+    <wsdl:part name="NewPromotableVersionsRequest" element="con:NewPromotableVersionsRequest" />
+  </wsdl:message>
+  <wsdl:message name="NewPromotableVersionsResponse">
+    <wsdl:part name="NewPromotableVersionsResponse" element="con:NewPromotableVersionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewTranslationsRequest">
+    <wsdl:part name="NewTranslationsRequest" element="con:NewTranslationsRequest" />
+  </wsdl:message>
+  <wsdl:message name="NewTranslationsResponse">
+    <wsdl:part name="NewTranslationsResponse" element="con:NewTranslationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindRevisionsRequest">
+    <wsdl:part name="FindRevisionsRequest" element="con:FindRevisionsRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindRevisionsResponse">
+    <wsdl:part name="FindRevisionsResponse" element="con:FindRevisionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="PromoteRevisionsRequest">
+    <wsdl:part name="PromoteRevisionsRequest" element="con:PromoteRevisionsRequest" />
+  </wsdl:message>
+  <wsdl:message name="CheckinItemsRequest">
+    <wsdl:part name="CheckinItemsRequest" element="con:CheckinItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="CheckoutItemsRequest">
+    <wsdl:part name="CheckoutItemsRequest" element="con:CheckoutItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetAssemblyUrlsRequest">
+    <wsdl:part name="GetAssemblyUrlsRequest" element="con:GetAssemblyUrlsRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetAssemblyUrlsResponse">
+    <wsdl:part name="GetAssemblyUrlsResponse" element="con:GetAssemblyUrlsResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateChildEntriesRequest">
+    <wsdl:part name="CreateChildEntriesRequest" element="con:CreateChildEntriesRequest" />
+  </wsdl:message>
+  <wsdl:message name="CreateChildEntriesResponse">
+    <wsdl:part name="CreateChildEntriesResponse" element="con:CreateChildEntriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadChildEntriesRequest">
+    <wsdl:part name="LoadChildEntriesRequest" element="con:LoadChildEntriesRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadChildEntriesResponse">
+    <wsdl:part name="LoadChildEntriesResponse" element="con:LoadChildEntriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveChildEntriesRequest">
+    <wsdl:part name="SaveChildEntriesRequest" element="con:SaveChildEntriesRequest" />
+  </wsdl:message>
+  <wsdl:message name="DeleteChildEntriesRequest">
+    <wsdl:part name="DeleteChildEntriesRequest" element="con:DeleteChildEntriesRequest" />
+  </wsdl:message>
+  <wsdl:message name="ReorderChildEntriesRequest">
+    <wsdl:part name="ReorderChildEntriesRequest" element="con:ReorderChildEntriesRequest" />
+  </wsdl:message>
+  <wsdl:message name="AddContentRelationsRequest">
+    <wsdl:part name="AddContentRelationsRequest" element="con:AddContentRelationsRequest" />
+  </wsdl:message>
+  <wsdl:message name="AddContentRelationsResponse">
+    <wsdl:part name="AddContentRelationsResponse" element="con:AddContentRelationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadContentRelationsRequest">
+    <wsdl:part name="LoadContentRelationsRequest" element="con:LoadContentRelationsRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadContentRelationsResponse">
+    <wsdl:part name="LoadContentRelationsResponse" element="con:LoadContentRelationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveContentRelationsRequest">
+    <wsdl:part name="SaveContentRelationsRequest" element="con:SaveContentRelationsRequest" />
+  </wsdl:message>
+  <wsdl:message name="DeleteContentRelationsRequest">
+    <wsdl:part name="DeleteContentRelationsRequest" element="con:DeleteContentRelationsRequest" />
+  </wsdl:message>
+  <wsdl:message name="ReorderContentRelationsRequest">
+    <wsdl:part name="ReorderContentRelationsRequest" element="con:ReorderContentRelationsRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindChildItemsRequest">
+    <wsdl:part name="FindChildItemsRequest" element="con:FindChildItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindChildItemsResponse">
+    <wsdl:part name="FindChildItemsResponse" element="con:FindChildItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindParentItemsRequest">
+    <wsdl:part name="FindParentItemsRequest" element="con:FindParentItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindParentItemsResponse">
+    <wsdl:part name="FindParentItemsResponse" element="con:FindParentItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadFoldersRequest">
+    <wsdl:part name="LoadFoldersRequest" element="con:LoadFoldersRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoadFoldersResponse">
+    <wsdl:part name="LoadFoldersResponse" element="con:LoadFoldersResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveFoldersRequest">
+    <wsdl:part name="SaveFoldersRequest" element="con:SaveFoldersRequest" />
+  </wsdl:message>
+  <wsdl:message name="SaveFoldersResponse">
+    <wsdl:part name="SaveFoldersResponse" element="con:SaveFoldersResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteFoldersRequest">
+    <wsdl:part name="DeleteFoldersRequest" element="con:DeleteFoldersRequest" />
+  </wsdl:message>
+  <wsdl:message name="AddFolderRequest">
+    <wsdl:part name="AddFolderRequest" element="con:AddFolderRequest" />
+  </wsdl:message>
+  <wsdl:message name="AddFolderResponse">
+    <wsdl:part name="AddFolderResponse" element="con:AddFolderResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddFolderTreeRequest">
+    <wsdl:part name="AddFolderTreeRequest" element="con:AddFolderTreeRequest" />
+  </wsdl:message>
+  <wsdl:message name="AddFolderTreeResponse">
+    <wsdl:part name="AddFolderTreeResponse" element="con:AddFolderTreeResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindFolderChildrenRequest">
+    <wsdl:part name="FindFolderChildrenRequest" element="con:FindFolderChildrenRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindFolderChildrenResponse">
+    <wsdl:part name="FindFolderChildrenResponse" element="con:FindFolderChildrenResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddFolderChildrenRequest">
+    <wsdl:part name="AddFolderChildrenRequest" element="con:AddFolderChildrenRequest" />
+  </wsdl:message>
+  <wsdl:message name="RemoveFolderChildrenRequest">
+    <wsdl:part name="RemoveFolderChildrenRequest" element="con:RemoveFolderChildrenRequest" />
+  </wsdl:message>
+  <wsdl:message name="MoveFolderChildrenRequest">
+    <wsdl:part name="MoveFolderChildrenRequest" element="con:MoveFolderChildrenRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindFolderPathRequest">
+    <wsdl:part name="FindFolderPathRequest" element="con:FindFolderPathRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindFolderPathResponse">
+    <wsdl:part name="FindFolderPathResponse" element="con:FindFolderPathResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindPathIdsRequest">
+    <wsdl:part name="FindPathIdsRequest" element="con:FindPathIdsRequest" />
+  </wsdl:message>
+  <wsdl:message name="FindPathIdsResponse">
+    <wsdl:part name="FindPathIdsResponse" element="con:FindPathIdsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ContractViolationFaultMessage">
+    <wsdl:part name="fault" element="flt:PSContractViolationFault" />
+  </wsdl:message>
+  <wsdl:message name="InvalidSessionFaultMessage">
+    <wsdl:part name="fault" element="flt:PSInvalidSessionFault" />
+  </wsdl:message>
+  <wsdl:message name="NotAuthorizedFaultMessage">
+    <wsdl:part name="fault" element="flt:PSNotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="UnknownContentTypeFaultMessage">
+    <wsdl:part name="fault" element="flt:PSUnknownContentTypeFault" />
+  </wsdl:message>
+  <wsdl:message name="UnknownChildFaultMessage">
+    <wsdl:part name="fault" element="flt:PSUnknownChildFault" />
+  </wsdl:message>
+  <wsdl:message name="ErrorResultsFaultMessage">
+    <wsdl:part name="fault" element="flt:PSErrorResultsFault" />
+  </wsdl:message>
+  <wsdl:message name="ErrorsFaultMessage">
+    <wsdl:part name="fault" element="flt:PSErrorsFault" />
+  </wsdl:message>
+  <wsdl:portType name="content">
+    <wsdl:operation name="LoadKeywords">
+      <wsdl:input message="con:LoadKeywordsRequest" />
+      <wsdl:output message="con:LoadKeywordsResponse" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="con:NotAuthorizedFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadLocales">
+      <wsdl:input message="con:LoadLocalesRequest" />
+      <wsdl:output message="con:LoadLocalesResponse" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="con:NotAuthorizedFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadTranslationSettings">
+      <wsdl:input message="con:empty" />
+      <wsdl:output message="con:LoadTranslationSettingsResponse" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="con:NotAuthorizedFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadContentTypes">
+      <wsdl:input message="con:LoadContentTypesRequest" />
+      <wsdl:output message="con:LoadContentTypesResponse" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="con:NotAuthorizedFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateItems">
+      <wsdl:input message="con:CreateItemsRequest" />
+      <wsdl:output message="con:CreateItemsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="UnknownContentTypeFault" message="con:UnknownContentTypeFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="con:NotAuthorizedFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindItems">
+      <wsdl:input message="con:FindItemsRequest" />
+      <wsdl:output message="con:FindItemsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadItems">
+      <wsdl:input message="con:LoadItemsRequest" />
+      <wsdl:output message="con:LoadItemsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveItems">
+      <wsdl:input message="con:SaveItemsRequest" />
+      <wsdl:output message="con:SaveItemsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteItems">
+      <wsdl:input message="con:DeleteItemsRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ViewItems">
+      <wsdl:input message="con:ViewItemsRequest" />
+      <wsdl:output message="con:ViewItemsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareForEdit">
+      <wsdl:input message="con:PrepareForEditRequest" />
+      <wsdl:output message="con:PrepareForEditResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReleaseFromEdit">
+      <wsdl:input message="con:ReleaseFromEditRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NewCopies">
+      <wsdl:input message="con:NewCopiesRequest" />
+      <wsdl:output message="con:NewCopiesResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NewPromotableVersions">
+      <wsdl:input message="con:NewPromotableVersionsRequest" />
+      <wsdl:output message="con:NewPromotableVersionsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NewTranslations">
+      <wsdl:input message="con:NewTranslationsRequest" />
+      <wsdl:output message="con:NewTranslationsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindRevisions">
+      <wsdl:input message="con:FindRevisionsRequest" />
+      <wsdl:output message="con:FindRevisionsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PromoteRevisions">
+      <wsdl:input message="con:PromoteRevisionsRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckinItems">
+      <wsdl:input message="con:CheckinItemsRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckoutItems">
+      <wsdl:input message="con:CheckoutItemsRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAssemblyUrls">
+      <wsdl:input message="con:GetAssemblyUrlsRequest" />
+      <wsdl:output message="con:GetAssemblyUrlsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateChildEntries">
+      <wsdl:input message="con:CreateChildEntriesRequest" />
+      <wsdl:output message="con:CreateChildEntriesResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="UnknownChildFault" message="con:UnknownChildFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadChildEntries">
+      <wsdl:input message="con:LoadChildEntriesRequest" />
+      <wsdl:output message="con:LoadChildEntriesResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="UnknownChildFault" message="con:UnknownChildFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveChildEntries">
+      <wsdl:input message="con:SaveChildEntriesRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="UnknownChildFault" message="con:UnknownChildFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteChildEntries">
+      <wsdl:input message="con:DeleteChildEntriesRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="UnknownChildFault" message="con:UnknownChildFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReorderChildEntries">
+      <wsdl:input message="con:ReorderChildEntriesRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="UnknownChildFault" message="con:UnknownChildFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddContentRelations">
+      <wsdl:input message="con:AddContentRelationsRequest" />
+      <wsdl:output message="con:AddContentRelationsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="con:NotAuthorizedFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadContentRelations">
+      <wsdl:input message="con:LoadContentRelationsRequest" />
+      <wsdl:output message="con:LoadContentRelationsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="con:NotAuthorizedFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveContentRelations">
+      <wsdl:input message="con:SaveContentRelationsRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="con:NotAuthorizedFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteContentRelations">
+      <wsdl:input message="con:DeleteContentRelationsRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="NotAuthorizedFault" message="con:NotAuthorizedFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReorderContentRelations">
+      <wsdl:input message="con:ReorderContentRelationsRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindChildItems">
+      <wsdl:input message="con:FindChildItemsRequest" />
+      <wsdl:output message="con:FindChildItemsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindParentItems">
+      <wsdl:input message="con:FindParentItemsRequest" />
+      <wsdl:output message="con:FindParentItemsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadFolders">
+      <wsdl:input message="con:LoadFoldersRequest" />
+      <wsdl:output message="con:LoadFoldersResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFolders">
+      <wsdl:input message="con:SaveFoldersRequest" />
+      <wsdl:output message="con:SaveFoldersResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFolders">
+      <wsdl:input message="con:DeleteFoldersRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddFolder">
+      <wsdl:input message="con:AddFolderRequest" />
+      <wsdl:output message="con:AddFolderResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddFolderTree">
+      <wsdl:input message="con:AddFolderTreeRequest" />
+      <wsdl:output message="con:AddFolderTreeResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorResultsFault" message="con:ErrorResultsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindFolderChildren">
+      <wsdl:input message="con:FindFolderChildrenRequest" />
+      <wsdl:output message="con:FindFolderChildrenResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddFolderChildren">
+      <wsdl:input message="con:AddFolderChildrenRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFolderChildren">
+      <wsdl:input message="con:RemoveFolderChildrenRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MoveFolderChildren">
+      <wsdl:input message="con:MoveFolderChildrenRequest" />
+      <wsdl:output message="con:empty" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+      <wsdl:fault name="ErrorsFault" message="con:ErrorsFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindFolderPath">
+      <wsdl:input message="con:FindFolderPathRequest" />
+      <wsdl:output message="con:FindFolderPathResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindPathIds">
+      <wsdl:input message="con:FindPathIdsRequest" />
+      <wsdl:output message="con:FindPathIdsResponse" />
+      <wsdl:fault name="ContractViolationFault" message="con:ContractViolationFaultMessage" />
+      <wsdl:fault name="InvalidSessionFault" message="con:InvalidSessionFaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="contentSOAP" type="con:content">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LoadKeywords">
+      <soap:operation soapAction="urn:LoadKeywords" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="LoadKeywordsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadLocales">
+      <soap:operation soapAction="urn:LoadLocales" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="LoadLocalesRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadTranslationSettings">
+      <soap:operation soapAction="urn:LoadTranslationSettings" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadContentTypes">
+      <soap:operation soapAction="urn:LoadContentTypes" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="LoadContentTypesRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateItems">
+      <soap:operation soapAction="urn:CreateItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="CreateItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnknownContentTypeFault">
+        <soap:fault use="literal" name="UnknownContentTypeFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindItems">
+      <soap:operation soapAction="urn:FindItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="FindItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadItems">
+      <soap:operation soapAction="urn:LoadItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="LoadItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SaveItems">
+      <soap:operation soapAction="urn:SaveItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="SaveItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteItems">
+      <soap:operation soapAction="urn:DeleteItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="DeleteItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ViewItems">
+      <soap:operation soapAction="urn:ViewItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="ViewItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareForEdit">
+      <soap:operation soapAction="urn:PrepareForEdit" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="PrepareForEditRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ReleaseFromEdit">
+      <soap:operation soapAction="urn:ReleaseFromEdit" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="ReleaseFromEditRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="NewCopies">
+      <soap:operation soapAction="urn:NewCopies" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="NewCopiesRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="NewPromotableVersions">
+      <soap:operation soapAction="urn:NewPromotableVersions" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="NewPromotableVersionsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="NewTranslations">
+      <soap:operation soapAction="urn:NewTranslations" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="NewTranslationsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindRevisions">
+      <soap:operation soapAction="urn:FindRevisions" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="FindRevisionsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="PromoteRevisions">
+      <soap:operation soapAction="urn:PromoteRevisions" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="PromoteRevisionsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CheckinItems">
+      <soap:operation soapAction="urn:CheckinItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="CheckinItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CheckoutItems">
+      <soap:operation soapAction="urn:CheckoutItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="CheckoutItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssemblyUrls">
+      <soap:operation soapAction="urn:GetAssemblyUrls" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="GetAssemblyUrlsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateChildEntries">
+      <soap:operation soapAction="urn:CreateChildEntries" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="CreateChildEntriesRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnknownChildFault">
+        <soap:fault use="literal" name="UnknownChildFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadChildEntries">
+      <soap:operation soapAction="urn:LoadChildEntries" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="LoadChildEntriesRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnknownChildFault">
+        <soap:fault use="literal" name="UnknownChildFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SaveChildEntries">
+      <soap:operation soapAction="urn:SaveChildEntries" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="SaveChildEntriesRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnknownChildFault">
+        <soap:fault use="literal" name="UnknownChildFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteChildEntries">
+      <soap:operation soapAction="urn:DeleteChildEntries" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="DeleteChildEntriesRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnknownChildFault">
+        <soap:fault use="literal" name="UnknownChildFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ReorderChildEntries">
+      <soap:operation soapAction="urn:ReorderChildEntries" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="ReorderChildEntriesRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnknownChildFault">
+        <soap:fault use="literal" name="UnknownChildFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddContentRelations">
+      <soap:operation soapAction="urn:AddContentRelations" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="AddContentRelationsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadContentRelations">
+      <soap:operation soapAction="urn:LoadContentRelations" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="LoadContentRelationsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SaveContentRelations">
+      <soap:operation soapAction="urn:SaveContentRelations" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="SaveContentRelationsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteContentRelations">
+      <soap:operation soapAction="urn:DeleteContentRelations" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="DeleteContentRelationsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFault">
+        <soap:fault use="literal" name="NotAuthorizedFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ReorderContentRelations">
+      <soap:operation soapAction="urn:ReorderContentRelations" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="ReorderContentRelationsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindChildItems">
+      <soap:operation soapAction="urn:FindChildItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="FindChildItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindParentItems">
+      <soap:operation soapAction="urn:FindParentItems" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="FindParentItemsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LoadFolders">
+      <soap:operation soapAction="urn:LoadFolders" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="LoadFoldersRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFolders">
+      <soap:operation soapAction="urn:SaveFolders" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="SaveFoldersRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFolders">
+      <soap:operation soapAction="urn:DeleteFolders" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="DeleteFoldersRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddFolder">
+      <soap:operation soapAction="urn:AddFolder" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="AddFolderRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddFolderTree">
+      <soap:operation soapAction="urn:AddFolderTree" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="AddFolderTreeRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorResultsFault">
+        <soap:fault use="literal" name="ErrorResultsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindFolderChildren">
+      <soap:operation soapAction="urn:FindFolderChildren" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="FindFolderChildrenRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddFolderChildren">
+      <soap:operation soapAction="urn:AddFolderChildren" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="AddFolderChildrenRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFolderChildren">
+      <soap:operation soapAction="urn:RemoveFolderChildren" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="RemoveFolderChildrenRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="MoveFolderChildren">
+      <soap:operation soapAction="urn:MoveFolderChildren" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="MoveFolderChildrenRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ErrorsFault">
+        <soap:fault use="literal" name="ErrorsFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindFolderPath">
+      <soap:operation soapAction="urn:FindFolderPath" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="FindFolderPathRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindPathIds">
+      <soap:operation soapAction="urn:FindPathIds" />
+      <wsdl:input>
+        <soap:header message="con:AuthenticationHeader" part="Session" use="literal" />
+        <soap:body use="literal" parts="FindPathIdsRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ContractViolationFault">
+        <soap:fault use="literal" name="ContractViolationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSessionFault">
+        <soap:fault use="literal" name="InvalidSessionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+</wsdl:definitions>

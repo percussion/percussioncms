@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXContentType (Description, EditorUrl )>
+<!ELEMENT EditorUrl (#PCDATA)>
+<!ELEMENT Description (#PCDATA)>
+<!ATTLIST  PSXContentType name CDATA #REQUIRED>
+<!ATTLIST  PSXContentType typeId CDATA #REQUIRED>
+<!ATTLIST  PSXContentType objectType CDATA #REQUIRED>
+<!ATTLIST PSXContentType hideFromMenu (true | false ) "false">
+<!ELEMENT ContentTypes (PSXContentType* )>

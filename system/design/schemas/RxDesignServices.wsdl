@@ -1,0 +1,107 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/design/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://www.w3.org/2001/XMLSchema" xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:dp="urn:www.percussion.com/webservices/design" xmlns:si="urn:www.percussion.com/webservices/standarditem" targetNamespace="urn:www.percussion.com/webservices/design/wsdl">
+	<import namespace="urn:www.percussion.com/webservices/header" location="sys_Header.xsd"/>
+	<import namespace="urn:www.percussion.com/webservices/design" location="sys_DesignParameters.xsd"/>
+	<message name="header-request">
+		<part name="Authentication" element="hdr:Authentication"/>
+	</message>
+	<message name="header-response">
+		<part name="HeaderResponse" element="hdr:HeaderResponse"/>
+	</message>
+	<message name="contentTypeList-request">
+		<part name="parameters" element="dp:contentTypeList"/>
+	</message>
+	<message name="contentTypeList-response">
+		<part name="parameters" element="dp:ContentTypeListResponse"/>
+	</message>
+	<message name="contentType-request">
+		<part name="parameters" element="dp:contentType"/>
+	</message>
+	<message name="contentType-response">
+		<part name="parameters" element="dp:ContentTypeResponse"/>
+	</message>
+	<message name="variantList-request">
+		<part name="parameters" element="dp:variantList"/>
+	</message>
+	<message name="variantList-response">
+		<part name="parameters" element="dp:VariantListResponse"/>
+	</message>
+	<portType name="DesignPort">
+		<operation name="contentTypeList">
+			<input message="tns:contentTypeList-request"/>
+			<output message="tns:contentTypeList-response"/>
+		</operation>
+		<operation name="contentType">
+			<input message="tns:contentType-request"/>
+			<output message="tns:contentType-response"/>
+		</operation>
+		<operation name="variantList">
+			<input message="tns:variantList-request"/>
+			<output message="tns:variantList-response"/>
+		</operation>
+	</portType>
+	<binding name="DesignBinding" type="tns:DesignPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="contentTypeList">
+			<soap:operation soapAction="urn:#contentTypeList"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="contentType">
+			<soap:operation soapAction="urn:#contentType"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="variantList">
+			<soap:operation soapAction="urn:#variantList"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="DesignServices">
+		<port name="DesignPort" binding="tns:DesignBinding">
+			<soap:address location="http://localhost:9980/RxServices/servlet/messagerouter"/>
+		</port>
+	</service>
+</definitions>

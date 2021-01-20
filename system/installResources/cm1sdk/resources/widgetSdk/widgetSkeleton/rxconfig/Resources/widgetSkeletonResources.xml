@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Resources>
+	<file id="@WIDGETNAME@_js"  path="/rx_resources/widgets/@WIDGETNAME@/js/@WIDGETNAME@Ui.js"  type="javascript" >
+	    <dependency refid="percSystem.jquery"/>
+	</file>
+</Resources>

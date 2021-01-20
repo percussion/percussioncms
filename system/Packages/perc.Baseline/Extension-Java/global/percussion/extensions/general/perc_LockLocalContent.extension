@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="contenteditor" context="global/percussion/extensions/general/" deprecated="no" handler="Java" name="perc_LockLocalContent" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">This workflow action revision locks local content.</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="className">com.percussion.itemmanagement.service.impl.PSLockLocalContentWorkflowAction</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSWorkflowAction"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

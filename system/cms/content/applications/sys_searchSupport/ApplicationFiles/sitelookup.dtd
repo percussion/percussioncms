@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT entry EMPTY>
+<!ATTLIST  entry sitename CDATA #REQUIRED>
+<!ATTLIST  entry siteid CDATA #REQUIRED>
+<!ATTLIST  entry folderroot CDATA #REQUIRED>
+<!ELEMENT sitelookup (entry* )>

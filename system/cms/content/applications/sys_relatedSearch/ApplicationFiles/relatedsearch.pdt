@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT relatedsearch (enddate, slotid, author, revision, createcontentlookupurl, startdate, selcontenttype, contenttitle, contentid, slotname )>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT contenttitle (#PCDATA)>
+<!ELEMENT selcontenttype (#PCDATA)>
+<!ELEMENT startdate (#PCDATA)>
+<!ELEMENT createcontentlookupurl (#PCDATA)>
+<!ELEMENT revision (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT slotid (#PCDATA)>
+<!ELEMENT enddate (#PCDATA)>
+<!ATTLIST  relatedsearch xml:lang CDATA #IMPLIED>

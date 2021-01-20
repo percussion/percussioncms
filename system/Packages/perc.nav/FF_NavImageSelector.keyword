@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>  <null id="1">
+    <choices>
+      <choice id="2">
+        <description/>
+        <label>Corporate Investments HP</label>
+        <sequence>0</sequence>
+        <value>cihp</value>
+      </choice>
+      <choice id="3">
+        <description/>
+        <label>Corporate Investments PS</label>
+        <sequence>0</sequence>
+        <value>cips</value>
+      </choice>
+      <choice id="4">
+        <description/>
+        <label>Corporate Investments PM</label>
+        <sequence>0</sequence>
+        <value>cipm</value>
+      </choice>
+      <choice id="5">
+        <description/>
+        <label>Corporate Investments AU</label>
+        <sequence>0</sequence>
+        <value>ciau</value>
+      </choice>
+      <choice id="6">
+        <description/>
+        <label>Corporate Investments IA</label>
+        <sequence>0</sequence>
+        <value>ciia</value>
+      </choice>
+      <choice id="7">
+        <description>Section Image</description>
+        <label>SectionImage</label>
+        <sequence>20</sequence>
+        <value>section</value>
+      </choice>
+      <choice id="8">
+        <description>Home Page Image</description>
+        <label>Home Page Logo</label>
+        <sequence>10</sequence>
+        <value>home</value>
+      </choice>
+    </choices>
+    <guid>0-14-328</guid>
+    <description>Managed Nav Image Selector</description>
+    <id>328</id>
+    <keyword-type>1</keyword-type>
+    <label>FF_NavImageSelector</label>
+    <name>FF_NavImageSelector</name>
+    <sequence>1</sequence>
+    <type>KEYWORD_DEF</type>
+    <value>328</value>
+  </null>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percEmsEventList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percEmsEventList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percEmsEventList-xml\percEmsEventList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percEmsEventList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Resources\percEmsEventList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percEmsEventList-xml\percEmsEventList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--1859343358787321775">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>e:\temp\percEmsEventList.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--1859343358787321775\percEmsEventList.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percEmsEventList_css_emseventlist-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\percEmsEventList\css\emseventlist.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percEmsEventList_css_emseventlist-css\emseventlist.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-476">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>e:\temp\percEmsEventList.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-476\percEmsEventList.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>e:\temp\percEmsEventList.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-476\percEmsEventList.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>e:\temp\percEmsEventList.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-476\percEmsEventList.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>e:\temp\percEmsEventList(1).contentType</RxFile>
+         <ArchiveFile>ContentType-476\percEmsEventList(1).contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>e:\temp\percEmsEventList(2).contentType</RxFile>
+         <ArchiveFile>ContentType-476\percEmsEventList(2).contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_emsEventList_css_PercEmsEventList-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\emsEventList\css\PercEmsEventList.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_emsEventList_css_PercEmsEventList-css\PercEmsEventList.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_emsEventList_js_PercEmsEventListService-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\emsEventList\js\PercEmsEventListService.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_emsEventList_js_PercEmsEventListService-js\PercEmsEventListService.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Application-percEmsEventList">
+      <DBMSInfoList/>
+      <PSXDependencyFile fileType="APPLICATION_XML">
+         <RxFile>e:\temp\percEmsEventList.application</RxFile>
+         <ArchiveFile>Application-percEmsEventList\percEmsEventList.application</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>e:\temp\percEmsEventList(1).application</RxFile>
+         <ArchiveFile>Application-percEmsEventList\percEmsEventList(1).application</ArchiveFile>
+         <OriginalFile>sys_Lookup.dtd</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>e:\temp\percEmsEventList(2).application</RxFile>
+         <ArchiveFile>Application-percEmsEventList\percEmsEventList(2).application</ArchiveFile>
+         <OriginalFile>sys_Lookup.pdt</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_emsEventList_js_PercEmsEventListView-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\emsEventList\js\PercEmsEventListView.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_emsEventList_js_PercEmsEventListView-js\PercEmsEventListView.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percEmsEventList_images_emsEventList--widgetPlaceholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\percEmsEventList\images\emsEventList-widgetPlaceholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percEmsEventList_images_emsEventList--widgetPlaceholder-png\emsEventList-widgetPlaceholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percEmsEventList_images_emsEventList--widgetIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\percEmsEventList\images\emsEventList-widgetIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percEmsEventList_images_emsEventList--widgetIcon-png\emsEventList-widgetIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

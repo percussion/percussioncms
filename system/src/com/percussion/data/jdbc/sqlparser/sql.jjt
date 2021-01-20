@@ -1,0 +1,1121 @@
+/*	A SQL parser based on the SQL-92 standard (ANSI X3.135-1992).
+ *
+ *	It is meant to be fully compliant with Entry Level SQL.
+ *
+ *	Currently it only supports select statements (no joins or
+ *	unions). Nested subqueries are OK.
+ *
+ *	TODO: Support update and create statements.
+ *
+ *
+ *
+ */
+
+// we can debug by turning on these options in any combination
+options
+{
+	DEBUG_TOKEN_MANAGER = false;
+	DEBUG_PARSER = false;
+	DEBUG_LOOKAHEAD = false;
+
+	// jjtree options
+	MULTI = true;
+	//NODE_PREFIX = "PS_SQL";
+	VISITOR = true;
+	//NODE_DEFAULT_VOID=true;
+	NODE_PACKAGE = "com.percussion.data.jdbc.sqlparser";
+}
+
+
+// the interface to the main program follows
+// the program reads SQL statements which end with a semicolon
+// and parses them
+PARSER_BEGIN(SQLParser)
+
+package com.percussion.data.jdbc.sqlparser;
+
+import syntaxtree.*;
+import visitor.*;
+
+public class SQLParser
+{
+    public static void main(String args[]) throws ParseException
+	{
+		SQLParser parser = new SQLParser(System.in);
+		while (true)
+		{
+			try
+			{
+				System.out.print("Enter Expression: ");
+				System.out.flush();
+
+				// this is the JJTree version
+				ASTStatementRoot statement = parser.StatementRoot();
+				statement.dump("");
+
+				System.out.println("Parsed statement.");
+				System.out.flush();
+			}
+			catch (ParseException e)
+			{
+				System.out.println("ERROR: " + e.toString() );
+				parser.ReInit(System.in);
+			}
+		}
+    }
+}
+PARSER_END(SQLParser)
+
+
+/*************************************************************************
+ *	SKIP WHITE SPACE
+ ************************************************************************/
+SKIP :
+{
+	  " "
+	| "\t"
+	| "\n"
+	| "\r"
+	| "\f"
+}
+
+/*************************************************************************
+ *	NONSTANDARD -- path information
+ ************************************************************************/
+TOKEN :
+{
+	  <#ALetter : ["A" - "Z", "a" - "z"] >
+	| <#ADigit : ["0" - "9"] >
+	| <#PathComponent : (<Underscore> | <ALetter> | <ADigit> | <Period>)? ( <Underscore> | <ALetter> | <ADigit> | <Period> )* >
+	| <#FilePath : ( <ALetter> <Colon> )? ( <Solidus> )? <PathComponent> ( <Solidus> <PathComponent> )* >
+	// 
+	// either a file path (optionally end with /*) or a filename
+	// 
+	| <FileSpecification :
+		<DoubleQuote> 
+			((<FilePath> ( <Solidus> ( <Asterisk> )? )?)	| (<FilePath> (<Solidus> <PathComponent>)))
+		<DoubleQuote> >
+}
+
+/*************************************************************************
+ *	KEYWORDS and reserved words
+ ************************************************************************/
+TOKEN [IGNORE_CASE] :
+{
+		  <ABSOLUTE: "ABSOLUTE">
+		| <ACTION : "ACTION" >
+		| <ADD : "ADD" >
+		| <ALL : "ALL" >
+		| <ALLOCATE : "ALLOCATE" >
+		| <ALTER : "ALTER" >
+		| <AND : "AND" >
+		| <ANY : "ANY" >
+		| <ARE : "ARE" >
+		| <AS : "AS" >
+		| <ASC : "ASC" >
+		| <ASSERTION : "ASSERTION" >
+		| <AT : "AT" >
+		| <AUTHORIZATION : "AUTHORIZATION" >
+		| <AVG : "AVG" >
+		| <BEGIN : "BEGIN" >
+		| <BETWEEN : "BETWEEN" >
+		| <BIT : "BIT" >
+		| <BIT_LENGTH: "BIT_LENGTH" >
+		| <BOTH : "BOTH" >
+		| <BY : "BY" >
+		| <CASCADE : "CASCADE" >
+		| <CASCADED : "CASCADED" >
+		| <CASE : "CASE" >
+		| <CAST : "CAST" >
+		| <CATALOG : "CATALOG" >
+		| <CHARACTER : "CHARACTER" | "CHAR" >
+		| <CHARACTER_LENGTH: "CHAR_LENGTH" | "CHARACTER_LENGTH" >
+		| <CHECK : "CHECK" >
+		| <CLOSE : "CLOSE" >
+		| <COALESCE : "COALESCE" >
+		| <COLLATE : "COLLATE" >
+		| <COLLATION : "COLLATION" >
+		| <COLUMN : "COLUMN" >
+		| <COMMIT : "COMMIT" >
+		| <CONNECT : "CONNECT" >
+		| <CONNECTION : "CONNECTION" >
+		| <CONSTRAINT : "CONSTRAINT" >
+		| <CONSTRAINTS : "CONSTRAINTS" >
+		| <CONTINUE : "CONTINUE" >
+		| <CONVERT : "CONVERT" >
+		| <CORRESPONDING : "CORRESPONDING" >
+		| <COUNT : "COUNT" >
+		| <CREATE : "CREATE" >
+		| <CROSS : "CROSS" >
+		| <CURRENT : "CURRENT" >
+		| <CURRENT_DATE : "CURRENT_DATE" >
+		| <CURRENT_TIME : "CURRENT_TIME" >
+		| <CURRENT_TIMESTAMP : "CURRENT_TIMESTAMP" >
+		| <CURRENT_USER : "CURRENT_USER" >
+		| <CURSOR : "CURSOR" >
+		| <DATE : "DATE" >
+		| <DAY : "DAY" >
+		| <DEALLOCATE : "DEALLOCATE" >
+		| <DEC : "DEC" >
+		| <DECIMAL : "DECIMAL" >
+		| <DECLARE : "DECLARE" >
+		| <DIRECTORY : "DIR" | "DIRECTORY" >
+		| <KEYWORD_DEFAULT: "DEFAULT" >
+		| <DEFERRABLE : "DEFERRABLE" >
+		| <DEFERRED : "DEFERRED" >
+		| <DELETE : "DELETE" >
+		| <DESC : "DESC" >
+		| <DESCRIBE : "DESCRIBE" >
+		| <DESCRIPTOR : "DESCRIPTOR" >
+		| <DIAGNOSTICS : "DIAGNOSTICS" >
+		| <DISCONNECT : "DISCONNECT" >
+		| <DISTINCT : "DISTINCT" >
+		| <DOMAIN : "DOMAIN" >
+		| <DOUBLE : "DOUBLE" >
+		| <DROP : "DROP" >
+		| <ELSE : "ELSE" >
+		| <END : "END" >
+		| <END_EXEC : "END-EXEC" >
+		| <ESCAPE : "ESCAPE" >
+		| <EXCEPT : "EXCEPT" >
+		| <EXCEPTION : "EXCEPTION" >
+		| <EXEC : "EXEC" >
+		| <EXECUTE : "EXECUTE" >
+		| <EXISTS : "EXISTS" >
+		| <EXTERNAL : "EXTERNAL" >
+		| <EXTRACT : "EXTRACT" >
+		| <FALSE : "FALSE" >
+		| <FETCH : "FETCH" >
+		| <FIRST : "FIRST" >
+		| <FLOAT : "FLOAT" >
+		| <FOR : "FOR" >
+		| <FOREIGN : "FOREIGN" >
+		| <FOUND : "FOUND" >
+		| <FROM : "FROM" >
+		| <FULL : "FULL" >
+		| <GET : "GET" >
+		| <GLOBAL : "GLOBAL" >
+		| <GO : "GO" >
+		| <GOTO : "GOTO" >
+		| <GRANT : "GRANT" >
+		| <GROUP : "GROUP" >
+		| <HAVING : "HAVING" >
+		| <HOUR : "HOUR" >
+		| <IDENTITY : "IDENTITY" >
+		| <IMMEDIATE : "IMMEDIATE" >
+		| <IN : "IN" >
+		| <INDICATOR : "INDICATOR" >
+		| <INITIALLY : "INITIALLY" >
+		| <INNER : "INNER" >
+		| <INPUT : "INPUT" >
+		| <INSENSITIVE : "INSENSITIVE" >
+		| <INSERT : "INSERT" >
+		| <INT : "INT" >
+		| <INTEGER : "INTEGER" >
+		| <INTERSECT : "INTERSECT" >
+		| <INTERVAL : "INTERVAL" >
+		| <INTO : "INTO" >
+		| <IS : "IS" >
+		| <ISOLATION : "ISOLATION" >
+		| <JOIN : "JOIN" >
+		| <KEY : "KEY" >
+		| <LANGUAGE : "LANGUAGE" >
+		| <LAST : "LAST" >
+		| <LEADING : "LEADING" >
+		| <LEFT : "LEFT" >
+		| <LEVEL : "LEVEL" >
+		| <LIKE : "LIKE" >
+		| <LOCAL : "LOCAL" >
+		| <LOWER : "LOWER" >
+		| <MATCH : "MATCH" >
+		| <MAX : "MAX" >
+		| <MIN : "MIN" >
+		| <MINUTE : "MINUTE" >
+		| <MODULE : "MODULE" >
+		| <MONTH : "MONTH" >
+		| <NAMES : "NAMES" >
+		| <NATIONAL : "NATIONAL" >
+		| <NATURAL : "NATURAL" >
+		| <NCHAR : "NCHAR" >
+		| <NEXT : "NEXT" >
+		| <NO : "NO" >
+		| <NOT : "NOT" >
+		| <NULL : "NULL" >
+		| <NULLIF : "NULLIF" >
+		| <NUMERIC : "NUMERIC" >
+		| <OCTET_LENGTH: "OCTET_LENGTH">
+		| <OF : "OF" >
+		| <ON : "ON" >
+		| <ONLY : "ONLY" >
+		| <OPEN : "OPEN" >
+		| <OPTION : "OPTION" >
+		| <OR : "OR" >
+		| <ORDER : "ORDER" >
+		| <OUTER : "OUTER" >
+		| <OUTPUT : "OUTPUT" >
+		| <OVERLAPS : "OVERLAPS" >
+		| <PAD : "PAD" >
+		| <PARTIAL : "PARTIAL" >
+		| <POSITION : "POSITION" >
+		| <PRECISION : "PRECISION" >
+		| <PREPARE : "PREPARE" >
+		| <PRESERVE : "PRESERVE" >
+		| <PRIMARY : "PRIMARY" >
+		| <PRIOR : "PRIOR" >
+		| <PRIVILEGES : "PRIVILEGES" >
+		| <PROCEDURE : "PROCEDURE" >
+		| <PUBLIC : "PUBLIC" >
+		| <READ : "READ" >
+		| <REAL : "REAL" >
+		| <REFERENCES : "REFERENCES" >
+		| <RELATIVE : "RELATIVE" >
+		| <RESTRICT : "RESTRICT" >
+		| <REVOKE : "REVOKE" >
+		| <RIGHT : "RIGHT" >
+		| <ROLLBACK : "ROLLBACK" >
+		| <ROWS : "ROWS" >
+		| <SCHEMA : "SCHEMA" >
+		| <SCROLL : "SCROLL" >
+		| <SECOND : "SECOND" >
+		| <SECTION : "SECTION" >
+		| <SELECT : "SELECT" >
+		| <SESSION : "SESSION" >
+		| <SESSION_USER : "SESSION_USER">
+		| <SET : "SET" >
+		| <SIZE : "SIZE" >
+		| <SMALLINT : "SMALLINT" >
+		| <SOME : "SOME" >
+		| <SPACE : "SPACE" >
+		| <SQL : "SQL" >
+		| <SQLCODE : "SQLCODE" >
+		| <SQLERROR : "SQLERROR" >
+		| <SQLSTATE : "SQLSTATE" >
+		| <SUBSTRING : "SUBSTRING" >
+		| <SUM : "SUM" >
+		| <SYSTEM_TIME : "SYSTEM_TIME" >
+		| <SYSTEM_USER : "SYSTEM_USER" >
+		| <TABLE : "TABLE" >
+		| <TEMPORARY : "TEMPORARY" >
+		| <THEN : "THEN" >
+		| <TIME : "TIME" >
+		| <TIMESTAMP : "TIMESTAMP" >
+		| <TIMEZONE_HOUR: "TIMEZONE_HOUR" >
+		| <TIMEZONE_MINUTE: "TIMEZONE_MINUTE" >
+		| <TO : "TO" >
+		| <TRAILING : "TRAILING" >
+		| <TRANSACTION : "TRANSACTION" >
+		| <TRANSLATE : "TRANSLATE" >
+		| <TRANSLATION : "TRANSLATION" >
+		| <TRIM : "TRIM" >
+		| <TRUE : "TRUE" >
+		| <UNION : "UNION" >
+		| <UNIQUE : "UNIQUE" >
+		| <UNKNOWN : "UNKNOWN" >
+		| <UPDATE : "UPDATE" >
+		| <UPPER : "UPPER" >
+		| <USAGE : "USAGE" >
+		| <USER : "USER" >
+		| <USING : "USING" >
+		| <VALUE : "VALUE" >
+		| <VALUES : "VALUES" >
+		| <VARCHAR : "VARCHAR" >
+		| <VARYING : "VARYING" >
+		| <VIEW : "VIEW" >
+		| <WHEN : "WHEN" >
+		| <WHENEVER : "WHENEVER" >
+		| <WHERE : "WHERE" >
+		| <WITH : "WITH" >
+		| <WORK : "WORK" >
+		| <WRITE : "WRITE" >
+		| <YEAR : "YEAR" >
+		| <ZONE : "ZONE" >
+}
+
+/*************************************************************************
+ *	IDENTIFIERS must start with a letter, then can be followed by any
+ *	number of letters, underscores, or digits.
+ *
+ *	An unsigned integer is just a sequence of digits.
+ *
+ *	A hex string literal is of the form X'...', where hex digits are
+ *	inside the quotes.
+ *
+ *	A bit string literal is of the form B'...', where zeroes and ones
+ *	are inside the quotes.
+ *
+ *	A character string literal is of the form '...', where any printable
+ *	character (besides a single quote) is inside the quotes.
+ *
+ *	All string literals may be broken up like this: '...'    '...'
+ *	and will be treated as one string.
+ ************************************************************************/
+TOKEN :
+{
+	<#QuoteSymbol : <Quote> <Quote> >
+	|
+	<#NonQuoteCharacter : ~["'"] >
+	|
+	<#CharacterRepresentation : <NonQuoteCharacter> | <QuoteSymbol> >
+	|
+	<#Bit : "0" | "1" >
+	|
+	<#Letter : ["A" - "Z", "a" - "z"] >
+	|
+	<#Digit : ["0" - "9"] >
+	|
+	<#Hexit : <Digit> | ["A" - "F"] | ["a" - "f"] >
+	|
+	<AtSign : "@" >
+	|
+	<Identifier : (<Letter> | <Underscore>) ( ( <Underscore> | <Letter> | <Digit> )? )* >
+	|
+	<DriveSpec : <Letter> <Colon> >
+	|
+	<ParameterName : <Colon> <Identifier> >
+	|
+	<#UnsignedInteger : (<Digit>)+ >
+	|
+	<#SignedInteger : ( <Sign> )? <UnsignedInteger> >
+	|
+	<ExactNumericLiteral : ( <UnsignedInteger> ( <FractionalPart> )? ) | <FractionalPart> >
+	//	An exact numeric literal can be an unsigned integer optionally followed
+	//	by a fractional part, or it can just be a fractional part, in which case
+	//	the whole part is understood to be 0.
+	|
+	<ApproximateNumericLiteral : <ExactNumericLiteral> ( "E" | "e" ) <SignedInteger> >
+	|
+	<#FractionalPart : <Period> <UnsignedInteger> >
+	|
+	<#Sign : <PlusSign> | <MinusSign> >
+	|
+	<HexStringLiteral : "X" <Quote> ( <Hexit> )* <Quote> ( <Quote> ( <Hexit> )* <Quote> )* >
+	|
+	<BitStringLiteral : "B" <Quote> ( <Bit> )* <Quote> ( <Quote> ( <Bit> )* <Quote> )* >
+	|
+
+	// commented out because Entry SQL's definition of character string literals is simpler
+	//	<CharacterStringLiteral : <Quote> ( <CharacterRepresentation> )* <Quote> ( <Quote> ( <CharacterRepresentation> )* <Quote> )* >
+	<CharacterStringLiteral : <Quote> ( <CharacterRepresentation> )+ <Quote> >
+	
+}
+
+/*************************************************************************
+ *	OPERATORS
+ ************************************************************************/
+TOKEN :
+{
+	<NotEqualsOperator : "<>" >
+	|
+	<GreaterThanOrEqualsOperator : ">=" >
+	|
+	<LessThanOrEqualsOperator : "<=" >
+	|
+	<ConcatenationOperator : "||" >
+	|
+	<DoublePeriod : <Period> <Period> >
+	|
+	<LessThanOperator : "<" >
+	|
+	<EqualsOperator : "=" >
+	|
+	<GreaterThanOperator : ">" >
+}
+
+/*************************************************************************
+ *	Special characters
+ ************************************************************************/
+TOKEN :	/* Special characters */
+{
+	<DoubleQuote : "\"" >
+	|
+	<Percent : "%" >
+	|
+	<Ampersand : "&" >
+	|
+	<Quote : "'" >
+	|
+	<LeftParen : "(" >
+	|
+	<RightParen : ")" >
+	|
+	<Asterisk : "*" >
+	|
+	<PlusSign : "+" >
+	|
+	<Comma : "," >
+	|
+	<MinusSign : "-" >
+	|
+	<Period : "." >
+	|
+	<Solidus : "/" >
+	|
+	<Colon : ":" >
+	|
+	<Semicolon : ";" >
+	|
+	<QuestionMark : "?" >
+	|
+	<LeftBracket : "[" >
+	|
+	<RightBracket : "]" >
+	|
+	<Underscore : "_" >
+	|
+	<VerticalBar : "|" >
+}
+
+/*************************************************************************
+ *	ENTRY POINT -- the root contains the valid statements
+ ************************************************************************/
+
+ASTStatementRoot StatementRoot() #StatementRoot : {}
+{
+	DirectSQLStatement()
+	{ return jjtThis; }
+}
+
+/*************************************************************************
+ *	DIRECT SQL STATEMENT (Sec. 20.1, p.443)
+ ************************************************************************/
+
+void DirectSQLStatement() #void : {}
+{
+	DirectlyExecutableStatement() <Semicolon>
+}
+
+void DirectlyExecutableStatement() #void : {}
+{
+//	TODO: support the rest of these statement types
+	DirectSQLDataStatement()
+//	| SQLTransactionStatement()
+//	| SQLConnectionStatement()
+//	| SQLSessionStatement()
+}
+
+void DirectSQLDataStatement() : {}
+{
+//	TODO: support the rest of these statement types
+//	DeleteStatementSearched()
+	DirectSelectStatementMultipleRows()
+//	| InsertStatement()
+//	| UpdateStatementSearched()
+//	| TemporaryTableDeclaration()
+}
+
+/*************************************************************************
+ *	DIRECT SELECT STATEMENT: MULTIPLE ROWS (Sec. 20.2, p.447)
+ ************************************************************************/
+
+void DirectSelectStatementMultipleRows() #DirectSelectStatementMultipleRows : {}
+{
+	QueryExpression() [ OrderByClause() ]
+}
+
+/*************************************************************************
+ *	QUERY EXPRESSION (Sec. 7.10, p.159)
+ ************************************************************************/
+
+void QueryExpression() #void : {}
+{
+	NonJoinQueryExpression()
+}
+
+void NonJoinQueryExpression() #void : {}
+{
+	NonJoinQueryTerm() ( QueryExpression() <UNION> [ <ALL> ] QueryTerm() )*
+}
+
+void QueryTerm() #void : {}
+{
+	NonJoinQueryTerm()
+}
+
+void NonJoinQueryTerm() #void : {}
+{
+	NonJoinQueryPrimary()
+}
+
+void QueryPrimary() #void : {}
+{
+	NonJoinQueryPrimary()
+}
+
+void NonJoinQueryPrimary() #void : {}
+{
+	SimpleTable()
+	| <LeftParen> NonJoinQueryExpression() <RightParen>
+}
+
+void SimpleTable() #void : {}
+{
+	QuerySpecification()
+}
+
+
+
+/*************************************************************************
+ *	NUMERIC LITERALS
+ *	Note that some of the numeric literals are tokens (where we could get
+ *	away with it) and some of them are productions (where we couldn't make
+ *	tokens out of them). The general philosophy is that most productions
+ * don't get addet to the tree, but instead return on object, the class
+ * of which is the most specific class I felt safe using to represent
+ * that object (for example, a SignedNumericLiteral returns a
+ * java.math.BigDecimal, but a Literal returns a java.lang.Comparable because
+ * it could be either a Number or a String).
+ ************************************************************************/
+
+java.math.BigDecimal SignedNumericLiteral() #void :
+	{
+		int sign = 1;	// the sign from the token
+		java.math.BigDecimal num;		// the unsigned numeric literal
+	}
+{
+	// an optional sign followed by a numeric literal
+	[
+		<PlusSign>
+		| <MinusSign> { sign = -1; }
+	]
+
+	num = UnsignedNumericLiteral()
+
+	{
+		if (sign == -1)
+		{
+			return num.negate();
+		}
+		else
+			return num;
+	}
+}
+
+java.math.BigDecimal UnsignedNumericLiteral() #void :
+	{
+		Token t;
+		java.math.BigDecimal val;		
+	}
+{
+	t = <ApproximateNumericLiteral>
+		{ val = new java.math.BigDecimal(t.image); }
+	| t = <ExactNumericLiteral>
+		{ val = new java.math.BigDecimal(t.image); }
+	
+	{ return val; }
+}
+
+/*************************************************************************
+ *	LITERALS (Sec. 5.3, p. 71)
+ ************************************************************************/
+
+void Literal() #Literal :
+	{
+		Comparable val = null;
+	}
+{
+	(
+		val = SignedNumericLiteral()
+		| val = GeneralLiteral()
+	)
+	{ jjtThis.setValue(val); }
+}
+
+Comparable UnsignedLiteral() #void :
+	{
+		Comparable val = null;
+	}
+{
+	(
+		val = UnsignedNumericLiteral()	// java.lang.java.math.BigDecimal
+		| val = GeneralLiteral()			// java.lang.String
+	)
+	{ return val; }
+}
+
+String GeneralLiteral() #void : 
+	{
+		Token t;
+	}
+{
+	t = <CharacterStringLiteral>
+	{
+		String litVal = ""; // strip leading and trailing single quotes
+		if (t.image.length() > 2)
+		{
+			litVal = t.image.substring(1, t.image.length() - 1);
+		}
+		
+		return litVal;
+	}
+}
+
+/*************************************************************************
+ *	COLUMN NAMING
+ ************************************************************************/
+
+// a column name identifies a column
+String ColumnName() #void :
+{
+	Token t;
+	String name = "";
+}
+{
+	// MODIFIED FROM STANDARD
+	// The standard version would have:
+	// 
+	// <Identifier>
+	// 
+	// but we have added support for a subset of valid XML identifiers.
+	// 
+	// See http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name
+	// We allow forward slashes in XML element names to specify hierarchy
+	// and @ symbols to specify attributes as opposed to elements
+	//
+	// This allows statements like:
+	//		"SELECT Book/Author/FirstName FROM foo"
+	// and
+	//		"SELECT Book/Author/FirstName/@languageId FROM foo"
+	// and
+	//		"SELECT _ElementName FROM FOO"
+	//
+	t = <Identifier> { name += t.image; }
+		(
+			LOOKAHEAD(2) ( <Solidus> t = <Identifier> { name += "/" + t.image; } )
+		)*
+		[ LOOKAHEAD(2) <Solidus> <AtSign> t = <Identifier> { name += "/@" + t.image; } ]
+
+	{ return name; }
+}
+
+// a column reference is a reference to a column in a table
+// (or a table alias). For example: MyTable.age would refer
+// to the column named 'age' in the table named 'MyTable'
+// Note that the qualifier is optional
+void ColumnReference() : 
+	{
+		String table = null;
+		String colName = null;
+	}
+{
+	[ LOOKAHEAD(3) table = ColumnNameQualifier() { jjtThis.setTable(table); } <Period> ]
+	colName = ColumnName() { jjtThis.setColumn(colName); }
+}
+
+String ColumnNameQualifier() #void :
+{
+	String tab = null;
+}
+{
+	tab = TableName()
+	{ return tab; }
+}
+
+
+/*************************************************************************
+ *	TABLE NAMING
+ ************************************************************************/
+
+// a table name identifies a table
+String TableName() #void :
+{
+	Token t;
+}
+{
+	t = <Identifier>
+	{ return t.image; }
+}
+
+
+// a correlation name identifies a local "alias" for a table
+// for example "SELECT M.name from MyTable M"
+String CorrelationName() #void :
+{
+	Token t;
+}
+{
+	t = <Identifier>
+	{ return t.image; }
+}
+
+/*************************************************************************
+ *	TABLE REFERENCES (Sec. 6.3, p. 94)
+ ************************************************************************/
+
+void TableReference() :
+{
+	String table;
+	String alias;
+}
+{
+	(
+		( table = TableName() { jjtThis.setTable(table); } )
+		| FileSpec()
+	)
+	[ alias = CorrelationName() { jjtThis.setAlias(alias); } ]
+}
+
+void FileSpec() #FileSpec :
+	{
+		Token t;
+	}
+{
+	( t = <FileSpecification>
+		{
+			jjtThis.setValue(t.image);
+		}
+	)
+}
+
+void ParameterSpecification() #ParameterSpecification :
+	{
+		Token t;
+		String indicator;
+	}
+{
+	// we have to differentiate between a free-standing parameter name and
+	// a parameter name followed by an indicator
+	t = <ParameterName> { jjtThis.setName(t.image); }
+}
+
+/*************************************************************************
+ *	QUERY SPECIFICATION (Sec. 7.9, p. 155)
+ ************************************************************************/
+
+int SetQuantifier() #void :
+	{
+		int type;
+	}
+{
+	  <DISTINCT> { type = ASTQuerySpecification.DISTINCT; }
+	| <ALL>      { type = ASTQuerySpecification.ALL;      }
+
+	{ return type; }
+}
+
+// specify a table derived from the result of a table expression
+void QuerySpecification() #QuerySpecification :
+	{
+		int type;
+	}
+{
+	<SELECT>
+		[ type = SetQuantifier() { jjtThis.setType(type); } ]
+		SelectList() TableExpression() [ WhereClause() ] [ GroupByClause() ] [ HavingClause() ]
+}
+
+void SelectList() #SelectList : {}
+{
+	<Asterisk> { jjtThis.setAllColumns(true); }
+	| DerivedColumn() ( <Comma> DerivedColumn() )*
+}
+
+// A derived column is not necessarily a table column. It refers
+// to a "virtual" result column. For example, if the statement
+// said "SELECT ColumnA, MAX(ColumnB), ColumnC + 10, 200 * 3.14 FROM FOO",
+// there would be a derived column entry for each entry in the select
+// list (only one of which corresponds to an unadulterated column value).
+void DerivedColumn() #DerivedColumn : 
+{
+	Object columnValue;
+	String alias;
+}
+{
+	(
+		Literal()
+		|
+		ColumnReference()
+		|
+		ParameterSpecification()
+	)
+	[
+		// let them introduce an alias for this column
+		( alias = AsClause() )
+		{ jjtThis.setColumnAlias(alias); }
+	]
+}
+
+String AsClause() #void : 
+{
+	Token t;
+}
+{
+	[ <AS> ] ( t = <Identifier> )
+	{ return t.image; }
+}
+
+/*************************************************************************
+ *	TABLE EXPRESSION (Sec. 7.3, p. 142)
+ ************************************************************************/
+
+void TableExpression() : {}
+{
+	// modified from the standard -- we put the clauses up above in the
+	// query specification
+	// FromClause()
+	FromClause()
+}
+
+/*************************************************************************
+ *	FROM CLAUSE (Sec. 7.4, p. 143)
+ ************************************************************************/
+
+void FromClause() : {}
+{
+	<FROM> TableReference() ( <Comma> TableReference() )*
+}
+
+/*************************************************************************
+ *	WHERE CLAUSE (Sec. 7.6, p. 150)
+ ************************************************************************/
+
+void WhereClause() : {}
+{
+	<WHERE> SearchCondition()
+}
+
+/*************************************************************************
+ *	GROUP BY CLAUSE (Sec. 7.7, p. 151)
+ ************************************************************************/
+
+void GroupByClause() : {}
+{
+	<GROUP> <BY> GroupingColumnReferenceList()
+}
+
+void GroupingColumnReferenceList() #void : {}
+{
+	GroupingColumnReference() ( <Comma> GroupingColumnReference() )*
+}
+
+void GroupingColumnReference() #void : {}
+{
+	ColumnReference()
+}
+
+/*************************************************************************
+ *	HAVING CLAUSE (Sec. 7.8, p. 153)
+ ************************************************************************/
+
+void HavingClause() : {}
+{
+	<HAVING> SearchCondition()
+}
+
+/*************************************************************************
+ *	SEARCH CONDITION (Sec. 8.12, p. 188)
+ ************************************************************************/
+
+/*
+ ***** commented out because PSConditional objects don't map easily to
+       boolean operator trees
+	void SearchCondition() #void : {}
+	{
+		BooleanTerm() ( <OR> BooleanTerm() )*
+	}
+
+ *****
+*/
+
+// this is the PSConditional-compatible version of SearchCondition
+void SearchCondition() #void :
+	{
+		Token t;
+		ASTBooleanFactor lastFactor;
+	}
+{
+	lastFactor = BooleanFactor()
+	(
+		(t = <AND> | t = <OR>) { lastFactor.setOp(t.image); } lastFactor = BooleanFactor()
+	)*
+}
+
+// this is orphaned...it will make a class but no one refers to it as long as
+// the original version of SearchCondition is commented out
+void BooleanTerm() : {}
+{
+	BooleanFactor() ( <AND> BooleanFactor() )*
+}
+
+
+ASTBooleanFactor BooleanFactor() : {}
+{
+	[ <NOT> { jjtThis.setNegated(true); } ] BooleanTest()
+
+	{ return jjtThis; }
+}
+
+void BooleanTest() #void : {}
+{
+	BooleanPrimary()
+}
+
+void BooleanPrimary() #void : {}
+{
+	LOOKAHEAD(4) Predicate()
+	| <LeftParen> SearchCondition() <RightParen>
+}
+
+/*************************************************************************
+ *	PREDICATE (Sec. 8.1, p. 167)
+ ************************************************************************/
+
+void Predicate() #void : {}
+{
+	LOOKAHEAD(LikePredicate()) LikePredicate()	// look ahead to the <LIKE> keyword
+	| LOOKAHEAD(BetweenPredicate()) BetweenPredicate() // look ahead to the <BETWEEN> keyword
+	| LOOKAHEAD(NullPredicate()) NullPredicate()	// look ahead to the <NULL> keyword
+	| ComparisonPredicate()
+}
+
+/*************************************************************************
+ *	COMPARISON PREDICATE (Sec. 8.2, p. 169)
+ ************************************************************************/
+
+void ComparisonPredicate() :
+	{
+		int compType;
+	}
+{
+	RowValueConstructor() compType = CompOp() RowValueConstructor()
+	{ jjtThis.setOperator(compType); }
+}
+
+int CompOp() #void :
+	{
+		int compType;
+	}
+{
+	(
+	<EqualsOperator> { compType = ASTComparisonPredicate.EQ; }
+	| <NotEqualsOperator> { compType = ASTComparisonPredicate.NEQ; }
+	| <LessThanOperator> { compType = ASTComparisonPredicate.LT; }
+	| <GreaterThanOperator> { compType = ASTComparisonPredicate.GT; }
+	| <LessThanOrEqualsOperator> { compType = ASTComparisonPredicate.LTE; }
+	| <GreaterThanOrEqualsOperator> { compType = ASTComparisonPredicate.GTE; }
+	)
+	{ return compType; }
+}
+
+/*************************************************************************
+ *	BETWEEN PREDICATE (Sec. 8.3, p. 172)
+ ************************************************************************/
+
+void BetweenPredicate() : {}
+{
+	RowValueConstructor() [ <NOT> { jjtThis.setNegated(true); } ]
+		<BETWEEN> RowValueConstructor() <AND> RowValueConstructor()
+}
+
+/*************************************************************************
+ *	LIKE PREDICATE (Sec. 8.5, p. 175)
+ ************************************************************************/
+
+void LikePredicate() : {}
+{
+	DerivedColumn() [ <NOT> { jjtThis.setNegated(true); } ] <LIKE> DerivedColumn() [ EscapeClause() ]
+}
+
+void EscapeClause() : {}
+{
+	<ESCAPE> ColumnReference()
+}
+
+/*************************************************************************
+ *	NULL PREDICATE (Sec. 8.6, p. 178)
+ ************************************************************************/
+
+void NullPredicate() : {}
+{
+	ColumnReference() <IS> [ <NOT> { jjtThis.setNegated(true); } ] <NULL>
+}
+
+/*************************************************************************
+ *	ROW VALUE CONSTRUCTOR (Sec. 7.1, p. 139)
+ ************************************************************************/
+
+void RowValueConstructor() #void : {}
+{
+	DerivedColumn()
+	| NullSpecification()
+}
+
+void NullSpecification() #void : {}
+{
+	<NULL>
+}
+
+/*************************************************************************
+ *	COLLATE CLAUSE (Sec. 10.5, p. 207)
+ ************************************************************************/
+
+String CollateClause() #void :
+	{
+		String coll = null;
+	}
+{
+	<COLLATE> coll = CollationName()
+	{ return coll; }
+}
+
+String CollationName() #void :
+	{
+		Token t;
+	}
+{
+	t = <Identifier>
+	{ return t.image; }
+}
+
+/*************************************************************************
+ *	ORDER BY CLAUSE (Sec. 13.1, p. 307)
+ ************************************************************************/
+
+void OrderByClause() : {}
+{
+	<ORDER> <BY> SortSpecificationList()
+}
+
+void SortSpecificationList() #void : {}
+{
+	SortSpecification() ( <Comma> SortSpecification() )*
+}
+
+void SortSpecification() :
+	{
+		int spec = ASC;
+		String coll = null;
+	}
+{
+	SortKey() [ coll = CollateClause()  { jjtThis.setCollationName(coll); } ]
+		[ spec = OrderingSpecification() { jjtThis.setType(spec); } ]
+}
+
+void SortKey() #SortKey :
+	{
+		Token t;
+	}
+{
+	// the standard says we should use a column name, but we want to allow sorting
+	// by qualified column names
+	// ColumnName()
+	ColumnReference()
+
+	// the standard says this should be an unsigned integer, but since we have no
+	// public token for such a thing, we use an exact numeric literal and we will
+	// complain at runtime if a fractional part is specified
+	// the number refers to the ordinal 1-based number of the column in the
+	// derived table
+	| t = <ExactNumericLiteral> { jjtThis.setOrdinal(Integer.parseInt(t.image)); }
+}
+
+int OrderingSpecification() #void :
+	{
+		int spec = ASTSortSpecification.ASC;
+	}
+{
+	(
+	<ASC> { spec = ASTSortSpecification.ASC; } | <DESC> { spec = ASTSortSpecification.DESC; }
+	)
+
+	{ return spec; }
+}

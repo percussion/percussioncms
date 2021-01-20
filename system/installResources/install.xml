@@ -1,0 +1,1643 @@
+<?xml version="1.0"?>
+
+<!-- Build file for Rhythmyx install -->
+<project name="install" default="install" basedir="..">
+
+
+  <!-- 
+	  Load System Environment Variables 
+  -->
+ <!-- <property environment="env"/>-->
+
+  <echoproperties></echoproperties>
+  <property name="ant.contrib.resource" value="${toolsdir}/Ant/lib/ant-contrib-0.6.jar"/>
+	
+  <!-- Source properties -->
+  <property name="builddir" value="${basedir}/build"/>
+  <property name="distdir" value="${builddir}/dist"/>
+  <property name="libdir" value="${distdir}/lib"/>
+  <property name="classdir" value="${builddir}/classes"/>
+  <property name="appdir" value="${builddir}/app"/>
+  <property name="toolsdir" value="${basedir}/Tools"/>
+  <property name="springdir" value="${toolsdir}/Spring"/>
+  <property name="ant1.8dir" value="${toolsdir}/Ant1.8"/>
+  <property name="helpdir" value="${toolsdir}/JavaHelp"/>
+  <property name="eardir" value="${basedir}/ear"/>
+  <property name="testdir" value="${eardir}/test"/>
+  <property name="buildtemp" value="${builddir}/temp"/>
+  <property name="exts.store" value="${buildtemp}/ext"/>
+  <property name="wardir" value="${builddir}/tomcat/InstallableApps"/>
+  <property name="releasedir" value="${basedir}/release"/>
+  <property name="jdbcdir" value="${basedir}/jdbc"/>
+  <property name="ant.libdir" location="${basedir}/Tools/Ant/lib"/>
+  <property name="release.configdir" location="${releasedir}/config"/>
+  <property name="designdir" location="${basedir}/design"/>
+  <property name="design.dtddir" location="${designdir}/dtd"/>
+  <property name="design.schemasdir" location="${designdir}/schemas"/>
+  <property name="ffdir" location="${distdir}/RxFastForward"/>
+  <property name="ff.coredir" location="${ffdir}/Core"/>
+  <property name="ff.configdir" location="${ff.coredir}/Config"/>
+  <property name="ff.ceditorsdir" location="${ff.configdir}/ContentEditors"/>
+  <property name="ff.serverdir" location="${ff.configdir}/Server"/>
+  <property name="ff.datadir" location="${ff.configdir}/Data"/>
+  <property name="fastforwarddir" location="${basedir}/FastForward"/>
+  <property name="fastforward.coredir" location="${fastforwarddir}/Core"/>
+  <property name="ff.plugins" location="${ff.configdir}/Plugins"/>
+  <property name="ff.managednavdir" location="${ffdir}/ManagedNav"/>
+  <property name="ff.sfpdir" location="${ffdir}/SiteFolderPublishing"/>
+  <property name="configdir" location="${basedir}/config"/>
+  <property name="errorpagesdir" location="${basedir}/Defaults/ErrorPages"/>
+  <property name="stylesheetsdir" location="${basedir}/Defaults/stylesheets"/>
+  <property name="webservices.designdir" location="${basedir}/webservices/design"/>
+  <property name="webservices.loaderdir" location="${basedir}/webservices/sample/loader"/>
+  <property name="samplesdir" location="${basedir}/Samples"/>
+  <property name="htmlconverterdir" location="${basedir}/htmlconverter"/>
+  <property name="nativedir" location="${basedir}/Native"/>
+  <property name="sprintadir" location="${jdbcdir}/Sprinta"/>
+  <property name="dtd.appfilesdir" location="${basedir}/applications/DTD/ApplicationFiles"/>
+  <property name="sysAppSupportdir" location="${distdir}/RxApps/sysAppSupport"/>
+  <property name="docs.appfilesdir" location="${basedir}/applications/Docs/ApplicationFiles"/>
+  <property name="sys_resources.appfilesdir" location="${basedir}/cms/content/applications/sys_resources/ApplicationFiles"/>
+  <property name="extrasdir" location="${distdir}/extras"/>
+  <property name="rxAppSupportdir" location="${distdir}/RxApps/rxAppSupport"/>
+  <property name="rx_resources.appfilesdir" location="${basedir}/cms/content/applications/rx_resources/ApplicationFiles"/>
+  <property name="jbossdir" location="${eardir}/jboss-4.0"/>  
+  <property name="misctoolsdir" location="${basedir}/misctools"/>
+  <property name="releaseddocsdir" location="${basedir}/Released Documents"/>
+  <property name="bindir" location="${distdir}/bin"/>
+  <property name="objectstoredir" location="${distdir}/RxApps/ObjectStore"/>
+  <property name="sysAdminSupportdir" location="${basedir}/applications/Administration/ApplicationFiles"/>
+  <property name="designerdir" location="${basedir}/Designer"/> 
+  <property name="pcm-pkgmgtui.dir" location="${basedir}/../PCM-PkgMgtUI/www"/>
+  <property name="deployer.dir" location="${basedir}/../deployer"/>
+  <property name="packagesdir" location="${distdir}/Packages"/>
+  <property name="pkg.configdir" location="${basedir}/Packages/Percussion/config"/>
+  <property name="ppkg.dir" value="${install.dir}/Packages/Percussion/"/>
+  <property name="webuiwarname" value="cm"/>
+  <property name="webui.wardir" location="${basedir}/../WebUI/build/dist/${webuiwarname}war"/>
+  <property name="projects.dir" location="${basedir}/../projects"/>
+  <property name="exec.dir" location="${basedir}/buildResources/executables"/>
+  <property name="release.tomcatdir" location="${releasedir}/tomcat"/>
+  <property name="src.confmgr.immutable.dir" value="${basedir}/configmgr"/>
+	
+	<!-- User input properties -->
+  <property name="install.type" value="new"/>
+  <property name="install.dir" value="C:\Rhythmyx"/>
+  <property name="mutable.dir" value="${install.dir}/var"/>
+  <property name="symlink.dir" value="${mutable.dir}/mapping"/>
+  <property name="doSAAS" value="no"/>
+  <property name="repository" value="yes"/>
+  <property name="server" value="yes"/>
+  <property name="server.core" value="yes"/>
+  <property name="server.doc" value="yes"/>
+  <property name="server.devtools" value="yes"/>
+  <property name="fastforward" value="yes"/>
+  <property name="fastforward.apps" value="yes"/>
+  <property name="fastforward.content" value="yes"/>
+  <property name="devtools" value="yes"/>
+  <property name="devtools.core" value="yes"/>
+  <property name="devtools.doc" value="yes"/>
+  <!-- The Delivery Tier Services will be installed when install.dts is yes. -->
+  <property name="install.dts" value="no" />
+  <property name="db.driver" value="jtds:sqlserver"/>
+  <property name="db.user" value="sa"/>
+  <property name="db.pass" value="demo"/>
+  <property name="db.schema" value="dbo"/>
+  <property name="db.name" value=""/>
+  <property name="db.class" value="net.sourceforge.jtds.jdbc.Driver"/>
+  <property name="db.backend" value="MSSQL"/>
+  <property name="db.server" value="//localhost"/>
+  <property name="ds.name" value="RhythmyxData"/>
+  <property name="port" value="9992"/>
+  <property name="port.naming" value="9993"/>
+  <property name="port.rmi" value="9994"/>
+  <property name="port.jrmp" value="9995"/>
+  <property name="port.pooled" value="9996"/>
+  <property name="port.jms" value="9997"/>
+  <property name="port.ajp" value="9998"/>  
+  <property name="server.type" value="System Master"/>  
+  <property name="service.description" value="Percussion Rhythmyx Server"/>
+  <property name="service.name" value="Rhythmyx Server"/>
+  <property name="server.admin.user" value="Admin"/>
+  <property name="server.admin.password" value="demo"/>
+  <property name="delivery.target" value="default" />
+  <property name="nightly.install" value="no" />
+  <property name="license.code" value="100" />
+      
+  <!-- Installation properties -->
+  <property name="install.AppServer" location="${install.dir}/AppServer"/>
+  <property name="install.java" location="${install.dir}/JRE/bin/java" />
+  <property name="install.rx" location="${install.AppServer}/server/rx"/>
+  <property name="install.rxconf" location="${install.rx}/conf"/>
+  <property name="install.deploy" location="${install.rx}/deploy"/>
+  <property name="install.rxlib" location="${install.rx}/lib"/>
+  <property name="install.ear" location="${install.deploy}/rxapp.ear"/>
+  <property name="install.war" location="${install.ear}/rxapp.war"/>
+  <property name="install.webinf" location="${install.war}/WEB-INF"/>
+  <property name="install.rxappconfig" location="${install.webinf}/config"/>
+  <property name="install.rxapplib" location="${install.webinf}/lib"/>
+  <property name="install.spring" location="${install.rxappconfig}/spring"/>
+  <property name="install.classes" location="${install.webinf}/classes"/>
+  <property name="install.upgrade" location="${install.dir}/upgrade"/>
+  <property name="install.rxconfig" location="${install.dir}/rxconfig"/>
+  <property name="install.Installer" location="${install.rxconfig}/Installer"/>
+  <property name="install.Server" location="${install.rxconfig}/Server"/>
+  <property name="install.Categories" location="${install.rxconfig}/Categories"/>
+  <property name="install.ContentEditors" location="${install.Server}/ContentEditors"/>
+  <property name="install.ObjectStore" location="${install.dir}/ObjectStore"/> 
+  <property name="install.DTD" location="${install.dir}/DTD"/>
+  <property name="install.FastForward" location="${install.dir}/FastForward"/>
+  <property name="install.lib" location="${install.dir}/lib"/>
+  <property name="install.sys_packager" location="${install.dir}/sys_Packager"/>
+  <property name="install.sys_msm" location="${install.dir}/sys_MultiServerManager"/>
+  <property name="install.ErrorPages" location="${install.dir}/Defaults/ErrorPages"/>
+  <property name="install.StyleSheets" location="${install.dir}/Defaults/StyleSheets"/>
+  <property name="install.jtds" location="${install.dir}/jdbc/jtds"/>
+  <property name="install.oracle" location="${install.dir}/jdbc/oracle"/>
+  <property name="install.db2" location="${install.dir}/jdbc/db2"/>
+  <property name="install.derby" location="${install.dir}/jdbc/derby"/>
+  <property name="install.mysql" location="${install.dir}/jdbc/mysql"/>
+  <property name="install.AppletJars" location="${install.dir}/sys_resources/AppletJars"/>
+  <property name="install.WebServices" location="${install.dir}/WebServices"/>
+  <property name="install.Samples" location="${install.dir}/Samples"/>
+  <property name="install.I18n" location="${install.rxconfig}/I18n"/>
+  <property name="install.XSplit" location="${install.rxconfig}/XSpLit"/>
+  <property name="install.rxlt" location="${install.dir}/rxlt"/>
+  <property name="install.sprinta" location="${install.dir}/jdbc/sprinta"/>
+  <property name="install.Administration" location="${install.dir}/Administration"/>
+  <property name="install.Docs" location="${install.dir}/Docs"/>
+  <property name="install.sys_resources" location="${install.dir}/sys_resources"/>
+  <property name="install.rx_resources" location="${install.dir}/rx_resources"/>
+  <property name="install.InstallableApps" location="${install.dir}/InstallableApps"/>
+  <property name="install.AllInOne" location="${install.InstallableApps}/AllInOne"/>
+  <property name="install.RemotePublisher" location="${install.InstallableApps}/RemotePublisher"/>
+  <property name="install.RxApp" location="${install.InstallableApps}/RxApp"/>
+  <property name="install.InlineLinkConverter" location="${install.dir}/InlineLinkConverter"/>
+  <property name="install.VariantConverter" location="${install.dir}/VariantConverter"/>
+  <property name="install.bin" location="${install.dir}/bin"/>
+  <property name="install.Administrator" location="${install.rxconfig}/Administrator"/>
+  <property name="install.Workflow" location="${install.rxconfig}/Workflow"/>
+  <property name="install.Proxy" location="${install.rxconfig}/Proxy"/>
+  <property name="install.ContentConnector" location="${install.rxconfig}/ContentConnector"/>
+  <property name="install.Packages" location="${install.rxconfig}/Packages"/>
+  <property name="install.jbossweb" location="${install.deploy}/jboss-web.deployer"/>
+  <property name="install.Repository" location="${install.dir}/Repository"/>
+  <property name="install.languageToolTimeOut" value="120000"/><!-- changed to 2 minutes for testing, it's been 10 minutes -->
+  <property name="install.config" location="${install.dir}/config"/>
+  <property name="install.LDAP" location="${install.rxconfig}/LDAP"/>
+  <property name="install.logs" location="${install.dir}/logs"/>
+  <property name="install.confmgr.immutable.dir" value="${install.dir}/configmgr"/>
+	
+  <!-- Projects Installation property -->
+  <property name="INSTALL_PROJECTS" value="yes"/>
+
+  <!-- Package properties -->
+  <property name="ant.install" value="com.percussion.ant.install"/>
+
+  <!-- Repository properties -->
+  <property name="DB_SERVER" value="${db.server}"/>
+  <property name="DB_DRIVER_NAME" value="${db.driver}"/>
+  <property name="DB_DRIVER_CLASS_NAME" value="${db.class}"/>
+  <property name="DB_SCHEMA" value="${db.schema}" />
+  <condition property="DB_NAME" value="${db.name}">
+    <not>
+      <equals arg1="${db.name}" arg2="null" />
+    </not>
+  </condition>
+  <property name="DB_BACKEND" value="${db.backend}"/>
+  
+  <!-- Refresh files property name -->
+  <property name="REFRESH_PROP_NAME" value="REFRESH"/>
+  
+
+	
+  <!-- Define the install classpath -->
+      <path id="ant.deps">
+    <fileset dir="${libdir}" includes="*.jar"/>
+  	<pathelement location="${install.mysql}/mysql-connector.jar"/>
+  	<pathelement location="${toolsdir}/Ant/lib/ant-contrib-0.6.jar"/>
+        <pathelement location="${toolsdir}/Ant/build/lib/psantextensions.jar"/>
+  	<pathelement location="${toolsdir}/Ehcache/ehcache-1.4.1.jar"/>
+        <pathelement location="${toolsdir}/Commons/commons-lang-2.4.jar"/>
+        <pathelement location="${toolsdir}/Commons/commons-logging-1.1.1.jar"/>
+      	<pathelement location="${toolsdir}/Commons/commons-codec-1.10.jar"/>
+      	<pathelement location="${toolsdir}/Commons/commons-httpclient-3.1.jar"/>
+      	<pathelement location="${toolsdir}/Commons/commons-collections-3.2.2.jar"/>
+      	<pathelement location="${toolsdir}/Commons/commons-io-2.0.1.jar"/>
+        <pathelement location="${toolsdir}/Commons/commons-io-2.0.1.jar"/>
+      	<pathelement location="${toolsdir}/servlet/servlet.jar"/>
+        <pathelement location="${toolsdir}/log4j/log4j.jar"/>
+        <pathelement location="${toolsdir}/saxon/saxon.jar"/>
+        <pathelement location="${toolsdir}/Ant/lib/ant-contrib-0.6.jar"/>
+      	<pathelement location="${toolsdir}/Stax/stax-api-1.0.1.jar"/>
+        <pathelement location="${toolsdir}/json/lib/json.jar"/>
+      	<pathelement location="${toolsdir}/xerces/xml-apis.jar"/>
+      	<pathelement location="${toolsdir}/xerces/xercesImpl.jar"/>
+      	<pathelement location="${install.derby}/derbyclient.jar"/>
+  </path>
+      <classloader classpathref="ant.deps"/>
+  
+  
+
+  <!-- Define package installer classpath -->
+  <path id="PACKAGE_INSTALLER.CLASSPATH">
+   <pathelement location="${install.lib}\substance.jar"/>
+   <pathelement location="${install.lib}\miglayout-3.6.3-swing.jar"/>
+   <pathelement location="${install.rxapplib}\rxdeployer.jar"/>
+   <pathelement location="${install.lib}\pspackagerui.jar"/>
+   <pathelement location="${install.rxapplib}\percbeans.jar"/>
+   <pathelement location="${install.rxapplib}\rxmisctools.jar"/>
+   <pathelement location="${install.rxapplib}\rhythmyx.jar"/>
+   <pathelement location="${install.rxapplib}\rxclient.jar"/>
+   <pathelement location="${install.rxlib}\log4j.jar"/>
+   <pathelement location="${install.rxapplib}\commons-codec-1.11.jar"/>
+   <pathelement location="${install.rxapplib}\rxutils.jar"/>
+   <pathelement location="${install.rxapplib}\commons-lang-2.4.jar"/>
+   <pathelement location="${install.rxlib}\commons-logging-1.1.1.jar"/>
+   <pathelement location="${install.rxlib}\saxon.jar"/>
+  </path>
+  
+  <!-- Define the language tool base classpath -->
+  <path id="LANGUAGE_TOOL.CLASSPATH">
+  	<pathelement location="${toolsdir}/xerces/xercesImpl.jar"/>
+  	<pathelement location="${toolsdir}/xerces/xml-apis.jar"/>  	    
+  	<pathelement location="${toolsdir}/xalan/xalan.jar"/>
+    <pathelement location="${install.Repository}/lib/derbyclient.jar"/>
+    <pathelement location="${install.mysql}/mysql-connector.jar"/>
+    <pathelement location="${jdbcdir}/DB2/db2jcc.jar"/>
+    <pathelement location="${jdbcdir}/DB2/db2jcc_license_cu.jar"/>
+    <pathelement location="${jdbcdir}/jtds/jtds.jar"/>
+    <pathelement location="${jdbcdir}/oracle9/ojdbc14.jar"/>
+    <pathelement location="${jdbcdir}/Sprinta/Sprinta2000.jar"/>
+    <fileset dir="${libdir}">
+      <include name="rxi18n.jar"/>
+      <include name="rxclient.jar"/>
+      <include name="rxtablefactory.jar"/>
+      <include name="rxmisctools.jar"/>
+      <include name="rxserver.jar"/>
+      <include name="rxutils.jar"/>
+      <include name="rxservices.jar"/>
+    </fileset>
+    <fileset dir="${toolsdir}/Commons">
+      <include name="commons-codec-1.11.jar"/>
+      <include name="commons-io-1.1.jar"/>
+      <include name="commons-lang-2.4.jar"/>
+      <include name="commons-logging-1.1.1.jar"/>
+    </fileset>
+    <pathelement location="${toolsdir}/log4j/log4j.jar"/>
+    <pathelement location="${install.rxlib}/jboss.jar"/>
+  </path>
+	
+
+
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties" loaderref="ant.coreLoader">
+
+  </taskdef>
+    
+  <!-- Custom task definitions -->  
+  <taskdef name="PSAction" classname="${ant.install}.PSAction" loaderref="ant.coreLoader">
+
+  </taskdef>
+  
+  <taskdef name="PSMakeLasagna" classname="${ant.install}.PSMakeLasagna" loaderref="ant.coreLoader">
+ 
+  </taskdef>
+  
+  <taskdef name="PSConvertOraLongToLOB" classname="${ant.install}.PSConvertOraLongToLOB" loaderref="ant.coreLoader">
+  </taskdef>
+
+  <taskdef name="PSDBXMLDataUpdate" classname="${ant.install}.PSDBXMLDataUpdate" loaderref="ant.coreLoader">
+  </taskdef>
+
+  <taskdef name="PSUpgrade" classname="${ant.install}.PSUpgrade" loaderref="ant.coreLoader">
+   
+  </taskdef>
+
+  <taskdef name="PSTrimRxPubDocs" classname="${ant.install}.PSTrimRxPubDocs" loaderref="ant.coreLoader">
+  
+  </taskdef>
+
+  <taskdef name="PSTableAction" classname="${ant.install}.PSTableAction" loaderref="ant.coreLoader">
+ 
+  </taskdef>
+
+  <taskdef name="PSCreateTableBackupAction" classname="${ant.install}.PSCreateTableBackupAction" loaderref="ant.coreLoader">
+ 
+  </taskdef>
+
+  <taskdef name="PSExecSQLStmt" classname="${ant.install}.PSExecSQLStmt" loaderref="ant.coreLoader">
+ 
+  </taskdef>
+  
+  <taskdef name="PSUpgradeRepository" classname="${ant.install}.PSUpgradeRepository" loaderref="ant.coreLoader">
+  
+  </taskdef>
+    	
+  <taskdef name="PSExtensions" classname="${ant.install}.PSExtensions" loaderref="ant.coreLoader">
+ 
+  </taskdef>  	
+  
+  <taskdef name="PSCopyFileAction" classname="${ant.install}.PSCopyFileAction" loaderref="ant.coreLoader">
+   
+  </taskdef> 
+  
+  <taskdef name="PSMergeXMLAction" classname="${ant.install}.PSMergeXMLAction" loaderref="ant.coreLoader">
+  
+  </taskdef>
+  
+  <taskdef name="PSBackupFiles" classname="${ant.install}.PSBackupFiles" loaderref="ant.coreLoader">
+    
+  </taskdef> 
+  
+  <taskdef name="PSConfigureDatasource" classname="${ant.install}.PSConfigureDatasource" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+  <taskdef name="PSConfigurePort" classname="${ant.install}.PSConfigurePort" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+  <taskdef name="PSUpgradeServerPageTags" classname="${ant.install}.PSUpgradeServerPageTags" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+  <taskdef name="PSBrandProduct" classname="${ant.install}.PSBrandProduct" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+  <taskdef name="PSCopyProperties" classname="${ant.install}.PSCopyProperties" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+  <taskdef name="PSPropertySet" classname="${ant.install}.PSPropertySet" loaderref="ant.coreLoader">
+  </taskdef> 
+  
+  <taskdef name="PSServerInstallEndPanel" classname="${ant.install}.PSServerInstallEndPanel" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+  <taskdef name="PSInstallLogTablesAction" classname="${ant.install}.PSInstallLogTablesAction" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+  <taskdef name="PSUpdateTomcatPortInTables" classname="${ant.install}.PSUpdateTomcatPortInTables" loaderref="ant.coreLoader">
+   
+  </taskdef> 
+  
+  <taskdef name="PSCleanProps" classname="${ant.install}.PSCleanProps" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+  <taskdef name="PSXMLFileUpdate" classname="${ant.install}.PSXMLFileUpdate" loaderref="ant.coreLoader">
+
+  </taskdef> 
+  
+  <taskdef name="PSUpdatePropFileWizAction" classname="${ant.install}.PSUpdatePropFileWizAction" loaderref="ant.coreLoader">
+   
+  </taskdef> 
+  
+  <taskdef name="PSRxFix" classname="${ant.install}.PSRxFix" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+  <taskdef name="PSCreateScheduledPublishingScript" classname="${ant.install}.PSCreateScheduledPublishingScript" loaderref="ant.coreLoader">
+    
+  </taskdef> 
+  
+  <taskdef name="PSUpdateWebApps" classname="${ant.install}.PSUpdateWebApps" loaderref="ant.coreLoader">
+    
+  </taskdef> 
+  
+  <taskdef name="PSModifyProviders" classname="${ant.install}.PSModifyProviders" loaderref="ant.coreLoader">
+   
+  </taskdef> 
+  
+  <taskdef name="PSUpdateLoginConfigXML" classname="${ant.install}.PSUpdateLoginConfigXML" loaderref="ant.coreLoader">
+
+  </taskdef> 
+  
+  <taskdef name="PSCopy" classname="${ant.install}.PSCopy" loaderref="ant.coreLoader">
+
+  </taskdef> 
+  
+  <taskdef name="PSCheckRunningServer" classname="${ant.install}.PSCheckRunningServer" loaderref="ant.coreLoader">
+ 
+  </taskdef> 
+  
+  <taskdef name="PSCheckInstallLog" classname="${ant.install}.PSCheckInstallLog" loaderref="ant.coreLoader">
+  
+  </taskdef> 
+  
+   <taskdef name="PSUpdateTableLicense" classname="${ant.install}.PSUpdateTableLicense" loaderref="ant.coreLoader">
+  
+  </taskdef>
+
+  <!-- Custom type definitions -->
+  <typedef name="PSVersionBuildNumberProdCondition" classname="${ant.install}.PSVersionBuildNumberProdCondition" loaderref="ant.coreLoader">
+
+  </typedef>
+  
+  <typedef name="PSTableViewExistsWizCondition" classname="${ant.install}.PSTableViewExistsWizCondition" loaderref="ant.coreLoader">
+  
+  </typedef>
+  
+  <typedef name="PSFFTableDataInstallProdCondition" classname="${ant.install}.PSFFTableDataInstallProdCondition" loaderref="ant.coreLoader">
+ 
+  </typedef>
+  
+  <typedef name="PSSprintaCondition" classname="${ant.install}.PSSprintaCondition" loaderref="ant.coreLoader">
+  
+  </typedef>
+  
+  <typedef name="PSEvalCondition" classname="${ant.install}.PSEvalCondition" loaderref="ant.coreLoader">
+   
+  </typedef>
+  
+  <typedef name="PSXMLElementCondition" classname="${ant.install}.PSXMLElementCondition" loaderref="ant.coreLoader">
+ 
+  </typedef>
+  
+  <typedef name="PSPropertyCondition" classname="${ant.install}.PSPropertyCondition" loaderref="ant.coreLoader">
+
+  </typedef>
+
+  <typedef name="PSPkgConfigFileEmptyCondition" classname="${ant.install}.PSPkgConfigFileEmptyCondition" loaderref="ant.coreLoader">
+   
+  </typedef>
+
+  <typedef name="PSRenameDeprecatedApps" classname="${ant.install}.PSRenameDeprecatedApps" loaderref="ant.coreLoader">
+ 
+  </typedef>
+	
+  <typedef name="PSPropertyCondition" classname="${ant.install}.PSPropertyCondition" loaderref="ant.coreLoader">
+   
+  </typedef>
+
+  <!-- The main install target -->
+  <target name="install" depends="init, detectPlatform">
+    <!-- Pre-install sequence for DEVELOPMENT upgrades -->
+    <if>
+      <equals arg1="${install.type}" arg2="upgrade"/>
+      <then>
+        <antcall target="preInstallForDevUpg"/>
+      </then>
+    </if>
+    <if>
+      <equals arg1="${repository}" arg2="yes"/>
+      <then>
+        <!-- Launch the repository installation script -->
+        <ant antfile="installResources/installRepository.xml" inheritrefs="true">
+      	 <reference refid="ant.deps"></reference>
+        </ant>
+      </then>
+    </if>
+    <if>
+      <equals arg1="${server}" arg2="yes"/>
+      <then>
+        <!-- Install the workflow properties file -->
+      	<mkdir dir="${install.Workflow}"/>
+      	<PSCopy tofile="${install.Workflow}/rxworkflow.properties" file="${basedir}/workflow/config/rxworkflow.properties" replaceType="never"/>
+      	
+      	<!-- Launch the server installation script -->
+      	<ant antfile="installResources/installServer.xml" inheritrefs="true"/>
+
+        <!-- Install Dep Webserver -->
+        <if>
+        	<or>
+           	<equals arg1="${install.dts}" arg2="yes" />
+        	<equals arg1="${install.dts}" arg2="true" />
+      	   	</or>
+        	<then>	
+      		 	<echo message="Installing Percussion DTS..." />
+        		<echo>TODO ***********************************************************************</echo>
+	        	<!--<ant antfile="installResources/installDTS.xml" inheritrefs="true"/>-->
+      		</then>
+		</if>
+		<!-- Install Bat Files -->
+        <antcall target="installBatFiles" inheritrefs="true"/>
+      </then>
+    </if>
+    <if>
+      <and>
+        <equals arg1="${devtools}" arg2="yes"/>
+		<or>
+        <equals arg1="${os}" arg2="windows"/>
+		<equals arg1="${os}" arg2="linux"/>
+		</or>
+      </and>
+      <then>
+        <!-- Launch the development tools installation script -->
+        <ant antfile="installResources/installDevTools.xml" inheritrefs="true"/>
+      </then>
+    </if>
+    <if>
+      <and>
+        <equals arg1="${fastforward}" arg2="yes"/>
+        <equals arg1="${install.type}" arg2="new"/>
+      </and>
+      <then>
+        <!-- Launch the fastforward installation script -->
+        <ant antfile="installResources/installFastForward.xml" inheritrefs="true"/>
+      </then>
+    </if>
+  	
+    <!-- Post-processing and configuration -->
+    <antcall target="postInstall" inheritrefs="true"/>
+  </target>
+
+  <!-- Initialize the installation -->
+  <target name="init">
+    <!-- Set the installation directory and refresh files property -->
+  	<echo>Installation dir is ${install.dir}</echo>
+    <PSAction rootDir="${install.dir}" refreshProperty="${REFRESH_PROP_NAME}"/>
+    
+    <!-- Check for running server and stop build (DEVELOPMENT only) -->
+    <if>
+      <isset property="DEVELOPMENT"/>
+      <then>
+        <echo>Checking for running server...</echo>
+        <PSCheckRunningServer/>
+        <echo>Did not detect running server...</echo>
+      </then>
+    </if>
+    
+    <!-- Install Version.properties file -->
+    <PSCopy todir="${install.dir}" file="${builddir}/classes/com/percussion/util/Version.properties"/>
+  </target>
+
+  <!-- Performs necessary steps required for upgrades from the development environment only -->
+  <target name="preInstallForDevUpg" if="DEVELOPMENT">
+  	
+  	<!-- Load the current Rhythmyx repository information for upgrade -->
+  	<if>
+  	  <or>
+        <equals arg1="${repository}" arg2="yes"/>
+  	    <equals arg1="${server}" arg2="yes"/>
+	  </or>
+	  <then>
+	    <PSUpgradeRepository/>
+	  </then>
+  	</if>
+  	
+  	<!-- Server Pre Install -->
+  	<if>
+  	  <equals arg1="${server}" arg2="yes"/>
+  	  <then>
+  	    <!-- Convert DB2 driver to type 4 -->
+  	    <if>
+  	      <and>
+  	        <equals arg1="${db.backend}" arg2="db2"/>
+  	        <isSet property="VERSION_50_TO_57_200511R01"/>
+              </and>
+              <then>
+                <!-- Backup repository properties file -->
+  	        <PSCopy tofile="${install.Installer}/rxrepository.properties.bak" file="${install.Installer}/rxrepository.properties"/>
+  	        
+  	        <echo>Running Rhythmyx Server Properties Editor...</echo>
+  	        <if>
+  	          <equals arg1="${os}" arg2="windows"/>
+  	          <then>
+  	            <exec executable="${install.dir}/RhythmyxServerPropertiesEditor.exe">
+		       <arg value="-convert"/>
+  	            </exec>
+  	          </then>
+  	          <elseif>
+  	            <or>
+  	              <equals arg1="${os}" arg2="solaris"/>
+  	              <equals arg1="${os}" arg2="linux"/>
+  	            </or>
+  	            <then>
+  	              <exec executable="${install.dir}/RhythmyxServerPropertiesEditor.bin">
+		        <arg value="-convert"/>
+  	              </exec>
+  	            </then>
+  	          </elseif>
+  	        </if>
+  	         	        
+  	        <!-- Restore repository properties file -->
+          	<PSCopy tofile="${install.Installer}/rxrepository.properties" file="${install.Installer}/rxrepository.properties.bak"/>
+              </then>
+  	    </if>
+  	  	
+  	    <!-- Run pre-upgrade plugins -->
+  	    <PSCopy tofile="${install.upgrade}/rxPreUpgradePlugins.xml" file="${releasedir}/src/com/percussion/rxupgrade/rxPreUpgradePlugins.xml"/>
+  	    <PSUpgrade upgradeFileNames="rxPreUpgradePlugins.xml"/>
+  	  	
+  	    <if>
+  	      <isSet property="VERSION_50_TO_57"/>
+  	      <then>
+  	   	<if>
+  	 	  <available file="${install.AppServer}"/>
+  	          <then>
+  		    <move tofile="${install.AppServer}.bak" file="${install.AppServer}"/>
+  	  	  </then>
+  	        </if>
+  	
+  	        <move tofile="${install.lib}.unused" file="${install.lib}" failonerror="false"/>
+  	  	<move tofile="${install.dir}/libextras" file="${install.dir}/libextras.unused" failonerror="false"/>
+  	  	<move tofile="${install.Server}/rxlogger.properties.old" file="${install.Server}/rxlogger.properties" failonerror="false"/>
+  	      </then>
+	    </if>
+          </then>
+        </if>
+  </target>
+	
+  <!-- Performs post install processing and configuration -->
+  <target name="postInstall">
+  	<PSAction  rootDir="${install.dir}" refreshProperty="${REFRESH_PROP_NAME}"/>
+  	<!-- 
+  		If we are doing a SAAS build then we will need to setup some SYMLINKS POST-INSTALL 
+  	-->
+  	<if>
+  		<or>
+  			<istrue value="${env.DO_SAAS}"/>
+  			<equals arg1="${doSAAS}" arg2="yes"/>
+  			<equals arg1="${doSAAS}" arg2="true"/>
+  		</or>
+  		<then>
+  			<echo message="Performing a SAAS Installation..."/>
+  			
+  			<!-- Output combined schemas needed for SaaS database update -->
+  			<echo message="Creating schema data and definitions"/>
+  			
+  			<!-- combine Table definitions -->
+  			<xslt in="${release.configdir}\cmstableDef.xml" out="${install.rxconfig}\Installer\Schema\schemaDefinitions.xml" style="installResources\combineSchemaFiles.xsl">
+  				<param name="secondSchema" expression="${fastforward.coredir}\Config\Data\RxffTableDef.xml"/>
+  			</xslt>
+  				
+  			<!-- Combine Table Data -->
+  			<xslt in="${release.configdir}\cmstableData.xml" out="${install.rxconfig}\Installer\Schema\schemaData.xml" style="installResources\combineSchemaFiles.xsl">
+  				<param name="secondSchema" expression="${fastforward.coredir}\Config\Data\RxffTableData.xml"/>
+  			</xslt>
+  			  			
+  			<!-- SymLinks -->
+  			<echo message="Configuring SYMLINKS"/>
+  			
+  			<property name="symlink.unfiltered.map" value="installResources/symlinks.properties"/>
+  			<property name="symlink.map" value="installResources/symlinks-filtered.properties"/>
+  						  			
+  			<!-- 
+  				 Create a temporary copy of our symlink map - we don't want to overwrite the copy 
+  				 with the tokens to filter. We want that copy left untouched. Otherwise...after the 
+  				 first install this script will be re-written without the property placeholders...
+  				 effectively leaving you with a hard-coded install dir. (What would happen if you 
+  				 went to reinstall with a different home directory then???)
+  			-->
+  			<copy file="${symlink.unfiltered.map}" tofile="${symlink.map}" overwrite="true"/>
+  			
+  			<replace file="${symlink.map}">
+  				<replacefilter token="@install.dir@" value="${install.dir}"/>
+  				<replacefilter token="@symlink.dir@" value="${symlink.dir}"/>
+  			</replace>
+  			
+  			<ant antfile="installResources/installSymlinks.xml" inheritrefs="true"/>
+  			
+  			<echo message="Copying over Configuration Manager YAML IMMUTABLE Task Definitions"/>
+  			
+  			<copy todir="${install.confmgr.immutable.dir}" overwrite="true">
+  				<fileset dir="${src.confmgr.immutable.dir}"/>
+  			</copy>
+  		</then>
+  	</if>
+  	
+    <condition property="SPRINTA_INSTALL">
+      <PSSprintaCondition/>
+    </condition>
+  	<condition property="VERSION_1_TO_2.1">
+  	    <PSVersionBuildNumberProdCondition
+  	            buildFrom="-1"
+  	            buildTo="-1"
+  	            majorVersionFrom="1"
+  	            majorVersionTo="2"
+  	            minorVersionFrom="0"
+  	            minorVersionTo="1"/>
+  	</condition>
+	<condition property="VERSION_1_TO_2.3">
+  	    <PSVersionBuildNumberProdCondition
+  	            buildFrom="-1"
+  	            buildTo="-1"
+  	            majorVersionFrom="1"
+  	            majorVersionTo="2"
+  	            minorVersionFrom="0"
+  	            minorVersionTo="3"/>
+  	</condition>
+	<condition property="VERSION_2_6">
+  	    <PSVersionBuildNumberProdCondition
+  	            buildFrom="-1"
+  	            buildTo="-1"
+  	            majorVersionFrom="1"
+  	            majorVersionTo="2"
+  	            minorVersionFrom="0"
+  	            minorVersionTo="6"/>
+  	</condition>
+  	 <condition property="VERSION_5_2">
+  	        <PSVersionBuildNumberProdCondition
+  	                buildFrom="-1"
+  	                buildTo="-1"
+  	                majorVersionFrom="1"
+  	                majorVersionTo="5"
+  	                minorVersionFrom="0"
+  	                minorVersionTo="2"/>
+  	 </condition>
+  	<!-- Server Post Install -->
+    <if>
+      <equals arg1="${server}" arg2="yes"/>
+      <then>
+      
+        <!-- Set Rhythmyx Server Type -->
+        <PSXMLFileUpdate
+          backupXMLFile="true"
+          resolveXslFileContents="true"
+          xmlFile="rxconfig/Server/config.xml"
+          xslFile="${releasedir}/src/com/percussion/rxupgrade/RhythmyxSetServerType.xsl"
+          token="\$W\(RxServerTypePanelBean.serverType\)"
+          value="${server.type}"/>
+        
+        <!-- New Install Only -->
+        <if>
+          <equals arg1="${install.type}" arg2="new"/>
+          <then>
+            <!-- Update xml files -->
+            <antcall target="updateXmlFiles" inheritall="true"/>
+                          
+            <!-- Set Server Port Property -->
+            <PSUpdatePropFileWizAction 
+              onlyIfExists="false"
+              propertyFile="${install.Administrator}/admin.properties"
+              propertyName="last_port_opened"
+              propertyValue="${port}"/>
+            <PSUpdatePropFileWizAction 
+	      onlyIfExists="false"
+	      propertyFile="${install.dir}/eclipse/plugins/com.percussion.workbench_1.0.0/default-config/rxconfig/Workbench/designer.properties"
+	      propertyName="last_port_opened"
+              propertyValue="${port}"/>
+            <PSUpdatePropFileWizAction 
+	      onlyIfExists="false"
+	      propertyFile="${install.Server}/server.properties"
+	      propertyName="bindPort"
+              propertyValue="${port}"/>
+            
+            <!-- Resolve Rhythmyx Configuration Files -->
+            <antcall target="resolveRxJBossFiles" inheritall="true"/>
+          </then>
+        </if>
+        
+        <!-- Upgrade Only -->
+        <if>
+          <equals arg1="${install.type}" arg2="upgrade"/>
+          <then>
+            
+            <!-- Resolve Rhythmyx Configuration Files -->
+            <antcall target="resolveRxJBossFilesUpgrade" inheritall="true"/>
+            
+            <!-- Run Upgrade Plugins -->
+            <PSUpgrade upgradeFileNames="rxupgrade.xml,rxOrphanedDataCleanupPlugins.xml"/>
+            
+            <!-- Update xml files -->
+            <antcall target="updateXmlFiles" inheritall="true"/>
+                         
+            <!-- Rename deprecated system apps if any were found during pre-upgrade checks -->
+            <PSRenameDeprecatedApps/>
+     
+         </then>
+        </if>
+        
+        <!-- CONTENTVARIANTS View -->
+        <PSDropView view="CONTENTVARIANTS"/>
+        <PSExecSQLStmt
+	  printExceptionStackTrace="true"
+	  qualifyTableNames="PSX_TEMPLATE,CONTENTTYPES,PSX_CONTENTTYPE_TEMPLATE"
+	  qualifyViewNames="CONTENTVARIANTS"
+          sql="CREATE VIEW CONTENTVARIANTS AS SELECT T.TEMPLATE_ID VARIANTID, C.CONTENTTYPEID, T.LABEL VARIANTDESCRIPTION, T.STYLESHEETNAME, '../assembler/render' ASSEMBLYURL, T.OUTPUTFORMAT, T.AATYPE, T.DESCRIPTION, T.PUBLISHWHEN, T.LOCATIONPREFIX, T.LOCATIONSUFFIX FROM PSX_TEMPLATE T, CONTENTTYPES C, PSX_CONTENTTYPE_TEMPLATE CT WHERE T.TEMPLATE_ID = CT.TEMPLATE_ID AND C.CONTENTTYPEID = CT.CONTENTTYPEID"/>
+        
+        <!-- Save Rhythmyx Service Information -->
+        <if>
+          <equals arg1="${os}" arg2="windows"/>
+          <then>
+            <PSServerInstallEndPanel
+              propertyFileName="rxconfig/Installer/installation.properties"
+              serviceDesc="${service.description}"
+              serviceName="${service.name}"/>
+            <PSInstallLogTablesAction/>
+          </then>
+        </if>
+        
+        <!-- Create Community Views -->
+        <if>
+          <equals arg1="${repository}" arg2="yes"/>
+          <then>
+            <!-- First drop views if they exist -->
+            <PSDropView view="RXSITECOMMUNITY"/>
+            <PSDropView view="RXCONTENTTYPECOMMUNITY"/>
+            <PSDropView view="RXVARIANTCOMMUNITY"/>
+            <PSDropView view="RXWORKFLOWCOMMUNITY"/>
+            <PSDropView view="PSX_DISPLAYFORMATPROPERTY_VIEW"/>
+            <PSDropView view="PSX_SEARCHPROPERTIES_VIEW"/>
+            <PSDropView view="PSX_MENUVISIBILITY_VIEW"/>
+            <!-- Drop community permission view after dependent views -->
+            <PSDropView view="PSX_COMMUNITY_PERMISSION_VIEW"/>
+
+            <PSDropView view="RXSITEITEMS"/>
+            <!-- Drop pubdocs view after dependent view -->
+            <PSDropView view="RXPUBDOCS"/>
+
+            <!-- PSX_COMMUNITY_PERMISSION_VIEW -->
+            <PSExecSQLStmt
+	      printExceptionStackTrace="true"
+	      qualifyTableNames="PSX_ACLS,PSX_ACLENTRIES,PSX_ACLENTRYPERMISSIONS,RXCOMMUNITY"
+	      qualifyViewNames="PSX_COMMUNITY_PERMISSION_VIEW"
+         sql="create view PSX_COMMUNITY_PERMISSION_VIEW as select acl.OBJECTID, acl.OBJECTTYPE, com.COMMUNITYID, aclperm.PERMISSION from PSX_ACLS acl, PSX_ACLENTRIES entry, PSX_ACLENTRYPERMISSIONS aclperm, RXCOMMUNITY com where acl.ID = entry.ACLID and entry.ID = aclperm.ENTRYID and entry.TYPE = 10 and entry.NAME = com.NAME and aclperm.PERMISSION = 40 union select acl.OBJECTID, acl.OBJECTTYPE, com.COMMUNITYID, aclperm.PERMISSION from PSX_ACLS acl, PSX_ACLENTRIES entry, PSX_ACLENTRYPERMISSIONS aclperm, RXCOMMUNITY com where acl.ID = entry.ACLID and entry.ID = aclperm.ENTRYID and entry.TYPE = 10 and entry.NAME = 'AnyCommunity' and aclperm.PERMISSION = 40 and com.NAME not in (select entry2.NAME from PSX_ACLENTRIES entry2 where acl.ID = entry2.ACLID and entry2.TYPE = 10)"
+         sqlOracle="create view PSX_COMMUNITY_PERMISSION_VIEW as select acl.OBJECTID, acl.OBJECTTYPE, com.COMMUNITYID, aclperm.PERMISSION from PSX_ACLS acl, PSX_ACLENTRIES entry, PSX_ACLENTRYPERMISSIONS aclperm, RXCOMMUNITY com where acl.ID = entry.ACLID and entry.ID = aclperm.ENTRYID and entry.TYPE = 10 and aclperm.PERMISSION = 40 and (entry.NAME = com.NAME or (entry.NAME = 'AnyCommunity' and com.NAME not in (select entry2.NAME from PSX_ACLENTRIES entry2 where acl.ID = entry2.ACLID and entry2.TYPE = 10)))" />
+            <!-- RXSITECOMMUNITY -->
+            <PSExecSQLStmt
+	      printExceptionStackTrace="true"
+	      qualifyViewNames="RXSITECOMMUNITY,PSX_COMMUNITY_PERMISSION_VIEW"
+	      sql="create view RXSITECOMMUNITY as select p.OBJECTID SITEID, p.COMMUNITYID from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 9 and p.PERMISSION = 40"/>
+	    
+	    <!-- RXCONTENTTYPECOMMUNITY -->
+	    <PSExecSQLStmt
+	      printExceptionStackTrace="true"
+	      qualifyViewNames="RXCONTENTTYPECOMMUNITY,PSX_COMMUNITY_PERMISSION_VIEW"
+	      sql="create view RXCONTENTTYPECOMMUNITY as select p.OBJECTID CONTENTTYPEID, p.COMMUNITYID from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 2 and p.PERMISSION = 40"/>
+	    
+	    <!-- RXVARIANTCOMMUNITY -->
+	    <PSExecSQLStmt
+	      printExceptionStackTrace="true"
+	      qualifyViewNames="RXVARIANTCOMMUNITY, PSX_COMMUNITY_PERMISSION_VIEW"
+	      sql="create view RXVARIANTCOMMUNITY as select p.OBJECTID VARIANTID, p.COMMUNITYID from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 4 and p.PERMISSION = 40"/>
+	    
+	    <!-- RXWORKFLOWCOMMUNITY -->
+	    <PSExecSQLStmt
+	      printExceptionStackTrace="true"
+	      qualifyViewNames="RXWORKFLOWCOMMUNITY, PSX_COMMUNITY_PERMISSION_VIEW"
+	      sql="create view RXWORKFLOWCOMMUNITY as select p.OBJECTID WORKFLOWAPPID, p.COMMUNITYID from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 23 and p.PERMISSION = 40"/>
+	    
+	    <!-- PSX_DISPLAYFORMATPROPERTY_VIEW -->
+	    <PSExecSQLStmt
+	      printExceptionStackTrace="true"
+	      qualifyTableNames="PSX_DISPLAYFORMATPROPERTIES"
+	      qualifyViewNames="PSX_DISPLAYFORMATPROPERTY_VIEW,PSX_COMMUNITY_PERMISSION_VIEW"
+	      sql="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   ltrim(str(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"
+	      sqlOracle="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   ltrim(to_char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"
+	      sqlUDB="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   rtrim(char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"
+		  sqlMysql="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   rtrim(cast(p.COMMUNITYID AS CHAR)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"
+          sqlDerby="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   rtrim(char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"/>
+	    
+	    <!-- PSX_SEARCHPROPERTIES -->
+	    <PSExecSQLStmt
+	      printExceptionStackTrace="true"
+	      qualifyTableNames="PSX_SEARCHPROPERTIES"
+	      qualifyViewNames="PSX_SEARCHPROPERTIES_VIEW,PSX_COMMUNITY_PERMISSION_VIEW"
+	      sql="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME, ltrim(str(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"
+	      sqlOracle="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   ltrim(to_char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"
+	      sqlUDB="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME, rtrim(char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' PROPERTYDESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"
+  	      sqlMysql="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME, rtrim(cast(p.COMMUNITYID AS CHAR)) PROPERTYVALUE, 'from acls' PROPERTYDESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"
+          sqlDerby="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME, rtrim(char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' PROPERTYDESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"/>
+
+	    
+	    <!-- PSX_MENUVISIBILITY_VIEW -->
+	    <PSExecSQLStmt
+              printExceptionStackTrace="true"
+              qualifyTableNames="RXMENUVISIBILITY,RXMENUACTION,RXCOMMUNITY,PSX_ACLS"
+              qualifyViewNames="PSX_MENUVISIBILITY_VIEW,PSX_COMMUNITY_PERMISSION_VIEW"
+              sql="create view PSX_MENUVISIBILITY_VIEW as select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, ltrim(str(C.COMMUNITYID)) VALUE, 'from acls' DESCRIPTION from RXMENUACTION a, RXCOMMUNITY C where (select count(*) from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID and (C.COMMUNITYID = COMMUNITYID) and p.PERMISSION = 40) = 0 and (select count(*) from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a.ACTIONID) &lt;&gt; 0"
+              sqlOracle="create view PSX_MENUVISIBILITY_VIEW AS select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, ltrim(to_char(C.COMMUNITYID)) VALUE, 'from acls' DESCRIPTION from (select a2.actionid actionid from RXMENUACTION a2 where exists (select * from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a2.ACTIONID)) a, RXCOMMUNITY C where C.COMMUNITYID NOT IN (select COMMUNITYID FROM PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID)"
+              sqlUDB="create view PSX_MENUVISIBILITY_VIEW as select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, rtrim(char(C.COMMUNITYID)) VALUE, 'from acls' DESCRIPTION from RXMENUACTION a, RXCOMMUNITY C where (select count(*) from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID and (C.COMMUNITYID = COMMUNITYID) and p.PERMISSION = 40) = 0 and (select count(*) from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a.ACTIONID) &lt;&gt; 0"
+              sqlMysql="create view PSX_MENUVISIBILITY_VIEW as select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, rtrim(cast(C.COMMUNITYID AS CHAR)) VALUE, 'from acls' DESCRIPTION from RXMENUACTION a, RXCOMMUNITY C where (select count(*) from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID and (C.COMMUNITYID = COMMUNITYID) and p.PERMISSION = 40) = 0 and (select count(*) from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a.ACTIONID) &lt;&gt; 0"
+              sqlDerby="create view PSX_MENUVISIBILITY_VIEW as select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, rtrim(char(C.COMMUNITYID)) VALUE, 'from acls' DESCRIPTION from RXMENUACTION a, RXCOMMUNITY C where (select count(*) from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID and (C.COMMUNITYID = COMMUNITYID) and p.PERMISSION = 40) = 0 and (select count(*) from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a.ACTIONID) &lt;&gt; 0"/>
+
+       
+        <!-- RXPUBDOCS -->
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_DOC" qualifyViewNames="RXPUBDOCS"
+         sql="create view RXPUBDOCS AS 
+            select STATUS_ID AS PUBSTATUSID, 
+               CONTENT_ID AS CONTENTID, 
+               TEMPLATE_ID AS VARIANTID, 
+               FOLDER_ID AS LOCATIONHASH,
+               case STATUS when 0 then 'success' else 'failure' end AS PUBSTATUS, 
+               PUBLISHING_DATE AS PUBDATE,
+               case OPERATION when 0 then 'publish' else 'unpublish' end AS PUBOP, 
+               LOCATION AS PUBLOCATION, 
+               ASSEMBLY_URL AS CONTENTURL, 
+               VERSION AS VERSIONID, 
+               REVISION_ID AS REVISIONID, 
+               ELAPSED AS ELAPSETIME,
+               REFERENCE_ID
+            from PSX_PUBLICATION_DOC"
+         sqlDerby="create view RXPUBDOCS AS 
+            select STATUS_ID AS PUBSTATUSID, 
+               CONTENT_ID AS CONTENTID, 
+               TEMPLATE_ID AS VARIANTID, 
+               FOLDER_ID AS LOCATIONHASH,
+               case when STATUS = 0 then 'success' else 'failure' end AS PUBSTATUS, 
+               PUBLISHING_DATE AS PUBDATE,
+               case when OPERATION = 0 then 'publish' else 'unpublish' end AS PUBOP, 
+               LOCATION AS PUBLOCATION, 
+               ASSEMBLY_URL AS CONTENTURL, 
+               VERSION AS VERSIONID, 
+               REVISION_ID AS REVISIONID, 
+               ELAPSED AS ELAPSETIME,
+               REFERENCE_ID
+            from PSX_PUBLICATION_DOC"/>
+            
+         <!-- RXSITEITEMS -->
+         <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM"   
+              qualifyViewNames="RXSITEITEMS,RXPUBDOCS"
+              sql="create view RXSITEITEMS AS
+              select  PD.PUBSTATUSID, 
+                 PD.CONTENTID, 
+                 PD.VARIANTID, 
+                 PD.LOCATIONHASH,
+                 PD.PUBSTATUS, 
+                 PD.PUBDATE,
+                 PD.PUBOP AS PUBOPERATION, 
+                 PD.PUBLOCATION AS LOCATION, 
+                 PD.CONTENTURL, 
+                 PD.VERSIONID, 
+                 PD.REVISIONID, 
+                 PD.ELAPSETIME,
+                 PD.REFERENCE_ID,
+                 PSI.SITE_ID AS SITEID, 
+                 PSI.CONTEXT_ID AS CONTEXT
+              from PSX_PUBLICATION_SITE_ITEM PSI inner join RXPUBDOCS PD
+              on PSI.REFERENCE_ID = PD.REFERENCE_ID"/>
+         </then>
+        </if>
+		
+		<if>
+          <equals arg1="${nightly.install}" arg2="yes"/>
+		  <then>
+		    <PSExecSQLStmt
+	          printExceptionStackTrace="true"
+	          qualifyTableNames=""
+	          qualifyViewNames=""
+	          sql="INSERT INTO PSX_LICENSE_INFO (SERVER_ID, LICENSE_ID, VERSION, LICENSE_STATUS, ACTIVATION_STATUS, MAX_SITES, MAX_PAGES) values ('12','100',0,'SUCCESS','1',-1,-1)"/>
+		    <PSUpdateTableLicense licensecode="${license.code}"/>
+		  </then>
+		</if>
+        
+        <!-- Publisher Post Install -->
+        <PSCopy todir="${install.DTD}"> 
+	      <fileset dir="${basedir}/cms/dbpublisher/dtd" includes="sys_DatabasePublisher.dtd"/>
+	      <fileset dir="${toolsdir}/TableFactory/dtd" includes="sys_Tabledata.dtd, sys_Tabledef.dtd"/>
+        </PSCopy>
+ 	    <PSCopy todir="${install.Server}/ContentEditors/DTD">
+	      <fileset dir="${design.dtddir}" includes="sys_ContentEditorSystemDef.dtd, sys_BasicObjects.dtd"/>
+        </PSCopy>
+        
+      </then>
+    </if>
+    <!-- DevTools Post Install -->
+    <if>
+      <equals arg1="${devtools}" arg2="yes"/>
+      <then>
+        <PSUpdatePropFileWizAction
+          onlyIfExists="false"
+          propertyFile="${install.Administrator}/admin.properties"
+          propertyName="helpset_file"
+          propertyValue="Docs/Rhythmyx/Server_Administrator/Rhythmyx_Server_Administrator.hs"/>
+      </then>
+    </if>
+    
+    <!-- ExecuteRXLT -->
+    <if>
+      <and>
+        <equals arg1="${server}" arg2="yes"/>
+        <isSet property="RUN_LANGUAGE_TOOL"/>
+      </and>
+      <then>
+        <if>
+          <not>
+            <available file="${install.I18n}/I18n/ResourceBundle.tmx"/>
+          </not>
+          <then>
+            <PSCopy tofile="${install.I18n}/ResourceBundle.tmx" file="${configdir}/I18n/ResourceBundle.tmx"/>
+          </then>
+        </if>
+      	<echo>Writing the rxlt properties file for this configuration</echo>
+      	<echo file="${install.I18n}/rxlt.properties">runAtStartup=true
+      	</echo>
+      </then>
+    </if>
+    
+    <!-- FastForward Post Install -->
+    <if>
+      <equals arg1="${fastforward}" arg2="yes"/>
+      <then>
+        <!-- New Install Only -->
+        <if>
+          <equals arg1="${install.type}" arg2="new"/>
+          <then>
+            <PSExecSQLStmt
+              printExceptionStackTrace="true"
+              qualifyTableNames=""
+              qualifyViewNames=""
+              sql="UPDATE RXSITES SET BASEURL='http://127.0.0.1:${port}/CI_Home' WHERE SITEID=303"/>
+            
+            <PSExecSQLStmt
+	          printExceptionStackTrace="true"
+	          qualifyTableNames=""
+	          qualifyViewNames=""
+	          sql="UPDATE RXSITES SET BASEURL='http://127.0.0.1:${port}/EI_Home' WHERE SITEID=301"/>
+          </then>  
+        </if>
+      </then>
+    </if>
+    
+    <if>
+      <equals arg1="${server}" arg2="yes"/>
+      <then>
+        <!-- Run RxFix -->
+        <PSRxFix fixModules="com.percussion.rxfix.dbfixes.PSFixNextNumberTable, com.percussion.rxfix.dbfixes.PSFixDanglingAssociations, com.percussion.rxfix.dbfixes.PSFixAllowedSitePropertiesWithBadSites,com.percussion.rxfix.dbfixes.PSFixInvalidFolderRelationships"/>
+      </then>
+        <PSRxFix fixModules="com.percussion.rxfix.dbfixes.PSFixNextNumberTable, com.percussion.rxfix.dbfixes.PSFixDanglingAssociations, com.percussion.rxfix.dbfixes.PSFixAllowedSitePropertiesWithBadSites,com.percussion.rxfix.dbfixes.PSFixInvalidFolderRelationships,com.percussion.rxfix.dbfixes.PSFixOrphanedContentChangeEvents"/>
+      </then>
+      	<echo> add classloader for rxfix *****************************************</echo>
+      <!--  <PSRxFix fixModules="com.percussion.rxfix.dbfixes.PSFixNextNumberTable, com.percussion.rxfix.dbfixes.PSFixDanglingAssociations, com.percussion.rxfix.dbfixes.PSFixAllowedSitePropertiesWithBadSites,com.percussion.rxfix.dbfixes.PSFixInvalidFolderRelationships"/>
+    
+    -->  </then>
+    </if>
+    
+    <!-- Cleanup Sequence -->
+    <if>
+      <equals arg1="${server}" arg2="yes"/>
+      <then>
+        <!-- Clean Server Properties -->
+        <PSCleanProps
+          properties="userThreadMin, userThreadMax, userThreadTimeout, requestTimeMax, requestQueueDepthMax,
+                      consoleColumns, driverType, serverName, databaseName, schemaName, loginId, loginPw,
+                      loggerClassname, loginTimeout, jdbcDrivers, bindAddress, bindPort, SSLKeystoreFile,
+                      SSLKeystorePassword, SSLCipher"
+          propertiesFile="rxconfig/Server/server.properties"/>
+      </then>
+    </if>
+    
+    <if>
+      <or>
+        <equals arg1="${repository}" arg2="yes"/>
+        <equals arg1="${server}" arg2="yes"/>
+      </or>
+      <then>
+        <!-- Clean Workflow Properties -->
+        <PSCleanProps
+          properties="DB_DRIVER_NAME, DB_SCHEMA, DB_SERVER, DB_NAME, PWD, UID, DB_DRIVER_VERSION, DB_BACKEND, DB_DRIVER_CLASS_NAME"
+          propertiesFile="rxconfig/Workflow/rxworkflow.properties"/>
+      </then>
+    </if>
+  	
+    <if>
+      <isset property="DEVELOPMENT"/>
+      <then>
+        <!-- Post install steps only needed for development use -->
+        <echo>Create a cactus properties file for this configuration</echo>
+        <echo file="${builddir}/classes/cactus.properties">
+          cactus.contextURL = http://localhost:${port}/Rhythmyx
+        </echo>
+		<copy todir="${projects.dir}/sitemanage/build/classes/main" file="${builddir}/classes/cactus.properties"/>
+      
+        <propertyfile file="${install.Server}/widgetDialogGenerator.properties">
+          <entry  key="srcDir" value=""/>
+          <entry  key="widgetId" value=""/>
+        </propertyfile>
+        <!-- Save install successful flag file used by nightly build -->
+        <touch file="${install.Installer}/rhythmyxInstalled"/>
+      </then>
+    </if>
+  	<!-- install latest EXE's and JRE -->
+	<if>
+      <and>
+        <isset property="DEVELOPMENT"/>
+        <equals arg1="${os}" arg2="windows"/>
+		<available file="${exec.dir}/PercussionCM.exe"/>
+		<not>		  
+		  <available file="${install.dir}/PercussionCM.exe"/>		  
+		</not>
+      </and>
+        <then>
+	      <PSUnzip srcFile="${exec.dir}/JRE.zip" destDir="${install.dir}"/>
+          <echo>Copying executables ...</echo>
+	      <PSCopy todir="${install.dir}">
+		    <fileset dir="${exec.dir}" excludes="JRE.zip" />
+		  </PSCopy>
+        </then>
+		<else>
+			<if>
+				<and>
+					<equals arg1="${os}" arg2="linux"/>
+				    <isset property="DEVELOPMENT"/>
+				</and>
+			<then>
+			  <PSUnzip srcFile="${exec.dir}/linux/JRE.zip" destDir="${install.dir}"/>
+			  <echo>Copying executables ...</echo>
+			  <PSCopy todir="${install.dir}">
+					    <fileset dir="${exec.dir}/linux" excludes="JRE.zip" />
+			   </PSCopy>
+			   <echo>Fixing executable permissions... </echo>
+			   <chmod dir="${install.dir}/JRE/bin" perm="ugo+rx" includes="*"/>
+				<chmod dir="${install.dir}" perm="ugo+rx" includes="**/*.sh"/>
+			   <chmod dir="${install.dir}" perm="ugo+rx" includes="**/*.bin"/>   						
+			</then>
+		  </if>
+			</else>
+		
+    </if>
+	
+	<!--check for if upgrade prior to 2.1 and enable search index on startup -->
+  	<if>
+  	   <and>
+  	     <equals arg1="${install.type}" arg2="upgrade"/>
+  	     <isSet property="VERSION_1_TO_2.1"/>
+  	   </and>
+  	   <then>
+  	     <xslt style="${releasedir}/src/com/percussion/rxupgrade/configupgradeFTSIndexOnStartup.xsl" in="${install.Server}/config.xml" out="${install.Server}/configTmp.xml" />
+         <!-- backup config.xml -->
+         <copy file="${install.Server}/config.xml" tofile="${install.Server}/config.xml.bak" overwrite="true" />
+         <move file="${install.Server}/configTmp.xml" tofile="${install.Server}/config.xml" />
+  	   </then>
+  	</if>
+  	
+	<!-- update data from "CT_PAGE_PAGE_CATEGORIES_TREE_SET" to "CT_PAGE_PAGE_CATEGORIES_SET" table-->
+	<if>
+	  <and>
+	    <equals arg1="${install.type}" arg2="upgrade"/>
+		<isSet property="VERSION_2_6"/>
+	  </and>
+	    <then>
+  	     <PSExecSQLStmt
+	      printExceptionStackTrace="true"
+	      qualifyTableNames="CT_PAGE_PAGE_CATEGORIES_SET, CT_PAGE_PAGE_CATEGORIES_TREE_SET"
+		  qualifyViewNames=""
+	      sql="insert into CT_PAGE_PAGE_CATEGORIES_SET select * from CT_PAGE_PAGE_CATEGORIES_TREE_SET"/>
+		</then>
+  	</if>
+  	
+  	<!-- Run final upgrade plugins - Upgrade Only -->
+    <if>
+      <equals arg1="${install.type}" arg2="upgrade"/>
+      <then>
+        
+        <PSUpgrade upgradeFileNames="rxupgrade3.xml"/>
+ 
+     </then>
+    </if>  	
+
+  	<!-- Shutdown embedded db if running -->
+    <if>
+      <and>
+      	<isset property="DEVELOPMENT"/>
+      	<equals arg1="${repository}" arg2="yes"/>
+      </and>
+      <then>
+        <!-- Shutdown the repository -->
+        <ant antfile="installResources/installRepository.xml" target="stopEmbeddedDB" inheritrefs="true"/>
+      </then>
+    </if>
+  	
+   	<!-- Check install log for errors -->  	
+    <PSCheckInstallLog/>
+  	
+  </target>
+ 
+	<!-- Helper target used to install single package -->
+      <target name="InstallPackage">
+         <PSInstallPackageExec ppkgfile="${packagesdir}\${file}.ppkg" server="${server}" classpath="AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jakarta-oro-2.0.8.jar;lib/substance.jar;lib/miglayout-3.6.3-swing.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxdeployer.jar;lib/pspackagerui.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/percbeans.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxmisctools.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rhythmyx.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxclient.jar;AppServer/server/rx/lib/log4j.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-codec-1.11.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxutils.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-lang-2.4.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-logging-1.1.1.jar;"/>
+      </target>
+      <!-- Helper target used to install all package for rxbuild -->
+      <target name="InstallAllPackages">
+           <foreach target="InstallingPackage" param="file"> 
+              <path> 
+                <fileset dir="${packages.dir}">
+                    <include name="*"/>
+                </fileset>
+              </path>
+           </foreach>
+      </target>
+      <target name="InstallingPackage">
+         <PSInstallPackageExec ppkgfile="${file}" server="${server}" classpath="AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jakarta-oro-2.0.8.jar;lib/substance.jar;lib/miglayout-3.6.3-swing.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxdeployer.jar;lib/pspackagerui.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/percbeans.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxmisctools.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rhythmyx.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxclient.jar;AppServer/server/rx/lib/log4j.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-codec-1.11.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxutils.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-lang-2.4.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-logging-1.1.1.jar;"/>
+      </target>
+     
+	
+	
+	  <!-- Install Bat files -->  
+	  <target name="installBatFiles">
+		   <if>
+		      <equals arg1="${os}" arg2="windows"/>
+		      <then>
+			    <PSCopy todir="${install.dir}">
+			      <fileset dir="${toolsdir}/batFiles"/>
+			    </PSCopy>
+		      </then>
+		    </if>
+	  </target>
+	  
+	<!-- testing123 -->
+	<var name ="os.bitness" value ="unknown"/>
+	<if>
+	<equals arg1="${os}" arg2="windows"/>
+      <then>
+	    <exec dir="." executable="cmd" outputproperty="command.ouput">
+          <arg line="/c SET ProgramFiles(x86)"/>
+        </exec>
+        <if>
+          <contains string="${command.ouput}" substring="Program Files (x86)"/>
+            <then>
+              <var name ="os.bitness" value ="64"/>
+            </then>
+        <else>
+          <var name ="os.bitness" value ="32"/>
+        </else>
+        </if>
+	  </then>
+	</if>
+	
+	
+    
+  <!-- Detects OS, architecture it is running on -->
+  <target name="detectPlatform">
+    <condition property="os" value="linux">
+      <os name="linux"/>
+    </condition>
+ 
+    <condition property="os" value="solaris">
+      <os family="unix" arch="sparc"/>
+    </condition>
+  
+    <condition property="os" value="windows">
+      <os family="windows"/>
+    </condition>
+    
+    <!-- asserts one and only one platform is recognized -->
+    <fail message="Unrecognized platform.">
+      <condition>
+        <not>
+          <isset property="os"/>
+        </not>
+      </condition>
+    </fail>
+  </target>
+  
+  <!-- Resolves Rhythmyx JBoss configuration files -->
+  <target name="resolveRxJBossFiles">
+    <replace file="${install.rxconf}/jboss-service.xml">
+      <replacefilter token="{{NAMING_PORT}}" value="${port.naming}"/>
+      <replacefilter token="{{NAMING_RMI_PORT}}" value="${port.rmi}"/>
+      <replacefilter token="{{INVOKER_JRMP_PORT}}" value="${port.jrmp}"/>
+      <replacefilter token="{{INVOKER_POOLED_PORT}}" value="${port.pooled}"/>
+    </replace>
+    <replace file="${install.deploy}/jms/uil2-service.xml" token="{{UIL2_PORT}}" value="${port.jms}"/>
+    <replace file="${install.deploy}/jboss-web.deployer/server.xml" token="{{AJP13_PORT}}" value="${port.ajp}"/>
+    <replace dir="${install.AppServer}/bin" includes="shutdown.bat, shutdown_service.bat, shutdown.sh" token="{{NAMING_PORT}}" value="${port.naming}"/>
+    <replace dir="${install.dir}" includes="StopServer.sh" token="{{NAMING_PORT}}" value="${port.naming}"/>
+  </target>
+  
+  <!-- Resolves Rhythmyx JBoss configuration files on Upgrade-->
+  <target name="resolveRxJBossFilesUpgrade">
+    <replace dir="${install.AppServer}/bin" includes="shutdown_service.bat" token="{{NAMING_PORT}}" value="${port.naming}"/>
+  </target>
+  
+  <!-- Updates Rhythmyx, RxServices xml files -->
+  <target name="updateXmlFiles">
+        
+    <!-- Set Rhythmyx Servlet RxDir -->
+    <PSXMLFileUpdate
+      backupXMLFile="true"
+      resolveXslFileContents="true"
+      xmlFile="AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/web.xml"
+      xslFile="${releasedir}/src/com/percussion/rxupgrade/RhythmyxServletSetRxDir.xsl"
+      token="\$P\(absoluteInstallLocation\)"
+      value="${install.dir}"/>
+                
+    <!-- Set RxServices RxPort -->
+    <PSXMLFileUpdate
+      backupXMLFile="true"
+      resolveXslFileContents="true"
+      xmlFile="AppServer/server/rx/deploy/RxServices.war/WEB-INF/web.xml"
+      xslFile="${releasedir}/src/com/percussion/rxupgrade/RxServicesSetRxPort.xsl"
+      token="\$W\(RxPortPanelBean.rxServerPort\)"
+      value="${port}"/>
+  </target>
+  
+  <!--==========================================================-->
+  <!-- PSApplicationFiles                                       -->
+  <!--                                                          -->
+  <!-- Copies files from srcDir to destDir, always replacing    -->
+  <!-- system files and directories if they exist, never        -->
+  <!-- replacing any other files if they exist unless a file    -->
+  <!-- refresh has been initiated.                              -->
+  <!--==========================================================-->
+  <macrodef name="PSApplicationFiles">
+    <attribute name="srcDir" default=""/>
+    <attribute name="destDir" default=""/>
+    <sequential>
+      <PSCopy todir="@{destDir}">
+        <fileset dir="@{srcDir}" includes="sys_*,sys_*/**"/>
+      </PSCopy>
+      <PSCopy todir="@{destDir}" replaceType="never">
+        <fileset dir="@{srcDir}" excludes="sys_*,sys_*/**"/>
+      </PSCopy>
+    </sequential>
+  </macrodef>
+  
+  <!--==========================================================-->
+  <!-- PSInstallExtensions                                      -->
+  <!--                                                          -->
+  <!-- Copies source extension files from srcDir to destDir,    -->
+  <!-- then installs/updates the extensions.  Note that destDir -->
+  <!-- is assumed to be relative to the Rhythmyx root directory -->
+  <!-- and extXml is the Extensions.xml source file for this    -->
+  <!-- group of extensions.  In REFRESH mode, extensions        -->
+  <!-- will only be updated if necessary.                       -->
+  <!--==========================================================-->
+  <macrodef name="PSInstallExtensions">
+    <attribute name="srcDir" default=""/>
+    <attribute name="destDir" default=""/>
+    <attribute name="extXml" default=""/>
+    <sequential>
+      <if>
+        <isSet property="${REFRESH_PROP_NAME}"/>
+        <then>
+          <uptodate property="EXTS.ARE.UPTODATE" targetfile="${exts.store}/@{destDir}-ext.xml" srcfile="@{extXml}" />
+        </then>
+      </if>
+      <if>
+        <not>
+          <isSet property="EXTS.ARE.UPTODATE"/>
+        </not>
+        <then>
+          <mkdir dir="${exts.store}"/>
+          <copy file="@{extXml}" tofile="${exts.store}/@{destDir}-ext.xml"/>
+          <mkdir dir="${install.dir}/@{destDir}"/>
+          <PSCopy todir="${install.dir}/@{destDir}">
+	    <fileset dir="@{srcDir}"/>
+          </PSCopy>
+          <PSExtensions installLocation="@{destDir}"/>
+        </then>
+        <else>
+          <echo>@{destDir} extensions are up to date, skipping...</echo>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <!--==========================================================-->
+  <!-- PSDropView                                               -->
+  <!--                                                          -->
+  <!-- Drops the specified view if it exists.                   -->
+  <!--==========================================================-->
+  <macrodef name="PSDropView">
+    <attribute name="view" default=""/>
+    <sequential>
+      <if>
+        <PSTableViewExistsWizCondition isView="true" objectName="@{view}"/>
+        <then>
+          <PSExecSQLStmt
+            printExceptionStackTrace="true"
+            qualifyViewNames="@{view}"
+            sql="DROP VIEW @{view}"/>
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <!--==========================================================-->
+  <!-- PSUnzip                                                  -->
+  <!--                                                          -->
+  <!-- Unzips the specified srcFile into the destDir.  An       -->
+  <!-- optional neverReplaceFilter defines a patternset of      -->
+  <!-- files which should not be replaced if they already       -->
+  <!-- exist.  This filter is only used on upgrades.            -->
+  <!--==========================================================-->
+  <macrodef name="PSUnzip">
+    <attribute name="srcFile" default=""/>
+    <attribute name="destDir" default=""/>
+    <element name="neverReplaceFilter" optional="yes"/>
+    <sequential>
+      <if>
+        <equals arg1="${install.type}" arg2="new"/>
+        <then>
+          <unzip src="@{srcFile}" dest="@{destDir}"/>
+        </then>
+        <else>
+          <unzip src="@{srcFile}" dest="@{destDir}">
+            <neverReplaceFilter/>
+          </unzip>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <!--==========================================================-->
+  <!-- PSJaFiles                                                -->
+  <!--                                                          -->
+  <!-- Installs the set of .ja files for the Rhythmyx launchers.-->
+  <!-- Existing files will never be overwritten.                -->
+  <!--==========================================================-->
+  <macrodef name="PSJaFiles">
+    <sequential>
+      <if>
+        <and>
+          <not>
+            <isSet property="${REFRESH_PROP_NAME}"/>
+          </not>
+          <equals arg1="${install.type}" arg2="new"/>
+        </and>
+        <then>
+          <PSCopy todir="${install.dir}" replaceType="never">
+            <fileset dir="${builddir}/installationAddons"/>
+          </PSCopy>
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <!--==========================================================-->
+  <!-- PSLanguageTool                                           -->
+  <!--                                                          -->
+  <!-- Launches the Rhythmyx language Tool using the given      -->
+  <!-- classpath.                                               -->
+  <!--==========================================================-->
+  <macrodef name="PSLanguageTool">
+    <attribute name="classpath"/>
+    <sequential>
+      <echo>Running Rhythmyx Language Tool...</echo>
+    	<!-- A Timeout is needed here because rxlt is not closing all of its descriptors (files) which makes the process hang for linux and ant 1.7 -->
+      <java classname="com.percussion.i18n.rxlt.PSRxltMain" dir="${install.rxlt}" fork="true" maxmemory="1024m" classpathref="@{classpath}" timeout="${install.languageToolTimeOut}">
+        <arg value="-R${install.dir}"/>
+        <arg value="-NOUI"/>
+      </java>
+    </sequential>
+  </macrodef>
+
+      <!--==========================================================-->
+      <!-- PSInstallPackage                                         -->
+      <!--==========================================================-->
+      <macrodef name="PSInstallPackage">
+        <attribute name="ppkgfile"/>
+        <sequential>
+          <if>
+            <available file="@{ppkgfile}"/>
+            <then>
+              <if>
+                <equals arg1="${os}" arg2="windows"/>
+                <then> 
+                  <PSInstallPackageExec ppkgfile="@{ppkgfile}" server="localhost" classpath="AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jakarta-oro-2.0.8.jar;lib/substance.jar;lib/miglayout-3.6.3-swing.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxdeployer.jar;lib/pspackagerui.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/percbeans.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxmisctools.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rhythmyx.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxclient.jar;AppServer/server/rx/lib/log4j.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-codec-1.11.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxutils.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-lang-2.4.jar;AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-logging-1.1.1.jar;"/>
+                </then>
+                <elseif>
+                  <or>
+                    <equals arg1="${os}" arg2="solaris"/>
+                    <equals arg1="${os}" arg2="linux"/>
+                  </or>
+                  <then>
+                    <PSInstallPackageExec ppkgfile="@{ppkgfile}" server="localhost" classpath="AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/jakarta-oro-2.0.8.jar:lib/substance.jar:lib/miglayout-3.6.3-swing.jar:AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxdeployer.jar:lib/pspackagerui.jar:AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/percbeans.jar:AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxmisctools.jar:AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rhythmyx.jar:AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxclient.jar:AppServer/server/rx/lib/log4j.jar:AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-codec-1.11.jar:AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/rxutils.jar:AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-lang-2.4.jar:AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/commons-logging-1.1.1.jar"/>
+                  </then>
+                </elseif>
+              </if>
+            </then>
+          </if>
+       <sleep seconds="5"/>
+        </sequential>
+      </macrodef>
+      
+      
+  
+	  <!--==========================================================-->
+	  <!-- PSInstallPackageExec                                         -->
+	  <!--==========================================================-->
+	  <macrodef name="PSInstallPackageExec">
+	    <attribute name="ppkgfile"/>
+		<attribute name="classpath"/>
+		<attribute name="server"/>
+	    <sequential>
+		<exec dir="${install.dir}" executable="${install.dir}/JRE/bin/java">
+		  <arg value="-Dsys_pkgVisibleToAllCommunities=true"/>
+		  <arg value="-classpath"/>
+		  <arg value="@{classpath}"/>
+		  <arg value="com.percussion.packageinstaller.ui.PSPackageInstallerClient"/>
+		  <arg value="-package"/>
+		  <arg value="@{ppkgfile}"/>
+		  <arg value="-host"/>
+		  <arg value="@{server}"/>
+		  <arg value="-port"/>
+		  <arg value="${port}"/>
+		  <arg value="-user"/>
+		  <arg value="${server.admin.user}"/>
+		  <arg value="-password"/>
+		  <arg value="${server.admin.password}"/>
+		  <arg value="-acceptwarnings"/>
+		  <arg value="true"/>
+		</exec>
+	    </sequential>
+	  </macrodef>
+	
+	  <!--==========================================================-->
+	  <!-- PSStartServer                                         -->
+	  <!--                                                          -->
+	  <!--  Starts server  -->
+	  <!--==========================================================-->
+	  <macrodef name="PSStartServer">
+	    <attribute name="startfile"/>
+	    <sequential>
+			<echo>Starting Server</echo>
+			<exec dir="${install.dir}" executable="@{startfile}" spawn="true"/>
+	    	<waitfor maxwait="10" maxwaitunit="minute" checkevery="10" checkeveryunit="second">
+	              <socket server="localhost" port="${port}"/>
+	    		</waitfor>
+	    </sequential>
+	  </macrodef>
+	
+	  <!--==========================================================-->
+	  <!-- PSStopServer                                         -->
+	  <!--                                                          -->
+	  <!--  Stop server  -->
+	  <!--==========================================================-->
+	  <macrodef name="PSStopServer">
+	    <attribute name="stopfile"/>
+	    <sequential>
+			<echo>Shutdown Server</echo>
+			<exec dir="${install.dir}/AppServer/bin/" executable="@{stopfile}" spawn="true"/>
+	    	<waitfor maxwait="10" maxwaitunit="minute" checkevery="10" checkeveryunit="second">
+				<not>
+	              <socket server="localhost" port="${port}"/>
+				</not>
+	    		</waitfor>
+	    </sequential>
+	  </macrodef>
+	
+	
+	
+	  <!--==========================================================-->
+	  <!-- PSLinuxStartServer                                         -->
+	  <!--                                                          -->
+	  <!--  Starts server  -->
+	  <!--==========================================================-->
+	  <macrodef name="PSLinuxStartServer">
+	    <attribute name="startfile"/>
+	    <sequential>
+			<echo>Starting Server</echo>
+	    	<echo>${install.dir}/@{startfile}</echo>
+			<exec dir="${install.dir}/AppServer/bin" executable="chmod">
+				<arg value="-R"/>
+				<arg value="755"/>
+				<arg value="${install.dir}/AppServer/bin"/>
+			</exec>
+			<exec dir="${install.dir}" executable="${install.dir}/@{startfile}" spawn="true"/>
+	    	<waitfor maxwait="10" maxwaitunit="minute" checkevery="10" checkeveryunit="second">
+	              <socket server="localhost" port="${port}"/>
+	    		 </waitfor>
+	    </sequential>
+	  </macrodef>
+	
+	  <!--==========================================================-->
+	  <!-- PSLinuxStopServer                                         -->
+	  <!--                                                          -->
+	  <!--  Stop server  -->
+	  <!--==========================================================-->
+	  <macrodef name="PSLinuxStopServer">
+	    <attribute name="stopfile"/>
+	    <sequential>
+			<echo>Shutdown Server</echo>
+	    	<echo>${install.dir}/AppServer/bin/@{stopfile}</echo>
+			<exec dir="${install.dir}/AppServer/bin" executable="chmod">
+				<arg value="-R"/>
+				<arg value="755"/>
+				<arg value="${install.dir}/AppServer/bin"/>
+			</exec>
+			<exec dir="${install.dir}" executable="${install.dir}/AppServer/bin/@{stopfile}" spawn="true"/>
+	    	<waitfor maxwait="10" maxwaitunit="minute" checkevery="10" checkeveryunit="second">
+				<not>
+	              <socket server="localhost" port="${port}"/>
+				</not>
+	    		  </waitfor>
+	    </sequential>
+	  </macrodef>
+	
+  <!--==========================================================-->
+  <!-- PSInstallPatchToolkit                                    -->
+  <!--                                                          -->
+  <!-- Installs the Rhythmyx patch install toolkit.  For non-   -->
+  <!-- development builds only.                                 -->
+  <!--==========================================================-->
+  <macrodef name="PSInstallPatchToolkit">
+    <sequential>
+	  <if>
+	    <not>
+          <isset property="DEVELOPMENT"/>
+		</not>
+		<then>
+			<echo message="Unzipping patch installkit" />	
+         
+			 <if>
+				<available file="${toolsdir}/Ant/PatchInstallToolkit/RxPatchInstallToolkit.zip"/>
+			<then>
+				<unzip src="${toolsdir}/Ant/PatchInstallToolkit/RxPatchInstallToolkit.zip" dest="${install.dir}"/>
+			</then>
+			  </if>
+		    </then>
+	  </if>
+	</sequential>
+  </macrodef>
+	<target name="installPatchTool">
+			
+					<PSInstallPatchToolkit />
+		</target>
+</project>

@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>Unit Test - Actions</title>
+<script src="jsUnitCore.js"></script>
+<script src="psTestingHelper.js"></script>
+<script src="../../dojo/dojo.js">;</script>
+<script src="../../ps/aa/io/Actions.js">;</script>
+<script src="../../ps/aa/io/Response.js">;</script>
+<script>
+
+var __rxroot = "http://localhost:9000/Rhythmyx";
+
+// load widget handler code
+dojo.require('dojo.widget.*');
+
+// Turn on console for dojo.debug.
+dojo.require("dojo.debug.console");
+
+
+
+dojo.hostenv.writeIncludes();
+
+
+
+</script>
+</head>
+<body>
+
+<script>
+    function testTest()
+    {
+        var result = ps.aa.io.Actions.test();
+        assertEquals("success", result);
+    }
+
+</script>
+
+<script>
+psAddSimpleTestRunner()
+</script>
+</body>
+</html>

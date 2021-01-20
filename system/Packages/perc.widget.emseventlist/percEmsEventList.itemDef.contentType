@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDefData appName="psx_cepercEmsEventList" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_cepercEmsEventList/percEmsEventList.html" id="476" label="percEmsEventList" name="percEmsEventList" typeId="476"/>
+   <PSXContentEditor contentType="476" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
+      <PSXDataSet id="768">
+         <name>percEmsEventList</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_PERCEMSEVENTLIST" name="CT_PERCEMSEVENTLIST"/>
+                  <PSXTableRef alias="CT_PERCEMSEVENTLIST_CALENDARS_SET" name="CT_PERCEMSEVENTLIST_CALENDARS_SET"/>
+                  <PSXTableRef alias="CT_PERCEMSEVENTLIST_EVENTTYPES_SET" name="CT_PERCEMSEVENTLIST_EVENTTYPES_SET"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="CT_percEmsEventList" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXFieldSet name="calendars_set" repeatability="zeroOrMore" supportsSequencing="yes" type="simpleChild" userSearchable="yes">
+                     <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="calendars" showInPreview="yes" showInSummary="yes" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>CT_PERCEMSEVENTLIST_CALENDARS_SET</tableAlias>
+                              <column>CALENDARS</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>1024</DataFormat>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXPropertySet>
+                           <PSXProperty locked="no" name="allowActiveTags">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="cleanupNamespaces">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="mayContainIDs">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                        </PSXPropertySet>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                  </PSXFieldSet>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="eventNameFilter" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCEMSEVENTLIST</tableAlias>
+                           <column>EVENTNAMEFILTER</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXFieldSet name="eventTypes_set" repeatability="zeroOrMore" supportsSequencing="yes" type="simpleChild" userSearchable="yes">
+                     <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="eventTypes" showInPreview="yes" showInSummary="yes" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>CT_PERCEMSEVENTLIST_EVENTTYPES_SET</tableAlias>
+                              <column>EVENTTYPES</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>1024</DataFormat>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXPropertySet>
+                           <PSXProperty locked="no" name="allowActiveTags">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="cleanupNamespaces">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="mayContainIDs">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                        </PSXPropertySet>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                  </PSXFieldSet>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="hideEventList" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCEMSEVENTLIST</tableAlias>
+                           <column>HIDEEVENTLIST</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>no</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>hideEventList</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="limitList" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCEMSEVENTLIST</tableAlias>
+                           <column>LIMITLIST</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>5</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="listTitle" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCEMSEVENTLIST</tableAlias>
+                           <column>PLACEHOLDER</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1024</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="2147483647">
+                           <PSXRule boolean="and">
+                              <PSXExtensionCallSet id="0">
+                                 <PSXExtensionCall id="0">
+                                    <name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+                                    <PSXExtensionParamValue id="0">
+                                       <value>
+                                          <PSXSingleHtmlParameter id="0">
+                                             <name>listTitle</name>
+                                          </PSXSingleHtmlParameter>
+                                       </value>
+                                    </PSXExtensionParamValue>
+                                 </PSXExtensionCall>
+                              </PSXExtensionCallSet>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="yes"/>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="locationFilter" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_PERCEMSEVENTLIST</tableAlias>
+                           <column>LOCATIONFILTER</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="sys_contentpostdate" showInPreview="no" showInSummary="no" type="system">
+                     <DataType/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXConditional id="0">
+                                 <variable>
+                                    <PSXTextLiteral id="0">
+                                       <text>1</text>
+                                    </PSXTextLiteral>
+                                 </variable>
+                                 <operator>=</operator>
+                                 <value>
+                                    <PSXTextLiteral id="0">
+                                       <text>0</text>
+                                    </PSXTextLiteral>
+                                 </value>
+                                 <boolean>AND</boolean>
+                              </PSXConditional>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXSearchProperties defaultSearchLabel="Content post date" enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="no"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_percEmsEventList" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef id="0" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>255</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentpostdate</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>listTitle</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>List Title:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10001" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>1024</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>List Title:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>eventTypes_set</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Event Types:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10004" name="sys_DropDownMultiple"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Event Types:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="internalLookup">
+                              <PSXUrlRequest>
+                                 <Href>../percEmsEventList/mceventtypes</Href>
+                                 <Anchor/>
+                              </PSXUrlRequest>
+                           </PSXChoices>
+                        </PSXUISet>
+                        <PSXDisplayMapper fieldSetRef="eventTypes_set" id="1">
+                           <PSXDisplayMapping>
+                              <FieldRef>eventTypes</FieldRef>
+                              <PSXUISet/>
+                           </PSXDisplayMapping>
+                        </PSXDisplayMapper>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>calendars_set</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Calendars:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10018" name="sys_DropDownMultiple"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Calendars:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="internalLookup">
+                              <PSXUrlRequest>
+                                 <Href>../percEmsEventList/mccalendars</Href>
+                                 <Anchor/>
+                              </PSXUrlRequest>
+                           </PSXChoices>
+                        </PSXUISet>
+                        <PSXDisplayMapper fieldSetRef="calendars_set" id="2">
+                           <PSXDisplayMapping>
+                              <FieldRef>calendars</FieldRef>
+                              <PSXUISet/>
+                           </PSXDisplayMapping>
+                        </PSXDisplayMapper>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>locationFilter</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Location Filter:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10026" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Location Filter:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>eventNameFilter</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Event Name Filter:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10027" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Event Name Filter:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>limitList</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Limit Event List</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10009" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Limit Event List</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>hideEventList</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Hide Event List:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10025" name="sys_DropDownSingle"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Hide Event List:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="local">
+                              <PSXEntry default="no" sequence="-1">
+                                 <PSXDisplayText>No</PSXDisplayText>
+                                 <Value>no</Value>
+                              </PSXEntry>
+                              <PSXEntry default="no" sequence="-1">
+                                 <PSXDisplayText>Yes</PSXDisplayText>
+                                 <Value>yes</Value>
+                              </PSXEntry>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>percEmsEventList</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="4,5,6,7"/>
+   </PSXContentEditor>
+</ItemDefData>

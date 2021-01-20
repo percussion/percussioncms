@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<stylesheetCleanupFilter>
+   <allowedNamespace name="" declAllowed="true " declValue="*xhtml*">
+      <allowedElement name="*"/>
+      <allowedAttribute name="*"/>
+   </allowedNamespace>
+   <allowedNamespace name="xml" declAllowed="false ">
+      <allowedAttribute name="lang"/>
+      <allowedAttribute name="space"/>
+   </allowedNamespace>
+   <!-- Uncomment the following to allow jsp tags -->
+   <!--
+   <allowedNamespace name="jsp" declAllowed="false ">
+      <allowedElement name="*"/>
+      <allowedAttribute name="*"/>
+   </allowedNamespace>
+   -->
+</stylesheetCleanupFilter>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+	   
+-->
+<capabilityData xmlns="http://myfaces.apache.org/trinidad/agent/capabilities">
+  <capability name="tables" value="advanced"/> 
+  <capability name="-adfinternal-advancedButtons" value="true"/>  
+  <capability name="-adfinternal-advancedForms" value="true"/>  
+  <capability name="-adfinternal-cssSelectors" value="multiple"/>
+  <capability name="-adfinternal-disabledFormElements" value="true"/>
+  <capability name="-adfinternal-fieldset" value="true"/> 
+  <capability name="-adfinternal-id" value="true"/>
+  <capability name="-adfinternal-intrinsicEvents" value="true"/> 
+  <capability name="-adfinternal-readonlyFormElements" value="true"/>  
+  <capability name="-adfinternal-styleAttributes" value="external"/>
+  <capability name="-adfinternal-scriptingSpeed" value="slow"/>
+  <capability name="-adfinternal-onclickOnImgInput" value="false"/>    
+  <!-- note the following that is not captured in the capability list:
+       1) textPresentation:  BlackBerry Browser 4.0 does not support all
+       of the XHTML text presentation module (5.4.1), specifically not 
+       {sub, sup} (this matches XHTML MP)
+       2) -adfinternal-nowrap:  although the nowrap attribute can be 
+       specified on td, it does not behave as a user might expect;
+       if the content of the nowrap cell is too long to fit on a single line,
+       all cells in the table appear on its own line; if the content is still
+       too long to fit on a single line of the display, the cell's content will
+       still wrap
+       3) the documentation for BlackBerry Browser 4.0 claims only XHTML
+       Mobile Profile (XHTMLMP) support, but the actual implementation does
+       support some other XHTML features (e.g. script); we specify capabilities
+       that match the "real world" device
+  -->
+</capabilityData>

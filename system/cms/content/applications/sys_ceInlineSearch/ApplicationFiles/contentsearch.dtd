@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT contentsearch (enddate, contenttypesurl, startdate, inlineslotid, author, contenttitle )>
+<!ELEMENT contenttitle (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT inlineslotid (#PCDATA)>
+<!ELEMENT startdate (#PCDATA)>
+<!ELEMENT contenttypesurl (#PCDATA)>
+<!ELEMENT enddate (#PCDATA)>
+<!ATTLIST  contentsearch xml:lang CDATA #IMPLIED>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXBackEndTable id="52">
+   <alias>TEST</alias>
+   <driver>test:nodriver</driver>
+   <server>//Bender</server>
+   <database>rxrhino</database>
+   <origin>dbo</origin>
+   <table>TEST</table>
+</PSXBackEndTable>

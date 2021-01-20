@@ -1,0 +1,190 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/* Reset */
+body,img,p,h1,h2,h3,h4,h5,h6,ul,ol {margin:0; padding:0; list-style:none; border:none;}
+/* End Reset */
+
+#dragger-tool {position: absolute; top: -1000px; left: -1000px; background-color: #555; display: none; }
+
+A {
+    text-decoration: none;
+    color: #000000;
+}
+
+#perc_head{
+    border: 1px solid #000000;
+    height: 26px;
+    margin-bottom: 10px;
+}
+
+.perc_box{
+    border: 1px solid black;
+    margin: 4px;
+    padding: 4px;
+}
+
+#perc_topnav{
+    width: 100%;
+}
+
+#perc_topnav_links{
+    text-align: left;
+    float: left;
+    /* width: 49%; */
+}
+
+#perc_userinfo{
+    text-align: right;
+    float: right;
+    width: 49%;
+}
+
+#perc_head div ul li{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    display: inline;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-right: 1px solid #000000;
+
+}
+
+#perc_main{
+    height: 100px;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+/* Dialogs */
+.perc_dialog{
+    font-size: 11px;
+}
+
+.perc_dialog_label{
+    font-weight: bold;
+}
+
+.perc_dialog_input {
+    width: 95%;
+    margin-bottom: 10px;
+}
+
+.perc_field_error {
+    color: red;
+}
+
+.perc_imageselect {
+
+    /* required settings */
+    position:relative;
+    overflow-y:scroll;
+    width: 155px;
+    height: 250px;
+
+    /* custom decorations */
+    padding-left: 10%;
+    padding-right: 10%;
+    border:1px solid #000;
+    background-color:#efefef;
+}
+
+
+.perc_imageselect_item {
+
+    margin: 3px 0px 3px 0px;
+    padding: 17px 10px 0px 10px;
+    width: 122px;
+    height: 113px;
+}
+
+.perc_imageselect_selected {
+
+    background-color: #caf589;
+    cursor:pointer;
+}
+
+.perc_hidden {
+    opacity: 0;
+    position: absolute;
+
+}
+
+.perc_imageselect_index, .perc_imageselect_value{
+    display: none;
+}
+
+
+/* Read-only fields */
+#perc-content-form div.datadisplay{
+    /* width: 98% !important;*/
+    background-color: #cccccc;
+    min-height: 16px;
+    border: 1px inset #999;
+    margin-top: 5px;
+    color: #333333;
+    overflow: auto;
+    padding:3px 3px 0px 3px;
+    width:330px;
+}
+
+
+.btn-primary {
+    background-color: #133c55 !important;
+    border-color: #133c55 !important;
+    float: right;
+    margin-right: 10px;
+    margin-top: 13px;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-stretch: normal;
+    font-size: 14px !important;
+    line-height: normal;
+    font-family: 'Open Sans', sans-serif !important;
+    padding: 0px 15px 0px 15px !important;
+    white-space: nowrap;
+    color: rgb(255, 255, 255);
+    border-radius: 4px;
+    cursor: pointer;
+    border-style: outset;
+    border-width: 2px;
+    padding-left: 15px;
+    padding-right: 15px !important;
+    width: auto !important;
+    height: 29px !important;
+    vertical-align: middle;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+    background-color: #d22f12 !important;
+    border-color: #d22f12 !important;
+    color: #ffffff !important;
+}

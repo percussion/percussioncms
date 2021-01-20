@@ -1,0 +1,82 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+#perc-search-criteria-panel-content
+{
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 11px;
+}
+#perc-search-criteria-panel-content-header
+{
+    height:20px;
+    padding-bottom:10px;
+}
+#perc-search-criteria-panel-content-select-filters
+{
+    margin-left:7px;
+    float:right;
+    margin-right: 7px;
+    cursor: pointer;
+    color: #000000;
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 11px;
+}
+#perc-search-criteria-panel-content-refresh-search
+{
+    height:22px;
+    width:66px;
+    margin-top: -4px;
+}
+
+#perc-search-criteria-panel-content-refresh-search:hover
+{
+}
+
+#perc-search-criteria-panel-content-refresh-search.perc-disabled
+{
+}
+
+#perc-search-criteria-panel-content-fields
+{
+    border:1px solid #777777;
+    background-color: #E6E6E9;
+    padding:5px;
+    color: #000;
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 11px;
+}
+.perc-search-criteria-panel-content-spans, .perc-search-criteria-panel-values-spans
+{
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 11px;
+}
+#perc-search-criteria-panel-content-fields #perc-search-criteria-panel-filters
+{
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 11px;
+}
+body * {
+    font-family: 'Open Sans', sans-serif ;
+}

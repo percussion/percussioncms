@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT StateRoles EMPTY>
+<!ATTLIST  StateRoles WorkflowAppId CDATA #REQUIRED>
+<!ATTLIST  StateRoles RoleId CDATA #REQUIRED>
+<!ELEMENT Action (StateRoles )>
+<!ATTLIST  Action type CDATA #REQUIRED>
+<!ELEMENT cascadeDeleteStateRoles (Action* )>

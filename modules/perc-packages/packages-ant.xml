@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- Rhythmyx Build -->
+<project name="packages" default="preparePackages" basedir=".">
+
+    <property name="packages.dir" value="${basedir}/../../system/Packages"/>
+    <property name="outputdir" value="${basedir}/target" />
+
+    <property name="pkg.tmp.dir" value="${outputdir}/distribution/Packages"/>
+
+    <echo> plugin classpath = ${plugin_classpath}</echo>
+    <!-- Define the ant extension classpath -->
+    <!--
+    <path id="antExt.class.path">
+        <pathelement location="${ant.lib.dir}/psantextensions.jar" />
+        <pathelement location="${ant.lib.dir}/p4.jar" />
+        <pathelement location="${ant.lib.dir}/ant-contrib-0.6.jar" />
+        <fileset dir="${toolsdir}/axis" includes="*.jar" />
+        <fileset dir="${toolsdir}/mail" includes="*.jar" />
+        <fileset dir="${toolsdir}/Commons" includes="*.jar" />
+        <pathelement location="${toolsdir}/regex/jakarta-regexp-1.3.jar"/>
+    </path>
+-->
+
+
+    <taskdef resource="com/percussion/ant/antlib.xml" loaderref="perc.loader"/>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" loaderref="perc.loader"/>
+
+
+    <!-- Add a new package to source control based on passed in ${PACKAGEPATH} -->
+    <target name="addPackage">
+        <property name="tempdir3" value="${outputdir}/temp/Packages/temp3" />
+        <mkdir dir="${tempdir3}"/>
+        <unzip src="${PACKAGEPATH}" dest="${tempdir3}" />
+        <PSP4PackageAdd env="${basedir}/buildResources/perforce.properties" packagepath="${PACKAGEPATH}"
+                      description="${DESCRIPTION}" rootpath="${packages.dir}" tempPath="${tempdir3}" />
+        <delete dir="${tempdir3}"/>
+    </target>
+
+    <!-- Checks out a package from source control based on passed in ${PACKAGEPATH} -->
+    <target name="checkOutPackage">
+        <PSP4Sync env="${basedir}/buildResources/perforce.properties"  path="${packages.dir}"/>
+        <PSP4Edit env="${basedir}/buildResources/perforce.properties"
+                       path="${packages.dir}" packagename="${PACKAGENAME}" description="${DESCRIPTION}" lock="false" />
+
+        <property name="tempdir1" value="${outputdir}/temp/Packages/temp1" />
+        <property name="tempdir2" value="${outputdir}/temp/Packages/temp2" />
+        <mkdir dir="${tempdir1}"/>
+        <mkdir dir="${tempdir2}"/>
+        <PSCopyDirectory  destDir="${tempdir1}" packagename="${PACKAGENAME}" rootdirpath="${packages.dir}"/>
+        <PSZipPackage  packagename="${PACKAGENAME}" rootdirpath="${packages.dir}" tempPath1="${tempdir1}"
+                       tempPath2="${tempdir2}"  />
+
+        <delete dir="${tempdir1}"/>
+        <delete dir="${tempdir2}"/>
+    </target>
+
+    <!-- Prepare package files for distribution -->
+    <target name="preparePackages">
+        <delete dir="${pkg.tmp.dir}" quiet="true"/>
+        <mkdir dir="${pkg.tmp.dir}"/>
+        <echo>Building packages</echo>
+        <foreach target="generatePackages" param="file">
+            <path>
+                <dirset dir="${packages.dir}">
+                    <include name="*"/>
+                    <exclude name="Percussion"/>
+                    <exclude name="packageholder"/>
+                </dirset>
+            </path>
+        </foreach>
+        <echo>Building package complete</echo>
+        <echo>Locking packages</echo>
+        <antcall target="lockPackages"/>
+        <echo>Locking package complete</echo>
+    </target>
+
+    <target name="generatePackages">
+        <basename property="temp.dirname" file="${file}"/>
+        <echo>Building package: ${temp.dirname}.ppkg</echo>
+        <antcall target="buildToolPackage">
+            <param name="PACKAGENAME" value="${temp.dirname}.ppkg"/>
+        </antcall>
+    </target>
+
+    <!-- Lock package files -->
+    <target name="lockPackages" if="is.external">
+        <path id="lockMgr.class.path">
+            <pathelement location="${deployerclassdir}" />
+            <path refid="classes.path" />
+        </path>
+        <java classname="com.percussion.deployer.server.PSPackageLockManager"
+              classpathref="lockMgr.class.path" fork="true" failonerror="true">
+            <arg value="-lock"/>
+            <arg value="${pkg.tmp.dir}"/>
+        </java>
+    </target>
+
+    <!-- Builds a package from the source folder under the base directory -->
+    <target name ="buildToolPackage">
+        <property name="tempdir1" value="${outputdir}/temp/Packages/temp1" />
+        <property name="tempdir2" value="${outputdir}/temp/Packages/temp2" />
+        <delete dir="${tempdir1}"/>
+        <delete dir="${tempdir2}"/>
+        <mkdir dir="${tempdir1}"/>
+        <mkdir dir="${tempdir2}"/>
+        <echo>tempdir1 = ${tempdir1}</echo>
+        <echo>tempdir2 = ${tempdir2}</echo>
+        <PSCopyDirectory  destDir="${tempdir1}" packagename="${PACKAGENAME}" rootdirpath="${packages.dir}"/>
+
+        <PSZipPackage  packagename="${PACKAGENAME}" rootdirpath="${packages.dir}" tempPath1="${tempdir1}"
+                       tempPath2="${tempdir2}" destDirPath="${pkg.tmp.dir}" />
+
+        <!--<move file="${packages.dir}/packageholder/${PACKAGENAME}" todir="${pkg.tmp.dir}"></move>-->
+       <delete dir="${tempdir1}"/>
+        <delete dir="${tempdir2}"/>
+
+    </target>
+
+    <!--Checks in a package -->
+    <target name="updatePackage">
+        <PSP4PackageUpdate env="${basedir}/buildResources/perforce.properties"  packagepath="${PACKAGEPATH}"
+                         rootDirpath="${packages.dir}" change="${change.list.number}"/>
+    </target>
+
+    <!-- Helper target for listing all available packages -->
+    <target name="packageList">
+        <echo>Available packages:</echo>
+        <foreach target="packagesListPrint" param="file">
+            <path>
+                <dirset dir="${packages.dir}">
+                    <include name="perc.Baseline.ppkg"/>
+                    <exclude name="Percussion"/>
+                </dirset>
+            </path>
+        </foreach>
+    </target>
+
+    <target name="packagesListPrint">
+        <basename property="temp.dirname" file="${file}"/>
+        <echo>     ${temp.dirname}</echo>
+    </target>
+
+</project>

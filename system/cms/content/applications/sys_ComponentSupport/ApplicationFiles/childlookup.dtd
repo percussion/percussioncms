@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT childlookup (addurl, parentchild, slot* )>
+<!ELEMENT slot (slotname, list* )>
+<!ELEMENT list (componentname, componentid, componentdesc, sortorder, componenturl, deleteurl, editurl, editcomponenturl, componentdisplayname, deletecomponenturl )>
+<!ELEMENT deletecomponenturl (#PCDATA)>
+<!ELEMENT componentdisplayname (#PCDATA)>
+<!ELEMENT editcomponenturl (#PCDATA)>
+<!ELEMENT editurl (#PCDATA)>
+<!ELEMENT deleteurl (#PCDATA)>
+<!ELEMENT componenturl (#PCDATA)>
+<!ELEMENT sortorder (#PCDATA)>
+<!ELEMENT componentdesc (#PCDATA)>
+<!ELEMENT componentid (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT parentchild (#PCDATA)>
+<!ELEMENT addurl (#PCDATA)>

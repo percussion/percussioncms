@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/securityDesign" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:secs="urn:www.percussion.com/6.0.0/securityServices" xmlns:secd="urn:www.percussion.com/6.0.0/securityDesign" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="../common.xsd"/>
+   <xsd:import namespace="urn:www.percussion.com/6.0.0/securityServices" schemaLocation="securityServices.xsd"/>
+   <xsd:element name="IsValidRhythmyxUserRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Username" type="xsd:string">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The name for the user to be tested, not null or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="IsValidRhythmyxUserResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="IsValid" type="xsd:boolean">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     True if the supplied user is a valid rhythmyx user, 
+                     false otherwise.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateCommunitiesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>The names of the communities, not null or empty. The names must be unique across all defined communities in the system, names are compared case-insensitive and cannot contain spaces.    </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateCommunitiesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="secs:PSCommunity" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The new community definition initialized with the 
+                     supplied parameters. The user must call SaveCommunities 
+                     for the returned object to persist the definition.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindCommunitiesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The name of the community to find, may be null or empty,
+                     wildcards are accepted. All community summaries will be
+                     returned if not supplied or empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindCommunitiesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all object summaries of type PSCommunity 
+                     found for the supplied name, never null, may be empty, 
+                     ordered in alpha order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadCommunitiesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array of community ids to be loaded, not null or empty,
+                     must be ids of existing communities.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     True to lock the found results for edit, false to return
+                     them read-only.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="LoadCommunitiesResponse">
+
+         <xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="PSCommunity" type="secs:PSCommunity"  minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                     <xsd:documentation>
+                        An array with all loaded communities in the requested
+                        mode in the same order as requested, never null or empty.
+                     </xsd:documentation>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveCommunitiesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="secs:PSCommunity" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all community definitions to be persisted 
+                     to the repository, new communities will be inserted, 
+                     existing communities will be updated.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeleteCommunitiesRequest">
+      <xsd:annotation>
+         <xsd:documentation>Delete all communities specified through the supplied ids. We ignore ids for which we can't find a community. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>An array of ids for which to delete the community definitions, not null or empty. We ignore cases where the object for a supplied id does not exist.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignored. If dependency checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that the client can deal with it appropriately.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetVisibilityByCommunityRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>The community ids for which to get the visible design objects.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Type" type="xsd:int" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>The design object type for whicch to filter the response, must be defined by PSTypeEnum.</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetVisibilityByCommunityResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="secs:PSCommunityVisibility" maxOccurs="unbounded"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindRolesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="0">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     The name of the role to find, not null or empty, wildcards
+                     are accepted. All roles will be returned if not supplied or
+                     empty.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FindRolesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>
+                     An array with all object summaries of type PSRole found 
+                     for the supplied name, never null, may be empty, 
+                     ordered in alpha order by name.
+                  </xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

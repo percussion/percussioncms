@@ -1,0 +1,10 @@
+- Name: 7installpackages
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskPackageInstall
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER
+  Parameters:
+    PackageDir: var/Packages
+    XmlFile: rxconfig/Installer/InstallPackages.xml
+    FailOnFileNotFound: false

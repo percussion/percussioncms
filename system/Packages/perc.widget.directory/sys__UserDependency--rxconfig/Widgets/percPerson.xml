@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percPerson - Version 1.0.0]
+
+-->
+<Widget>
+ <WidgetPrefs title="Person"
+              contenttype_name="percPerson"
+              description="This widget is used to store the details of a Person for use with the Directory widget"
+              author="Percussion Software Inc"
+              thumbnail="/rx_resources/widgets/percPerson/images/percPersonIcon.png"
+              preferred_editor_width="800"
+              preferred_editor_height="800"
+              is_responsive="true"/>
+ <UserPref name="perc_hidefield_personOrgField"
+           display_name="Hide Organization"
+           default_value="false"
+           datatype="bool" />
+ <UserPref name="perc_hidefield_personDptField"
+           display_name="Hide Department"
+           default_value="false"
+           datatype="bool" />
+ <UserPref name="perc_hidefield_personTitleField"
+           display_name="Hide Position / Title"
+           default_value="false"
+           datatype="bool" />
+ <UserPref name="perc_hidefield_personPhoneField"
+           display_name="Hide Phone Number"
+           default_value="true"
+           datatype="bool" />
+ <UserPref name="perc_hidefield_personEmailField"
+           display_name="Hide 'Send Email' link"
+           default_value="true"
+           datatype="bool" />
+ <UserPref name="perc_hidefield_personImageField"
+           display_name="Hide Image"
+           default_value="false"
+           datatype="bool" />
+ <UserPref name="perc_hidefield_personPageField"
+           display_name="Hide Personal Page"
+           default_value="false"
+           datatype="bool" />
+ <UserPref name="perc_hidefield_personCaptionField"
+           display_name="Hide Personal Caption"
+           default_value="false"
+           datatype="bool" />
+
+ <!-- User prefs define input needed when in layout config for a widget -->
+ <!-- Available data types are bool, number, enum, string -->
+
+ <Code type="jexl">
+  <!-- This section is used to set up data that will be used in the content section -->
+  <![CDATA[
+       $pageId = $perc.page.id;
+       $widgetId = $perc.widget.item.id;
+       $rootclass = 'percPerson';
+
+       ## Get asset item(s)
+       $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+       $perc.setWidgetContents($assets);
+
+        if (! $assets.isEmpty())
+        {
+            $assetItem = $assets.get(0); ## Get first item (which may be only item)
+            $assetContentId = $assetItem.getNode().getProperty('sys_contentid').String;
+
+            ## Get site domain name
+            $pageName = $perc.page.name;
+            $folderName = $perc.page.folderPaths.get(0);
+            $temp = $folderName.replace("//Sites/","");
+            $pathArray = $temp.split("/");
+            $siteDomain = $pathArray.get(0);
+
+            ## Get Widget Layout Properties
+            $percHideFieldPersonOrganization = $perc.widget.item.properties.get('perc_hidefield_personOrgField');
+            $percHideFieldPersonDepartment = $perc.widget.item.properties.get('perc_hidefield_personDptField');
+            $percHideFieldPersonTitle = $perc.widget.item.properties.get('perc_hidefield_personTitleField');
+            $percHidefieldPersonPhone = $perc.widget.item.properties.get('perc_hidefield_personPhoneField');
+            $percHidefieldPersonEmail = $perc.widget.item.properties.get('perc_hidefield_personEmailField');
+            $percHideFieldPersonImage = $perc.widget.item.properties.get('perc_hidefield_personImageField');
+            $percHideFieldPersonPage = $perc.widget.item.properties.get('perc_hidefield_personPageField');
+            $percHideFieldPersonCaption = $perc.widget.item.properties.get('perc_hidefield_personCaptionField');
+
+            ## Get Widget Content Properties
+            $honorificPrefix = $assetItem.getNode().getProperty('honorificPrefix').String;
+            $personFirstName = $assetItem.getNode().getProperty('personFirstName').String;
+            $personLastName = $assetItem.getNode().getProperty('personLastName').String;
+            $personName = "";
+            if ($honorificPrefix != "" && $honorificPrefix != "#")
+            {
+                $personName = $personName + $honorificPrefix + " ";
+            }
+            if ($personFirstName != "" && $personFirstName != "#")
+            {
+                $personName = $personName + $personFirstName + " ";
+            }
+            if ($personLastName != "" && $personLastName != "#")
+            {
+                $personName = $personName + $personLastName;
+            }
+
+            $personPhone = $assetItem.getNode().getProperty('personPhone').String;
+            $personEmail = $assetItem.getNode().getProperty('personEmail').String;
+
+            ##
+            ## Configure form page for Send Email link
+            ##
+            $emailFormPage_linkId = $assetItem.getNode().getProperty('emailFormPage_linkId').String;
+            $emailFormPage_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $emailFormPage_linkId);
+            $emailFormPage_title = "";
+            $emailFormPage_sys_contentId = $rx.pageutils.getManagedLinkDependentId($emailFormPage_linkId);
+            if ($emailFormPage_sys_contentId != "")
+            {
+                $emailFormPage_pageMap = $rx.pageutils.findItemFieldValues('percPage', 'resource_link_title', $emailFormPage_sys_contentId);
+                $emailFormPage_title = $emailFormPage_pageMap.get('resource_link_title');
+            }
+            $sendMailName = $personFirstName.trim() + "-" + $personLastName.trim();
+            $sendMailLink = $emailFormPage_path + "?name=" + $sendMailName;
+
+            ##
+            ## Get Organization Name from contentId
+            ##
+            $orgContentId = $assetItem.getNode().getProperty('personOrganization').String;
+            $orgName = "";
+            if ($orgContentId != "" && $orgContentId != "#")
+            {
+                $params = $rx.string.stringToMap(null);
+                $params.put('orgContentId', $orgContentId );
+                $query = 'select rx:sys_contentid, rx:sys_folderid from rx:percOrganization where rx:sys_contentid = :orgContentId';
+                $params.put('max_results', 1);
+                $params.put('query', $query);
+                $finderName = 'Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder';
+                $orgResult = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+                    if( $orgResult.size() > 0 )
+                    {
+                        $orgName = $orgResult.get(0).getNode().getProperty("orgName").String;
+                    }
+            }
+
+            ##
+            ## Get Department Name from Dept Content Id
+            ##
+            $dptContetnId = $assetItem.getNode().getProperty('personDepartment').String;
+            $dptName = "";
+            if ($dptContetnId != "" && $dptContetnId != "#")
+            {
+                $params = $rx.string.stringToMap(null);
+                $params.put('dptContetnId', $dptContetnId );
+                $query = 'select rx:sys_contentid, rx:sys_folderid from rx:percDepartment where rx:sys_contentid = :dptContetnId';
+                $params.put('max_results', 1);
+                $params.put('query', $query);
+                $finderName = 'Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder';
+                $dptResult = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+                    if( $dptResult.size() > 0 )
+                    {
+                        $dptName = $dptResult.get(0).getNode().getProperty("dptName").String;
+                    }
+            }
+
+            $personTitle = $assetItem.getNode().getProperty('personTitle').String;
+
+            ## Get Image details
+            $personImage_linkId = $assetItem.getNode().getProperty('personImage_linkId').String;
+            $personImage_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $personImage_linkId, $sys.assemblyItem.PubServerId);
+            $personImage_alt_text = "";
+            $personImage_title = "";
+            $personImage_sys_contentId = $rx.pageutils.getManagedLinkDependentId($personImage_linkId);
+            if ($personImage_sys_contentId != "")
+            {
+                $personImage_assetMap = $rx.pageutils.findItemFieldValues('percImageAsset', 'displaytitle,alttext', $personImage_sys_contentId);
+                $personImage_alt_text = $personImage_assetMap.get('alttext');
+                $personImage_title = $personImage_assetMap.get('displaytitle');
+            }
+
+            ## Get Page details
+            $personPage_linkId = $assetItem.getNode().getProperty('personPage_linkId').String;
+            $personPage_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $personPage_linkId);
+            $personPage_title = "";
+            $personPage_sys_contentId = $rx.pageutils.getManagedLinkDependentId($personPage_linkId);
+            if ($personPage_sys_contentId != "")
+            {
+                $personPage_pageMap = $rx.pageutils.findItemFieldValues('percPage', 'resource_link_title', $personPage_sys_contentId);
+                $personPage_title = $personPage_pageMap.get('resource_link_title');
+            }
+
+            $personCaption = $assetItem.getNode().getProperty('personCaption').String;
+
+            ##
+            ## Schema.org Markup
+            ##
+            $scriptSchemaId = "perc-person-schema-" + $assetContentId;
+            $personSchema = $rx.string.getJSONObject();
+            $personSchema.put("@context", "http://schema.org");
+            $personSchema.put("@type", "Person");
+            $personSchema.put("givenName", $personFirstName);
+            $personSchema.put("familyName", $personLastName);
+
+            if ($honorificPrefix != "") {
+                $personSchema.put("honorificPrefix", $honorificPrefix);
+            }
+            if ($personOrganization != "") {
+                $personSchema.put("worksFor", $orgName);
+            }
+            if ($personTitle != "") {
+                $personSchema.put("jobTitle", $personTitle);
+            }
+            if ($personImage_path != "" && $personImage_path != "#") {
+                $personalImageURL = "//" + $siteDomain + $personImage_path;
+                $personSchemaImage = $rx.string.getJSONObject();
+                $personSchemaImage.put("@type", "ImageObject");
+                $personSchemaImage.put("url", $personalImageURL);
+                if ($personImage_title != "") {
+                    $personSchemaImage.put("name", $personImage_title);
+                }
+                if ($personImage_alt_text != "") {
+                    $personSchemaImage.put("alternateName", $personImage_alt_text);
+                }
+                $personSchema.put("image", $personSchemaImage);
+            }
+            if ($personEmail != "") {
+                $personMailTo = "mailto:" + $personEmail;
+                $personSchema.put("email", $personMailTo);
+            }
+            if ($personPhone != "") {
+                $personSchema.put("telephone", $personPhone);
+            }
+            if ($personPage_path != "" && $personPage_path != "#") {
+                $personURL = "//" + $siteDomain + $personPage_path;
+                $personSchema.put("url", $personURL);
+            }
+        }
+    ]]>
+ </Code>
+ <Content type="velocity">
+  <!-- This section defines the rendered content -->
+  <![CDATA[
+       <div class="$!rootclass">
+#if( ! $perc.widgetContents.isEmpty() )
+#set($addlHead = $perc.page.getAdditionalHeadContent())##
+## Check for existing Schema if using multiple instances of widget on same page
+#if( !($addlHead.contains($scriptSchemaId)) )##
+$perc.page.setAdditionalHeadContent("$!{addlHead}<script async id='$!{scriptSchemaId}' type='application/ld+json'>$!{personSchema}</script>")##
+#end##
+            <div class="perc-person">
+#if( !($percHideFieldPersonImage) && "$!{personImage_path}" != ""  && "$!{personImage_path}" != "#" )##
+                <div class="perc-person-image">
+#if( !($percHideFieldPersonPage) && "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )##
+                    <a href="$personPage_path" title="$personPage_title">
+                        <img src="$personImage_path" title="$personImage_title" alt="$personImage_alt_text" />
+                    </a>
+#else##
+                    <img src="$personImage_path" title="$personImage_title" alt="$personImage_alt_text" />
+#end##
+                </div>
+#end##
+                <div class="perc-person-details">
+#if( !($percHideFieldPersonPage) && "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )##
+                    <a href="$personPage_path" title="$personPage_title">
+                        <div class="perc-person-name">$!{personName}</div>
+                    </a>
+#else##
+                    <div class="perc-person-name">$!{personName}</div>
+#end##
+##
+#if( !($percHideFieldPersonOrganization) && "$!{orgName}" != "" && "$!{orgName}" != "#" )##
+                    <div class="perc-person-org"><p>$!{orgName}</p></div>
+#end##
+#if( !($percHideFieldPersonDepartment) && "$!{dptName}" != "" && "$!{dptName}" != "#" )##
+                    <div class="perc-person-dpt"><p>$!{dptName}</p></div>
+#end##
+#if( !($percHideFieldPersonTitle) && "$!{personTitle}" != "" && "$!{personTitle}" != "#" )##
+                    <div class="perc-person-title"><p>$!{personTitle}</p></div>
+#end##
+#if( !($percHidefieldPersonPhone) && "$!{personPhone}" != "" && "$!{personPhone}" != "#" )##
+                    <div class="perc-person-phone"><p>$!{personPhone}</p></div>
+#end##
+#if( !($percHidefieldPersonEmail) && "$!{personEmail}" != "" && "$!{emailFormPage_path}" != "" && "$!{emailFormPage_path}" != "#")##
+                    <div class="perc-person-email">
+                        <a href="$sendMailLink" title="Send Email">Send Email</a>
+                    </div>
+#end##
+                </div>
+#if( !($percHideFieldPersonCaption) && "$!{personCaption}" != "" )##
+                <div class="perc-person-caption">$!{personCaption}</div>
+#end##
+            </div>
+## set Dollar symbol for use in embedded jQuery script
+#set( $d = "$" )##
+            <script>
+                window.addEventListener('DOMContentLoaded', function() {
+                    // Presubmit Event handler to encode
+                    ${d}('#percPerson').on('click', '.perc-person-email a', function (element) {
+                        // grab the href value
+                        var url = ${d}(this).attr("href");
+                        // URI encode param
+                        url = encodeURI(url);
+                        // update the element href attribute prior to navigation
+                        ${d}(this).attr("href", url)
+                    });
+                });
+            </script>
+#elseif ($perc.isEditMode())
+#createEmptyWidgetContent("percPerson-empty-style", "This widget is showing sample content")
+#end
+       </div>
+    ]]>
+ </Content>
+</Widget>

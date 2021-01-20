@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT components (componentname, relatedlinks, searchcompurl, newcomponenturl, currentpsfirst, list* )>
+<!ELEMENT list (componentid, componentdesc, editcomponenturl, componentdisplayname, deletecomponenturl )>
+<!ELEMENT deletecomponenturl (#PCDATA)>
+<!ELEMENT componentdisplayname (#PCDATA)>
+<!ELEMENT editcomponenturl (#PCDATA)>
+<!ELEMENT componentdesc (#PCDATA)>
+<!ELEMENT componentid (#PCDATA)>
+<!ELEMENT currentpsfirst (#PCDATA)>
+<!ELEMENT newcomponenturl (#PCDATA)>
+<!ELEMENT searchcompurl (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>

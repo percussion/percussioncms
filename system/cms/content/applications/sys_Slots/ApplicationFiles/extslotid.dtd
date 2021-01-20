@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT extslotid (slotdesc, slotid, systemslot, slotname, slottype )>
+<!ELEMENT slottype (#PCDATA)>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT systemslot (#PCDATA)>
+<!ELEMENT slotid (#PCDATA)>
+<!ELEMENT slotdesc (#PCDATA)>

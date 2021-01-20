@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT redirect (HttpHost, BounceTo, caurl )>
+<!ELEMENT caurl (#PCDATA)>
+<!ELEMENT BounceTo (#PCDATA)>
+<!ELEMENT HttpHost (#PCDATA)>
+<!ATTLIST  redirect xml:lang CDATA #IMPLIED>

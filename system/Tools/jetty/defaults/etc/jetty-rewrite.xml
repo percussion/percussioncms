@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+
+<!-- =============================================================== -->
+<!-- Mixin the RewriteHandler                                        -->
+<!-- =============================================================== -->
+
+
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+    <!-- =========================================================== -->
+    <!-- configure rewrite handler                                   -->
+    <!-- =========================================================== -->
+    <Get id="oldhandler" name="handler"/>
+
+    <Set name="handler">
+        <New id="Rewrite" class="org.eclipse.jetty.rewrite.handler.RewriteHandler">
+            <Set name="handler"><Ref refid="oldhandler"/></Set>
+            <Set name="rewriteRequestURI"><Property name="jetty.rewrite.rewriteRequestURI" deprecated="rewrite.rewriteRequestURI" default="true"/></Set>
+            <Set name="rewritePathInfo"><Property name="jetty.rewrite.rewritePathInfo" deprecated="rewrite.rewritePathInfo" default="false"/></Set>
+            <Set name="originalPathAttribute"><Property name="jetty.rewrite.originalPathAttribute" deprecated="rewrite.originalPathAttribute" default="requestedPath"/></Set>
+
+            <!-- Set DispatcherTypes  -->
+            <Set name="dispatcherTypes">
+                <Array type="javax.servlet.DispatcherType">
+                    <Item><Call class="javax.servlet.DispatcherType" name="valueOf"><Arg>REQUEST</Arg></Call></Item>
+                    <Item><Call class="javax.servlet.DispatcherType" name="valueOf"><Arg>ASYNC</Arg></Call></Item>
+                </Array>
+            </Set>
+
+
+
+            <!-- example rule -->
+
+            <Call name="addRule">
+                <Arg>
+                    <New class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+                        <Set name="pattern">*.html</Set>
+                        <Set name="name">X-UA-Compatible</Set>
+                        <Set name="value">IE=edge,chrome=1</Set>
+                    </New>
+                </Arg>
+            </Call>
+
+            <Call name="addRule">
+                <Arg>
+                    <New class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+                        <Set name="pattern">*.jsp</Set>
+                        <Set name="name">X-UA-Compatible</Set>
+                        <Set name="value">IE=edge,chrome=1</Set>
+                    </New>
+                </Arg>
+            </Call>
+
+            <Call name="addRule">
+                <Arg>
+                    <New class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+                        <Set name="pattern">*.faces</Set>
+                        <Set name="name">X-UA-Compatible</Set>
+                        <Set name="value">IE=edge,chrome=1</Set>
+                    </New>
+                </Arg>
+            </Call>
+
+            <Call name="addRule">
+                <Arg>
+                    <New class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+                        <Set name="pattern">*.htm</Set>
+                        <Set name="name">X-UA-Compatible</Set>
+                        <Set name="value">IE=edge,chrome=1</Set>
+                    </New>
+                </Arg>
+            </Call>
+            <!-- Redirect Package Manager -->
+            <Call name="addRule">
+                <Arg>
+                    <New class="org.eclipse.jetty.rewrite.handler.RedirectPatternRule">
+                        <Set name="pattern">/cm/packages</Set>
+                        <Set name="location">/sys_resources/ui/gwt/com.percussion.gwt.pkgmgtui.PkgMgtUI/PkgMgtUI.html</Set>
+                    </New>
+                </Arg>
+            </Call>
+
+
+        </New>
+    </Set>
+</Configure>

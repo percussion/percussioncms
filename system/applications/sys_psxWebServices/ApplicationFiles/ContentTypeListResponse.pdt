@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT DataVariant (#PCDATA)>
+<!ATTLIST  DataVariant name CDATA #IMPLIED>
+<!ATTLIST  DataVariant description CDATA #IMPLIED>
+<!ATTLIST  DataVariant id CDATA #REQUIRED>
+<!ELEMENT ContentType (DataVariant* )>
+<!ATTLIST  ContentType name CDATA #IMPLIED>
+<!ATTLIST  ContentType description CDATA #IMPLIED>
+<!ATTLIST  ContentType id CDATA #REQUIRED>
+<!ELEMENT ContentTypeListResponse (ContentType+ )>

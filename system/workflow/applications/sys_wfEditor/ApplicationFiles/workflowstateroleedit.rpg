@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflowstateroleedit (relatedlinks, componentname, stateinfourl, workflowStateRoleEdit, roleid, workflowid, stateid, URL, assignmenttype, notify, adhoc )>
+<!ELEMENT adhoc (#PCDATA)>
+<!ELEMENT notify (#PCDATA)>
+<!ELEMENT assignmenttype (#PCDATA)>
+<!ELEMENT extroles (#PCDATA)>
+<!ELEMENT URL (extroles )>
+<!ELEMENT stateid (#PCDATA)>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT roleid (#PCDATA)>
+<!ELEMENT workflowStateRoleEdit (Name, NameValue )>
+<!ELEMENT NameValue (#PCDATA)>
+<!ELEMENT Name (#PCDATA)>
+<!ELEMENT stateinfourl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

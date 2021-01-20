@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT HistoryEntry (Title, CheckOutUserName, LastModifier, LastModified, RoleSet, EventTime, Actor, TransitionDesc, StateName, Comment? )>
+<!ELEMENT Comment (#PCDATA)>
+<!ELEMENT StateName (#PCDATA)>
+<!ATTLIST  StateName stateId CDATA #IMPLIED>
+<!ELEMENT TransitionDesc (#PCDATA)>
+<!ELEMENT Actor (#PCDATA)>
+<!ELEMENT EventTime (#PCDATA)>
+<!ELEMENT Role (#PCDATA)>
+<!ATTLIST  Role roleId CDATA #IMPLIED>
+<!ELEMENT RoleSet (Role+ )>
+<!ELEMENT LastModified (#PCDATA)>
+<!ELEMENT LastModifier (#PCDATA)>
+<!ELEMENT CheckOutUserName (#PCDATA)>
+<!ELEMENT Title (#PCDATA)>
+<!ATTLIST  HistoryEntry contentId CDATA #REQUIRED>
+<!ATTLIST  HistoryEntry workflowId CDATA #REQUIRED>
+<!ATTLIST  HistoryEntry key CDATA #REQUIRED>
+<!ATTLIST  HistoryEntry revision CDATA #REQUIRED>
+<!ATTLIST  HistoryEntry transitionId CDATA #REQUIRED>
+<!ELEMENT HistoryList (HistoryEntry* )>
+<!ELEMENT wfHistory (HistoryList )>
+

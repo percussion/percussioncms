@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="File"
+                 contenttype_name="percFileAsset"
+                 category="content,rich media"
+                 description="Upload a file and display a link to it"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/file/images/widgetIconFile.png"
+                 preferred_editor_width="780"
+                 preferred_editor_height="340"
+                 is_responsive="true"
+    />
+    <UserPref name="linkNewWindow"
+              display_name="Open link in new window"
+              default_value="true"
+              datatype="bool"/>
+    <UserPref name="referalPolicy"
+              display_name="Referrer-Policy"
+              datatype="enum">
+        <EnumValue value="no-referrer" display_value="no-referrer" />
+        <EnumValue value="no-referrer-when-downgrade" display_value="no-referrer-when-downgrade" />
+        <EnumValue value="origin" display_value="origin" />
+        <EnumValue value="origin-when-cross-origin" display_value="origin-when-cross-origin" />
+        <EnumValue value="same-origin" display_value="same-origin" />
+        <EnumValue value="strict-origin" display_value="strict-origin" />
+        <EnumValue value="strict-origin-when-cross-origin" display_value="strict-origin-when-cross-origin" />
+        <EnumValue value="unsafe-url" display_value="unsafe-url" />
+    </UserPref>
+    <CssPref name="rootclass"
+             display_name="CSS Root Class"
+             datatype="string" />
+    <Code type="jexl">
+        <![CDATA[
+        $props = $perc.widget.item.properties;
+        $referalPolicy = $props.get("referalPolicy");
+        $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+        if(!empty($rootclass)) {
+            $rootclass = $rootclass + " ";
+        }
+
+        $linkNewWindow = $perc.widget.item.properties.get('linkNewWindow');
+
+
+        if ($linkNewWindow == true) {
+            $target="_blank";
+        }
+        else {
+            $target="_self";
+        }
+        $linkContext = $perc.linkContext;
+        $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+        $perc.setWidgetContents($assetItems);
+        if ( ! $assetItems.isEmpty() ) {
+            $assetItem = $assetItems.get(0);
+            $link = $rx.pageutils.itemLink($linkContext, $assetItem, "percSystem.fileBinary");
+            $title = $rx.pageutils.html($assetItem,'displaytitle');
+            $link = $tools.esc.html($link);
+        }
+
+        $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+
+        $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
+
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[
+    <div class="$!{rootclass} perc-file" data="$!{dynamicListData}">
+        #if( ! $perc.widgetContents.isEmpty() )##
+            <span property="perc:asset-link" aria-hidden="true" style="display: none;">$!{link}</span>
+            <span property="perc:asset-title" aria-hidden="true" style="display: none;">$!{title}</span>
+            <a href="$!{link}" referrerpolicy="$!{referalPolicy}"  title="$!{title}"target="$!{target}">$!{title}</a>
+        #elseif ($perc.isEditMode())##
+            #createEmptyWidgetContent("file-sample-content", "This file widget is showing sample content.")##
+        #end##
+    </div>
+    ]]>
+    </Content>
+</Widget>

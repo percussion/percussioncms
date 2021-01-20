@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT AuditTrail (Date, Transition, Revision, State, Publishable, Username, Comment )>
+<!ELEMENT Comment (#PCDATA)>
+<!ELEMENT Username (#PCDATA)>
+<!ELEMENT Publishable (#PCDATA)>
+<!ELEMENT State (#PCDATA)>
+<!ATTLIST  State id CDATA #IMPLIED>
+<!ELEMENT Revision (#PCDATA)>
+<!ELEMENT Transition (#PCDATA)>
+<!ATTLIST  Transition id CDATA #IMPLIED>
+<!ELEMENT Date (#PCDATA)>
+<!ELEMENT AuditTrailResponse (AuditTrail* )>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="WidgetContentFinder" context="global/percussion/widgetcontentfinder/" deprecated="no" handler="Java" name="perc_NavWidgetContentFinder" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">The navigation widget content finder looks up the sibling navigation node (navon or navtree) for a specified item. Both the sibling navigation node and the given item are under the same folder. The looked up navigation node can be accessed from the binding of the returned assembly item from "$nav.self". In addition, the binding of "$nav.root" is the root of the navigation. All navigation nodes are filtered by the item filter specified in the given item.</initParam>
+      <initParam name="com.percussion.extension.version">53</initParam>
+      <initParam name="className">com.percussion.pagemanagement.assembler.impl.finder.PSNavWidgetContentFinder</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.pagemanagement.assembler.IPSWidgetContentFinder"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT TitleAbs (displaytitle*, link*, abstractcontent* )>
+<!ELEMENT abstractcontent (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT displaytitle (#PCDATA)>

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+<Configure id='wac' class="org.eclipse.jetty.webapp.WebAppContext">
+    <New id="cf" class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg><Ref refid='wac'/></Arg> <!-- reference to WebAppContext -->
+        <Arg>jms/ConnectionFactory</Arg>
+        <Arg>
+            <New class="org.apache.activemq.ActiveMQConnectionFactory">
+                <Arg>vm://localhost?brokerConfig=xbean:activemq.xml</Arg>
+            </New>
+        </Arg>
+    </New>
+    <New id="NotificationQueue" class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg><Ref refid='wac'/></Arg> <!-- reference to WebAppContext -->
+        <Arg>queue/notificationQueue</Arg>
+        <Arg>
+            <New class="org.apache.activemq.command.ActiveMQQueue">
+                <Arg>PERCUSSION.NOTIFICATIONS</Arg>
+            </New>
+        </Arg>
+    </New>
+    <New id="PublishQueue" class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg><Ref refid='wac'/></Arg> <!-- reference to WebAppContext -->
+        <Arg>queue/publishQueue</Arg>
+        <Arg>
+            <New class="org.apache.activemq.command.ActiveMQQueue">
+                <Arg>PERCUSSION.PUBLISHING</Arg>
+            </New>
+        </Arg>
+    </New>
+    <New id="EmailQueue" class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg><Ref refid='wac'/></Arg> <!-- reference to WebAppContext -->
+        <Arg>queue/emailQueue</Arg>
+        <Arg>
+            <New class="org.apache.activemq.command.ActiveMQQueue">
+                <Arg>PERCUSSION.EMAIL</Arg>
+            </New>
+        </Arg>
+    </New>
+</Configure>

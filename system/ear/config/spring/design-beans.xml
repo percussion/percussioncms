@@ -1,0 +1,167 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+   <tx:annotation-driven transaction-manager="sys_transactionManager"/>
+   <bean id="sys_design_ACL"
+		class="com.percussion.rx.design.impl.PSAclModel">
+		<property name="service">
+			<ref bean="sys_aclService"/>
+		</property>
+   </bean>
+
+   <bean id="sys_design_ACTION"
+		class="com.percussion.rx.design.impl.PSActionModel">
+   </bean>
+
+   <bean id="sys_design_APPLICATION"
+		class="com.percussion.rx.design.impl.PSApplicationModel">
+   </bean>
+
+   <bean id="sys_design_COMMUNITY_DEF"
+		class="com.percussion.rx.design.impl.PSCommunityModel">
+		<property name="service">
+			<ref bean="sys_backEndRoleMgr"/>
+		</property>
+   </bean>
+
+   <bean id="sys_design_CONTEXT"
+		class="com.percussion.rx.design.impl.PSContextModel">
+		<property name="service">
+			<ref bean="sys_sitemanager"/>
+		</property>
+   </bean>
+
+   <bean id="sys_design_CONTROL"
+		class="com.percussion.rx.design.impl.PSControlModel">
+   </bean>
+
+   <bean id="sys_design_DISPLAY_FORMAT"
+		class="com.percussion.rx.design.impl.PSDisplayFormatModel">
+   </bean>
+
+   <bean id="sys_design_EXTENSION"
+		class="com.percussion.rx.design.impl.PSExtensionModel">
+   </bean>
+
+   <bean id="sys_design_ITEM_FILTER"
+		class="com.percussion.rx.design.impl.PSItemFilterModel">
+		<property name="service">
+			<ref bean="sys_filtermanager"/>
+		</property>
+		<property name="normalizedTypeEnumName">
+            <value>Filter</value>
+        </property>
+   </bean>
+
+   <bean id="sys_design_LOCALE"
+		class="com.percussion.rx.design.impl.PSLocaleModel">
+		<property name="service">
+			<ref bean="sys_cmsObjectMgr"/>
+		</property>
+   </bean>
+
+   <bean id="sys_design_LOCATION_SCHEME"
+		class="com.percussion.rx.design.impl.PSLocationSchemeModel">
+		<property name="service">
+			<ref bean="sys_sitemanager"/>
+		</property>
+   </bean>
+
+   <bean id="sys_design_NODEDEF"
+		class="com.percussion.rx.design.impl.PSContentTypeModel">
+   </bean>
+
+   <bean id="sys_design_RELATIONSHIP_CONFIGNAME"
+		class="com.percussion.rx.design.impl.PSRelationshipConfigModel">
+   </bean>
+
+   <bean id="sys_design_SHARED_GROUP"
+		class="com.percussion.rx.design.impl.PSSharedGroupModel">
+   </bean>
+
+   <bean id="sys_design_SLOT"
+		class="com.percussion.rx.design.impl.PSSlotModel">
+		<property name="service">
+			<ref bean="sys_assemblyService"/>
+		</property>
+   </bean>
+ 
+   <bean id="sys_design_TEMPLATE"
+		class="com.percussion.rx.design.impl.PSTemplateModel">
+		<property name="service">
+			<ref bean="sys_assemblyService"/>
+		</property>
+   </bean>
+
+   <bean id="sys_design_KEYWORD_DEF"
+		class="com.percussion.rx.design.impl.PSKeywordModel">
+		<property name="service">
+			<ref bean="sys_contentService"/>
+		</property>
+      <property name="normalizedTypeEnumName">
+         <value>Keyword</value>
+      </property>
+   </bean>
+   <bean id="sys_design_SITE"
+		class="com.percussion.rx.design.impl.PSSiteModel">
+		<property name="service">
+			<ref bean="sys_sitemanager"/>
+		</property>
+   </bean>
+   <bean id="sys_design_EDITION"
+		class="com.percussion.rx.design.impl.PSEditionModel">
+		<property name="service">
+			<ref bean="sys_publisherservice"/>
+		</property>
+   </bean>
+   <bean id="sys_design_CONTENT_LIST"
+		class="com.percussion.rx.design.impl.PSContentListModel">
+		<property name="service">
+			<ref bean="sys_publisherservice"/>
+		</property>
+      <property name="normalizedTypeEnumName">
+         <value>ContentList</value>
+      </property>
+   </bean>
+   <bean id="sys_design_SEARCH_DEF"
+		class="com.percussion.rx.design.impl.PSSearchModel">
+   </bean>
+   <bean id="sys_design_VIEW_DEF"
+		class="com.percussion.rx.design.impl.PSSearchModel">
+   </bean>
+   <bean id="sys_design_WORKFLOW"
+		class="com.percussion.rx.design.impl.PSWorkflowModel">
+		<property name="service">
+			<ref bean="sys_workflowService"/>
+		</property>
+   </bean>
+</beans>

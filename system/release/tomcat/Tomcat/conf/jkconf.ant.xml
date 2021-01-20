@@ -1,0 +1,75 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="jkconf" default="main" basedir=".">
+
+    <target name="init-3x" if="33.detect">
+        <taskdef name="jkconf" 
+                 classname="org.apache.jk.config.WebXml2Jk" >
+            <classpath>
+                <!-- 3.3 support -->
+                <pathelement location="/ws/jtc/jk/build/classes" />
+                <pathelement location="${tomcat.home}/lib/container/tomcat-jk2.jar" />
+                <pathelement location="${tomcat.home}/lib/container/crimson.jar"/>
+                <pathelement location="${tomcat.home}/lib/common/commons-logging.jar"/>
+            </classpath>
+        </taskdef>
+    </target>
+
+    <target name="init-4x" if="4x.detect" >
+        <path id="main.classpath">
+            <!-- 3.3 support -->
+            <fileset dir="${tomcat.home}/lib" includes="*.jar" />
+            <fileset dir="${tomcat.home}/server/lib" includes="*.jar" />
+            <fileset dir="${tomcat.home}/common/lib" includes="*.jar" />
+        </path>
+        
+        <taskdef name="jkconf" classpathref="main.classpath" 
+                 classname="org.apache.jk.config.WebXml2Jk" />
+    </target>
+
+    <target name="detect" >
+        <property file="build.properties"/>
+        <property file="${user.home}/build.properties"/>
+        <property file="${user.home}/.build.properties"/>
+            
+            <!-- default locations, overrident by properties.
+            This file must be installed in conf/  -->
+        <property name="tomcat.home" location=".." />
+            
+        <available property="33.detect" file="${tomcat.home}/lib/container" />
+        <available property="4x.detect" file="${tomcat.home}/server/lib" />
+    </target>
+
+    <target name="init" depends="detect,init-3x,init-4x" />
+
+    <!-- ==================== Detection and reports ==================== -->
+
+
+    <target name="main" depends="init">
+        <jkconf docBase="${tomcat.home}/webapps/examples" 
+                context="/examples" />
+    </target>
+
+</project>

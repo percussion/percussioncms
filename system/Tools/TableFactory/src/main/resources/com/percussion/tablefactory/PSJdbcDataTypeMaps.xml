@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!--
+  Default datatype map file for JDBC to Native type conversions.
+-->
+<DataTypeMaps>
+   <DataTypeMap for="MSSQL" os="Windows NT" driver="odbc">
+      <DataType jdbc="BIT" native="BIT"/>
+      <DataType jdbc="TINYINT" native="TINYINT"/>
+      <DataType jdbc="SMALLINT" native="SMALLINT"/>
+      <DataType jdbc="INTEGER" native="INT"/>
+      <DataType jdbc="BIGINT" native="BIGINT"/>
+      <DataType jdbc="FLOAT" native="REAL"/>
+      <DataType jdbc="REAL" native="REAL"/>
+      <DataType jdbc="DOUBLE" native="FLOAT" defaultSize="53"/>
+      <DataType jdbc="NUMERIC" native="NUMERIC" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="DECIMAL" native="DECIMAL" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="CHAR" native="CHAR" defaultSize="1"/>
+      <DataType jdbc="VARCHAR" native="VARCHAR" defaultSize="1"/>
+      <DataType jdbc="LONGVARCHAR" native="TEXT"/>
+      <DataType jdbc="DATE" native="DATETIME"/>
+      <DataType jdbc="TIME" native="DATETIME"/>
+      <DataType jdbc="TIMESTAMP" native="DATETIME"/>
+      <DataType jdbc="BINARY" native="BINARY" defaultSize="1"/>
+      <DataType jdbc="VARBINARY" native="VARBINARY" defaultSize="1"/>
+      <DataType jdbc="LONGVARBINARY" native="IMAGE"/>
+      <DataType jdbc="BLOB" native="IMAGE"/>
+      <DataType jdbc="CLOB" native="TEXT"/>
+   </DataTypeMap>
+   <DataTypeMap for="MSSQL" os="" driver="inetdae7;sqlserver;jtds:sqlserver">
+      <DataType jdbc="BIT" native="BIT"/>
+      <DataType jdbc="TINYINT" native="TINYINT"/>
+      <DataType jdbc="SMALLINT" native="SMALLINT"/>
+      <DataType jdbc="INTEGER" native="INT"/>
+      <DataType jdbc="BIGINT" native="BIGINT"/>
+      <DataType jdbc="FLOAT" native="REAL"/>
+      <DataType jdbc="REAL" native="REAL"/>
+      <DataType jdbc="DOUBLE" native="FLOAT" defaultSize="53"/>
+      <DataType jdbc="NUMERIC" native="NUMERIC" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="DECIMAL" native="DECIMAL" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="CHAR" native="NCHAR" defaultSize="1"/>
+      <DataType jdbc="VARCHAR" native="NVARCHAR" defaultSize="1"/>
+      <DataType jdbc="LONGVARCHAR" native="NTEXT"/>
+      <DataType jdbc="DATE" native="DATETIME"/>
+      <DataType jdbc="TIME" native="DATETIME"/>
+      <DataType jdbc="TIMESTAMP" native="DATETIME"/>
+      <DataType jdbc="BINARY" native="BINARY" defaultSize="1"/>
+      <DataType jdbc="VARBINARY" native="VARBINARY" defaultSize="1"/>
+      <DataType jdbc="LONGVARBINARY" native="IMAGE"/>
+      <DataType jdbc="BLOB" native="IMAGE" isNative2Jdbc="y"/>
+      <DataType jdbc="CLOB" native="NTEXT" isNative2Jdbc="y"/>
+   </DataTypeMap>
+   <DataTypeMap for="ORACLE" os="Windows NT;SunOS" driver="oracle:thin;oracle:oci8">
+      <DataType jdbc="BIT" native="CHAR" defaultSize="1"/>
+      <DataType jdbc="TINYINT" native="NUMBER" defaultSize="3" defaultScale="0" isNative2Jdbc="y"/>
+      <DataType jdbc="SMALLINT" native="NUMBER" defaultSize="5" defaultScale="0" isNative2Jdbc="y"/>
+      <DataType jdbc="INTEGER" native="NUMBER" defaultSize="10" defaultScale="0" isNative2Jdbc="y"/>
+      <DataType jdbc="BIGINT" native="NUMBER" defaultSize="19" defaultScale="0" isNative2Jdbc="y"/>
+      <DataType jdbc="FLOAT" native="NUMBER" defaultSize="38" defaultScale="5" isNative2Jdbc="y"/>
+      <DataType jdbc="REAL" native="NUMBER" defaultSize="38" defaultScale="5" isNative2Jdbc="y"/>
+      <DataType jdbc="DOUBLE" native="NUMBER" defaultSize="38" defaultScale="5" isNative2Jdbc="y"/>
+      <DataType jdbc="NUMERIC" native="NUMBER" defaultSize="38" defaultScale="0" isNative2Jdbc="y"/>
+      <DataType jdbc="DECIMAL" native="NUMBER" defaultSize="38" defaultScale="0" isNative2Jdbc="y"/>
+      <DataType jdbc="CHAR" native="CHAR" defaultSize="1"/>
+      <DataType jdbc="VARCHAR" native="VARCHAR2" defaultSize="1"/>
+      <DataType jdbc="LONGVARCHAR" native="LONG"/>
+      <DataType jdbc="DATE" native="DATE"/>
+      <DataType jdbc="TIME" native="DATE"/>
+      <DataType jdbc="TIMESTAMP" native="DATE"/>
+      <DataType jdbc="BINARY" native="RAW" defaultSize="1"/>
+      <DataType jdbc="VARBINARY" native="RAW" defaultSize="1"/>
+      <DataType jdbc="LONGVARBINARY" native="LONG RAW"/>
+      <DataType jdbc="BLOB" native="BLOB"/>
+      <DataType jdbc="CLOB" native="CLOB"/>
+   </DataTypeMap>
+   <DataTypeMap for="DB2" os="" driver="db2">
+      <DataType jdbc="BIT" native="CHARACTER" defaultSize="1"/>
+      <DataType jdbc="TINYINT" native="SMALLINT"/>
+      <DataType jdbc="SMALLINT" native="SMALLINT"/>
+      <DataType jdbc="INTEGER" native="INTEGER"/>
+      <DataType jdbc="BIGINT" native="BIGINT"/>
+      <DataType jdbc="DECIMAL" native="DECIMAL" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="FLOAT" native="FLOAT" defaultSize="18"/>
+      <DataType jdbc="REAL" native="REAL"/>
+      <DataType jdbc="DOUBLE" native="DOUBLE"/>
+      <DataType jdbc="NUMERIC" native="DECIMAL" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="CHAR" native="CHARACTER" defaultSize="1"/>
+      <DataType jdbc="VARCHAR" native="VARCHAR" defaultSize="1"/>
+      <DataType jdbc="LONGVARCHAR" native="LONG VARCHAR"/>
+      <DataType jdbc="DATE" native="TIMESTAMP"/>
+      <DataType jdbc="TIME" native="TIMESTAMP"/>
+      <DataType jdbc="TIMESTAMP" native="TIMESTAMP"/>
+      <DataType jdbc="BINARY" native="CHARACTER" defaultSize="1" suffix="FOR BIT DATA"/>
+      <DataType jdbc="VARBINARY" native="VARCHAR" defaultSize="1" suffix="FOR BIT DATA"/>
+      <DataType jdbc="LONGVARBINARY" native="LONG VARCHAR" suffix="FOR BIT DATA"/>
+      <DataType jdbc="BLOB" native="BLOB" defaultSize="1073741824" suffix="LOGGED COMPACT"/>
+      <DataType jdbc="CLOB" native="CLOB" defaultSize="1073741824" suffix="LOGGED COMPACT"/>
+   </DataTypeMap>
+   <DataTypeMap for="MYSQL" os="" driver="mysql" maxIndexColSize="255" createForeignkeyIndexes="yes">
+      <DataType jdbc="BIT" native="BIT"/>
+      <DataType jdbc="TINYINT" native="TINYINT"/>
+      <DataType jdbc="SMALLINT" native="SMALLINT"/>
+      <DataType jdbc="INTEGER" native="INT"/>
+      <DataType jdbc="BIGINT" native="BIGINT"/>
+      <DataType jdbc="FLOAT" native="FLOAT"/>
+      <DataType jdbc="REAL" native="FLOAT"/>
+      <DataType jdbc="DOUBLE" native="DOUBLE"/>
+      <DataType jdbc="NUMERIC" native="NUMERIC" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="DECIMAL" native="DECIMAL" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="CHAR" native="CHAR"  defaultSize="1"/>
+      <DataType jdbc="VARCHAR" native="VARCHAR" defaultSize="1"/>
+      <DataType jdbc="LONGVARCHAR" native="LONGTEXT"/>
+      <DataType jdbc="CLOB" native="LONGTEXT"/>
+      <DataType jdbc="DATE" native="DATETIME"/>
+      <DataType jdbc="TIME" native="TIME"/>
+      <DataType jdbc="TIMESTAMP" native="DATETIME"/>
+      <DataType jdbc="BINARY" native="BINARY"/>
+      <DataType jdbc="VARBINARY" native="VARBINARY"/>
+      <DataType jdbc="LONGVARBINARY" native="LONGBLOB"/>
+      <DataType jdbc="BLOB" native="LONGBLOB"/>
+   </DataTypeMap>    
+   <DataTypeMap for="DERBY" os="" driver="derby">
+      <DataType jdbc="BIT" native="CHAR" defaultSize="1" suffix="FOR BIT DATA"/>
+      <DataType jdbc="TINYINT" native="SMALLINT"/>
+      <DataType jdbc="SMALLINT" native="SMALLINT"/>
+      <DataType jdbc="INTEGER" native="INTEGER"/>
+      <DataType jdbc="BIGINT" native="BIGINT"/>
+      <DataType jdbc="FLOAT" native="DOUBLE PRECISION"/>
+      <DataType jdbc="REAL" native="REAL"/>
+      <DataType jdbc="DOUBLE" native="DOUBLE PRECISION"/>
+      <DataType jdbc="NUMERIC" native="DECIMAL" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="DECIMAL" native="DECIMAL" defaultSize="18" defaultScale="0"/>
+      <DataType jdbc="CHAR" native="CHAR" defaultSize="1"/>
+      <DataType jdbc="VARCHAR" native="VARCHAR" defaultSize="1"/>
+      <DataType jdbc="LONGVARCHAR" native="LONGVARCHAR"/>
+      <DataType jdbc="CLOB" native="CLOB"/>
+      <DataType jdbc="DATE" native="TIMESTAMP"/>
+      <DataType jdbc="TIME" native="TIME"/>
+      <DataType jdbc="TIMESTAMP" native="TIMESTAMP"/>
+      <DataType jdbc="BINARY" native="CHAR" defaultSize="1" suffix="FOR BIT DATA"/>
+      <DataType jdbc="VARBINARY" native="VARCHAR" defaultSize="1" suffix="FOR BIT DATA"/>
+      <DataType jdbc="LONGVARBINARY" native="LONG VARCHAR" suffix="FOR BIT DATA"/>
+      <DataType jdbc="BLOB" native="BLOB"/>
+   </DataTypeMap>   
+</DataTypeMaps>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:secs="urn:www.percussion.com/6.0.0/securityServices" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/securityServices" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="../common.xsd" namespace="urn:www.percussion.com/6.0.0/common" />
+  <xsd:element name="PSCommunity">
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:DesignObject">
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="Roles">
+              <xsd:annotation>
+                <xsd:documentation>All associated community roles.</xsd:documentation>
+              </xsd:annotation>
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element maxOccurs="unbounded" name="Role">
+                    <xsd:complexType>
+                      <xsd:attribute name="id" type="com:Id" use="required">
+                        <xsd:annotation>
+                          <xsd:documentation>The role id.</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:attribute>
+                      <xsd:attribute name="name" type="xsd:string" use="required">
+                        <xsd:annotation>
+                          <xsd:documentation>The role name.</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:attribute>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The name of a community is unique across all communities in a system.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSCommunityVisibility">
+    <xsd:annotation>
+      <xsd:documentation>Lists all design object summaries which are visible for the identified community.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The community id for which this lists all visible design objects.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="VisibleObjects">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSObjectSummary" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSLogin">
+    <xsd:annotation>
+      <xsd:documentation>The response returned for a login request.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Roles">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="secs:PSRole" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Communities">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="secs:PSCommunity" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Locales">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="secs:PSLocale" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="sessionId" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The session id for the logged in user. This is required for all other web services as input header.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="sessionTimeout" type="xsd:long" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The session timeout in milliseconds, -1 if it does not timeout.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="defaultCommunity" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the default community for the logged in user.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="defaultLocaleCode" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The default locale code for the logged in user.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSRole">
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:DesignObject">
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="Attributes">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element maxOccurs="unbounded" name="Attribute">
+                    <xsd:complexType>
+                      <xsd:sequence>
+                        <xsd:element name="Name" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="unbounded" name="Value" type="xsd:string" />
+                      </xsd:sequence>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="name" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The role name.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSLocale">
+    <xsd:complexType>
+      <xsd:complexContent mixed="false">
+        <xsd:extension base="com:DesignObject">
+          <xsd:attribute name="code" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The language code such as en-us, etc.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="label" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>The display label used to present this locale to end users.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute default="false" name="enabled" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Specifies whether or not this locale is enabled.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

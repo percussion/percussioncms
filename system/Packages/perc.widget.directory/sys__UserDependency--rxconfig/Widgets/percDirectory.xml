@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percDirectory - Version 1.0.0]
+
+-->
+<Widget>
+    <WidgetPrefs title="Directory"
+                 contenttype_name="percDirectory"
+                 description="This widget is used to display a paginated list of people belonging to a selected organization and enable users to search through the list."
+                 author="Percussion Software Inc."
+                 thumbnail="/rx_resources/widgets/percDirectory/images/percDirectoryIcon.png"
+                 preferred_editor_width="800"
+                 preferred_editor_height="600"
+                 is_responsive="true"/>
+    <UserPref name="dirTitleFormat"
+              display_name="Format of directory title"
+              required="false"
+              datatype="enum" default_value="h2">
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="div" display_value="Div" />
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+    </UserPref>
+    <UserPref name="directoryLayoutFormat"
+              display_name="Layout format: Table or Card"
+              required="true"
+              datatype="enum" default_value="table">
+        <EnumValue value="table" display_value="Table" />
+        <EnumValue value="card" display_value="Card" />
+    </UserPref>
+    <UserPref name="perc_hidefield_textSearch"
+              display_name="Hide text search box"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_filter_dropdown"
+              display_name="Hide dropdown filter menu"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_personOrganization"
+              display_name="Hide organization"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_personDepartment"
+              display_name="Hide department"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_personTitle"
+              display_name="Hide position/title"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_personPhoneField"
+              display_name="Hide phone number"
+              default_value="true"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_personEmailField"
+              display_name="Hide 'Send Email' link"
+              default_value="true"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_personImageField"
+              display_name="Hide image"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_display_full_dir"
+              display_name="Display full directory"
+              default_value="false"
+              datatype="bool" />
+
+    <!-- User prefs define input needed when in layout config for a widget -->
+    <!-- Available data types are bool, number, enum, string -->
+
+    <Code type="jexl">
+        <!-- This section is used to set up data that will be used in the content section -->
+        <![CDATA[
+       $pageId = $perc.page.id;
+       $widgetId = $perc.widget.item.id;
+       $rootclass = 'percDirectory';
+
+       ## Get asset item(s)
+       $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+       $perc.setWidgetContents($assets);
+
+       if (! $assets.isEmpty())
+       {
+            $assetItem = $assets.get(0); ## Get first item (which may be only item)
+            $assetContentId = $assetItem.getNode().getProperty('sys_contentid').String;
+
+            ## Get Widget Layout Properties
+            ##
+            $dirTitleFormat = $perc.widget.item.properties.get('dirTitleFormat');
+            if (!empty($dirTitleFormat))
+            {
+                $dirTitleFormatStartTag = '<' + $dirTitleFormat + ' class="perc-directory-title">';
+                $dirTitleFormatEndTag = '</' + $dirTitleFormat + '>';
+            }
+            $directoryLayoutFormat = $perc.widget.item.properties.get('directoryLayoutFormat');
+            $percHideFieldTextSearch = $perc.widget.item.properties.get('perc_hidefield_textSearch');
+            $percHideFieldFilterDropdown = $perc.widget.item.properties.get('perc_hidefield_filter_dropdown');
+            $percHideFieldFilterByDpt = $perc.widget.item.properties.get('perc_hidefield_filter_by_dpt');
+            $percHideFieldPersonOrganization = $perc.widget.item.properties.get('perc_hidefield_personOrganization');
+            $percHideFieldPersonDepartment = $perc.widget.item.properties.get('perc_hidefield_personDepartment');
+            $percHideFieldPersonTitle = $perc.widget.item.properties.get('perc_hidefield_personTitle');
+            $percHideFieldPersonPhone = $perc.widget.item.properties.get('perc_hidefield_personPhoneField');
+            $percHideFieldPersonEmail = $perc.widget.item.properties.get('perc_hidefield_personEmailField');
+            $percHideFieldPersonImage = $perc.widget.item.properties.get('perc_hidefield_personImageField');
+            $percDisplayFullDir = $perc.widget.item.properties.get('perc_display_full_dir');
+
+            ##
+            ## Get Widget Content Properties
+            ##
+            $directoryTitle = $assetItem.getNode().getProperty('directoryTitle').String;
+
+            ##
+            ## Get custom placeholder image
+            ##
+            $customPlaceholderImg_linkId = $assetItem.getNode().getProperty('customPlaceholderImg_linkId').String;
+            $customPlaceholderImg_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $customPlaceholderImg_linkId, $sys.assemblyItem.PubServerId);
+            $customPlaceholderImg_alt_text = "";
+            $customPlaceholderImg_title = "";
+            $customPlaceholderImg_sys_contentId = $rx.pageutils.getManagedLinkDependentId($customPlaceholderImg_linkId);
+            if ($customPlaceholderImg_sys_contentId != "")
+            {
+                $customPlaceholderImg_assetMap = $rx.pageutils.findItemFieldValues('percImageAsset', 'displaytitle,alttext', $customPlaceholderImg_sys_contentId);
+                $customPlaceholderImg_alt_text = $customPlaceholderImg_assetMap.get('alttext');
+                $customPlaceholderImg_title = $customPlaceholderImg_assetMap.get('displaytitle');
+            }
+
+            $organizationSearch = $assetItem.getNode().getProperty('organizationSearch').String;
+            $departmentId = $assetItem.getNode().getProperty('departmentID').String;
+            $deptId = $tools.math.toInteger($departmentId);
+            $orgSearchId = $tools.math.toInteger($organizationSearch);
+            $orgName = "";
+
+            ##
+            ## If a department filter has been selected, we want to hide the department filter/selector
+            ##
+            if ($deptId != -1) {
+                $doNotShowDeptFilter = 'data-show-dpt-filter="false"';
+            }
+            else {
+                $doNotShowDeptFilter = 'data-show-dpt-filter="true"';
+            }
+
+            if ($orgSearchId != 0)
+            {
+                ##
+                ## Retreive List of People tagged to this Organization
+                ##
+                $params = $rx.string.stringToMap(null);
+                if ($orgSearchId > 0)
+                {
+                    $params.put('orgSearchId', $orgSearchId);
+                    if ($deptId == -1)
+                    {
+                        $params.put('query', "select rx:sys_contentid, rx:sys_folderid from rx:percPerson where rx:personOrganization = :orgSearchId and rx:sys_contentstateid != 7 order by rx:personLastName");
+                    }
+                    else if ($deptId > 0)
+                    {
+                        $params.put('deptSearchId', $deptId);
+                        $params.put('query', "select rx:sys_contentid, rx:sys_folderid from rx:percPerson where rx:personOrganization = :orgSearchId and rx:personDepartment = :deptSearchId and rx:sys_contentstateid != 7 order by rx:personLastName");
+                    }
+                }
+                else if ($orgSearchId == -1)
+                {
+                    if ($deptId == -1) {
+                        $params.put('query', "select rx:sys_contentid, rx:sys_folderid from rx:percPerson where rx:personOrganization != '#' and rx:sys_contentstateid != 7 order by rx:personLastName");
+                    }
+                    else if ($deptId > 0)
+                    {
+                        $params.put('deptSearchId', $deptId);
+                        $params.put('query', "select rx:sys_contentid, rx:sys_folderid from rx:percPerson where rx:personOrganization != '#' and rx:personDepartment = :deptSearchId and rx:sys_contentstateid != 7 order by rx:personLastName");
+                    }
+                }
+                $params.put('max_results', 5000);
+                $finderName ="Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
+                $directoryResults =  $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+
+                if ($orgSearchId > 0)
+                {
+                    ##
+                    ## Get Label Name for selected Organization
+                    ##
+                    ##
+                    $params = $rx.string.stringToMap(null);
+                    $params.put('orgSearchId', $orgSearchId);
+                    $query = 'select rx:orgName from rx:percOrganization where rx:sys_contentid = :orgSearchId';
+                    $params.put('query', $query);
+                    $params.put('max_results', 1);
+                    $finderName = 'Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder';
+                    $orgResult = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+
+                    if( $orgResult.size() > 0 )
+                    {
+                        $orgName = $orgResult.get(0).getNode().getProperty('orgName').String;
+                    }
+                }
+            }
+            if ($orgSearchId == -1)
+            {
+                $orgFiltersArray = $rx.string.stringToMap(null);
+
+                $params = $rx.string.stringToMap(null);
+                $query = 'select rx:sys_contentid, rx:sys_folderid from rx:percOrganization order by rx:orgName asc';
+                $params.put('query', $query);
+                $params.put('max_results', 2000);
+                $finderName = 'Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder';
+                $orgResults = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+                if( $orgResults.size() > 0 )
+                {
+                    for ($org : $orgResults)
+                    {
+                        $orgFilter = $org.getNode().getProperty('orgName').String;
+                        $orgFiltersArray.put($orgFilter, $orgFilter);
+                    }
+                }
+            }
+       }
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <!-- This section defines the rendered content -->
+        <![CDATA[
+       <div class="$!rootclass">
+#if( ! $perc.widgetContents.isEmpty() )
+##
+## Script to Initialize perc-directory.js
+##
+#if( $orgSearchId == -1 )##
+            <div id="percDirectoryList" data-directory-results-size="$directoryResults.size()" data-directory-org-name="$!{orgName}" data-search-all-orgs="true" data-display-full-directory="$!{percDisplayFullDir}" $!{doNotShowDeptFilter}>
+#else##
+            <div id="percDirectoryList" data-directory-results-size="$directoryResults.size()" data-directory-org-name="$!{orgName}" data-search-all-orgs="false" data-display-full-directory="$!{percDisplayFullDir}" $!{doNotShowDeptFilter}>
+#end##
+##
+## Search Box HTML
+##
+                <div class="perc-directory-name">
+                    $!{dirTitleFormatStartTag}${directoryTitle}$!{dirTitleFormatEndTag}
+                </div>
+                <div id="perc-directory-search">
+#if( !($percHideFieldTextSearch) )##
+                    <label for="search-directory" role="search" id="perc-search-directory">Search Directory</label>
+                    <input id="search-directory" role="search" class="search" placeholder="Search Directory" />
+#end##
+##
+## Search Results HTML
+##
+                </div>
+## end perc-directory-search
+                <div id="perc-directory-alphabet-sort">
+                    <div class="perc-alpha-sort-label">Filter by Last Name</div>
+                    <!-- populate letters for filter sorting here -->
+                    <span id="perc-alpha-sort-letters"></span>
+                    <button id="perc-clear-alpha-filter" class="perc-directory-button" style="display:none;" aria-label="Clear Filter">Clear Filter</button>
+                </div>
+#if( !($percHideFieldFilterDropdown) && $orgSearchId == -1 )##
+                <div class="perc-filter-wrapper">
+                    <select name="perc-org-filter" id="perc-org-filter">
+                        <option value="all">Filter by Organization</option>
+#foreach( $org in $orgFiltersArray )##
+                        <option value="$!{org}">$!{org}</option>
+#end##
+                    </select>
+                </div>
+                <div class="perc-filter-wrapper">
+#if( $orgSearchId > 0 && $deptId == -1 )##
+                    <select name="perc-dpt-filter" data-tezt="tezt" id="perc-dpt-filter">
+                    </select>
+#else##
+                    <select name="perc-dpt-filter" id="perc-dpt-filter" style="display:none;">
+                    </select>
+#end##
+                </div>
+#end##
+##
+#if( $directoryLayoutFormat == "table" )##
+##
+                <table role="table" summary="This table organizes the directory using last name, organizaton, department, title, phone number, or email">
+                    <thead role="rowgroup">
+                        <tr>
+#if( !($percHideFieldPersonImage) )##
+                            <th id="perc-sort-image" class="perc-sort-field">
+                            </th>
+#end##
+                            <!--<th id="perc-sort-first-name" class="perc-sort-field" role="columnheader"></th>-->
+                            <th id="perc-sort-last-name" class="perc-sort-field" role="columnheader">
+                                <a class="sort" tabindex="0" aria-label="Filter by last name" data-sort="perc-person-last-name">Name</a>
+                            </th>
+#if( !($percHideFieldPersonOrganization) )##
+                            <th id="perc-sort-org" class="perc-sort-field">
+                                <a class="sort" tabindex="0" aria-label="Sort by organization" data-sort="perc-person-org">Organization</a>
+                            </th>
+#end##
+#if( !($percHideFieldPersonDepartment) )##
+                            <th id="perc-sort-dpt" class="perc-sort-field">
+                                <a class="sort" tabindex="0" aria-label="Sort by department" data-sort="perc-person-dpt">Department</a>
+                            </th>
+#end##
+#if( !($percHideFieldPersonTitle) )##
+                            <th id="perc-sort-title" class="perc-sort-field">
+                                <a class="sort" tabindex="0" aria-label="Sort by title" data-sort="perc-person-title">Title</a>
+                            </th>
+#end##
+#if( !($percHideFieldPersonPhone) )##
+                            <th id="perc-sort-phone" class="perc-sort-field">
+                                <a class="sort" tabindex="0" aria-label="Sort by phone" data-sort="perc-person-phone">Phone</a>
+                            </th>
+#end##
+#if( !($percHideFieldPersonEmail) )##
+                            <th id="perc-sort-email" class="perc-sort-field">
+                                <a class="sort" tabindex="0" aria-label="Sort by email" data-sort="perc-person-email">Email</a>
+                            </th>
+#end##
+                        </tr>
+                    </thead>
+                    <tbody class="list perc-directory-list">
+##
+#else## If format layout is Card generate buttons for cards
+##
+                <div class="perc-directory-sort-buttons">
+                    <button class="sort perc-directory-button" aria-label="Filter by last name" data-sort="perc-person-last-name">Filter by Last Name</button>
+#if( !($percHideFieldPersonOrganization))##
+                    <button class="sort perc-directory-button" aria-label="Sort by organization" data-sort="perc-person-org">Sort by Organization</button>
+#end##
+#if( !($percHideFieldPersonDepartment) )##
+                    <button class="sort perc-directory-button" aria-label="Sort by department" data-sort="perc-person-dpt">Sort by Department</button>
+#end##
+#if( !($percHideFieldPersonTitle) )##
+                    <button class="sort perc-directory-button" aria-label="Sort by title" data-sort="perc-person-title">Sort by Title</button>
+#end##
+#if( !($percHideFieldPersonPhone) )##
+                    <button class="sort perc-directory-button" aria-label="Sort by phone" data-sort="perc-person-phone">Sort by Phone</button>
+#end##
+#if( !($percHideFieldPersonEmail) )##
+                    <button class="sort perc-directory-button" aria-label="Sort by email" data-sort="perc-person-email">Sort by Email</button>
+#end##
+                </div>
+## End perc-directory-sort-buttons
+##
+                <ul class="list perc-directory-list">
+#end##
+##
+#if( $directoryResults.size() > 0 )##
+##
+#foreach( $person in $directoryResults )##
+##
+## Reset variable values for each loop
+#set( $personAssetContentId = "" )##
+#set( $personNamePrefix = "" )##
+#set( $personFirstName = "" )##
+#set( $personLastName = "" )##
+#set( $personPhone = "" )##
+#set( $personEmail = "" )##
+#set( $emailFormPage_linkId = "" )##
+#set( $sendMailName = "" )##
+#set( $sendMailLink = "" )##
+##
+#set( $person = $person.getNode() )##
+#if( $person.hasProperty("sys_contentid") )##
+#set( $personAssetContentId = $person.getProperty('sys_contentid').String )##
+#end##
+#if( $person.hasProperty("personNamePrefix") )##
+#set( $personNamePrefix = $person.getProperty('personNamePrefix').String.trim() )##
+#end##
+#if( $person.hasProperty("personFirstName") )##
+#set( $personFirstName = $person.getProperty('personFirstName').String.trim() )##
+#end##
+#if( $person.hasProperty("personLastName") )##
+#set( $personLastName = $person.getProperty('personLastName').String.trim() )##
+#end##
+#if( $person.hasProperty("personPhone") )##
+#set( $personPhone = $person.getProperty('personPhone').String )##
+#end##
+#if( $person.hasProperty("personEmail") )##
+#set( $personEmail = $person.getProperty('personEmail').String )##
+#end##
+##
+## Get email form page details
+##
+#if( $person.hasProperty("emailFormPage_linkId") )##
+#set( $emailFormPage_linkId = $person.getProperty('emailFormPage_linkId').String )##
+#set( $emailFormPage_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $emailFormPage_linkId) )##
+#set( $emailFormPage_title = "" )##
+#set( $emailFormPage_sys_contentId = $rx.pageutils.getManagedLinkDependentId($emailFormPage_linkId) )##
+#if( $emailFormPage_sys_contentId != "" )##
+    #set( $emailFormPage_pageMap = $rx.pageutils.findItemFieldValues('percPage', 'resource_link_title', $emailFormPage_sys_contentId) )##
+    #set( $emailFormPage_title = $emailFormPage_pageMap.get('resource_link_title') )##
+#end##
+#set( $$sendMailName = $personFirstName + "-" + $personLastName )##
+#set( $sendMailLink = $emailFormPage_path + "?name=" + $sendMailName )##
+##
+#end## --( $person.hasProperty("emailFormPage_linkId") )--
+##
+#set( $personOrgId = "" )## Reset personOrgId
+##
+#if( $orgSearchId == -1 )##
+##
+#set( $orgName = "" )## Reset orgName to empty
+##
+#if( $person.hasProperty("personOrganization") )##
+#set( $personOrgId = $tools.math.toInteger($person.getProperty('personOrganization').String) )##
+##
+#if( $personOrgId > 0 )##
+##
+#set( $params = $rx.string.stringToMap(null) )##
+#set( $dummy = $params.put('orgId', $personOrgId)  )##
+#set( $query = 'select * from rx:percOrganization where rx:sys_contentid = :orgId' )##
+#set( $dummy = $params.put('max_results', 1) )##
+#set( $dummy = $params.put('query', $query) )##
+#set( $finderName = 'Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder' )##
+#set( $orgResult = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params) )##
+##
+#if( $orgResult.size() > 0 )##
+##
+#set( $orgName = $orgResult.get(0).getNode().getProperty('orgName').String )##
+##
+#end## --( $orgResult.size() > 0 )--
+##
+#end## --( $personOrgId > 0 )--
+##
+#end## --( $person.hasProperty("personOrganization") )--
+##
+#end## --( $orgSearchId == -1 )--
+##
+#set( $personDeptId = "" )## Reset personDeptId
+#set( $personDeptId = $tools.math.toInteger($person.getProperty('personDepartment').String) )##
+#set( $dptName = "" )##
+##
+##
+#if( $personDeptId > 0 )##
+##
+#set( $params = $rx.string.stringToMap(null) )##
+#set( $dummy = $params.put('deptId', $personDeptId)  )##
+#set( $query = 'select * from rx:percDepartment where rx:sys_contentid = :deptId' )##
+#set( $dummy = $params.put('max_results', 1) )##
+#set( $dummy = $params.put('query', $query) )##
+#set( $finderName = 'Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder' )##
+#set( $deptResult = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params) )##
+##
+#if( $deptResult.size() > 0 )##
+##
+#set( $dptName = $deptResult.get(0).getNode().getProperty('dptName').String )##
+##
+#end## --( $deptResult.size() > 0 )--
+##
+#end## --( $personDeptId > 0 )--
+##
+#set( $personTitle = $person.getProperty('personTitle').String )##
+##
+## Get Image details
+## Clear Image CSS parameter for each loop
+#set( $imageCSS = "" )##
+#set( $personImage_linkId = $person.getProperty('personImage_linkId').String )##
+#set( $personImage_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $personImage_linkId, $sys.assemblyItem.PubServerId) )##
+#set( $personImage_alt_text = "" )##
+#set( $personImage_title = "" )##
+#set( $personImage_sys_contentId = $rx.pageutils.getManagedLinkDependentId($personImage_linkId) )##
+#if( $personImage_sys_contentId != "" )##
+#set( $personImage_assetMap = $rx.pageutils.findItemFieldValues('percImageAsset', 'displaytitle,alttext', $personImage_sys_contentId) )##
+#set( $personImage_alt_text = $personImage_assetMap.get('alttext') )##
+#set( $personImage_title = $personImage_assetMap.get('displaytitle') )##
+#end## --( $personImage_sys_contentId != "" )--
+##
+## Get Page details
+#set( $personPage_linkId = $person.getProperty('personPage_linkId').String )##
+#set( $personPage_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $personPage_linkId) )##
+#set( $personPage_title = "" )##
+#set( $personPage_sys_contentId = $rx.pageutils.getManagedLinkDependentId($personPage_linkId) )##
+#if( $personPage_sys_contentId != "")##
+#set( $personPage_pageMap = $rx.pageutils.findItemFieldValues('percPage', 'resource_link_title', $personPage_sys_contentId) )##
+#set( $personPage_title = $personPage_pageMap.get('resource_link_title') )##
+#end## --( $personPage_sys_contentId != "")--
+##
+#set( $personCaption = $person.getProperty('personCaption').String )##
+##
+##
+## HTML for disply
+##
+##
+#if( $directoryLayoutFormat == "table" )##
+##
+                        <tr class="perc-person">
+#if( !($percHideFieldPersonImage) )##
+                            <td role="gridcell">
+#if( "$!{personImage_path}" != ""  && "$!{personImage_path}" != "#" )## If person Asset has a valid Profile Image
+##
+#if( "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )##
+                                <a href="$personPage_path" title="$personPage_title">
+                                    <span class="perc-person-field perc-person-image">
+                                        <img src="$personImage_path" title="$personImage_title" alt="$personImage_alt_text" />
+                                    </span>
+                                </a>
+#else##
+                                <span class="perc-person-field perc-person-image">
+                                    <img src="$personImage_path" title="$personImage_title" alt="$personImage_alt_text" />
+                                </span>
+#end## --( "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )--
+##
+#elseif( "$!{customPlaceholderImg_path}" != "" && "$!{customPlaceholderImg_path}" != "#" )## If custom placeholder image is valid
+##
+#if( "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )##
+                                <a href="$personPage_path" title="$personPage_title">
+                                    <span class="perc-person-field perc-person-image">
+                                        <img src="$!{customPlaceholderImg_path}" title="$!{customPlaceholderImg_title}" alt="$!{customPlaceholderImg_alt_text}" />
+                                    </span>
+                                </a>
+#else##
+                                <span class="perc-person-field perc-person-image">
+                                    <img src="$!{customPlaceholderImg_path}" title="$!{customPlaceholderImg_title}" alt="$!{customPlaceholderImg_alt_text}" />
+                                </span>
+#end## --( "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )--
+##
+#else## Else use Default PLaceholder image
+##
+#if( "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )##
+                                <a href="$personPage_path" title="$personPage_title">
+                                    <span class="perc-person-field perc-person-image">
+                                        <img src="/web_resources/widgets/directory/img/person-directory-placeholder-min.png" title="Percussion directory image placeholder" alt="Percussion directory image placeholder" />
+                                    </span>
+                                </a>
+#else##
+                                <span class="perc-person-field perc-person-image">
+                                    <img src="/web_resources/widgets/directory/img/person-directory-placeholder-min.png" title="Percussion directory image placeholder" alt="Percussion directory image placeholder" />
+                                </span>
+#end## --( "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )--
+##
+#end## --( "$!{personImage_path}" != ""  && "$!{personImage_path}" != "#" )--
+                            </td>
+#end## --( !($percHideFieldPersonImage) )--
+                            <td role="gridcell" class="perc-person-field perc-person-name" >
+#if( "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )##
+                                <a href="$personPage_path" title="$personPage_title">
+##
+#if( "$!{personNamePrefix}" != "" && "$!{personNamePrefix}" != "#" )##
+                                    <span class="perc-person-name-prefix">$!{personNamePrefix} </span>
+#end##
+#if( "$!{personFirstName}" != "" && "$!{personFirstName}" != "#" )##
+                                    <span class="perc-person-first-name">$!{personFirstName}</span>
+#end##
+#if( "$!{personLastName}" != "" && "$!{personLastName}" != "#" )##
+                                    <span class="perc-person-last-name">$!{personLastName}</span>
+#end##
+                                </a>
+#else##
+#if( "$!{personNamePrefix}" != "" && "$!{personNamePrefix}" != "#" )##
+                                <span class="perc-person-name-prefix">$!{personNamePrefix} </span>
+#end##
+#if( "$!{personFirstName}" != "" && "$!{personFirstName}" != "#" )##
+                                <span class="perc-person-first-name">$!{personFirstName}</span>
+#end##
+#if( "$!{personLastName}" != "" && "$!{personLastName}" != "#" )##
+                                <span class="perc-person-last-name">$!{personLastName}</span>
+#end##
+##
+#end## --( "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )--
+                            </td>
+##
+#if( !($percHideFieldPersonOrganization) )##
+                            <td role="gridcell">
+#if( "$!{orgName}" != "" && "$!{orgName}" != "#")##
+                                <span class="perc-person-field perc-person-org">$!{orgName}</span>
+#end##
+                            </td>
+#end## --( !($percHideFieldPersonOrganization) )--
+#if( !($percHideFieldPersonDepartment) )##
+                            <td role="gridcell">
+#if( "$!{dptName}" != "" && "$!{dptName}" != "#")##
+                                <span class="perc-person-field perc-person-dpt">$!{dptName}</span>
+#end##
+                            </td>
+#end## --( !($percHideFieldPersonDepartment) )--
+#if( !($percHideFieldPersonTitle) )##
+                            <td role="gridcell">
+#if( "$!{personTitle}" != "" && "$!{personTitle}" != "#")##
+                                <span class="perc-person-field perc-person-title">$!{personTitle}</span>
+#end##
+                            </td>
+#end## --( !($percHideFieldPersonTitle) )--
+#if( !($percHideFieldPersonPhone) )##
+                            <td role="gridcell">
+#if( "$!{personPhone}" != "" && "$!{personPhone}" != "#")##
+                                <span class="perc-person-field perc-person-phone">$!{personPhone}</span>
+#end##
+                            </td>
+#end## --( !($percHideFieldPersonPhone) )--
+#if( !($percHideFieldPersonEmail) )##
+                            <td role="gridcell">
+                                <span class="perc-person-field perc-person-email">
+#if( "$!{sendMailLink}" != "" && "$!{sendMailLink}" != "#" )##
+                                    <a href="$sendMailLink" title="Send Email">Send Email</a>
+#end## --( "$!{sendMailLink}" != "" )--
+                                </span>
+                            </td>
+#end## --( !($percHideFieldPersonEmail) )--
+                        </tr>
+##
+#else## directoryLayoutFormat is Card
+##
+                    <li class="perc-person">
+#if( !($percHideFieldPersonImage) && "$!{personImage_path}" != ""  && "$!{personImage_path}" != "#" )##
+##
+                        <div class="perc-person-image">
+#if( !($percHideFieldPersonPage) && "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )##
+                            <a href="$personPage_path" title="$personPage_title">
+                                <img src="$personImage_path" title="$personImage_title" alt="$personImage_alt_text" />
+                            </a>
+#else##
+                            <img src="$personImage_path" title="$personImage_title" alt="$personImage_alt_text" />
+#end## --( !($percHideFieldPersonPage) && "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )--
+                        </div>
+##
+#end## --( !($percHideFieldPersonImage) && "$!{personImage_path}" != ""  && "$!{personImage_path}" != "#" )--
+                        <div class="perc-person-name">
+#if( !($percHideFieldPersonPage) && "$!{personPage_path}" != ""  && "$!{personPage_path}" != "#" )##
+                            <a href="$personPage_path" title="$personPage_title">
+                                <span class="perc-person-name-prefix">$!{personNamePrefix} </span>
+                                <span class="perc-person-first-name">$!{personFirstName}</span>
+                                <span class="perc-person-last-name">$!{personLastName}</span>
+                            </a>
+#else##
+                            <span class="perc-person-name-prefix">$!{personNamePrefix} </span>
+                            <span class="perc-person-first-name">$!{personFirstName}</span>
+                            <span class="perc-person-last-name">$!{personLastName}</span>
+#end## --( !($percHideFieldPersonImage) && "$!{personImage_path}" != ""  && "$!{personImage_path}" != "#" )--
+                        </div>
+##
+#if( !($percHideFieldPersonOrganization) && "$!{orgName}" != "" && "$!{orgName}" != "#" )##
+##
+                        <div class="perc-person-org">$!{orgName}</div>
+##
+#end##
+#if( !($percHideFieldPersonDepartment) && "$!{dptName}" != "" && "$!{dptName}" != "#" )##
+##
+                        <div class="perc-person-dpt">$!{dptName}</div>
+##
+#end##
+#if( !($percHideFieldPersonTitle) && "$!{personTitle}" != "" && "$!{personTitle}" != "#" )##
+##
+                        <div class="perc-person-title">$!{personTitle}</div>
+##
+#end##
+#if( !($percHideFieldPersonPhone) && "$!{personPhone}" != "" && "$!{personPhone}" != "#" )##
+##
+                        <div class="perc-person-phone">$!{personPhone}</div>
+##
+#end##
+#if( !($percHideFieldPersonEmail) && "$!{personEmail}" != "" && "$!{personEmail}" != "#" )##
+##
+                        <div class="perc-person-email">
+#if( "$!{sendMailLink}" != "" && "$!{sendMailLink}" != "#" )##
+                            <a href="$sendMailLink" title="Send Email">Send Email</a>
+#end##
+                        </div>
+##
+#end##
+                    </li>
+#end## --( $directoryLayoutFormat == "table" )--
+##
+#end## --( $person in $directoryResults )--
+##
+#end## --( $directoryResults.size() > 0 )--
+##
+#if( $directoryLayoutFormat == "table" )##
+                    </tbody>
+                </table> <!-- end perc-directory-list Table-->
+#else##
+                </ul> <!-- end perc-directory-list Cards-->
+#end## --( $directoryLayoutFormat == "table" )--
+            </div>
+## end percDirectoryList
+##
+#elseif ($perc.isEditMode())
+#createEmptyWidgetContent("percDirectory-empty-style", "This widget is showing sample content")
+#end
+        </div> <!-- end "$!rootclass" -->
+    ]]>
+    </Content>
+</Widget>

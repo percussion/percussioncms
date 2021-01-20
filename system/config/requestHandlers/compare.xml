@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Compare SYSTEM "/Rhythmyx/DTD/sys_Compare.dtd">
+<Compare version="1.0">
+   <options>
+      <option name="dcGranularity">20</option>
+      <option name="dcMoveSense">100</option>
+      <option name="dcPunctuation">0</option>
+      <option name="dcOldPrgmList">0</option>
+      <option name="dcNewPrgmList">0</option>
+      <option name="dcHTML">1</option>
+   </options>
+</Compare>

@@ -1,0 +1,280 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.percussion</groupId>
+        <artifactId>core</artifactId>
+        <version>8.0.0-SNAPSHOT</version>
+        <relativePath>../..</relativePath>
+    </parent>
+    <artifactId>webservices</artifactId>
+    <packaging>jar</packaging>
+    <properties>
+        <axis.version>1.4.1</axis.version>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>axistools-maven-plugin</artifactId>
+                <version>1.4</version>
+                <configuration>
+                    <!-- The plugin navigates your source src/main/** tree and finds your WSDLs for you; just name them individually in a <wsdlFiles/> element. -->
+                    <helperGen>false</helperGen>
+                    <debug>false</debug>
+                    <wsdlFiles>
+                        <wsdlFiles>rhythmyx.wsdl</wsdlFiles>
+                        <wsdlFiles>rhythmyxDesign.wsdl</wsdlFiles>
+                    </wsdlFiles>
+                    <skeletonDeploy>false</skeletonDeploy>
+                    <sourceDirectory>${basedir}/src/main/resources/com/percussion/webservices/design</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/generated-sources/axistools/wsdl2java</outputDirectory>
+                    <serverSide>true</serverSide>
+                    <skeletonDeploy>false</skeletonDeploy>
+                    <deployScope>Request</deployScope>
+                    <all>true</all>
+                    <wrapArrays>false</wrapArrays>
+                    <typeMappingVersion>1.2</typeMappingVersion>
+                    <mappings>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/common</namespace>
+                            <targetPackage>com.percussion.webservices.common</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/faults</namespace>
+                            <targetPackage>com.percussion.webservices.faults</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/assembly</namespace>
+                            <targetPackage>com.percussion.webservices.assembly</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/assemblyDesign</namespace>
+                            <targetPackage>com.percussion.webservices.assemblydesign</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/assemblyServices</namespace>
+                            <targetPackage>com.percussion.webservices.assembly.data</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/content</namespace>
+                            <targetPackage>com.percussion.webservices.content</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/contentDesign</namespace>
+                            <targetPackage>com.percussion.webservices.contentdesign</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/contentServices</namespace>
+                            <targetPackage>com.percussion.webservices.content.data</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/security</namespace>
+                            <targetPackage>com.percussion.webservices.security</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/securityDesign</namespace>
+                            <targetPackage>com.percussion.webservices.securitydesign</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/securityServices</namespace>
+                            <targetPackage>com.percussion.webservices.security.data</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/system</namespace>
+                            <targetPackage>com.percussion.webservices.system</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/systemDesign</namespace>
+                            <targetPackage>com.percussion.webservices.systemdesign</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/systemServices</namespace>
+                            <targetPackage>com.percussion.webservices.system.data</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/ui</namespace>
+                            <targetPackage>com.percussion.webservices.ui</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/uiDesign</namespace>
+                            <targetPackage>com.percussion.webservices.uidesign</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/uiServices</namespace>
+                            <targetPackage>com.percussion.webservices.ui.data</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/rhythmyx</namespace>
+                            <targetPackage>com.percussion.webservices.rhythmyx</targetPackage>
+                        </mapping>
+                        <mapping>
+                            <namespace>urn:www.percussion.com/6.0.0/rhythmyxDesign</namespace>
+                            <targetPackage>com.percussion.webservices.rhythmyxdesign</targetPackage>
+                        </mapping>
+                    </mappings>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>javax.mail</groupId>
+                        <artifactId>mail</artifactId>
+                        <version>1.4.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
+                        <version>1.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>axis</groupId>
+                        <artifactId>axis</artifactId>
+                        <version>${axis.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.xml</groupId>
+                        <artifactId>jaxrpc-api</artifactId>
+                        <version>1.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
+                        <version>1.1</version>
+                    </dependency>
+                    <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+                    <dependency>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                        <version>1.2</version>
+                    </dependency>
+                    <!-- https://mvnrepository.com/artifact/commons-discovery/commons-discovery -->
+                    <dependency>
+                        <groupId>commons-discovery</groupId>
+                        <artifactId>commons-discovery</artifactId>
+                        <version>0.5</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>wsdl4j</groupId>
+                        <artifactId>wsdl4j</artifactId>
+                        <version>1.6.2</version>
+                    </dependency>
+
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>wsdl2java</id>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/axistools/wsdl2java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>axis</groupId>
+                <artifactId>wsdl2java-maven-plugin</artifactId>
+                <version>1.4.1</version>
+            </plugin>
+            <plugin>
+                <groupId>javax.xml</groupId>
+                <artifactId>jaxrpc-api</artifactId>
+                <version>1.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean-axis-impl</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+
+                                <delete>
+                                    <fileset dir="${project.build.directory}/generated-sources/axistools/wsdl2java" includes="**/*SOAPImpl.java"/>
+                                </delete>
+
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+    <dependencies>
+
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml</groupId>
+            <artifactId>jaxrpc-api</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

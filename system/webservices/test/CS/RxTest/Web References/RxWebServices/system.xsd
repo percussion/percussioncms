@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<xsd:schema xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:sys="urn:www.percussion.com/6.0.0/system" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/system" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="../common.xsd" namespace="urn:www.percussion.com/6.0.0/common" />
+  <xsd:include schemaLocation="systemServices.xsd" />
+  <xsd:element name="SwitchCommunityRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The community name to which the user will be switched, not null or empty. Must be the an existing community.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SwitchLocaleRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Code" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The code of the locale to which the user wants to switch, e.g. en-us, not null or empty, must be an installed and enabled locale.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CreateRelationshipRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name or the relationship type definition to create, not null or empty, must be an existing relationship type.
+</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="OwnerId" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The id of the relationship owner, not null, must be an id to an existing object. If the relationship type uses owner revision, then the revision of this id must be either -1 or the head revision (which is the editt revision if the item is checked out; otherwise is current revision).</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="DependentId" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The id of the relationship  dependent, not null, must be the id to an existing object. If the relationship type uses dependent revision, then the revision of this id must be either -1 or the head revision (which is the editt revision  if the item is checked out; otherwise is current revision). </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CreateRelationshipResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="sys:PSRelationship">
+          <xsd:annotation>
+            <xsd:documentation>
+                     A new relationship between the specified onwer and 
+                     dependent of the requested type, never null. All 
+                     relationship properties are initialized with the defaults 
+                     as specified in the relationship type definition.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadRelationshipsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="sys:PSRelationshipFilter">
+          <xsd:annotation>
+            <xsd:documentation>
+                     Defines the parameters by which to filter the returned 
+                     relationships. If not supplied or no filter parameters 
+                     are specified, all relationships will be returned.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadRelationshipsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="sys:PSRelationship">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded relationships ordered by id, 
+                     never null, may be empty.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SaveRelationshipsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="sys:PSRelationship">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all relationships to be saved to the 
+                     repostiory, not null or empty.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DeleteRelationshipsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array with all relationship ids to be deleted, not null or empty. We ignore cases where a relationship of a supplied id does not exist.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindDependentsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The source id for which to find the children, not null. Must be the id of a valid object.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" ref="sys:PSRelationshipFilter">
+          <xsd:annotation>
+            <xsd:documentation>
+                     Defines the parameters by which to filter the returned 
+                     children. If not supplied or no filter parameters are 
+                     specified, all children will be returned.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindDependentsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Ids">
+          <xsd:annotation>
+            <xsd:documentation>An array of object ids for all children found for the specified object and filter parameters, never null, may be empty.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindOwnersRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The source id for which to find the parents, not null. Must be the id of a valid object.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" ref="sys:PSRelationshipFilter">
+          <xsd:annotation>
+            <xsd:documentation>
+                     Defines the parameters by which to filter the returned 
+                     parents. If not supplied or no filter parameters are 
+                     specified, all parents will be returned.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindOwnersResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Ids">
+          <xsd:annotation>
+            <xsd:documentation>An array of object ids for all parents found for the specified object and filter, never null, may be empty.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadRelationshipTypesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The relationship type name to load, may be null or empty, asterisk wildcards are accepted. If not supplied or empty, all relationship types will be loaded.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Category" type="sys:RelationshipCategory">
+          <xsd:annotation>
+            <xsd:documentation>The relationship category for which to load the configurations, may be null but not empty. Must be an existing category. All relationship configurations will be loaded if not supplied.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadRelationshipTypesResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="sys:PSRelationshipConfigSummary" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadAuditTrailsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array of item ids for which to get the audit trails, not null or empty. It is an error if no item exists for any of the supplied ids.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadAuditTrailsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="sys:PSAuditTrail">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array of audit trails in the same order as requested, 
+                     never null or empty.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="TransitionItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>
+An array of ids for all items to be trasitioned, not null or empty. The revision of an id (in the ids) may be -1, otherwise it must be the current revision of the item. It is an error if no item exists for any of the supplied ids. All items must be in checked in mode.
+              </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Transition" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name or the transition to use for each item, not null or empty. It is an error if no transition exists for any of the specified items current state or if the supplied transition does not exist.    </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="TransitionItemsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="States">
+          <xsd:annotation>
+            <xsd:documentation>An array of state names to which the requested items were transitioned to in the same order as requested, never null or empty.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="State" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadWorkflowsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the workflow to load, may be null or empty, asterisk wildcards are accepted. All workflows will be loaded if null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadWorkflowsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="sys:PSWorkflow">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded workflows in read-only mode, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="GetAllowedTransitionsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The ids of the items to check, may not be null or empty.  If multiple ids are supplied, then the intersection of allowed transitions is returned.  It is an error if no item exists for any of the supplied ids.
+</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="GetAllowedTransitionsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="Transition" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The allowed transition names, ordered in alpha ascending order.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="Label" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The label to display corresponding to the matching entry in the transition list.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

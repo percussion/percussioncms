@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+This configuration file is used to merge the server TMX resource bundle with
+that generated from the CMS by the tool. This merging is required to preserve the
+existing translations before giving the generated TMX resource bundle for
+translation service.
+<!DOCTYPE tmxmergeconfig SYSTEM "tmxmergeconfig.dtd">
+-->
+<tmxmergeconfig>
+	<tu>
+		<config>
+			<param name="deleteifexists">no</param>
+			<param name="replaceifexists">no</param>
+			<!-- Get inside the tu element -->
+			<param name="modifyifexists">yes</param>
+			<param name="ignoreifexists">no</param>
+			<param name="addifnotexists">no</param>
+			<!-- Do not bother if does not exist -->
+			<param name="ignoreifnotexists">yes</param>
+		</config>
+		<note>
+			<config>
+				<param name="deleteifexists">no</param>
+				<!-- tu/note is always overwritten from the server resource bundle -->
+				<param name="replaceifexists">yes</param>
+				<param name="modifyifexists">no</param>
+				<param name="ignoreifexists">no</param>
+				<!-- Add the server one if does not exist -->
+				<param name="addifnotexists">yes</param>
+				<param name="ignoreifnotexists">no</param>
+			</config>
+		</note>
+		<prop>
+			<config>
+				<param name="deleteifexists">no</param>
+				<!-- tu/prop is always overwritten from the server resource bundle -->
+				<param name="replaceifexists">yes</param>
+				<param name="modifyifexists">no</param>
+				<param name="ignoreifexists">no</param>
+				<!-- Add the server one if does not exist -->
+				<param name="addifnotexists">yes</param>
+				<param name="ignoreifnotexists">no</param>
+			</config>
+		</prop>
+		<tuv>
+			<config>
+				<param name="deleteifexists">no</param>
+				<param name="replaceifexists">no</param>
+				<!-- get inside the tuv element -->
+				<param name="modifyifexists">yes</param>
+				<param name="ignoreifexists">no</param>
+				<!-- Add the server one if does not exist -->
+				<param name="addifnotexists">yes</param>
+				<param name="ignoreifnotexists">no</param>
+			</config>
+			<note>
+				<config>
+					<param name="deleteifexists">no</param>
+					<!-- tuv/note is always overwritten from the server resource bundle -->
+					<param name="replaceifexists">yes</param>
+					<param name="modifyifexists">no</param>
+					<param name="ignoreifexists">no</param>
+					<!-- Add the server one if does not exist -->
+					<param name="addifnotexists">yes</param>
+					<param name="ignoreifnotexists">no</param>
+				</config>
+			</note>
+			<prop>
+				<config>
+					<param name="deleteifexists">no</param>
+					<!-- tuv/prop is always overwritten from the server resource bundle -->
+					<param name="replaceifexists">yes</param>
+					<param name="modifyifexists">no</param>
+					<param name="ignoreifexists">no</param>
+					<!-- Add the server one if does not exist -->
+					<param name="addifnotexists">yes</param>
+					<param name="ignoreifnotexists">no</param>
+				</config>
+			</prop>
+			<seg>
+				<config>
+					<param name="deleteifexists">no</param>
+					<param name="replaceifexists">no</param>
+					<!-- get inside the seg element -->
+					<param name="modifyifexists">yes</param>
+					<param name="ignoreifexists">no</param>
+					<!-- Add the server one if does not exist -->
+					<param name="addifnotexists">yes</param>
+					<param name="ignoreifnotexists">no</param>
+				</config>
+			</seg>
+		</tuv>
+	</tu>
+</tmxmergeconfig>
+

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT lang (name, id, langstring, description, sortorder )>
+<!ELEMENT sortorder (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT langstring (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT locale (lang* )>

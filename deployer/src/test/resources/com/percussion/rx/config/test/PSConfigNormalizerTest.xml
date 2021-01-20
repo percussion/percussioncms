@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<SolutionConfigurations publisherPrefix="com.percussion" publisherName="Percussion" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+   <SolutionConfig name="Smog">
+      <!-- Basic Properties -->
+      <property name="Boston" value="Good"/>
+      <property name="NewYork" value="Fair"/>
+      <property name="LosAngeles">
+         <pvalue>Bad</pvalue>
+      </property>
+      <!-- Property Value List-->
+      <property name="ValueList">
+         <pvalues>
+            <pvalue>value1</pvalue>
+            <pvalue>value2</pvalue>
+            <pvalue>value3</pvalue>
+         </pvalues>
+      </property>
+      <!-- Property Pair List -->
+      <property name="PairMap">
+         <pvalues>
+            <pair value1="a" value2="1"/>
+            <pair value1="b" value2="2"/>
+            <pair value1="c" value2="3"/>
+         </pvalues>
+      </property>
+      <!-- Simple Property Set -->
+      <propertySet name="propSet1">
+         <property name="ps1p1Name" value="ps1p1Value"/>
+         <property name="ps1p2Name" value="ps1p2Value"/>
+         <property name="ps1p3Name" value="ps1p3Value"/>
+      </propertySet>
+      <!-- Complex Property with PropertySet -->
+      <property name="propertyWithPropSet">
+         <propertySet>
+            <property name="pwpsP1Name" value="pwpsP1Value"/>
+            <property name="pwpsP2Name" value="pwpsP2Value"/>
+         </propertySet>
+         <propertySet>
+            <property name="pwpsP3Name" value="pwpsP3Value"/>
+            <property name="pwpsP4Name" value="pwpsP4Value"/>
+         </propertySet>
+      </property>
+      <!-- Complex Property Set -->
+      <propertySet name="propSet2">
+         <property name="ps2p1Name" value="ps2p1Value"/>
+         <property name="ps2p2Name" value="ps2p2Value"/>
+         <property name="ps2p3Name" value="ps2p3Value"/>
+         <propertySet name="propSet2L2">
+            <propertySet>
+               <property name="ps2L3p1Name" value="ps2L3p1Value"/>
+               <property name="ps2L3p2Name" value="ps2L3p2Value"/>
+            </propertySet>
+            <propertySet>
+               <property name="ps2L3p3Name" value="ps2L3p3Value"/>
+               <property name="ps2L3p4Name" value="ps2L3p4Value"/>
+            </propertySet>
+         </propertySet>
+
+         <propertySet name="propSet2L2-2">
+            <propertySet name="ps2L3p1Name-2">
+               <property name="ps2L4p1Name-2" value="ps2L4p1Value-2"/>
+               <property name="ps2L4p2Name-2" value="ps2L4p2Value-2"/>
+            </propertySet>
+            <propertySet name="ps2L3p2Name-2">
+               <property name="ps2L4p3Name-2" value="ps2L4p3Value-2"/>
+               <property name="ps2L4p4Name-2" value="ps2L4p4Value-2"/>
+            </propertySet>
+         </propertySet>
+
+      </propertySet>
+   </SolutionConfig>
+   <SolutionConfig name="Smog_2">
+      <property name="Seattle" value="Good"/>
+   </SolutionConfig>
+</SolutionConfigurations>

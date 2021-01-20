@@ -1,0 +1,278 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.asset-wizard {
+    padding-left:50px;
+    padding-top: 10px;
+    padding-right: 50px;
+    padding-bottom: 10px;
+}
+
+.filter-select div {
+    float:left;
+}
+
+.asset-type-input {
+    clear:left;
+    background:#E9F6FC;
+}
+
+.control-container {
+    padding-top:3px;
+    width:100%;
+    overflow:hidden;
+}
+
+.asset-folder-control {
+    padding-left: 10px;
+    float:left;
+    width:50%;
+    height:100%;
+}
+.asset-type-control {
+    padding-right: 10px;
+    float:left;
+    width:50%;
+    height:100%;
+    border-right: 1px solid #BDC6D7;
+}
+
+.styled-input {
+	height: 38px;
+	width: 100%;
+	border: 1px solid #BDC6D7;
+	border-radius: 2px;
+	padding-left: 15px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	font-size: 14px;
+	text-align: left;
+	vertical-align: middle;
+	color: #576071;
+}
+
+.select-placeholder {
+	display:none;
+}
+
+.form-title {
+	font-family: 'Open Sans', sans-serif; font-weight: 600; font-size:16px; color: #576071;
+	padding-top:5px;
+}
+
+.wizard-form-error {
+	font-family: 'Open Sans', sans-serif; font-weight: 600; font-size:16px; color: #EE5336;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+input[type=radio].asset-type-checkbox {
+  display:none;
+}
+
+input[type=radio].asset-type-checkbox + label.asset-type-labelradio {
+  padding-left:25px;
+  height:20px; 
+  display:inline-block;
+  font-weight: 400;
+  line-height:20px;
+  background-repeat:no-repeat;
+  background-position: 0 0;
+  font-family: 'Open Sans', sans-serif;
+  vertical-align:middle;
+  cursor:pointer;
+  padding-right: 30px;
+  font-size:14px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+
+input[type=radio].asset-type-checkbox:checked + label.asset-type-labelradio {
+  background-position: 0 -20px;
+}
+
+input[type=radio].asset-folder-checkbox {
+  display:none;
+}
+
+input[type=radio].asset-folder-checkbox + label.asset-folder-labelradio {
+  padding-left:25px;
+  height:20px; 
+  display:inline-block;
+  font-weight: 400;
+  line-height:20px;
+  background-repeat:no-repeat;
+  background-position: 0 0;
+  font-family: 'Open Sans', sans-serif;
+  vertical-align:middle;
+  cursor:pointer;
+  padding-right: 45px;
+  font-size:14px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+
+input[type=radio].asset-folder-checkbox:checked + label.asset-folder-labelradio {
+  background-position: 0 -20px;
+}
+
+label.asset-type-labelradio {
+  background-image:url('../../components/perc-css/img/percussionRadioButtons.png');
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+label.asset-folder-labelradio {
+  background-image:url('../../components/perc-css/img/percussionRadioButtons.png');
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.asset-type-gallery {
+	background:#E9F6FC;
+	width:100%;
+	height: 368px;
+	overflow: auto;
+	overflow-x: hidden;
+}
+
+.asset-type {
+	width: 50%;
+	float: left;
+	height: 45px;
+}
+
+.asset-type img{
+	border: 7px solid #E9F6FC;
+	float:left;
+}
+
+.selected-asset-type img {
+	border: 7px solid rgba(255, 164, 72, .73);
+	-webkit-border-top-left-radius: 2px;
+	-webkit-border-top-right-radius: 2px;
+	-moz-border-radius-topleft: 2px;
+	-moz-border-radius-topright: 2px;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+}
+
+.all-folder-list {
+	background:#E9F6FC;
+	width:100%;
+	height: 330px;
+	overflow: auto;
+	overflow-x: hidden;
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+.recent-folder-list {
+	background:#E9F6FC;
+	width:100%;
+	height: 368px;
+	overflow: auto;
+	overflow-x: hidden;
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+.selected-folder {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
+	font-size: 12px;
+	color: #262626;
+	background-color: rgba(255, 164, 72, .73);
+}
+
+.folder-name {
+	font-family: 'Open Sans', sans-serif;
+  	font-weight: 400;
+  	font-size: 12px;
+ 	color: #262626;
+	text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-left: 15px;
+}
+
+.selected-folder .folder-name {
+	font-weight: 600;
+}
+
+.all-items-filter label {
+	padding-right:0px;
+}
+
+.asset-type-description {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    line-height:45px;
+    color: #262626;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.selected-asset-type .asset-type-description {
+    font-weight: 600;
+    background: rgba(255, 164, 72, .73);
+    -webkit-border-bottom-right-radius: 2px;
+    -webkit-border-bottom-left-radius: 2px;
+    -moz-border-radius-bottomright: 2px;
+    -moz-border-radius-bottomleft: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.empty-recent-templates,
+.empty-recent-folders {
+    text-align: center;
+    padding: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+}

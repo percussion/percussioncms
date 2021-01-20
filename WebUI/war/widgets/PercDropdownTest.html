@@ -1,0 +1,90 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<link rel="stylesheet" type="text/css" href="../css/superfish.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../css/PercDropdown.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../css/PercWorkflowDropdown.css" media="screen">
+<script src="../jslib/jquery-1.4.2.js"></script>
+<script src="../jslib/hoverIntent.js"></script>
+<script src="../jslib/superfish.js"></script>
+<script src="PercDropdown.js"></script>
+<script>
+    //TODO: I18N?
+    $(document).ready(function() {
+        var config1 = {
+            percDropdownRootClass : "perc-view",
+            percDropdownOptionLabels : ["Publish","Takedown","Approve","Close","Open"],
+            percDropdownCallbacks : [publish, takeDown, approve, close, function(data){open(data);}],
+            percDropdownCallbackData : ["Publish !!!", "Take Down", {pageId : 123}, "Close !!!", [123,234]]
+        }
+        var config2 = {
+            percDropdownRootClass : "perc-workflow",
+            percDropdownOptionLabels : ["&nbsp;","Action 2","Action 3","Action 4","Action 5"],
+            percDropdownCallbacks : [action1, action2, action3, action4, function(data){action5(data);}],
+            percDropdownCallbackData : ["Publish !!!", "Take Down", {pageId : 123}, "Close !!!", [123,234]]
+        }
+        $("#dropdown0").PercDropdown();
+        $("#dropdown1").PercDropdown(config1);
+        $("#dropdown2").PercDropdown(config2);
+    });
+    
+    function publish(param) {
+        alert("publish " + param);
+    }
+    function takeDown(param) {
+        alert("takeDown " + param);
+    }
+    function approve(param) {
+        alert("approve " + param);
+    }
+    function close(param) {
+        alert("close " + param);
+    }
+    function open(param) {
+        alert("open " + param);
+    }
+    
+    function action1(param) {
+        alert("action1 " + param);
+    }
+    function action2(param) {
+        alert("action2 " + param);
+    }
+    function action3(param) {
+        alert("action3 " + param);
+    }
+    function action4(param) {
+        alert("action4 " + param);
+    }
+    function action5(param) {
+        alert("action5 " + param);
+    }
+</script>
+
+<div id="dropdown0">
+</div>
+<div id="dropdown1">
+</div>
+<div id="dropdown2">
+</div>

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="STATEROLES">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="STATEID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ROLEID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ASSIGNMENTTYPE">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ADHOCTYPE">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ISNOTIFYON">
+            <jdbctype>CHAR</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SHOWININBOX">
+            <jdbctype>CHAR</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>STATEID</name>
+         <name>ROLEID</name>
+         <name>WORKFLOWAPPID</name>
+      </primarykey>
+      <indexdefinitions>
+         <index action="c" isUnique="n" name="IX_STROLES_WID_SID">
+            <name>WORKFLOWAPPID</name>
+            <name>STATEID</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table name="STATEROLES" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">7</column>
+         <column encoding="text" name="ROLEID">3</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">7</column>
+         <column encoding="text" name="ROLEID">5</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">2</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">7</column>
+         <column encoding="text" name="ROLEID">1</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">7</column>
+         <column encoding="text" name="ROLEID">2</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">2</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">7</column>
+         <column encoding="text" name="ROLEID">4</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">6</column>
+         <column encoding="text" name="ROLEID">3</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">6</column>
+         <column encoding="text" name="ROLEID">1</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">6</column>
+         <column encoding="text" name="ROLEID">2</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">2</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">6</column>
+         <column encoding="text" name="ROLEID">4</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">6</column>
+         <column encoding="text" name="ROLEID">5</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">2</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">5</column>
+         <column encoding="text" name="ROLEID">3</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">5</column>
+         <column encoding="text" name="ROLEID">1</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">5</column>
+         <column encoding="text" name="ROLEID">2</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">2</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">5</column>
+         <column encoding="text" name="ROLEID">4</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">5</column>
+         <column encoding="text" name="ROLEID">5</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">4</column>
+         <column encoding="text" name="ROLEID">3</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">4</column>
+         <column encoding="text" name="ROLEID">1</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">4</column>
+         <column encoding="text" name="ROLEID">2</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">2</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">4</column>
+         <column encoding="text" name="ROLEID">4</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">4</column>
+         <column encoding="text" name="ROLEID">5</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">2</column>
+         <column encoding="text" name="ROLEID">3</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">2</column>
+         <column encoding="text" name="ROLEID">1</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">2</column>
+         <column encoding="text" name="ROLEID">2</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">2</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">y</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">2</column>
+         <column encoding="text" name="ROLEID">4</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">y</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">1</column>
+         <column encoding="text" name="ROLEID">3</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">1</column>
+         <column encoding="text" name="ROLEID">5</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">2</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">1</column>
+         <column encoding="text" name="ROLEID">1</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">1</column>
+         <column encoding="text" name="ROLEID">2</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">1</column>
+         <column encoding="text" name="ROLEID">4</column>
+         <column encoding="text" name="ASSIGNMENTTYPE">3</column>
+         <column encoding="text" name="ADHOCTYPE">0</column>
+         <column encoding="text" name="ISNOTIFYON">n</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SHOWININBOX">y</column>
+      </row>
+   </table>
+</PSXDependencyData>

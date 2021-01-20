@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--suppress ALL -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://cxf.apache.org/core
+http://cxf.apache.org/schemas/core.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.1.xsd
+http://cxf.apache.org/jaxrs
+http://cxf.apache.org/schemas/jaxrs.xsd">
+
+<bean class="org.springframework.mock.web.MockHttpServletRequest" name="httpRequest" lazy-init="false" />
+<bean class="org.springframework.mock.web.MockHttpServletResponse" name="httpResponse" lazy-init="false" />
+
+    <bean id="sys_protoLegacyDataSource"
+          class="com.percussion.util.PSDataSourceFactory"
+          factory-method="createDataSource" >
+        <constructor-arg>
+            <props>
+                <prop key="driverClassName">org.apache.derby.jdbc.EmbeddedDriver</prop>
+                <prop key="url">jdbc:derby:../modules/perc-distribution-tree/target/distribution/Repository/CMDB</prop>
+                <prop key="username">CMDB</prop>
+                <prop key="password">demo</prop>
+
+                <prop key="database"/>
+
+                <prop key="driverLocation"/>
+            </props>
+        </constructor-arg>
+    </bean>
+    <!-- Setup all JMS queues and topics here that need to be available
+        for unit testing -->
+    <bean id="sys_mockJmsConnectionFactory"
+          class="com.percussion.utils.spring.PSMockJmsConnectionFactoryHelper">
+        <constructor-arg>
+            <ref bean="sys_mockJndiContextHelper"/>
+        </constructor-arg>
+        <property name="destinations">
+            <map>
+                <entry key="java:comp/env/queue/notificationQueue">
+                    <value>queue</value>
+                </entry>
+                <entry key="java:comp/env/topic/notificationTopic">
+                    <value>topic</value>
+                </entry>
+                <entry key="java:comp/env/queue/publishQueue">
+                    <value>queue</value>
+                </entry>
+                <entry key="java:comp/env/queue/emailQueue">
+                    <value>queue</value>
+                </entry>
+                <entry key="java:comp/env/queue/publishResultQueue">
+                    <value>queue</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="sys_mockJndiContextHelper"
+          class="com.percussion.utils.jndi.PSNamingContextHelper">
+    <!-- Set root before bindings! -->
+    <property name="root">
+        <value>java:comp/env</value>
+    </property>
+    <property name="bindings">
+        <map>
+            <entry key="jdbc/RhythmyxData">
+                <ref local="sys_protoLegacyDataSource"/>
+            </entry>
+        </map>
+    </property>
+    </bean>
+    <bean id="sys_rhythmyxinfo"
+          class="com.percussion.services.general.impl.PSRhythmyxInfo">
+        <property name="bindings">
+            <map>
+                <entry key="UNIT_TESTING">
+                    <value>true</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="sys_datasourceResolver"
+          depends-on="sys_mockJndiContextHelper"
+          class="com.percussion.utils.jdbc.PSDatasourceResolver">
+        <property name="repositoryDatasource" value="rxdefault"/>
+        <property name="datasourceConfigurations">
+            <list>
+                <bean id="rxdefault"
+                      class="com.percussion.utils.jdbc.PSDatasourceConfig">
+                    <property name="name" value="rxdefault"/>
+                    <property name="dataSource" value="jdbc/RhythmyxData"/>
+                    <property name="database" value="CMDB"/>
+                    <property name="origin" value=""/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <bean id="sys_hibernateDialects"
+          class="com.percussion.services.datasource.PSHibernateDialectConfig">
+        <property name="dialects">
+            <map>
+                <entry key="jtds:sqlserver">
+                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
+                </entry>
+                <entry key="inetdae7">
+                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
+                </entry>
+                <entry key="oracle:thin">
+                    <value>org.hibernate.dialect.OracleDialect</value>
+                </entry>
+                <entry key="db2">
+                    <value>org.hibernate.dialect.DB2Dialect</value>
+                </entry>
+                <entry key="derby">
+                    <value>org.hibernate.dialect.DerbyTenSevenDialect</value>
+                </entry>
+                <entry key="mysql">
+                    <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="sys_beanConfiguration"
+          class="com.percussion.services.utils.general.PSServiceConfigurationBean">
+        <property name="maxCachedContentNodeSize" value="100000"/>
+    </bean>
+
+    <bean id="sys_testSetup"
+          class="com.percussion.testing.PSTestSetupBean">
+        <property name="config">
+            <map>
+                <entry key="extensionDir" value="build/unitTestConfig/extensions" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="sys_deliveryManager"
+          class="com.percussion.rx.delivery.impl.PSLocalDeliveryManager">
+    </bean>
+
+</beans>

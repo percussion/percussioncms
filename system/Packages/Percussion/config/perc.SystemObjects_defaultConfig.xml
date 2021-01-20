@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<SolutionConfigurations publisherPrefix="perc" publisherName="Percussion Software, Inc."  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+   <SolutionConfig name="SystemObjects">
+
+<!---  ========================================
+        Context "Publish"
+       ========================================
+-->
+       <property name="Publish.defaultLocationScheme" value="" />
+
+<!---  ========================================
+        Context "Site_Folder_Assembly"
+       ========================================
+-->
+       <property name="Site_Folder_Assembly.defaultLocationScheme" value="" />
+
+<!---  ========================================
+        Slot "sys_inline_image"      
+       ========================================
+-->
+       <property name="sys_inline_image.slotAssociations">
+          <pvalues>
+          </pvalues>
+       </property>
+
+<!---  ========================================
+        Slot "sys_inline_link"      
+       ========================================
+-->
+       <property name="sys_inline_link.slotAssociations">
+          <pvalues>
+          </pvalues>
+       </property>
+
+<!---  ========================================
+        Slot "sys_inline_variant"      
+       ========================================
+-->
+       <property name="sys_inline_variant.slotAssociations">
+          <pvalues>
+          </pvalues>
+       </property>
+
+<!---  ========================================
+        Relationship Configuration "ActiveAssembly"      
+       ========================================
+-->
+       <propertySet name="ActiveAssembly.deepCloning">
+            <property name="enabled" value="true"/>
+            <property name="condition">
+                <propertySet>
+                    <property name="type" value="Conditional"/>
+                    <property name="rules">
+                        <propertySet>
+                            <property name="variable1" value="PSXOriginatingRelationshipProperty/category"/>
+                            <property name="variable2" value="rs_translation"/>
+                            <property name="operator" value="="/>
+                            <property name="boolean" value="AND"/>
+                        </propertySet>
+                    </property>
+                </propertySet>
+            </property>
+       </propertySet>
+       <propertySet name="ActiveAssembly.shallowCloning">
+            <property name="enabled" value="true"/>
+            <property name="condition">
+                <propertySet>
+                    <property name="type" value="Conditional"/>
+                    <property name="rules">
+                        <propertySet>
+                            <property name="variable1" value="PSXOriginatingRelationshipProperty/category"/>
+                            <property name="variable2" value="rs_promotable"/>
+                            <property name="operator" value="="/>
+                            <property name="boolean" value="OR"/>
+                        </propertySet>
+                        <propertySet>
+                            <property name="variable1" value="PSXOriginatingRelationshipProperty/category"/>
+                            <property name="variable2" value="rs_copy"/>
+                            <property name="operator" value="="/>
+                            <property name="boolean" value="AND"/>
+                        </propertySet>
+                    </property>
+                </propertySet>
+            </property>
+       </propertySet>
+
+<!---  ========================================
+        Relationship Configuration "ActiveAssembly-Mandatory"      
+       ========================================
+-->
+       <propertySet name="ActiveAssembly-Mandatory.deepCloning">
+            <property name="enabled" value="true"/>
+            <property name="condition">
+                <propertySet>
+                    <property name="type" value="Conditional"/>
+                    <property name="rules">
+                        <propertySet>
+                            <property name="variable1" value="PSXOriginatingRelationshipProperty/category"/>
+                            <property name="variable2" value="rs_translation"/>
+                            <property name="operator" value="="/>
+                            <property name="boolean" value="AND"/>
+                        </propertySet>
+                    </property>
+                </propertySet>
+            </property>
+       </propertySet>
+       <propertySet name="ActiveAssembly-Mandatory.shallowCloning">
+            <property name="enabled" value="true"/>
+            <property name="condition">
+                <propertySet>
+                    <property name="type" value="Conditional"/>
+                    <property name="rules">
+                        <propertySet>
+                            <property name="variable1" value="PSXOriginatingRelationshipProperty/category"/>
+                            <property name="variable2" value="rs_promotable"/>
+                            <property name="operator" value="="/>
+                            <property name="boolean" value="OR"/>
+                        </propertySet>
+                        <propertySet>
+                            <property name="variable1" value="PSXOriginatingRelationshipProperty/category"/>
+                            <property name="variable2" value="rs_copy"/>
+                            <property name="operator" value="="/>
+                            <property name="boolean" value="AND"/>
+                        </propertySet>
+                    </property>
+                </propertySet>
+            </property>
+       </propertySet>
+       <property name="ActiveAssembly-Mandatory.effects">
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Workflow</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Down"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_PublishMandatory"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>no</pvalue>
+                        <pvalue/>
+                        <pvalue/>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Workflow</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Down"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_UnpublishMandatory"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>no</pvalue>
+                        <pvalue/>
+                        <pvalue/>
+                    </pvalues>
+                </property>
+            </propertySet>
+       </property>
+        
+<!---  ========================================
+        Relationship Configuration "FolderContent"      
+       ========================================
+-->
+       <propertySet name="FolderContent.deepCloning">
+            <property name="enabled" value="true"/>
+            <property name="condition">
+                <propertySet>
+                    <property name="type" value="Conditional"/>
+                    <property name="rules">
+                        <propertySet>
+                            <property name="variable1" value="PSXOriginatingRelationshipProperty/name"/>
+                            <property name="variable2" value="Translation-Mandatory"/>
+                            <property name="operator" value="="/>
+                            <property name="boolean" value="AND"/>
+                        </propertySet>
+                    </property>
+                </propertySet>
+            </property>
+       </propertySet>
+       <propertySet name="FolderContent.shallowCloning">
+            <property name="enabled" value="false"/>
+       </propertySet>
+       <property name="FolderContent.effects">
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Construction</pvalue>
+                        <pvalue>Pre-Destruction</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Down"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_TouchParentFolderEffect"/>
+            </propertySet>
+       </property>
+
+<!---  ========================================
+        Relationship Configuration "NewCopy"      
+       ========================================
+-->
+       <propertySet name="NewCopy.deepCloning">
+            <property name="enabled" value="false"/>
+       </propertySet>
+       <propertySet name="NewCopy.shallowCloning">
+            <property name="enabled" value="false"/>
+       </propertySet>
+       <property name="NewCopy.fieldOverrides">
+            <propertySet>
+                <property name="fieldName" value="sys_title"/>
+                <property name="extension" value="Java/global/percussion/relationship/sys_CloneTitle"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>{0}-$clone_count</pvalue>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.TITLE</pvalue>
+                        <pvalue/>
+                        <pvalue/>
+                        <pvalue/>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_communityid"/>
+                <property name="extension" value="Java/global/percussion/generic/sys_OverrideLiteral"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.COMMUNITYID</pvalue>
+                        <pvalue>sys_communityid_override</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_workflowid"/>
+                <property name="extension" value="Java/global/percussion/generic/sys_OverrideLiteral"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>PSXContentItemStatus/WORKFLOWAPPS.WORKFLOWAPPID</pvalue>
+                        <pvalue>sys_workflowid_override</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+       </property>
+       <property name="NewCopy.effects">
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Construction</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Down"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_AddCloneToFolder"/>
+            </propertySet>
+       </property>
+
+<!---  ========================================
+        Relationship Configuration "PromotableVersion"      
+       ========================================
+-->
+       <propertySet name="PromotableVersion.deepCloning">
+            <property name="enabled" value="false"/>
+       </propertySet>
+       <propertySet name="PromotableVersion.shallowCloning">
+            <property name="enabled" value="false"/>
+       </propertySet>
+       <property name="PromotableVersion.fieldOverrides">
+            <propertySet>
+                <property name="fieldName" value="sys_title"/>
+                <property name="extension" value="Java/global/percussion/relationship/sys_CloneTitle"/>
+                <property name="extensionParams">
+                    <pvalues>
+                         <pvalue>PV-{0}-$clone_count</pvalue>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.TITLE</pvalue>
+                        <pvalue/>
+                        <pvalue/>
+                        <pvalue/>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_communityid"/>
+                <property name="extension" value="Java/global/percussion/generic/sys_Literal"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.COMMUNITYID</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_workflowid"/>
+                <property name="extension" value="Java/global/percussion/generic/sys_Literal"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.WORKFLOWAPPID</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+       </property>
+       <property name="PromotableVersion.effects">
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Post-Workflow</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Up"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_Promote"/>
+            </propertySet>
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Construction</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Down"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_AddCloneToFolder"/>
+            </propertySet>
+       </property>
+
+<!---  ========================================
+        Relationship Configuration "Translation"      
+       ========================================
+-->
+       <propertySet name="Translation.deepCloning">
+            <property name="enabled" value="false"/>
+       </propertySet>
+       <propertySet name="Translation.shallowCloning">
+            <property name="enabled" value="false"/>
+       </propertySet>
+       <property name="Translation.fieldOverrides">
+            <propertySet>
+                <property name="fieldName" value="sys_title"/>
+                <property name="extension" value="Java/global/percussion/relationship/sys_CloneTitle"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>[{0}] Copy of {1}</pvalue>
+                        <pvalue>PSXSingleHTMLParameter/sys_lang</pvalue>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.TITLE</pvalue>
+                        <pvalue/>
+                        <pvalue/>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_communityid"/>
+                <property name="extension" value="Java/global/percussion/cms/sys_cloneOverrideField"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>../sys_trFieldOverride/TranslationFieldOverride.xml</pvalue>
+                        <pvalue>CommunityId</pvalue>
+                        <pvalue>sys_contentid</pvalue>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.CONTENTID</pvalue>
+                        <pvalue>sys_lang</pvalue>
+                        <pvalue>PSXSingleHTMLParameter/sys_lang</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_workflowid"/>
+                <property name="extension" value="Java/global/percussion/cms/sys_cloneOverrideField"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>../sys_trFieldOverride/TranslationFieldOverride.xml</pvalue>
+                        <pvalue>WorkflowId</pvalue>
+                        <pvalue>sys_contentid</pvalue>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.CONTENTID</pvalue>
+                        <pvalue>sys_lang</pvalue>
+                        <pvalue>PSXSingleHtmlParameter/sys_lang</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_lang"/>
+                <property name="extension" value="Java/global/percussion/generic/sys_Literal"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>PSXSingleHtmlParameter/sys_lang</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+       </property>
+       <property name="Translation.effects">
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Clone</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Down"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_isCloneExists"/>
+            </propertySet>
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Construction</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Down"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_AttachTranslatedFolder"/>
+            </propertySet>
+       </property>
+
+<!---  ========================================
+        Relationship Configuration "Translation-Mandatory"      
+       ========================================
+-->
+       <propertySet name="Translation-Mandatory.deepCloning">
+            <property name="enabled" value="true"/>
+            <property name="condition">
+                <propertySet>
+                    <property name="type" value="Conditional"/>
+                    <property name="rules">
+                        <propertySet>
+                            <property name="variable1" value="PSXOriginatingRelationshipProperty/category"/>
+                            <property name="variable2" value="rs_promotable"/>
+                            <property name="operator" value="="/>
+                            <property name="boolean" value="AND"/>
+                        </propertySet>
+                    </property>
+                </propertySet>
+            </property>
+       </propertySet>
+       <propertySet name="Translation-Mandatory.shallowCloning">
+            <property name="enabled" value="false"/>
+       </propertySet>
+       <property name="Translation-Mandatory.fieldOverrides">
+            <propertySet>
+                <property name="fieldName" value="sys_title"/>
+                <property name="extension" value="Java/global/percussion/relationship/sys_CloneTitle"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>[{0}] Copy of {1}</pvalue>
+                        <pvalue>PSXSingleHTMLParameter/sys_lang</pvalue>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.TITLE</pvalue>
+                        <pvalue/>
+                        <pvalue/>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_communityid"/>
+                <property name="extension" value="Java/global/percussion/cms/sys_cloneOverrideField"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>../sys_trFieldOverride/TranslationFieldOverride.xml</pvalue>
+                        <pvalue>CommunityId</pvalue>
+                        <pvalue>sys_contentid</pvalue>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.CONTENTID</pvalue>
+                        <pvalue>sys_lang</pvalue>
+                        <pvalue>PSXSingleHtmlParameter/sys_lang</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_workflowid"/>
+                <property name="extension" value="Java/global/percussion/cms/sys_cloneOverrideField"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>../sys_trFieldOverride/TranslationFieldOverride.xml</pvalue>
+                        <pvalue>WorkflowId</pvalue>
+                        <pvalue>sys_contentid</pvalue>
+                        <pvalue>PSXContentItemStatus/CONTENTSTATUS.CONTENTID</pvalue>
+                        <pvalue>sys_lang</pvalue>
+                        <pvalue>PSXSingleHtmlParameter/sys_lang</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="fieldName" value="sys_lang"/>
+                <property name="extension" value="Java/global/percussion/generic/sys_Literal"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>PSXSingleHtmlParameter/sys_lang</pvalue>
+                    </pvalues>
+                </property>
+            </propertySet>
+       </property>
+       <property name="Translation-Mandatory.effects">
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Clone</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Down"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_isCloneExists"/>
+            </propertySet>
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Workflow</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Up"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_PublishMandatory"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>no</pvalue>
+                        <pvalue/>
+                        <pvalue/>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Workflow</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Up"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_UnpublishMandatory"/>
+                <property name="extensionParams">
+                    <pvalues>
+                        <pvalue>no</pvalue>
+                        <pvalue/>
+                        <pvalue/>
+                    </pvalues>
+                </property>
+            </propertySet>
+            <propertySet>
+                <property name="executionContext">
+                    <pvalues>
+                        <pvalue>Pre-Construction</pvalue>
+                    </pvalues>
+                </property>
+                <property name="direction" value="Down"/>
+                <property name="extension" value="Java/global/percussion/relationship/effect/sys_AttachTranslatedFolder"/>
+            </propertySet>
+       </property>
+
+   </SolutionConfig>
+</SolutionConfigurations>

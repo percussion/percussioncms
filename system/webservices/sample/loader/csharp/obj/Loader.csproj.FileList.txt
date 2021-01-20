@@ -1,0 +1,6 @@
+bin\Debug\Loader.exe.config
+bin\Debug\Loader.exe
+bin\Debug\Loader.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Loader.exe
+obj\Debug\Loader.pdb

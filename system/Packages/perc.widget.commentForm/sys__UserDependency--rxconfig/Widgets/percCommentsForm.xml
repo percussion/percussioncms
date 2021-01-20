@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="Comments Form"
+                 contenttype_name="percCommentsFormAsset"
+                 category="blog,social"
+                 description="Build a form for submitting comments"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/commentsForm/images/WidgetIconComntForm.png"
+                 preferred_editor_width="780"
+                 preferred_editor_height="680"
+                 is_responsive="true"
+    />
+    <UserPref name="labelalign"
+              display_name="Label align"
+              required="true"
+              default_value="top"
+              datatype="enum">
+        <EnumValue value="top" display_value="Top of the control" />
+        <EnumValue value="left" display_value="Left of the control" />
+    </UserPref>
+
+    <CssPref name="rootclass"
+             display_name="CSS Root Class"
+             datatype="string" />
+
+    <Code type="jexl">
+        <![CDATA[
+
+        $linkContext = $perc.linkContext;
+        $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+        $perc.setWidgetContents($assetItems);
+        if ( ! $assetItems.isEmpty() ) {
+            $assetItem = $assetItems.get(0);
+        }
+
+        $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+        if(!empty($rootclass)) {
+            $rootclass = $rootclass;
+        }
+        $props = $perc.widget.item.properties;
+        $labelalignclass = "perc-label-location-top";
+        if($props.get("labelalign") != null && $props.get("labelalign").equals("left"))
+            $labelalignclass = "perc-label-location-left";
+        $pageId = $perc.page.id;
+        $widgetId = $perc.widget.item.id;
+        $sUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId) +  "/perc-comments-services/comment";
+        if(!empty($pageId))
+        {
+            $finderPath = $rx.pageutils.getItemPath($pageId);
+            $pathParts = $finderPath.split("\/");
+            $siteName = $pathParts[2];
+            $pagePath = "";
+            $counter = 0;
+            for($part : $pathParts)
+            {
+                $counter = $counter + 1;
+                if($counter > 3)
+                $pagePath = $pagePath + "/" + $part;
+            }
+        }
+        $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+
+        $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
+
+        ]]>
+    </Code>
+
+    <Content type="velocity">
+        <![CDATA[
+      #loadRelatedWidgetContents()
+          <div class = "perc-comments-form $!{rootclass} $!{labelalignclass}" data-query="$!{dynamicListData}">
+              #if( ! $perc.widgetContents.isEmpty() )
+                 #set($node = $perc.widgetContents.get(0).node)
+                 #set($formdata = $node.getProperty('rx:formdata').getString())
+                 #set($renderedForm = $node.getProperty('rx:renderedform').getString())
+                 #set($renderedForm = $renderedForm.replace("${tools.esc.q}PERC_RV_COMMENT_FORM_ACTION${tools.esc.q}","${tools.esc.q}${sUrl}${tools.esc.q}"))
+                 #set($renderedForm = $renderedForm.replace("PERC_RV_COMMENT_FORM_ACTION","${tools.esc.q}${sUrl}${tools.esc.q}"))
+                 #set($renderedForm = $renderedForm.replace("${tools.esc.q}PERC_RV_SITE_NAME${tools.esc.q}","${tools.esc.q}${siteName}${tools.esc.q}"))
+                 #set($renderedForm = $renderedForm.replace("PERC_RV_SITE_NAME","${tools.esc.q}${siteName}${tools.esc.q}"))
+                 #set($renderedForm = $renderedForm.replace("${tools.esc.q}PERC_RV_PAGE_PATH${tools.esc.q}","${tools.esc.q}$tools.esc.html($pagePath)${tools.esc.q}"))
+                 #set($renderedForm = $renderedForm.replace("PERC_RV_PAGE_PATH","${tools.esc.q}$tools.esc.html($pagePath)${tools.esc.q}"))
+                 <div class = "perc-form-name">$renderedForm </div>
+                 #if($formdata.contains('Honeypot'))##
+                     <script >
+                     window.addEventListener('DOMContentLoaded', function() {
+                         validatePercForm();
+                     });
+
+                     function validatePercForm() {
+                             if(!document.getElementById("topyenoh").value) {
+                                 return true;
+                             }
+                             return false;
+                         }
+
+                     </script>
+                 #end##
+              #elseif ($perc.isEditMode())
+                 #createEmptyWidgetContent("commentsform-sample-content", "This Form widget is showing sample content.")
+             #end
+
+             #if($perc.isPreviewMode())
+                <script>
+                    window.addEventListener('DOMContentLoaded', function() {
+                        jQuery("input[type = 'submit']").attr('disabled', 'disabled');
+                    });
+                </script>
+             #end
+        </div>
+    ]]>
+    </Content>
+</Widget>

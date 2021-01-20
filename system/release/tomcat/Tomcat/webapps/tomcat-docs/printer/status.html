@@ -1,0 +1,123 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<html><head><META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container - Project Status</title><meta value="Remy Maucherat" name="author"><meta value="remm@apache.org" name="email"><meta value="Yoav Shapira" name="author"><meta value="yoavs@apache.org" name="email"></head><body vlink="#525D76" alink="#525D76" link="#525D76" text="#000000" bgcolor="#ffffff"><table cellspacing="4" width="100%" border="0"><!--PAGE HEADER--><tr><td colspan="2"><!--JAKARTA LOGO--><a href="http://jakarta.apache.org/"><img border="0" alt="The Jakarta Project" align="left" src="./../images/jakarta-logo.gif"></a><!--PROJECT LOGO--><a href="http://jakarta.apache.org/tomcat/"><img border="0" alt="
+      The Apache Jakarta Tomcat Servlet/JSP Container
+    " align="right" src="./../images/tomcat.gif"></a></td></tr><!--HEADER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><tr><!--RIGHT SIDE MAIN BODY--><td align="left" valign="top" width="80%"><table cellspacing="4" width="100%" border="0"><tr><td valign="top" align="left"><h1>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container</h1><h2>Project Status</h2></td><td nowrap="true" valign="top" align="right"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Preface"><strong>Preface</strong></a></font></td></tr><tr><td><blockquote>
+    <p>
+      This document attempts to convey the current status of Tomcat development
+      in "big picture" terms.  This is not the place to check if an individual
+      bug report has been addressed or when an individual feature will be available.
+    </p>
+    <p>
+      This page is updated roughly once per every couple of Tomcat minor releases,
+      so for day-to-day status you should check the tomcat-user and tomcat-dev mailing
+      lists.  You can always inquire there as to the availability or status of a
+      specific feature or component.
+    </p>
+  </blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Current Status Summary"><strong>Current Status Summary</strong></a></font></td></tr><tr><td><blockquote>
+    <p>
+      <b>Tomcat 5.0.27</b> was released on June 17th, 2004.  At that time, the TOMCAT_5_0
+      branch was tagged in CVS, and work on Tomcat 5.5 began.  Until the first stable 
+      release of Tomcat 5.5, building from
+      CVS head may be unstable or broken: use the TOMCAT_5_0 branch tag to build
+      the Tomcat 5.0 releases.
+    </p>
+    <p>
+      <b>Tomcat 5.5</b> has several major goals.  They are discussed in the tomcat-dev
+      mailing list's "5.next" thread: 
+      <a href="http://marc.theaimsgroup.com/?l=tomcat-dev&w=2&r=1&s=5.next&q=b">MARC</a>.
+      The status of some of these items is detailed below.  Once 5.5 releases are
+      available, please refer to the Changelog accompanying each release for detailed
+      changes, enhancements, and fixes.
+    </p>
+    <p>
+      <b>Tomcat 4.1.x</b> is no longer actively developed.  It is maintained to address
+      only showstopper, security, and Servlet Specification compliance issues.  Maintenance
+      for Tomcat 4.1.x will likely cease once a stable release or two of Tomcat 5.5 are out.
+      Users of Tomcat 4.1.x are strongly encouraged to upgrade to the latest stable Tomcat
+      5.0 release.
+    </p>
+    <p>
+      <b>Tomcat 4.0.x</b> is relatively old, and not actively maintained or supported.
+      It is strongly recommended that users of these releases upgrade to the latest
+      stable Tomcat 5.0 release or at least the latest stable Tomcat 4.1 release.
+    </p>
+    <p>
+      <b>Tomcat 3.3.x</b> is in roughly the same maintenance mode as Tomcat 4.1.x.
+    </p>
+    <p>
+      <b>Tomcat 3.2</b> and earlier are in roughly the same support state as Tomcat 4.0.x.
+      Users should upgrade to Tomcat 3.3.x or the latest stable Tomcat 5.0.x.
+    </p>
+  </blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="How to read the report"><strong>How to read the report</strong></a></font></td></tr><tr><td><blockquote>
+    
+    <p>
+      The columns in this report contain the following information:
+    <ul>
+      <li><b>Priority</b> - A sense of how important it is to address this 
+        issue in the short term.</li>
+      <li><b>Action Item</b> - Concise description of the action item
+        to be completed.  Where relevant, Java package names of the
+        primary classes involved are listed in [square brackets]</li>
+      <li><b>Volunteers</b> - Login of those developers who
+        have volunteered to assist in the design, implementation, testing, and
+        documentation of this action item's changes to Tomcat.</li>
+    </ul>
+      Developers can nominate
+      themselves to work on particular action items by asking a Committer to 
+      add their name address to those items.  The developers 
+      working on each item should discuss and agree upon the approach to be 
+      used for implementing the item's changes to the project source code 
+      and documentation, prior to completing those changes.  Such discussions 
+      should take place on the tomcat-dev mailing list so that everyone can 
+      stay apprised of what is going on, or chime in if they want to 
+      contribute ideas and suggestions.
+    </p>
+    
+  </blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="TODO List"><strong>TODO List</strong></a></font></td></tr><tr><td><blockquote>
+
+    <table cellpadding="5" border="1"><tr><th bgcolor="#023264" width="15%"><font color="#ffffff">Priority</font></th><th bgcolor="#023264" width="50%"><font color="#ffffff">Action Item</font></th><th bgcolor="#023264" width="25%"><font color="#ffffff">Volunteers</font></th><tr><td valign="center" align="left">High</td><td valign="center" align="left">
+        Refactor ClassLoaders for Tomcat 5.5 to allow container plugins.
+      </td><td valign="center" align="left">costin</td></tr><tr><td valign="center" align="left">Medium</td><td valign="center" align="left">
+        Enhance Cluster functionality for Tomcat 5.5.
+      </td><td valign="center" align="left">fhanik</td></tr><tr><td valign="center" align="left">Low</td><td valign="center" align="left">
+        Update docs, site, and FAQ for Tomcat 5.5 once ready.
+      </td><td valign="center" align="left">yoavs, remm, funkman</td></tr><tr><td valign="center" align="left">Low</td><td valign="center" align="left">
+        Continue fixing bugs ;)
+      </td><td valign="center" align="left">everyone</td></tr></tr></table>
+
+  </blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Open bugs"><strong>Open bugs</strong></a></font></td></tr><tr><td><blockquote>
+    
+    <p>
+      The list of the bugs which are in an unresolved state for Tomcat 5 can be
+      seen 
+      <a href="http://issues.apache.org/bugzilla/buglist.cgi?bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=RESOLVED&resolution=LATER&resolution=REMIND&resolution=---&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&bugidtype=include&bug_id=&changedin=&votes=&chfieldfrom=&chfieldto=Now&chfieldvalue=&product=Tomcat+5&short_desc=&short_desc_type=allwordssubstr&long_desc=&long_desc_type=allwordssubstr&bug_file_loc=&bug_file_loc_type=allwordssubstr&keywords=&keywords_type=anywords&field0-0-0=noop&type0-0-0=noop&value0-0-0=&cmdtype=doit&order=%27Importance%27">here</a>.
+      Aspiring volunteers and others are strongly encouraged to attempt 
+      to comment and help resolve these issues.
+    </p>
+    
+  </blockquote></td></tr></table></td></tr><!--FOOTER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><!--PAGE FOOTER--><tr><td colspan="2"><div align="center"><font size="-1" color="#525D76"><em>
+        Copyright &copy; 1999-2004, Apache Software Foundation
+        </em></font></div></td></tr></table></body></html>

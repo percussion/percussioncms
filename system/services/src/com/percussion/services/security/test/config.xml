@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXServerConfiguration id="1">
+   <requestRoot>Rhythmyx</requestRoot>
+   <defaultAppName>sys_welcome</defaultAppName>
+   <PSXAcl id="1">
+      <PSXAclEntry id="1" type="user">
+         <name>Default</name>
+         <securityProviderType>Any</securityProviderType>
+         <serverAccessLevel administerServer="yes" createApplications="yes" dataAccess="yes" deleteApplications="yes" designAccess="yes"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="user">
+         <name>Anonymous</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataCreate="no" dataDelete="no" dataQuery="no" dataUpdate="no" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <DataEncryption>
+      <PSXDataEncryptor id="1">
+         <SSLRequired>no</SSLRequired>
+         <keyStrength>40</keyStrength>
+      </PSXDataEncryptor>
+   </DataEncryption>
+   <AdminEncryption>
+      <PSXDataEncryptor id="1">
+         <SSLRequired>no</SSLRequired>
+         <keyStrength>40</keyStrength>
+      </PSXDataEncryptor>
+   </AdminEncryption>
+   <AllowDetailedAuthErrorMsgs>yes</AllowDetailedAuthErrorMsgs>
+   <Performance>
+      <maxThreadsPerApp>-1</maxThreadsPerApp>
+      <minThreadsOnServer>10</minThreadsOnServer>
+      <maxThreadsOnServer>-1</maxThreadsOnServer>
+      <idleThreadTimeout>300000</idleThreadTimeout>
+      <maxRequestsInQueuePerApp>-1</maxRequestsInQueuePerApp>
+      <maxRequestsInQueueOnServer>-1</maxRequestsInQueueOnServer>
+      <maxRequestTime>60</maxRequestTime>
+      <userSessionEnabled>yes</userSessionEnabled>
+      <userSessionTimeout>1800</userSessionTimeout>
+      <maxOpenUserSessions>2000</maxOpenUserSessions>
+   </Performance>
+   <PSXLogger id="1" logAppStartStop="yes" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="yes" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+   <LogTruncation>
+      <runningLogDays>2</runningLogDays>
+   </LogTruncation>
+   <BackEndConnections>
+      <Pools>
+         <PSXBackEndConnection id="1">
+            <jdbcDriverName>odbc</jdbcDriverName>
+            <jdbcClassName>sun.jdbc.odbc.JdbcOdbcDriver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+            <connectionRefreshPeriod>-1</connectionRefreshPeriod>
+         </PSXBackEndConnection>
+         <PSXBackEndConnection id="3">
+            <jdbcDriverName>oracle:thin</jdbcDriverName>
+            <jdbcClassName>oracle.jdbc.OracleDriver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+            <connectionRefreshPeriod>3600</connectionRefreshPeriod>
+         </PSXBackEndConnection>
+         <PSXBackEndConnection id="5">
+            <jdbcDriverName>psxml</jdbcDriverName>
+            <jdbcClassName>com.percussion.data.jdbc.PSXmlDriver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+            <connectionRefreshPeriod>-1</connectionRefreshPeriod>
+         </PSXBackEndConnection>
+         <PSXBackEndConnection id="6">
+            <jdbcDriverName>psfilesystem</jdbcDriverName>
+            <jdbcClassName>com.percussion.data.jdbc.PSFileSystemDriver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+            <connectionRefreshPeriod>-1</connectionRefreshPeriod>
+         </PSXBackEndConnection>
+         <PSXBackEndConnection id="8">
+            <jdbcDriverName>inetdae7</jdbcDriverName>
+            <jdbcClassName>com.inet.tds.TdsDriver</jdbcClassName>
+            <serverName>*</serverName>
+            <connectionMin>0</connectionMin>
+            <connectionMax>-1</connectionMax>
+            <connectionIdleTimeout>900</connectionIdleTimeout>
+            <connectionRefreshPeriod>-1</connectionRefreshPeriod>
+         </PSXBackEndConnection>
+      </Pools>
+      <Credentials>
+         <PSXBackEndCredential id="0">
+            <alias>sql</alias>
+            <comment/>
+            <driver>inetdae7</driver>
+            <server>tell</server>
+            <userId>sa</userId>
+            <password encrypted="yes">5JpOmuNvaUW0ZOx2b4nL2g==</password>
+         </PSXBackEndCredential>
+      </Credentials>
+      <backEndLoginTimeout>60</backEndLoginTimeout>
+   </BackEndConnections>
+   <SecurityProviders>
+      <PSXSecurityProviderInstance id="0" type="DirectoryConn">
+         <name>e2srv - uid</name>
+         <Properties/>
+         <DirectoryProvider>
+            <PSXProvider class="com.percussion.security.PSDirectoryServerCataloger" type="directory">
+               <PSXReference name="e2srv - uid" type="com.percussion.design.objectstore.PSDirectorySet"/>
+            </PSXProvider>
+         </DirectoryProvider>
+         <RoleProvider>
+            <PSXProvider class="com.percussion.security.PSRoleCataloger" type="role">
+               <PSXReference name="e2srv - uid" type="com.percussion.design.objectstore.PSRoleProvider"/>
+            </PSXProvider>
+         </RoleProvider>
+      </PSXSecurityProviderInstance>
+   </SecurityProviders>
+   <PSXServerCacheSettings agingTime="-1" enabled="yes" id="0" maxDiskSpace="1073741824" maxMemory="104857600" maxPageSize="256000"/>
+   <DisableSandboxSecurity>y</DisableSandboxSecurity>
+   <BrowserUISettings>
+      <ContentActions uiType="actionMenu"/>
+      <SearchSettings useCurrentCommunity="yes"/>
+   </BrowserUISettings>
+   <PSXJavaPluginConfig>
+      <PSXJavaPlugin browserkey="Any" downloadlocation="http://java.sun.com/products/plugin/autodl/jinstall-1_4-windows-i586.cab#Version=1,4,0,0" oskey="Any" versioningtype="dynamic" versiontouse="1.4.0_03"/>
+   </PSXJavaPluginConfig>
+   <PSXSearchConfig adminMaster="no" fullTextSearchEnabled="no" serverHost="localhost" serverPort="-1" traceEnabled="no"/>
+   <CxAppletOptions selectiveViewRefresh="no"/>
+   <Authentications>
+      <PSXAuthentication name="e2srv" scheme="simple">
+         <Credentials>
+            <User appendBaseDn="no">cn=Manager,dc=percussion,dc=com</User>
+            <Password encrypted="no">P3rcuss1on</Password>
+         </Credentials>
+      </PSXAuthentication>
+   </Authentications>
+   <DirectoryServices>
+      <Directories>
+         <PSXDirectory catalog="deep" name="deep">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="e2srv" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://ad2008:390/ou=deep,ou=test,dc=percussion,dc=com</ProviderUrl>
+         </PSXDirectory>
+         <PSXDirectory catalog="deep" name="shallow">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="e2srv" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://ad2008:390/ou=shallow,ou=test,dc=percussion,dc=com</ProviderUrl>
+         </PSXDirectory>
+         <PSXDirectory catalog="deep" name="static">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="e2srv" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://ad2008:390/ou=groupstatic,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <groupProviders>
+            	<groupName>jndi</groupName>
+            </groupProviders>
+         </PSXDirectory>  
+         <PSXDirectory catalog="deep" name="dynamic">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="e2srv" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://ad2008:390/ou=groupdynamic,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <groupProviders>
+            	<groupName>jndi</groupName>
+            </groupProviders>
+         </PSXDirectory>    
+         <PSXDirectory catalog="deep" name="nested">
+            <Factory>com.sun.jndi.ldap.LdapCtxFactory</Factory>
+            <Authentication>
+               <PSXReference name="e2srv" type="com.percussion.design.objectstore.PSAuthentication"/>
+            </Authentication>
+            <ProviderUrl>ldap://ad2008:390/ou=groupnested,ou=test,dc=percussion,dc=com</ProviderUrl>
+            <groupProviders>
+            	<groupName>jndi</groupName>
+            </groupProviders>
+         </PSXDirectory>
+	      <GroupProviders>
+	         <PSXGroupProviderInstance classname="com.percussion.design.objectstore.PSJndiGroupProviderInstance" id="0" name="jndi" type="DirectoryConn">
+	            <PSXJnidGroupProviderInstance>
+	               <objectClasses>
+	                  <objectClass memberattr="member" name="group" type="static"/>
+	                  <objectClass memberattr="member" name="groupOfNames" type="static"/>
+	                  <objectClass memberattr="uniquemember" name="groupOfUniqueNames" type="static"/>
+	                  <objectClass memberattr="memberurl" name="groupOfUrls" type="dynamic"/>
+	               </objectClasses>
+	               <groupNodes>
+	                  <groupNode>ou=groupstatic,ou=test,dc=percussion,dc=com</groupNode>
+	                  <groupNode>ou=groupdynamic,ou=test,dc=percussion,dc=com</groupNode>
+	                  <groupNode>ou=groupnested,ou=test,dc=percussion,dc=com</groupNode>
+	               </groupNodes>
+	            </PSXJnidGroupProviderInstance>
+	         </PSXGroupProviderInstance>
+	      </GroupProviders>
+      </Directories>
+      <DirectorySets>
+         <PSXDirectorySet name="e2srv - uid">
+            <PSXReference name="deep" type="com.percussion.design.objectstore.PSDirectory"/>
+            <PSXReference name="shallow" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>
+         <PSXDirectorySet name="e2srv - uid-groups">
+            <PSXReference name="static" type="com.percussion.design.objectstore.PSDirectory"/>
+            <PSXReference name="dynamic" type="com.percussion.design.objectstore.PSDirectory"/>
+            <PSXReference name="nested" type="com.percussion.design.objectstore.PSDirectory"/>
+            <RequiredAttributeNames>
+               <Attribute name="roleAttributeName">roles</Attribute>
+               <Attribute name="objectAttributeName">uid</Attribute>
+               <Attribute name="emailAttributeName">mail</Attribute>
+            </RequiredAttributeNames>
+         </PSXDirectorySet>         
+      </DirectorySets>
+   </DirectoryServices>
+   <RoleServices>
+      <PSXRoleProvider name="e2srv - uid" type="both">
+         <PSXReference name="e2srv - uid" type="com.percussion.design.objectstore.PSDirectorySet"/>
+      </PSXRoleProvider>
+   </RoleServices>
+</PSXServerConfiguration>

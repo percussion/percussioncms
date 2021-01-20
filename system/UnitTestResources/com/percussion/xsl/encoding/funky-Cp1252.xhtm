@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="windows-1252"?><html>
+<head>
+<meta content="text/html; charset=windows-1252" http-equiv="Content-Type"/>
+<meta content="Word.Document" name="ProgId"/>
+<meta content="Microsoft Word 9" name="Generator"/>
+<meta content="Microsoft Word 9" name="Originator"/>
+<link href="./funky_files/filelist.xml" rel="File-List"/>
+<title>Let’s make some “funky” characters that are uniquely encoded in Cp1252</title>
+</head>
+
+<body lang="EN-US" style="'tab-interval:.5in'">
+<div class="Section1">
+<p class="MsoNormal">Let’s make some “funky” characters that are uniquely encoded
+in Cp1252.</p>
+<p class="MsoNormal">— em dash</p>
+<p class="MsoNormal">– en dash</p>
+<p class="MsoNormal">&#8209; nb hypen</p>
+<p class="MsoNormal">  nbsp</p>
+<p class="MsoNormal">© copy</p>
+<p class="MsoNormal">® reg tm</p>
+<p class="MsoNormal">™ tm</p>
+<p class="MsoNormal">§ section</p>
+<p class="MsoNormal">¶ para</p>
+<p class="MsoNormal">… ellipse</p>
+<p class="MsoNormal">‘ lsqou</p>
+<p class="MsoNormal">’ rsquo</p>
+<p class="MsoNormal">“ lquo</p>
+<p class="MsoNormal">” rquo</p>
+</div>
+</body>
+</html>

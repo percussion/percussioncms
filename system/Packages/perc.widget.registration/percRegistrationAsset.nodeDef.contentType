@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description/>
+    <hide-from-menu>false</hide-from-menu>
+    <id>369</id>
+    <internal-name>percRegistrationAsset</internal-name>
+    <label>Registration Asset</label>
+    <mandatory>false</mandatory>
+    <name>rx:percRegistrationAsset</name>
+    <new-request>../psx_cepercRegistrationAsset/percRegistrationAsset.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercRegistrationAsset/percRegistrationAsset.html</query-request>
+    <raw-content-type>369</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

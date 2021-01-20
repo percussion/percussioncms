@@ -1,0 +1,66 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="MaintenanceManagerServerTest" default="" basedir=".">
+
+	<property name="server_port" value="9992" />	
+	
+    <target name="checkForErrors" description="Checks to see if there are errors, fails if there are">
+
+            <waitfor maxwait="6" maxwaitunit="second" checkevery="2" checkeveryunit="second"
+                timeoutproperty="check-errors-timeout">
+                <and>
+                     <socket server="localhost" port="${server_port}"/>
+                	 <http url="http://localhost:${server_port}/Rhythmyx/services/maintenance/manager/status/process" />
+                </and>
+           </waitfor>
+    	<fail if="check-errors-timeout" message="check-errors-timeout" /> 
+    </target>
+	
+    <target name="checkForMaint" description="Checks to see if the server is in maintenance, if so fails">
+
+            <waitfor maxwait="6" maxwaitunit="second" checkevery="2" checkeveryunit="second"
+                timeoutproperty="check-maint-timeout">
+                <and>
+                     <socket server="localhost" port="${server_port}"/>
+                     <http url="http://localhost:${server_port}/Rhythmyx/services/maintenance/manager/status/server" />
+                </and>
+           </waitfor>
+    	   <fail if="check-maint-timeout" message="check-maint-timeout" /> 
+    </target>
+	
+    <target name="checkForBoth" description="Checks to see if the server is in maintenance and if there are errors, fails if either is true">
+
+            <waitfor maxwait="6" maxwaitunit="second" checkevery="2" checkeveryunit="second"
+                timeoutproperty="check-both-timeout">
+                <and>
+                     <socket server="localhost" port="${server_port}"/>
+                     <http url="http://localhost:${server_port}/Rhythmyx/services/maintenance/manager/status/server" />
+                	 <http url="http://localhost:${server_port}/Rhythmyx/services/maintenance/manager/status/process" />
+                </and>
+           </waitfor>
+           <fail if="check-both-timeout" message="Timed out waiting for server to be ready" /> 
+    </target>
+
+</project>

@@ -1,0 +1,96 @@
+<?xml encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This DTD defines the stucture of the result XML document generated in the
+   case of item validation error(s).
+
+   If item validation fails, an error document conforming to this DTD will be
+   created to the internal error cache. The client will be redirected to this
+   document. It is the stylesheets responsibility to render the error 
+   information in this document appropriately. We recommend an output structure
+   similar to this:
+
+      Screen url 1
+         Error field(s) : error message 1
+         Error field(s) : error message 2
+      Screen url 2
+         Error field(s) : error message 3
+         Error field(s) : error message 4
+      ...
+
+   This way the user has information about all offending fields and the 
+   appropriate link how to get there and correct it.
+-->
+
+<!--
+   An item error can affect one or more item screens.
+-->
+<!ELEMENT ItemError (ErrorSet+)>
+
+<!--
+   An error set provides information about the screen where the error
+   happened and all field(s) with an appropriate error message.
+-->
+<!ELEMENT ErrorSet (ErrorScreen, ErrorFieldSet, ErrorMessage)>
+
+<!--
+   The screen url which contains all the offending fields causing the
+   validation error.
+
+   Attributes:
+   screenUrl - the fully qualified url (including all parameters) leading
+      to the screen of the offending fields which need corrections.
+-->
+<!ELEMENT ErrorScreen EMPTY>
+<!ATTLIST ErrorScreen
+   screenUrl CDATA #REQUIRED
+   >
+
+<!--
+   A list of one or more fields which caused the validation error.
+-->
+<!ELEMENT ErrorFieldSet (ErrorField+)>
+
+<!--
+   An error field.
+
+   Attributes:
+   submitName - the submit name of the field that caused the validation error.
+      This name is unique within the entire item.
+
+   displayName - the display name of the field that caused the validation error.
+      This is the name the user sees on the item screens.
+-->
+<!ELEMENT ErrorField EMPTY>
+<!ATTLIST ErrorField
+   submitName  CDATA #REQUIRED
+   displayName CDATA #REQUIRED
+   >
+
+<!--
+   The formatted error message describing the cause for the validation error.
+-->
+<!ELEMENT ErrorMessage (#PCDATA)>

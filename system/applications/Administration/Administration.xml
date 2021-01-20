@@ -1,0 +1,89 @@
+
+<PSXApplication id="1" active="no" enabled="yes" version="2.0">
+  <name>Administration</name>
+  <description></description>
+  <requestRoot>Administration</requestRoot>
+  <PSXRevisionHistory>
+    <PSXRevisionEntry majorVersion="1" minorVersion="0">
+      <agent>OS:markdandrea</agent>
+      <description>saved</description>
+      <time>19990818T202203835</time>
+    </PSXRevisionEntry>
+    <PSXRevisionEntry majorVersion="1" minorVersion="1">
+      <agent>OS:markdandrea</agent>
+      <description>saved</description>
+      <time>19990818T202205407</time>
+    </PSXRevisionEntry>
+    <PSXRevisionEntry majorVersion="1" minorVersion="2">
+      <agent>OS:markdandrea</agent>
+      <description>saved</description>
+      <time>19990818T233802874</time>
+    </PSXRevisionEntry>
+  </PSXRevisionHistory>
+  <PSXAcl id="0">
+    <PSXAclEntry id="0" type="user">
+      <name>Default</name>
+      <securityProviderType>Any</securityProviderType>
+      <securityProviderInstance></securityProviderInstance>
+      <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="no" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+    </PSXAclEntry>
+    <PSXAclEntry id="0" type="user">
+      <name>Anonymous</name>
+      <securityProviderType>Any</securityProviderType>
+      <securityProviderInstance></securityProviderInstance>
+      <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="no" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+    </PSXAclEntry>
+    <PSXAclEntry id="0" type="user">
+      <name>rxpersonthatdoesnotexistbecauseweneedatleastonewithfullaccess</name>
+      <securityProviderType>Any</securityProviderType>
+      <securityProviderInstance></securityProviderInstance>
+      <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+    </PSXAclEntry>
+    <multiMembershipBehavior></multiMembershipBehavior>
+  </PSXAcl>
+  <maxThreads>0</maxThreads>
+  <maxRequestTime>0</maxRequestTime>
+  <maxRequestsInQueue>0</maxRequestsInQueue>
+  <userSessionEnabled>no</userSessionEnabled>
+  <userSessionTimeout>0</userSessionTimeout>
+  <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+  <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+  <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+  <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+  <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+  <ApplicationUdfs/>
+  <ServerUdfReferences/>
+  <ApplicationExits/>
+  <ServerExitReferences/>
+  <PSXErrorWebPages id="3" returnHtml="yes"/>
+  <backEndLoginPassthru>no</backEndLoginPassthru>
+  <PSXNotifier id="4">
+    <providerType>SMTP</providerType>
+    <server>&lt;Unspecified&gt;</server>
+    <from>E2</from>
+  </PSXNotifier>
+  <userProperty name="schemaSourceReadOnly6">false</userProperty>
+  <userProperty name="locationY10">116</userProperty>
+  <userProperty name="externalInterfaceConnectedFigures10"></userProperty>
+  <userProperty name="externalInterfaceConnectedFigures9"></userProperty>
+  <userProperty name="locationY9">198</userProperty>
+  <userProperty name="locationY8">159</userProperty>
+  <userProperty name="locationY7">31</userProperty>
+  <userProperty name="locationY5">158</userProperty>
+  <userProperty name="locationY4">100</userProperty>
+  <userProperty name="locationY3">55</userProperty>
+  <userProperty name="locationY2">10</userProperty>
+  <userProperty name="externalInterfaceKey10">10</userProperty>
+  <userProperty name="locationX9">127</userProperty>
+  <userProperty name="locationX8">440</userProperty>
+  <userProperty name="createDTD6">true</userProperty>
+  <userProperty name="locationX7">19</userProperty>
+  <userProperty name="locationX5">302</userProperty>
+  <userProperty name="locationX4">11</userProperty>
+  <userProperty name="locationX3">11</userProperty>
+  <userProperty name="locationX2">11</userProperty>
+  <userProperty name="externalInterfaceHtml10">M:\e2\Installer\wbadmin_Installers\install.html</userProperty>
+  <userProperty name="locationX10">122</userProperty>
+  <userProperty name="externalInterfaceKey9">9</userProperty>
+  <userProperty name="savedFromE2Designer">Yes</userProperty>
+</PSXApplication>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error" name="metadata">
+  <Appenders>
+    <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${sys:catalina.base}/logs/metadata.log"
+                 filePattern="logs/$${date:yyyy-MM}/metadata-%d{MM-dd-yyyy}-%i.log.gz">
+      <PatternLayout>
+        <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [Thread: %t] %level [%c][%M] - %msg%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10 MB"/>
+      </Policies>
+    </RollingRandomAccessFile>
+  </Appenders>
+  <Loggers>
+    <Root level="error" includeLocation="true" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+    </Root>
+ 	<Logger name="com.percussion.delivery.metadata" level="info" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+     <!-- 
+     <Logger name="com.percussion.delivery.metadata.impl.PSMetadataRestService" level="info" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.metadata.impl.PSMetadataRestService" level="debug" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.metadata.impl.PSMetadataRestService" level="error" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+	 
+	 <Logger name="com.percussion.delivery.metadata.impl.PSMetadataRestService" level="warn" additivity="false">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+     </Logger>
+     -->
+  </Loggers>
+</Configuration>

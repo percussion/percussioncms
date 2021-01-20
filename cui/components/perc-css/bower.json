@@ -1,0 +1,10 @@
+{
+  "name": "Percussion-CSS",
+  "version": "0.0.5",
+  "main": [
+    "perc.css"
+  ],
+  "ignore": [ ],
+  "private": true,
+  "dependencies": { }
+}

@@ -1,0 +1,747 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   $Id: package.html 1.8 1999/05/10 18:50:14Z TasGiakouminakis Release $
+
+   Version Labels  : $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 20000724_2_0 20000522_1_1 20000501_1_1 20000327_1_1 20000111_1_0 991227_1_0 991214_1_0 991213_1_0 991202_1_0 Release_1_0_Intl Release_10_1 Release_10 $
+
+   Locked By       : $Locker: $
+
+   Revision History:
+                     $Log: package.html $
+                     Revision 1.8  1999/05/10 18:50:14Z  TasGiakouminakis
+                      updated images to reflect latest changes
+                     Revision 1.7  1999/04/30 20:50:10  TasGiakouminakis
+                      added anchor for OS diagrams 
+                     Revision 1.6  1999/04/22 12:38:54  TasGiakouminakis
+                      updated image maps with latest structure
+                     Revision 1.5  1999/03/01 17:53:58  TasGiakouminakis
+                      updated map for PSPipe
+                     Revision 1.4  1999/02/17 21:30:50  TasGiakouminakis
+                      updated XML structure info
+                     Revision 1.3  1999/02/02 16:51:12  TasGiakouminakis
+                      changed data set image
+                     Revision 1.2  1999/01/13 15:53:56  Administrator
+                      added RCS headers
+-->
+
+<BODY>
+
+This specification defines the object store model used by E2. It describes
+the internal classes which are used by the E2 server as well as the XML
+document model used to send and receive object store requests from external
+applications (such as the E2 designer).</P>
+
+<H2>Implementation Phases</H2>
+
+<P>For phase I, the XML files received from the designer will be written to
+disk in the /E2Root/ObjectStore directory. The XML files will be given the
+name of the object they refer to. For instance, the XML file for an
+application named Reg will be saved as Reg.xml. In this phase, only searching
+for named applications will be supported.</P>
+
+<P>The next phase, which will occur for version 1.0, will be to convert the
+object store to a back-end model (eg, ODBC). During this phase we must build
+a relational table generator to create a new E2 object store. Various indices
+will be created on the objects to allow for more powerful searches (such as
+the cataloger searching for particular object types). The XML interface and
+Java classes will remain the same, but the XML data will now be generated on
+the fly rather than from the file system.</P>
+
+<H2>XML Interface</H2>
+
+<P>There are three main XML document types defined for use in E2.
+These are:</P>
+
+<UL>
+<LI>PSXServer - this document type defines the server settings. It is used to
+    perform server administration requests. </LI>
+<LI>PSXApplication - this document type defines the application settings.
+    When the designer creates or edits an application, this document type
+	should be used. This also contains all the pages (PSXPage), data sets
+	(PSXDataSet), pipes (PSXPipe), private roles (PSXRole) and private
+	credential aliases (PSXCredentialAlias) defined for the application.</LI>
+<LI>PSXCollection - this document type is used to wrapper a set of objects of
+    the same type. It is most commonly used to provide results from a catalog
+	request. For instance, if the designer needs to know what public roles
+	have been defined, a PSXCollection document will be returned containing
+	zero or more PSXRole objects (one for each public role).</LI>
+</UL>
+
+<H2>Java Interface</H2>
+
+<P>The Java interface to the object store is what will be used by the E2
+server internally as well as any designer clients, such as the Visual
+Workbench. The implementation of each varies slightly. Let's look at how
+these work, making note of their differences.</P>
+
+<A NAME="OSDiagrams" />
+<P>The main focus of the initial object store implementation is the
+application. The application, and its related classes, are:</P>
+<TABLE BORDER="0">
+<TR><TD><A NAME="PSApplicationImage"><!-- --></A>
+        <IMG SRC="doc-files/PSApplication.gif"  USEMAP="#AppMap"></TD></TR>
+<TR><TD><A NAME="PSDataSetImage"><!-- --></A>
+        <IMG SRC="doc-files/PSDataSet.gif"      USEMAP="#DataSetMap"></TD></TR>
+<TR><TD><A NAME="PSPipeImage"><!-- --></A>
+        <IMG SRC="doc-files/PSPipe.gif"         USEMAP="#PipeMap"></TD></TR>
+<TR><TD><A NAME="PSPipe2Image"><!-- --></A>
+        <IMG SRC="doc-files/PSPipe2.gif"         USEMAP="#Pipe2Map"></TD></TR>
+</TABLE>
+
+<MAP NAME="AppMap">
+   <AREA SHAPE=rect COORDS="4,53,136,393" 
+         HREF="PSApplication.html" ALT="PSApplication">
+   <AREA SHAPE=rect COORDS="167,2,359,91" 
+         HREF="PSAcl.html" ALT="PSAcl">
+   <AREA SHAPE=rect COORDS="390,2,501,89" 
+         HREF="PSAclEntry.html" ALT="PSAclEntry">
+   <AREA SHAPE=rect COORDS="450,93,531,154" 
+         HREF="PSDataEncryptor.html" ALT="PSDataEncryptor">
+   <AREA SHAPE=rect COORDS="359,105,441,146" 
+         HREF="#PSDataSetImage" ALT="PSDataSet">
+   <AREA SHAPE=rect COORDS="197,113,349,223" 
+         HREF="PSLogger.html" ALT="PSLogger">
+   <AREA SHAPE=rect COORDS="330,226,431,280" 
+         HREF="PSLoginWebPage.html" ALT="PSLoginWebPage">
+   <AREA SHAPE=rect COORDS="227,235,319,291" 
+         HREF="PSErrorWebPages.html" ALT="PSErrorWebPages">
+   <AREA SHAPE=rect COORDS="348,296,419,350" 
+         HREF="PSCustomError.html" ALT="PSCustomError">
+   <AREA SHAPE=rect COORDS="227,296,298,372" 
+         HREF="PSNotifier.html" ALT="PSNotifier">
+   <AREA SHAPE=rect COORDS="451,235,613,515" 
+         HREF="PSRecipient.html" ALT="PSRecipient">
+   <AREA SHAPE=rect COORDS="329,373,430,472" 
+         HREF="PSBackEndCredential.html" ALT="PSBackEndCredential">
+   <AREA SHAPE=rect COORDS="227,388,298,442" 
+         HREF="PSRole.html" ALT="PSRole">
+   <AREA SHAPE=rect COORDS="330,480,431,555" 
+         HREF="PSRoleSet.html" ALT="PSRoleSet">
+   <AREA SHAPE=rect COORDS="106,419,188,460" 
+         HREF="IPSExit.html" ALT="IPSExit">
+   <AREA SHAPE=rect COORDS="85,478,198,550" 
+         HREF="PSUdfExit.html" ALT="PSUdfExit">
+   <AREA SHAPE=rect COORDS="234,482,314,549" 
+         HREF="PSExitParamDef.html" ALT="PSExitParamDef">
+</MAP>
+
+<MAP NAME="DataSetMap">
+   <AREA SHAPE=rect COORDS="18,2,138,166" 
+         HREF="PSDataSet.html" ALT="PSDataSet">
+   <AREA SHAPE=rect COORDS="169,3,251,44" 
+         HREF="PSDataEncryptor.html" ALT="PSDataEncryptor">
+   <AREA SHAPE=rect COORDS="289,40,372,80" 
+         HREF="#PSPipeImage" ALT="PSPipe">
+   <AREA SHAPE=rect COORDS="180,54,271,113" 
+         HREF="PSPageDataTank.html" ALT="PSPageDataTank">
+   <AREA SHAPE=rect COORDS="291,105,434,196" 
+         HREF="PSRequestor.html" ALT="PSRequestor">
+   <AREA SHAPE=rect COORDS="190,135,273,191" 
+         HREF="PSResultPager.html" ALT="PSResultPager">
+   <AREA SHAPE=rect COORDS="36,179,127,240" 
+         HREF="PSExitCall.html" ALT="PSExitCall">
+   <AREA SHAPE=rect COORDS="36,252,129,292" 
+         HREF="#PSPipe2Image" ALT="PSExitParamValue">
+   <AREA SHAPE=rect COORDS="25,308,149,358" 
+         HREF="IPSExit.html" ALT="IPSExit">
+   <AREA SHAPE=rect COORDS="18,398,158,469" 
+         HREF="PSJavaExit.html" ALT="PSJavaExit">
+   <AREA SHAPE=rect COORDS="274,206,332,247" 
+         HREF="IPSResults.html" ALT="IPSResults">
+   <AREA SHAPE=rect COORDS="190,285,312,330" 
+         HREF="PSResultPageSet.html" ALT="PSResultPageSet">
+   <AREA SHAPE=rect COORDS="190,345,312,412" 
+         HREF="PSResultPage.html" ALT="PSResultPage">
+   <AREA SHAPE=rect COORDS="352,287,434,399" 
+         HREF="PSRequestLink.html" ALT="PSRequestLink">
+   <AREA SHAPE=rect COORDS="352,409,434,450" 
+         HREF="#PSPipeImage" ALT="PSConditional">
+   <AREA SHAPE=rect COORDS="209,425,290,466" 
+         HREF="#PSApplicationImage" ALT="PSExitParamDef">
+</MAP>
+
+<MAP NAME="PipeMap">
+   <AREA SHAPE=rect COORDS="72,117,163,93" 
+         HREF="PSPipe.html" ALT="PSPipe">
+   <AREA SHAPE=rect COORDS="193,2,294,59" 
+         HREF="PSBackEndDataTank.html" ALT="PSBackEndDataTank">
+   <AREA SHAPE=rect COORDS="376,3,457,101" 
+         HREF="PSBackEndTable.html" ALT="PSBackEndTable">
+   <AREA SHAPE=rect COORDS="407,470,498,510" 
+         HREF="#PSPipe2Image" ALT="PSBackEndColumn">
+   <AREA SHAPE=rect COORDS="390,110,471,220" 
+         HREF="PSBackEndJoin.html" ALT="PSBackEndJoin">
+   <AREA SHAPE=rect COORDS="221,82,332,134" 
+         HREF="PSDataMapper.html" ALT="PSDataMapper">
+   <AREA SHAPE=rect COORDS="242,151,361,219" 
+         HREF="PSDataMapping.html" ALT="PSDataMapping">
+   <AREA SHAPE=rect COORDS="390,225,492,265" 
+         HREF="#PSPipe2Image" ALT="IPSDocumentMapping">
+   <AREA SHAPE=rect COORDS="386,308,464,348" 
+         HREF="#PSPipe2Image" ALT="PSXmlField">
+   <AREA SHAPE=rect COORDS="431,361,510,402" 
+         HREF="#PSPipe2Image" ALT="PSUdfCall">
+   <AREA SHAPE=rect COORDS="389,410,491,451" 
+         HREF="#PSPipe2Image" ALT="IPSBackEndMapping">
+   <AREA SHAPE=rect COORDS="21,134,102,191" 
+         HREF="PSUpdatePipe.html" ALT="PSUpdatePipe">
+   <AREA SHAPE=rect COORDS="20,199,112,278" 
+         HREF="PSDataSynchronizer.html" ALT="PSDataSynchronizer">
+   <AREA SHAPE=rect COORDS="32,291,113,360" 
+         HREF="PSUpdateColumn.html" ALT="PSUpdateColumn">
+   <AREA SHAPE=rect COORDS="133,134,214,191" 
+         HREF="PSQueryPipe.html" ALT="PSQueryPipe">
+   <AREA SHAPE=rect COORDS="132,200,213,241" 
+         HREF="#PSDataSetImage" ALT="PSExitCall">
+   <AREA SHAPE=rect COORDS="153,256,295,390" 
+         HREF="PSDataSelector.html" ALT="PSDataSelector">
+   <AREA SHAPE=rect COORDS="173,404,255,459" 
+         HREF="PSSortedColumn.html" ALT="PSSortedColumn">
+   <AREA SHAPE=rect COORDS="173,478,254,556" 
+         HREF="PSConditional.html" ALT="PSConditional">
+   <AREA SHAPE=rect COORDS="172,584,253,624" 
+         HREF="PSWhereClause.html" ALT="PSWhereClause">
+   <AREA SHAPE=rect COORDS="272,565,389,605" 
+         HREF="#PSPipe2Image" ALT="IPSReplacementValue">
+</MAP>
+
+<MAP NAME="Pipe2Map">
+   <AREA SHAPE=rect COORDS="63,21,163,64" 
+         HREF="IPSBackEndMapping.html" ALT="IPSBackEndMapping">
+   <AREA SHAPE=rect COORDS="22,101,114,170" 
+         HREF="PSUdfCall.html" ALT="PSUdfCall">
+   <AREA SHAPE=rect COORDS="23,184,115,223" 
+         HREF="PSExitParamValue.html" ALT="PSExitParamValue">
+   <AREA SHAPE=rect COORDS="28,251,109,292" 
+         HREF="#PSPipeImage" ALT="PSUdfExit">
+   <AREA SHAPE=rect COORDS="236,2,351,60" 
+         HREF="IPSReplacementValue.html" ALT="IPSReplacementValue">
+   <AREA SHAPE=rect COORDS="149,105,240,163" 
+         HREF="PSBackEndColumn.html" ALT="PSBackEndColumn">
+   <AREA SHAPE=rect COORDS="157,232,238,273" 
+         HREF="#PSPipeImage" ALT="PSBackEndTable">
+   <AREA SHAPE=rect COORDS="185,177,267,218" 
+         HREF="PSHtmlParameter.html" ALT="PSHtmlParameter">
+   <AREA SHAPE=rect COORDS="268,103,328,144" 
+         HREF="PSXmlField.html" ALT="PSXmlField">
+   <AREA SHAPE=rect COORDS="271,153,341,194" 
+         HREF="PSCgiVariable.html" ALT="PSCgiVariable">
+   <AREA SHAPE=rect COORDS="341,103,392,144" 
+         HREF="PSCookie.html" ALT="PSCookie">
+   <AREA SHAPE=rect COORDS="304,202,404,243" 
+         HREF="PSLiteral.html" ALT="PSLiteral">
+   <AREA SHAPE=rect COORDS="257,285,325,326" 
+         HREF="PSTextLiteral.html" ALT="PSTextLiteral">
+   <AREA SHAPE=rect COORDS="329,285,402,332" 
+         HREF="PSDateLiteral.html" ALT="PSDateLiteral">
+   <AREA SHAPE=rect COORDS="409,285,489,332" 
+         HREF="PSNumericLiteral.html" ALT="PSNumericLiteral">
+   <AREA SHAPE=rect COORDS="404,103,463,194" 
+         HREF="PSLiteralSet.html" ALT="PSLiteralSet">
+</MAP>
+
+<H3>Using the Object Store</H3>
+
+To load an application for editing, the following code can be used by the
+client:
+<pre><code>
+
+   import java.util.Properties;
+   import com.percussion.design.objectstore.*;
+
+   ...
+
+   // set the server info we want to connect to
+   Properties props = new Properties();
+   props.put("hostName", "myserver");
+   props.put("loginId",  "myid");
+   props.put("loginPw",  "mypw");
+
+   try {
+      // connect to the object store
+      PSObjectStore os  = new PSObjectStore(props);
+
+      try {
+         // and get the named app
+         PSApplication app = os.getApplication("myapp", true);
+      } catch (PSLockedException le) {
+         // let the world know someone else has the app locked!
+      }
+      } catch (PSNotFoundException nfe) {
+         // let the world know the app doesn't exist!
+      }
+
+      // now we can start using the app!
+
+      try {
+         // and when we're done, we can save it
+         os.saveApplication(  app,
+                              true,    // release the lock, we're done
+                              true,    // validate our changes
+                              false);  // this should be updated, not created
+      } catch (PSNonUniqueException nue) {
+         // unless we renamed it, this should never happen
+      } catch (PSNotLockedException nle) {
+         // we lost the lock?! must have taken too long!
+      }
+      } catch (PSValidationException ve) {
+         // we failed the validation!
+      }
+   } catch (PSServerException se) {
+      // let the world know the server is down or the server name is bad!
+   }
+   } catch (PSAuthorizationException ae) {
+      // let the world know we don't have access!
+   }
+
+</pre></code>
+
+<H2>Client-Server Connectivity</H2>
+
+The client connects to the E2 server through the web server using the
+standard HTTP protocol. The E2 hook passes the request on the server for
+processing, which waits for the server's reply. The reply is then sent
+back to the client (requestor).
+
+<H3>Connecting to the Object Store</H3>
+
+<P>The client uses the PSObjectStore class to connect to the
+E2 server's object store. This is done by constructing the object with the
+E2 server's connectivity information. This includes the E2 server's host
+name and the appropriate credentials for gaining designer access to the
+E2 server. In a future version we may also allow the protocol to be
+specified. Due to existing Java limitations, only HTTP can be used.
+Ideally, HTTPS can also be supported to allow secure connections between
+the E2 server and the designer client. The PSObjectStore sets the
+request header field <code>PS-Request-Type</code> to 
+<code>design-open</code>. The request contains the appropriate XML document
+structure (defined in the
+<A HREF="#DesignOpen">Object Store Requests</A> section)
+and a URL of the form:</P>
+<PRE><CODE>
+   http://hostName/E2Hook
+</CODE></PRE>
+
+<P>When the E2 server gets the request, it first verifies the login
+information. If this is valid, it then verifies the user is defined in the
+server's ACL with designer access. If all these conditions have been met,
+a cookie is returned to the client. The cookie, psdsessid, is set
+to their session id for designer access. When the PSObjectStore object
+on the client gets positive acknowledgement from the server,
+it returns the newly constructed object. The connection is kept alive and
+the session id cookie is saved. This is then sent along
+with all subsequent requests to the server.</P>
+
+<P>At this point, we've seen the differences in connecting to the object
+store. You may also be wondering why RMI or CORBA was not used. To provide
+secure RMI or CORBA connections, we must also license SSL support. This adds
+substantial licensing issues both in terms of distribution (eg, US export
+laws) and cost (RSA is expensive!). We may revisit this implementation in a
+future release.</P>
+
+<H3>Accessing Objects</H3>
+
+<P>For Phase I of E2, the client will convert the objects to their
+appropriate XML representation and send them to the server for processing.
+For instance, when the client issues a request to have an application
+loaded, the request will be sent to the server, along with the session
+cookie. The request header field 
+<code>PS-Request-Type</code> is sent with the value
+<code>design-objectstore-app-load</code>. The request contains the
+appropriate XML document structure (defined in the 
+<A HREF="#DesignAppLoad">Object Store Requests</A> section)
+and a URL of the form:</P>
+<PRE><CODE>
+   http://hostName/E2Hook
+</PRE></CODE>
+
+<P>This tells the server to create an XML document containing the
+application's definition. This will be loaded directly from the file system
+in Phase I. In a later phase, this will be done by querying the object store
+and building the appropriate XML document. By specifying a mode of edit, the
+designer will be granted a 30 minute lock on the application. This will
+allow other readers in, but no editors. If the designer chooses not to make
+changes, they should close the application, releasing its lock. If they need
+an extension on their lock (eg, they need more than 30 minutes), they can
+request an extension through the object store.</P>
+
+<P>Once the XML data is received, it will then be used to construct Java
+objects. Based upon the XML data, the appropriate mutators will be called
+on the newly constructed objects.</P>
+
+<P>The PSXmlObjectStoreHandler, which will be used in Phase I rather than
+the PSBackEndObjectStoreHandler, loads the applications
+from disk. It will search the /E2/ObjectStore directory for a
+file named appName.xml and return its contents.</P>
+
+<A NAME="ObjectStoreRequests"></A><H2>Object Store Requests</H2>
+
+Object store requests are sent using various headers and the contents of
+an XML file as the request data. The PS-Request-Type value and its
+associated structures are defined below.
+
+<A NAME="DesignAppList"></A><H3>design-objectstore-app-list</H3>
+
+This command is used to get a list of applications. The data to retrieve
+for each application can be specified in the request.
+The request headers are:
+
+<UL>
+<LI>PS-Request-Type: design-objectstore-app-list</LI>
+<LI>Content-Type: text/xml</LI>
+</UL>
+
+The request contents use the following XML document structure:
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppList (columnName*)&gt;
+
+   &lt;!--
+      the attributes associated with this request:
+      
+      sessid - the design session id associated with the requestor
+      (returned by a design-open call).
+    --&gt;
+   &lt;!ATTLIST PSXDesignAppList
+      sessid         CDATA       #REQUIRED
+   &gt;
+
+   &lt;!-- the name of a column to include in the results
+    --&gt;
+   &lt;!ELEMENT columnName       (#PCDATA)&gt;
+</CODE></PRE>
+
+<P>The response contents use the following XML document structure:</P>
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppListResults (	(PSXApplicationSummary*) |
+														PSXError)&gt;
+
+   &lt;!--
+		one column is returned for each piece of summary info. The attribute
+		name is set to the summary type name and the value is the returned
+		data.
+	 --&gt;
+   &lt;!ELEMENT PSXApplicationSummary   (name?, description?,
+	                                      isEnabled?, isActive?,
+													  createdBy?, createdOn?)&gt;
+	&lt;!ATTLIST PSXApplicationSummary
+		name				ID				#REQUIRED
+	&gt;
+
+   &lt;!ELEMENT PSXError               (message, exceptionClass?)
+   &lt;!ELEMENT message                (#PCDATA)
+   &lt;!ELEMENT exceptionClass         (#PCDATA)
+</CODE></PRE>
+
+
+<A NAME="DesignAppLoad"></A><H3>design-objectstore-app-load</H3>
+
+This command is used to load the named application.
+The request headers are:
+
+<UL>
+<LI>PS-Request-Type: design-objectstore-app-load</LI>
+<LI>Content-Type: text/xml</LI>
+</UL>
+
+The request contents use the following XML document structure:
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppLoad (name | applid)&gt;
+
+   &lt;!--
+      the attributes associated with this request:
+
+      sessid - the design session id associated with the requestor
+      (returned by a design-open call).
+
+      mode - should the application be loaded read-only, or is it being
+      loaded for editing, in which case it must be locked. By default,
+      applications are loaded in read-only mode.
+    --&gt;
+   &lt;!ATTLIST PSXDesignAppLoad
+      sessid      CDATA          #REQUIRED
+      mode        (read | edit)  #OPTIONAL
+   &gt;
+
+   &lt;!-- the name of the application to load
+    --&gt;
+   &lt;!ELEMENT name             (#PCDATA)&gt;
+
+   &lt;!-- the ID of the application to load
+    --&gt;
+   &lt;!ELEMENT applid           (#PCDATA)&gt;
+</CODE></PRE>
+
+<P>The response contents use the following XML document structure:</P>
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppLoadResults (	PSXApplication |
+														PSXError)&gt;
+
+   &lt;!ELEMENT PSXError               (message, exceptionClass?)
+   &lt;!ELEMENT message                (#PCDATA)
+   &lt;!ELEMENT exceptionClass         (#PCDATA)
+</CODE></PRE>
+
+
+<A NAME="DesignAppLock"></A><H3>design-objectstore-app-lock</H3>
+
+This command is used to lock (or extend the lock) on an application.
+The request headers are:
+
+<UL>
+<LI>PS-Request-Type: design-objectstore-app-lock</LI>
+<LI>Content-Type: text/xml</LI>
+</UL>
+
+The request contents use the following XML document structure:
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppLock (applid)&gt;
+
+   &lt;!--
+      the attributes associated with this request:
+
+      sessid - the design session id associated with the requestor
+      (returned by a design-open call).
+    --&gt;
+   &lt;!ATTLIST PSXDesignAppLock
+      sessid         CDATA       #REQUIRED
+   &gt;
+
+   &lt;!-- the ID of the application to lock
+    --&gt;
+   &lt;!ELEMENT applid           (#PCDATA)&gt;
+</CODE></PRE>
+
+<P>The response contents use the following XML document structure:</P>
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppLockResults (PSXError?)&gt;
+
+   &lt;!ELEMENT PSXError               (message, exceptionClass?)
+   &lt;!ELEMENT message                (#PCDATA)
+   &lt;!ELEMENT exceptionClass         (#PCDATA)
+</CODE></PRE>
+
+
+<A NAME="DesignAppRemove"></A><H3>design-objectstore-app-remove</H3>
+
+This command is used to permanently delete an application from the server.
+The request headers are:
+
+<UL>
+<LI>PS-Request-Type: design-objectstore-app-remove</LI>
+<LI>Content-Type: text/xml</LI>
+</UL>
+
+The request contents use the following XML document structure:
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppRemove  (name | applid)&gt;
+
+   &lt;!--
+      the attributes associated with this request:
+
+      sessid - the design session id associated with the requestor
+      (returned by a design-open call).
+    --&gt;
+   &lt;!ATTLIST PSXDesignAppRemove
+      sessid         CDATA          #REQUIRED
+   &gt;
+
+   &lt;!-- the name of the application to remove
+    --&gt;
+   &lt;!ELEMENT name             (#PCDATA)&gt;
+
+   &lt;!-- the ID of the application to remove
+    --&gt;
+   &lt;!ELEMENT applid           (#PCDATA)&gt;
+</CODE></PRE>
+
+<P>The response contents use the following XML document structure:</P>
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppRemoveResults (PSXError?)&gt;
+
+   &lt;!ELEMENT PSXError               (message, exceptionClass?)
+   &lt;!ELEMENT message                (#PCDATA)
+   &lt;!ELEMENT exceptionClass         (#PCDATA)
+</CODE></PRE>
+
+
+<A NAME="DesignAppRename"></A><H3>design-objectstore-app-rename</H3>
+
+This command is used to rename an application.
+The request headers are:
+
+<UL>
+<LI>PS-Request-Type: design-objectstore-app-rename</LI>
+<LI>Content-Type: text/xml</LI>
+</UL>
+
+The request contents use the following XML document structure:
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppRename  ((oldName | applid), newName)&gt;
+
+   &lt;!--
+      the attributes associated with this request:
+
+      sessid - the design session id associated with the requestor
+      (returned by a design-open call).
+    --&gt;
+   &lt;!ATTLIST PSXDesignAppRename
+      sessid         CDATA       #REQUIRED
+   &gt;
+
+   &lt;!-- the original name of the application to rename
+    --&gt;
+   &lt;!ELEMENT oldName          (#PCDATA)&gt;
+
+   &lt;!-- the ID of the application to rename
+    --&gt;
+   &lt;!ELEMENT applid           (#PCDATA)&gt;
+
+   &lt;!-- the new name to set for the application
+    --&gt;
+   &lt;!ELEMENT newName          (#PCDATA)&gt;
+</CODE></PRE>
+
+<P>The response contents use the following XML document structure:</P>
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppRenameResults (PSXError?)&gt;
+
+   &lt;!ELEMENT PSXError               (message, exceptionClass?)
+   &lt;!ELEMENT message                (#PCDATA)
+   &lt;!ELEMENT exceptionClass         (#PCDATA)
+</CODE></PRE>
+
+
+<A NAME="DesignAppSave"></A><H3>design-objectstore-app-save</H3>
+
+This command is used to save an application. This may cause the creation
+of a new application on the server, or update an existing application.
+The request headers are:
+
+<UL>
+<LI>PS-Request-Type: design-objectstore-app-save</LI>
+<LI>Content-Type: text/xml</LI>
+</UL>
+
+The request contents use the following XML document structure:
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppSave (PSXApplication)&gt;
+
+   &lt;!--
+      the attributes associated with this request:
+
+      sessid - the design session id associated with the requestor
+      (returned by a design-open call).
+
+		releaseLock - "yes" to release the application lock; "no" to keep it
+
+		validate - "yes" to validate the application; "no" to save it as is
+
+		createNewApp - "yes" to create a new application if a match does not
+		exist; "no" to update only (failing if not found)
+    --&gt;
+   &lt;!ATTLIST PSXDesignAppSave
+      sessid         CDATA       	#REQUIRED
+		releaseLock		%PSXIsEnabled	#IMPLIED
+		validate			%PSXIsEnabled	#IMPLIED
+		createNewApp	%PSXIsEnabled	#IMPLIED
+   &gt;
+</CODE></PRE>
+
+<P>The response contents use the following XML document structure:</P>
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignAppSaveResults (PSXError?)&gt;
+
+   &lt;!ELEMENT PSXError               (message, exceptionClass?)
+   &lt;!ELEMENT message                (#PCDATA)
+   &lt;!ELEMENT exceptionClass         (#PCDATA)
+</CODE></PRE>
+
+
+<A NAME="DesignClose"></A><H3>design-close</H3>
+
+This command is used to close the specified designer session.
+The request headers are:
+
+<UL>
+<LI>PS-Request-Type: design-close</LI>
+<LI>Content-Type: text/xml</LI>
+</UL>
+
+The request contents use the following XML document structure:
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignClose   EMPTY&gt;
+
+   &lt;!--
+      the attributes associated with this request:
+
+      sessid - the design session id associated with the requestor
+      (returned by a design-open call).
+    --&gt;
+   &lt;!ATTLIST PSXDesignClose
+      sessid         CDATA       #REQUIRED
+   &gt;
+</CODE></PRE>
+
+
+<A NAME="DesignOpen"></A><H3>design-open</H3>
+
+This command is used to initiate a designer session.
+The request headers are:
+
+<UL>
+<LI>PS-Request-Type: design-open</LI>
+<LI>Content-Type: text/xml</LI>
+</UL>
+
+The request contents use the following XML document structure:
+
+<PRE><CODE>
+   &lt;!ELEMENT PSXDesignOpen    (loginid, loginpw)&gt;
+
+   &lt;!-- the id to login to the E2 server with
+    --&gt;
+   &lt;!ELEMENT loginid          (#PCDATA)&gt;
+
+   &lt;!-- the password to login to the E2 server with
+    --&gt;
+   &lt;!ELEMENT loginpw          (#PCDATA)&gt;
+</CODE></PRE>
+
+</BODY>
+

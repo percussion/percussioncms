@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="1038" startPriority="0" version="2.0">
+	<name>sys_trFieldOverride</name>
+	<description/>
+	<requestRoot>sys_trFieldOverride</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_CHANAK_1067315801234/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20031027T233820484</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="6">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20031027T235013671</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>admin1</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior/>
+	</PSXAcl>
+	<maxThreads>0</maxThreads>
+	<maxRequestTime>0</maxRequestTime>
+	<maxRequestsInQueue>0</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>0</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="3893">
+		<name>Dataset3418</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3891">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3886">
+				<PSXBackEndTable id="3884">
+					<alias>PSX_AUTOTRANSLATION</alias>
+					<table>PSX_AUTOTRANSLATION</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="3885">
+					<alias>CONTENTSTATUS</alias>
+					<table>CONTENTSTATUS</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndJoin id="0" joinType="inner">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>CONTENTSTATUS</tableAlias>
+							<column>CONTENTTYPEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>PSX_AUTOTRANSLATION</tableAlias>
+							<column>CONTENTTYPEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3889" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>TranslationFieldOverride/Entry/CommunityId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_AUTOTRANSLATION</tableAlias>
+						<column>COMMUNITYID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>TranslationFieldOverride/Entry/ContentTypeId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_AUTOTRANSLATION</tableAlias>
+						<column>CONTENTTYPEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>TranslationFieldOverride/Entry/Locale</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_AUTOTRANSLATION</tableAlias>
+						<column>LOCALE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>TranslationFieldOverride/Entry/WorkflowId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_AUTOTRANSLATION</tableAlias>
+						<column>WORKFLOWID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3887" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="yes">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>CONTENTSTATUS</tableAlias>
+									<column>CONTENTID</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_contentid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+					<PSXWhereClause id="0" omitWhenNull="yes">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>PSX_AUTOTRANSLATION</tableAlias>
+									<column>LOCALE</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>sys_lang</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="3892">
+			<schemaSource>file:TranslationFieldOverride.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>TranslationFieldOverride</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="3894">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+		<PSXResultPager id="3888">
+			<maxRowsPerPage>-1</maxRowsPerPage>
+			<maxPages>-1</maxPages>
+			<maxPageLinks>10</maxPageLinks>
+		</PSXResultPager>
+	</PSXDataSet>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="3882" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="3883">
+		<providerType>SMTP</providerType>
+		<server>&lt;Unspecified&gt;</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="pageDatatankFilePath3892">C:\Documents and Settings\RammohanVangapalli\Desktop\TranslationFieldOverride.dtd</userProperty>
+	<userProperty name="3885sizewidth">120</userProperty>
+	<userProperty name="pageDatatankFilePath3890">C:\Documents and Settings\RammohanVangapalli\Desktop\TranslationFieldOverride.dtd</userProperty>
+	<userProperty name="locationX3889">237</userProperty>
+	<userProperty name="locationX3888">170</userProperty>
+	<userProperty name="locationX3887">103</userProperty>
+	<userProperty name="locationX3886">0</userProperty>
+	<userProperty name="locationX3883">16</userProperty>
+	<userProperty name="locationX3882">16</userProperty>
+	<userProperty name="schemaSourceReadOnly3892">true</userProperty>
+	<userProperty name="locationX3881">16</userProperty>
+	<userProperty name="schemaSourceReadOnly3890">true</userProperty>
+	<userProperty name="3885sizeheight">200</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="3885readonly">false</userProperty>
+	<userProperty name="locationY3894">10</userProperty>
+	<userProperty name="3884locationy">20</userProperty>
+	<userProperty name="locationY3893">146</userProperty>
+	<userProperty name="3884locationx">20</userProperty>
+	<userProperty name="locationY3892">0</userProperty>
+	<userProperty name="locationY3891">10</userProperty>
+	<userProperty name="locationY3890">0</userProperty>
+	<userProperty name="3885locationy">20</userProperty>
+	<userProperty name="3885locationx">20</userProperty>
+	<userProperty name="3884sizeheight">200</userProperty>
+	<userProperty name="locationY3889">24</userProperty>
+	<userProperty name="locationX3894">10</userProperty>
+	<userProperty name="locationY3888">24</userProperty>
+	<userProperty name="locationX3893">1</userProperty>
+	<userProperty name="locationY3887">24</userProperty>
+	<userProperty name="locationX3892">357</userProperty>
+	<userProperty name="locationY3886">0</userProperty>
+	<userProperty name="locationX3891">10</userProperty>
+	<userProperty name="3884sizewidth">120</userProperty>
+	<userProperty name="locationX3890">357</userProperty>
+	<userProperty name="locationY3883">100</userProperty>
+	<userProperty name="locationY3882">55</userProperty>
+	<userProperty name="locationY3881">10</userProperty>
+	<userProperty name="3884readonly">false</userProperty>
+	<userProperty name="pageDatatankSrcType3892">2</userProperty>
+	<userProperty name="pageDatatankSrcType3890">2</userProperty>
+</PSXApplication>

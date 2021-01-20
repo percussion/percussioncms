@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<PSXFeatureSet>
+   <PSXFeature Name="Trace">
+      <PSXVersion Number="1" Introduced="20001201">
+      </PSXVersion>
+   </PSXFeature>
+   <PSXFeature Name="ContentEditorUI">
+      <PSXVersion Number="1" Introduced="20020212">
+      </PSXVersion>
+   </PSXFeature>
+   <PSXFeature Name="GroupProviders">
+      <PSXVersion Number="1" Introduced="20020308">
+      </PSXVersion>
+   </PSXFeature>
+   <PSXFeature Name="CmsCaching">
+      <PSXVersion Number="1" Introduced="20020515">
+      </PSXVersion>
+   </PSXFeature>
+   <PSXFeature Name="ContentExplorer">
+      <PSXVersion Number="1" Introduced="20030501">
+      </PSXVersion>
+      <PSXVersion Number="2" Introduced="20031101">
+      </PSXVersion>
+   </PSXFeature>
+   <PSXFeature Name="ResourceCaching">
+      <PSXVersion Number="1" Introduced="20030601">
+      </PSXVersion>
+   </PSXFeature>
+   <PSXFeature Name="FullTextSearch">
+      <PSXVersion Number="1" Introduced="20040401">
+      </PSXVersion>
+   </PSXFeature>
+   <PSXFeature Name="DirectoryServices">
+      <PSXVersion Number="1" Introduced="20040112"/>
+   </PSXFeature>
+</PSXFeatureSet>

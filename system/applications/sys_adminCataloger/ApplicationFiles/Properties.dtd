@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Property (#PCDATA)>
+<!ATTLIST Property
+	Value CDATA #REQUIRED
+	Category CDATA #REQUIRED
+	LimitToList CDATA #REQUIRED
+	CatalogUrl CDATA #REQUIRED
+>
+<!ELEMENT Properties (Property*)>
+<!ATTLIST Properties
+	Type CDATA #REQUIRED
+>

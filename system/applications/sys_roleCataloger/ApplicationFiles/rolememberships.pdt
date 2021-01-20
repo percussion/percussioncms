@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Subject (#PCDATA)>
+<!ATTLIST  Subject spName CDATA #REQUIRED>
+<!ATTLIST  Subject type CDATA #REQUIRED>
+<!ATTLIST  Subject name CDATA #REQUIRED>
+<!ELEMENT Role (Subject* )>
+<!ATTLIST  Role name CDATA #REQUIRED>
+<!ELEMENT RoleMemberships (Role* )>

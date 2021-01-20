@@ -1,0 +1,68 @@
+ ############################################################################
+ #
+ # $Id: package.nmk 1.1 2002/12/17 20:27:57Z bjoginipally Exp $
+ #
+ # Version Labels	: $Name: $
+ # Locked By		: $Locker: $
+ #
+ # Revision History:
+ #	$Log: package.nmk $
+ #	Revision 1.1  2002/12/17 20:27:57Z  bjoginipally
+ #	Initial revision
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.server.compare
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = 
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = \
+	PSCompareRequestHandler \
+   PSCompare \
+   PSCompareException
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = 
+
+#
+# Properties files
+#
+PROPERTIES = 
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)

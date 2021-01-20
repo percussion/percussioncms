@@ -1,0 +1,303 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="installRepository" default="installRepository" >
+
+    <property name="install.dir" location="C:\DevEnv\Installs\dev"/>
+    <property name="data.dir" location="${install.dir}/rxconfig/Installer/data"/>
+    <property name="customer.jdbc.drivers" location="${install.dir}/jetty/base/lib/jdbc"/>
+    <dirname property="install.src" file="${ant.file}"/>
+    <property name="install.configdir.src" location="${install.src}/rxconfig/Installer"/>
+    <property name="perc.jdbc.drivers" location="${install.dir}/jetty/defaults/lib/perc"/>
+    <property name="install.configdir.src" location="${install.src}/rxconfig/Installer"/>
+    <property name="rxrepository.properties.new" location="${install.configdir.src}/rxrepository.properties"/>
+    <property name="rxrepository.properties" location="${install.dir}/rxconfig/Installer/rxrepository.properties"/>
+
+    <path id="ant.deps">
+        <fileset dir="${customer.jdbc.drivers}"  erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${install.src}/jetty/defaults/lib/perc" erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${install.src}/jetty/defaults/lib/perc-logging" erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+
+    <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
+
+    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
+
+    <target name="installRepository" depends="init,repository_properties">
+
+
+    <!-- The main install target -->
+
+        <!-- Install Rhythmyx Tables -->
+        <echo>Installing repository...</echo>
+
+        <mkdir dir="${install.dir}/logs"/>
+
+        <ant antfile="installDropTables.xml" target="installDropTables" inheritAll="true" inheritRefs="true" />
+        <ant antfile="installDropIndexes.xml" target="installDropIndexes" inheritAll="true" inheritRefs="true" />
+        <ant antfile="installDropViews.xml" target="installDropViews" inheritAll="true" inheritRefs="true" />
+
+<!-- update table schema -->
+        <echo> updating table schemas</echo>
+
+        <property name="tableDataSources" value="${data.dir}/cmsTableData.xml" />
+        <property name="tableDefSources" value="${data.dir}/cmsTableDef.xml" />
+
+        <PSTableAction rootDir="${install.dir}"
+                       repositoryLocation="${rxrepository.properties}"
+                       tableFactoryLogFile="${install.dir}/rxconfig/Installer/tableFactory.log"
+                       tableData="${tableDataSources}"
+                       tableDef="${tableDefSources}" failonerror="true" silenceerrors="false" />
+
+       <!--  There are problems with this.  Content Types conflict with CM1 content types.
+        <echo>Updating FastForward schema...</echo>
+
+        <PSTableAction rootDir="${install.dir}"
+                       repositoryLocation="${rxrepository.properties}"
+                       tableFactoryLogFile="${install.dir}/logs/tableFactory.log"
+                       tableData="${data.dir}/RxffTableData.xml"
+                       tableDef="${data.dir}/RxffTableDef.xml" failonerror="true" silenceerrors="false"/>
+       -->
+        <echo>Repository installation complete...</echo>
+
+        <echo>creating views</echo>
+        <!-- PSX_COMMUNITY_PERMISSION_VIEW -->
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyTableNames="PSX_ACLS,PSX_ACLENTRIES,PSX_ACLENTRYPERMISSIONS,RXCOMMUNITY"
+                qualifyViewNames="PSX_COMMUNITY_PERMISSION_VIEW"
+                sql="create view PSX_COMMUNITY_PERMISSION_VIEW as select acl.OBJECTID, acl.OBJECTTYPE, com.COMMUNITYID, aclperm.PERMISSION from PSX_ACLS acl, PSX_ACLENTRIES entry, PSX_ACLENTRYPERMISSIONS aclperm, RXCOMMUNITY com where acl.ID = entry.ACLID and entry.ID = aclperm.ENTRYID and entry.TYPE = 10 and entry.NAME = com.NAME and aclperm.PERMISSION = 40 union select acl.OBJECTID, acl.OBJECTTYPE, com.COMMUNITYID, aclperm.PERMISSION from PSX_ACLS acl, PSX_ACLENTRIES entry, PSX_ACLENTRYPERMISSIONS aclperm, RXCOMMUNITY com where acl.ID = entry.ACLID and entry.ID = aclperm.ENTRYID and entry.TYPE = 10 and entry.NAME = 'AnyCommunity' and aclperm.PERMISSION = 40 and com.NAME not in (select entry2.NAME from PSX_ACLENTRIES entry2 where acl.ID = entry2.ACLID and entry2.TYPE = 10)"
+                sqlOracle="create view PSX_COMMUNITY_PERMISSION_VIEW as select acl.OBJECTID, acl.OBJECTTYPE, com.COMMUNITYID, aclperm.PERMISSION from PSX_ACLS acl, PSX_ACLENTRIES entry, PSX_ACLENTRYPERMISSIONS aclperm, RXCOMMUNITY com where acl.ID = entry.ACLID and entry.ID = aclperm.ENTRYID and entry.TYPE = 10 and aclperm.PERMISSION = 40 and (entry.NAME = com.NAME or (entry.NAME = 'AnyCommunity' and com.NAME not in (select entry2.NAME from PSX_ACLENTRIES entry2 where acl.ID = entry2.ACLID and entry2.TYPE = 10)))"
+                failonerror="true" silenceerrors="false"
+        />
+        <!-- RXSITECOMMUNITY -->
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXSITECOMMUNITY,PSX_COMMUNITY_PERMISSION_VIEW"
+                sql="create view RXSITECOMMUNITY as select p.OBJECTID SITEID, p.COMMUNITYID from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 9 and p.PERMISSION = 40"
+                failonerror="true" silenceerrors="false"
+        />
+
+        <!-- RXCONTENTTYPECOMMUNITY -->
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXCONTENTTYPECOMMUNITY,PSX_COMMUNITY_PERMISSION_VIEW"
+                sql="create view RXCONTENTTYPECOMMUNITY as select p.OBJECTID CONTENTTYPEID, p.COMMUNITYID from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 2 and p.PERMISSION = 40"
+                failonerror="true" silenceerrors="false"
+        />
+
+        <!-- RXVARIANTCOMMUNITY -->
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXVARIANTCOMMUNITY, PSX_COMMUNITY_PERMISSION_VIEW"
+                sql="create view RXVARIANTCOMMUNITY as select p.OBJECTID VARIANTID, p.COMMUNITYID from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 4 and p.PERMISSION = 40"
+                failonerror="true" silenceerrors="false"
+        />
+
+        <!-- RXWORKFLOWCOMMUNITY -->
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXWORKFLOWCOMMUNITY, PSX_COMMUNITY_PERMISSION_VIEW"
+                sql="create view RXWORKFLOWCOMMUNITY as select p.OBJECTID WORKFLOWAPPID, p.COMMUNITYID from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 23 and p.PERMISSION = 40"
+                failonerror="true" silenceerrors="false"
+        />
+
+        <!-- PSX_DISPLAYFORMATPROPERTY_VIEW -->
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyTableNames="PSX_DISPLAYFORMATPROPERTIES"
+                qualifyViewNames="PSX_DISPLAYFORMATPROPERTY_VIEW,PSX_COMMUNITY_PERMISSION_VIEW"
+                sql="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   ltrim(str(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"
+                sqlOracle="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   ltrim(to_char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"
+                sqlUDB="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   rtrim(char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"
+                sqlMysql="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   rtrim(cast(p.COMMUNITYID AS CHAR)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"
+                sqlDerby="create view PSX_DISPLAYFORMATPROPERTY_VIEW as select * from PSX_DISPLAYFORMATPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   rtrim(char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 31"
+                failonerror="true" silenceerrors="false"
+        />
+
+        <!-- PSX_SEARCHPROPERTIES -->
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyTableNames="PSX_SEARCHPROPERTIES"
+                qualifyViewNames="PSX_SEARCHPROPERTIES_VIEW,PSX_COMMUNITY_PERMISSION_VIEW"
+                sql="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME, ltrim(str(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"
+                sqlOracle="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME,   ltrim(to_char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' DESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"
+                sqlUDB="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME, rtrim(char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' PROPERTYDESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"
+                sqlMysql="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME, rtrim(cast(p.COMMUNITYID AS CHAR)) PROPERTYVALUE, 'from acls' PROPERTYDESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"
+                sqlDerby="create view PSX_SEARCHPROPERTIES_VIEW as select * from PSX_SEARCHPROPERTIES union select p.OBJECTID PROPERTYID, 'sys_community' PROPERTYNAME, rtrim(char(p.COMMUNITYID)) PROPERTYVALUE, 'from acls' PROPERTYDESCRIPTION from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 15 OR p.OBJECTTYPE = 18"
+                failonerror="true" silenceerrors="false"
+        />
+
+
+        <!-- PSX_MENUVISIBILITY_VIEW -->
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyTableNames="RXMENUVISIBILITY,RXMENUACTION,RXCOMMUNITY,PSX_ACLS"
+                qualifyViewNames="PSX_MENUVISIBILITY_VIEW,PSX_COMMUNITY_PERMISSION_VIEW"
+                sql="create view PSX_MENUVISIBILITY_VIEW as select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, ltrim(str(C.COMMUNITYID)) VALUE, 'from acls' DESCRIPTION from RXMENUACTION a, RXCOMMUNITY C where (select count(*) from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID and (C.COMMUNITYID = COMMUNITYID) and p.PERMISSION = 40) = 0 and (select count(*) from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a.ACTIONID) &lt;&gt; 0"
+                sqlOracle="create view PSX_MENUVISIBILITY_VIEW AS select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, ltrim(to_char(C.COMMUNITYID)) VALUE, 'from acls' DESCRIPTION from (select a2.actionid actionid from RXMENUACTION a2 where exists (select * from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a2.ACTIONID)) a, RXCOMMUNITY C where C.COMMUNITYID NOT IN (select COMMUNITYID FROM PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID)"
+                sqlUDB="create view PSX_MENUVISIBILITY_VIEW as select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, rtrim(char(C.COMMUNITYID)) VALUE, 'from acls' DESCRIPTION from RXMENUACTION a, RXCOMMUNITY C where (select count(*) from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID and (C.COMMUNITYID = COMMUNITYID) and p.PERMISSION = 40) = 0 and (select count(*) from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a.ACTIONID) &lt;&gt; 0"
+                sqlMysql="create view PSX_MENUVISIBILITY_VIEW as select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, rtrim(cast(C.COMMUNITYID AS CHAR)) VALUE, 'from acls' DESCRIPTION from RXMENUACTION a, RXCOMMUNITY C where (select count(*) from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID and (C.COMMUNITYID = COMMUNITYID) and p.PERMISSION = 40) = 0 and (select count(*) from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a.ACTIONID) &lt;&gt; 0"
+                sqlDerby="create view PSX_MENUVISIBILITY_VIEW as select * from RXMENUVISIBILITY where VISIBILITYCONTEXT &lt;&gt; '2' union select a.ACTIONID, '2' VISIBILITYCONTEXT, rtrim(char(C.COMMUNITYID)) VALUE, 'from acls' DESCRIPTION from RXMENUACTION a, RXCOMMUNITY C where (select count(*) from PSX_COMMUNITY_PERMISSION_VIEW p where p.OBJECTTYPE = 107 and p.OBJECTID = a.ACTIONID and (C.COMMUNITYID = COMMUNITYID) and p.PERMISSION = 40) = 0 and (select count(*) from PSX_ACLS ACL where OBJECTTYPE = 107 and OBJECTID = a.ACTIONID) &lt;&gt; 0"
+                failonerror="true" silenceerrors="false"
+        />
+
+
+        <!-- RXPUBDOCS -->
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_DOC" qualifyViewNames="RXPUBDOCS"
+                       sql="create view RXPUBDOCS AS
+            select STATUS_ID AS PUBSTATUSID,
+               CONTENT_ID AS CONTENTID,
+               TEMPLATE_ID AS VARIANTID,
+               FOLDER_ID AS LOCATIONHASH,
+               case STATUS when 0 then 'success' else 'failure' end AS PUBSTATUS,
+               PUBLISHING_DATE AS PUBDATE,
+               case OPERATION when 0 then 'publish' else 'unpublish' end AS PUBOP,
+               LOCATION AS PUBLOCATION,
+               ASSEMBLY_URL AS CONTENTURL,
+               VERSION AS VERSIONID,
+               REVISION_ID AS REVISIONID,
+               ELAPSED AS ELAPSETIME,
+               REFERENCE_ID
+            from PSX_PUBLICATION_DOC"
+                       sqlDerby="create view RXPUBDOCS AS
+            select STATUS_ID AS PUBSTATUSID,
+               CONTENT_ID AS CONTENTID,
+               TEMPLATE_ID AS VARIANTID,
+               FOLDER_ID AS LOCATIONHASH,
+               case when STATUS = 0 then 'success' else 'failure' end AS PUBSTATUS,
+               PUBLISHING_DATE AS PUBDATE,
+               case when OPERATION = 0 then 'publish' else 'unpublish' end AS PUBOP,
+               LOCATION AS PUBLOCATION,
+               ASSEMBLY_URL AS CONTENTURL,
+               VERSION AS VERSIONID,
+               REVISION_ID AS REVISIONID,
+               ELAPSED AS ELAPSETIME,
+               REFERENCE_ID
+            from PSX_PUBLICATION_DOC"
+        failonerror="true" silenceerrors="false"
+        />
+
+        <!-- RXSITEITEMS -->
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM"
+                       qualifyViewNames="RXSITEITEMS,RXPUBDOCS"
+                       sql="create view RXSITEITEMS AS
+              select  PD.PUBSTATUSID,
+                 PD.CONTENTID,
+                 PD.VARIANTID,
+                 PD.LOCATIONHASH,
+                 PD.PUBSTATUS,
+                 PD.PUBDATE,
+                 PD.PUBOP AS PUBOPERATION,
+                 PD.PUBLOCATION AS LOCATION,
+                 PD.CONTENTURL,
+                 PD.VERSIONID,
+                 PD.REVISIONID,
+                 PD.ELAPSETIME,
+                 PD.REFERENCE_ID,
+                 PSI.SITE_ID AS SITEID,
+                 PSI.CONTEXT_ID AS CONTEXT
+              from PSX_PUBLICATION_SITE_ITEM PSI inner join RXPUBDOCS PD
+              on PSI.REFERENCE_ID = PD.REFERENCE_ID"
+                       failonerror="true" silenceerrors="false"
+        />
+
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="PSX_CONTENTCHANGEEVENT"
+                       qualifyViewNames=""
+                       sql="ALTER TABLE PSX_CONTENTCHANGEEVENT ADD FOREIGN KEY (SITEID) REFERENCES RXSITES(SITEID)"
+                       failonerror="true" silenceerrors="false"
+        />
+
+
+
+    </target>
+
+    <target name="init">
+        <echo>Install Directory is ${install.dir}</echo>
+        <PSAction rootDir="${install.dir}"/>
+    </target>
+
+
+    <target name="repository_properties">
+        <if>
+            <isset property="PWD"/>
+            <then>
+                <echo>Setting repository password</echo>
+                <propertyfile file="${rxrepository.properties}"
+                              comment="Repository Properties">
+                    <entry key="PWD" value="${PWD}"/>
+                    <entry key="PWD_ENCRYPTED" value="N"/>
+                </propertyfile>
+            </then>
+        </if>
+        <!--<touch file="${rxrepository.properties}"/>
+        <loadproperties>
+            <file file="${rxrepository.properties}"/>
+        </loadproperties>
+
+        &lt;!&ndash; set defaults &ndash;&gt;
+        <property name="UID" value="CMDB"/>
+        <property name="PWD" value="demo"/>
+        <property name="DB_SERVER" value="CMDB;create=true"/>
+        <property name="DB_SCHEMA" value="CMDB"/>
+        <property name="DB_BACKEND" value="DERBY"/>
+        <property name="DSCONFIG_NAME" value="PercussionData"/>
+        <property name="DB_DRIVER_NAME" value="derby"/>
+        <property name="DB_DRIVER_CLASS_NAME" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+        <property name="DB_NAME" value=""/>
+
+        <propertyfile file="${rxrepository.properties}"
+                      comment="Repository Properties">
+            <entry key="UID" value="${UID}"/>
+            <entry key="PWD" value="${PWD}"/>
+            <entry key="DB_SERVER" value="${DB_SERVER}"/>
+            <entry key="DB_SCHEMA" value="${DB_SCHEMA}"/>
+            <entry key="DB_BACKEND" value="${DB_BACKEND}"/>
+            <entry key="DSCONFIG_NAME" value="${DSCONFIG_NAME}"/>
+            <entry key="DB_DRIVER_NAME" value="${DB_DRIVER_NAME}"/>
+            <entry key="DB_DRIVER_CLASS_NAME" value="${DB_DRIVER_CLASS_NAME}"/>
+            <entry key="DB_NAME" value="${DB_NAME}"/>
+        </propertyfile>
+-->
+        <PSMakeLasagna root="${install.dir}"/>
+    </target>
+
+    <target name="exportDB">
+        <PSExportDatabase rootDir="${install.dir}" tabledatafile="${data.dir}/cmsTableData.xml" tabledeffile="${release.configdir}/cmsTableDef.xml"/>
+    </target>
+    <target name="exportDBsnapshot" depends="init,repository_properties" >
+        <echo>exporting database</echo>
+        <PSExportDatabase rootDir="${install.dir}" tabledatafile="${data.dir}/${start.DSTAMP}_${start.TSTAMP}/cmsTableData.xml" tabledeffile="${data.dir}/${start.DSTAMP}_${start.TSTAMP}/cmsTableDef.xml" />
+    </target>
+
+</project>

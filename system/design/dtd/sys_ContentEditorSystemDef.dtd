@@ -1,0 +1,111 @@
+<?xml encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This file contains the DTD that defines System level definitions for the
+   content editor system. Initially this is just display mappings for user
+   settable system fields.
+-->
+<!-- Include the shared definitions -->
+<!ENTITY % BasicObjects SYSTEM "sys_BasicObjects.dtd">
+%BasicObjects;
+<!--
+   No dynamic internationalization of strings will be supported in this
+   version. User strings are entered directly into the definition file.
+   For each field used in UIDef, there must be a mapping in FieldMapper. Most
+   of the optional properties of FieldSet will be ignored if they are present.
+
+   See ContentEditorSystemDef.xml for a sample system config file.
+
+   Attributes:
+   cacheTimeout - the minimum period of time to wait (in minutes) before any
+         document in the local error cache is discarded.
+-->
+<!ELEMENT ContentEditorSystemDef (SystemLocator, PSXCommandHandlerStylesheets,
+      PSXApplicationFlow, SectionLinkList?, CommandHandlerExits*,
+      SystemParamNames?, InitParams*, (PSXContainerLocator, PSXFieldSet,
+      PSXUIDefinition, PSXValidationRules?, PSXInputTranslations?,
+      PSXOutputTranslations?)?)>
+<!ATTLIST ContentEditorSystemDef
+	cacheTimeout CDATA "15"
+>
+<!--
+   Specifies where to find the table that contains choice list entries.
+-->
+<!ELEMENT SystemLocator (PSXContainerLocator)>
+<!--
+   Provides hooks into the content editor system. One of the key purposes of
+   this mechanism is to re-use existing workflow exits to save work on the
+   implementation. You can specify the pre-processing and result document
+   exits for each handler. Each handler should only be specified once.
+   Additional definitions will be silently ignored.
+
+   Attributes:
+   commandName - must match the internal name of one of the command handlers.
+-->
+<!ELEMENT CommandHandlerExits (InputDataExits, ResultDataExits)>
+<!ATTLIST CommandHandlerExits
+	commandName CDATA #REQUIRED
+>
+<!--
+   Allows the user to override default html parameter names used for various
+   purposes. The internal name of the param is the name attribute of Param and
+   the user specified value is the content. The following names are currently
+   supported.
+
+   commandParamName - The HTML parameter name that will be used by the
+      server when selecting the command handler. If not specified,
+      'sys_command' will be assumed.
+
+   cacheIdParamName - The HTML parameter name that will be used by the
+      server when retrieving a previously cached document. If not specified,
+      'sys_cacheid' will be assumed.
+
+   contentIdParamName - The HTML parameter name that will be used by the
+      server when specifying the content id part of the content item key. If
+      not specified, 'sys_contentid' will be assumed.
+
+   revisionIdParamName - The HTML parameter name that will be used by the
+      server when specifying the revision part of the content item key. If not
+      specified, 'sys_revision' will be assumed.
+
+   childIdParamName - The HTML parameter name that will be used by the
+      server when specifying the id of the active child on the current
+      request. If not specified, 'sys_childid' will be assumed. Children are
+      assigned ids starting at 1 in document order within the def file.
+-->
+<!ELEMENT SystemParamNames (PSXParam+)>
+<!--
+   This mechanism allows name/value pairs to be passed into a command handler.
+   All of them are loaded and made available from the system def object. A
+   set of params may be made available to more than 1 command handler by
+   specifying multiple CommandName elements.
+-->
+<!ELEMENT InitParams (CommandName+, PSXParam+)>
+<!--
+   The content must be the internal name of a command handler.
+-->
+<!ELEMENT CommandName (#PCDATA)>
+

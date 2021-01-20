@@ -1,0 +1,14 @@
+{
+  "name": "Percussion-Utilities",
+  "version": "0.0.2",
+  "main": [
+    "dist/*"
+  ],
+  "ignore": [
+    "bower_components"
+  ],
+  "private": true,
+  "dependencies": { 
+    "jquery": "~2.1.1"
+  }
+}

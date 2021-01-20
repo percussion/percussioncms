@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT searchlisturl (#PCDATA)>
+<!ELEMENT savedsearches (searchlisturl )>
+<!ATTLIST  savedsearches xml:lang CDATA #IMPLIED>

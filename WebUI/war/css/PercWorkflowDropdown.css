@@ -1,0 +1,119 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+#perc-dropdown-page-workflow .perc-dropdown-title
+{
+    /*width: 29px;
+    height: 29px;
+    padding: 0;*/
+}
+/*#perc-dropdown-page-workflow .perc-dropdown.sf-menu li li
+{
+    background-color: transparent;
+}*/
+#perc-dropdown-page-workflow ul ul
+{
+    left: auto !important;
+    right: 2px !important;
+    top: 70% !important;
+    margin-top: 0 !important;
+    background-color: #FFFFFF;
+}
+#perc-dropdown-page-workflow .perc-dropdown.sf-menu li
+{
+    background-color: inherit;
+}
+#perc-dropdown-page-workflow .perc-dropdown.sf-menu a
+{
+    border-width: 0;
+    padding-right: 13px;
+}
+#perc-dropdown-page-workflow > a:first-child span
+{
+    display: none;
+}
+#perc-dropdown-page-workflow .perc-dropdown.sf-menu li li a.perc-drop-disabled
+{
+    background-color: #FFFFFF;
+}
+#perc-dropdown-page-workflow .perc-dropdown.sf-menu li li a
+{
+    /*background-color: #0086a8;*/
+}
+a.perc-dropdown-title.perc-workflow-split-button-arrow:after {
+    content: '\25bc';
+    position: absolute;
+    top: 3px;
+    left: 9px;
+}
+a.perc-dropdown-title.perc-workflow-split-button-arrow {
+    padding: 0;
+}
+.perc-workflow-split-button-right {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-left-style: unset;
+    float: left;
+    height: 25px !important;
+    border-width: 2px !important;
+    border-style: outset !important;
+    border-left: 1px solid #ffffff !important;
+    width: 15px !important;
+    color: #ffffff !important;
+    padding: 0px 16px 0px 0px !important;
+}
+#perc-dropdown-page-workflow .perc-dropdown.sf-menu li li
+{
+    background: #FFFFFF none repeat scroll 0 0;
+}
+#perc-dropdown-page-workflow .sf-menu ul
+{
+
+}
+#perc-dropdown-page-workflow, #perc-dropdown-page-workflow > a, #perc-dropdown-page-workflow > div
+{
+    height: 27px;
+
+}
+#perc-dropdown-page-workflow .perc-workflow-split-button-left {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-top-style: outset !important;
+    border-right-style: unset;
+    float: left;
+    margin: 0;
+}
+#perc-dropdown-page-workflow > a, #perc-dropdown-page-workflow li.current > a
+{
+    margin: 0 !important;
+}
+#perc-dropdown-page-workflow {
+    margin-right: 8px;
+    margin-top: 13px;
+}
+#perc-dropdown-page-workflow > a
+{
+    overflow: auto;
+    vertical-align:top; /* Safari Fix */
+}

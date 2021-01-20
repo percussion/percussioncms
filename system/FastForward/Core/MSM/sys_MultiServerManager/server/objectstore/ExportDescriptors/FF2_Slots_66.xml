@@ -1,0 +1,1159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXExportDescriptor archiveType="normal">
+   <PSXDescriptor name="FF2_Slots_66">
+      <Description>MSM Archive for Slots</Description>
+   </PSXDescriptor>
+   <Packages>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="520" dependencyType="Shared" displayName="rffAutoCalendarEvents" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="520" dependencyType="Local" displayName="rffAutoCalendarEvents" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="502" dependencyType="Shared" displayName="rffAutoIndex" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="502" dependencyType="Local" displayName="rffAutoIndex" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="522" dependencyType="Shared" displayName="rffAutoPressReleases2007" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="522" dependencyType="Local" displayName="rffAutoPressReleases2007" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="512" dependencyType="Shared" displayName="rffSnDateAndTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="523" dependencyType="Shared" displayName="rffAutoPressReleases2008" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="523" dependencyType="Local" displayName="rffAutoPressReleases2008" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="512" dependencyType="Shared" displayName="rffSnDateAndTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffContacts" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Local" displayName="rffContacts" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="305" dependencyType="Shared" displayName="rffContacts" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Shared" displayName="rffSnNameAndAddress" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="519" dependencyType="Shared" displayName="rffSnNameAndEmail" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="505" dependencyType="Shared" displayName="rffEvents" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="505" dependencyType="Local" displayName="rffEvents" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="501" dependencyType="Shared" displayName="rffHomeImage" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="501" dependencyType="Local" displayName="rffHomeImage" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="rffImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="314" dependencyType="Shared" displayName="rffNavon" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="534" dependencyType="Shared" displayName="rffSnFlash" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="521" dependencyType="Shared" displayName="rffSnImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="551" dependencyType="Shared" displayName="rffSnNavHomeImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="507" dependencyType="Shared" displayName="rffHomeList" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="507" dependencyType="Local" displayName="rffHomeList" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="rffAutoIndex" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="302" dependencyType="Shared" displayName="rffBrief" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="rffCalendar" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="305" dependencyType="Shared" displayName="rffContacts" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="308" dependencyType="Shared" displayName="rffExternalLink" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="309" dependencyType="Shared" displayName="rffFile" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffGenericWord" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="rffImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="528" dependencyType="Shared" displayName="rffSnAutoBulletList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="527" dependencyType="Shared" displayName="rffSnAutoList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="532" dependencyType="Shared" displayName="rffSnBulletedTitleList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="501" dependencyType="Shared" displayName="rffSnCallout" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="512" dependencyType="Shared" displayName="rffSnDateAndTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="524" dependencyType="Shared" displayName="rffSnDateRange" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="534" dependencyType="Shared" displayName="rffSnFlash" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="514" dependencyType="Shared" displayName="rffSnHome" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="521" dependencyType="Shared" displayName="rffSnImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="522" dependencyType="Shared" displayName="rffSnImageAndTitle" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="502" dependencyType="Shared" displayName="rffSnImageLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="526" dependencyType="Shared" displayName="rffSnLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Shared" displayName="rffSnNameAndAddress" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="519" dependencyType="Shared" displayName="rffSnNameAndEmail" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="537" dependencyType="Shared" displayName="rffSnTitleCalloutAndMoreLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="503" dependencyType="Shared" displayName="rffSnTitleCalloutLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="520" dependencyType="Shared" displayName="rffSnTitleLinkAndIcon" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="523" dependencyType="Shared" displayName="rffSnTitleWithDate" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="506" dependencyType="Shared" displayName="rffHomeSidebar" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="506" dependencyType="Local" displayName="rffHomeSidebar" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="rffAutoIndex" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="302" dependencyType="Shared" displayName="rffBrief" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="rffCalendar" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="305" dependencyType="Shared" displayName="rffContacts" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="308" dependencyType="Shared" displayName="rffExternalLink" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="309" dependencyType="Shared" displayName="rffFile" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffGenericWord" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="rffImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="528" dependencyType="Shared" displayName="rffSnAutoBulletList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="527" dependencyType="Shared" displayName="rffSnAutoList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="501" dependencyType="Shared" displayName="rffSnCallout" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="512" dependencyType="Shared" displayName="rffSnDateAndTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="524" dependencyType="Shared" displayName="rffSnDateRange" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="514" dependencyType="Shared" displayName="rffSnHome" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="521" dependencyType="Shared" displayName="rffSnImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="522" dependencyType="Shared" displayName="rffSnImageAndTitle" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="502" dependencyType="Shared" displayName="rffSnImageLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="526" dependencyType="Shared" displayName="rffSnLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Shared" displayName="rffSnNameAndAddress" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="519" dependencyType="Shared" displayName="rffSnNameAndEmail" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="537" dependencyType="Shared" displayName="rffSnTitleCalloutAndMoreLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="503" dependencyType="Shared" displayName="rffSnTitleCalloutLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="520" dependencyType="Shared" displayName="rffSnTitleLinkAndIcon" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="523" dependencyType="Shared" displayName="rffSnTitleWithDate" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="508" dependencyType="Shared" displayName="rffImageLink" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="508" dependencyType="Local" displayName="rffImageLink" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="rffCalendar" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="309" dependencyType="Shared" displayName="rffFile" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffGenericWord" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="rffImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="521" dependencyType="Shared" displayName="rffSnImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="509" dependencyType="Shared" displayName="rffList" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="509" dependencyType="Local" displayName="rffList" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="rffAutoIndex" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="302" dependencyType="Shared" displayName="rffBrief" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="rffCalendar" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="305" dependencyType="Shared" displayName="rffContacts" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="308" dependencyType="Shared" displayName="rffExternalLink" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="309" dependencyType="Shared" displayName="rffFile" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffGenericWord" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="rffImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="528" dependencyType="Shared" displayName="rffSnAutoBulletList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="527" dependencyType="Shared" displayName="rffSnAutoList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="501" dependencyType="Shared" displayName="rffSnCallout" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="512" dependencyType="Shared" displayName="rffSnDateAndTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="524" dependencyType="Shared" displayName="rffSnDateRange" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="534" dependencyType="Shared" displayName="rffSnFlash" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="514" dependencyType="Shared" displayName="rffSnHome" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="521" dependencyType="Shared" displayName="rffSnImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="522" dependencyType="Shared" displayName="rffSnImageAndTitle" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="502" dependencyType="Shared" displayName="rffSnImageLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="526" dependencyType="Shared" displayName="rffSnLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Shared" displayName="rffSnNameAndAddress" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="519" dependencyType="Shared" displayName="rffSnNameAndEmail" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="537" dependencyType="Shared" displayName="rffSnTitleCalloutAndMoreLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="503" dependencyType="Shared" displayName="rffSnTitleCalloutLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="520" dependencyType="Shared" displayName="rffSnTitleLinkAndIcon" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="523" dependencyType="Shared" displayName="rffSnTitleWithDate" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="511" dependencyType="Shared" displayName="rffNav" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="511" dependencyType="Local" displayName="rffNav" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies/>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="513" dependencyType="Shared" displayName="rffNavImage" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="513" dependencyType="Local" displayName="rffNavImage" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="313" dependencyType="Shared" displayName="rffNavImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="550" dependencyType="Shared" displayName="rffSnNavImageLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="510" dependencyType="Shared" displayName="rffNavLandingPage" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="510" dependencyType="Local" displayName="rffNavLandingPage" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="rffCalendar" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="308" dependencyType="Shared" displayName="rffExternalLink" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="309" dependencyType="Shared" displayName="rffFile" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffGenericWord" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="526" dependencyType="Shared" displayName="rffSnLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="516" dependencyType="Shared" displayName="rffNavSubmenu" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="516" dependencyType="Local" displayName="rffNavSubmenu" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="308" dependencyType="Shared" displayName="rffExternalLink" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="314" dependencyType="Shared" displayName="rffNavon" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="315" dependencyType="Shared" displayName="rffNavTree" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="526" dependencyType="Shared" displayName="rffSnLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="544" dependencyType="Shared" displayName="rffSnNavonLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Shared" displayName="rffSidebar" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Local" displayName="rffSidebar" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="rffAutoIndex" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="302" dependencyType="Shared" displayName="rffBrief" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="rffCalendar" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="305" dependencyType="Shared" displayName="rffContacts" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="308" dependencyType="Shared" displayName="rffExternalLink" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="309" dependencyType="Shared" displayName="rffFile" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffGenericWord" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="rffImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="528" dependencyType="Shared" displayName="rffSnAutoBulletList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="527" dependencyType="Shared" displayName="rffSnAutoList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="501" dependencyType="Shared" displayName="rffSnCallout" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="512" dependencyType="Shared" displayName="rffSnDateAndTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="524" dependencyType="Shared" displayName="rffSnDateRange" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="534" dependencyType="Shared" displayName="rffSnFlash" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="514" dependencyType="Shared" displayName="rffSnHome" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="521" dependencyType="Shared" displayName="rffSnImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="522" dependencyType="Shared" displayName="rffSnImageAndTitle" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="502" dependencyType="Shared" displayName="rffSnImageLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="526" dependencyType="Shared" displayName="rffSnLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Shared" displayName="rffSnNameAndAddress" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="519" dependencyType="Shared" displayName="rffSnNameAndEmail" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="537" dependencyType="Shared" displayName="rffSnTitleCalloutAndMoreLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="503" dependencyType="Shared" displayName="rffSnTitleCalloutLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="520" dependencyType="Shared" displayName="rffSnTitleLinkAndIcon" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="523" dependencyType="Shared" displayName="rffSnTitleWithDate" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="104" dependencyType="Shared" displayName="sys_inline_image" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="104" dependencyType="Local" displayName="sys_inline_image" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="506" dependencyType="Shared" displayName="rffBnImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="rffImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="103" dependencyType="Shared" displayName="sys_inline_link" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="103" dependencyType="Local" displayName="sys_inline_link" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="533" dependencyType="Shared" displayName="rffBnBinary" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="506" dependencyType="Shared" displayName="rffBnImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="rffCalendar" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="309" dependencyType="Shared" displayName="rffFile" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffGenericWord" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="rffImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="529" dependencyType="Shared" displayName="rffPgCalendarMonth" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="549" dependencyType="Shared" displayName="rffPgCiEvent" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="543" dependencyType="Shared" displayName="rffPgCiGeneric" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="548" dependencyType="Shared" displayName="rffPgCiGenericWord" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="545" dependencyType="Shared" displayName="rffPgCiHome" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="546" dependencyType="Shared" displayName="rffPgCiPressRelease" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="525" dependencyType="Shared" displayName="rffPgEiEvent" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="505" dependencyType="Shared" displayName="rffPgEiGeneric" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="530" dependencyType="Shared" displayName="rffPgEiHome" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="513" dependencyType="Shared" displayName="rffPgEiPressRelease" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="105" dependencyType="Shared" displayName="sys_inline_variant" isIncluded="yes" objectType="Slot" objectTypeName="Slot" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="105" dependencyType="Local" displayName="sys_inline_variant" isIncluded="yes" objectType="SlotDef" objectTypeName="Slot Definition" supportsIdMapping="yes" supportsIdTypes="yes" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="301" dependencyType="Shared" displayName="rffAutoIndex" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="302" dependencyType="Shared" displayName="rffBrief" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="303" dependencyType="Shared" displayName="rffCalendar" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="305" dependencyType="Shared" displayName="rffContacts" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="306" dependencyType="Shared" displayName="rffEvent" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="308" dependencyType="Shared" displayName="rffExternalLink" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="309" dependencyType="Shared" displayName="rffFile" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="311" dependencyType="Shared" displayName="rffGeneric" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="310" dependencyType="Shared" displayName="rffGenericWord" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="312" dependencyType="Shared" displayName="rffHome" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="307" dependencyType="Shared" displayName="rffImage" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="316" dependencyType="Shared" displayName="rffPressRelease" isIncluded="no" objectType="ContentEditor" objectTypeName="Content Type" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="528" dependencyType="Shared" displayName="rffSnAutoBulletList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="527" dependencyType="Shared" displayName="rffSnAutoList" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="501" dependencyType="Shared" displayName="rffSnCallout" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="512" dependencyType="Shared" displayName="rffSnDateAndTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="524" dependencyType="Shared" displayName="rffSnDateRange" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="534" dependencyType="Shared" displayName="rffSnFlash" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="514" dependencyType="Shared" displayName="rffSnHome" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="521" dependencyType="Shared" displayName="rffSnImage" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="522" dependencyType="Shared" displayName="rffSnImageAndTitle" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="502" dependencyType="Shared" displayName="rffSnImageLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="526" dependencyType="Shared" displayName="rffSnLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="518" dependencyType="Shared" displayName="rffSnNameAndAddress" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="519" dependencyType="Shared" displayName="rffSnNameAndEmail" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="537" dependencyType="Shared" displayName="rffSnTitleCalloutAndMoreLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="504" dependencyType="Shared" displayName="rffSnTitleLink" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="523" dependencyType="Shared" displayName="rffSnTitleWithDate" isIncluded="no" objectType="sys_Templates" objectTypeName="Template" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+   </Packages>
+   <ModifiedPackages/>
+   <MissingPackages/>
+</PSXExportDescriptor>

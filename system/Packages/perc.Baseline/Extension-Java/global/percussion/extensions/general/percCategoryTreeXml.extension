@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="contenteditor" context="global/percussion/extensions/general/" deprecated="no" handler="Java" name="percCategoryTreeXml" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">This exit is to be used retrieve a category tree in the XML format that the tree control expects.</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.pagemanagement.extension.PSCategoryTreeXmlExit</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

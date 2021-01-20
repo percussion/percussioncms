@@ -1,0 +1,61 @@
+Introduction
+------------
+
+RxVerify provides a set of installation check modules to verify your 
+Rhythmyx installation. At this time the following modules are implemented:
+
+1) Installed Logs verification
+2) Database Tables verification
+3) Extensions verification
+4) XSL Version verification
+5) Installed Files verification
+
+Running
+-------
+
+To run RxVerify, you must either have a java executable on your path, or
+use a full pathname to access the java executable in your Rhythmyx
+directory. To run the utility in the same directory you've unziped the
+tool into:
+
+1) Run verification checks
+java -jar rxverifyqa.jar rhythmyxdir -tableindexes
+
+This will check the database for table existence, primary key, index, and foreign key
+
+2) For more thorough checks, QA use, generate .bom file
+java -jar rxverifyqa.jar rhythmyxdir -generate billofmaterials.bom [-force]
+
+-force will overwrite the current .bom file
+
+**Note: It is only necessary to generate once
+
+Run verification checks
+java -jar rxverifyqa.jar rhythmyxdir -verify billofmaterials.bom -options 
+
+-options must be one of the following:
+-all verifies entire installation
+-logs verifies installation logfiles
+-files verifies installation files
+-tables verifies database tables for column
+-xslversion verifies xsl version
+-extensions verifies extensions
+-help displays help
+
+You can also list the contents of the .bom file with the following command:
+java -jar rxverifyqa.jar -list billofmaterials.bom
+
+The tool will output its actions to the console, and will also record 
+them in a file in the current directory, rxverify.log. This file will not
+be overwritten on each run; instead it will be appended to. The log 
+entries include the date to allow you to see what was run when.
+
+Understanding the Output
+------------------------
+
+The output from the tool is logged in sections. Each fix module is run,
+and each attempts to summarize what it has done. 
+
+
+
+

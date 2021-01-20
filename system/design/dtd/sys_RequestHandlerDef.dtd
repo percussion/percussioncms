@@ -1,0 +1,119 @@
+<?xml encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   This file contains the DTD that specifies how the Request handler
+   configuration file must be organized. The server will attempt to load all
+   classes specified in the config. Each class must implement the
+   IPSLoadableRequestHandler interface.
+-->
+
+<!ELEMENT RequestHandlerDefs (RequestHandlerDef+)>
+
+<!--
+
+   Attributes:
+   handlerName - the unique name by which this handler is identified.  Used
+      to identify the handler for non-rooted requests using the Rhythmyx
+      Reqeust type CGI variable to identify the handler.  This will take the
+      form of "extdata-<handlerName>".
+
+   className - the fully qualified class name that implements the required
+      interface.
+
+   configFile - the relative name of the file. The handler opens the file
+      and passes a stream to the handler during initialization. The file
+      should be located in /<serverroot>/config/requestHandlers. If not present,
+      null is passed to the init method.
+-->
+<!ELEMENT RequestHandlerDef (RequestRoots)>
+<!ATTLIST RequestHandlerDef
+   handlerName CDATA #REQUIRED
+   className   CDATA #REQUIRED
+   configFile  CDATA #IMPLIED
+   >
+
+
+
+<!--
+   The set of request names which this handler wants to process. These names
+   are equivalent to application names. To create the full URL, add the server
+   root to this name.
+   For example, if the RequestRoot is 'foo', the full URL would be:
+      /<serverRoot>/foo/[anything else is allowed including
+      resource name, extensions,query string, anchor etc.]
+
+   Request handlers are loaded before applications. Therefore, if a root like
+   'foo' is chosen, care must be excercised to make sure
+   the name is unique. If there also happens to be an application
+   by this name, and that application is active, the request handler will never
+   get to process the request, it will always be handled by the application
+   handler.
+   For a handler to gain control, not only the request root, but also the
+   HTTP request type must match one of those supplied for the given root.
+-->
+<!ELEMENT RequestRoots (RequestRoot+)>
+
+<!--
+
+   Attributes:
+   baseName - The request root that this handler will respond to.
+     Leading / is optional. When the server supports categories for
+     applications, this attribute will allow multi-level names such as
+     foo/bar/alpha.
+
+-->
+<!ELEMENT RequestRoot (RequestType+)>
+<!ATTLIST RequestRoot
+   baseName CDATA #REQUIRED
+   >
+
+<!--
+   One of the HTTP methods, such as GET or POST, case insensitive.
+-->
+<!ELEMENT RequestType (#PCDATA)>
+
+
+
+<!--
+   Sample XML Doc
+
+<?xml encoding="UTF-8" version="1.0" ?>
+
+<RequestHandlerDefs>
+   <RequestHandlerDef handlerName="pubbroker"
+         className="com.percussion.pubs.PublisherBroker"
+         configFile="pubbroker.xml">
+      <RequestRoots>
+         <RequestRoot baseName="rxpublish">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+         </RequestRoot>
+      <RequestRoots>
+   </RequestHandlerDef>
+</RequestHandlerDefs>
+
+-->
+

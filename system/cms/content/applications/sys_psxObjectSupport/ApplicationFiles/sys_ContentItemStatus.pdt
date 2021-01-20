@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT sys_ContentItemStatus (ContentStatus, WorkflowApps, States )>
+<!ELEMENT States EMPTY>
+<!ATTLIST  States stateId CDATA #IMPLIED>
+<!ATTLIST  States workflowAppId CDATA #IMPLIED>
+<!ATTLIST  States stateName CDATA #IMPLIED>
+<!ATTLIST  States sortOrder CDATA #IMPLIED>
+<!ELEMENT WorkflowApps EMPTY>
+<!ATTLIST  WorkflowApps workflowAppId CDATA #IMPLIED>
+<!ATTLIST  WorkflowApps initialStateId CDATA #IMPLIED>
+<!ATTLIST  WorkflowApps workflwoAppName CDATA #IMPLIED>
+<!ATTLIST  WorkflowApps administrator CDATA #IMPLIED>
+<!ELEMENT ContentStatus EMPTY>
+<!ATTLIST  ContentStatus title CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentPathName CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentExpiryDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus currentRevision CDATA #IMPLIED>
+<!ATTLIST  ContentStatus tipRevision CDATA #IMPLIED>
+<!ATTLIST  ContentStatus reminderDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus nextAgingDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentId CDATA #IMPLIED>
+<!ATTLIST  ContentStatus stateEnteredDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentStartDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus lastTransitionDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentCreatedBy CDATA #IMPLIED>
+<!ATTLIST  ContentStatus locale CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentStateId CDATA #IMPLIED>
+<!ATTLIST  ContentStatus workflowAppId CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentLastModifiedDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus repeatedAgingTransStartDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentPublishDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentCheckoutUserName CDATA #IMPLIED>
+<!ATTLIST  ContentStatus nextAgingTransition CDATA #IMPLIED>
+<!ATTLIST  ContentStatus communityId CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentAgingTime CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentCreatedDate CDATA #IMPLIED>
+<!ATTLIST  ContentStatus clonedParent CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentTypeId CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentLastModifier CDATA #IMPLIED>
+<!ATTLIST  ContentStatus contentSuffix CDATA #IMPLIED>
+<!ATTLIST  ContentStatus editRevision CDATA #IMPLIED>
+<!ATTLIST  ContentStatus revisionLock CDATA #IMPLIED>

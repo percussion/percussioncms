@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXExtensionHandlerConfiguration handlerName="Java">
+	<!--
+       When adding extensions that have never been distributed, the following
+       contexts should be used:
+
+         IPSUdfProcessor              global/percussion/generic
+         IPSResultDocumentProcessor   global/percussion/exit
+         IPSRequestPreProcessor       global/percussion/exit
+         IPSPasswordFilter            global/percussion/filter
+
+      A new naming convention was adopted around 4/01. At this time, all exits
+      were given a new name (sys_xxx), possibly a new context and the classes
+      were moved to a jar for distribution rather than individual classes. The
+      old exit names were left for compatibility, but they all point to the
+      new java classes.
+   -->
+  <Extension name="preExitDebugger" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">This exit dumps all HTML params, CGI vars etc. to the console and can be used to debug a pre-processor exit.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSPreExitHandler</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+  </Extension>
+  <Extension name="postExitDebugger" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">This exit dumps all HTML params, CGI vars etc. to the console and can be used to debug a post-processor exit.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSPostExitHandler</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+  </Extension>
+  <Extension name="previewWorkflow" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">This used in workflow editor application. It takes the result document and transforms to another DTD that usable by the style sheet to generate the graphical view of the workflow.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PreviewWorkflow</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+  </Extension>
+  <Extension name="authenticateUser" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">Authenticates current user for his role(s).</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitAuthenticateUser</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>RoleNameList</name>
+      <dataType>java.lang.String</dataType>
+      <description>Comma separated list of roles this user is a member of.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>CheckInOutCondition</name>
+      <dataType>java.lang.String</dataType>
+      <description>Continue process if this condition is met. "ignore", "checkin" and "checkout" are allowed here.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>RequiredAccessLevel</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Minimum access level to authenticate the user. 1 - None, 2 - Reader and above, 3 - Assignee and above</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>WorkflowAppId</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Optional parameter, the id of the workflow used by the content item, used to check to see if user can create a new item.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="disallowUpdatePublished" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">Does not allow updating a document that is in publish state.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitDisallowUpdatePublished</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="sendNotifications" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">Sends notifications to Roles/ad-hoc users about the transition.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitNotifyAssignees</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>roleProviderRef</name>
+      <dataType>java.lang.String</dataType>
+      <description>Optional, a reference to the role cataloger used to lookup roles, roleAttributes and subjects.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="prepareQueryFilter" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">Prepares filter(s) for the query depending on the roles the user is part of and stores in an HTML parameter.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitPrepareQueryFilters</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>RoleNameList</name>
+      <dataType>java.lang.String</dataType>
+      <description>Comma separated list of roles this user is a member of.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="updateHistory" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">Updates content state history.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitUpdateHistory</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="addPossibleTransitions" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">Appends possible transition to each of the status document.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitAddPossibleTransitions</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>StatusDocumentElementName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Node name (XML field name like root/document) of the status document.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>ContentIDNodeName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Node name (e.g. contentid or @contentid) of the content ID.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="performTransition" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">Performs a valid transition and changes the content state accordingly.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitPerformTransition</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>ActionTriggerName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Unique action trigger (checkin, checkout or any transition trigger).</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="nextNumber" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">Gets next number required for new unique IDs in the table inserts.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitNextNumber</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>htmlParamName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the html parameter to return next number value.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>htmlParamKey</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the key for which the number is attributed. This for example, can be the table name.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="nextNumberMaxPP" context="global/percussion/exit" handler="Java" deprecated="yes">
+    <initParam name="com.percussion.user.description">Gets next number required for new unique IDs in the table inserts. This version does not use NEXTNUMBER table, instead it returns max. column value for the specified primary column +1. It starts from 1 for every new workflowid.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitNextNumberMaxPP</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>htmlParamName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the html parameter to return next number value.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>WorkflowID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>WorkflowID that this table belongs to.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>TableName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the table.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>PrimaryColumnName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the primary column in the table.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfPreviewWorkflow" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">This used in workflow editor application. It takes the result document and transforms to another DTD that usable by the style sheet to generate the graphical view of the workflow.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PreviewWorkflow</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+  </Extension>
+	<Extension name="sys_wfAuthenticateUser" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Authenticates current user for his role(s).</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitAuthenticateUser</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>RoleNameList</name>
+      <dataType>java.lang.String</dataType>
+      <description>Comma separated list of roles this user is a member of.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>CheckInOutCondition</name>
+      <dataType>java.lang.String</dataType>
+      <description>Continue process if this condition is met. "ignore", "checkin" and "checkout" are allowed here.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>RequiredAccessLevel</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Minimum access level to authenticate the user. 1 - None, 2 - Reader and above, 3 - Assignee and above</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>WorkflowAppId</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Optional parameter, the id of the workflow used by the content item, used to check to see if user can create a new item.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfDisallowUpdatePublished" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Does not allow updating a document that is in publish state.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitDisallowUpdatePublished</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfSendNotifications" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Sends notifications to Roles/ad-hoc users about the transition.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitNotifyAssignees</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfPrepareQueryFilter" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Prepares filter(s) for the query depending on the roles the user is part of and stores in an HTML parameter.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitPrepareQueryFilters</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>RoleNameList</name>
+      <dataType>java.lang.String</dataType>
+      <description>Comma separated list of roles this user is a member of.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfUpdateHistory" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Updates content state history.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitUpdateHistory</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfAddPossibleTransitions" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Adds a node to the result document that contains actions appropriate for this document, including checkin/out, edit, preview and transitions.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitAddPossibleTransitionsEx</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>StatusDocumentElementName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Node name (XML field name like root/document) of the status document.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>ContentIDNodeName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Node name (e.g. contentid or @contentid) of the content ID.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfPerformTransition" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Performs a valid transition and changes the content state accordingly.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitPerformTransition</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>ContentID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>Content ID.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>UserName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the current user.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>ActionTriggerName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Unique action trigger (checkin, checkout or any transition trigger).</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfNextNumber" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Gets next number required for new unique IDs in the table inserts.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitNextNumber</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>htmlParamName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the html parameter to return next number value.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>htmlParamKey</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the key for which the number is attributed. This for example, can be the table name.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfNextNumberSecondary" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+		<initParam name="com.percussion.user.description">Gets next number required for new unique IDs in the table inserts. This version does not use NEXTNUMBER table, instead it returns max. column value for the specified primary column +1. It starts from 1 for every new workflowid.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitNextNumberMaxPP</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>htmlParamName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the html parameter to return next number value.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>WorkflowID</name>
+      <dataType>java.lang.Integer</dataType>
+      <description>WorkflowID that this table belongs to.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>TableName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the table.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>PrimaryColumnName</name>
+      <dataType>java.lang.String</dataType>
+      <description>Name of the primary column in the table.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+	<Extension name="sys_wfGetCheckOutUserStatus" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Returns a String that represents the status of the current document.
+      Three values are possible:
+         0 - Not checked out
+         1 - Checked out by current user
+         2 - Checked out by another user</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSGetCheckOutStatusUdf</initParam>
+    <interface name="com.percussion.extension.IPSUdfProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>userName</name>
+      <dataType>java.lang.String</dataType>
+      <description>The name of the user that currently has the document checked out. Usually obtained from a backend column in the ContentStatus table.</description>
+    </PSXExtensionParamDef>
+  </Extension>
+  <Extension name="sys_wfExecuteActions" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Executes assigned workflow actions for the transition.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExecuteWorkflowActions</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+  </Extension>
+  <Extension name="sys_wfAppendWorkflowActions" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Appends a list of all workflow actions registered by the server to the result XML document. &amp;amp;lt;workflowactionlist&amp;amp;gt; element shall be a child of the root element in the document.  Each action in the list shall be &amp;amp;lt;workflowaction&amp;amp;gt;.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSGetWorkflowActionList</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+  </Extension>
+<Extension name="sys_wfAddEditAuthFlag" context="global/percussion/workflow/" handler="Java" categorystring="workflow" deprecated="no">
+<initParam name="com.percussion.user.description">Add flag to the activeitem element indicating if user can edit the content item</initParam>
+<initParam name="com.percussion.extension.version">1</initParam>
+<initParam name="com.percussion.extension.reentrant">yes</initParam>
+<initParam name="className">com.percussion.workflow.PSExitAddEditAuthFlag</initParam>
+<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+<PSXExtensionParamDef id="0">
+   <name>UserName</name>
+   <dataType>java.lang.String</dataType>
+   <description>Name of the current user.</description>
+</PSXExtensionParamDef>
+<PSXExtensionParamDef id="0">
+   <name>RoleNameList</name>
+   <dataType>java.lang.String</dataType>
+   <description>Comma separated list of roles this user is a member of.</description>
+</PSXExtensionParamDef>
+</Extension>
+  <Extension name="sys_wfGetAllowedTransitions" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Adds a node to the result document that contains actions allowed by the user, including checkin/out, and transitions.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitGetAllowedTransitions</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+  </Extension>
+  <Extension name="sys_wfDeleteContentTypeAssociations" context="global/percussion/workflow" handler="Java" categorystring="workflow">
+    <initParam name="com.percussion.user.description">Pre exit to delete the workflow associations with the content types when a workflow is deleted. Gets all the node definitions that have associations with the supplied workflow id in the form of request parameter named "workflowid". Deletes the workflow association from each node definition. If there is any error deleting the association, skips that node def and continues with the rest.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.workflow.PSExitDeleteWfCtypeAssociations</initParam>
+    <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+  </Extension>
+  <Extension categorystring="relationship" context="global/percussion/relationship/effect/" deprecated="no" handler="Java" name="sys_NotifyEffect">
+    <initParam name="com.percussion.user.description">Notifies all assignees of the current item for the supplied parameters.</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.relationship.effect.PSNotifyEffect</initParam>
+    <interface name="com.percussion.relationship.IPSEffect"/>
+    <PSXExtensionParamDef id="0">
+      <name>workflowid</name>
+      <dataType>java.lang.String</dataType>
+      <description>The workflow id for which to make the notification, required.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>stateid</name>
+      <dataType>java.lang.String</dataType>
+      <description>The workflow state id for which to make the notification, required.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>transitionid</name>
+      <dataType>java.lang.String</dataType>
+      <description>The transition id for which to make the notification, required.</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="0">
+      <name>username</name>
+      <dataType>java.lang.String</dataType>
+      <description>The user name for which to make the notification, required.</description>
+    </PSXExtensionParamDef>
+    <suppliedResources/>
+  </Extension>
+</PSXExtensionHandlerConfiguration>

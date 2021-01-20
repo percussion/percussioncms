@@ -1,0 +1,188 @@
+ ############################################################################
+ #
+ #
+ ############################################################################
+PACKAGE=com.percussion.cms.objectstore
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+   PSActiveAssemblyProcessorProxyTest \
+   PSCloneSiteFolderRequestTest \
+   PSCloningOptionsTest \
+   PSComponentSummaryTest \
+   PSFolderTest \
+   PSKeyTest \
+   PSRelationshipFilterTest 
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#  EXCLUDED_CLASSES +=
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+   EXCLUDED_CLASSES += \
+      $(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES =
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+   IPSBinaryLocator \
+   IPSCataloger \
+   IPSCmsComponent \
+   IPSComponentProcessor \
+   IPSDbComponent \
+   IPSFieldCataloger \
+   IPSFieldValue \
+   IPSFolderProcessor \
+   IPSItemAccessor \
+   IPSKeyGenerator \
+   IPSRelationshipProcessor \
+   IPSSequencedComponent \
+   IPSVisitor \
+   PSAcceptElements \
+   PSAction \
+   PSActionParameter \
+   PSActionParameters \
+   PSActionProperties \
+   PSActionProperty \
+   PSActionVisibilityContext \
+   PSActionVisibilityContexts \
+   PSActiveAssemblerHandlerRequest \
+   PSBinaryValue \
+   PSChildActions \
+   PSCloneSiteFolderRequest \
+   PSCloningOptions \
+   PSCmsComponent \
+   PSCmsObject \
+   PSCmsProperty \
+   PSComponentSummaries \
+   PSComponentSummary \
+   PSComponentUtils \
+   PSCoreItem \
+   PSDbComponent \
+   PSDbComponentCollection \
+   PSDbComponentList \
+   PSDbComponentSet \
+   PSDateValue \
+   PSDependent \
+   PSDependentSet \
+   PSDFColumns \
+   PSDFMultiProperty \
+   PSDFProperties \
+   PSDFProperty \
+   PSDisplayColumn \
+   PSDisplayFormat \
+   PSDisplayFormatCollection \
+   PSFieldValue \
+   PSFieldDefinition \
+   PSFolder \
+   PSFolderAcl \
+   PSFolderPermissions \
+   PSFolderProcessorProxy \
+   PSFolderProperty \
+   PSInvalidChildTypeException \
+   PSInvalidContentTypeException \
+   PSItemChild \
+   PSItemChildEntry \
+   PSItemChildLocator \
+   PSItemComponent \
+   PSItemDefExtractor \
+   PSItemDefinition \
+   PSItemDefSummary \
+   PSItemField \
+   PSItemFieldMeta \
+   PSItemRelatedItem \
+   PSKey \
+   PSMenuChild \
+   PSMenuContext \
+   PSMenuMode \
+   PSMenuModeContextMapping \
+   PSMultiValuedProperty \
+   PSName \
+   PSObjectAcl \
+   PSObjectAclEntry \
+   PSObjectPermissions \
+   PSProcessingStatistics \
+   PSProcessorCommon \
+   PSProcessorProxy \
+   PSRelationshipInfo \
+   PSRelationshipInfoSet \
+   PSSaveResults \
+   PSSearch \
+   PSSearchCollection \
+   PSSearchField \
+   PSSearchMultiProperty \
+   PSSecurityProviderCataloger \
+   PSSecurityProviderInstanceSummary \
+   PSSFields \
+   PSSimpleKey \
+   PSSite \
+   PSSlot \
+   PSSProperties \
+   PSSProperty \
+   PSTextValue \
+   PSUserInfo \
+   PSVisibilityContextEntry \
+   PSXmlValue \
+   PSComponentProcessorProxy \
+   PSRelationshipProcessorProxy \
+   PSSlotType \
+   PSAaRelationshipList \
+   PSContentTypeVariant \
+   PSContentType \
+   PSRelationshipFilter \
+   PSAaRelationship \
+   PSVariantSlotType \
+   PSSlotTypeContentTypeVariantSet \
+   PSContentTypeSet \
+   PSSlotTypeContentTypeVariant \
+   PSComponentDefProcessorProxy \
+   PSSlotTypeSet \
+   PSActiveAssemblyProcessorProxy \
+   PSContentTypeVariantSet \
+   PSVariantSlotTypeSet \
+   PSVersionableDbComponent
+
+#
+# Properties files
+#
+PROPERTIES =
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# XML files
+#
+XML = \
+  CmsProcessorConfig.xml
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+   $(XML) \
+   $(PROPERTIES) \
+   $(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)
+
+all :
+   [-@
+   ]

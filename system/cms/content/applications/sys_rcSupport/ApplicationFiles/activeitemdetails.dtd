@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT rid (#PCDATA)>
+<!ATTLIST  rid rid CDATA #IMPLIED>
+<!ATTLIST  rid parentcontentid CDATA #IMPLIED>
+<!ATTLIST  rid contentid CDATA #IMPLIED>
+<!ELEMENT rids (rid* )>
+<!ELEMENT activeitemdetails (rids )>

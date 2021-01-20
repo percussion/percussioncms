@@ -1,0 +1,90 @@
+## Macro, perc_processNavigationNode, is used by Navigation widget, it renders all its descendant nodes
+#macro(perc_processNavigationNode $node $idx $pos $addTitleAttrs $titleNavigateToText $maxRootItems $maxSubItems) 
+#if(!$_entryIdx)##
+## Set the entry index, if tree depth is greater than 40, then customer is not using product correctly
+## The entry index is used to keep track of entry index per node.Depth, as all variables are global
+## there is no other way to do this
+#set($_entryIdx = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])##
+#end##
+#if(!$idx)##
+#set($idx = 1)##
+#end##
+#if(!$pos)##
+#set($pos = 1)##
+#end##
+#if($node.Depth < $rootlevel && $rootlevel > 0)##
+#set($submenu = [])##
+#foreach($submenuitem in $node.getNodes("nav:submenu"))##
+#set($dummy=$submenu.add($submenuitem))##
+#end##
+#if ($submenu.size() > 0 )## 
+#foreach($submenuitem in $submenu)## 
+#set($axis = $submenuitem.getProperty("nav:axis").String)##
+#if ($axis == "SELF" || $axis == "ANCESTOR" || $axis == "PARENT" || $axis == "DESCENDANT" || $submenuitem.Depth >= $rootlevel)##
+#set($_tmp = $_entryIdx.get($node.Depth) + 1)##
+#if($_entryIdx.set($node.Depth, $_tmp))#end## Inside if eval to inhibit rendering
+#if(!(($submenuitem.Depth == $rootlevel) && ($maxRootItems >= 0 && $_tmp > $maxRootItems)) && !(($submenuitem.Depth > $rootlevel) && ($maxSubItems >= 0 && $_tmp > $maxSubItems)))##
+#perc_processNavigationNode($submenuitem,  $_entryIdx.get($node.Depth), 1, $addTitleAttrs, $titleNavigateToText, $maxRootItems $maxSubItems)##
+#end##
+#end##
+#end##
+#end##
+#else##
+#set($axis = $node.getProperty("nav:axis").String)##
+#set($class="")##
+## add "current" class to current and all ancestors, except root unless root is current node
+#if (($axis == "SELF") || (($node.Depth > 0) && ($axis == "ANCESTOR" || $axis == "PARENT")) )##
+#set($class="current ")##
+#end##
+#set($_navLevel = "nav-level-" + ($node.Depth + 1))##
+#set($_navEntry = "nav-entry-" + $idx)##
+#set($_listPos = "list-position-" + $pos)##
+#set($cssClassNames = " " + $node.getProperty('rx:cssClassNames').String)##
+#set($class = $class +  $_navLevel + " " + $_navEntry + " " +$_listPos + $cssClassNames)##
+<li role="presentation" class="$!{class}">##
+#set($navType = $node.getProperty("rx:no_type").String)##
+#if($navType == "externallink")##
+#set($landing_page = $node.getProperty("rx:no_externalurl").String)##
+#else##
+#set($landing_page = $tools.esc.html($rx.pageutils.navLink($linkContext, $node)))##
+#end##
+#set($targetAttr = $node.getProperty("rx:no_target").getString())##
+#if("$!{targetAttr}" != "")##
+#set($targetAttr = " target='$!{targetAttr}'")##
+#end##
+#if($addTitleAttrs == "yes")##
+#set($titleAttr = ' title="' + $tools.esc.html($node.getProperty('rx:displaytitle').String) + '"')##
+#set($titleAttr = "$!{$titleNavigateToText}$!{titleAttr}")##
+#else##
+#set($titleAttr = "")##
+#end##
+#set($submenu = [])##
+#if ("$!landing_page" != "" && "$!landing_page" != "#")##
+#set($menuNavWidgetId = $perc.widget.getItem().getId())##
+#set($menuItemId="perc-navigation-menuitem-$!{_navLevel}-$!{_navEntry}-$!{_listPos}-$!{menuNavWidgetId}")##
+<a id="$!{menuItemId}" href="$!{landing_page}" role="menuitem"$!{targetAttr}$!{titleAttr}>$tools.esc.html($node.getProperty('rx:displaytitle').String)</a>##
+#foreach($submenuitem in $node.getNodes("nav:submenu"))##
+#set($dummy=$submenu.add($submenuitem))##
+#end##
+#end##
+#if ($submenu.size() > 0 && ($tools.math.add($tools.math.add($maxlevels, -1),$rootlevel)  > $node.Depth))##             
+#if($node.Depth > 0)##
+<ul role="menu" aria-labelledby="$!{menuItemId}">
+#else##
+##if we dont need to open a new list element we can close the <li>
+</li>                    
+#end##
+#foreach($submenuitem in $submenu)##
+#set($_tmp = $_entryIdx.get($node.Depth) + 1)##
+#if($_entryIdx.set($node.Depth, $_tmp))#end## Inside if eval to inhibit rendering
+#if(!(($submenuitem.Depth == $rootlevel) && ($maxRootItems >= 0 && $velocityCount > $maxRootItems)) && !(($submenuitem.Depth > $rootlevel) && ($maxSubItems >= 0 && $velocityCount > $maxSubItems)))##
+#perc_processNavigationNode($submenuitem, $_entryIdx.get($node.Depth), $velocityCount, $addTitleAttrs, $titleNavigateToText $maxRootItems $maxSubItems)##
+#end##
+#end##
+#if($node.Depth > 0 )</ul></li>#end
+#else##
+##the submenu is empty so we close the <li> element
+</li>
+#end##  
+#end##  
+#end##

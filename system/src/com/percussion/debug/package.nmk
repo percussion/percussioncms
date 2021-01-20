@@ -1,0 +1,84 @@
+ ############################################################################
+ #
+ # $Id: package.nmk 1.6 2001/11/16 14:49:15Z JaySeletz Exp $                      
+ #                           
+ # Version Labels : $Name: Pre_CEEditorUI $   
+ #                           
+ # Locked By      : $Locker: $ 
+ #                           
+ # Revision History:         
+ #   $Log: package.nmk $                   
+ #   Revision 1.6  2001/11/16 14:49:15Z  JaySeletz                   
+ #   Fix for Rx-01-10-0032, added new PSTraceWriter class.                   
+ #   Revision 1.5  2001/05/30 19:09:54Z  markdandrea                   
+ #   Looks like workbench needs most classes shared.                   
+ #   Revision 1.4  2001/05/30 18:55:23Z  markdandrea                   
+ #   PSTraceMessage needed to be shared.                   
+ #                      
+ #   Revision 1.3  2001/05/30 18:33:59Z  markdandrea                   
+ #   PSTraceAppHandlerProc needed to be shared.                   
+ #   Revision 1.2  2000/12/07 22:58:03Z  JaySeletz                   
+ #   Revision 1.1  2000/12/06 20:33:26Z  JaySeletz                   
+ #   Initial revision                   
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.debug
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+ PSDebugManagerTest \
+ PSDebugLogHandlerTest \
+ PSTraceMessageFactoryTest
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = 
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+  PSTraceFlag \
+  PSTraceAppHandlerProc \
+  PSTraceMessage \
+  PSTraceMessageFactory \
+  PSTraceAppSecurity \
+  PSTraceConditionalEval \
+  PSTraceExitProc \
+  PSTraceExitExecution \
+  PSTraceResultSet \
+  PSTraceMapper \
+  PSTraceSessionInfo \
+  IPSTraceMessage \
+  PSDebugLogHandler \
+  PSDebugManager \
+  PSTraceResourceHandler \
+  PSTraceFileInfo \
+  PSTraceBasicRequest \
+  IPSTraceStateListener \
+  PSTraceOutputConversion \
+  PSTraceDBPool \
+  PSTraceHtmlCgi \
+  PSTracePostExitXml \
+  PSTraceWriter
+
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)

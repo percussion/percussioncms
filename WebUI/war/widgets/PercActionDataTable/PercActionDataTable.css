@@ -1,0 +1,104 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+table.perc-datatable th.perc-datatable-head-column.perc-first {
+	text-align : left;
+}
+table.perc-datatable th.perc-datatable-head-column.perc-last {
+	text-align : right;
+}
+table.perc-datatable tr.perc-datatable-row td.perc-datatable-column.perc-last .perc-simplemenu-menuitems {
+	text-align : left;
+}
+table.perc-datatable td.perc-datatable-column.perc-first {
+	text-align : left;
+}
+table.perc-datatable td.perc-middle,
+table.perc-datatable th.perc-middle {
+	text-align : left;
+}
+
+table.perc-datatable th, table.perc-datatable td {
+	padding-left : 0px;
+	padding-right : 20px;
+/*	padding-top : 10px;*/
+	padding-bottom : 6px;
+}
+
+table.perc-datatable .perc-datatable-columnrow {
+	padding-top : 10px;
+}
+
+table.perc-datatable td.perc-last {
+	padding-left : 0px;
+	padding-right : 7px;
+}
+
+table.perc-datatable th.perc-last {
+	padding-left : 0px;
+	padding-right : 0px;
+}
+
+table.perc-datatable .perc-datatable-columnrow.perc-callback {
+	color : #006B9D;
+}
+
+table.perc-datatable thead tr.perc-datatable-head-row th.sorting_disabled {
+	cursor : default;
+}
+
+table.perc-datatable thead tr.perc-datatable-head-row th.sorting_disabled span.perc-sort {
+	display : none;
+}
+
+.dataTables_info {
+	display : none;
+}
+
+.dataTables_paginate.paging_full_numbers {
+/*	text-align : right;
+	padding-right : 10px;
+	padding-top : 12px;
+*/
+	position : absolute;
+	right : 0px;
+	bottom : 0px;
+}
+
+.dataTables_paginate.paging_full_numbers .first,
+.dataTables_paginate.paging_full_numbers .previous,
+.dataTables_paginate.paging_full_numbers .next,
+.dataTables_paginate.paging_full_numbers .last {
+	display : none;
+}
+
+.dataTables_paginate.paging_full_numbers span span.paginate_active,
+.dataTables_paginate.paging_full_numbers span span.paginate_button {
+	padding-left : 4;
+	cursor : pointer;
+}
+
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

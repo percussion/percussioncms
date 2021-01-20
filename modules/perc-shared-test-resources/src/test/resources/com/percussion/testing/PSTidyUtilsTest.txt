@@ -1,0 +1,199 @@
+<div class="rxbodyfield">
+
+    <div id="videoTag">
+        <video controls="controls" width="320">
+        	<source src="movie.mp4" type="video/mp4"></source>
+        	<source src="movie.ogg" type="video/ogg"></source>
+        	<source src="movie.webm" type="video/webm"></source> 
+        	Your browser does not support the video tag. 
+        </video>
+    </div>
+    
+    <div id="menuAndCommandTag">
+        <menu>
+            <command type="command" label="Save" onclick="save()">Save</command>
+            <command type="command" label="Load" onclick="load()">Load</command>
+            <command type="command" label="Cancel" onclick="cancel()">Cancel</command>
+    	</menu>
+    </div>
+
+    <div id="embedTag">
+    	<embed src="/abc/srouce" type="my-type" ></embed>
+    </div>	
+    
+    <div id="articleTag">
+        <article>
+            <h1>Internet Explorer 9</h1>
+            <p>Windows Internet Explorer 9 (abbreviated as IE9) was released to
+            the  public on March 14, 2011 at 21:00 PDT.....</p>
+        </article> 
+    </div>  
+    
+    <div id="asideTag">
+        <p>My family and I visited The Epcot center this summer.</p>
+        <aside>
+            <h4>Epcot Center</h4>
+            <p>The Epcot Center is a theme park in Disney World, Florida.</p>
+        </aside> 
+    </div>
+    
+    <div id="audioTag">
+        <audio controls="controls">
+            <source src="horse.ogg" type="audio/ogg">
+            <source src="horse.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+        </audio> 
+    </div>
+    
+    <div id="bdiTag">
+        <ul>
+            <li>User <bdi>hrefs</bdi>: 60 points</li>
+            <li>User <bdi>jdoe</bdi>: 80 points</li>
+        </ul>
+    </div>
+    
+    <div id="canvasTag">
+        <canvas id="myCanvas"></canvas>
+    
+        <script type="text/javascript">
+            var canvas=document.getElementById('myCanvas');
+            var ctx=canvas.getContext('2d');
+            ctx.fillStyle='#FF0000';
+            ctx.fillRect(0,0,80,100);
+        </script>
+    </div>
+
+    <div id="datalistTag">	
+        <input list="browsers">
+        <datalist id="browsers">
+            <option value="Internet Explorer">
+            <option value="Firefox">
+            <option value="Chrome">
+            <option value="Opera">
+            <option value="Safari">
+        </datalist> 
+    </div>
+	
+	<div id="detailsTag">
+        <details>
+            <summary>Copyright 1999-2011.</summary>
+            <p> - by Refsnes Data. All Rights Reserved.</p>
+            <p>All content and graphics on this web site are the property of the company Refsnes Data.</p>
+        </details> 
+	</div>
+	
+	<div id="figureTag">
+        <figure>
+            <img src="img_pulpit.jpg" alt="The Pulpit Rock"
+            width="304" height="228">
+            <figcaption>Fig1. - A view of the pulpit rock in Norway.</figcaption>
+        </figure> 
+    </div>
+    
+    <div id="footerTag">
+        <footer>
+            <p>Posted by: Hege Refsnes</p>
+            <p><time pubdate datetime="2012-03-01"></time></p>
+        </footer> 
+    </div>
+    
+    <div id="headerTag">
+        <article>
+            <header>
+                <h1>Internet Explorer 9</h1>
+                <p><time pubdate datetime="2011-03-15"></time></p>
+            </header>
+            <p>Windows Internet Explorer 9 (abbreviated as IE9) was released to
+            the  public on March 14, 2011 at 21:00 PDT.....</p>
+        </article> 
+    </div>
+    
+    <div id="hgroupTag">
+        <hgroup>
+            <h1>Welcome to my WWF</h1>
+            <h2>For a living planet</h2>
+        </hgroup>
+        
+        <p>The rest of the content...</p> 
+    </div>
+
+    <div id="keygenTag">
+        <form action="demo_keygen.asp" method="get">
+            Username: <input type="text" name="usr_name">
+            Encryption: <keygen name="security"></keygen>
+            <input type="submit">
+        </form>    
+    </div>
+    
+    <div id="markTag">
+        <p>Do not forget to buy <mark>milk</mark> today.</p> 
+    </div>
+    
+    <div id="meterTag">
+        <meter value="2" min="0" max="10">2 out of 10</meter><br>
+        <meter value="0.6">60%</meter> 
+    </div>
+    
+    <div id="navTag">
+        <nav>
+            <a href="/html/">HTML</a> |
+            <a href="/css/">CSS</a> |
+            <a href="/js/">JavaScript</a> |
+            <a href="/jquery/">jQuery</a>
+        </nav>     
+    </div>
+    
+    <div id="outputTag">
+        <form oninput="x.value=parseInt(a.value)+parseInt(b.value)">0
+            <input type="range" name="a" value="50">100
+            +<input type="number" name="b" value="50">
+            =<output name="x" for="a b"></output>
+        </form> 
+    </div>
+    
+    <div id="progressTag">
+        <progress value="22" max="100"></progress> 
+    </div>
+    
+    <div id="rubyTag">
+        <ruby>
+            <rt><rp>(</rp>ㄏㄢˋ<rp>)</rp></rt>
+        </ruby> 
+    </div>
+    
+    <div id="sectionTag">
+        <section>
+            <h1>WWF</h1>
+            <p>The World Wide Fund for Nature (WWF) is....</p>
+        </section>
+    </div>
+    
+    <div id="summaryTag">
+        <details>
+            <summary>Copyright 1999-2011.</summary>
+            <p> - by Refsnes Data. All Rights Reserved.</p>
+            <p>All content and graphics on this web site are the property of the company Refsnes Data.</p>
+        </details>
+    </div>
+    
+    <div id="timeTag">
+        <p>We open at <time>10:00</time> every morning.</p>
+        <p>I have a date on <time datetime="2008-02-14">Valentines day</time>.</p>
+    </div>
+    
+    <div id="trackTag">
+        <video width="320" height="240" controls="controls">
+            <track src="subtitles_en.vtt" kind="subtitles" srclang="en"
+                label="English"></track>
+            <track src="subtitles_no.vtt" kind="subtitles" srclang="no"
+                label="Norwegian"></track>
+        </video> 
+    </div>
+    
+    <div id="wbrTag">
+        <p>
+            To learn AJAX, you must be familiar with the XML<wbr></wbr>Http<wbr></wbr>Request Object.
+        </p>    
+    </div>
+    
+</div>

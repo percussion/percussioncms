@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DeliveryServerConfig>
+	<DeliveryServer>
+		<server-type>production</server-type>
+		<connection-url>http://localhost:9980</connection-url>
+		<user>ps_manager</user>
+		<password encrypted="true">-7a817995ebf59950e59a1641964fdd61</password>
+        <admin-connection-url>https://localhost:8443</admin-connection-url>
+		<allow-self-signed-certificate>true</allow-self-signed-certificate>
+		<availableServices>
+		   <service>perc-form-processor</service>
+           <service>feeds</service>
+		   <service>perc-comments-services</service>
+		   <service>perc-metadata-services</service>
+		   <service>perc-membership-services</service>
+		   <service>perc-integrations</service>
+		</availableServices>
+	</DeliveryServer>
+	<DeliveryServer>
+		<server-type>staging</server-type>
+		<connection-url>http://localhost:9970</connection-url>
+		<user>ps_manager</user>
+		<password encrypted="true">-7a817995ebf59950e59a1641964fdd61</password>
+        <admin-connection-url>https://localhost:9443</admin-connection-url>
+		<allow-self-signed-certificate>true</allow-self-signed-certificate>
+		<availableServices>
+		   <service>perc-form-processor</service>
+           <service>feeds</service>
+		   <service>perc-comments-services</service>
+		   <service>perc-metadata-services</service>
+		   <service>perc-membership-services</service>
+		   <service>perc-integrations</service>
+		</availableServices>
+	</DeliveryServer>
+	<DeliveryServer>
+		<server-type>license</server-type>
+		<connection-url>https://license-qa.percussion.com</connection-url>
+		<user>ps_manager</user>
+		<password encrypted="true">-7cd50422f40e9ee79d8bd0e3478f4621e6e9018044a2518f</password>
+        <admin-connection-url>https://license-qa.percussion.com</admin-connection-url>
+		<allow-self-signed-certificate>false</allow-self-signed-certificate>
+		<availableServices>
+		   <service>perc-thirdparty-services</service>
+		</availableServices>
+	</DeliveryServer>
+</DeliveryServerConfig>

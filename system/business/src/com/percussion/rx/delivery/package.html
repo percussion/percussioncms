@@ -1,0 +1,40 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<h1><font face="Arial">The Delivery System</font></h1>
+<p><font face="Arial">The delivery system takes results from assembly, interprets the delivery type 
+and eventually delivers them to the appropriate destination. The assembly results  
+may be stored between the initial delivery and the eventual end of the publishing 
+job. 
+</font><p><font face="Arial">A delivered item may either add or remove an item from the destination. When
+the job is committed, the items to be removed (unpublished) are handled first. Then
+the items to be replaced or added are handled.
+</font><h2><font face="Arial">Status</font></h2>
+<p><font face="Arial">
+As each item is delivered and when the items are committed, status is returned
+from the handler. This status is passed along to the publishing results handler,
+which uses it to signal the publishing system that the particular item has changed
+state, and whether the delivery or committal is a success or failure. Failure messages
+are accumulated for the given item in the item status table.
+</font></p><h2><font face="Arial">Transational Behavior</font></h2><font face="Arial">The use of the word transactional in this context does not refer to the&nbsp; standard ACID criteria. Rather it really talks about the delivery handler buffering the published changes to the end of the job, and applying those as an all or nothing batch. This enables us to keep web sites more generally consistent, longer than if we were outputting changes on a per delivery&nbsp; mechanism.</font>

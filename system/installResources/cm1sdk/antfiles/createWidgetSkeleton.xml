@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Oct 22, 2011 12:28:34 PM                                                        
+
+     [createWidgetSkleton.xml]
+                   
+     Erik Serating
+     Percussion Software Inc.                                                                
+     ====================================================================== -->
+<project name="createWidgetSkeleton" default="default" basedir=".">
+    <description>
+       Creates a widget skeleton as a starting point for widget development
+    </description>
+	<!--
+	   Arguments:
+	   
+	   install.target.dir:    The path to the CMS Installation directory (Required)
+	   widget.name: The name of the widget (Required)
+	   widget.display.name: The display name for the widget (Optional)	   
+	
+	-->
+	
+	<!-- Define Properties -->
+	<property name="skeleton.files.dir" location="../resources/widgetSdk/widgetSkeleton"/>
+	<property name="source.rxconfig" location="${skeleton.files.dir}/rxconfig"/>	
+    <property name="source.rx_resources" location="${skeleton.files.dir}/rx_resources"/>
+	<property name="source.web_resources" location="${skeleton.files.dir}/web_resources"/>
+	<property name="target.rxconfig" location="${install.target.dir}/rxconfig"/>	
+	<property name="target.rx_resources" location="${install.target.dir}/rx_resources"/>
+	<property name="target.web_resources" location="${install.target.dir}/web_resources"/>	
+	  
+	 
+    
+	<!-- ================================= 
+          target: default              
+         ================================= -->
+    <target name="default" depends="">       
+        <fail unless="install.target.dir">Install target directory is required.</fail>
+        <fail unless="widget.name">Widget name is required.</fail>	
+        <available file="${target.rxconfig}/widgets/${widget.name}.xml" property="widget.exists"/>
+        <fail if="widget.exists">A widget with the name '${widget.name}' already exists. Skeleton cannot be created.</fail>	
+        <property name="widget.display.name" value="${widget.name}"/>
+    	<antcall target="copyFiles" inheritRefs="true"/>
+    </target>
+    	
+    <target name="copyFiles">
+        <!-- Copy files under rxconfig -->
+        <mkdir dir="${target.rxconfig}/Resources"/>
+        <mkdir dir="${target.rxconfig}/Widgets"/>	
+        <copy file="${source.rxconfig}/Resources/widgetSkeletonResources.xml" tofile="${target.rxconfig}/Resources/${widget.name}.xml">           
+              <filterset>
+        	      <filter token="WIDGETNAME" value="${widget.name}"/>
+              	<filter token="WIDGETDISPLAYNAME" value="${widget.display.name}"/>
+        	  </filterset>
+       </copy>
+       <copy file="${source.rxconfig}/widgets/widgetSkeleton.xml" tofile="${target.rxconfig}/Widgets/${widget.name}.xml">           
+             <filterset>
+    	         <filter token="WIDGETNAME" value="${widget.name}"/>
+             	<filter token="WIDGETDISPLAYNAME" value="${widget.display.name}"/>
+    	     </filterset>
+       </copy>
+       <!-- Copy files under rx_resources -->
+       <mkdir dir="${target.rx_resources}/widgets"/>
+       <mkdir dir="${target.rx_resources}/widgets/${widget.name}/css"/>
+       <mkdir dir="${target.rx_resources}/widgets/${widget.name}/images"/>	
+       <mkdir dir="${target.rx_resources}/widgets/${widget.name}/js"/>	
+       <copy file="${source.rx_resources}/widgets/widgetSkeleton/css/widgetSkeleton.css" tofile="${target.rx_resources}/widgets/${widget.name}/css/${widget.name}.css">           
+             <filterset>
+     	        <filter token="WIDGETNAME" value="${widget.name}"/>
+              <filter token="WIDGETDISPLAYNAME" value="${widget.display.name}"/>
+     	    </filterset>
+       </copy>
+       <copy file="${source.rx_resources}/widgets/widgetSkeleton/js/widgetSkeleton.js" tofile="${target.rx_resources}/widgets/${widget.name}/js/${widget.name}.js">           
+            <filterset>
+                <filter token="WIDGETNAME" value="${widget.name}"/>
+                <filter token="WIDGETDISPLAYNAME" value="${widget.display.name}"/>
+     	    </filterset>
+       </copy>
+       <copy file="${source.rx_resources}/widgets/widgetSkeleton/images/widgetIcon.png" tofile="${target.rx_resources}/widgets/${widget.name}/images/${widget.name}Icon.png"/>	
+       <copy file="${source.rx_resources}/widgets/widgetSkeleton/images/widgetPlaceholder.png" tofile="${target.rx_resources}/widgets/${widget.name}/images/${widget.name}Placeholder.png"/>
+       <!-- Create Web_resources structure -->
+       <mkdir dir="${target.web_resources}/widgets/${widget.name}/css"/>
+	   <mkdir dir="${target.web_resources}/widgets/${widget.name}/images"/>
+	   <mkdir dir="${target.web_resources}/widgets/${widget.name}/js"/>
+    </target>
+</project>

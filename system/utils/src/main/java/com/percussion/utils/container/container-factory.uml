@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="740.5" y="275.0">com.percussion.utils.container.adapters.DtsConnectorConfigurationAdapter</node>
+    <node x="1813.5" y="176.0">com.percussion.utils.container.adapters.JBossDatasourceConfigurationAdapter</node>
+    <node x="106.48611111111131" y="23.0">com.percussion.utils.container.config.ContainerConfig</node>
+    <node x="1041.5" y="132.0">com.percussion.utils.container.adapters.JettyDatasourceConfigurationAdapter</node>
+    <node x="0.0" y="1158.0">com.percussion.utils.container.PSContainerUtilsFactory</node>
+    <node x="1495.5" y="308.0">com.percussion.utils.container.adapters.LoggingContainerConfigurationAdapter</node>
+    <node x="29.020833333333485" y="951.0">com.percussion.utils.container.DefaultConfigurationContextImpl</node>
+    <node x="1348.0" y="0.0">com.percussion.utils.container.IPSConfigurationAdapter</node>
+    <node x="348.5" y="297.5">com.percussion.utils.container.ConfigurationAdaptorComposite</node>
+    <node x="10.5" y="143.0">com.percussion.utils.container.config.model.impl.BaseContainerUtils</node>
+    <node x="2228.5" y="319.5">com.percussion.utils.container.adapters.JBossConnectorConfigurationAdapter</node>
+    <node x="73.02083333333348" y="629.0">com.percussion.utils.container.ConfigurationContextAbstract</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.percussion.utils.container.ConfigurationContextAbstract" target="com.percussion.utils.container.config.ContainerConfig">
+      <point x="-93.0" y="-136.0" />
+      <point x="166.02083333333348" y="604.0" />
+      <point x="0.0" y="604.0" />
+      <point x="0.0" y="112.0" />
+      <point x="131.65277777777783" y="112.0" />
+      <point x="-50.333333333333485" y="13.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.adapters.JBossConnectorConfigurationAdapter" target="com.percussion.utils.container.IPSConfigurationAdapter">
+      <point x="0.0" y="-36.0" />
+      <point x="2370.5" y="92.0" />
+      <point x="1537.75" y="92.0" />
+      <point x="86.25" y="36.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.DefaultConfigurationContextImpl" target="com.percussion.utils.container.ConfigurationContextAbstract">
+      <point x="0.0" y="-81.0" />
+      <point x="0.0" y="136.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.ConfigurationAdaptorComposite" target="com.percussion.utils.container.IPSConfigurationAdapter">
+      <point x="93.0" y="-58.0" />
+      <point x="627.5" y="92.0" />
+      <point x="1365.25" y="92.0" />
+      <point x="-86.25" y="36.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.config.model.impl.BaseContainerUtils" target="com.percussion.utils.container.config.ContainerConfig">
+      <point x="0.0" y="-212.5" />
+      <point x="169.5" y="112.0" />
+      <point x="181.9861111111113" y="112.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.adapters.DtsConnectorConfigurationAdapter" target="com.percussion.utils.container.IPSConfigurationAdapter">
+      <point x="0.0" y="-80.5" />
+      <point x="881.0" y="102.0" />
+      <point x="1399.75" y="102.0" />
+      <point x="-51.75" y="36.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.ConfigurationAdaptorComposite" target="com.percussion.utils.container.config.ContainerConfig">
+      <point x="-93.0" y="-58.0" />
+      <point x="441.5" y="112.0" />
+      <point x="232.3194444444448" y="112.0" />
+      <point x="50.333333333333485" y="13.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.adapters.JettyDatasourceConfigurationAdapter" target="com.percussion.utils.container.IPSConfigurationAdapter">
+      <point x="0.0" y="-223.5" />
+      <point x="1258.5" y="112.0" />
+      <point x="1434.25" y="112.0" />
+      <point x="-17.25" y="36.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.ConfigurationContextAbstract" target="com.percussion.utils.container.ConfigurationAdaptorComposite">
+      <point x="93.0" y="-136.0" />
+      <point x="352.0208333333335" y="604.0" />
+      <point x="534.5" y="604.0" />
+      <point x="0.0" y="58.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.adapters.LoggingContainerConfigurationAdapter" target="com.percussion.utils.container.IPSConfigurationAdapter">
+      <point x="0.0" y="-47.5" />
+      <point x="1644.5" y="112.0" />
+      <point x="1468.75" y="112.0" />
+      <point x="17.25" y="36.0" />
+    </edge>
+    <edge source="com.percussion.utils.container.adapters.JBossDatasourceConfigurationAdapter" target="com.percussion.utils.container.IPSConfigurationAdapter">
+      <point x="0.0" y="-179.5" />
+      <point x="2011.0" y="102.0" />
+      <point x="1503.25" y="102.0" />
+      <point x="51.75" y="36.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="1061.0" y="441.0" />
+  <SelectedNodes>
+    <node>com.percussion.utils.container.adapters.JBossDatasourceConfigurationAdapter</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

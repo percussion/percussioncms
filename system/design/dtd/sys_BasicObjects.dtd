@@ -1,0 +1,1125 @@
+<?xml encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   Contains the objects used by many different DTDs. This is meant only to be
+   included in other DTDs, it will not stand alone. It has a dependency on
+   the PSApplication DTD, which needs to be added here (most elements that
+   begin with 'PSX').
+-->
+<!--
+   Identifier for referenced resources.
+-->
+<!ENTITY % URI "CDATA">
+<!--
+   A unique numeric identifier for an object. It is unique within a context.
+   Quite often it is used as the primary key in a table.
+-->
+<!ENTITY % UniqueId "CDATA">
+<!--
+   Boolean flags. To work as we want them to, the Boolean entity must be a
+   PEDecl and the True/False entities must be PEDecls. This appears to work
+   correctly for the Xml4j parser. However, Xml Spy won't process this
+   correctly, so we just hard-code the values.
+-->
+<!ENTITY % True "yes">
+<!ENTITY % False "no">
+<!ENTITY % Boolean "(yes|no)">
+<!--
+   A collection of named data items that makes up an item.
+
+   Attributes:
+   name - An identifier to use with the display mapping set. It is required
+         if the type is 'child'. An entry must be added to the display mapper
+         that references a control that can handle the 'table' dimension type.
+         Must be unique among all field and fieldset names in the enclosing
+         content editor, including system and shared field names.
+
+   type - Is this collection of fields for the main content table, or any
+         child. A simpleChild is edited within its parent's row editor. It
+         contains a pre-defined list of possibilities for a single field.
+         A complex child is shown in summary view within the parent row
+         editor and can contain 1 or more columns and an arbitrary number of
+         rows. A multi property simple child is edited within its parent's row
+         editor and can contain 1 or more columns but only one row.  Every
+         fieldset other than the parent must have a type set to
+         one of the child types. simpleChild field sets must include a choice
+         list in the UISet associated with the (single) field that belongs
+         to this set.
+
+   repeatability - How many times do the rows in this table have to appear?
+         The main table should always have the repeatability set to
+         'zeroOrMore'. If the repeatability attribute is specified as count,
+         the optional attribute 'count' must be specified.
+
+   count - This attribute is required if the 'repeatability' attribute is
+         specified as count. It defines how many rows this table must have
+         to be a valid item.
+
+   supportsSequencing - Only applicable if type is not 'parent'. Indicates
+         whether the rows associated with the parent can be put in a specific
+         order by the end user. Defaults to true.
+         
+   userSearchable - This flag determines whether the children of this fieldset
+         are allowed to be indexed. True means the flag on the child is used
+         to make the determination, false means no child can be used for 
+         searching.
+-->
+<!ELEMENT PSXFieldSet ((PSXField | PSXFieldSet)*)>
+<!ATTLIST PSXFieldSet
+   name CDATA #REQUIRED
+   type (parent | simpleChild | complexChild | multiPropertySimpleChild) "parent"
+   repeatability (zeroOrMore | oneOrMore | count) "zeroOrMore"
+   count CDATA #IMPLIED
+   supportsSequencing %Boolean; "yes"
+   userSearchable %Boolean; "yes"
+>
+<!--
+   This could be extended in the future to support other data sources or to
+   include multiple table sets.
+-->
+<!ELEMENT PSXContainerLocator (PSXTableSet+)>
+<!--
+   Initially, we expect all tables to exist in the same database/schema.
+   The datatank contains the list of all tables needed for storage of the item.
+   In the future, the server will be modified to support remote SQL requests
+   so the workbench can create the tables needed for a content editor.
+
+   Attributes:
+   href - specifies the location of the document containing the table defs,
+         if create is yes and the table doesn't exist, it will be created
+         based on this def. If the table already exists, its metadata is
+         validated against the def. (Future? Needed?)
+-->
+<!ELEMENT PSXTableSet (PSXTableLocator, PSXTableRef+)>
+<!ATTLIST PSXTableSet
+   href %URI; #IMPLIED
+>
+<!--
+   If Alias is used, there must be a PSXTableLocator within the definition
+   that has the value of this element as its alias attribute. Otherwise,
+   the properties specify exactly where to find the table.
+
+   Attributes:
+   alias - a name so this locator can be shared. If not supplied, the locator
+         can't be shared.
+-->
+<!ELEMENT PSXTableLocator (TableLocatorAlias | ((PSXBackEndCredential | Alias)))>
+<!ATTLIST PSXTableLocator
+   alias CDATA #IMPLIED
+>
+<!ELEMENT TableLocatorAlias (#PCDATA)>
+<!--
+   The name of an existing object. Where it must exist (i.e. within this
+   object, somewhere on the server, etc) is dependent on the context where it
+   is used.
+-->
+<!ELEMENT Alias (#PCDATA)>
+<!--
+   Used with a PSXTableLocator to fully specify a table's location.
+
+   Attributes:
+   name - the base name of the table
+
+   alias -uses name if not supplied, only needed if same table name exists in
+         multiple TableSets (must be unique among all tables in this def)
+-->
+<!ELEMENT PSXTableRef EMPTY>
+<!ATTLIST PSXTableRef
+   name CDATA #REQUIRED
+   alias CDATA #IMPLIED
+>
+<!--
+   A PSXField element contains all of the non-UI data required to define a
+   field, including business rules. All DataLocator types except FieldRef are
+   supported. If the DataLocator of a field specifies something other than
+   PSXBackEndColumn, this field cannot be updated, it is for query only.
+   Rather than try and enumerate all of the possibilities, everything is
+   indicated as optional. However, each context requires some set of required
+   children. When defining a field, the DataLocator is required, all other
+   children are optional. When over-riding / extending a system or shared
+   field in the local def, either the FieldRules or DefaultValue is required.
+   The other children will be ignored.
+
+   Attributes:
+   name - PSXField name, must be unique among all field and fieldset names in
+         the enclosing content editor, including system and shared field names.
+         Allowed characters are defined by the context of its use.
+
+   showInSummary - Applies only to fields in complexChild fieldsets. When
+         displaying
+         1 or more rows of child fields in a table while editing the parent
+         or when editing the child summary, only fields with this flag set to
+         'yes' will be displayed. This should be set to 'no' on large text
+         fields that make little sense to show in a summary setting. The
+         fields will not be included in the result document. This is
+         automatically set to no for binary fields.
+         The field is ignored except when creating the summary table data.
+         Defaults to true.
+
+   showInPreview - Allows designer to hide large fields that don't make sense
+         in this type of view. By default, all fields are shown except binary.
+         Defaults to true.
+
+   forceBinary - a flag to override the default behavior of the server.
+         Normally, the server only considers binary fields such as Image or
+         LONG RAW as binary. If the user wants the server to treat another
+         data type as binary (such as CLOB or Text), then set this flag and
+         this field will behave as if it was a binary field. Defaults to false.
+
+   modificationType - Who and when can this field be modified. A value of
+      'system' means only the server can modify this field. If the field is
+      submitted, it is ignored. 'userCreate' means the server will set the
+      field once when the item is created, then not allow any subsequent
+      modifications. 'user' means the field can be updated at any time.
+      'systemCreate' means the server will set the field when the item is
+      created, then will never modify it again. This attribute is only
+      applicable if the DataLocator is a PSXBackEndColumn, otherwise, the
+      field is readonly (not stored in the database). Defaults to 'user'.
+      
+   systemMandatory - fields with this attribute set to "yes" are required
+      in every content editor or the system won't work. Fields marked like
+      this in the system definition cannot be excluded in local definitions.
+      Fields marked like this in shared definitions are always included in
+      local definitions. The attribute is optional and defaults to "no".
+      Further this attribute controls the hiding rules for a field. Fields
+      with this attribute set to "yes" allow only XSL hiding rules, hiding
+      rules set as XML will automatically be overridden to XSL.
+
+   systemInternal - fields with this attribute set to "yes" are for internal
+      use only and should not be visible to the end user or implementer in 
+      searches or content type definitions.  Defaults to "no".
+      
+   The following attributes are left here only for backward compatibility w/
+   servers prior to v5.5. See PSXSearchProperties for descriptions.
+   userSearchable
+   userCustomizable
+   defaultSearchLabel
+   
+   clearBinaryParam - Optional.  If this attribute is present and has a value
+         of "yes", it indicates that this field should support being cleared
+         on update.  This attribute only applies if the database column
+         contains binary data or if this field has the forceBinary attribute
+         set.  The field will be cleared if in the update an HTML parameter is
+         present with the name "<fieldname>_clear" and the value "yes".
+
+   type - Optional. If this attribute is present, it must contain the correct
+         field type, which is one of "local", "shared" or "system".
+      mimetype - Optional for backwards compatibility.  Holds the expected MIME
+          type of this field.
+      fieldvaluetype - Optional for backwards compatibility.  It must contain the
+         correct field value type, which is either "content" or "meta".
+-->
+<!ELEMENT PSXField (DataLocator?, DataType?, DataFormat?, DefaultValue?, OccurrenceSettings*, FieldRules?, PSXChoices?, PSXPropertySet?, PSXSearchProperties?)>
+<!ATTLIST PSXField
+   name CDATA #REQUIRED
+   showInSummary %Boolean; "no"
+   showInPreview %Boolean; "yes"
+   forceBinary %Boolean; "no"
+   modificationType (system | systemCreate | user | userCreate | none) "user"
+   userSearchable %Boolean; "yes"
+   userCustomizable %Boolean; "yes"
+   exportable %Boolean; "yes"
+   defaultSearchLabel CDATA #IMPLIED
+   clearBinaryParam %Boolean; #IMPLIED
+   type (local | shared | system) #IMPLIED
+   mimetype CDATA #IMPLIED
+   fieldvaluetype (unknown | content | meta) #IMPLIED
+   systemMandatory %Boolean; "no"
+   systemInternal %Boolean; "no"
+>
+<!--
+   A PSXSearchProperties is a container for attributes that control how the
+   search interface looks and how the search engine is configured at the
+   field level.
+   For backwards compatibility, if this element is not present, the server
+   will look in the PSXField element for the attributes that were present
+   there before this change took effect (pre 5.5).
+
+   Attributes:
+   id - A unique numeric identifier, currently unused.
+   
+   userSearchable - an optional flag that specifies whether or not this field is
+      visible to implementers and end-users for use with searching, either in a 
+      query/result or result-only way. A field is result-only if it is not 
+      stored in the db (i.e. a field cannot be made result-only by the 
+      implementer). Default if not present is 'yes'.
+
+   enableTransformation - an optional flag that controls whether the field 
+      content is transformed into a simple text format during indexing. This 
+      should be enabled for any field that contains data such as pdf, gif, 
+      html, etc. This value is passed to the installed search engine and is 
+      not used directly by the Rx server.
+      Default value is dependent on the data type of the field. Any LOB 
+      defaults to  'yes' and if BLOB, cannot be changed. All other field 
+      types default to 'no'.
+
+   userCustomizable - an optional flag that specifies whether or not to show
+      this field in the "create search dialog". This flag is basically used to
+      restrict the fields which users are allowed to add to the search dialog. 
+      Defaults to 'yes'.
+
+   defaultSearchLabel - If a field doesn't have a UIDef, or it has been
+      overridden, the value of this attribute will be used as the label in
+      any search dialog presented to the user. If the UIDef and this attribute
+      are both missing, the field name will be used.
+      
+   visibleToGlobalQuery - If 'yes', the contents of this field are indexed
+      with all fields that have the enableTransformation property set. This
+      allows the words in this field to be concept searched via the global
+      query field. Defaults to 'yes'. 
+   
+   tokenizeSearchContent - If 'yes', words in this field are indexed as strings, 
+   	  punctuation does not act as a word separator as it would otherwise,
+   	  punctuation is indexed. This should be set for fields containing
+   	  filenames, identifiers, etc. Defaults to 'no'.
+-->
+<!ELEMENT PSXSearchProperties EMPTY>
+<!ATTLIST PSXSearchProperties
+   id CDATA #REQUIRED
+   userSearchable %Boolean; "yes"
+   enableTransformation %Boolean; "no"
+   tokenizeSearchContent %Boolean; "no"
+   userCustomizable %Boolean; "yes"
+   visibleToGlobalQuery %Boolean; "yes"
+   defaultSearchLabel CDATA #IMPLIED
+>
+<!--
+   A collection of properties.
+-->
+<!ELEMENT PSXPropertySet (PSXProperty+)>
+<!--
+   A property, sopecified as name/value pair.
+
+   name - the property name.
+   locked - specifies whether or not the property can be overridden at
+      runtime, defaults to 'no'.
+-->
+<!ELEMENT PSXProperty (Value, Description?)>
+<!ATTLIST PSXProperty
+   name CDATA #REQUIRED
+   locked %Boolean; "no"
+>
+<!ELEMENT Description (#PCDATA)>
+<!--
+   How many times can or should the owning object occur?
+
+   Attributes:
+   dimension - How many times can this field occur. If ...OrMore or
+         count is specified, then a child table is usually required to store
+         the data. 'count' requires exactly the number of values specied as
+         the content of this element. If the dimension is 'required' or
+         'oneOrMore', then the server will automatically validate this
+         requirement when the final validation is performed. If the
+         determination of whether this field is required is based on the
+         transition, then specify 'optional' here. Only specify 'required' if
+         all transitions will require it.
+
+   multiValuedType - If the repeatability is ..._or_more, how should the data
+         be displayed and how is it returned to the server. If 'delimited',
+         all field values will be concatenated into a single string, with
+         the 'delimiter' seperating the values. If 'separate', then multiple
+         values will be added to the DisplayField when the result document is
+         generated.
+
+   delimiter - This character is used as the delimiter between values whey
+         multiple values are stored in the database. Must be a single
+         character. Use 2 in sequence to escape if the delimiter appears in a
+         value..
+
+   transitionId - If specified, then these settings are only applied
+         when the specified transition being performed matches the
+         TransitionId.  It is invalid to specify more than one occurrence
+         setting containing either the same transitionId or no transitionId.
+         An occurrence setting with no transitionId will be used as the default.
+-->
+<!ELEMENT OccurrenceSettings (#PCDATA)>
+<!ATTLIST OccurrenceSettings
+   dimension (optional | required | oneOrMore | zeroOrMore | count) "optional"
+   multiValuedType (delimited | separate) "delimited"
+   delimiter CDATA ";"
+   transitionId CDATA #IMPLIED
+>
+<!--
+   The basic data type for the field. The content is the type. The recognized
+   types are (how the size attribute is used):
+      text     (max size of column, in chars)
+      date     (unused)
+      time     (unused)
+      datetime (unused)
+      integer  (max # of base 10 digits, i.e., the precision)
+      float    (precision.scale)
+      boolean  (unused)
+      binary   (max size of column, in bytes)
+      Image    (unused)
+   During content editor initialization, the supplied type will be validated
+   against the back-end column datatype. If they are not compatible, (or one
+   is not supplied) the supplied type will be replaced w/ the actual backend
+   type. 
+   Image type is used for computed fields that are used in display formats to 
+   tell the client (Content Explorer) to render the field as an image. Computed
+   fields do not have any direct backend dependency and hence the supplied
+   type is preserved in the field cataloging.
+
+   Attributes:
+   size - additional information about the data type. Its interpretation is
+      dependent on the data type, as noted above.
+-->
+<!ELEMENT DataType (#PCDATA)>
+<!ATTLIST DataType
+   size CDATA #IMPLIED
+>
+<!--
+   This optional data format element is used to persist content
+   editor field data format, which user can enter for any local field.
+-->
+<!ELEMENT DataFormat (#PCDATA)>
+<!--
+   This object specifies how to find data in various places.
+   Not all types are supported in all contexts. The context must specify
+   which types are allowed.
+-->
+<!ELEMENT DataLocator (PSXBackEndColumn | PSXCgiVariable | PSXCookie | PSXDateLiteral | PSXExtensionCall | PSXHtmlParameter | PSXNumericLiteral | PSXSingleHtmlParameter | PSXTextLiteral | PSXUserContext | PSXContentItemStatus | PSXXmlField | PSXLiteralSet | PSXFunctionCall | PSXMacro)>
+<!--
+   The content is the name of the field in the def, must match an existing
+   field name.
+-->
+<!ELEMENT FieldRef (#PCDATA)>
+<!--
+   Contains all of the mappings of fields to their display controls.
+   Each field can occur at most 1 time in the list.
+
+   Attributes:
+   id - A unique numeric identifier for the mapper (unique among all mappers
+         in the system, shared and local defs). This value is used as the
+         sys_childid during updates.
+
+   fieldSetRef - The name of an existing field set. All complexChild field
+         sets must have a mapper whose ref matches the name of that set.
+-->
+<!ELEMENT PSXDisplayMapper (PSXDisplayMapping*)>
+<!ATTLIST PSXDisplayMapper
+   id CDATA #REQUIRED
+   fieldSetRef CDATA #REQUIRED
+>
+<!ELEMENT PSXDisplayMapping (FieldRef, PSXUISet, PSXDisplayMapper?)>
+<!--
+   All types except PSXBackEndColumn, FieldRef, and PSXXmlField are allowed for
+   the DataLocator.
+-->
+<!ELEMENT DefaultValue (DataLocator)>
+<!--
+   Contains the User Interface related objects.
+
+   Each PSXUISet in this object MUST supply a value for the name attribute.
+   These objects can then be referenced by that name in other PSXUISet
+   definitions to support reusability.
+-->
+<!ELEMENT PSXUIDefinition (DefaultUI?, PSXDisplayMapper)>
+<!--
+   Each PSXUISet in this object MUST supply a value for the name attribute.
+   These objects can then be referenced by that name in other PSXUISet
+   definitions to support reusability.
+-->
+<!ELEMENT DefaultUI (PSXUISet+)>
+<!--
+   The PSXDisplayText contains the text labelling the control for this field.
+   The ErrorLabel contains the text that will be substituted for the label if
+   a validation error occurs on this field. If not supplied, it will  be the
+   responsibility of the stylesheet to modify the appearance of the label.
+
+   Attributes:
+   name - If supplied, this name can be used as the value for the defaultSet
+      attribute of this object.
+   defaultSet - Must be the name of a PSXUISet in this item. If supplied, all
+      properties of the referenced PSXUISet are used unless they are
+      specifically overridden in this object.
+   accessKey - an optional attribute that specifies the access key for this field.
+-->
+<!ELEMENT PSXUISet (Label?, PSXControlRef?, ErrorLabel?, PSXChoices?, ReadOnlyRules?, PSXCustomActionGroup?)>
+<!ATTLIST PSXUISet
+   name CDATA #IMPLIED
+   defaultSet CDATA #IMPLIED
+   accessKey CDATA #IMPLIED
+>
+<!--
+   Text that will be displayed to the end user.
+-->
+<!ELEMENT PSXDisplayText (#PCDATA)>
+<!ELEMENT ErrorMessage (PSXDisplayText)>
+<!ELEMENT ErrorLabel (PSXDisplayText)>
+<!ELEMENT Label (PSXDisplayText)>
+<!--
+   TODO: Cascading choices
+
+   The entries in the choice list can be obtained from 3 sources: by having
+   the server look them up in a table, supplying them directly or providing
+   a URL so the style sheet can look them up.
+
+   Attributes:
+   type - 'global' means the entries are stored in the lookup table and they
+         are obtained by the server when the document is built by using the
+         key supplied as the content;
+        - 'local' means they are entered directly and stored in the app. A
+         list of PSXEntry defines the content;
+        - 'internalLookup' means an href is supplied. The entries are obtained
+         through an internal request to the specified href. The application
+         providing the entries must conform to the sys_Lookup.dtd. The content
+         is PSXUrlRequest.
+        - 'lookup' means an href is supplied and the control/stylesheet is
+         responsible for obtaining the entries. The content is PSXUrlRequest.
+
+   sortOrder - if 'user', and type is local, the sequence attribute of the
+         PSXEntry objects is used. If 'user' and type is global, the sequence
+         specified in the lookup table is used. Otherwise it is ignored and
+         the entries are sorted in ascending or descending dictionary order.
+-->
+<!ELEMENT PSXChoices ((Key | PSXEntry+ | PSXUrlRequest | PSXChoiceTableInfo), PSXNullEntry?, DefaultSelected?, PSXChoiceFilter?)>
+<!ATTLIST PSXChoices
+   type (global | local | lookup | internalLookup) "global"
+   sortOrder (ascending | descending | user) "ascending"
+>
+<!--
+   This element contains the information needed to find a set of choices from
+   an existing table.
+   
+   Attributes:
+   dataSource - the name of the data source that contains the table
+   
+   tableName - The table name, qualified sufficiently for the supplied data 
+         source.
+   
+   labelColumnName - The name of the column that contains the text to use as
+         the text for the entry displayed to the end user.
+         
+   valueColumnName - The name of the column that contains the text that will
+         be returned if the associated entry is chosen. If not provided, 
+         defaults to the labelColumnName.
+-->
+<!ELEMENT PSXChoiceTableInfo EMPTY>
+<!ATTLIST PSXChoiceTableInfo
+   dataSource CDATA #REQUIRED
+   tableName CDATA #REQUIRED
+   labelColumnName CDATA #REQUIRED
+   valueColumnName CDATA #IMPLIED
+>
+<!ELEMENT DefaultSelected (PSXDefaultSelected*)>
+<!ELEMENT Key (#PCDATA)>
+<!--
+   Attributes:
+   type - if the entry in the db is null or empty, then this element can
+         specify how to choose the default value. If 'nullEntry' is specified,
+         the associated PSXNullEntry is the selected entry. If 'sequence' is
+         specified, then the element in the list at that sequence number is
+         selected (the value of this element is converted to an integer).
+         If 'text' is specified, the value is checked against the value of
+         each entry (case insensitive), when a match is found, that becomes
+         the selected value. A selected entry is indicated by setting the
+         'selected' attribute to 'yes'.
+-->
+<!ELEMENT PSXDefaultSelected (#PCDATA)>
+<!ATTLIST PSXDefaultSelected
+   type (nullEntry | sequence | text) "nullEntry"
+>
+<!--
+   Attributes:
+   includeWhen - when should this entry be included in the output document,
+         only when the field is empty or null, or always
+
+   sortOrder - where should it appear in the list. If 'sorted' is specified,
+         it is sorted with the rest of the entries in the list.
+-->
+<!ELEMENT PSXNullEntry (PSXEntry)>
+<!ATTLIST PSXNullEntry
+   includeWhen (always | onlyIfNull) "onlyIfNull"
+   sortOrder (first | last | sorted) "first"
+>
+<!--
+   A designer specified PSXEntry for a lookup list.
+
+   Attributes:
+   sequence - what order is this entry relative to others. Whether it is used
+         is determined by the container.
+
+   default - This is used for output documents. Whichever entries are
+         marked as default by the definition, the output document will set
+         this attribute on those entries. Defaults to false.
+-->
+<!--
+   Choice filter is the dynamic display choice list that replace that returned
+   by the content editor cataloger. PSXUrlRequest specifies the URL request used
+   to generate the filter chioce list. This URL will always be appended with the
+   dependent field values (e.g. sys_community=10) if the dependent field is accessible.
+   The result of executing this URL must return an XML document with PSXChoices
+   as root element and one or more PSXEntry elements.
+-->
+<!ELEMENT PSXChoiceFilter (DependentField+, PSXUrlRequest)>
+<!--
+   The choice filter catalogging generally depends on one or more of the other
+   fields of the content editor.  DependentField  is used to specify such fields.
+   fieldRef attribute of this element is the name of the other content editor field
+   on which this fields choice list depends. dependencyType is to specify if
+   the dependent field is required or optional to generate the choice list filter.
+-->
+<!ELEMENT DependentField EMPTY>
+<!ATTLIST DependentField
+   fieldRef CDATA #REQUIRED
+   dependencyType (optional | required) "optional"
+>
+<!ELEMENT PSXEntry (PSXDisplayText, Value)>
+<!ATTLIST PSXEntry
+   sequence CDATA #IMPLIED
+   default %Boolean; "no"
+>
+<!--
+   A generic element used to avoid a mixed content model. Used as the value
+   of some element that contains other children.
+
+   type - the porperty type is optional. This attribute is not saved if not
+      needed by the implementation. In that case the element value is
+      interpreted as String. Support type are 'Boolean', 'Date' and 'String'.
+-->
+<!ELEMENT Value (#PCDATA)>
+<!ATTLIST Value
+   type (Boolean | Date | String) "String"
+>
+<!--
+   A link to a control used for displaying field data. (Use XLink??)
+   The children are designer specified name-value pairs that are
+   passed through without interpretation.
+
+   Attributes:
+   name - this name can be used to find the ctl in the referenced location.
+         Typically, this will be the name of the template.
+-->
+<!ELEMENT PSXControlRef (PSXParam*)>
+<!ATTLIST PSXControlRef
+   id CDATA #IMPLIED
+   name CDATA #REQUIRED
+>
+<!--
+   These rules determine whether a field should be displayed readonly. If
+   PSXControlRef is specified and the rules evaluate to true, it will be used
+   instead of the standard control. If the rules evaluate to true, the
+   readOnly attribute on the DisplayField element will be set to yes in the
+   output document.
+-->
+<!ELEMENT ReadOnlyRules (PSXRule*, PSXControlRef?)>
+<!--
+   If a validation error occurs, the text contained in the supplied
+   PSXDisplayText element is combined with the text from all field/item
+   validation failures in the form:
+      Main message
+      Validation failure sub message 1
+      Validation failure sub message 2
+
+   The resulting text will be added as the first child node of the result
+   document.
+-->
+<!--ELEMENT ErrorInfo (PSXDisplayText)-->
+<!ELEMENT PSXStylesheet (PSXUrlRequest)>
+<!--
+   A stylesheet that will only be used if the Conditions evaluate to true.
+-->
+<!ELEMENT PSXConditionalStylesheet (PSXStylesheet, Conditions)>
+<!--
+   A PSXUrlRequest element defines the pieces needed to build a URL. They are
+   either defined directly or the URL can be generated by a UDF. When the
+   pieces are supplied, the server generates a URL of the following form
+   (missing pieces are handled properly):
+
+      href?param1=value1&param2=value2#anchor
+
+   Children:
+   HRef - the base part of the URL, with the query string
+
+   PSXParam - A set of name/value pairs used to build the query string.
+
+   Anchor - the anchor part of a URL
+
+   PSXExtensionCall - A UDF whose return value must be a URL appropriate for
+         the context where it is used.
+
+
+   Attributes:
+   name - an optional identifier for this request. It should be unique within
+         the document in which it is used.
+-->
+<!ELEMENT PSXUrlRequest ((Href, PSXParam*, Anchor?) | PSXExtensionCall)>
+<!ATTLIST PSXUrlRequest
+   name CDATA #IMPLIED
+>
+<!--
+   The location part of a URL.
+-->
+<!ELEMENT Href (#PCDATA)>
+<!ELEMENT Anchor (#PCDATA)>
+<!--
+   A request that will only be used if the Conditions evaluate to true.
+-->
+<!ELEMENT PSXConditionalRequest (PSXUrlRequest, Conditions)>
+<!ELEMENT Conditions (PSXRule+)>
+<!--
+   A name-value pairing. The attribute is the name while the content is the
+   value.
+
+   Attributes:
+   type - optional attribute whose allowed values are defined by the context
+         in which it is used
+
+   name - the name of the parameter, the allowed chars are defined by the
+         context of its use
+-->
+<!ELEMENT PSXParam (DataLocator)>
+<!ATTLIST PSXParam
+   type CDATA #IMPLIED
+   name CDATA #REQUIRED
+>
+<!ELEMENT FieldRules (PSXVisibilityRules?, PSXFieldValidationRules?, FieldInputTranslation?, FieldOutputTranslation?)>
+<!--
+   These rules determine whether a visibility flag will be set when the date
+   is requested. It is up to the stylesheet to enforce the visibility if
+   dataHiding is set to xsl, otherwise, if the data is hidden, it will not
+   be included in the result document.
+
+   Attributes:
+   dataHiding - When a field is hidden, it can either be flagged that it is
+         hidden or it can be removed entirely from the document. The value of
+         this attribute determines which. 'xsl' means the data is flagged
+-->
+<!ELEMENT PSXVisibilityRules (PSXRule*)>
+<!ATTLIST PSXVisibilityRules
+   dataHiding (xsl | xml) "xsl"
+>
+<!--
+   A FieldInputTranslation converts data from one form to another during data
+   submission. Only UDFs are allowed. If an ErrorLabel is provided and the UDF
+   throws an exception, this label will be added to the general error label.
+-->
+<!ELEMENT FieldInputTranslation (PSXFieldTranslation)>
+<!--
+   An OutputTranslation converts data from one form to another during a data
+   request. Only UDFs can be used at the field level.
+-->
+<!ELEMENT FieldOutputTranslation (PSXFieldTranslation)>
+<!ELEMENT PSXFieldTranslation (PSXExtensionCallSet, ErrorLabel?)>
+<!--
+   During update, the data is tested for validity before it is transformed.
+   If failures occur, the submitted page is returned with additional error
+   information.
+   If PSXApplyWhen is specified, then the validation rules will only be
+   applied if these rules all evaluate to true. If not specified, the
+   validation rules will be applied if the field is not empty.
+
+   Attributes:
+   name - PSXField validation rules can be shared within their type (Group
+         validation rules must be shared). To make a validation rule sharable,
+         include it in the separate validation rule section and provide it a
+         name. This name can then be used in the FieldValidationRuleRef
+         reference.
+
+   maxErrorsToStop - if checking more than 1 error, stop after this many,
+         includes datatype validation errors
+-->
+<!ELEMENT PSXFieldValidationRules ((PSXRule | FieldValidationRuleRef)*, PSXApplyWhen?, ErrorMessage?)>
+<!ATTLIST PSXFieldValidationRules
+   name CDATA #IMPLIED
+   maxErrorsToStop CDATA "10"
+>
+<!--
+   A set of rules that determine if a set of validations will be performed. If
+   they evauluate to true, the validations will be performed.
+
+   Attribute:
+   ifFieldEmpty - by default, the rules won't be applied if the field has no
+         value and it is not a required field. For transition dependent rules,
+         you need to set this to 'yes' if you want to make a field required
+         dependent on the transition being performed. This can be used to
+         specify a field must have a value before the document can be
+         submitted (for example, you may want to enforce that the Title local
+         field is not empty when the document is submitted).
+-->
+<!ELEMENT PSXApplyWhen (PSXRule*)>
+<!ATTLIST PSXApplyWhen
+   ifFieldEmpty (yes | no) "no"
+>
+<!--
+   A reference to a validation rule set defined elsewhere.
+
+   Attribute:
+   name - Must match the name attribute of a PSXFieldValidationRules element
+         defined elsewhere in the definition.
+-->
+<!ELEMENT FieldValidationRuleRef EMPTY>
+<!ATTLIST FieldValidationRuleRef
+   name CDATA #REQUIRED
+>
+<!--
+   Only UDFs are supported for the extension call. Multiple UDFs are only
+   allowed if they are nested. By using multiple Rules, complex nestings of
+   conditionals can be easily supported.
+
+   Attribute:
+   boolean - Indicates how this rule will be combined with the following rule,
+         if there is one. AND'd rules have the highest precedence, similar to
+         the current conditionals and SQL.
+-->
+<!ELEMENT PSXRule ((PSXConditional* | PSXExtensionCall | PSXExtensionCallSet), ErrorLabel?)>
+<!ATTLIST PSXRule
+   boolean (and | or) "and"
+>
+<!--
+   Defines where the server should go after a non-query request. Each redirect
+   has an optional set of conditions that will be tested before that redirect
+   is used. The first redirect that has its conditionals evaluate to true
+   will be used. If no conditions evaluate to true, the last PSXUrlRequest in
+   the child list will be used. Initially, conditions will not be supported.
+
+   NOTE: This element only uses the part (PSXConditionalRequest*, PSXUrlRequest)
+     of the CommandHandler element.
+-->
+<!ELEMENT PSXApplicationFlow (CommandHandler+)>
+<!--
+   The set of stylesheets or requests used with the content editors. May be
+   overridden at the user level by supplying a definition with a matching
+   handler ref. A stylesheet must be supplied for every query handler.
+
+   NOTE: This element only uses the part (PSXConditionalStylesheet*, PSXStylesheet)
+     of the CommandHandler element.
+-->
+<!ELEMENT PSXCommandHandlerStylesheets (CommandHandler+)>
+<!--
+   The set of stylesheets or requests used with a specific content editor. May
+   be overridden at the user level by supplying a definition with a matching
+   handler ref. A stylesheet must be supplied for every query handler.
+
+   Attributes:
+   name - The internal name of the query command handler
+      for which this stylesheet will be used.
+-->
+<!ELEMENT CommandHandler ((PSXConditionalStylesheet*, PSXStylesheet) | (PSXConditionalRequest*, PSXUrlRequest))>
+<!ATTLIST CommandHandler
+   name CDATA #REQUIRED
+>
+<!--
+   A PSXInputTranslations converts data from one form to another during data
+   submission across 2 or more fields. Only exits are allowed.
+-->
+<!ELEMENT PSXInputTranslations (PSXConditionalExit?)>
+<!--
+   An OutputTranslation converts data from one form to another during a data
+   request or submission. Only UDFs can be used at the field level. For
+   PSXInputTranslations, only exits are allowed.
+-->
+<!ELEMENT PSXOutputTranslations (PSXConditionalExit?)>
+<!--
+   During update, the data is tested for validity before it is transformed.
+   If failures occur, the submitted page is returned with additional error
+   information. If present, the PSXField's PSXDisplayText is replaced with
+   the ErrorLabel and an element as described by the ErrorInfo element is
+   added as the first child of the root.
+
+   Attributes:
+   maxErrorsToStop - if checking more than 1 error, stop after this many,
+         includes datatype validation errors
+-->
+<!ELEMENT PSXValidationRules (PSXConditionalExit?)>
+<!ATTLIST PSXValidationRules
+   maxErrorsToStop CDATA "10"
+>
+<!--
+   Conditional exit.
+
+   Attributes:
+   maxErrorsToStop - if checking more than 1 error, stop after this many,
+         includes datatype validation errors
+-->
+<!ELEMENT PSXConditionalExit (PSXExtensionCallSet, PSXApplyWhen?)>
+<!ATTLIST PSXConditionalExit
+   maxErrorsToStop CDATA "10"
+>
+<!--
+   An action that can be taken by the end user. They are meant to be used
+   with a model such as the submit BUTTON on HTML forms. The button must have
+   an action that appends all name/value pairs specified in the Param objects
+   included with this element. This is done to support multiple actions in a
+   form that require different values for more than 1 parameter and it allows
+   us to decouple the widget text from the submitted value.
+   If the button is disabled, the style sheet has the option of 'graying out'
+   or hiding the button. The style sheet can use any UI control it wishes, as
+   long as the semantics of the HTML BUTTON are followed when the request is
+   submitted. The attribute is named in the negative to match the HTML
+   semantics of the button element.
+   The value of the Param must be literal text, it cannot be a replacement
+   value.
+
+   Attributes:
+   isDisabled - included if this action should be grayed out when rendered.
+         The stylesheet has the option of hiding the widget if the browser
+         doesn't support disabling. Defaults to false;
+
+   isTransition - A flag to indicate whether this action initiates a
+         transition. All other actions do not include this flag. Defaults to
+         false.
+-->
+<!ELEMENT PSXActionLink (PSXDisplayText, PSXParam*)>
+<!ATTLIST PSXActionLink
+   isDisabled %Boolean; "no"
+   isTransition %Boolean; "no"
+   name CDATA #IMPLIED
+>
+<!--
+   A collection of actions that should be available to the user in the form
+   used to edit the data in this document..
+-->
+<!ELEMENT PSXActionLinkList (PSXActionLink+)>
+<!--
+   The children of this element are passed through to the output document
+   without interpretation. Any UDFs will be processed before the result is
+   added to the result document.
+-->
+<!ELEMENT SectionLinkList (PSXUrlRequest*)>
+<!--
+   A custom action group lets the user overwrite the default form action,
+   remove default buttons and add new buttons.
+
+   Children:
+
+   Location - the location of this custom action group.
+   RemoveActions - a list of buttons to remove
+   PSXFormAction - the target url, overwrites the original url if any of
+      these actions are activated
+   ActionLinkList - a list of new buttons
+-->
+<!ELEMENT PSXCustomActionGroup (PSXLocation, (RemoveActions | (RemoveActions?, PSXFormAction, PSXActionLinkList)))>
+<!ELEMENT PSXFormAction (PSXUrlRequest)>
+<!ATTLIST PSXFormAction
+   method (GET | POST) "GET"
+>
+<!--
+   A list of ActionLink objects which specifies all buttons to be
+   removed. Unknown buttons are ignored.
+-->
+<!ELEMENT RemoveActions (ActionLinkRef+)>
+<!--
+   The name of an action link.
+-->
+<!ELEMENT ActionLinkRef (#PCDATA)>
+<!--
+   Specifies the location of a custom action group. The interpretation of the
+   element is dependent upon the chosen attributes.
+   If type is wfAction or wfTransition, then page is ignored. The button will
+   appear on all editor pages. For all other types, a page must be specified.
+   The page values have the following meanings:
+      summaryView - the buttons will appear on 1 or more of the summary editors
+      rowEdit - the buttons will appear on all row editors
+      parentEdit - the buttons will appear only on the root parent editor
+      childEdit - like summary view, the buttons will appear on 1 or more of
+         the child row editors
+
+   The type attribute can have the following values:
+      form - The buttons appear for submission of the main form
+      row - only applicable to summaryView. Buttons will appear on each row of
+         the summary table.
+      field - only applicable for row editors. Buttons will appear with the
+         specified child summary view(s).
+      wfAction - buttons appear in the workflow action box
+      wfTransition -buttons appear in the workflow transition box
+
+   The sequence attribute specifies the position of the button relative to
+   other buttons that will appear. A value of 1 causes the action to appear
+   first in the output document. If not specified, the actions will be added
+   to the end of the list.
+
+   The content of this element is ignored except when the page attribute is
+   summaryView or the page attribute is rowEdit and the type is field or form.
+   In these cases, each child element specifies the name of a fieldset that this
+   action group applies to, which may include the name of the parent field set
+   if the page type is rowEdit. If none are specified, then it applies to all.
+
+   Every custom action will have several params added by the server in the
+   output document. Any number of these may be included as hidden params
+   rather than direct children of the action element. The included system
+   params are as follows:
+      sys_contentid - the content id of the item being edited
+      sys_revision - the revision of the item being edited
+      sys_childrowid - if type is row, the unique id for a particular child row
+      sys_pageid - the unique identifier of the editor page which contains the
+         button. If modifying, pass through to the handler so it redirects
+         to the original page.
+      sys_childid - a unique identifier for the fieldset, used by the modify
+         handler to determine what table to update
+
+   Additional params needed by the target can be specified using PSXParam
+   elements, e.g. if you desire to replace the 'Add new' button on the summary
+   editor, include a param called 'targeturl' and use the sys_MakeAbsLink to
+   create a link to the modify handler. This url could then be used by the
+   customized page to submit the new children into the modify handler.
+
+   NOTE: The only part of this model implemented in the first release is
+   enough to implement related content. This means adding a button to the
+   main form of the summary editor page and removing the button that is there.
+-->
+<!ELEMENT PSXLocation (FieldRef*)>
+<!ATTLIST PSXLocation
+   page (summaryView | rowEdit) "summaryView"
+   type (form | row | field | wfAction | wfTransition) "form"
+   sequence CDATA #IMPLIED
+>
+<!ELEMENT PSXBackEndCredential (alias, comment?, datasource)>
+<!ATTLIST PSXBackEndCredential
+   id CDATA #REQUIRED
+>
+<!ELEMENT alias (#PCDATA)>
+<!ELEMENT comment (#PCDATA)>
+<!ELEMENT datasource (#PCDATA)>
+<!ELEMENT PSXBackEndColumn (tableAlias, column, columnAlias?)>
+<!ATTLIST PSXBackEndColumn
+   id CDATA #REQUIRED
+>
+<!ELEMENT tableAlias (#PCDATA)>
+<!ELEMENT column (#PCDATA)>
+<!ELEMENT columnAlias (#PCDATA)>
+<!--
+   PSXConditional is used to define conditionals. Conditionals take
+   the form: {variable} {operator} {value} [{boolean} {cond}]
+   One use of conditionals is in the PSXRequestor object to check
+   the input data. If the input data meets the selection criteria,
+   the request is handled. Input data is often provided as an INPUT
+   parameter defined on a HTML FORM.
+-->
+<!ELEMENT PSXConditional (variable, operator, value, boolean?)>
+<!ATTLIST PSXConditional
+   id %UniqueId; #REQUIRED
+>
+<!--
+   the name of the variable to check.
+-->
+<!ELEMENT variable (PSXBackEndColumn | PSXTextLiteral | PSXCgiVariable | PSXHtmlParameter | PSXSingleHtmlParameter | PSXCookie | PSXUserContext | PSXXmlField | PSXFunctionCall)>
+<!--
+   The relational operator to use when comparing.
+   One of the following: = | <> | < | <= | > | >= | IS NULL | IS NOT NULL
+   | BETWEEN | NOT BETWEEN | IN | NOT IN | LIKE | NOT LIKE
+-->
+<!ELEMENT operator (#PCDATA)>
+<!--
+   the value the variable must match.
+-->
+<!ELEMENT value (PSXBackEndColumn | PSXDateLiteral | PSXNumericLiteral | PSXTextLiteral | PSXCgiVariable | PSXHtmlParameter | PSXCookie | PSXUserContext | PSXXmlField | PSXSingleHtmlParameter | PSXLiteralSet | PSXFunctionCall | PSXContentItemData | PSXContentItemStatus | PSXRelationshipProperty | PSXMacro | PSXOriginatingRelationshipProperty)>
+<!--
+   The boolean operator to use when joining multiple conditionals, either
+   'AND' or 'OR'. (AND is used by default).
+-->
+<!ELEMENT boolean (#PCDATA)>
+<!-- See a Rhythmyx app for an example of these. -->
+<!-- A group of literals of the same type -->
+<!ELEMENT PSXLiteralSet (PSXDateLiteral* | PSXNumericLiteral* | PSXTextLiteral*)>
+<!ELEMENT PSXTextLiteral (text)>
+<!ATTLIST PSXTextLiteral
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXDateLiteral (date, format)>
+<!ATTLIST PSXDateLiteral
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXNumericLiteral (number, format)>
+<!ATTLIST PSXNumericLiteral
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT date (#PCDATA)>
+<!ELEMENT number (#PCDATA)>
+<!ELEMENT text (#PCDATA)>
+<!ELEMENT format (#PCDATA)>
+<!ELEMENT PSXCookie (name)>
+<!ATTLIST PSXCookie
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXHtmlParameter (name)>
+<!ATTLIST PSXHtmlParameter
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXSingleHtmlParameter (name)>
+<!ATTLIST PSXSingleHtmlParameter
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXXmlField (name)>
+<!ATTLIST PSXXmlField
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXCgiVariable (name)>
+<!ATTLIST PSXCgiVariable
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXUserContext (name)>
+<!ATTLIST PSXUserContext
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXExtensionCallSet (PSXExtensionCall*)>
+<!ATTLIST PSXExtensionCallSet
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXExtensionCall (name, PSXExtensionParamValue*)>
+<!ATTLIST PSXExtensionCall
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXExtensionParamValue (value)>
+<!ATTLIST PSXExtensionParamValue
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXFunctionCall (name, PSXFunctionParamValue*)>
+<!ATTLIST PSXFunctionCall
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXFunctionParamValue (value)>
+<!ATTLIST PSXFunctionParamValue
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXDisplayFieldRef (FieldRef)>
+<!ATTLIST PSXDisplayFieldRef
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXContentItemStatus (name)>
+<!ATTLIST PSXContentItemStatus
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXContentItemData (name)>
+<!ATTLIST PSXContentItemData
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXRelationshipProperty (name)>
+<!ATTLIST PSXRelationshipProperty
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXMacro (name)>
+<!ATTLIST PSXMacro
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT PSXOriginatingRelationshipProperty (name)>
+<!ATTLIST PSXOriginatingRelationshipProperty
+   id %UniqueId; #REQUIRED
+>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT InputDataExits (PSXExtensionCallSet?)>
+<!ELEMENT ResultDataExits (PSXExtensionCallSet?)>

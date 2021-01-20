@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXExtensionHandlerConfiguration handlerName="Java">
+   <Extension categorystring="sitefolderpublishing" context="global/percussion/fastforward/sfp/" deprecated="no" handler="Java" name="rxs_pubAppendPurgedOrMovedItems" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">The objectives of this extension are to filter the content list for
+publishing by appending the content items/pages that were published earlier
+and are:
+
+1. Purged from the system
+2. Removed from a folder
+3. Moved from one folder to another
+
+to the unpublish content list XML result document. It uses the following
+algorithm to do the above:
+
+1. Gets all previously published items/pages to the site by making an
+internal request to a Rhythmyx resource. These are obtained as a result set
+for performance reasons.
+2. Gets the parent folderids for each of the items. While doing so, it
+assumes the item can exist in multiple folders.
+3. It generates publish paths for each of the folders it exists in.
+4. It filters out any item with publish path not matching with the
+previously published location path.
+5. It builds the content list document for these remaining items/pages by
+making another internal request to a Rhythmyx resource.
+6. Finally, this list is merged with the result document which is already
+an unpublish content list document.
+
+The exit takes one optional parameter to indicate if the publish path
+comparison should be case sensitive. The default value for this is "no". It
+assumes the DTD of the result document to be contentlist.dtd and
+the content list being generated is for unpublishing.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.fastforward.sfp.PSAppendPurgedOrMovedItems</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>isPathCaseSensitive</name>
+         <dataType>java.lang.String</dataType>
+         <description>Optional. Is the publocation case sensitive? Specify "yes" (case insensitive) if the publocation is case sensitive. Default is "no".</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+</PSXExtensionHandlerConfiguration>

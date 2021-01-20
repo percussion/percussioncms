@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT contvariantid (variantid*, varianttype*, contenttypeid*, contenttype* )>
+<!ELEMENT contenttype (#PCDATA)>
+<!ELEMENT contenttypeid (#PCDATA)>
+<!ELEMENT varianttype (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>

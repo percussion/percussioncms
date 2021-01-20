@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Slot (VariantId, SlotId )>
+<!ELEMENT SlotId (#PCDATA)>
+<!ELEMENT VariantId (#PCDATA)>
+<!ELEMENT CloneVaraintSlots (Slot* )>

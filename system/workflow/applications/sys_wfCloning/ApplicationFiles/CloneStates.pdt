@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT State (ContentValid, SortOrder, StateDesc, StateId, StateName, WorkflowId )>
+<!ELEMENT WorkflowId (#PCDATA)>
+<!ELEMENT StateName (#PCDATA)>
+<!ELEMENT StateId (#PCDATA)>
+<!ELEMENT StateDesc (#PCDATA)>
+<!ELEMENT SortOrder (#PCDATA)>
+<!ELEMENT ContentValid (#PCDATA)>
+<!ELEMENT CloneStates (State* )>

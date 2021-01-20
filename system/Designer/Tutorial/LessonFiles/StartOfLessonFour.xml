@@ -1,0 +1,432 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<PSXApplication id="35" active="no" enabled="no" version="2.0">
+  <name>StartOfLessonFour</name>
+  <description></description>
+  <requestRoot>StartOfLessonFour</requestRoot>
+  <defaultRequestPage></defaultRequestPage>
+  <PSXRevisionHistory>
+    <PSXRevisionEntry majorVersion="1" minorVersion="0">
+      <agent>OS:Administrator</agent>
+      <description>saved</description>
+      <time>19991001T154148390</time>
+    </PSXRevisionEntry>
+  </PSXRevisionHistory>
+  <PSXAcl id="0">
+    <PSXAclEntry id="0" type="user">
+      <name>Default</name>
+      <securityProviderType>Any</securityProviderType>
+      <securityProviderInstance></securityProviderInstance>
+      <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+    </PSXAclEntry>
+    <PSXAclEntry id="0" type="user">
+      <name>Anonymous</name>
+      <securityProviderType>Any</securityProviderType>
+      <securityProviderInstance></securityProviderInstance>
+      <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+    </PSXAclEntry>
+    <PSXAclEntry id="0" type="user">
+      <name>Administrator</name>
+      <securityProviderType>Any</securityProviderType>
+      <securityProviderInstance></securityProviderInstance>
+      <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+    </PSXAclEntry>
+    <multiMembershipBehavior></multiMembershipBehavior>
+  </PSXAcl>
+  <maxThreads>0</maxThreads>
+  <maxRequestTime>0</maxRequestTime>
+  <maxRequestsInQueue>0</maxRequestsInQueue>
+  <userSessionEnabled>no</userSessionEnabled>
+  <userSessionTimeout>0</userSessionTimeout>
+  <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+  <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+  <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+  <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+  <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+  <ApplicationUdfs/>
+  <ServerUdfReferences/>
+  <ApplicationExits/>
+  <ServerExitReferences/>
+  <PSXDataSet id="1162">
+    <name>Dataset15</name>
+    <description></description>
+    <transactionType>none</transactionType>
+    <PSXQueryPipe id="21">
+      <name>QueryPipe</name>
+      <description></description>
+      <PSXBackEndDataTank id="17">
+        <PSXBackEndTable id="16">
+          <alias>Employee</alias>
+          <driver>idb</driver>
+          <server>RhythmyxTutorial.properties</server>
+          <database></database>
+          <origin></origin>
+          <table>Employee</table>
+        </PSXBackEndTable>
+      </PSXBackEndDataTank>
+      <PSXDataMapper id="19">
+        <PSXDataMapping id="0" groupId="1">
+          <PSXXmlField id="0">
+            <name>Person/Name/First</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>FirstName</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+        <PSXDataMapping id="0" groupId="1">
+          <PSXXmlField id="0">
+            <name>Person/Name/Last</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>LastName</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+        <PSXDataMapping id="0" groupId="1">
+          <PSXXmlField id="0">
+            <name>Person/Title</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>Title</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+        <PSXDataMapping id="0" groupId="1">
+          <PSXXmlField id="0">
+            <name>Person/Telephone</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>HomePhone</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+        <PSXDataMapping id="0" groupId="1">
+          <PSXXmlField id="0">
+            <name>Person/Email</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>EmailAddress</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+      </PSXDataMapper>
+      <PSXDataSelector id="18" method="whereClause" unique="no">
+        <WhereClauses>
+          <PSXWhereClause id="0" omitWhenNull="no">
+            <PSXConditional id="0">
+              <variable>
+                <PSXBackEndColumn id="0">
+                  <tableAlias>Employee</tableAlias>
+                  <column>ID</column>
+                  <columnAlias></columnAlias>
+                </PSXBackEndColumn>
+              </variable>
+              <operator>=</operator>
+              <value>
+                <PSXHtmlParameter id="0">
+                  <name>EmployeeId</name>
+                </PSXHtmlParameter>
+              </value>
+              <boolean>AND</boolean>
+            </PSXConditional>
+          </PSXWhereClause>
+        </WhereClauses>
+        <Sorting/>
+        <nativeStatement></nativeStatement>
+        <Caching enabled="no" type="interval">
+          <ageInterval>15</ageInterval>
+        </Caching>
+      </PSXDataSelector>
+    </PSXQueryPipe>
+    <PSXPageDataTank id="1161">
+      <schemaSource>file:Person.dtd</schemaSource>
+      <actionTypeXmlField></actionTypeXmlField>
+    </PSXPageDataTank>
+    <PSXRequestor id="0" allowHtmlOutput="yes">
+      <requestPage>Person</requestPage>
+      <SelectionParams/>
+      <ValidationRules/>
+      <characterEncoding>UTF-8</characterEncoding>
+      <MimeProperties>
+        <htm>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </htm>
+        <html>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </html>
+      </MimeProperties>
+    </PSXRequestor>
+    <PSXResultPageSet id="0">
+      <PSXResultPage id="1170">
+        <styleSheet>file:Person.xsl</styleSheet>
+        <PSXRequestLink id="1169" type="query">
+          <targetDataSet>BinaryDataset107</targetDataSet>
+          <xmlField>Person/Photo</xmlField>
+        </PSXRequestLink>
+      </PSXResultPage>
+    </PSXResultPageSet>
+  </PSXDataSet>
+  <PSXDataSet id="1164">
+    <name>Dataset58</name>
+    <description></description>
+    <transactionType>none</transactionType>
+    <PSXQueryPipe id="64">
+      <name>QueryPipe</name>
+      <description></description>
+      <PSXBackEndDataTank id="60">
+        <PSXBackEndTable id="59">
+          <alias>Employee</alias>
+          <driver>idb</driver>
+          <server>RhythmyxTutorial.properties</server>
+          <database></database>
+          <origin></origin>
+          <table>Employee</table>
+        </PSXBackEndTable>
+      </PSXBackEndDataTank>
+      <PSXDataMapper id="62" returnEmptyXml="yes">
+        <PSXDataMapping id="0" groupId="1">
+          <PSXXmlField id="0">
+            <name>PersonList/Person/EmployeeID</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>ID</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+        <PSXDataMapping id="0" groupId="1">
+          <PSXXmlField id="0">
+            <name>PersonList/Person/Name/First</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>FirstName</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+        <PSXDataMapping id="0" groupId="1">
+          <PSXXmlField id="0">
+            <name>PersonList/Person/Name/Last</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>LastName</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+        <PSXDataMapping id="0" groupId="1">
+          <PSXXmlField id="0">
+            <name>PersonList/Person/Telephone</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>HomePhone</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+      </PSXDataMapper>
+      <PSXDataSelector id="61" method="whereClause" unique="no">
+        <WhereClauses>
+          <PSXWhereClause id="0" omitWhenNull="yes">
+            <PSXConditional id="0">
+              <variable>
+                <PSXBackEndColumn id="0">
+                  <tableAlias>Employee</tableAlias>
+                  <column>FirstName</column>
+                  <columnAlias></columnAlias>
+                </PSXBackEndColumn>
+              </variable>
+              <operator>LIKE</operator>
+              <value>
+                <PSXHtmlParameter id="0">
+                  <name>FirstName</name>
+                </PSXHtmlParameter>
+              </value>
+              <boolean>AND</boolean>
+            </PSXConditional>
+          </PSXWhereClause>
+        </WhereClauses>
+        <Sorting/>
+        <nativeStatement></nativeStatement>
+        <Caching enabled="no" type="interval">
+          <ageInterval>15</ageInterval>
+        </Caching>
+      </PSXDataSelector>
+    </PSXQueryPipe>
+    <PSXPageDataTank id="1163">
+      <schemaSource>file:PersonList.dtd</schemaSource>
+      <actionTypeXmlField></actionTypeXmlField>
+    </PSXPageDataTank>
+    <PSXRequestor id="0" allowHtmlOutput="yes">
+      <requestPage>PersonList</requestPage>
+      <SelectionParams/>
+      <ValidationRules/>
+      <characterEncoding>UTF-8</characterEncoding>
+      <MimeProperties>
+        <htm>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </htm>
+        <html>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </html>
+      </MimeProperties>
+    </PSXRequestor>
+    <PSXResultPageSet id="0">
+      <PSXResultPage id="1166">
+        <styleSheet>file:PersonList.xsl</styleSheet>
+        <PSXRequestLink id="1165" type="query">
+          <targetDataSet>Dataset15</targetDataSet>
+          <xmlField>PersonList/Person/Link</xmlField>
+        </PSXRequestLink>
+      </PSXResultPage>
+    </PSXResultPageSet>
+  </PSXDataSet>
+  <PSXDataSet id="1167">
+    <name>BinaryDataset107</name>
+    <description></description>
+    <transactionType>none</transactionType>
+    <PSXQueryPipe id="0">
+      <name>QueryPipe</name>
+      <description></description>
+      <PSXBackEndDataTank id="0">
+        <PSXBackEndTable id="0">
+          <alias>Employee</alias>
+          <driver>idb</driver>
+          <server>RhythmyxTutorial.properties</server>
+          <database></database>
+          <origin></origin>
+          <table>Employee</table>
+        </PSXBackEndTable>
+      </PSXBackEndDataTank>
+      <PSXDataMapper id="0">
+        <PSXDataMapping id="0" groupId="0">
+          <PSXXmlField id="0">
+            <name>IMAGE</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>Employee</tableAlias>
+            <column>Photo</column>
+            <columnAlias></columnAlias>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+      </PSXDataMapper>
+      <PSXDataSelector id="0" method="whereClause" unique="no">
+        <WhereClauses>
+          <PSXWhereClause id="0" omitWhenNull="no">
+            <PSXConditional id="0">
+              <variable>
+                <PSXBackEndColumn id="0">
+                  <tableAlias>Employee</tableAlias>
+                  <column>ID</column>
+                  <columnAlias></columnAlias>
+                </PSXBackEndColumn>
+              </variable>
+              <operator>=</operator>
+              <value>
+                <PSXHtmlParameter id="0">
+                  <name>EmployeeId</name>
+                </PSXHtmlParameter>
+              </value>
+              <boolean>AND</boolean>
+            </PSXConditional>
+          </PSXWhereClause>
+        </WhereClauses>
+        <Sorting/>
+        <nativeStatement></nativeStatement>
+        <Caching enabled="no" type="interval">
+          <ageInterval>15</ageInterval>
+        </Caching>
+      </PSXDataSelector>
+    </PSXQueryPipe>
+    <PSXRequestor id="0" directDataStream="yes">
+      <requestPage>head.gif</requestPage>
+      <SelectionParams/>
+      <ValidationRules/>
+      <characterEncoding></characterEncoding>
+      <MimeProperties>
+        <jpg>
+          <PSXTextLiteral id="0">
+            <text>image/jpeg</text>
+          </PSXTextLiteral>
+        </jpg>
+        <jpeg>
+          <PSXTextLiteral id="0">
+            <text>image/jpeg</text>
+          </PSXTextLiteral>
+        </jpeg>
+        <gif>
+          <PSXTextLiteral id="0">
+            <text>image/gif</text>
+          </PSXTextLiteral>
+        </gif>
+      </MimeProperties>
+    </PSXRequestor>
+  </PSXDataSet>
+  <PSXErrorWebPages id="1159" returnHtml="yes"/>
+  <backEndLoginPassthru>no</backEndLoginPassthru>
+  <PSXNotifier id="1160">
+    <providerType>SMTP</providerType>
+    <server>&lt;Unspecified&gt;</server>
+    <from></from>
+  </PSXNotifier>
+  <userProperty name="pageDatatankFilePath1161">G:\rx0227\Tutorial\StartOfLessonThree\Person.htm</userProperty>
+  <userProperty name="savedFromWorkbench">Yes</userProperty>
+  <userProperty name="schemaSourceReadOnly1163">true</userProperty>
+  <userProperty name="schemaSourceReadOnly1161">true</userProperty>
+  <userProperty name="externalInterfaceConnectedFigures1171">3:1162, 3:1164</userProperty>
+  <userProperty name="locationY1159">55</userProperty>
+  <userProperty name="locationY1158">10</userProperty>
+  <userProperty name="applicationFileKey1168">1168</userProperty>
+  <userProperty name="applicationFileName1168">Corplogo.gif</userProperty>
+  <userProperty name="resultPageFilePath1170">G:\rx0227\Tutorial\LessonFour\Person.htm</userProperty>
+  <userProperty name="externalInterfaceKey1171">1171</userProperty>
+  <userProperty name="locationX1171">36</userProperty>
+  <userProperty name="locationX1170">306</userProperty>
+  <userProperty name="externalInterfaceHtml1171">G:\rx0227\Tutorial\StartOfLessonTwo\Welcome.htm</userProperty>
+  <userProperty name="resultPageFilePath1166">G:\rx0227\Tutorial\LessonFour\PersonList.htm</userProperty>
+  <userProperty name="resultPageDtd1170">Person.rpg</userProperty>
+  <userProperty name="locationY1171">65</userProperty>
+  <userProperty name="locationX1168">295</userProperty>
+  <userProperty name="locationY1170">178</userProperty>
+  <userProperty name="locationX1167">472</userProperty>
+  <userProperty name="locationX1166">316</userProperty>
+  <userProperty name="locationX1164">158</userProperty>
+  <userProperty name="locationX1162">165</userProperty>
+  <userProperty name="locationX1160">11</userProperty>
+  <userProperty name="pageDatatankSrcType1163">0</userProperty>
+  <userProperty name="pageDatatankSrcType1161">0</userProperty>
+  <userProperty name="resultPageDtd1166">PersonList.rpg</userProperty>
+  <userProperty name="locationY1168">48</userProperty>
+  <userProperty name="locationY1167">81</userProperty>
+  <userProperty name="locationY1166">336</userProperty>
+  <userProperty name="applicationFileFile1168">G:\rx0227\Tutorial\StartOfLessonOne\Corplogo.gif</userProperty>
+  <userProperty name="locationY1164">289</userProperty>
+  <userProperty name="locationY1162">138</userProperty>
+  <userProperty name="locationX1159">11</userProperty>
+  <userProperty name="pageDatatankFilePath1163">G:\rx0227\Tutorial\StartOfLessonTwo\PersonList.htm</userProperty>
+  <userProperty name="locationX1158">11</userProperty>
+  <userProperty name="locationY1160">100</userProperty>
+</PSXApplication>

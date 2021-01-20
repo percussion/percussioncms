@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT ContentStatus (WorkflowName, StateName, ContentTypeName, DataVariant, Title, CheckOutUserName, LastModifier, LastModified, CreatedBy, CreatedDate, StartDate?, ExpirationDate?, AgingTime?, PublishDate?, PathName?, Suffix?, Lock, CommunityId )>
+<!ELEMENT CommunityId (#PCDATA)>
+<!ELEMENT Lock (#PCDATA)>
+<!ELEMENT Suffix (#PCDATA)>
+<!ELEMENT PathName (#PCDATA)>
+<!ELEMENT PublishDate (#PCDATA)>
+<!ELEMENT AgingTime (#PCDATA)>
+<!ELEMENT ExpirationDate (#PCDATA)>
+<!ELEMENT StartDate (#PCDATA)>
+<!ELEMENT CreatedDate (#PCDATA)>
+<!ELEMENT CreatedBy (#PCDATA)>
+<!ELEMENT LastModified (#PCDATA)>
+<!ELEMENT LastModifier (#PCDATA)>
+<!ELEMENT CheckOutUserName (#PCDATA)>
+<!ATTLIST  CheckOutUserName checkOutStatus CDATA #IMPLIED>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT DataVariant (#PCDATA)>
+<!ELEMENT ContentTypeName (#PCDATA)>
+<!ELEMENT StateName (#PCDATA)>
+<!ATTLIST  StateName stateId CDATA #IMPLIED>
+<!ATTLIST  StateName isPublishable CDATA #IMPLIED>
+<!ELEMENT WorkflowName (#PCDATA)>
+<!ATTLIST  WorkflowName workflowId CDATA #REQUIRED>
+<!ATTLIST  ContentStatus currentRevision CDATA #IMPLIED>
+<!ATTLIST  ContentStatus sys_contentid CDATA #REQUIRED>
+<!ATTLIST  ContentStatus editRevision CDATA #IMPLIED>
+<!ATTLIST  ContentStatus revisionCount CDATA #REQUIRED>
+<!ELEMENT ContentStatusResponse (ContentStatus? )>

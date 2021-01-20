@@ -1,0 +1,759 @@
+/* @For Percussion Software
+    Krunal Patel */
+
+/************INDEX**************
+1. Global Reset
+2. Page Shell
+3. For Finder
+4. Navigation Menu
+5. Dialog
+6. Perc page editor
+*/
+/***********Global reset***********/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align:baseline;
+    font-size: 100%;
+    background: transparent;
+
+
+}
+body {
+    line-height: 1em;
+    overflow: hidden;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+:focus {
+}
+
+ins {
+    text-decoration: none;
+}
+del {
+    text-decoration: line-through;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/************ Common CSS styles *************/
+
+.perc-main .perc-header .perc-logo {
+    width: 44px;
+    height: 43px;
+    background: url(../images/images/headerLogo.png) no-repeat center;
+    background-size: 44px 43px;
+}
+
+/*********To set style for page shell ************/
+.perc-header-topnav .perc-topnav:hover .icon-chevron-down {
+    color: rgba(255, 255, 255, 0.75);
+}
+.perc-header-topnav .perc-topnav .icon-chevron-down {
+    position: absolute;
+    top: 9px;
+    right: 8px;
+    color: rgba(255, 255, 255, 0.35);
+    text-shadow: 1px 1px rgba(116, 180, 223, 0.66);
+}
+.perc-header-topnav .perc-topnav label {
+    margin: 6px;
+    text-shadow: 1px 1px rgba(87, 97, 103, 0.29);
+    font-weight: 800;
+    font-size: 14pt;
+    cursor: pointer;
+}
+
+.perc-header-topnav .perc-topnav .perc-actions-menu-item.ui-state-active {
+    cursor: default;
+    font-weight: bold;
+}
+
+.perc-header-topnav .perc-topnav .perc-actions-menu-item {
+    color: black;
+    padding: 2px 4px 4px 8px;
+}
+
+.perc-header-topnav .perc-topnav .perc-actions-menu {
+    width: 200px;
+    padding: 2px;
+}
+
+.perc-header-topnav .perc-topnav:hover {
+    border-bottom: 1px solid rgb(204, 204, 204);
+}
+
+.perc-header-topnav .perc-topnav {
+    font-size: 10pt;
+    line-height: 20pt;
+    font-variant: small-caps;
+    letter-spacing: 1px;
+    margin: 3px;
+    color: #FFFFFF;
+    border-bottom: 1px solid rgba(116, 180, 223, 0.66);
+    cursor: pointer;
+}
+
+.perc-header-topnav {
+    /* ignore existing layout on the page*/
+    position: absolute;
+    top: 8px;
+    left: 50px;
+    width: 230px;
+    text-align: left;
+}
+
+.perc-main .perc-header .perc-logout span {
+    color: #FFFFFF;
+    padding-right:5px;
+}
+
+.perc-main .perc-header .perc-logout a:hover {
+    text-decoration: underline;
+}
+
+.perc-main .perc-header .perc-logout a {
+    color: #FFFFFF;
+}
+
+.perc-main .perc-header .perc-logout {
+    float: right;
+    color: #FFFFFF;
+    margin: 22px 10px 0 0;
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt;
+    font-weight: normal;
+    text-shadow: 1px -1px rgba(64, 112, 122, 0.5);
+}
+
+.perc-main .perc-header {
+    height: 43px;
+    -background-color: #6C717C;
+    background-color: #133c55;
+}
+.perc-main .perc-header .perc-logo   {
+    padding: 0;
+    float:left;
+}
+.perc-main .perc-login-info {
+}
+
+.float-right    {
+    float:right;
+}
+/******* Finder menu **************/
+/******* Utilized for Finder resizing
+and adding, removing sites  *****/
+
+#perc-finder-actions {
+    float: right;
+}
+
+.perc-actions-menu {
+    text-decoration: none;
+    background-color : white;
+    width : 120px;
+    position : absolute;
+    text-align : left;
+    display : none;
+    z-index : 5001;
+}
+
+.perc-actions-menu-item {
+    background-color : white;
+    padding : 0px;
+}
+
+.perc-actions-menu-item:hover {
+    background-color : #caf589;
+    cursor: pointer;
+}
+
+.perc-finder #perc_newSiteDialogButtons input   {
+    width:20px;
+    height:10px;
+    border: 10px solid;
+}
+
+/***** Finder: Applying additional styling to the menu
+*****/
+
+.perc-finder .mcol-listing {
+    margin: 0px;
+    padding: 4px 4px 2px 8px;
+}
+
+.perc-finder {
+    min-width: 952px;
+    /* set the minimum height that the Finder can drag to */
+    min-height: 100px;
+    padding: 0;
+    float: none;
+}
+
+.perc-finder .mcol-listing.mcol-opened img {
+    -background-color: #67d1e5;
+    background-color: #133c55;
+}
+.perc-finder .mcol-listing img{
+    padding-right: 5px;
+    background-color: #aaa;
+    padding: 2px;
+    border-radius: 4px;
+    opacity: 0.75;
+}
+
+.perc-finder .perc-go-action    {
+    margin-left: 4px;
+    padding: 1px 34px 5px 0px;
+    float:none;
+}
+
+/* Navigation Menu */
+/**** Selected Page *****/
+/********Page 1 *********/
+/********Page 2 *********/
+/********Page 3 *********/
+
+#perc_head{
+    z-index:101;
+    margin-left: 0px;
+    left: 50px;
+    top: 3px;
+    left: 300px;
+}
+#perc_head #perc-links  {
+    position:relative;
+    z-index:101;
+}
+#perc_head, #perc_head #perc-links  {
+    width: 300px;
+    position: absolute;
+    display: block;
+    border:0px !important;
+}
+
+#perc_head  #perc_topnav    {
+    width: 310px;
+    z-index: 10000;
+}
+#perc_head  #perc_topnav-links {
+    width: 310px;;
+    z-index: 10000;
+    position: relative;
+    float:inherit;
+}
+#perc_head  #perc_topnav .perc-selected {
+    min-width: 200px;
+    height: 39px;
+    max-width: 310px;
+}
+
+#perc_head  #perc_topnav .perc-selected .perc-label {
+    float:left;
+    padding: 8px 7px 0 5px;
+}
+
+#perc_head  #perc_topnav .perc-selected #perc-dropdown-img {
+    margin: 17px 0 13px 0;
+    width: 13px;
+    height:9px;
+    float:left;
+}
+
+#perc_head #perc_topnav #perc-links #perc_topnav_links{
+    z-index:10000;
+    position:absolute;
+    width: auto !important;
+}
+/** Applying the shadow borders to navigation menu **/
+#perc_head div ul .last {
+    background:transparent url(../images/images/finderShadowBgBottomFull.png) repeat-x scroll center bottom;
+    padding-top: 5px ;
+    display: block;
+}
+/** Applying the shadow borders to the header **/
+#perc_head #perc_topnav {
+    padding-top: 4px ;
+    display: block;
+    background:transparent url(../images/images/finderShadowBgTopFull.png) repeat-x scroll center top;
+}
+#perc_head #perc_topnav .left {
+    padding-left:4px;
+    display: block;
+    background:transparent url(../images/images/finderShadowBgLeft.png) repeat-y scroll center left;
+}
+#perc_head #perc_topnav .right {
+    padding-right:5px;
+    display: block;
+    background:transparent url(../images/images/finderShadowBgRight.png) repeat-y scroll center right;
+}
+
+#perc_head div ul .unselected, #perc_head div ul .selected, #perc_head div ul .inactive  {
+    padding-left: 15px;
+    padding-top: 13px;
+    height: 26px;
+    min-width: 261px;
+    max-width: 290px;
+    border: 0px;
+
+}
+
+
+#perc_head div ul .unselected a,    #perc_head div ul .inactive a           {
+    border-left: 6px solid;
+    padding-top:0px;
+    padding-bottom:3px;
+}
+#perc_head div ul .selected a{
+    border-left: 6px solid;
+    padding-left: 6px;
+    padding-top:0px;
+    padding-bottom:3px;
+}
+#perc_head div ul .submenu  {
+    padding-left : 32px ;
+    min-width: 243px;
+    max-width: 273px;
+    border-top-style:dashed;
+}
+
+/*************Form styles *************/
+
+/** TODO: These will need to be moved to be appended
+specific class once we change the perc_wizard.js***/
+.perc-dialog  .ui-widget-header {
+    border: 0px;
+}
+.perc-dialog  {
+    padding: 0px 7px;
+    min-width: 686px;
+}
+
+.perc-dialog .ui-dialog-content {
+    padding-left: 35px;
+    padding-top: 35px;
+    padding-bottom: 35px;
+}
+.perc-dialog select {
+    margin-top:5px;
+    margin-bottom: 10px;
+}
+.perc-dialog input, .perc-dialog textarea   {
+    margin-top:5px;
+    margin-bottom: 10px;
+}
+.perc-dialog legend {
+    margin-top:5px;
+    margin-bottom: 17px;
+}
+
+.perc-dialog .perc_dialog_input {
+    margin-top:5px;
+}
+.perc-dialog #ui-dialog-title-1 {
+    float:left;
+}
+.perc-dialog .ui-dialog-titlebar    {
+    padding:0px 0px 0px 11px;
+}
+
+#perc-layout-menu td
+{
+    vertical-align:top;
+}
+
+
+.perc-wf-button {
+    padding: 0;
+    margin-right: 8px;
+    /* Want the buttons centered in a 54px high area. Some things depend on the bottom margin being there,
+    even though it is not strictly required. */
+    margin-top: 12px;
+    margin-bottom:13px;
+    /* the size of the image */
+    height: 29px;
+}
+
+/* This is done as a hack, it shouldn't be needed. The 2 groups above should handle the save-as case, but
+for some reason, no button appears unless it is done this way. TODO - debug why*/
+#perc-saveas-dialog-cancel-button, #perc-saveas-dialog-save-button
+{
+    padding: 6px 78px 0 0;
+    margin-right: 8px;
+    margin-top: 12px;
+    margin-bottom:13px;
+    height: 0;
+    width: 0;
+}
+
+/*** perc page Editor buttons ***/
+#perc-pageEditor-menu .perc-button  {
+    padding-right: 40px;
+}
+#tabs .ui-tabs-panel, #perc-pageEditor-tabs .ui-tabs-panel  {
+    padding: 0px;
+}
+
+/******** CSS Editor tab ********/
+#perc-css-override-editor-preview, #perc-css-override-editor-save, #perc-css-gallery-edit-preview, #perc-css-gallery-edit-save, #perc-view-theme-editor-save {
+    height: 29px;
+    width: 78px;
+}
+
+/******** To fix the padding issue in dialog box********/
+#edit-widget-content{
+    padding:0px;
+}
+#edit-page-metadata{
+    padding:0px;
+    overflow: hidden;
+
+}
+/******** To fix the style issue in URL dialog box under TinyMCE********/
+
+#general_panel table, caption, tbody, tfoot, thead, tr, th, td, img{
+    font-size:10px;
+}
+
+#general_panel fieldset {
+    border:1px solid #919B9C;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    margin:0px;
+    padding:4px;
+}
+#general_panel input, select, textarea {
+    border:1px solid #808080;
+
+}
+#general_panel td{
+    padding:3.25px;
+    vertical-align:middle;
+}
+/******** To fix the style issue of Error Dialog box i:e when you hit save without inputing require filed ex. event widget********/
+
+#perc-content-edit-errors{
+    padding-left: 35px;
+    padding-top: 25px;
+    padding-bottom: 0px;
+}
+
+.ui-dialog-content select{
+    margin-top:5px;
+    margin-bottom:17px;
+}
+
+#perc-content-form label {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    color: #000000;
+}
+.panel_wrapper {
+    background-image:none;
+    background:#E6E6E9 none repeat scroll 0 0;
+
+}
+.clearlooks2 .mceBottom, .clearlooks2 .mceBottom div {
+    height:0px;
+}
+.clearlooks2 .mceMiddle{
+    border:1px solid grey;
+}
+
+#mce_18_top{
+    background-color:white
+}
+
+#mce_18_ifr{
+    height:196px;
+}
+
+#insert {
+    width:78px;
+    height:29px;
+    margin-left:13px;
+    text-indent:-999em;
+    background-position: 0 0px;
+}
+#insert:hover {
+    width:78px;
+    height:29px;
+    margin-left:13px;
+    text-indent:-999em;
+    background-position: 0 56px;
+}
+#cancel {
+    background-position:0 84px;
+    height:29px;
+    margin-right:13px;
+    text-indent:-99em;
+    width:78px;
+}
+#cancel:hover {
+    background-position:0 28px;
+    height:29px;
+    margin-right:13px;
+    text-indent:-99em;
+    width:78px;
+}
+/***** Navigation bar in finder for List View and Result *****/
+
+.perc-pagingbar-finder
+{
+    float: left;
+    color: #444444;
+    width: 100%;
+    font-size: 10px;
+    font-weight: bold;
+    height: 20px;
+    padding-top: 3px;#
+    border-top: 5px solid white;
+}
+
+.perc-pagingbar-finder .perc-pagingbar-navigator
+{
+    float: right;
+    padding-left: 10px;
+}
+
+.perc-pagingbar-finder .perc-pagingbar-items
+{
+    float: right;
+    color: #444444;
+}
+.perc-pagingbar-navigator a
+{
+    cursor: pointer;
+    float: left;
+    height: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 9px;
+}
+
+.perc-pagingbar-navigator .perc-pagingbar-previous.perc-disabled-navigator:hover,
+.perc-pagingbar-navigator .perc-pagingbar-previous.perc-disabled-navigator
+{
+    background: url(/cm/images/images/FinderPageArrowLeft_disabled.png) no-repeat scroll 0 0 transparent;
+}
+.perc-pagingbar-navigator .perc-pagingbar-next.perc-disabled-navigator:hover,
+.perc-pagingbar-navigator .perc-pagingbar-next.perc-disabled-navigator
+{
+    background: url(/cm/images/images/FinderPageArrowRight_disabled.png) no-repeat scroll 0 0 transparent;
+}
+
+.perc-pagingbar-navigator .perc-pagingbar-previous
+{
+    background: url("/cm/images/images/FinderPageArrowLeft_enabled.png") no-repeat scroll 0 0 transparent;
+}
+.perc-pagingbar-navigator .perc-pagingbar-next
+{
+    background: url(/cm/images/images/FinderPageArrowRight_enabled.png) no-repeat scroll 0 0 transparent;
+}
+
+.perc-pagingbar-navigator .perc-pagingbar-previous:hover
+{
+    background: url(/cm/images/images/FinderPageArrowLeft_over.png) no-repeat scroll 0 0 transparent;
+}
+.perc-pagingbar-navigator .perc-pagingbar-next:hover
+{
+    background: url(/cm/images/images/FinderPageArrowRight_over.png) no-repeat scroll 0 0 transparent;
+}
+
+#perc-region-edit-properties-container, #perc-region-edit-css-container, #perc-region-edit-cssoverrides-container
+{
+    padding: 0 0 15px 0;
+}
+
+#perc-region-edit.ui-dialog-content.ui-widget-content
+{
+    background: #fff;
+    padding: 0;
+}
+
+.perc-items-minimizer, .perc-items-maximizer  {
+    /*display: inline-block;*/
+    float: left;
+    height:16px;
+    margin: 0px 2px 2px 0;
+    margin-right :5px;
+    margin-left :-20px;
+    width: 16px;
+}
+.perc-items-minimizer   {
+    background-image:url(../images/images/buttonBlueMinus.png);
+}
+.perc-items-minimizer:hover {
+    background-image:url(../images/images/buttonBlueMinusOver.png);
+}
+.perc-items-maximizer {
+    background-image:url(../images/images/buttonBluePlus.png);
+}
+.perc-items-maximizer:hover {
+    background-image:url(../images/images/buttonBluePlusOver.png);
+}
+
+.perc-min-max {
+    cursor:pointer;
+}
+
+.perc-inline-edit-datatable-delete-row
+{
+    width:16px;
+    height:16px;
+    display:block;
+    background-image:url(../images/images/buttonDeleteLine.png);
+}
+
+.perc-inline-edit-datatable-delete-row:hover
+{
+    background-image:url(../images/images/buttonDeleteLineHover.png);
+}
+
+#perc-region-css-table th, #perc-region-attributes-table th
+{
+    text-align:left;
+    background-color:#FFFFFF;
+    color: #999DA4;
+    height:18px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    vertical-align: middle;
+    font-size:10px;
+}
+
+#perc-region-css-table td, #perc-css-overrides-table td, #perc-css-attributes-table td , #perc-region-attributes-table td
+{
+    text-align:left;
+    background-color:#FFFFFF;
+    color: #000000;
+    height:22px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    vertical-align: middle;
+    font-size:10px;
+}
+
+#perc-region-css-table td input, #perc-css-overrides-table td input, #perc-region-attributes-table td input
+{
+    /*color: #999DA4;*/
+    margin: 1px 0px 0px 0px;
+    width: 100%;
+    height: 16px;
+}
+
+#perc-region-css-table td input.perc-edit-mode, #perc-css-overrides-table td input.perc-edit-mode, #perc-region-attributes-table td input.perc-edit-mode
+{
+    height: 27px;
+}
+
+#perc-css-overrides-table td.perc-disabled
+{
+    background-color: #B9BBBD;
+}
+
+#perc-new-css-property, #perc-new-attribute
+{
+    color: #0099CC;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    height: 16px;
+    text-decoration: none;
+}
+
+#perc-css-overrides-disable-container
+{
+    margin-top:8px;
+}
+
+#perc-css-overrides-disable-span
+{
+    vertical-alignment:top;
+}
+
+#perc-css-overrides-disable
+{
+    margin-top:0px;
+    width:15px;
+}
+
+#perc-region-edit div.fieldGroup
+{
+    padding: 0 35px;
+}
+
+#perc-region-edit .perc-section-header
+{
+    margin-left: -26px;
+}
+
+#perc-region-edit .perc-section-label
+{
+    margin-top: -6px;
+}
+
+#perc-region-edit-cssoverrides-container
+{
+    margin-top: 5px;
+}
+
+#perc-region-cssClass-hint
+{
+    margin-top: -17px;
+}
+
+::-webkit-input-placeholder { color:#BCBCBC; }
+::-moz-placeholder { color:#BCBCBC; } /* firefox 19+ */
+:-ms-input-placeholder { color:#BCBCBC; } /* ie */
+input:-moz-placeholder { color:#BCBCBC; }
+
+#perc-region-edit-cssoverrides-container span.perc-placeholder
+{
+    color: #BCBCBC;
+}
+
+#perc-categories-movedown-button, #perc-categories-moveup-button {
+    position: relative;
+    display: inline-block;
+    width: auto;
+    top: -26px;
+    left: 26px;
+}
+
+#perc-category-details {
+    position: relative;
+    top: 20px;
+}
+
+#perc-category-info {
+    clear: both;
+    display: block;
+    position: relative;
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- Functionality to copy dojo files into Rhythmyx installation-->
+<project name="installDojo" default="deploy">
+   <property name="output.dir" location="${basedir}/build"/>
+
+   <target name="deploy" depends="check.dojo.build, deploy.src, deploy.debug, deploy.nodebug"/>
+
+   <!-- fails the build if dojo/js distribution is not build -->
+   <target name="check.dojo.build">
+      <fail message="Dojo/javascript distribution was not found. Build it and run this script again.">
+         <condition>
+            <not>
+               <available file="${output.dir}/dojoTmp/dojo/release/dojo/dojo.js"/>
+            </not>
+         </condition>
+      </fail>
+   </target>
+
+	<!-- deploys dojo source -->
+   <target name="deploy.src">
+      <copy todir="${RXROOT}/sys_resources/dojo" overwrite="${OVERWRITE}">
+         <fileset dir="${output.dir}/dojoTmp/dojo/release/dojo"/>
+      </copy>
+   </target>
+
+	<!-- deploys debugging version of dojo.js, javascript -->
+   <target name="deploy.debug" if="DEBUG_DOJO">
+      <copy file="${output.dir}/dojoTmp/dojo/dojo.js"
+            tofile="${RXROOT}/sys_resources/dojo/dojo.js" 
+            verbose="true"
+            overwrite="true"/>
+      <copy file="${basedir}/cms/content/applications/sys_resources/ApplicationFiles/html/sys_aaPageHeader.html"
+            todir="${RXROOT}/sys_resources/html" overwrite="true"/>
+      <replace file="${RXROOT}/sys_resources/html/sys_aaPageHeader.html">
+         <replacefilter token="@@DEBUG.TOKEN.CLOSE.COMMENT@@" value="-->"/>
+         <replacefilter token="@@DEBUG.TOKEN.REMOVE.COMMENT@@-->" value=""/>
+      </replace>
+   </target>
+
+	<!-- deploys non-debugging version of dojo.js, javascript -->
+   <target name="deploy.nodebug" unless="DEBUG_DOJO">
+      <copy file="${basedir}/cms/content/applications/sys_resources/ApplicationFiles/html/sys_aaPageHeader.html"
+            todir="${RXROOT}/sys_resources/html" overwrite="true"/>
+      <replace file="${RXROOT}/sys_resources/html/sys_aaPageHeader.html">
+         <replacefilter token="@@DEBUG.TOKEN.CLOSE.COMMENT@@" value=""/>
+         <replacefilter token="@@DEBUG.TOKEN.REMOVE.COMMENT@@" value=""/>
+      </replace>
+   </target>
+
+</project>

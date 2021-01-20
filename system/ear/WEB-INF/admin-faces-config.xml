@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE faces-config PUBLIC
+      "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+      "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+   <navigation-rule>
+      <!-- Global navigation for the admin views -->
+      <navigation-case>
+         <from-outcome>admin-console-view</from-outcome>
+         <to-view-id>/ui/admin/console.jsp</to-view-id>
+         <redirect id="admin-console-view"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-convert-variants</from-outcome>
+         <to-view-id>/ui/admin/tools/ConvertVariant.jsp</to-view-id>
+         <redirect id="admin-convert-variants"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-convert-variants-result</from-outcome>
+         <to-view-id>/ui/admin/tools/ConvertVariantResult.jsp</to-view-id>
+         <redirect id="admin-convert-variants-result"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-rxfix</from-outcome>
+         <to-view-id>/ui/admin/tools/RxFix.jsp</to-view-id>
+         <redirect id="admin-rxfix"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-rxfix-preview</from-outcome>
+         <to-view-id>/ui/admin/tools/RxFixPreview.jsp</to-view-id>
+         <redirect id="admin-rxfix-preview"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-checker</from-outcome>
+         <to-view-id>/ui/admin/tools/ConsistencyChecker.jsp</to-view-id>
+         <redirect id="admin-checker"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-timed-event-notifications</from-outcome>
+         <to-view-id>/ui/admin/TaskNotificationList.jsp</to-view-id>
+         <redirect id="admin-timed-event-notifications"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-schedule-notification-template-editor</from-outcome>
+         <to-view-id>/ui/admin/TaskNotificationEditor.jsp</to-view-id>
+         <redirect id="admin-schedule-notification-template-editor"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-timed-events</from-outcome>
+         <to-view-id>/ui/admin/ScheduledTaskList.jsp</to-view-id>
+         <redirect id="admin-timed-events"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-scheduled-task-editor</from-outcome>
+         <to-view-id>/ui/admin/ScheduledTask.jsp</to-view-id>
+         <redirect id="admin-scheduled-task-editor"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-scheduled-task-log</from-outcome>
+         <to-view-id>/ui/admin/TaskLogs.jsp</to-view-id>
+         <redirect id="admin-scheduled-task-log"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-scheduled-task-detail-log</from-outcome>
+         <to-view-id>/ui/admin/TaskDetailLog.jsp</to-view-id>
+         <redirect id="admin-scheduled-task-detail-log"/>
+      </navigation-case>
+      
+      <navigation-case>
+         <from-outcome>admin-no-log-selection-warning</from-outcome>
+         <to-view-id>/ui/admin/NoTaskLogSelectionWarning.jsp</to-view-id>
+         <redirect id="admin-no-log-selection-warning"/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>admin-delete-all-event-log-warning</from-outcome>
+         <to-view-id>/ui/admin/DeleteAllTaskLogWarning.jsp</to-view-id>
+         <redirect id="admin-delete-all-event-log-warning"/>
+      </navigation-case>
+      
+   </navigation-rule>
+
+   <!-- ContentType consistency checker rules -->
+   <navigation-rule>
+      <display-name>/tools/ConsistencyChecker</display-name>
+      <from-view-id>/ui/admin/tools/ConsistencyChecker.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>report</from-outcome>
+         <to-view-id>/ui/admin/tools/ConsistencyCheckerReport.jsp</to-view-id>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>error</from-outcome>
+         <to-view-id>/ui/admin/tools/ConsistencyChecker.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+      <display-name>/tools/ConsistencyCheckerReport</display-name>
+      <from-view-id>/ui/admin/tools/ConsistencyCheckerReport.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>fix</from-outcome>
+         <to-view-id>/ui/admin/tools/ConsistencyCheckerReport.jsp</to-view-id>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>back</from-outcome>
+         <to-view-id>/ui/admin/tools/ConsistencyChecker.jsp</to-view-id>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>done</from-outcome>
+         <to-view-id>/ui/admin/tools/ConsistencyCheckerReview.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+      <display-name>/tools/ConsistencyCheckerReview</display-name>
+      <from-view-id>/ui/admin/tools/ConsistencyCheckerReview.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>restart</from-outcome>
+         <to-view-id>/ui/admin/tools/ConsistencyChecker.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   
+   <!-- Removal confirmation. -->
+   <navigation-rule>
+      <from-view-id>/ui/admin/RemoveConfirmation.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>return-to-events-notifications</from-outcome>
+         <to-view-id>/ui/admin/TaskNotificationList.jsp</to-view-id>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>return-to-events</from-outcome>
+         <to-view-id>/ui/admin/ScheduledTaskList.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   
+   <!-- Timed Events Notifications Rules -->
+   <navigation-rule>
+      <from-view-id>/ui/admin/TaskNotificationList.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>delete</from-outcome>
+         <to-view-id>/ui/admin/RemoveConfirmation.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+      <from-view-id>/ui/admin/TaskNotificationEditor.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>save</from-outcome>
+         <to-view-id>/ui/admin/TaskNotificationList.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   
+   <!-- Timed Events Rules -->
+   <navigation-rule>
+      <from-view-id>/ui/admin/ScheduledTaskList.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>delete</from-outcome>
+         <to-view-id>/ui/admin/RemoveConfirmation.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+      <from-view-id>/ui/admin/ScheduledTask.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>save</from-outcome>
+         <to-view-id>/ui/admin/ScheduledTaskList.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+      <from-view-id>/ui/admin/RemoveConfirmation.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>return-to-events</from-outcome>
+         <to-view-id>/ui/admin/ScheduledTaskList.jsp</to-view-id>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>return-to-events</from-outcome>
+         <to-view-id>/ui/admin/ScheduledTaskList.jsp</to-view-id>
+      </navigation-case>
+   </navigation-rule>
+   
+   <!-- Admin-specific validators -->
+   <managed-bean>
+      <managed-bean-name>sys_admin_navigation</managed-bean-name>
+      <managed-bean-class>com.percussion.rx.admin.jsf.beans.PSAdminNavigation</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>sys_variantmigrationbean</managed-bean-name>
+      <managed-bean-class>com.percussion.services.assembly.ui.PSVariantMigrationBean</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>sys_rxfix</managed-bean-name>
+      <managed-bean-class>com.percussion.rxfix.PSRxFix</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>sys_consistencychecker</managed-bean-name>
+      <managed-bean-class>com.percussion.services.contentmgr.ui.PSConsistencyCheckerBean</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>sys_admin_name_value_provider</managed-bean-name>
+      <managed-bean-class>
+         com.percussion.rx.jsf.PSCategoryNodesNameProvider
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+      <managed-property>
+         <property-name>navigation</property-name>
+         <value>#{sys_admin_navigation}</value>
+      </managed-property>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>sys_admin_unique_name_validator</managed-bean-name>
+      <managed-bean-class>
+         com.percussion.services.utils.jsf.validators.PSUniqueValidator
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+      <managed-property>
+         <property-name>valueProvider</property-name>
+         <value>#{sys_admin_name_value_provider}</value>
+      </managed-property>
+   </managed-bean>
+</faces-config>

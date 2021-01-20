@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Result (#PCDATA)>
+<!ATTLIST  Result errorCode CDATA #IMPLIED>
+<!ELEMENT ResultResponse (Result* )>
+<!ATTLIST  ResultResponse type CDATA #REQUIRED>

@@ -1,0 +1,90 @@
+ <!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+ <JspAspTags>
+    <tag>
+       <opening>&lt;%</opening>
+       <closing>%&gt;</closing>
+       <disableEscaping>no</disableEscaping>
+    </tag>
+
+    <tag>
+       <opening>&lt;jsp:</opening>
+       <closing>&lt;/jsp:</closing>
+       <disableEscaping>no</disableEscaping>
+    </tag>
+
+    <tag isXslTag="yes">
+       <opening>&lt;xsl:</opening>
+       <closing>&gt;</closing>
+       <disableEscaping>yes</disableEscaping>
+    </tag>
+
+    <tag isXslTag="yes">
+       <opening>&lt;!-- begin XSL --&gt;</opening>
+       <closing>&lt;!-- end XSL --&gt;</closing>
+       <disableEscaping>yes</disableEscaping>
+    </tag>
+
+   <!-- added by Microsoft Word when a comment is in the document: remove them entirely -->
+    <tag>
+       <opening>&lt;![if !supportAnnotations]&gt;</opening>
+       <closing>&lt;![endif]&gt;</closing>
+       <disableEscaping>yes</disableEscaping>
+    </tag>
+    <tag>
+       <opening>&lt;!--[if supportFields]&gt;</opening>
+       <closing>&lt;![endif]--&gt;</closing>
+       <disableEscaping>yes</disableEscaping>
+    </tag>
+
+   <!-- remove specific Microsoft Word "if" wrappers that contain not well-formed content  -->
+   <tag>
+      <opening>&lt;!--[if !mso]&gt;</opening>
+      <closing>&lt;![endif]--&gt;</closing>
+      <disableEscaping>yes</disableEscaping>
+   </tag>
+
+   <!-- remove generic Microsoft Word "if" wrappers, but leave the content inside -->
+    <tag>
+       <opening>&lt;!--[if</opening>
+       <closing>&gt;</closing>
+       <disableEscaping>yes</disableEscaping>
+    </tag>
+    <tag>
+       <opening>&lt;!-- [if</opening>
+       <closing>--&gt;</closing>
+       <disableEscaping>yes</disableEscaping>
+    </tag>
+    <tag>
+       <opening>&lt;![if</opening>
+       <closing>&gt;</closing>
+       <disableEscaping>yes</disableEscaping>
+    </tag>
+    <tag>
+       <opening>&lt;![endif</opening>
+       <closing>&gt;</closing>
+       <disableEscaping>yes</disableEscaping>
+    </tag>
+
+ </JspAspTags>

@@ -1,0 +1,6 @@
+obj\Debug\ResolveAssemblyReference.cache
+bin\Debug\RxTest.exe.config
+bin\Debug\RxTest.exe
+bin\Debug\RxTest.pdb
+obj\Debug\RxTest.exe
+obj\Debug\RxTest.pdb

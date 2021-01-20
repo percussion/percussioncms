@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editcompproperty (relatedlinks, pagename, componentname, propertyid, cmpname, componentid, propertyname, propertyvalue, propertydesc, cancelurl )>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT propertydesc (#PCDATA)>
+<!ELEMENT propertyvalue (#PCDATA)>
+<!ELEMENT propertyname (#PCDATA)>
+<!ELEMENT componentid (#PCDATA)>
+<!ELEMENT cmpname (#PCDATA)>
+<!ELEMENT propertyid (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

@@ -1,0 +1,296 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using RxTest.RxWebServices;
+
+namespace RxTest
+{
+    public class PSContentTestBase
+    {
+        protected PSContentTestBase(PSTest test)
+        {
+            m_test = test;
+        }
+
+        protected void switchToIECommunity()
+        {
+            SwitchCommunityRequest req = new SwitchCommunityRequest();
+            req.Name = "Enterprise_Investments";
+            m_test.m_sysService.SwitchCommunity(req);
+        }
+
+        protected PSAaRelationship[] loadAaRelationshipsByOwner(int contentId)
+        {
+            PSAaRelationshipFilter filter = new PSAaRelationshipFilter();
+            long legacyGuid = PSGetGuidFromContentID(contentId);
+            filter.Owner = legacyGuid;
+            filter.limitToOwnerRevisions = true;
+            return loadAaRelationships(filter);
+        }
+
+        protected PSAaRelationship[] loadAaRelationships(PSAaRelationshipFilter filter)
+        {
+            LoadContentRelationsRequest lreq = new LoadContentRelationsRequest();
+            lreq.PSAaRelationshipFilter = filter;
+            lreq.loadReferenceInfo = true;
+
+            return m_test.m_contService.LoadContentRelations(lreq);
+        }
+
+        protected PSSearchResults[] PSSearchItemByContentID(long contentId)
+        {
+            FindItemsRequest    searchRequest   = new FindItemsRequest();
+            PSSearch            search          = new PSSearch();
+            PSSearchField[]     searchFields     = new PSSearchField[1];
+
+            searchFields[0] = new PSSearchField();
+            searchFields[0].name    = "sys_contentid";
+            searchFields[0].Value   = string.Format("{0}", contentId);
+
+            PSSearchParams Parms = new PSSearchParams();
+
+            Parms.Parameter = searchFields;
+
+            search.PSSearchParams = Parms;
+
+            searchRequest.PSSearch = search;
+
+            return(m_test.m_contService.FindItems(searchRequest));
+        }
+
+        protected long PSGetGuidFromContentID(long contentId)
+        {
+            PSSearchResults[] results = PSSearchItemByContentID(contentId);
+
+            PSFileUtils.RxAssert(results.Length == 1, string.Format("Found {0} content items for content id {1}", results.Length, contentId));
+
+            return (results[0].id);
+        }
+
+        /**
+         * Calls the <code>loadContentTypes</code> webservice.
+         *
+         * @param name The name to search on, may be <code>null</code> or empty or
+         * contain the "*" wildcard.
+         * @param session The current session, may be <code>null</code> or empty to
+         * test authentication.
+         *
+         * @return The list of content type summaries, never <code>null</code>.
+         *
+         */
+        protected PSContentTypeSummary[] loadContentTypeSummaries(String name)
+        {
+           PSContentTypeSummary[] value = null;
+
+
+           LoadContentTypesRequest req = new LoadContentTypesRequest();
+
+           req.Name = name;
+
+           value = m_test.m_contService.LoadContentTypes(req);
+
+
+           return value;
+        }
+
+        /**
+         * Calls the <code>LoadCommunities</code> webservice.
+         *
+         * @param name The name to search on, may be <code>null</code> or empty or
+         * contain the "*" wildcard.
+         *
+         * @return The list of Communities.
+         *
+         */
+        protected PSCommunity[] LoadCommunitiesByName(String name)
+        {
+           PSCommunity[] value = null;
+
+
+           LoadCommunitiesRequest req = new LoadCommunitiesRequest();
+
+           req.Name = name;
+
+           value = m_test.m_secService.LoadCommunities(req);
+
+
+           return value;
+        }
+
+        /**
+         * Calls the <code>LoadWorkflows</code> webservice.
+         *
+         * @param name The name to search on, may be <code>null</code> or empty or
+         * contain the "*" wildcard.
+         *
+         * @return The list of Workflows.
+         *
+         */
+        protected PSWorkflow[] LoadWorkflowsByName(String name)
+        {
+           PSWorkflow[] value = null;
+
+
+           LoadWorkflowsRequest req = new LoadWorkflowsRequest();
+
+           req.Name = name;
+
+           value = m_test.m_sysService.LoadWorkflows(req);
+
+
+           return value;
+        }
+        protected PSItemStatus checkoutItem(int contentId)
+        {
+            long[] Guid = { PSGetGuidFromContentID(contentId) };
+            return m_test.m_contService.PrepareForEdit(Guid)[0];
+        }
+
+        protected void checkinItem(PSItemStatus item)
+        {
+            ReleaseFromEditRequest req = new ReleaseFromEditRequest();
+            req.PSItemStatus = new PSItemStatus[] { item };
+            m_test.m_contService.ReleaseFromEdit(req);
+        }
+
+        protected PSAaRelationship loadAaRelationshipsByRid(long rid, bool isRequired)
+        {
+            PSAaRelationshipFilter filter = new PSAaRelationshipFilter();
+            filter.Id = rid;
+            PSAaRelationship[] rels = loadAaRelationships(filter);
+
+            if (isRequired)
+                PSFileUtils.RxAssert(rels.Length == 1, String.Format("Unable to load Content Relations for rid {0}, length = {1}", rid, rels.Length));
+
+            return rels.Length == 0 ? null : rels[0];
+        }
+
+        /**
+         * Create a list of test auto translations
+         * Only creating one for .net since I do not have access to design services
+         * And this shoould do the job.
+         *
+         * @return The list, never <code>null</code> or empty.
+         */
+        protected List<PSAutoTranslation> createTestTranslations()
+        {
+            List<PSAutoTranslation> result = new List<PSAutoTranslation>(1);
+
+            for (int i = 0; i < 1 ; i++)
+            {
+                result.Add(createAutoTranslation(i));
+            }
+
+            return(result);
+        }
+
+        /**
+         * Create a test auto translation using the supplied ordinal to create test
+         * values.  For .net this only gets called once.
+         *
+         * @param ordinal The ordinal value.
+         *
+         * @return The result, never <code>null</code>.
+         */
+        private PSAutoTranslation createAutoTranslation(int ordinal)
+        {
+            PSAutoTranslation src = new PSAutoTranslation();
+
+            src.communityName    = CommunityName;
+            src.contentTypeName  = ContentTypeName;
+            src.workflowName     = WorkflowName;
+            src.locale           = Locale;
+
+            return src;
+        }
+
+       /**
+        * Calls the <code>loadAutoTranslations</code> webservice.
+        *
+        * @param session The current session, may be <code>null</code> or empty to
+        * test authentication.
+        *
+        * @return The list of auto translations, never <code>null</code>.
+        *
+        * @throws Exception If there are any errors.
+        */
+        protected List<PSAutoTranslation> loadAutoTranslations()
+        {
+            PSAutoTranslation[] values = null;
+
+            values = m_test.m_contService.LoadTranslationSettings();
+            
+            List<PSAutoTranslation> result = new List<PSAutoTranslation>(values.Length);
+
+            foreach (PSAutoTranslation value in values)
+            {
+                result.Add(value);
+            }
+
+            return(result);
+        }
+
+       /**
+        * Calls the <code>loadAutoTranslations</code> design web service call.
+        *
+        * @param session The current session, may be <code>null</code> or empty to
+        * test authentication.
+        * @param lock <code>true</code> to lock the design objects on load,
+        * <code>false</code> to load them read-only.
+        * @param user The user to use.  If <code>null</code>, the supplied
+        * session is used, otherwise a new session is created by logging in with
+        * this user and the supplied <code>pwd</code>.
+        * @param pwd The password to use, may be <code>null</code> or empty, ignored
+        * if <code>user</code> is <code>null</code>.
+        *
+        * @return The list, never <code>null</code> or empty.
+        *
+        * @throws Exception If there are any errors.
+        */
+        protected List<PSAutoTranslation> loadAutoTranslations(Boolean lockit)
+        {
+            PSAutoTranslation[] values = null;
+
+            values = m_test.m_contService.LoadTranslationSettings(lockit);
+            
+            List<PSAutoTranslation> result = new List<PSAutoTranslation>(values.Length);
+
+            foreach (PSAutoTranslation value in values)
+            {
+                result.Add(value);
+            }
+
+            return(result);
+        }
+
+   /**
+    * Saves the supplied translations
+    * @param translations The list of translations to save, may be
+    * <code>null</code> or empty to test contract enforcement.
+    * @param session The current session, may be <code>null</code> or empty to
+    * test authentication.
+    * @param release <code>true</code> to release the lock after save,
+    * <code>false</code> to keep it.
+    *
+    * @throws Exception if there are any errors.
+    */
+   protected void saveAutoTranslations(List<PSAutoTranslation> translations, boolean release)
+   {
+      SaveTranslationSettingsRequest req = new SaveTranslationSettingsRequest();
+
+      PSAutoTranslation[] arr = null;
+      if (translations != null)
+         arr = translations.toArray(new PSAutoTranslation[translations.size()]);
+      req.setPSAutoTranslation(arr);
+      req.setRelease(release);
+      binding.saveTranslationSettings(req);
+   }
+*/
+        
+        protected PSTest m_test;
+        protected String ContentTypeName    = "rffContacts";
+        protected String WorkflowName       = "Simple Workflow";
+        protected String CommunityName      = "Enterprise_Investments";
+        protected String Locale             = "en-us";
+    }
+}

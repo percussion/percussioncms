@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="Navigation"
+                 contenttype_name=""
+                 category="navigation"
+                 description="Add Navigation links to a page"
+                 author="Percussion Software Inc"
+                 thumbnail="/web_resources/widgets/navBar/images/widgetIconNavBar.png"
+                 is_responsive="true"/>
+    <UserPref name="maxlevels"
+              display_name="Maximum number of levels to be shown"
+              default_value="3"
+              datatype="number" />
+    <UserPref name="rootlevel"
+              display_name="Set the primary node for your navigation"
+              default_value="1"
+              datatype="number" />
+    <UserPref name="maxRootItems"
+              display_name="Set the maximum number of navigation items to display at the root level (-1 for unlimited )"
+              default_value="-1"
+              datatype="number" />
+    <UserPref name="maxSubItems"
+              display_name="Set the maximum number or navigation items to display at each navigation sub level (-1 for unlimited )"
+              default_value="-1"
+              datatype="number" />
+    <UserPref name="layout"
+              display_name="Layout"
+              required="true"
+              datatype="enum" default_value="sf-menu perc-navbar-sfhorizontal">
+        <EnumValue value="perc-navbar-horizontal" display_value="Horizontal" />
+        <EnumValue value="perc-navbar-vertical" display_value="Vertical" />
+        <EnumValue value="sf-menu perc-navbar-sfhorizontal" display_value="Horizontal rollover" />
+        <EnumValue value="sf-menu sf-vertical perc-navbar-sfvertical" display_value="Vertical rollover" />
+        <EnumValue value="sf-menu sf-navbar perc-navbar-sfnavbar" display_value="NavBar rollover" />
+    </UserPref>
+    <UserPref name="addtitleattributes"
+              display_name="Add title attributes"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="titleNavigateToText"
+              display_name="'Navigate to' Title Text"
+              default_value="Navigate to"
+              datatype="string" />
+    <UserPref name="ariaLabel"
+              display_name="Aria Label"
+              default_value="Main Navigation"
+              datatype="string" />
+    <UserPref name="generateSkipLink"
+              display_name="Generate Skip Link"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="skipLinkText"
+              display_name="Skip Link Text"
+              default_value="Skip to content"
+              datatype="string" />
+    <UserPref name="skipLinkRegionId"
+              display_name="Skip Link target Region Id"
+              default_value=""
+              datatype="string" />
+    <UserPref name="tabindexValue"
+              display_name="Skip link tabindex value"
+              default_value="-1"
+              datatype="number" />
+    <CssPref name="rootclass"
+             display_name="CSS Root Class"
+             datatype="string" />
+    <Code type="jexl">
+        <![CDATA[
+    $linkContext = $perc.linkContext;
+    $layout = $perc.widget.item.properties.get('layout');
+    $maxlevels = $perc.widget.item.properties.get('maxlevels');
+    $maxRootItems = $perc.widget.item.properties.get('maxRootItems');
+    $maxSubItems = $perc.widget.item.properties.get('maxSubItems');
+    $rootlevel = $tools.math.toNumber($perc.widget.item.properties.get('rootlevel'));
+    $ariaLabel = $perc.widget.item.properties.get('ariaLabel');
+    $titleNavigateToText = $perc.widget.item.properties.get('titleNavigateToText');
+    $generateSkipLink = $perc.widget.item.properties.get('generateSkipLink');
+    $skipLinkRegionId = $perc.widget.item.properties.get('skipLinkRegionId');
+    $skipLinkText = $perc.widget.item.properties.get('skipLinkText');
+    $tabindexValue = $perc.widget.item.properties.get('tabindexValue');
+
+    if($generateSkipLink == null)
+       $generateSkipLink = false;
+
+    if($titleNavigateToText)
+        $titleNavigateToText = $titleNavigateToText.trim();
+
+    $ata = $perc.widget.item.properties.get('addtitleattributes');
+
+    $addTitleAttrs = "no";
+    if($ata){
+        $addTitleAttrs = "yes";
+    }
+
+    if($maxlevels < 1)
+    {
+      $maxlevels = 1;
+   }
+   if ($rootlevel >= 1) {
+        $rootlevel = $rootlevel - 1;
+    }
+    else {
+        $rootlevel = 0;
+    }
+    $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+    if (!empty($rootclass))
+        $rootclass = $rootclass + " ";
+    $finder="Java/global/percussion/widgetcontentfinder/perc_NavWidgetContentFinder";
+    $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finder, null, true);
+    if ( ! $assetItems.isEmpty() ) {
+        $nav = $assetItems.get(0).getNode();
+        $sampleTooltip = '';
+    }
+    else if ($perc.isEditMode()){
+        $navTooltip = $rx.pageutils.getWidgetTooltip($perc, $perc.widget, "This navbar is showing sample content.");
+        $sampleTooltip = ' title="' + $navTooltip + '"';
+    }
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[<div role="navigation" aria-label="$!{ariaLabel}" class="$!{rootclass} perc-navbar"$!{sampleTooltip}>
+#if("$generateSkipLink"=="true" && ! $perc.isEditMode())##
+<script >
+window.addEventListener('DOMContentLoaded', function() {
+$( document ).ready(function() {
+// bind a click event to the 'skip' link
+$(".perc-navigation-skiplink").click(function(event) {
+// strip the leading hash and declare
+// the content we're skipping to
+var skipTo="#"+this.href.split('#')[1];
+// Setting 'tabindex' to -1 takes an element out of normal
+// tab flow but allows it to be focused via javascript
+$(skipTo).attr('tabindex', -1).on('blur focusout', function () {
+// when focus leaves this element,
+// remove the tabindex attribute
+$(this).removeAttr('tabindex');
+}).focus(); // focus on the content container
+});
+});
+});
+</script>
+<a href="#$!{skipLinkRegionId}" class="perc-navigation-skiplink" tabindex="$!{tabindexValue}">$!{skipLinkText}</a>
+#end##
+<ul role="menubar" class="$!{layout}">
+#if($!{nav})##
+#perc_processNavigationNode($nav.getRoot(), 1, 1, $addTitleAttrs, $titleNavigateToText, $maxRootItems, $maxSubItems)##
+#elseif ($perc.isEditMode())##
+<li role="presentation" class="perc-navbar-current">
+<a href="#a">Section 1</a>
+#if($maxlevels > 1)##
+<ul>
+<li role="presentation">
+<a href="#">Section 2</a>
+#if($maxlevels > 2)##
+<ul>
+<li role="presentation">
+<a href="#aa">menu item that is quite long</a>
+</li>
+<li class="perc-navbar-current" role="presentation">
+<a href="#ab">menu item</a>
+#if($maxlevels > 3)##
+<ul>
+<li class="perc-navbar-current"><a href="#">menu item</a></li>
+<li><a href="#aba">menu item</a></li>
+<li><a href="#abb">menu item</a></li>
+<li><a href="#abc">menu item</a></li>
+<li><a href="#abd">menu item</a></li>
+</ul>
+#end##
+</li>
+<li>
+<a href="#">menu item</a>
+#if($maxlevels > 3)##
+<ul>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+</ul>
+#end##
+</li>
+<li>
+<a href="#">menu item</a>
+#if($maxlevels > 3)##
+<ul>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+</ul>
+#end##
+</li>
+</ul>
+#end##
+</li>
+<li>
+<li>
+<a href="#">Section 3</a>
+#if($maxlevels > 2)##
+<ul>
+<li>
+<a href="#">menu item</a>
+#if($maxlevels > 3)##
+<ul>
+<li><a href="#">short</a></li>
+<li><a href="#">short</a></li>
+<li><a href="#">short</a></li>
+<li><a href="#">short</a></li>
+<li><a href="#">short</a></li>
+</ul>
+#end##
+</li>
+<li>
+<a href="#">menu item</a>
+#if($maxlevels > 3)##
+<ul>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+</ul>
+#end##
+</li>
+<li>
+<a href="#">menu item</a>
+#if($maxlevels > 3)##
+<ul>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+</ul>
+#end##
+</li>
+<li>
+<a href="#">menu item</a>
+#if($maxlevels > 3)##
+<ul>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+</ul>
+#end##
+</li>
+<li>
+<a href="#">menu item</a>
+#if($maxlevels > 3)##
+<ul>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+<li><a href="#">menu item</a></li>
+</ul>
+#end##
+</li>
+</ul>
+#end##
+</li>
+<li>
+<a href="#">Section 4</a>
+</li>
+</ul>
+#end##
+</li>
+#end##
+</ul>
+<div style="clear:both"></div>
+</div>]]>
+    </Content>
+</Widget>

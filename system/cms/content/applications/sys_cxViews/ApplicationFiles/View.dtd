@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Item EMPTY>
+<!-- 
+   If sys_contenttypeid is present, it will be used to speed up the view processing
+   by limiting the content types that are searched to populate the display information. 
+   So it is very worthwhile to include this information in custom views. 
+-->
+<!ATTLIST Item
+   sys_contentid CDATA #REQUIRED
+   sys_contenttypeid CDATA #IMPLIED
+>
+<!ELEMENT View (Item*)>

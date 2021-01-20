@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="/Rhythmyx/sys_DisplayFormats/RenameDisplayFormatList.xsl"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXDbComponentCollection className="com.percussion.cms.objectstore.PSDisplayFormat" ordered="no" state="db_unmodified">
+   <PSXDisplayFormat state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <DISPLAYID>5</DISPLAYID>
+      </PSXKey>
+      <DISPLAYNAME>By Author</DISPLAYNAME>
+      <INTERNALNAME>By_Author</INTERNALNAME>
+      <DESCRIPTION>Views &amp; Search results by author.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSXDFColumns className="com.percussion.cms.objectstore.PSDisplayColumn" state="db_unmodified">
+         <PSXDisplayColumn displayName="Content Title" groupingType="flat" name="sys_title" sequence="0" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_title</SOURCE>
+               <DISPLAYID>5</DISPLAYID>
+            </PSXKey>
+            <Description>The title of the item.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Checkout status" groupingType="flat" name="sys_checkoutstatus" sequence="1" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_checkoutstatus</SOURCE>
+               <DISPLAYID>5</DISPLAYID>
+            </PSXKey>
+            <Description>The status whether or not the content is checked out.</Description>
+            <RenderType>Image</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="State" groupingType="flat" name="sys_statename" sequence="2" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_statename</SOURCE>
+               <DISPLAYID>5</DISPLAYID>
+            </PSXKey>
+            <Description>The current document workflow state.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Content Type" groupingType="flat" name="sys_contenttypename" sequence="3" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contenttypename</SOURCE>
+               <DISPLAYID>5</DISPLAYID>
+            </PSXKey>
+            <Description>The document content type.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Author" groupingType="categorized" name="sys_contentcreatedby" sequence="4" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contentcreatedby</SOURCE>
+               <DISPLAYID>5</DISPLAYID>
+            </PSXKey>
+            <Description>The name of the author.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Last Modified" groupingType="flat" name="sys_contentlastmodifieddate" sequence="5" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contentlastmodifieddate</SOURCE>
+               <DISPLAYID>5</DISPLAYID>
+            </PSXKey>
+            <Description>The date when last modified.</Description>
+            <RenderType>Date</RenderType>
+         </PSXDisplayColumn>
+      </PSXDFColumns>
+      <PSX_PROPERTIES url="http://127.0.0.1:9992/Rhythmyx/sys_DisplayFormats/getDisplayProperties.xml?id=5"/>
+   </PSXDisplayFormat>
+   <PSXDisplayFormat state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <DISPLAYID>4</DISPLAYID>
+      </PSXKey>
+      <DISPLAYNAME>By Status</DISPLAYNAME>
+      <INTERNALNAME>By_Status</INTERNALNAME>
+      <DESCRIPTION>Views &amp; Search results by status.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSXDFColumns className="com.percussion.cms.objectstore.PSDisplayColumn" state="db_unmodified">
+         <PSXDisplayColumn displayName="Content Title" groupingType="flat" name="sys_title" sequence="0" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_title</SOURCE>
+               <DISPLAYID>4</DISPLAYID>
+            </PSXKey>
+            <Description>The title of the item.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Checkout status" groupingType="flat" name="sys_checkoutstatus" sequence="1" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_checkoutstatus</SOURCE>
+               <DISPLAYID>4</DISPLAYID>
+            </PSXKey>
+            <Description>The status whether or not the content is checked out.</Description>
+            <RenderType>Image</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="State" groupingType="categorized" name="sys_statename" sequence="2" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_statename</SOURCE>
+               <DISPLAYID>4</DISPLAYID>
+            </PSXKey>
+            <Description>The current document workflow state.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Content Type" groupingType="flat" name="sys_contenttypename" sequence="3" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contenttypename</SOURCE>
+               <DISPLAYID>4</DISPLAYID>
+            </PSXKey>
+            <Description>The document content type.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Author" groupingType="flat" name="sys_contentcreatedby" sequence="4" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contentcreatedby</SOURCE>
+               <DISPLAYID>4</DISPLAYID>
+            </PSXKey>
+            <Description>The name of the author.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Last Modified" groupingType="flat" name="sys_contentlastmodifieddate" sequence="5" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contentlastmodifieddate</SOURCE>
+               <DISPLAYID>4</DISPLAYID>
+            </PSXKey>
+            <Description>The date when last modified.</Description>
+            <RenderType>Date</RenderType>
+         </PSXDisplayColumn>
+      </PSXDFColumns>
+      <PSX_PROPERTIES url="http://127.0.0.1:9992/Rhythmyx/sys_DisplayFormats/getDisplayProperties.xml?id=4"/>
+   </PSXDisplayFormat>
+   <PSXDisplayFormat state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <DISPLAYID>3</DISPLAYID>
+      </PSXKey>
+      <DISPLAYNAME>By Type</DISPLAYNAME>
+      <INTERNALNAME>By_Type</INTERNALNAME>
+      <DESCRIPTION>Views &amp; Search results by type.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSXDFColumns className="com.percussion.cms.objectstore.PSDisplayColumn" state="db_unmodified">
+         <PSXDisplayColumn displayName="Content Title" groupingType="flat" name="sys_title" sequence="0" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_title</SOURCE>
+               <DISPLAYID>3</DISPLAYID>
+            </PSXKey>
+            <Description>The title of the item.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Checkout status" groupingType="flat" name="sys_checkoutstatus" sequence="1" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_checkoutstatus</SOURCE>
+               <DISPLAYID>3</DISPLAYID>
+            </PSXKey>
+            <Description>The status whether or not the content is checked out.</Description>
+            <RenderType>Image</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="State" groupingType="flat" name="sys_statename" sequence="2" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_statename</SOURCE>
+               <DISPLAYID>3</DISPLAYID>
+            </PSXKey>
+            <Description>The current document workflow state.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Content Type" groupingType="categorized" name="sys_contenttypename" sequence="3" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contenttypename</SOURCE>
+               <DISPLAYID>3</DISPLAYID>
+            </PSXKey>
+            <Description>The document content type.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Author" groupingType="flat" name="sys_contentcreatedby" sequence="4" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contentcreatedby</SOURCE>
+               <DISPLAYID>3</DISPLAYID>
+            </PSXKey>
+            <Description>The name of the author.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Last Modified" groupingType="flat" name="sys_contentlastmodifieddate" sequence="5" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contentlastmodifieddate</SOURCE>
+               <DISPLAYID>3</DISPLAYID>
+            </PSXKey>
+            <Description>The date when last modified.</Description>
+            <RenderType>Date</RenderType>
+         </PSXDisplayColumn>
+      </PSXDFColumns>
+      <PSX_PROPERTIES url="http://127.0.0.1:9992/Rhythmyx/sys_DisplayFormats/getDisplayProperties.xml?id=3"/>
+   </PSXDisplayFormat>
+   <PSXDisplayFormat state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <DISPLAYID>0</DISPLAYID>
+      </PSXKey>
+      <DISPLAYNAME>Default</DISPLAYNAME>
+      <INTERNALNAME>Default</INTERNALNAME>
+      <DESCRIPTION>Default display format.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSXDFColumns className="com.percussion.cms.objectstore.PSDisplayColumn" state="db_unmodified">
+         <PSXDisplayColumn displayName="Content Title" groupingType="flat" name="sys_title" sequence="0" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_title</SOURCE>
+               <DISPLAYID>0</DISPLAYID>
+            </PSXKey>
+            <Description>The title of the item.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Checkout status" groupingType="flat" name="sys_checkoutstatus" sequence="1" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_checkoutstatus</SOURCE>
+               <DISPLAYID>0</DISPLAYID>
+            </PSXKey>
+            <Description>The status whether or not the content is checked out.</Description>
+            <RenderType>Image</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="State" groupingType="flat" name="sys_statename" sequence="2" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_statename</SOURCE>
+               <DISPLAYID>0</DISPLAYID>
+            </PSXKey>
+            <Description>The current document workflow state.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Content Type" groupingType="flat" name="sys_contenttypename" sequence="3" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contenttypename</SOURCE>
+               <DISPLAYID>0</DISPLAYID>
+            </PSXKey>
+            <Description>The document content type.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+      </PSXDFColumns>
+      <PSX_PROPERTIES url="http://127.0.0.1:9992/Rhythmyx/sys_DisplayFormats/getDisplayProperties.xml?id=0"/>
+   </PSXDisplayFormat>
+   <PSXDisplayFormat state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <DISPLAYID>2</DISPLAYID>
+      </PSXKey>
+      <DISPLAYNAME>Extended</DISPLAYNAME>
+      <INTERNALNAME>Extended</INTERNALNAME>
+      <DESCRIPTION>Extended folder display format.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSXDFColumns className="com.percussion.cms.objectstore.PSDisplayColumn" state="db_unmodified">
+         <PSXDisplayColumn displayName="Content Title" groupingType="flat" name="sys_title" sequence="0" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_title</SOURCE>
+               <DISPLAYID>2</DISPLAYID>
+            </PSXKey>
+            <Description>The title of the item.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Checkout status" groupingType="flat" name="sys_checkoutstatus" sequence="1" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_checkoutstatus</SOURCE>
+               <DISPLAYID>2</DISPLAYID>
+            </PSXKey>
+            <Description>The status whether or not the content is checked out.</Description>
+            <RenderType>Image</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="State" groupingType="flat" name="sys_statename" sequence="2" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_statename</SOURCE>
+               <DISPLAYID>2</DISPLAYID>
+            </PSXKey>
+            <Description>The current document workflow state.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Content Type" groupingType="flat" name="sys_contenttypename" sequence="3" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contenttypename</SOURCE>
+               <DISPLAYID>2</DISPLAYID>
+            </PSXKey>
+            <Description>The document content type.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Author" groupingType="flat" name="sys_contentcreatedby" sequence="4" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contentcreatedby</SOURCE>
+               <DISPLAYID>2</DISPLAYID>
+            </PSXKey>
+            <Description>The name of the author.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Last Modified" groupingType="flat" name="sys_contentlastmodifieddate" sequence="5" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contentlastmodifieddate</SOURCE>
+               <DISPLAYID>2</DISPLAYID>
+            </PSXKey>
+            <Description>The date when last modified.</Description>
+            <RenderType>Date</RenderType>
+         </PSXDisplayColumn>
+      </PSXDFColumns>
+      <PSX_PROPERTIES url="http://127.0.0.1:9992/Rhythmyx/sys_DisplayFormats/getDisplayProperties.xml?id=2"/>
+   </PSXDisplayFormat>
+   <PSXDisplayFormat state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <DISPLAYID>8</DISPLAYID>
+      </PSXKey>
+      <DISPLAYNAME>Ranked Search Results</DISPLAYNAME>
+      <INTERNALNAME>RankedSearchResults</INTERNALNAME>
+      <DESCRIPTION>Search results sorted descending by rank.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSXDFColumns className="com.percussion.cms.objectstore.PSDisplayColumn" state="db_unmodified">
+         <PSXDisplayColumn displayName="Content Title" groupingType="flat" name="sys_title" sequence="0" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_title</SOURCE>
+               <DISPLAYID>8</DISPLAYID>
+            </PSXKey>
+            <Description>The system title of the content item.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Rank" groupingType="flat" name="sys_relevancy" sequence="1" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_relevancy</SOURCE>
+               <DISPLAYID>8</DISPLAYID>
+            </PSXKey>
+            <Description>The relevancy ranking of the item within the results.</Description>
+            <RenderType>Number</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Checkout status" groupingType="flat" name="sys_checkoutstatus" sequence="2" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_checkoutstatus</SOURCE>
+               <DISPLAYID>8</DISPLAYID>
+            </PSXKey>
+            <Description>The status whether or not the content is checked out.</Description>
+            <RenderType>Image</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="State" groupingType="flat" name="sys_statename" sequence="3" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_statename</SOURCE>
+               <DISPLAYID>8</DISPLAYID>
+            </PSXKey>
+            <Description>The current document workflow state.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Content Type" groupingType="flat" name="sys_contenttypename" sequence="4" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contenttypename</SOURCE>
+               <DISPLAYID>8</DISPLAYID>
+            </PSXKey>
+            <Description>The document content type.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+      </PSXDFColumns>
+      <PSX_PROPERTIES url="http://127.0.0.1:9992/Rhythmyx/sys_DisplayFormats/getDisplayProperties.xml?id=8"/>
+   </PSXDisplayFormat>
+   <PSXDisplayFormat state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <DISPLAYID>6</DISPLAYID>
+      </PSXKey>
+      <DISPLAYNAME>Related Content By Type</DISPLAYNAME>
+      <INTERNALNAME>Related_Content_By_Type</INTERNALNAME>
+      <DESCRIPTION>Related Content search results by type.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSXDFColumns className="com.percussion.cms.objectstore.PSDisplayColumn" state="db_unmodified">
+         <PSXDisplayColumn displayName="Content Title" groupingType="flat" name="sys_title" sequence="0" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_title</SOURCE>
+               <DISPLAYID>6</DISPLAYID>
+            </PSXKey>
+            <Description>The title of the item.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Checkout status" groupingType="flat" name="sys_checkoutstatus" sequence="1" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_checkoutstatus</SOURCE>
+               <DISPLAYID>6</DISPLAYID>
+            </PSXKey>
+            <Description>The status whether or not the content is checked out.</Description>
+            <RenderType>Image</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="State" groupingType="flat" name="sys_statename" sequence="2" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_statename</SOURCE>
+               <DISPLAYID>6</DISPLAYID>
+            </PSXKey>
+            <Description>The current document workflow state.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Content Type" groupingType="categorized" name="sys_contenttypeid" sequence="3" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contenttypeid</SOURCE>
+               <DISPLAYID>6</DISPLAYID>
+            </PSXKey>
+            <Description>The document content type.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Variant" groupingType="flat" name="sys_variantid" sequence="4" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_variantid</SOURCE>
+               <DISPLAYID>6</DISPLAYID>
+            </PSXKey>
+            <Description>The document variant.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+      </PSXDFColumns>
+      <PSX_PROPERTIES url="http://127.0.0.1:9992/Rhythmyx/sys_DisplayFormats/getDisplayProperties.xml?id=6"/>
+   </PSXDisplayFormat>
+   <PSXDisplayFormat state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <DISPLAYID>7</DISPLAYID>
+      </PSXKey>
+      <DISPLAYNAME>Related Content By Variant</DISPLAYNAME>
+      <INTERNALNAME>Related_Content_By_Variant</INTERNALNAME>
+      <DESCRIPTION>Related Content search results by variant.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSXDFColumns className="com.percussion.cms.objectstore.PSDisplayColumn" state="db_unmodified">
+         <PSXDisplayColumn displayName="Content Title" groupingType="flat" name="sys_title" sequence="0" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_title</SOURCE>
+               <DISPLAYID>7</DISPLAYID>
+            </PSXKey>
+            <Description>The title of the item.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Checkout status" groupingType="flat" name="sys_checkoutstatus" sequence="1" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_checkoutstatus</SOURCE>
+               <DISPLAYID>7</DISPLAYID>
+            </PSXKey>
+            <Description>The status whether or not the content is checked out.</Description>
+            <RenderType>Image</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="State" groupingType="flat" name="sys_statename" sequence="2" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_statename</SOURCE>
+               <DISPLAYID>7</DISPLAYID>
+            </PSXKey>
+            <Description>The current document workflow state.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Content Type" groupingType="flat" name="sys_contenttypeid" sequence="3" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contenttypeid</SOURCE>
+               <DISPLAYID>7</DISPLAYID>
+            </PSXKey>
+            <Description>The document content type.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Variant" groupingType="categorized" name="sys_variantid" sequence="4" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_variantid</SOURCE>
+               <DISPLAYID>7</DISPLAYID>
+            </PSXKey>
+            <Description>The document variant.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+      </PSXDFColumns>
+      <PSX_PROPERTIES url="http://127.0.0.1:9992/Rhythmyx/sys_DisplayFormats/getDisplayProperties.xml?id=7"/>
+   </PSXDisplayFormat>
+   <PSXDisplayFormat state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <DISPLAYID>1</DISPLAYID>
+      </PSXKey>
+      <DISPLAYNAME>Simple</DISPLAYNAME>
+      <INTERNALNAME>Simple</INTERNALNAME>
+      <DESCRIPTION>Simple folder display format.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSXDFColumns className="com.percussion.cms.objectstore.PSDisplayColumn" state="db_unmodified">
+         <PSXDisplayColumn displayName="Content Title" groupingType="flat" name="sys_title" sequence="0" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_title</SOURCE>
+               <DISPLAYID>1</DISPLAYID>
+            </PSXKey>
+            <Description>The title of the item.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Checkout status" groupingType="flat" name="sys_checkoutstatus" sequence="1" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_checkoutstatus</SOURCE>
+               <DISPLAYID>1</DISPLAYID>
+            </PSXKey>
+            <Description>The status whether or not the content is checked out.</Description>
+            <RenderType>Image</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="State" groupingType="flat" name="sys_statename" sequence="2" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_statename</SOURCE>
+               <DISPLAYID>1</DISPLAYID>
+            </PSXKey>
+            <Description>The current document workflow state.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+         <PSXDisplayColumn displayName="Content Type" groupingType="flat" name="sys_contenttypename" sequence="3" sortOrder="ascending" state="db_unmodified" width="">
+            <PSXKey isPersisted="yes">
+               <SOURCE>sys_contenttypename</SOURCE>
+               <DISPLAYID>1</DISPLAYID>
+            </PSXKey>
+            <Description>The document content type.</Description>
+            <RenderType>Text</RenderType>
+         </PSXDisplayColumn>
+      </PSXDFColumns>
+      <PSX_PROPERTIES url="http://127.0.0.1:9992/Rhythmyx/sys_DisplayFormats/getDisplayProperties.xml?id=1"/>
+   </PSXDisplayFormat>
+</PSXDbComponentCollection>

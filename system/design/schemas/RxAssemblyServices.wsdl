@@ -1,0 +1,65 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/assembly/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://www.w3.org/2001/XMLSchema" xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:ap="urn:www.percussion.com/webservices/assembly" targetNamespace="urn:www.percussion.com/webservices/assembly/wsdl">
+	<import namespace="urn:www.percussion.com/webservices/header" location="sys_Header.xsd"/>
+	<import namespace="urn:www.percussion.com/webservices/assembly" location="sys_AssemblyParameters.xsd"/>
+	<message name="header-request">
+		<part name="Authentication" element="hdr:Authentication"/>
+	</message>
+	<message name="header-response">
+		<part name="HeaderResponse" element="hdr:HeaderResponse"/>
+	</message>
+	<message name="createVariant-request">
+		<part name="parameters" element="ap:createVariant"/>
+	</message>
+	<message name="createVariant-response">
+		<part name="parameters" element="ap:CreateVariantResponse"/>
+	</message>
+	<portType name="AssemblyPort">
+		<operation name="createVariant">
+			<input message="tns:createVariant-request"/>
+			<output message="tns:createVariant-response"/>
+		</operation>
+	</portType>
+	<binding name="AssemblyBinding" type="tns:AssemblyPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="createVariant">
+			<soap:operation soapAction="urn:#createVariant"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="AssemblyServices">
+		<port name="AssemblyPort" binding="tns:AssemblyBinding">
+			<soap:address location="http://localhost:9980/RxServices/servlet/messagerouter"/>
+		</port>
+	</service>
+</definitions>

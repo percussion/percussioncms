@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- The 1st example sets up the edition 301 (name=EI_Full) to publish on the
+     "Direct to Public" Transitions (id=3) for the Standard Workflow (id=5). 
+     The 2nd example sets up the edition 301 (name=EI_Full) to publish on the 
+     "Republish" Transitions (id=1) for the Standard Workflow (id=5).
+     
+	  Make your additions and removals below 
+-->
+<PSXConfig polling-time="1500">
+<!-- The attribute polling-time is the time between two successive attempts to publish an 
+edition when the same edition is already running. Longer the interval fewer will be 
+the requests to the server but more time lag between the transition and publishing 
+-->
+	<PSXPublish>
+	    <PSXWorkflowId>5</PSXWorkflowId>
+	    <PSXTransitionId>3</PSXTransitionId>
+	    <PSXEdition>301</PSXEdition> 		
+	</PSXPublish>
+	<PSXPublish>
+	    <PSXWorkflowId>5</PSXWorkflowId>
+	    <PSXTransitionId>1</PSXTransitionId>
+	    <PSXEdition>301</PSXEdition> 		
+	</PSXPublish>
+</PSXConfig>

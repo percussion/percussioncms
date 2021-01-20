@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Paul Howard (Percussion Software) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:element name="CM1DataDef">
+        <xs:annotation>
+            <xs:documentation>A definition for sites/templates/assets and pages in a CM1 system. This file can be processed by a data generator to create all the design objects and content in any system.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="SiteDefs" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="SiteDef" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="HomePageTitle" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="NavTitle" type="xs:string" minOccurs="0"/>
+                                        <xs:element ref="TemplateDef"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="TemplateDefs" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="TemplateDef" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="SectionDefs" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="SectionDef" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="LinkTitle" type="xs:string" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation>Defaults to the name of the section.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="templateName" type="xs:string" use="required"/>
+                                    <xs:attribute name="name" type="xs:string" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>The name of the section folder.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="copyTemplates" type="xs:boolean" default="false"/>
+                                    <xs:attribute name="sectionType" use="optional">
+										<xs:annotation>
+											<xs:documentation>The type of the section folder.</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="blog"/>
+												<xs:enumeration value="externallink"/>
+												<xs:enumeration value="section"/>
+												<xs:enumeration value="sectionlink"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="blogPostTemplate" type="xs:string" use="optional">
+										<xs:annotation>
+											<xs:documentation>The name of the blog template.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="externalUrl" type="xs:string" use="optional"/>
+									<xs:attribute name="targetSection" type="xs:string" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="parentPath" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The full path, relative to the /Sites node, of the parent of all child SectionDef nodes. Must be a section or site itself, and must exist by the time this node is processed.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="AssetFolder" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="AssetDef" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                        <xs:attribute name="path" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The path should be relative to the /Assets node, e.g. /foo means /Assets/foo.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="SiteFolder" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="PageDef" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="LinkTitle" type="xs:string" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation>Defaults to the name of the page.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="PageTitle" type="xs:string" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation>Defaults to the LinkTitle</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="MetaPageDescription" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="AdditionalHeadContent" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="AfterBodyStart" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="BeforeBodyClose" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="Field" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>Any additional page metadata properties can be specified as arbitrary fields. The name should be the property name as specified in the page content type.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:anySimpleType">
+                                                        <xs:attribute name="name" type="xs:string" use="required"/>
+                                                        <xs:attribute name="href" type="xs:string" use="optional">
+                                                            <xs:annotation>
+                                                                <xs:documentation>If this value is specified, it is a link whose content will be used as the content for this field. Otherwise, the value of this element is the value of the field. If the path is relative, it is interpreted relative to the location of the xml file containing the definition.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element ref="Widget" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                    <xs:attribute name="templateName" use="required">
+                                        <xs:simpleType>
+                                            <xs:list itemType="xs:string"/>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="targetStateName" use="optional">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="Draft"/>
+                                                <xs:enumeration value="Pending"/>
+                                                <xs:enumeration value="Review"/>
+                                                <xs:enumeration value="Live"/>
+                                                <xs:enumeration value="Quick Edit"/>
+                                                <xs:enumeration value="Archive"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="blogPostTemplate" type="xs:string" use="optional">
+										<xs:annotation>
+											<xs:documentation>The name of the blog post template</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="path" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The path should be relative to /Sites, e.g. /foo would mean /Sites/foo.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="AutoGen" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>This data is used to automatically generate folders, assets and pages, distributed in a controlled fashion without having to enter data for them. Generally, this is useful for performance/stress testing.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Folders" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="basePath" type="xs:string" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>The generated folders are all descendents of this folder. The path is relative to either /Sites or /Assets, determined by the type property.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="count" type="xs:int" use="optional" default="100"/>
+                                    <xs:attribute name="maxDepth" type="xs:int" use="optional" default="10"/>
+                                    <xs:attribute name="breadthFactor" type="xs:float" use="optional" default=".5"/>
+                                    <xs:attribute name="baseNames" type="xs:string" use="optional" default="folder"/>
+                                    <xs:attribute name="type" use="required">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:NMTOKEN">
+                                                <xs:enumeration value="Assets"/>
+                                                <xs:enumeration value="Sites"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Assets" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="AssetGroup" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="AssetDefName" type="xs:string" maxOccurs="unbounded">
+                                                        <xs:annotation>
+                                                            <xs:documentation>The name of an AssetDef within this file. If not found, a warning is logged and the name is skipped. If no names are found, no assets will be generated from this group and a warning will be logged. Names are case-insensitive. If you don't care about this level of control, then just use the Assets node with no AssetGroups - this will randomly select from all AssetDefs.</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="count" type="xs:positiveInteger" use="optional" default="10">
+                                                    <xs:annotation>
+                                                        <xs:documentation>How many assets to create. Each asset is generated from a randomly chosen def from a set defined by all the asset defs named in the child elements of this group.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="basePath" type="xs:string" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>A folder path under /Assets. If any parts of the path don't exist, they will be created. Each generated asset will either be placed in this folder or a descendent folder that is already present. For example, if you specify /foo, the asset will be placed in /Assets/foo.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="count" type="xs:positiveInteger" use="optional" default="1">
+                                        <xs:annotation>
+                                            <xs:documentation>Only used if there are no AssetGroup children. In that case, it indicates how many assets to create, using all AssetDefs in all AssetFolders, chosen randomly.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Pages" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="PageGroup" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="PageDefName" type="xs:string" maxOccurs="unbounded">
+                                                        <xs:annotation>
+                                                            <xs:documentation>See AssetDefName - works the same way, except substitue PageDef for AssetDef.</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="count" type="xs:positiveInteger" use="optional" default="10"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="basePath" type="xs:string" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>A folder path under /Sites. If any parts of the path don't exist, they will be created. Each generated page will either be placed in this folder or a descendent folder that is already present. For example, if you specify /foo, the page will be placed in /Sites/foo.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="count" type="xs:positiveInteger" use="optional" default="10"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="basePath" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>Default folder for all child elements. If a child element specifies its own basePath, that value overrides this one. Is relative to /Sites (for Pages) or /Assets (for Assets).</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TemplateDef">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="BodyMarkup" type="xs:string" minOccurs="0"/>
+                <xs:element name="CssOverride" type="xs:string" minOccurs="0"/>
+                <xs:element name="AdditionalHeadContent" type="xs:string" minOccurs="0"/>
+                <xs:element name="AfterBodyStart" type="xs:string" minOccurs="0"/>
+                <xs:element name="BeforeBodyClose" type="xs:string" minOccurs="0"/>
+                <xs:element name="RegionDef" minOccurs="0">
+                    <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attribute name="parentRegion" type="xs:string" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element ref="Widget" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The name is optional when in the context of a site, otherwise, it is required. When in the context of a site, if not provided, the site's name + 'Template' is used as the template name.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="label" type="xs:string" use="optional"/>
+            <xs:attribute name="siteName" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>This is optional if the context provides a siteName (i.e. some ancestor element has a required site name), otherwise it is required.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="baseTemplateName" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AssetDef">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Field" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:anySimpleType">
+                                <xs:attribute name="name" type="xs:string" use="required"/>
+                                <xs:attribute name="href" type="xs:string" use="optional">
+                                    <xs:annotation>
+                                        <xs:documentation>If this value is specified, it is a link whose content will be used as the content for this field. Otherwise, the value of this element is the value of the field. If the path is relative, it is interpreted relative to the location of the xml file containing the definition.</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="contentType" type="xs:string" use="required"/>
+            <xs:attribute name="targetStateName" type="xs:string" use="optional" default="Draft"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Widget">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="AssetDef" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="widgetName" type="xs:string" use="required"/>
+            <xs:attribute name="regionName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>The widget will be added the region that matches this name (case-insensitive), in the order they appear in the def doc.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="contentSource" use="optional" default="shared">
+                <xs:annotation>
+                    <xs:documentation>If the value is 'local', then a child AssetDef node is expected. Otherwise, the name of the existing asset should be placed in the sourceAssetName attribute. If you aren't setting any content now, leave it as shared.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="local"/>
+                        <xs:enumeration value="shared"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="sourceAssetName" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>If the contentSource attribute is 'shared', then this attribute is checked for the name of the linked asset. If not present, then no asset is linked. It should be the full path, relative to the /Assets node.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

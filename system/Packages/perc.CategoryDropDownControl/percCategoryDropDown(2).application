@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Child (Child* )>
+<!ATTLIST  Child title CDATA #REQUIRED>
+<!ATTLIST  Child showInPgMetaData CDATA #REQUIRED>
+<!ATTLIST  Child selectable CDATA #REQUIRED>
+<!ATTLIST  Child previousCategoryName CDATA #IMPLIED>
+<!ATTLIST  Child lastModifiedDate CDATA #IMPLIED>
+<!ATTLIST  Child lastModifiedBy CDATA #IMPLIED>
+<!ATTLIST  Child initialViewCollapsed CDATA #REQUIRED>
+<!ATTLIST  Child id CDATA #REQUIRED>
+<!ATTLIST  Child deleted CDATA #REQUIRED>
+<!ATTLIST  Child creationDate CDATA #REQUIRED>
+<!ATTLIST  Child createdBy CDATA #REQUIRED>
+<!ELEMENT Children (Child+ )>
+<!ATTLIST  Children title CDATA #REQUIRED>
+<!ATTLIST  Children showInPgMetaData CDATA #REQUIRED>
+<!ATTLIST  Children selectable CDATA #REQUIRED>
+<!ATTLIST  Children previousCategoryName CDATA #IMPLIED>
+<!ATTLIST  Children lastModifiedDate CDATA #IMPLIED>
+<!ATTLIST  Children lastModifiedBy CDATA #IMPLIED>
+<!ATTLIST  Children initialViewCollapsed CDATA #REQUIRED>
+<!ATTLIST  Children id CDATA #REQUIRED>
+<!ATTLIST  Children deleted CDATA #REQUIRED>
+<!ATTLIST  Children creationDate CDATA #IMPLIED>
+<!ATTLIST  Children createdBy CDATA #IMPLIED>
+<!ELEMENT CategoryTree (Children+ )>
+<!ATTLIST  CategoryTree title CDATA #REQUIRED>
+<!ATTLIST  CategoryTree sitename CDATA #REQUIRED>

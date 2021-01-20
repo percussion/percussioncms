@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT savedsearcheslist (currentpsfirst, username, list* )>
+<!ELEMENT list (editlink, deletelink, searchid, searchname )>
+<!ELEMENT searchname (#PCDATA)>
+<!ELEMENT searchid (#PCDATA)>
+<!ELEMENT deletelink (#PCDATA)>
+<!ELEMENT editlink (#PCDATA)>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT currentpsfirst (#PCDATA)>
+<!ATTLIST  savedsearcheslist xml:lang CDATA #IMPLIED>

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT searchcomponent (pagename, componentname, cmpname, componentid, componentdesc, componenturl, componenttype, componentdisplayname )>
+<!ELEMENT componentdisplayname (#PCDATA)>
+<!ELEMENT componenttype (#PCDATA)>
+<!ELEMENT componenturl (#PCDATA)>
+<!ELEMENT componentdesc (#PCDATA)>
+<!ELEMENT componentid (#PCDATA)>
+<!ELEMENT cmpname (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>

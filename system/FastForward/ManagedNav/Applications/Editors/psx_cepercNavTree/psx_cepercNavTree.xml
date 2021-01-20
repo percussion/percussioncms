@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXApplication active="no" appType="CONTENT_EDITOR" enabled="yes" hidden="no" id="1058" startPriority="0" version="2.0">
+   <name>psx_cepercNavTree</name>
+   <description>NavTree Content Editor</description>
+   <requestRoot>psx_cepercNavTree</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/_MSTARCKY_1070921424919/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20031208T170553542</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="26">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20040518T171104406</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>-1</maxThreads>
+   <maxRequestTime>-1</maxRequestTime>
+   <maxRequestsInQueue>-1</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>1</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="877">
+      <name>purge</name>
+      <description>Purge Resource for NavTree</description>
+      <transactionType>forAllRows</transactionType>
+      <PSXUpdatePipe id="875">
+         <name>UpdatePipe</name>
+         <description/>
+         <PSXBackEndDataTank id="874">
+            <PSXBackEndTable id="872">
+               <alias>RXS_CT_NAVTREE</alias>
+               <table>RXS_CT_NAVTREE</table>
+               <datasource/>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="873">
+               <alias>RXS_CT_SHARED</alias>
+               <table>RXS_CT_SHARED</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="869" returnEmptyXml="no">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXSingleHtmlParameter id="0">
+                  <name>sys_contentid</name>
+               </PSXSingleHtmlParameter>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_NAVTREE</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="2" id="0">
+               <PSXSingleHtmlParameter id="0">
+                  <name>sys_contentid</name>
+               </PSXSingleHtmlParameter>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSynchronizer allowDeletes="yes" allowInserts="no" allowUpdates="no" id="870">
+            <PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_NAVTREE</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </PSXUpdateColumn>
+            <PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHARED</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </PSXUpdateColumn>
+         </PSXDataSynchronizer>
+      </PSXUpdatePipe>
+      <PSXPageDataTank id="876">
+         <schemaSource>file:rx_zho_RXS_CT_NAVTREE.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>purge</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+   </PSXDataSet>
+   <PSXContentEditor contentType="315" enableRelatedContent="yes" iconSource="1" iconValue="percNavTree.gif" objectType="1" workflowId="4">
+      <PSXDataSet id="880">
+         <name>percNavTree</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <InputDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="0">
+                     <name>Java/global/percussion/extensions/general/sys_NullIf</name>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>0</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>no_selector</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>no_variable</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="275">
+                        <alias>contentCredential</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="RXS_CT_NAVTREE" name="RXS_CT_NAVTREE"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <SharedFieldIncludes>
+                  <SharedFieldGroupName>shared</SharedFieldGroupName>
+                  <SharedFieldExcludes>
+                     <FieldRef>body</FieldRef>
+                     <FieldRef>callout</FieldRef>
+                     <FieldRef>description</FieldRef>
+                     <FieldRef>filename</FieldRef>
+                     <FieldRef>keywords</FieldRef>
+                     <FieldRef>webdavowner</FieldRef>
+                  </SharedFieldExcludes>
+               </SharedFieldIncludes>
+               <PSXFieldSet name="rxs_ct_navtree" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="no_propagate" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXS_CT_NAVTREE</tableAlias>
+                           <column>NT_PROPAGATE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>1</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXVisibilityRules dataHiding="xsl">
+                           <PSXRule boolean="and">
+                              <PSXConditional id="0">
+                                 <variable>
+                                    <PSXSingleHtmlParameter id="0">
+                                       <name>sys_contentid</name>
+                                    </PSXSingleHtmlParameter>
+                                 </variable>
+                                 <operator>IS NULL</operator>
+                                 <value>
+                                    <PSXTextLiteral id="0">
+                                       <text>1</text>
+                                    </PSXTextLiteral>
+                                 </value>
+                                 <boolean>AND</boolean>
+                              </PSXConditional>
+                           </PSXRule>
+                        </PSXVisibilityRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="no_selector" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXS_CT_NAVTREE</tableAlias>
+                           <column>NO_SELECTOR</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="no_variable" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXS_CT_NAVTREE</tableAlias>
+                           <column>NO_VARIABLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="nt_theme" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXS_CT_NAVTREE</tableAlias>
+                           <column>NT_THEME</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <FieldRules>
+                        <PSXFieldValidationRules maxErrorsToStop="10" name="isValidTheme">
+                           <PSXRule boolean="and">
+                              <PSXConditional id="1">
+                                 <variable>
+                                    <PSXHtmlParameter id="0">
+                                       <name>nt_theme</name>
+                                    </PSXHtmlParameter>
+                                 </variable>
+                                 <operator>IS NOT NULL</operator>
+                                 <value>
+                                    <PSXTextLiteral id="0">
+                                       <text/>
+                                    </PSXTextLiteral>
+                                 </value>
+                                 <boolean>AND</boolean>
+                              </PSXConditional>
+                           </PSXRule>
+                           <PSXApplyWhen ifFieldEmpty="no"/>
+                           <ErrorMessage>
+                              <PSXDisplayText>Theme field cannot be empty</PSXDisplayText>
+                           </ErrorMessage>
+                        </PSXFieldValidationRules>
+                     </FieldRules>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="rxs_ct_navtree" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet accessKey="s"/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>displaytitle</FieldRef>
+                        <PSXUISet accessKey="t"/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentstartdate</FieldRef>
+                        <PSXUISet accessKey="D"/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>nt_theme</FieldRef>
+                        <PSXUISet accessKey="h">
+                           <Label>
+                              <PSXDisplayText>Theme:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="514" name="sys_DropDownSingle"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Theme:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="user" type="global">
+                              <Key>331</Key>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>no_propagate</FieldRef>
+                        <PSXUISet accessKey="g">
+                           <Label>
+                              <PSXDisplayText>Propagate:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="528" name="sys_SingleCheckBox"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Propagate:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="local">
+                              <PSXEntry default="no" sequence="0">
+                                 <PSXDisplayText>Yes</PSXDisplayText>
+                                 <Value>1</Value>
+                              </PSXEntry>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>no_selector</FieldRef>
+                        <PSXUISet accessKey="S">
+                           <Label>
+                              <PSXDisplayText>Image Selector:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="4611" name="sys_DropDownSingle"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Image Selector:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="global">
+                              <Key>328</Key>
+                              <PSXNullEntry includeWhen="always" sortOrder="first">
+                                 <PSXEntry default="yes" sequence="-1">
+                                    <PSXDisplayText>None</PSXDisplayText>
+                                    <Value>0</Value>
+                                 </PSXEntry>
+                              </PSXNullEntry>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>no_variable</FieldRef>
+                        <PSXUISet accessKey="V">
+                           <Label>
+                              <PSXDisplayText>Variable Selector:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="4673" name="sys_DropDownSingle"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Variable Selector:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="internalLookup">
+                              <PSXUrlRequest>
+                                 <Href>../rxs_navSupport/VarSelector</Href>
+                                 <Anchor/>
+                              </PSXUrlRequest>
+                              <PSXNullEntry includeWhen="always" sortOrder="first">
+                                 <PSXEntry default="yes" sequence="-1">
+                                    <PSXDisplayText>None</PSXDisplayText>
+                                    <Value>0</Value>
+                                 </PSXEntry>
+                              </PSXNullEntry>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet accessKey="m"/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet accessKey="w"/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet accessKey="l"/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+         </PSXContentEditorPipe>
+         <PSXPageDataTank id="879">
+            <schemaSource>file:navtree.xml</schemaSource>
+            <actionTypeXmlField/>
+         </PSXPageDataTank>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>percNavTree</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="4,5"/>
+   </PSXContentEditor>
+   <PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+   <PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+   <PSXErrorWebPages id="866" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="867">
+      <providerType>SMTP</providerType>
+      <server>JB</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="pageDatatankSrcType879">1</userProperty>
+   <userProperty name="pageDatatankSrcType876">3</userProperty>
+   <userProperty name="873locationy">20</userProperty>
+   <userProperty name="873locationx">20</userProperty>
+   <userProperty name="locationX878">10</userProperty>
+   <userProperty name="locationX877">141</userProperty>
+   <userProperty name="locationX876">0</userProperty>
+   <userProperty name="locationX875">10</userProperty>
+   <userProperty name="locationX874">357</userProperty>
+   <userProperty name="872sizeheight">200</userProperty>
+   <userProperty name="locationX871">303</userProperty>
+   <userProperty name="locationX870">236</userProperty>
+   <userProperty name="872sizewidth">120</userProperty>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="schemaSourceReadOnly879">false</userProperty>
+   <userProperty name="locationY880">18</userProperty>
+   <userProperty name="schemaSourceReadOnly876">true</userProperty>
+   <userProperty name="872readonly">false</userProperty>
+   <userProperty name="873sizewidth">120</userProperty>
+   <userProperty name="pageDatatankSrcType868">3</userProperty>
+   <userProperty name="locationX869">169</userProperty>
+   <userProperty name="locationX868">0</userProperty>
+   <userProperty name="locationX867">16</userProperty>
+   <userProperty name="locationX866">16</userProperty>
+   <userProperty name="locationX865">16</userProperty>
+   <userProperty name="locationY878">22</userProperty>
+   <userProperty name="locationY877">19</userProperty>
+   <userProperty name="locationY876">0</userProperty>
+   <userProperty name="locationY875">10</userProperty>
+   <userProperty name="locationY874">0</userProperty>
+   <userProperty name="873sizeheight">200</userProperty>
+   <userProperty name="locationY871">24</userProperty>
+   <userProperty name="schemaSourceReadOnly868">true</userProperty>
+   <userProperty name="locationY870">24</userProperty>
+   <userProperty name="873readonly">false</userProperty>
+   <userProperty name="enabled871">true</userProperty>
+   <userProperty name="locationY869">24</userProperty>
+   <userProperty name="locationY868">0</userProperty>
+   <userProperty name="locationY867">100</userProperty>
+   <userProperty name="locationY866">55</userProperty>
+   <userProperty name="pageDatatankFilePath879">D:\clients\ManagedNav\Applications\rxs_NavTree_ce\navtree.xml</userProperty>
+   <userProperty name="locationX880">33</userProperty>
+   <userProperty name="locationY865">10</userProperty>
+   <userProperty name="872locationy">20</userProperty>
+   <userProperty name="872locationx">20</userProperty>
+</PSXApplication>

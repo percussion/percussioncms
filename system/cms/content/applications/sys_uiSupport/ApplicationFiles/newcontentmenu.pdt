@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (displaytext*, url* )>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT displaytext (#PCDATA)>
+<!ELEMENT newcontentmenu (item* )>

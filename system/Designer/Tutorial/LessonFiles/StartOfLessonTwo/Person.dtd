@@ -1,0 +1,7 @@
+<!ELEMENT Telephone (#PCDATA)>
+<!ELEMENT Person (Name*, Title*, Telephone*, Email*)>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT Last (#PCDATA)>
+<!ELEMENT Name (First*, Last*)>
+<!ELEMENT Email (#PCDATA)>
+<!ELEMENT First (#PCDATA)>

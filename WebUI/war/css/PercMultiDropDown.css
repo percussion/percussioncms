@@ -1,0 +1,153 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.ui-multiselect { padding:2px 0 2px 4px; text-align:left }
+.ui-multiselect span.ui-icon { float:right }
+.ui-multiselect-single .ui-multiselect-checkboxes input { position:absolute !important; top: auto !important; left:-9999px; }
+.ui-multiselect-single .ui-multiselect-checkboxes label { padding:5px !important }
+
+.ui-multiselect-header { margin-bottom:3px; padding:3px 0 3px 7px }
+.ui-multiselect-header ul { font-size:0.9em }
+.ui-multiselect-header ul li { float:right; padding:0 10px 0 0 }
+.ui-multiselect-header ul li:first-child {float:left}
+.ui-multiselect-header a { text-decoration:none }
+.ui-multiselect-header a:hover { text-decoration:underline }
+.ui-multiselect-header span.ui-icon { float:left }
+.ui-multiselect-header li.ui-multiselect-close { float:right; text-align:right; padding-right:0 }
+
+.ui-multiselect-menu { display:none; padding:0px; position:absolute; z-index:10000;  -moz-box-shadow: 6px 6px 3px 0 #bbbbbb; box-shadow: 6px 6px 3px 0 #bbbbbb; -webkit-box-shadow:6px 6px 3px 0 #bbbbbb; }
+.ui-multiselect-checkboxes { position:relative /* fixes bug in IE6/7 */; overflow-y:auto }
+.ui-multiselect-checkboxes label { cursor:default; display:block; border:0px solid transparent; padding:3px 1px 1px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; width:190px;}
+.ui-multiselect-checkboxes label input { position:relative; top:1px }
+.ui-multiselect-checkboxes li { clear:both; font-size:0.9em; padding-right:3px; }
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label { text-align:center; font-weight:bold; border-bottom:1px solid }
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a { display:block; padding:3px; margin:1px 0; text-decoration:none }
+
+/* remove label borders in IE6 because IE6 does not support transparency */
+* html .ui-multiselect-checkboxes label { border:none }
+
+.ui-multiselect-menu .ui-state-hover {
+    background: none;
+    border: 1px solid transparent;
+    outline: none;
+}
+
+button.ui-multiselect.ui-corner-all, .ui-multiselect-menu.ui-widget.ui-widget-content.ui-corner-all {
+	border-radius:0px;
+	padding-left:5px;
+}
+.ui-multiselect-menu, a.ui-multiselect-all , a.ui-multiselect-none, .ui-multiselect-checkboxes span{
+	font-weight:normal;
+	font-size:11px;
+	font-family:verdana;
+	text-decoration:none;
+}
+
+button.ui-multiselect {
+	background:none !important;
+	background-color:white !important;
+	border-color: #CECFCE #CECFCE #D6D7DE #D6D7DE !important;
+    border-style: solid !important;
+	border-width: 1px !important;
+    padding-left: 3px !important;
+	height: 25px !important;
+    margin-top: 5px !important;
+}
+
+button.ui-widget, button.ui-widget:hover {
+	font-weight:normal;
+	color:black;
+}
+a.ui-multiselect-close {
+	display:none;
+}
+
+span.ui-icon.ui-icon-check, span.ui-icon.ui-icon-closethick {
+	background-image:none;
+	display:none;
+}
+
+.perc-social-config-gadget-frame span.ui-icon.ui-icon-check, .perc-social-config-gadget-frame span.ui-icon.ui-icon-closethick {
+	display:block;
+	width: 16px; 
+	height: 16px; 
+	background-image: url(/cm/themes/smoothness/images/ui-icons_222222_256x240.png);
+}
+.ui-multiselect-checkboxes input[type="checkbox"] {
+	margin:0px 5px;
+	vertical-align:baseline;
+}
+
+.ui-multiselect-checkboxes {
+	border-top: 1px solid  #CECFCE;
+	padding-top:8px;
+}
+.ui-datepicker-header.ui-widget-header, .ui-datepicker-header .ui-widget-header {
+    background: url("../themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #CCCCCC;
+    border: 1px solid #AAAAAA;
+    color: #222222;
+    font-weight: bold;
+}
+
+.ui-widget-header.ui-multiselect-header {
+	background: none;
+	border:0px solid transparent;	
+}
+.ui-slider-range.ui-slider-range-min.ui-widget-header {
+	background: url("../themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #CCCCCC;
+    border: 1px solid #AAAAAA;
+    color: #222222;
+    font-weight: bold;
+}
+
+ .ui-slider.ui-widget-content {
+    background: url("../themes/smoothness/images/ui-bg_flat_75_ffffff_40x100.png") repeat-x scroll 50% 50% #FFFFFF;
+    border: 1px solid #AAAAAA;
+    color: #222222;
+}
+
+#ui-timepicker-div {
+	border:1px solid #AAAAAA;
+}
+
+#perc-content-edit-page_calendar  input.perc-datetime-picker {
+    background-color: #CCCCCC;
+    border: 1px inset #999999;
+    color: #333333;
+    font-family: Verdana;
+    font-size: 11px;
+    font-weight: normal;
+}
+#perc-content-edit-page_calendar  img {
+    margin-top: -5px;
+    padding-left: 3px;
+    vertical-align: middle;
+}
+
+.ui-multiselect-checkboxes label.ui-state-hover {
+    background:none;
+    border:0px solid transparent;
+    padding:0px;
+    margin:0px;
+}

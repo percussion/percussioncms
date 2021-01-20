@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT CopyWorkflowEdit (Workflow*, componentname, relatedlinks )>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT Workflow (UpdateLink, WorkflowName )>
+<!ELEMENT WorkflowName (#PCDATA)>
+<!ELEMENT UpdateLink (#PCDATA)>

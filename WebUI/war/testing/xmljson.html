@@ -1,0 +1,65 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=windows-1250">
+  <meta name="generator" content="PSPad editor, www.pspad.com">
+  <title></title>
+  <link rel="stylesheet" media="screen" type="text/css" href="../css/testsuite.css" />
+  <script src="../jslib/jquery-1.3.2.js"></script>
+  <script src="../jslib/jquery.xmldom-1.0.js"></script>
+  <script src="../jslib/testrunner.js"></script>
+  <script src="../jslib/json.js"></script>
+  <script src="../plugins/perc_utils.js"></script>
+  <script src="../plugins/perc_page_schema.js"></script>
+  <script>
+   $(document).ready(function(){
+           test( "Page object to and from XML", function(){
+
+                var orig_xml = $.perc_schemata.page_test_data;
+
+                var json = $.perc_utils.unxml( $.perc_schemata.page, $.xmlDOM(orig_xml) );
+
+                //Check that the JSON has basic characteristics of the XML
+                equals( json.Page.regionBranches.regions[0].children[0].regionId, 'rid', "XML->JSON preserves structure" );
+
+                var rexml = $.perc_utils.rexml( $.perc_schemata.page, json );
+
+                var rejson = $.perc_utils.unxml( $.perc_schemata.page, $.xmlDOM(rexml) );
+
+                //check that the JSON structure is preserved by translating to and from XML
+                same( rejson, json, "JSON->XML->JSON changes nothing" );
+           }); 
+   });
+  </script>
+  </head>
+  <body>
+  <h1 id="qunit-header">Testing: perc_template_layout_helper.js</h1>
+  <h2 id="banner"></h2>
+  <h2 id="userAgent"></h2>
+  <ol id="tests"></ol>   
+  </body>
+</html>

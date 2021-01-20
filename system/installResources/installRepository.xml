@@ -1,0 +1,186 @@
+<!-- Build file for Rhythmyx repository install -->
+<project name="install" default="install" basedir="..">
+   
+  
+ <!-- Define Derby DB classpath -->
+ <path id="DERBY_TOOL.CLASSPATH">
+   <fileset dir="C:\DevEnv\Installs\dev\Repository\lib">
+     <include name="derby.jar"/>
+     <include name="derbynet.jar"/>
+     <include name="derbyclient.jar"/>
+     <include name="derbytools.jar"/>
+   </fileset>
+ </path>
+ <!-- <classloader name="ant.coreLoader"/>-->
+  <property name="DERBY_PROPS_FILE" value="${install.dir}/Repository/derby.properties"/>
+
+	 <!-- Define Derby DB classpath -->
+	
+  <!-- The main install target -->
+  <target name="install">
+    <echoproperties></echoproperties>
+  
+  	
+    <!-- Call Pre-Install Sequence -->
+    <antcall target="preInstall" inheritrefs="true"/>
+    
+    
+    <!-- Install Rhythmyx Tables -->
+    <echo>Installing repository...</echo>
+ 
+   	<mkdir dir="${install.dir}/logs"/>
+    <PSTableAction
+     
+      repositoryLocation="${install.dir}/rxconfig/Installer/rxrepository.properties"
+      tableFactoryLogFile="${install.dir}/logs/tableFactory.log"
+      tableData="${release.configdir}/cmstableData.xml"
+      tableDef="${release.configdir}/cmstableDef.xml"/>
+    <echo>Repository installation complete...</echo>
+    <antcall target="postInstall" inheritrefs="true"/>
+  </target>
+
+  <!-- Repository Pre-Install sequence -->
+  <target name="preInstall">
+    <!-- Copy MySQL driver for MySQL installs -->
+    <echo>Checking Database Type...</echo>
+    <if>
+      <isset property="mysql.driver.location"/>
+      <then>
+        <echo>Copying MySQL Driver...</echo>
+      	<mkdir dir="${install.mysql}"/>
+        <copy file="${mysql.driver.location}" tofile="${install.mysql}/mysql-connector.jar"/>
+        <copy file="${mysql.driver.location}" tofile="${install.rxlib}/mysql-connector.jar"/>
+      </then>
+    </if>
+  
+    <!-- Setup rxrepository.properties if necessary -->
+    <antcall target="setupRepository" inheritrefs="true"/>
+	<antcall target="setupEmbeddedDB" inheritrefs="true"/>
+        
+    <!-- Convert Oracle Long to LOB -->
+    <PSConvertOraLongToLOB tableNames="NOTIFICATIONS,RXARTICLE,RXARTICLEWORD,RXBRIEF,PSX_ADMINLOOKUP,RXSEARCHES,RXMENUACTION,PSX_PERSISTEDPROPERTYVALUES"/>
+  
+  </target>
+
+  <!-- Repository Post-Install Sequence -->
+  <target name="postInstall">
+    
+    <!-- Create ORACLE TABLE OF NUMBER TYPE -->
+    <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="RX_NUMBER_TABLE"
+                   sqlOracle="CREATE OR REPLACE TYPE RX_NUMBER_TABLE AS TABLE OF NUMBER"/>
+
+    <antcall target="createDerbyPropFile" inheritrefs="true"/>
+  </target>
+
+  <!--==========================================================-->
+  <!-- Setup repository properties (Development only)           -->
+  <!--==========================================================-->
+  <target name="setupRepository" if="DEVELOPMENT">
+    <if>
+      <equals arg1="${install.type}" arg2="new"/>
+      <then>
+        <mkdir dir="${install.Installer}"/>
+        <echoproperties destfile="${install.Installer}/rxrepository.properties" prefix="DB_"/>
+        <echo file="${install.Installer}/rxrepository.properties" append="true">PWD=${db.pass}${line.separator}</echo>
+        <echo file="${install.Installer}/rxrepository.properties" append="true">UID=${db.user}${line.separator}</echo>
+        <echo file="${install.Installer}/rxrepository.properties" append="true">DSCONFIG_NAME=${ds.name}${line.separator}</echo>
+        <PSMakeLasagna root="${install.dir}"/>
+      </then>
+    </if>
+  </target>
+	
+    <!-- Install Embedded Derby DB -->
+	<target name="setupEmbeddedDB">
+		<property file="${install.dir}/rxconfig/Installer/rxrepository.properties" />
+	    <if>
+	      <PSPropertyCondition 
+	      	compareOperator="=="
+	    	isCaseSensitive="false"
+	    	leftSideValue="derby"
+	    	propertyFile="rxconfig/Installer/rxrepository.properties"
+	    	propertyName="DB_DRIVER_NAME"/>
+	      <then>
+            <echo>Unzipping embedded DB</echo>
+            <unzip src="${toolsdir}/Derby/Repository.zip" dest="${install.dir}"/>
+            <copy todir="${install.dir}/AppServer/server/rx/lib"  file="${install.dir}/Repository/lib/derbyclient.jar"/>
+
+            <delete file="${DERBY_PROPS_FILE}" quiet="true"/>
+
+	      	<classloader classpathref="DERBY_TOOL.CLASSPATH"/>
+	  
+            <antcall target="startEmbeddedDB" inheritrefs="true"/>
+            <waitfor maxwait="60" maxwaitunit="second">
+              <socket server="localhost" port="1527"/>
+            </waitfor>
+
+            <echo>Connecting to DB...</echo>
+	      	<echo>classpath - ${DERBY_TOOL.CLASSPATH_STRING}</echo>
+            <sql driver="org.apache.derby.jdbc.ClientDriver"
+              url='jdbc:derby://localhost:1527/${install.dir}/Repository/CMDB;create=true'
+              classpathref="DERBY_TOOL.CLASSPATH"
+              userid="${UID}"
+              password="${PWD}">
+              set schema app;
+            </sql>
+            <echo>DB connection successful...</echo>
+          </then>
+        </if>
+    </target>
+	
+	<target name="startEmbeddedDB">
+	   
+
+	    
+		  <echo>Starting Embedded DB</echo>
+		  <java classname="org.apache.derby.drda.NetworkServerControl"
+		  		classpathref="DERBY_TOOL.CLASSPATH"
+		        fork="yes" 
+		  	    spawn="yes">
+		    <jvmarg value="-Dderby.system.home=${install.dir}/Repository"/>
+		  	<jvmarg value="-Dderby.stream.error.file=${install.dir}/logs/derby.log"/>
+		    <arg value="start"/>
+		  	<arg value="-noSecurityManager"/>
+		  </java>
+	</target>
+	
+	<target name="stopEmbeddedDB">
+		<if>
+	      <PSPropertyCondition 
+	      	compareOperator="=="
+	    	isCaseSensitive="false"
+	    	leftSideValue="derby"
+	    	propertyFile="rxconfig/Installer/rxrepository.properties"
+	    	propertyName="DB_DRIVER_NAME"/>
+	      <then>
+		    <echo>Stopping Embedded DB</echo>
+		    <java classname="org.apache.derby.drda.NetworkServerControl"
+	  		      classpathref="DERBY_TOOL.CLASSPATH"
+		          fork="yes" >
+		      <arg value="shutdown"/>
+		    </java>
+		  </then>
+	    </if>
+	</target>
+	
+  <target name="createDerbyPropFile">
+        <property file="${install.dir}/rxconfig/Installer/rxrepository.properties" />
+		<if>
+	      <PSPropertyCondition 
+	      	compareOperator="=="
+	    	isCaseSensitive="false"
+	    	leftSideValue="derby"
+	    	propertyFile="rxconfig/Installer/rxrepository.properties"
+	    	propertyName="DB_DRIVER_NAME"/>
+	      <then>
+		    <echo>Creating Embedded DB Properties File</echo>
+			<propertyfile file="${DERBY_PROPS_FILE}">
+			  <entry  key="derby.connection.requireAuthentication" value="true"/>
+			  <entry  key="derby.authentication.provider" value="com.percussion.utils.security.PSDerbyAuthenticator"/>
+			  <entry  key="derby.user.CMDB" value="${PWD}"/>
+			  <entry  key="derby.stream.error.file" value="${install.dir}/logs/derby.log"/>
+			</propertyfile>
+		  </then>
+	    </if>
+	</target>
+
+</project>

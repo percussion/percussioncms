@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXItemEntry EMPTY>
+<!ATTLIST  PSXItemEntry contentid CDATA #REQUIRED>
+<!ATTLIST  PSXItemEntry title CDATA #IMPLIED>
+<!ATTLIST  PSXItemEntry communityid CDATA #IMPLIED>
+<!ATTLIST  PSXItemEntry contenttypeid CDATA #IMPLIED>
+<!ATTLIST  PSXItemEntry objecttype CDATA #REQUIRED>
+<!ELEMENT ItemEntries (PSXItemEntry* )>

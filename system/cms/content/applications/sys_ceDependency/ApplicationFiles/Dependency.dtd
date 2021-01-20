@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Item (Workflow*, ContentType*, ChildLink*, Title*, PreviewLink* )>
+<!ELEMENT PreviewLink (#PCDATA)>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT ChildLink (#PCDATA)>
+<!ELEMENT ContentType (#PCDATA)>
+<!ATTLIST  ContentType contenttypeid CDATA #IMPLIED>
+<!ELEMENT State (#PCDATA)>
+<!ELEMENT Workflow (State* )>
+<!ATTLIST  Workflow stateValid CDATA #IMPLIED>
+<!ATTLIST  Workflow stateid CDATA #IMPLIED>
+<!ATTLIST  Workflow Appid CDATA #IMPLIED>
+<!ATTLIST  Item contentid CDATA #IMPLIED>
+<!ATTLIST  Item revision CDATA #IMPLIED>
+<!ATTLIST  Item relationshiptype CDATA #IMPLIED>
+<!ELEMENT Dependency (Item* )>

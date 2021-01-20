@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description/>
+    <hide-from-menu>false</hide-from-menu>
+    <id>321</id>
+    <internal-name>percUserProfile</internal-name>
+    <label>percUserProfile</label>
+    <mandatory>false</mandatory>
+    <name>rx:percUserProfile</name>
+    <new-request>../psx_cepercUserProfile/percUserProfile.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercUserProfile/percUserProfile.html</query-request>
+    <raw-content-type>321</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

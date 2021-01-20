@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<RequestHandlerDefs>
+   <RequestHandlerDef handlerName="agenthandler"
+      className="com.percussion.server.agent.PSAgentRequestHandler"
+      configFile="agentmanager.xml">
+      <RequestRoots>
+         <RequestRoot baseName="sys_agentManager">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+         </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+   <RequestHandlerDef handlerName="actionHandler"
+      className="com.percussion.server.actions.PSActionSetRequestHandler"
+      configFile="storedActions.xml">
+      <RequestRoots>
+         <RequestRoot baseName="sys_action">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+         </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+   <RequestHandlerDef handlerName="jobhandler" 
+      className="com.percussion.server.job.PSJobHandler"
+      configFile="jobhandler.xml">
+      <RequestRoots>
+         <RequestRoot baseName="sys_jobHandler">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+         </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+   <RequestHandlerDef handlerName="deploymenthandler" 
+      className="com.percussion.deploy.server.PSDeploymentHandler">
+      <RequestRoots>
+         <RequestRoot baseName="sys_deploymentHandler">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+         </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+   <RequestHandlerDef handlerName="deployerhandler" 
+      className="com.percussion.deployer.server.PSDeploymentHandler">
+      <RequestRoots>
+         <RequestRoot baseName="sys_deployerHandler">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+         </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+   <RequestHandlerDef
+      className="com.percussion.server.compare.PSCompareRequestHandler"
+      configFile="compare.xml" handlerName="compareHandler">
+      <RequestRoots>
+         <RequestRoot baseName="sys_compareHandler">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+         </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+   <RequestHandlerDef
+      className="com.percussion.server.webservices.PSWebServicesRequestHandler"
+      configFile="webservices.xml" handlerName="webServicesHandler">
+      <RequestRoots>
+         <RequestRoot baseName="sys_webServicesHandler">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+         </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+   <RequestHandlerDef 
+      className="com.percussion.cms.handlers.PSActiveAssemblyRequestHandler" 
+      configFile="activeassembly.xml" handlerName="activeAssemblyHandler">
+      <RequestRoots>
+         <RequestRoot baseName="sys_psxActiveAssembly">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+         </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+   <RequestHandlerDef 
+      className="com.percussion.cms.objectstore.server.PSCatalogServerObjectHandler" 
+      handlerName="sys_ceFieldsCataloger">
+      <RequestRoots>
+         <RequestRoot baseName="sys_ceFieldsCataloger">
+            <RequestType>POST</RequestType>
+            <RequestType>GET</RequestType>
+          </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+   <RequestHandlerDef 
+      className="com.percussion.cms.handlers.PSGlobalTemplateUpdateHandler" 
+      handlerName="sys_GlobalTemplateHandler" configFile="globaltemplates.xml">
+      <RequestRoots>
+         <RequestRoot baseName="sys_GlobalTemplateHandler">
+            <RequestType>GET</RequestType>
+          </RequestRoot>
+      </RequestRoots>
+   </RequestHandlerDef>
+</RequestHandlerDefs>

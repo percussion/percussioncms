@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT sa_keywords (componentname, relatedlinks, sloturlbyname, addcategoryurl, contentlookupurl, category* )>
+<!ELEMENT category (deletecategoryurl, displayname, description, lookupid, editcategoryurl )>
+<!ELEMENT editcategoryurl (#PCDATA)>
+<!ELEMENT lookupid (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT displayname (#PCDATA)>
+<!ELEMENT deletecategoryurl (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT addcategoryurl (#PCDATA)>
+<!ELEMENT sloturlbyname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>

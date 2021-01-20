@@ -1,0 +1,1025 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<html><head><META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container - Changelog</title><meta value="Remy Maucherat" name="author"><meta value="remm@apache.org" name="email"><meta value="Yoav Shapira" name="author"><meta value="yoavs@apache.org" name="email"></head><body vlink="#525D76" alink="#525D76" link="#525D76" text="#000000" bgcolor="#ffffff"><table cellspacing="4" width="100%" border="0"><!--PAGE HEADER--><tr><td colspan="2"><!--JAKARTA LOGO--><a href="http://jakarta.apache.org/"><img border="0" alt="The Jakarta Project" align="left" src="./../images/jakarta-logo.gif"></a><!--PROJECT LOGO--><a href="http://jakarta.apache.org/tomcat/"><img border="0" alt="
+      The Apache Jakarta Tomcat Servlet/JSP Container
+    " align="right" src="./../images/tomcat.gif"></a></td></tr><!--HEADER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><tr><!--RIGHT SIDE MAIN BODY--><td align="left" valign="top" width="80%"><table cellspacing="4" width="100%" border="0"><tr><td valign="top" align="left"><h1>The Apache Jakarta Tomcat 5.5 Servlet/JSP Container</h1><h2>Changelog</h2></td><td nowrap="true" valign="top" align="right"><img border="0" hspace="0" vspace="0" height="1" width="1" src="./../images/void.gif"></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Preface"><strong>Preface</strong></a></font></td></tr><tr><td><blockquote>
+  <p>
+  This is the Changelog for Tomcat 5.5.x, which was branched based on Tomcat 5.0.27.
+  For changes in Tomcat version 5.0.x, which preceded version 5.5.0, please see
+  <a href="http://jakarta.apache.org/tomcat/tomcat-5.0-doc/changelog.html">The
+  Tomcat 5.0.x Changelog</a>.  As maintenance releases are cut on the 5.0.x branch,
+  most fixes will be ported into a 5.5.x release and noted both here and in the
+  above Changelog.  However, bugs fixed in Tomcat 5.0.28 and earlier are noted
+  only in the above changelog.
+  </p>
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Tomcat 5.5.7 (remm)"><strong>Tomcat 5.5.7 (remm)</strong></a></font></td></tr><tr><td><blockquote>
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="General"><strong>General</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Add installer for mod_jk on IIS. (mturk)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        New store config module for better server.xml saving support.<br> 
+		Add &lt;Listener className="org.apache.catalina.storeconfig.StoreConfigLifecycleListener" /&gt; to your server.xml (pero)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32081">32081</a>: Remove the JDK requirement from the Unix scripts, submitted
+        by Ben Souther (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32953">32953</a>: SERVLETAPI: XSS Issues, submitted by Mark Thomas (jfarcand)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Update to commons-digester 1.6, JDT 3.0.1, MX4J 2.1.0, Struts 1.2.6 (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Catalina"><strong>Catalina</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+         First integration at StoreConfig to StandardServer (pero)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32714 ">32714 </a>: Don't make the AccessLogValve final (funkman)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32694">32694</a>: Fix bad code to make docBase path aboslute in antiLocking
+        method. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32713">32713</a>: Fix resource-env-ref handling. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31201">31201</a>: Improve i18n support in DefaultServlet. This was causing
+        problems with JSP include actions and static files. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Add some log.isXXXEnabled to o.a.c.core.StandardHost StandardEngine, StandardService (pero)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Feature addition to add Redirector and failOnError support for all Catalina Ant tasks,
+        submitted by Gabriele Garuglieri (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31198">31198</a>: Fix FORM and DIGEST authentication for non-ASCII
+        usernames and passwords. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Reimplement charset mapper (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Add logging of exception which could occur when retrieving the password in JDBCRealm (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=25889">25889</a>: Don't execute queries twice, submitted by Tom Anderson (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32832">32832</a>: request.getSession(false) fails to return null (luehe)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=28222">28222</a>: request.getRequestURL() in forwarded jsp/servlet returns
+        original url rather than new url as per SRV8.4 (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=33157">33157</a>: Fix handling of the buffer length for basic authentication parsing (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Coyote"><strong>Coyote</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32708">32708</a>: Better handling of bad encoding with the string cache. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32781">32781</a>: Fix bad initialization of the "scheme" field of the request
+        object, which would cause getScheme to return "http" for the first request. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Content length should be ignored if there is chunking (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Remove most deprecation problems for the AJP connector (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Jasper"><strong>Jasper</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32746">32746</a>: Avoid JAR locking when loading classes and improve loading
+        performance by taking advantage of caching, submitted by Dominik Drzewiecki. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Cluster"><strong>Cluster</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+	   <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+          correct JvmRouteSessionIDBinderListener MBean name to &lt;domain&gt;:type=Listener,name=JvmRouteSessionIDBinderListener,host=&lt;host&gt; (pero)
+       </td></tr>
+	   <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+	   	  JMX support to SimpleTcpCluster, ReplicationTransmitter and all senders (pero)
+	   </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Webapps"><strong>Webapps</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix the webDAV servlet so it can be used via any arbitrary mapping
+        (eg /webdav/*) to edit the contents of a web application. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32729">32729</a>: Stop is optional and may fail, so it needs to be in a separate try/catch (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Remove the remove method of the manager servlet, and use the undeploy method instead (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32777">32777</a>: Fail if application isn't configured properly, submitted by Gabriele Garuglieri
+        (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32771">32771</a>: Cannot undeploy/deploy misconfigured app after tomcat startup, 
+        submitted by Gabriele Garuglieri (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=28867">28867</a>: Correct manager documentation to document correct way to
+        reference the ROOT context. Submitted by Stephane Bailliez. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=33085">33085</a>: Add support for setting privileged attribute of context
+        to admin webapp. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=33117">33117</a>: Fix Open bugs link broken on default homepage.
+        Patch supplied by Sander Temme. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Improve javadoc generation for Catalina. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Tomcat 5.5.6 (yoavs)"><strong>Tomcat 5.5.6 (yoavs)</strong></a></font></td></tr><tr><td><blockquote>
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="General"><strong>General</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32532">32532</a>: updated logging documentation. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32382">32382</a>: Index page and packaed WAR for sample webapp. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32603">32603</a>: Updated host.xml to reflect appBase resolution. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Catalina"><strong>Catalina</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Add child to the map of the parent before starting it. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Decouple usage of the scheme and secure attributes from enabling SSL. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32502">32502</a>: memory leak in DigestAuthenticator. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=28709">28709</a>: javax.servlet.http.HttpServletRequest.isRequestedSessionIdValid() returns true for an invalidated session. (luehe)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32137">32137</a>: Possible thread-safety issue in RealmBase. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Coyote"><strong>Coyote</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32585">32585</a>: Better handling for content length greater than Integer.MAX_VALUE in response. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Allow ApacheConfig and friends to live under an Engine. (billbarker)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Syncronize access to the Jk Request registration count. (billbarker)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Speed the MsgContext on its way to GC. (billbarker)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Keep correct thread counts in Thread pool when thread ends in an exception (billbarker)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Jasper"><strong>Jasper</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Updated Jasper-HowTo section on using Jikes, changed conf/web.xml JSPServlet to refer people to Jasper-HowTo so that we don't have these instructions in two places. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Webapps"><strong>Webapps</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32505">32505</a>: Fix handling of an empty context parameter (which occurred every time the HTML
+        manager was used to deploy a local war without specifying also a context file). (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Tomcat 5.5.5 (yoavs)"><strong>Tomcat 5.5.5 (yoavs)</strong></a></font></td></tr><tr><td><blockquote>
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="General"><strong>General</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32235">32235</a>: Sync conf/web.xml MIME types with Apache httpd. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31132">31132</a>: Better -x/-r support for OS/400 in startup scripts. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=22679">22679</a>: Added misc note on accessing session ID to SSL-HowTo. (yoavs)
+      </td></tr>
+ 
+       <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32249">32249</a>: Updated logging documentation. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32282">32282</a>: Modify Windows Uninstaller to only remove webapps/ROOT and webapps if user asks to remove everything. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32371">32371</a>: outdated introduction.xml page. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32373">32373</a>: outdated installation.xml page. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32454">32454</a>: amended JNDI documentation for JavaMail/JavaActivationFramework usage. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Catalina"><strong>Catalina</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32130">32130</a>: Add safety check to FileStore#keys method. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32276">32276</a>: Add developer info to Realm How-To. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32082">32082</a>: Added protected getPrincipals method to MemoryRealm for easier extension. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32023">32023</a>: CGIServlet fails to handle post message with multipart/form data. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32269">32269</a>: JNDIRealm fails with InvalidNameException to authenticate users if LDAP distinguished name (DN) contains slash or double quote character(s). (yoavs)
+      </td></tr>
+     <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Move processExpiresFrequency check to ManagerBase and reflect change to all subclasses (StandardManager, PersientManagerBase, DeltaManager). (pero)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Add DIGEST authentication support to the JDBC and DataSource realms. Supports both digested and cleartext passwords. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32429">32429</a>: CGIServlet calculates number of lines received on stderr incorrectly. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32431">32431</a>: Fix typo in code that passes data to CGI script. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32430">32430</a>: Class cast exception in toString() method within CGI servlet. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+         Add some log.isXXXEnabled checks at StandardContext and HostConfig (pero)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+         Remove the last DefaultContext artifacts (pero)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+         <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32031">32031</a>: using createConnector with "http" protocol (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+         Add configFile attribute in JMX descriptors (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+         Fix autodeployer handling of a war which includes a /META-INF/context.xml, so that it is
+         correctly registered and can be reloaded correctly (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+         <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32137">32137</a>: Use of MessageDigest should be synced in DIGEST (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+         Add info log when the autodeployer reloads a context (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Coyote"><strong>Coyote</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Small HTTP/1.1 optimizations: replace usage of Strings with constant byte arrays, and
+        simplify the code converting Strings to bytes (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Greatly reduce the amount of recycle method calls on the buffers (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>Add null OName check for Request unregistration in Jk, to remove
+           exception under JDK 1.5. (billbarker)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td><a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32292">32292</a>: Don't send keep-alive header when the protocol
+           can't be parsed. (billbarker)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Jasper"><strong>Jasper</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Updated JspC usage messages to include recently added configurable parameters. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32330">32330</a>: JspC changes context classloader. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Cluster"><strong>Cluster</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+       <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+          JvmRouteBinderValve/JvmRouteSessionIDBinderListener to bind cluster session after primary node failure at first calling backup node.
+          This was an option to have session stickyness after cluster node crashed. Work only with JESSIONID cookies. (pero)
+       </td></tr>
+       <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+          Better log support to DeltaManager to see detail information at debug level. (pero)
+       </td></tr>
+       <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+          Fix FarmWarDeployer based on new HostConfig deployer. (pero)
+       </td></tr>
+       <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+          FarmWarDeployer controlled WarWatcher with engine backgroundProcess call.
+          Added processDeployFrequency attribute to Deployer server.xml element. (pero)
+       </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Webapps"><strong>Webapps</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32019">32019</a>: Remove maxlength=64 restriction on env entry values in admin webapp. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix various problems in realm docs, submitted by Phil Mocek. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Add log4j docs submitted by Allistair Crossley. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td><a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=32381">32381</a>: Fix problem where EL expression is used as a
+        place holder in the admin webapp.
+        Submitted by Allistair Crossley. (billbarker)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Tomcat 5.5.4 (yoavs)"><strong>Tomcat 5.5.4 (yoavs)</strong></a></font></td></tr><tr><td><blockquote>
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="General"><strong>General</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31671">31671</a>: Update web.xml files to 2.4 schema where applicable. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31912">31912</a>: Add PNG and CSS file types to replication filter default. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Catalina"><strong>Catalina</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Add processExpiresFrequency to PersistentManagerBase and made some small JDBCStore optimizations (pero)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Register JSP monitoring mbean for each servlet that declares a jsp-file in web.xml. (luehe)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31578">31578</a>: Update Manager configuration documentation. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31273">31273</a>: Add support for derefaliases in JNDIRealm. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31623">31623</a>: Better OS400 support in setclasspath.sh. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Extend background processing to most container components. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Remove all MX4J related code. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Update JAR list in TldConfig. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Register datasources with JMX. With DBCP, this is enough to provide JMX management and monitoring.
+        It might work well with many other data sources which might not register themselves in JMX
+        but do expose their stuff in a java bean fashion. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Add the ability to force session cookies to be set to the root path "/". This should not be used
+        on large servers, otherwise tons of cookies may be sent. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Workaround for client socket exceptions occurring while running a CGI, which could cause
+        the external process to hang. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Optimize session cookie IDs conversion to String, since this is an unavoidable and uncacheable
+        operation. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Add explicit error message if temp dir does not exist, and remove useless calls to initDirs. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Add an optimized access log valve, supporting hardcoded support for the common and combined patterns,
+        and doing a majority of its write-to-logfile operations asynchronously. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Register an MBean to monitor and manage the StringCache, and allow invoking the reset operation. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31677">31677</a>: Log warning if work dir for context can't be determined. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31903">31903</a>: Fix condition which seems to not have been properly updated after adding
+        entry.binaryContent = null a little below, submitted by Joe Zhou. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Prevent silent NPEs during StandardContext.start dealing with JMX registration of realm, submitted
+        by Keith Wannamaker. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31592">31592</a>: Support other encodings for digests. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31739">31739</a>: Minor realm-howto and AJP connector doc updates. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31753">31753</a>: Minor inconsistency between JDBC and DataSourceRealm#authenticate. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31683">31683</a>: Minor clarifications to realm documentation. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Coyote"><strong>Coyote</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Improve i18n in TCP endpoint, and add a better error message when an exception occurs
+        in setSocketOptions. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31663">31663</a>: Use interval field as the delay for monitor thread. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Remove bad shutdown logic for ms pool strategy. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Sync with Cookie, by adding ' ' as a special char. If a special char is present,
+        the string will be quoted. If the client doesn't support it, the String will no be quoted anyway
+        and no IAE will be thrown. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Add an optional String cache for ByteChunk.toString and CharChunk.toString. The cache is
+        unsynchronized during most of its operation, and is static after a training period. An operation
+        is provided to allow resetting the cache. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        String caching is enabled by default for ByteChunk. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31090">31090</a>: Use a URL encoded path when setting session cookies. (remm)
+      </td></tr>
+       <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+          Add getAttributeName() to ProtocolHandler to get all attributes at runtime (pero)
+       </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Jasper"><strong>Jasper</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Exposed compilerSourceVM and compilerTargetVM options to JspC. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Cluster"><strong>Cluster</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+       <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+          DeltaManager and SimpleTcpReplicationManager generate double jvmRoute (pero)
+       </td></tr>
+       <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+          Add some missing Getters and log.isXXXEnableds (pero)
+       </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Webapps"><strong>Webapps</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31707">31707</a>: Broken JavaScript confirmation in HTML manager. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Remove hard-coded admin context path from admin's banner.jsp. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Major connector docs update. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31732">31732</a>: Fix Japanese localization of Manager's list output. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Tomcat 5.5.3 (yoavs)"><strong>Tomcat 5.5.3 (yoavs)</strong></a></font></td></tr><tr><td><blockquote>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="General"><strong>General</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=30568">30568</a>: Incomplete setup.html documentation for launching jsvc. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Repackage naming features. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix deployer packaging. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix embed packaging. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Catalina"><strong>Catalina</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix memory leak when Security Manager is turned on. (jfarcand)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        When checking status codes for error handling, only check if
+        Response.isError() is true. This way, users may use setStatus() to set their own
+        error status without having the error page invoked. (in which case, the user should've
+        use sendError()) (funkman)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Remove Digester code for Xerces workaround. (jfarcand)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Give proper permission to the balancer app when running under the security manager. (jfarcand)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=30869">30869</a>: Make sure JAAS realm name is legal. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+          md5Helper, md5Encoder, and normalize are used by WebdavServlet,
+          not DefaultServelt so move them into WebdavServlet.
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31277">31277</a>: Clarified automatic application deployment section of Host configuration page. (yoavs)
+      </td></tr>
+     <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+       <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=28631">28631</a>: JAASRealm enhancements to support custom user and role classes  use Commons-Logging. (yoavs)
+     </td></tr>
+     <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+       <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31364">31364</a>: Missing resource in org.apache.catalina.core.LocalString.properties. (yoavs)
+     </td></tr>
+     <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+       <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31362">31362</a>: Missing -Xdebug in catalina.bat when launching with JPDA and Security. (yoavs)
+     </td></tr>
+     <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+       <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31356">31356</a>: Duplicates not counted in session generation. (yoavs)
+     </td></tr>
+     <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+       <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=30949">30949</a>: Make sure ApplicationDispatcher unwraps request/response even if include error occurs. (yoavs)
+     </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fixed StandardContext.getStartTime() to return actual start time/date instead of time (startupTime) it took to start context. (luehe)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        getRequest/getResponse should return the most relevant interface, to avoid casts. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Add check for directory before considering something is a compressed WAR. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/docs.gif" class="icon" alt="docs"></td><td>
+        Update the connector documentation. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        When parsing a context file, ignore the "path" attribute:
+        the only place where it is acceptable is in server.xml. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Digester handling fixes: always call reset in a finally block after using a digester. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Remove many fields from Connector, and tie the creation of the Connector to the
+        creation of the protocol handler. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Remove package triggers from the classloader, which seem useless when using Java 5. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Realms will now use set attribute to set themselves in their container when using JMX. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix JMX related operations with the Connector. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix save-to-XML for naming resources. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Remove authenticator "debug" attributes from the descriptors. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Refactor org.apache.catalina.deploy.ContextXXX to use new super class ResourceBase. (pero)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Enable Connector.findLifecycleListener that we can listen start/stop Connector events and save the listener to xml. (pero)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Remove Watchdog references, as it is no longer used. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31511">31511</a>: Don't call setenv.bat if not found, in *using-launcher scripts. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31549">31549</a>: Add name to WebappClassLoader's stopped message. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Coyote"><strong>Coyote</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Allow customized server header for Standalone. (funkman)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Digester.reset now removes the error handler, the root and calls clear, to prevent
+        any memory leak. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Remove useless stuff in digester. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        In HTTP, add a utility method to convert strings to byte arrays, and output the server header
+        directly as bytes. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Add a master slave thread pool based on the code from Tomcat 4.0. It is less exotic than the
+        default one, and might fare better on some picky systems, such as Redhat 9. The two threadpools
+        will likely be removed once we use the Java 5 API, although more investigation is needed. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix issue with getProperty in IntrospectionUtils. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Remove attribute translation for SSL in the HTTP protocol handler: it will now be done in the
+        Catalina Connector class. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix handling of the "timeout" attribute of the HTTP protocol handler. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Jasper"><strong>Jasper</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31171">31171</a>: Wrap to avoid ClassCastException in PageContextImpl. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31257">31257</a>: Added specification of endorsed dirs if forking.  Note that this is fairly useless for now in 5.5 since it uses JDT and not javac by default. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/docs.gif" class="icon" alt="docs"></td><td>
+        Document new Jasper defaults, and update the production configuration. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Copied XML encoding detection logic into JASPER, so we're no longer dependent on Xerces. (luehe)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix cosmetic issue where extra CRLF would be inserted during each precompilation in web.xml. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Allow configuring the interval following a compilation during which a JSP will not be checked
+        for modifications. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31465">31465</a>: Ensure that the compiler reads the .java file using the same encoding as that with which it was written. (markt)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31510">31510</a>: Null out response in JspWriterImpl#recycle to aid in JBoss memory leak. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Cluster"><strong>Cluster</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Added flag to the cluster (notifyListenersOnReplication) to enable/disable the
+        notifications of attribute/context listeners upon replication of a session delta
+        Works only with the DeltaManager (fhanik)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Added flag to the cluster (Cluster/Sender/ackTimeout) to set the timeout in milliseconds
+        for a synchronous request to go through, defaults to 15000ms (fhanik)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Webapps"><strong>Webapps</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=29485">29485</a>: I broke the HTML manager when adding JavaScript confirmation, fixed now ;) (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31058">31058</a>: Ensure StatusTransformer escapes query string for XML. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Added contexts' start time (available from 'startTime' MBean attribute of StandardContext) to status page (luehe)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31264">31264</a>: the deploy task should now behave correctly. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Refactor the manager servlet to make calls to the deployer more robust. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Use the more robust String.valueOf in the form edit action of the connector. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Tomcat 5.5.2 (yoavs)"><strong>Tomcat 5.5.2 (yoavs)</strong></a></font></td></tr><tr><td><blockquote>
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="General"><strong>General</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        The installer will now use the system's JRE. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Catalina"><strong>Catalina</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix URL generation for classloaders on Windows, causing common/classes and shared/classes
+        to be unusable (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31110">31110</a>: Fix resource packaging bug for servlets (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix 5.5 regression where going through the authenticator would create a session each time. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix classname of the connector in Embedded, and remove the socket factory. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Coyote"><strong>Coyote</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Redo server header handling again. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Cleanup a little access to the headers using a local variable and
+        use setValue for Server and Date headers. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Jasper"><strong>Jasper</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Remove maxTagNesting and curTagNesting since they are unused. (funkman)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix tag files handling with JDT, which were ususable, and refactor the lifecycle handling of
+        the page loader. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Cluster"><strong>Cluster</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Webapps"><strong>Webapps</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+    </table>
+  </blockquote></td></tr></table>
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Tomcat 5.5.1 (yoavs)"><strong>Tomcat 5.5.1 (yoavs)</strong></a></font></td></tr><tr><td><blockquote>
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="General"><strong>General</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Tomcat 5.5 can be built on JDK 5.0. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Windows installer polish. (mladen, remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Remove dependency on Jakarta regexp. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Catalina"><strong>Catalina</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Allow overriding the location of the default context file, similar to the default
+        web.xml. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Backport if-else logic for SSI servlet from 4.1 (funkman)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Remove DefaultContext elements from the digester rules. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix ResourceLink handling. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Modify the auto deployer to get along with contexts which are statically defined in server.xml. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Externalize constant strings defining the location of deployment related resources. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31052">31052</a>: BeanFactory swallows root cause of exception. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Allow using deploy Ant task with just config attribute, submitted by Michael Schuerig. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Added longest time an expired session had been alive to set of monitorable session manager attributes. (luehe)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Added average time an expired session had been alive to set of monitorable session manager attributes. (luehe)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Clear a reference in the digester where a context would be referenced for more time than it
+        needed, until the next context deployment operation. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Coyote"><strong>Coyote</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=31018">31018</a>: Race condition in SystemLogHandler. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Jasper"><strong>Jasper</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Use the "compiler" parameter to allow specifying that Ant should be used. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Ignore JDT compiler warnings. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/add.gif" class="icon" alt="add"></td><td>
+        Added compilerTargetVM option support, "1.4" default. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Cluster"><strong>Cluster</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/fix.gif" class="icon" alt="fix"></td><td>
+        Fix adding the clustering valve, so that session replication actually occurs. (fhanik)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Webapps"><strong>Webapps</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Major documentation update with current Tomcat 5.5 changes. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Added JavaScript confirmation dialog to "dangerous" Manager servler links. (yoavs)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+</blockquote></td></tr></table><table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#525D76"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Tomcat 5.5.0 (yoavs)"><strong>Tomcat 5.5.0 (yoavs)</strong></a></font></td></tr><tr><td><blockquote>
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="General"><strong>General</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Many updated and fixed JavaDocs. (yoavs)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Designed and tested Tomcat on J2SE 5.0 (aka JDK 1.5). (everyone)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Bundled Eclipse JDT (new dependency) to allow Tomcat to run on a JRE only, i.e. no JDK required. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Repackage commons-dbcp and its dependencies as a sigle smaller WAR, with renamed packages. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Removed dependencies on commons-digester, commons-beanutils, and commons-collections.
+        The relevant digester functionality is now merged in tomcat-util. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Catalina"><strong>Catalina</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Removed usage of org.apache.catalina.Logger, increased usage of commons-logging everywhere. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Refactored classloader code to better handle JAR and general resource locking. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Written JMX-related code to play nicely with J2SE 5.0 built-in JMX abilities. (remm, costin)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Extensively profiled and optimized the server startup performance as well as the request mapping and processing pipeline. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        The container will now always process a /META-INF/context.xml resource, unless the webapp has a specified external context file. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        New default configuration mechanism for web applications, replacing DefaultContext. This uses a
+        shared context file located in conf/context.xml. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Revamped deployer, alloying full hotdeploy (note: on Windows, this requires the anti file locking
+        features). (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Remove verbosity from the JNDI resources configuration, by allowing arbitrary attributes on the Resource element. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Simpler Valve interface, to allow smaller stack traces and reducing the amount of method calls. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Coyote"><strong>Coyote</strong></a></font></td></tr><tr><td><blockquote>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Jasper"><strong>Jasper</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Eclipse JDT is now the default Java compiler in Jasper. Source dependencies are now loaded from
+        the container classloader, and compilation times are much faster. (remm)
+      </td></tr>
+      <tr><td><img src="./../images/update.gif" class="icon" alt="update"></td><td>
+        Jasper development mode should now have acceptable performance for heavily accessed pages.
+        Precompiling JSPs is still significantly more efficient, however. (remm)
+      </td></tr>
+    </table>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Cluster"><strong>Cluster</strong></a></font></td></tr><tr><td><blockquote>
+  </blockquote></td></tr></table>
+
+  <table cellpadding="2" cellspacing="0" border="0"><tr><td bgcolor="#828DA6"><font face="arial,helvetica.sanserif" color="#ffffff"><a name="Webapps"><strong>Webapps</strong></a></font></td></tr><tr><td><blockquote>
+    <table cellspacing="2" cellpadding="2" border="0">
+    </table>
+  </blockquote></td></tr></table>
+</blockquote></td></tr></table></td></tr><!--FOOTER SEPARATOR--><tr><td colspan="2"><hr size="1" noshade="noshade"></td></tr><!--PAGE FOOTER--><tr><td colspan="2"><div align="center"><font size="-1" color="#525D76"><em>
+        Copyright &copy; 1999-2004, Apache Software Foundation
+        </em></font></div></td></tr></table></body></html>

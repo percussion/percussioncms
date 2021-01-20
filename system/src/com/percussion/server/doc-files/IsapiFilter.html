@@ -1,0 +1,158 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   $Id: IsapiFilter.html 1.2 1999/01/13 15:54:44Z Administrator Release $
+
+   Version Labels  : $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 20000724_2_0 20000522_1_1 20000501_1_1 20000327_1_1 20000111_1_0 991227_1_0 991214_1_0 991213_1_0 991202_1_0 Release_1_0_Intl Release_10_1 Release_10 $
+
+   Locked By       : $Locker: $
+
+   Revision History:
+                     $Log: IsapiFilter.html $
+                     Revision 1.2  1999/01/13 15:54:44Z  Administrator
+                      added RCS headers
+-->
+
+<BODY>
+
+<H2>E2 Hook - ISAPI Filter</H2>
+
+The ISAPI Filter allows E2 to directly hook the Microsoft IIS core. Filters
+are called by the server at the various points in the request process.
+Fitlers are written as DLLs implementing three functions. These are:
+<UL>
+<LI><CODE>GetFilterVersion</CODE> - initialize the filter and return to IIS
+the supported version info and the desired events to hook. This is called
+once when the server starts.</LI>
+<LI><CODE>HttpFilterProc</CODE> - this is the work horse, called for each
+request</LI>
+<LI><CODE>TerminateFilter</CODE> - shutdown the filter. This is called
+once when the server is shut down.</LI>
+</UL>
+
+<P>Unlike ISAPI extensions, filters must be performance conscious above all
+else. Every request going through the web server is intercepted by the
+filter. Extensions are called only when the request is for the extension,
+which is why performance is not as critical.<P>
+
+<P>To provide the required through put, we must make the request detection
+process as quick as possible. Several settings can be defined on the E2
+server to assist in this process. By trapping just the header pre-processing
+event (<CODE>SF_NOTIFY_PREPROC_HEADERS</CODE>) we can minimize our impact
+and still detect E2 requests fairly reliably. During pre-processing we also
+have the opportunity to redirect the request. We will actually re-direct the
+request to our ISAPI Extension, allowing the filter to contain no code
+which is dependent upon the E2 server's request processing.</P>
+
+<P>The first thing the hook does is check for the existence of the E2
+specific request header <CODE>PS-Reqeust-Type</CODE>. If this exists, the
+request is clearly for E2 and in a format E2 understands. This request is
+then handed to our ISAPI extension, as described below.</P>
+
+<P>Next, the more complex task of detecting a data request begins. The
+E2 server request root is the first piece of information we need to check.
+This contains the root "directory" for E2 requests.
+If the request URL does not begin with this, the filter will ignore the
+request. If it does begin with the appropriate root, the application
+request roots are then checked. The application request root is treated
+as the next part of the URL. If this matches one of the applications
+defined in E2, the request page is checked next. This is the final part of
+the URL and matches the page supported by one or more data sets in the
+application. If a match is found here, the request is definitely for E2.</P>
+
+<P>As noted earlier, we don't actually send the request to E2, we redirect
+it to our ISAPI extension. To do this, we simply call <CODE>SetHeader</CODE>
+(in the <CODE>PHTTP_FILTER_PREPROC_HEADERS</CODE> object) to set the
+following headers:</P>
+
+<UL><CODE>
+<LI>URL: /{E2 ISAPI Extension}?psrequrl={original URL}{&original params}</LI>
+<LI>PS-Request-Version: 1.0</LI>
+<LI>PS-Request-Type: {appropriate type}</LI>
+<LI>PS-Application: {application name}</LI>
+<LI>PS-DataSet: {data set name}</LI>
+</CODE></UL>
+
+<P>When IIS performs its URL resolution, it will call our
+<A HREF="IsapiExtension.html">ISAPI Extension</A> to complete the
+request.</P>
+
+<H2>Implementation Details</H2>
+
+<P>When <CODE>GetFilterVersion</CODE> is called to initialize the filter,
+we will check if our local E2 server is up. If it's not, we will start it.
+We'll then load the E2 server request root, application request roots and
+the application request pages. We'll also register a listener for changes
+to these components. These pieces will be loaded into memory and stored
+using the following structures:</P>
+
+<PRE><CODE>
+   typedef struct tagE2HookBlock_Page {
+      char *            szName;        /* the name of the request page */
+      char *            szDataSet;     /* the name of the data set handling
+                                        * requests for this page
+                                        */
+   } E2HookBlock_Page, *PE2HookBlock_Page;
+
+   typedef struct tagE2HookBlock_App {
+      char *            szName;        /* the name of the app */
+      char *            szRoot;        /* the request root for the app */
+      PE2HookBlock_Page aPages[];      /* the sorted array of request
+                                        * pages associated with this app
+                                        */
+      ULONG             ulPageCount;   /* the number of request pages
+                                        * in the array
+                                        */
+      ULONG             ulPageMax;     /* the array capacity */
+   } E2HookBlock_App, *PE2HookBlock_App;
+
+   typedef struct tagE2HookBlock_Server {
+      char *            szName;        /* the name of the server */
+      char *            szRoot;        /* the request root for the server */
+      PE2HookBlock_App  aApps[];       /* the sorted array of apps
+                                        * defined on this server
+                                        */
+      ULONG             ulAppCount;    /* the number of apps in the array */
+      ULONG             ulAppMax;      /* the array capacity */
+   } E2HookBlock_Server, *PE2HookBlock_Server;
+</CODE></PRE>
+
+<P>For each E2 server supported, a <code>PE2HookBlock_Server</code> object
+exists. Within each server block, it contains a sorted array of the
+applications that exist on the server. Each application contains a
+sorted array of the request pages that are used by the application.</P>
+
+<P>Access to the memory will be protected using a mutex semaphore. This
+has the adverse effect of serializing access to the memory across all
+threads. However, since the memory is sorted we will be doing binary 
+searches. This should make the required access time very small.</P>
+
+<P>The longest delay will be when multiple changes are detected. The
+server hook listener will need to insert elements or remove elements from
+the appropriate places in the chain. This may require array reallocation,
+which can take some time, but overall it should not be too bad.</P>
+
+</BODY>
+

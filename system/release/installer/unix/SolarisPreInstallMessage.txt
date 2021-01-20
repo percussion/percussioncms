@@ -1,0 +1,15 @@
+
+If you are performing a new installation of Rhythmyx, 
+then you must create a system account for Rhythmyx, 
+login into the system with that account and then 
+run the installation. You must then use the new 
+account for running Rhythmyx and performing updates 
+to the Rhythmyx installation.
+
+
+If you are performing an update to an existing Rhythmyx 
+installation, then you must login into the system 
+with the same account under which you installed 
+and run Rhythmyx. Also make sure that this account 
+has read and write permissions on all the files 
+under the Rhythmyx root directory.

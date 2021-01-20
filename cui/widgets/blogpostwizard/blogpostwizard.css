@@ -1,0 +1,111 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.blog-post-wizard{
+	padding-left:50px;
+	padding-top: 10px;
+	padding-right: 50px;
+}
+
+.styled-select {
+    width: 120%;
+    overflow: hidden;
+    padding-right: 30px;
+    background: url('../../components/perc-css/img/downwardTriangle.png') no-repeat right ;
+    padding-left: 5px;
+    color: #17accc;
+    text-overflow: ellipsis;
+    background-position: 82% 60%, 0 0;
+    border: none;    
+    outline : medium none;
+    display: inline-flex;
+    height: 38px;
+    -webkit-appearance: none;
+    -moz-appearance:none;
+}
+
+.styled-select select {
+    background: transparent;
+    width: 268px;
+    border: 0;
+    border-radius: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1;
+    height: 38px;
+    -webkit-appearance: none;
+    -moz-appearance:none;
+
+}
+
+.blog-select{
+    border: 1px solid #BDC6D7;
+    border-radius: 2px; 
+    width: 240px;
+    overflow: hidden;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.styled-input {
+	height: 38px;
+	width: 100%;
+	border: 1px solid #BDC6D7;
+	border-radius: 2px;
+	padding-left: 15px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	font-size: 14px;
+	text-align: left;
+	vertical-align: middle;
+	color: #576071;
+}
+
+.select-placeholder {
+	display:none;
+}
+
+.form-title {
+	font-family: 'Open Sans', sans-serif; font-weight: 600; font-size:16px; color: #576071;
+	padding-top:5px;
+}
+
+.wizard-form-error {
+	font-family: 'Open Sans', sans-serif; font-weight: 600; font-size:16px; color: #EE5336;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}

@@ -1,0 +1,3031 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="377" startPriority="0" version="2.0">
+	<name>sys_components</name>
+	<description/>
+	<requestRoot>sys_components</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/bender_1000468085343/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:Admin1</agent>
+			<description>Saved</description>
+			<time>20010914T074301625</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="80">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20040112T141748621</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="no" dataDelete="no" dataQuery="yes" dataUpdate="no" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>Anonymous</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="no" dataDelete="no" dataQuery="no" dataUpdate="no" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="no" dataDelete="no" dataQuery="yes" dataUpdate="no" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>rxserver</name>
+			<securityProviderType>RxInternal</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+	</PSXAcl>
+	<maxThreads>0</maxThreads>
+	<maxRequestTime>0</maxRequestTime>
+	<maxRequestsInQueue>0</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>0</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="442">
+		<name>UpdateRoleCfg</name>
+		<description/>
+		<transactionType>forAllRows</transactionType>
+		<PSXUpdatePipe id="429">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="428">
+				<PSXBackEndTable id="416">
+					<alias>PSX_ROLES</alias>
+					<table>PSX_ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="417">
+					<alias>PSX_SUBJECTS</alias>
+					<table>PSX_SUBJECTS</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="418">
+					<alias>PSX_ATTRIBUTE_NAMES</alias>
+					<table>PSX_ATTRIBUTE_NAMES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="419">
+					<alias>PSX_ATTRIBUTE_VALUES</alias>
+					<table>PSX_ATTRIBUTE_VALUES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="420">
+					<alias>PSX_ROLE_SUBJECTS</alias>
+					<table>PSX_ROLE_SUBJECTS</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="421">
+					<alias>PSX_ROLE_SUBJECT_ATTRIBUTES</alias>
+					<table>PSX_ROLE_SUBJECT_ATTRIBUTES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="422">
+					<alias>PSX_ROLE_ATTRIBUTES</alias>
+					<table>PSX_ROLE_ATTRIBUTES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="423">
+					<alias>PSX_SUBJECT_ATTRIBUTES</alias>
+					<table>PSX_SUBJECT_ATTRIBUTES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="424">
+					<alias>ROLES</alias>
+					<table>ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="425">
+					<alias>STATEROLES</alias>
+					<table>STATEROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="426">
+					<alias>RXCOMMUNITYROLE</alias>
+					<table>RXCOMMUNITYROLE</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="427">
+					<alias>TRANSITIONROLES</alias>
+					<table>TRANSITIONROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="413" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRole/@DbComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRole/@name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRole/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_ToLowerCase</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXXmlField id="0">
+									<name>UpdateRoleCfg/Action/PSXRole/@name</name>
+								</PSXXmlField>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>NORMALNAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXSubject/@DbComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXSubject/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXSubject/name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXSubject/@type</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>TYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="3" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXAttribute/@DbComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="3" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXAttribute/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="3" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXAttribute/@name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="3" id="0">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_ToLowerCase</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXXmlField id="0">
+									<name>UpdateRoleCfg/Action/PSXAttribute/@name</name>
+								</PSXXmlField>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>NORMALNAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="4" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXAttributeValue/@DbComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="4" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXAttributeValue/attributeId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="4" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXAttributeValue/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="4" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXAttributeValue/value</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>VALUE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="5" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRoleSubjectRelation/Role</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECTS</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="5" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRoleSubjectRelation/Subject</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECTS</tableAlias>
+						<column>SUBJECTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="6" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRoleSubjectAttributeRelation/Attribute</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="6" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRoleSubjectAttributeRelation/Role</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="6" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRoleSubjectAttributeRelation/Subject</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>SUBJECTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="7" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRoleAttributeRelation/Role</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_ATTRIBUTES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="7" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXRoleAttributeRelation/Attribute</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_ATTRIBUTES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="8" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXSubjectAttributeRelation/Subject</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>SUBJECTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="8" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/PSXSubjectAttributeRelation/Attribute</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="9" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/WorkflowRoles/@RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="9" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/WorkflowRoles/@WorkflowAppId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="10" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/StateRoles/@RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="10" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/StateRoles/@WorkflowAppId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="11" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/CommunityRoles/@RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMMUNITYROLE</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="12" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/TransitionRoles/@RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>TRANSITIONROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="12" id="0">
+					<PSXXmlField id="0">
+						<name>UpdateRoleCfg/Action/TransitionRoles/@WorkflowAppId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="yes" allowInserts="yes" allowUpdates="yes" id="414">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_ATTRIBUTES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_ATTRIBUTES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>SUBJECTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECTS</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECTS</tableAlias>
+						<column>SUBJECTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>SUBJECTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>STATEROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMMUNITYROLE</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>TRANSITIONROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>NORMALNAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>TYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>NORMALNAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>VALUE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+			<InputDataExits>
+				<PSXExtensionCallSet id="440">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/extensions/general/sys_CascadeDelete</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>//Action[@type='DELETE']/PSXRole</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_components/cascadeDeleteWorkflowRoles.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>roleName</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>./@name</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/extensions/general/sys_CascadeDelete</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>//Action[@type='DELETE']/PSXRole</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_components/cascadeDeleteStateRoles.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>roleName</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>./@name</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/extensions/general/sys_CascadeDelete</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>//Action[@type='DELETE']/PSXRole</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_components/cascadeDeleteCommunityRoles.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>roleName</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>./@name</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/extensions/general/sys_CascadeDelete</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>//Action[@type='DELETE']/PSXRole</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>sys_components/cascadeDeleteTransitionRoles.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>roleName</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>./@name</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</InputDataExits>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="441">
+			<schemaSource>file:UpdateRoleCfg.dtd</schemaSource>
+			<actionTypeXmlField>UpdateRoleCfg/Action/@type</actionTypeXmlField>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>UpdateRoleCfg</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="444">
+		<name>getRole</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="230">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="226">
+				<PSXBackEndTable id="225">
+					<alias>PSX_ROLES</alias>
+					<table>PSX_ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="228" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRole/PSXRole/name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRole/PSXRole/@DbComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRole/PSXRole/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="227" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="443">
+			<schemaSource>file:getRole.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getRole</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="445">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="447">
+		<name>getSubject</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="236">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="232">
+				<PSXBackEndTable id="231">
+					<alias>PSX_SUBJECTS</alias>
+					<table>PSX_SUBJECTS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="234" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getSubject/PSXSubject/name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getSubject/PSXSubject/@DbComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getSubject/PSXSubject/@type</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>TYPE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getSubject/PSXSubject/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECTS</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="233" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="446">
+			<schemaSource>file:getSubject.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getSubject</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="448">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="450">
+		<name>getAttribute</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="3109">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="3105">
+				<PSXBackEndTable id="3103">
+					<alias>PSX_ATTRIBUTE_VALUES</alias>
+					<table>PSX_ATTRIBUTE_VALUES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="3104">
+					<alias>PSX_ATTRIBUTE_NAMES</alias>
+					<table>PSX_ATTRIBUTE_NAMES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndJoin id="0" joinType="leftOuter">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+							<column>ID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+							<column>ATTRIBUTEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="3107" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getAttribute/PSXAttribute/@name</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>NAME</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getAttribute/PSXAttribute/@DbComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getAttribute/PSXAttribute/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXXmlField id="0">
+						<name>getAttribute/PSXAttribute/PSXAttributeValue/@DbComponentId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>ID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXXmlField id="0">
+						<name>getAttribute/PSXAttribute/PSXAttributeValue/value</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>VALUE</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="2" id="0">
+					<PSXXmlField id="0">
+						<name>getAttribute/PSXAttribute/PSXAttributeValue/@id</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+						<column>COMPONENTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="3106" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting>
+					<PSXSortedColumn id="0" isAscending="yes">
+						<PSXBackEndColumn id="0">
+							<tableAlias>PSX_ATTRIBUTE_NAMES</tableAlias>
+							<column>ID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</PSXSortedColumn>
+					<PSXSortedColumn id="0" isAscending="yes">
+						<PSXBackEndColumn id="0">
+							<tableAlias>PSX_ATTRIBUTE_VALUES</tableAlias>
+							<column>ID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</PSXSortedColumn>
+				</Sorting>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="449">
+			<schemaSource>file:getAttribute.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getAttribute</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="451">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="453">
+		<name>getRoleSubjectAttributeRelation</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="260">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="256">
+				<PSXBackEndTable id="255">
+					<alias>PSX_ROLE_SUBJECT_ATTRIBUTES</alias>
+					<table>PSX_ROLE_SUBJECT_ATTRIBUTES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="258" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRoleSubjectAttributeRelation/PSXRoleSubjectAttributeRelation/Role</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRoleSubjectAttributeRelation/PSXRoleSubjectAttributeRelation/Subject</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>SUBJECTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRoleSubjectAttributeRelation/PSXRoleSubjectAttributeRelation/Attribute</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="257" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="452">
+			<schemaSource>file:getRoleSubjectAttributeRelation.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getRoleSubjectAttributeRelation</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="454">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="456">
+		<name>getRoleAttributeRelation</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="1978">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="1974">
+				<PSXBackEndTable id="1973">
+					<alias>PSX_ROLE_ATTRIBUTES</alias>
+					<table>PSX_ROLE_ATTRIBUTES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="1976" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRoleAttributeRelation/PSXRoleAttributeRelation/Role</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_ATTRIBUTES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRoleAttributeRelation/PSXRoleAttributeRelation/Attribute</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_ATTRIBUTES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="1975" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="455">
+			<schemaSource>file:getRoleAttributeRelation.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getRoleAttributeRelation</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="457">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="459">
+		<name>getRoleSubjectRelation</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="242">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="238">
+				<PSXBackEndTable id="237">
+					<alias>PSX_ROLE_SUBJECTS</alias>
+					<table>PSX_ROLE_SUBJECTS</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="240" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRoleSubjectRelation/PSXRoleSubjectRelation/Role</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECTS</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getRoleSubjectRelation/PSXRoleSubjectRelation/Subject</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_ROLE_SUBJECTS</tableAlias>
+						<column>SUBJECTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="239" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="458">
+			<schemaSource>file:getRoleSubjectRelation.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getRoleSubjectRelation</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="460">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="462">
+		<name>getSubjectAttributeRelation</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="254">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="250">
+				<PSXBackEndTable id="249">
+					<alias>PSX_SUBJECT_ATTRIBUTES</alias>
+					<table>PSX_SUBJECT_ATTRIBUTES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="252" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getSubjectAttributeRelation/PSXSubjectAttributeRelation/Subject</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>SUBJECTID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>getSubjectAttributeRelation/PSXSubjectAttributeRelation/Attribute</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SUBJECT_ATTRIBUTES</tableAlias>
+						<column>ATTRIBUTEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="251" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="461">
+			<schemaSource>file:getSubjectAttributeRelation.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getSubjectAttributeRelation</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="463">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="466">
+		<name>Dataset424</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="266">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="262">
+				<PSXBackEndTable id="261">
+					<alias>RXDUAL</alias>
+					<table>RXDUAL</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="264" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>SecurityProviders</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXDUAL</tableAlias>
+						<column>GB</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="263" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="464">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/system/sys_GetSecurityProviders</name>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="465">
+			<schemaSource>file:SecurityProviders.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getSecurityProviders</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="467">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="470">
+		<name>Dataset1539</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="957">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="953">
+				<PSXBackEndTable id="952">
+					<alias>ROLES</alias>
+					<table>ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="955" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteWorkflowRoles/Action/WorkflowRoles/@RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteWorkflowRoles/Action/WorkflowRoles/@WorkflowAppId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteWorkflowRoles/Action/@type</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_Literal</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>DELETE</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="954" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>ROLES</tableAlias>
+									<column>ROLENAME</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>roleName</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="468">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/system/sys_emptyDoc</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>cascadeDeleteWorkflowRoles</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="469">
+			<schemaSource>file:cascadeDeleteWorkflowRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>cascadeDeleteWorkflowRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="471">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="474">
+		<name>Dataset1650</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="951">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="947">
+				<PSXBackEndTable id="945">
+					<alias>ROLES</alias>
+					<table>ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="946">
+					<alias>STATEROLES</alias>
+					<table>STATEROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndJoin id="0" joinType="inner">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>ROLES</tableAlias>
+							<column>ROLEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>STATEROLES</tableAlias>
+							<column>ROLEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+				<PSXBackEndJoin id="0" joinType="inner">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>ROLES</tableAlias>
+							<column>WORKFLOWAPPID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>STATEROLES</tableAlias>
+							<column>WORKFLOWAPPID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="949" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteStateRoles/Action/StateRoles/@RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteStateRoles/Action/StateRoles/@WorkflowAppId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>ROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteStateRoles/Action/@type</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_Literal</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>DELETE</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="948" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>ROLES</tableAlias>
+									<column>ROLENAME</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>roleName</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="472">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/system/sys_emptyDoc</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>cascadeDeleteStateRoles</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="473">
+			<schemaSource>file:cascadeDeleteStateRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>cascadeDeleteStateRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="475">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="478">
+		<name>Dataset1752</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="944">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="940">
+				<PSXBackEndTable id="938">
+					<alias>RXCOMMUNITYROLE</alias>
+					<table>RXCOMMUNITYROLE</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="939">
+					<alias>PSX_ROLES</alias>
+					<table>PSX_ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndJoin id="0" joinType="inner">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>PSX_ROLES</tableAlias>
+							<column>ID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>RXCOMMUNITYROLE</tableAlias>
+							<column>ROLEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="942" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteCommunityRoles/Action/CommunityRoles/@RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXCOMMUNITYROLE</tableAlias>
+						<column>ROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteCommunityRoles/Action/@type</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_Literal</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>DELETE</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="941" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>PSX_ROLES</tableAlias>
+									<column>NAME</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>roleName</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="476">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/system/sys_emptyDoc</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>cascadeDeleteCommunityRoles</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="477">
+			<schemaSource>file:cascadeDeleteCommunityRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>cascadeDeleteCommunityRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="479">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="482">
+		<name>Dataset149</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="964">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="960">
+				<PSXBackEndTable id="958">
+					<alias>TRANSITIONROLES</alias>
+					<table>TRANSITIONROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndTable id="959">
+					<alias>ROLES</alias>
+					<table>ROLES</table>
+					<datasource/>
+				</PSXBackEndTable>
+				<PSXBackEndJoin id="0" joinType="inner">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>ROLES</tableAlias>
+							<column>ROLEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>TRANSITIONROLES</tableAlias>
+							<column>TRANSITIONROLEID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+				<PSXBackEndJoin id="0" joinType="inner">
+					<leftColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>ROLES</tableAlias>
+							<column>WORKFLOWAPPID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</leftColumn>
+					<rightColumn>
+						<PSXBackEndColumn id="0">
+							<tableAlias>TRANSITIONROLES</tableAlias>
+							<column>WORKFLOWAPPID</column>
+							<columnAlias/>
+						</PSXBackEndColumn>
+					</rightColumn>
+				</PSXBackEndJoin>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="962" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteTransitionRoles/Action/TransitionRoles/@RoleId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>TRANSITIONROLEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteTransitionRoles/Action/TransitionRoles/@WorkflowAppId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>TRANSITIONROLES</tableAlias>
+						<column>WORKFLOWAPPID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>cascadeDeleteTransitionRoles/Action/@type</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_Literal</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>DELETE</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="961" method="whereClause" unique="no">
+				<WhereClauses>
+					<PSXWhereClause id="0" omitWhenNull="no">
+						<PSXConditional id="0">
+							<variable>
+								<PSXBackEndColumn id="0">
+									<tableAlias>ROLES</tableAlias>
+									<column>ROLENAME</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXSingleHtmlParameter id="0">
+									<name>roleName</name>
+								</PSXSingleHtmlParameter>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXWhereClause>
+				</WhereClauses>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="480">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/system/sys_emptyDoc</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>cascadeDeleteTransitionRoles</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="481">
+			<schemaSource>file:cascadeDeleteTransitionRoles.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>cascadeDeleteTransitionRoles</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="483">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="486">
+		<name>Dataset435</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="0">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="0">
+				<PSXBackEndTable id="0">
+					<alias>RXDUAL</alias>
+					<table>RXDUAL</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="0" returnEmptyXml="no">
+				<PSXDataMapping groupId="0" id="0">
+					<PSXXmlField id="0">
+						<name>blank/RXDUALSet/RXDUAL/GB</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXDUAL</tableAlias>
+						<column>GB</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="0" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="484">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_InlineLinkCleanup</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>cleanup</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="485">
+			<schemaSource>file:blank.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>CleanupInlineLinkRelationships</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="487">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="490">
+		<name>Dataset436</name>
+		<description/>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="0">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="0">
+				<PSXBackEndTable id="0">
+					<alias>RXDUAL</alias>
+					<table>RXDUAL</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="0" returnEmptyXml="no">
+				<PSXDataMapping groupId="0" id="0">
+					<PSXXmlField id="0">
+						<name>blank/RXDUALSet/RXDUAL/GB</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>RXDUAL</tableAlias>
+						<column>GB</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="0" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<ResultDataExits>
+				<PSXExtensionCallSet id="488">
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_InlineLinkCleanup</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>preview</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXExtensionCallSet>
+			</ResultDataExits>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="489">
+			<schemaSource>file:blank.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>PreviewCleanupInlineLinkRelationships</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="491">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="438" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="439">
+		<providerType>SMTP</providerType>
+		<server>localhost</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="locationY474">387</userProperty>
+	<userProperty name="pageDatatankSrcType485">3</userProperty>
+	<userProperty name="locationY472">22</userProperty>
+	<userProperty name="locationY471">488</userProperty>
+	<userProperty name="locationY470">487</userProperty>
+	<userProperty name="pageDatatankSrcType481">2</userProperty>
+	<userProperty name="resultPageFilePath457">C:\LocalFiles\dev\Specs\Roles\Datasets\getRoleAttributeRelation.dtd</userProperty>
+	<userProperty name="resultPageFilePath454">C:\LocalFiles\dev\Specs\Roles\Datasets\getRoleSubjectAttributeRelation.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly469">true</userProperty>
+	<userProperty name="locationX468">83</userProperty>
+	<userProperty name="resultPageFilePath451">C:\LocalFiles\dev\Specs\Roles\Datasets\getAttribute.dtd</userProperty>
+	<userProperty name="locationX467">-8</userProperty>
+	<userProperty name="schemaSourceReadOnly465">false</userProperty>
+	<userProperty name="locationX466">-19</userProperty>
+	<userProperty name="locationX464">66</userProperty>
+	<userProperty name="locationX463">196</userProperty>
+	<userProperty name="locationY468">22</userProperty>
+	<userProperty name="schemaSourceReadOnly461">true</userProperty>
+	<userProperty name="locationY467">0</userProperty>
+	<userProperty name="locationX462">37</userProperty>
+	<userProperty name="locationY466">0</userProperty>
+	<userProperty name="locationX460">171</userProperty>
+	<userProperty name="pageDatatankSrcType477">2</userProperty>
+	<userProperty name="locationY464">22</userProperty>
+	<userProperty name="locationY463">653</userProperty>
+	<userProperty name="locationY462">649</userProperty>
+	<userProperty name="pageDatatankSrcType473">2</userProperty>
+	<userProperty name="locationY460">338</userProperty>
+	<userProperty name="pageDatatankFilePath481">C:\RX500625DB2\sys_components\cascadeDeleteTransitionRoles.dtd</userProperty>
+	<userProperty name="resultPageFilePath448">C:\LocalFiles\dev\Specs\Roles\Datasets\getSubject.dtd</userProperty>
+	<userProperty name="resultPageFilePath445">C:\LocalFiles\dev\Specs\Roles\Datasets\getRole.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly458">true</userProperty>
+	<userProperty name="locationX459">32</userProperty>
+	<userProperty name="schemaSourceReadOnly455">true</userProperty>
+	<userProperty name="locationX457">178</userProperty>
+	<userProperty name="locationX456">31</userProperty>
+	<userProperty name="locationY459">322</userProperty>
+	<userProperty name="schemaSourceReadOnly452">true</userProperty>
+	<userProperty name="locationX454">192</userProperty>
+	<userProperty name="locationX453">28</userProperty>
+	<userProperty name="locationY457">418</userProperty>
+	<userProperty name="pageDatatankSrcType469">2</userProperty>
+	<userProperty name="locationY456">428</userProperty>
+	<userProperty name="locationX451">177</userProperty>
+	<userProperty name="locationX450">54</userProperty>
+	<userProperty name="locationY454">523</userProperty>
+	<userProperty name="locationY453">529</userProperty>
+	<userProperty name="pageDatatankFilePath477">C:\RX500523\sys_components\cascadeDeleteCommunityRoles.dtd</userProperty>
+	<userProperty name="pageDatatankSrcType465">3</userProperty>
+	<userProperty name="locationY451">230</userProperty>
+	<userProperty name="locationY450">229</userProperty>
+	<userProperty name="pageDatatankFilePath473">C:\RX500523\sys_components\cascadeDeleteStateRoles.dtd</userProperty>
+	<userProperty name="pageDatatankSrcType461">2</userProperty>
+	<userProperty name="schemaSourceReadOnly449">true</userProperty>
+	<userProperty name="schemaSourceReadOnly446">true</userProperty>
+	<userProperty name="locationX448">168</userProperty>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="locationX447">53</userProperty>
+	<userProperty name="schemaSourceReadOnly443">true</userProperty>
+	<userProperty name="locationX445">167</userProperty>
+	<userProperty name="locationX444">51</userProperty>
+	<userProperty name="schemaSourceReadOnly441">true</userProperty>
+	<userProperty name="locationY448">137</userProperty>
+	<userProperty name="locationX442">362</userProperty>
+	<userProperty name="locationY447">134</userProperty>
+	<userProperty name="pageDatatankFilePath469">C:\RX500523\sys_components\cascadeDeleteWorkflowRoles.dtd</userProperty>
+	<userProperty name="locationX440">10</userProperty>
+	<userProperty name="pageDatatankSrcType458">2</userProperty>
+	<userProperty name="locationY445">54</userProperty>
+	<userProperty name="locationY444">40</userProperty>
+	<userProperty name="locationY442">113</userProperty>
+	<userProperty name="pageDatatankSrcType455">2</userProperty>
+	<userProperty name="locationY440">22</userProperty>
+	<userProperty name="pageDatatankSrcType452">2</userProperty>
+	<userProperty name="pageDatatankFilePath461">C:\LocalFiles\dev\Specs\Roles\Datasets\getSubjectAttributeRelation.dtd</userProperty>
+	<userProperty name="locationX439">16</userProperty>
+	<userProperty name="locationX438">16</userProperty>
+	<userProperty name="locationX437">16</userProperty>
+	<userProperty name="resultPageFilePath483">C:\RX500625DB2\sys_components\cascadeDeleteTransitionRoles.dtd</userProperty>
+	<userProperty name="locationY439">100</userProperty>
+	<userProperty name="locationY438">55</userProperty>
+	<userProperty name="locationY437">10</userProperty>
+	<userProperty name="pageDatatankSrcType449">2</userProperty>
+	<userProperty name="pageDatatankFilePath458">C:\LocalFiles\dev\Specs\Roles\Datasets\getRoleSubjectRelation.dtd</userProperty>
+	<userProperty name="pageDatatankSrcType446">2</userProperty>
+	<userProperty name="pageDatatankFilePath455">C:\LocalFiles\dev\Specs\Roles\Datasets\getRoleAttributeRelation.dtd</userProperty>
+	<userProperty name="locationX491">561</userProperty>
+	<userProperty name="pageDatatankSrcType443">2</userProperty>
+	<userProperty name="locationX490">431</userProperty>
+	<userProperty name="pageDatatankFilePath452">C:\LocalFiles\dev\Specs\Roles\Datasets\getRoleSubjectAttributeRelation.dtd</userProperty>
+	<userProperty name="pageDatatankSrcType441">2</userProperty>
+	<userProperty name="locationY491">867</userProperty>
+	<userProperty name="locationY490">866</userProperty>
+	<userProperty name="resultPageFilePath479">C:\RX500523\sys_components\cascadeDeleteCommunityRoles.dtd</userProperty>
+	<userProperty name="resultPageFilePath475">C:\RX500523\sys_components\cascadeDeleteStateRoles.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly489">true</userProperty>
+	<userProperty name="resultPageFilePath471">C:\RX500523\sys_components\cascadeDeleteWorkflowRoles.dtd</userProperty>
+	<userProperty name="locationX488">70</userProperty>
+	<userProperty name="schemaSourceReadOnly485">true</userProperty>
+	<userProperty name="locationX487">242</userProperty>
+	<userProperty name="locationX486">112</userProperty>
+	<userProperty name="pageDatatankFilePath449">C:\LocalFiles\dev\Specs\Roles\Datasets\getAttribute.dtd</userProperty>
+	<userProperty name="locationX484">70</userProperty>
+	<userProperty name="schemaSourceReadOnly481">true</userProperty>
+	<userProperty name="locationX483">557</userProperty>
+	<userProperty name="locationY488">22</userProperty>
+	<userProperty name="pageDatatankFilePath446">C:\LocalFiles\dev\Specs\Roles\Datasets\getSubject.dtd</userProperty>
+	<userProperty name="locationX482">427</userProperty>
+	<userProperty name="locationY487">861</userProperty>
+	<userProperty name="locationY486">860</userProperty>
+	<userProperty name="locationX480">83</userProperty>
+	<userProperty name="pageDatatankFilePath443">C:\LocalFiles\dev\Specs\Roles\Datasets\getRole.dtd</userProperty>
+	<userProperty name="locationY484">22</userProperty>
+	<userProperty name="locationY483">657</userProperty>
+	<userProperty name="pageDatatankFilePath441">C:\LocalFiles\dev\Specs\Roles\Datasets\UpdateRoleCfg.dtd</userProperty>
+	<userProperty name="locationY482">656</userProperty>
+	<userProperty name="locationY480">22</userProperty>
+	<userProperty name="resultPageFilePath463">C:\LocalFiles\dev\Specs\Roles\Datasets\getSubjectAttributeRelation.dtd</userProperty>
+	<userProperty name="schemaSourceReadOnly477">true</userProperty>
+	<userProperty name="locationX479">513</userProperty>
+	<userProperty name="locationX478">355</userProperty>
+	<userProperty name="resultPageFilePath460">C:\LocalFiles\dev\Specs\Roles\Datasets\getRoleSubjectRelation.dtd</userProperty>
+	<userProperty name="locationX476">83</userProperty>
+	<userProperty name="schemaSourceReadOnly473">true</userProperty>
+	<userProperty name="locationX475">557</userProperty>
+	<userProperty name="locationX474">427</userProperty>
+	<userProperty name="locationY479">260</userProperty>
+	<userProperty name="locationY478">236</userProperty>
+	<userProperty name="locationX472">82</userProperty>
+	<userProperty name="locationX471">595</userProperty>
+	<userProperty name="locationY476">22</userProperty>
+	<userProperty name="pageDatatankSrcType489">3</userProperty>
+	<userProperty name="locationX470">465</userProperty>
+	<userProperty name="locationY475">388</userProperty>
+</PSXApplication>

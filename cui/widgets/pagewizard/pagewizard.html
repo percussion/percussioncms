@@ -1,0 +1,104 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<div class="page-wizard" data-bind="visible: isPageWizardVisible()">
+	<div class="site-selector" data-bind="visible: multipleSites()">
+		<div class="form-title">* Select Site</div>
+        <div class="wizard-form-error" data-bind="slideVisible: invalidSiteSelection()">Site selection is required</div>
+		<div class="site-select">
+			<select class="styled-select" data-bind="options: sites, optionsText: function(site) {return site.name}, value: selectedSite, optionsCaption: 'Select the Site for this page'">
+			</select>
+		</div>
+	</div>
+	<div class="form-title">* Page Title</div>
+    <div class="wizard-form-error" data-bind="slideVisible: invalidPageTitle()">Page Title is required</div>
+	<div class="page-title-input">
+		<input data-bind="hasFocus: titleHasFocus, value: pageTitle, valueUpdate: 'afterkeydown'" type="text" name="pageTitle" class="styled-input" placeholder="Enter a title for your Page"></input>
+	</div>
+	<div class="form-title">* File Name (URL)</div>
+    <div class="wizard-form-error" data-bind="slideVisible: invalidPageFile()">File Name is required</div>
+	<div class="wizard-form-error" data-bind="slideVisible: fileNameTooLong()">File Name cannot exceed 255 characters</div>
+	<div class="blog-file-name-input">
+		<input data-bind="hasFocus: fileHasFocus, value: pageFile, valueUpdate: 'afterkeydown'" type="text" name="pageFile" class="styled-input" placeholder="Enter a file name. Your file name will be used in your URL. Include your file extension (.htm, .html, etc.)"></input>
+	</div>
+    
+    <div class="control-container">
+    
+        <div class="template-control">
+            <div class="form-title">* Choose a template:</div>
+            <div class="wizard-form-error" data-bind="slideVisible: invalidTemplateSelected()">Template selection is required</div>
+            
+            <div class="filter-select">
+                <div class="recent-items-filter">
+                    <input type="radio" name="radiog_dark1" id="radio7" class="template-checkbox" value="Recent" data-bind="checked: selectedTemplateFilter">
+                    <label for="radio7" class="template-labelradio radGroup3">Recent templates</label>
+                </div>
+                <div class="all-items-filter">
+                    <input type="radio" name="radiog_dark1" id="radio8" class="template-checkbox" value="All" data-bind="checked: selectedTemplateFilter">
+                    <label for="radio8" class="template-labelradio radGroup3">All templates</label>
+                </div>
+            </div>
+            
+        	<div class="template-gallery" data-bind="css: {'template-gallery-extended': !multipleSites()}">
+                <div class="empty-recent-templates" data-bind="visible: emptyRecentTemplates()">No recent templates</div>
+				<span data-bind="foreach: templates">
+	                <div class="template" data-bind="click: function(template) { $root.pageTemplate(template.id) }, css: {'selected-template': $root.pageTemplate() ? $root.pageTemplate() == id : false}, attr: {id: id}">
+	                    <img data-bind="attr: {src: thumbPath, alt: name}"/>
+	                    <div class="description" data-bind="text: name, attr:{title:name}"></div>
+	                </div>
+				</span>
+            </div>
+        </div>
+        
+        <div class="folder-control">
+            <div class="form-title">* Choose a target location (folder):</div>
+            <div class="wizard-form-error" data-bind="slideVisible: invalidFolderSelection()">Target location selection is required</div>
+            
+            <div class="filter-select">
+                <div class="recent-items-filter">
+                    <input type="radio" name="radiog_dark2" id="radio9" class="folder-checkbox" value="Recent" data-bind="checked: selectedFolderFilter">
+                    <label for="radio9" class="folder-labelradio radGroup4">Recent folders</label>
+                </div>
+                <div class="all-items-filter">
+                    <input type="radio" name="radiog_dark2" id="radio10" class="folder-checkbox" value="All" data-bind="checked: selectedFolderFilter">
+                    <label for="radio10" class="folder-labelradio radGroup4">All folders</label>
+                </div>
+            </div>
+            
+			<div class="recent-folders" data-bind="visible: !allFoldersSelected(), css: {'recent-folders-extended': !multipleSites()}">
+				<div class="empty-recent-folders" data-bind="visible: emptyRecentFolders()">No recent folders</div>
+				<span data-bind="foreach: folders">
+	                <div class="folder" data-bind="click: function(folder) { $root.pageFolder(folder.path) }, css: {'selected-folder': $root.pageFolder() == path}, attr: {title: path}">
+	                    <img src="/Rhythmyx/sys_resources/images/finderFolder.png" class="folder-icon">
+						<div class="folder-name" data-bind="text: name"></div>
+	                </div>
+				</span>
+            </div>
+			<div id="page-folder-tree" class="folder-tree" data-bind="visible: allFoldersSelected(), css: {'folder-tree-extended': !multipleSites()}">
+            </div>
+        </div>
+    
+    </div>
+    
+</div>

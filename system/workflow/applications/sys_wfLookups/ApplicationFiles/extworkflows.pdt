@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflow (workflowid, link, name, description, deletelink, previewlink, newwflink, copywflink, componentname )>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT newwflink (#PCDATA)>
+<!ELEMENT copywflink (#PCDATA)>
+<!ELEMENT previewlink (#PCDATA)>
+<!ELEMENT deletelink (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT extworkflows (workflow* )>

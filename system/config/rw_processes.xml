@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Processes>
+   <!--
+      Compress an index - can do them in - place or elsewhere
+      and then copied into place, the latter allows the engine to continue
+      servicing requests while the compression/reorganization goes on.
+      Since we don't want to loose any data in this process, the search
+      server should be shut down while this operation is performed.
+
+      [TEMP_DIR is the target location of the indexes, they must be
+      moved over the actual index, which would require a server shutdown]:
+   -->
+   <PSXProcess name="sindex_compress" type="com.percussion.process.PSSimpleProcess">
+      <PSXProcessDef os="win">
+         <executable resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin/indexdmp"/>
+         <params>
+            <PSXParam resolver="com.percussion.process.PSPathResolver" value="{CONFIG_DIR}/rware.cfg"/>
+            <PSXParam resolver="com.percussion.process.PSBasicResolver" value="{RW_LIBRARY_NAME}"/>
+            <PSXParam resolver="com.percussion.process.PSBasicResolver" value="{TEMP_DIR}"/>
+            <PSXParam name="temp"/>
+            <PSXParam name="reformat"/>
+            <PSXParam name="time"/>
+         </params>
+      </PSXProcessDef>
+      <PSXProcessDef os="linux">
+         <executable resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin/indexdmp"/> 
+		 <params>
+           <PSXParam resolver="com.percussion.process.PSPathResolver" value="{CONFIG_DIR}/rware.cfg"/>
+           <PSXParam resolver="com.percussion.process.PSBasicResolver" value="{RW_LIBRARY_NAME}"/>
+            <PSXParam resolver="com.percussion.process.PSBasicResolver" value="{TEMP_DIR}"/>
+           <PSXParam name="temp"/>
+           <PSXParam name="reformat"/>
+           <PSXParam name="time"/>
+         </params>
+      </PSXProcessDef>
+	  <PSXProcessDef os="solaris">
+         <executable value="sh"/>
+         <params>
+            <PSXParam name="c"/>
+            <group>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin/indexdmp"/> 
+               <PSXParam resolver="com.percussion.process.PSPathResolver" value="{CONFIG_DIR}/rware.cfg"/>
+               <PSXParam resolver="com.percussion.process.PSBasicResolver" value="'{RW_LIBRARY_NAME}'"/>
+               <PSXParam resolver="com.percussion.process.PSBasicResolver" value="{TEMP_DIR}"/>
+               <PSXParam name="temp"/>
+               <PSXParam name="reformat"/>
+               <PSXParam name="time"/>
+            </group>
+         </params>
+      </PSXProcessDef>	  
+   </PSXProcess>
+   <!--
+      Starting a server.
+   -->
+   <PSXProcess name="start" type="com.percussion.process.PSSimpleProcess">
+      <PSXProcessDef os="win">
+         <executable value="cmd"/>
+         <params>
+	    <PSXParam value="/c"/>
+    	    <PSXParam resolver="com.percussion.process.PSPathResolver"
+               name=""
+	       value="{INSTALL_DIR}/bin/execd" />
+	    <PSXParam resolver="com.percussion.process.PSPathResolver"
+	       name="cfg"
+	       value="{CONFIG_DIR}/exec.cfg"/>
+	    <PSXParam resolver="com.percussion.process.PSPathResolver"
+	       name="error_log"
+	       value="{WORKING_DIR}/logs/execd_errors.log" />
+	    <PSXParam resolver="com.percussion.process.PSBasicResolver"
+	       name="port" value="{PORT}"/>
+  	    <PSXParam resolver="com.percussion.process.PSBasicResolver"
+	       name="host" value="{HOST}"/>
+	    <PSXParam resolver="com.percussion.process.PSBasicResolver"
+	       name="ns" value="cqns@{HOST}:{PORT}"/>
+	    <PSXParam name="spawn"/>
+         </params>
+      </PSXProcessDef>
+      <PSXProcessDef os="solaris,linux">
+         <executable  value="nohup"/>
+         <params>
+            <PSXParam value="sh"/>
+            <PSXParam name="c"/>
+            <group>
+               <PSXParam  
+                  resolver="com.percussion.process.PSPathResolver"
+                  value="{INSTALL_DIR}/bin/execd"/>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" 
+                  name="cfg" 
+                  value="{CONFIG_DIR}/exec.cfg"/>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" 
+                  name="error_log" 
+                  value="{WORKING_DIR}/logs/rw_exec_errors.txt"/>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" 
+                  name="pid_file"
+                  value="{WORKING_DIR}/logs/execd.pid"/>
+               <PSXParam resolver="com.percussion.process.PSBasicResolver" 
+                  name="port" value="{PORT}"/>
+               <PSXParam resolver="com.percussion.process.PSBasicResolver" 
+                  name="host" value="{HOST}"/>
+               <PSXParam resolver="com.percussion.process.PSBasicResolver" 
+                  name="ns" value="cqns@{HOST}:{PORT}"/>
+            </group>
+         </params>
+      </PSXProcessDef>
+   </PSXProcess>
+   <!--
+      Restarting server.
+      This is much more efficient than stopping the server and starting it
+      again if the goal is to reload the config files.
+   -->
+   <PSXProcess name="restart" type="com.percussion.process.PSSimpleProcess">
+      <PSXProcessDef os="win">
+         <executable resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin/execstat"/>
+         <params>
+            <PSXParam resolver="com.percussion.process.PSBasicResolver"
+               name="restart" value="{HOST}:{PORT}"/>
+         </params>
+      </PSXProcessDef>
+      <PSXProcessDef os="solaris, linux">
+        <executable  value="sh"/>
+        <params>
+           <PSXParam name="c"/>
+           <group>
+              <PSXParam resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin/execstat"/>
+              <PSXParam resolver="com.percussion.process.PSBasicResolver" 
+                 name="restart" value="{HOST}:{PORT}"/>
+           </group>
+        </params>
+      </PSXProcessDef>      
+   </PSXProcess>
+   
+   <!--
+      Shutdown server.
+      Use this command when the Rx server is shutting down or it is necessary
+      to perform some other operation.
+   -->
+   <PSXProcess name="shutdown" type="com.percussion.process.PSSimpleProcess">
+      <PSXProcessDef os="win">
+         <executable resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin/execstat"/>
+         <params>
+            <PSXParam resolver="com.percussion.process.PSBasicResolver"
+               name="shutdown" value="{HOST}:{PORT}"/>
+            <PSXParam value="exec"/>
+         </params>
+      </PSXProcessDef>
+      <PSXProcessDef os="solaris, linux">
+        <executable  value="sh"/>
+        <params>
+           <PSXParam name="c"/>
+           <group>
+              <PSXParam value="{INSTALL_DIR}/bin/execstat" resolver="com.percussion.process.PSPathResolver"/>
+	      <PSXParam resolver="com.percussion.process.PSBasicResolver" 
+	         name="shutdown" value="{HOST}:{PORT}"/>
+	      <PSXParam value="exec"/>
+	   </group>
+        </params>
+      </PSXProcessDef>
+   </PSXProcess>
+   
+   <!--
+      Run the rw_inso executable to convert a file or retrieve the type.
+   -->
+   <PSXProcess name="rw_inso" type="com.percussion.process.PSSimpleProcess">
+      <PSXProcessDef os="win">
+         <dir resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/inso"/>
+         <executable resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/inso/rw_inso"/>
+         <params>
+            <PSXParam resolver="com.percussion.process.PSPathResolver"
+               name="file"
+               value="{WORKING_DIR}/temp/{SOURCE_FILE}"/>
+            <PSXParam name="type" ifDefined="FILE_TYPE"/>
+            <PSXParam resolver="com.percussion.process.PSPathResolver"
+               name="output"
+               value="{WORKING_DIR}/temp/{OUTPUT_FILE}"
+              ifDefined="OUTPUT_FILE"/>
+            <PSXParam resolver="com.percussion.process.PSPathResolver"
+              name="html"
+               value="{INSTALL_DIR}/{HTML_TEMPLATE}"
+              ifDefined="HTML_TEMPLATE"/>
+            <PSXParam name="crlf" ifDefined="CRLF"/>
+            <PSXParam resolver="com.percussion.process.PSBasicResolver"
+              name="fo"
+              value="{OUTPUT_FILTER}"
+              ifDefined="OUTPUT_FILTER"/>
+         </params>
+      </PSXProcessDef>
+      <PSXProcessDef os="solaris, linux">
+         <dir resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/inso"/>
+         <executable value="sh"/>
+         <params>
+            <PSXParam name="c"/>
+            <group>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/inso/rw_inso"/>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" 
+                  name="file" 
+                  value="{WORKING_DIR}/temp/{SOURCE_FILE}"/>
+               <PSXParam name="type" ifDefined="FILE_TYPE"/>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" 
+                  name="output" 
+                  value="{WORKING_DIR}/temp/{OUTPUT_FILE}" 
+                  ifDefined="OUTPUT_FILE"/>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" 
+                  name="html"
+                  value="{INSTALL_DIR}/{HTML_TEMPLATE}" 
+                  ifDefined="HTML_TEMPLATE"/>
+               <PSXParam name="crlf" ifDefined="CRLF"/>
+               <PSXParam resolver="com.percussion.process.PSBasicResolver" 
+                  name="fo" 
+                  value="{OUTPUT_FILTER}" 
+                  ifDefined="OUTPUT_FILTER"/>
+            </group>
+         </params>
+      </PSXProcessDef>
+   </PSXProcess>
+   <PSXProcess name="rw_pdf" type="com.percussion.process.PSSimpleProcess">
+      <PSXProcessDef os="win">
+         <dir resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin"/>
+         <executable resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin/cq60pdf"/>
+         <params>
+            <PSXParam resolver="com.percussion.process.PSPathResolver"
+               value="{WORKING_DIR}/temp/{SOURCE_FILE}"/>
+            <PSXParam name="N"/>
+            <PSXParam name="V0"/>
+            <PSXParam resolver="com.percussion.process.PSPathResolver"
+               name="T"
+               value="{WORKING_DIR}/temp/{OUTPUT_FILE}"
+               separator="="/>
+            <PSXParam name="debug"/>
+         </params>
+      </PSXProcessDef>
+      <PSXProcessDef os="solaris, linux">
+         <dir resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin"/>
+         <executable value="sh"/>
+         <params>
+            <PSXParam name="c"/>
+            <group>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" value="{INSTALL_DIR}/bin/cq60pdf"/>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" 
+                  value="{WORKING_DIR}/temp/{SOURCE_FILE}"/>
+               <PSXParam name="N"/>
+               <PSXParam name="V0"/>
+               <PSXParam resolver="com.percussion.process.PSPathResolver" 
+                  name="T"
+                  value="{WORKING_DIR}/temp/{OUTPUT_FILE}"
+                  separator="="/>
+               <PSXParam name="debug"/>
+            </group>
+         </params>
+      </PSXProcessDef>
+   </PSXProcess>
+
+   <!--
+      If the RW server is found at the specified host and port, the return is
+      similar to:
+
+      exec v7.0.3 at 10.10.10.203:9061
+      Program            | Interface | State        | Status
+      ___________________+___________+______________+____________
+      cqquery            | cqquery   | active       |
+      cqserv             | cqserv    | active       |
+      cqdh               | cqdh      | active       |
+      cqns               | cqnameser+| active       |
+      cqxref             | cqxref    | active       |
+      cqfe               | cqfe      |  not running |
+      cqsched            | cqsched   | active       |
+      nfserv             | netfile   |  not running |
+      cqindex_ce9        | cqindex   |  not running |
+      cqindex_ce8        | cqindex   |  not running |
+      cqindex_ce7        | cqindex   |  not running |
+
+      If not found, it is similar to:
+
+         exec@10.10.10.203:906: Connect system call failed
+   -->
+   <PSXProcess name="status" type="com.percussion.process.PSSimpleProcess">
+      <PSXProcessDef os="win, solaris, linux">
+         <executable resolver="com.percussion.process.PSPathResolver"
+               value="{INSTALL_DIR}/bin/execstat"/>
+         <params>
+            <PSXParam resolver="com.percussion.process.PSBasicResolver"
+               value="{HOST}:{PORT}"/>
+         </params>
+      </PSXProcessDef>
+   </PSXProcess>
+</Processes>

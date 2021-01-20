@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Item EMPTY>
+<!ATTLIST  Item sys_revision CDATA #IMPLIED>
+<!ATTLIST  Item sys_contentid CDATA #IMPLIED>
+<!ELEMENT Items (Item* )>

@@ -1,0 +1,996 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Melissa Morin (Percussion Software) -->
+<wsdl:definitions xmlns:uid="urn:www.percussion.com/6.0.0/uiDesign" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:www.percussion.com/6.0.0/uiDesign" name="uiDesign">
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/faults" schemaLocation="../faults.xsd">
+         </xsd:import>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/uiDesign" schemaLocation="uiDesign.xsd">
+         </xsd:import>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="AuthenticationHeader">
+      <wsdl:part name="Session" element="com:PSAuthenticationHeader"/>
+   </wsdl:message>
+   <wsdl:message name="empty"/>
+   <wsdl:message name="CreateActionsRequest">
+      <wsdl:part name="CreateActionsRequest" element="uid:CreateActionsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateActionsResponse">
+      <wsdl:part name="CreateActionsResponse" element="uid:CreateActionsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FindActionsRequest">
+      <wsdl:part name="FindActionsRequest" element="uid:FindActionsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FindActionsResponse">
+      <wsdl:part name="FindActionsResponse" element="uid:FindActionsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadActionsRequest">
+      <wsdl:part name="LoadActionsRequest" element="uid:LoadActionsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadActionsResponse">
+      <wsdl:part name="LoadActionsResponse" element="uid:LoadActionsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="SaveActionsRequest">
+      <wsdl:part name="SaveActionsRequest" element="uid:SaveActionsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="DeleteActionsRequest">
+      <wsdl:part name="DeleteActionsRequest" element="uid:DeleteActionsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateDisplayFormatsRequest">
+      <wsdl:part name="CreateDisplayFormatsRequest" element="uid:CreateDisplayFormatsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateDisplayFormatsResponse">
+      <wsdl:part name="CreateDisplayFormatsResponse" element="uid:CreateDisplayFormatsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FindDisplayFormatsRequest">
+      <wsdl:part name="FindDisplayFormatsRequest" element="uid:FindDisplayFormatsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FindDisplayFormatsResponse">
+      <wsdl:part name="FindDisplayFormatsResponse" element="uid:FindDisplayFormatsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadDisplayFormatsRequest">
+      <wsdl:part name="LoadDisplayFormatsRequest" element="uid:LoadDisplayFormatsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadDisplayFormatsResponse">
+      <wsdl:part name="LoadDisplayFormatsResponse" element="uid:LoadDisplayFormatsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="SaveDisplayFormatsRequest">
+      <wsdl:part name="SaveDisplayFormatsRequest" element="uid:SaveDisplayFormatsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="DeleteDisplayFormatsRequest">
+      <wsdl:part name="DeleteDisplayFormatsRequest" element="uid:DeleteDisplayFormatsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateSearchesRequest">
+      <wsdl:part name="CreateSearchesRequest" element="uid:CreateSearchesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateSearchesResponse">
+      <wsdl:part name="CreateSearchesResponse" element="uid:CreateSearchesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FindSearchesRequest">
+      <wsdl:part name="FindSearchesRequest" element="uid:FindSearchesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FindSearchesResponse">
+      <wsdl:part name="FindSearchesResponse" element="uid:FindSearchesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadSearchesRequest">
+      <wsdl:part name="LoadSearchesRequest" element="uid:LoadSearchesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadSearchesResponse">
+      <wsdl:part name="LoadSearchesResponse" element="uid:LoadSearchesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="SaveSearchesRequest">
+      <wsdl:part name="SaveSearchesRequest" element="uid:SaveSearchesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="DeleteSearchesRequest">
+      <wsdl:part name="DeleteSearchesRequest" element="uid:DeleteSearchesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateViewsRequest">
+      <wsdl:part name="CreateViewsRequest" element="uid:CreateViewsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateViewsResponse">
+      <wsdl:part name="CreateViewsResponse" element="uid:CreateViewsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FindViewsRequest">
+      <wsdl:part name="FindViewsRequest" element="uid:FindViewsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FindViewsResponse">
+      <wsdl:part name="FindViewsResponse" element="uid:FindViewsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadViewsRequest">
+      <wsdl:part name="LoadViewsRequest" element="uid:LoadViewsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadViewsResponse">
+      <wsdl:part name="LoadViewsResponse" element="uid:LoadViewsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="SaveViewsRequest">
+      <wsdl:part name="SaveViewsRequest" element="uid:SaveViewsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="DeleteViewsRequest">
+      <wsdl:part name="DeleteViewsRequest" element="uid:DeleteViewsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateHierarchyNodesRequest">
+      <wsdl:part name="CreateHierarchyNodesRequest" element="uid:CreateHierarchyNodesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateHierarchyNodesResponse">
+      <wsdl:part name="CreateHierarchyNodesResponse" element="uid:CreateHierarchyNodesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FindHierarchyNodesRequest">
+      <wsdl:part name="FindHierarchyNodesRequest" element="uid:FindHierarchyNodesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FindHierarchyNodesResponse">
+      <wsdl:part name="FindHierarchyNodesResponse" element="uid:FindHierarchyNodesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadHierarchyNodesRequest">
+      <wsdl:part name="LoadHierarchyNodesRequest" element="uid:LoadHierarchyNodesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadHierarchyNodesResponse">
+      <wsdl:part name="LoadHierarchyNodesResponse" element="uid:LoadHierarchyNodesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="SaveHierarchyNodesRequest">
+      <wsdl:part name="SaveHierarchyNodesRequest" element="uid:SaveHierarchyNodesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="DeleteHierarchyNodesRequest">
+      <wsdl:part name="DeleteHierarchyNodesRequest" element="uid:DeleteHierarchyNodesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="GetChildrenRequest">
+      <wsdl:part name="GetChildrenRequest" element="uid:GetChildrenRequest"/>
+   </wsdl:message>
+   <wsdl:message name="GetChildrenResponse">
+      <wsdl:part name="GetChildrenResponse" element="uid:GetChildrenResponse"/>
+   </wsdl:message>
+   <wsdl:message name="MoveChildrenRequest">
+      <wsdl:part name="MoveChildrenRequest" element="uid:MoveChildrenRequest"/>
+   </wsdl:message>
+   <wsdl:message name="RemoveChildrenRequest">
+      <wsdl:part name="RemoveChildrenRequest" element="uid:RemoveChildrenRequest"/>
+   </wsdl:message>
+   <wsdl:message name="PathsToIdsRequest">
+      <wsdl:part name="PathsToIdsRequest" element="uid:PathsToIdsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="PathsToIdsResponse">
+      <wsdl:part name="PathsToIdsResponse" element="uid:PathsToIdsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="IdsToPathsRequest">
+      <wsdl:part name="IdsToPathsRequest" element="uid:IdsToPathsRequest"/>
+   </wsdl:message>
+   <wsdl:message name="IdsToPathsResponse">
+      <wsdl:part name="IdsToPathsResponse" element="uid:IdsToPathsResponse"/>
+   </wsdl:message>
+   <wsdl:message name="ContractViolationFaultMessage">
+      <wsdl:part name="fault" element="flt:PSContractViolationFault"/>
+   </wsdl:message>
+   <wsdl:message name="InvalidSessionFaultMessage">
+      <wsdl:part name="fault" element="flt:PSInvalidSessionFault"/>
+   </wsdl:message>
+   <wsdl:message name="NotAuthorizedFaultMessage">
+      <wsdl:part name="fault" element="flt:PSNotAuthorizedFault"/>
+   </wsdl:message>
+   <wsdl:message name="ErrorResultsFaultMessage">
+      <wsdl:part name="fault" element="flt:PSErrorResultsFault"/>
+   </wsdl:message>
+   <wsdl:message name="ErrorsFaultMessage">
+      <wsdl:part name="fault" element="flt:PSErrorsFault"/>
+   </wsdl:message>
+   <wsdl:portType name="uiDesign">
+      <wsdl:operation name="CreateActions">
+         <wsdl:input message="uid:CreateActionsRequest"/>
+         <wsdl:output message="uid:CreateActionsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FindActions">
+         <wsdl:input message="uid:FindActionsRequest"/>
+         <wsdl:output message="uid:FindActionsResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadActions">
+         <wsdl:input message="uid:LoadActionsRequest"/>
+         <wsdl:output message="uid:LoadActionsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="uid:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="SaveActions">
+         <wsdl:input message="uid:SaveActionsRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteActions">
+         <wsdl:input message="uid:DeleteActionsRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="CreateDisplayFormats">
+         <wsdl:input message="uid:CreateDisplayFormatsRequest"/>
+         <wsdl:output message="uid:CreateDisplayFormatsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FindDisplayFormats">
+         <wsdl:input message="uid:FindDisplayFormatsRequest"/>
+         <wsdl:output message="uid:FindDisplayFormatsResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadDisplayFormats">
+         <wsdl:input message="uid:LoadDisplayFormatsRequest"/>
+         <wsdl:output message="uid:LoadDisplayFormatsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="uid:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="SaveDisplayFormats">
+         <wsdl:input message="uid:SaveDisplayFormatsRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteDisplayFormats">
+         <wsdl:input message="uid:DeleteDisplayFormatsRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="CreateSearches">
+         <wsdl:input message="uid:CreateSearchesRequest"/>
+         <wsdl:output message="uid:CreateSearchesResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FindSearches">
+         <wsdl:input message="uid:FindSearchesRequest"/>
+         <wsdl:output message="uid:FindSearchesResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadSearches">
+         <wsdl:input message="uid:LoadSearchesRequest"/>
+         <wsdl:output message="uid:LoadSearchesResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="uid:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="SaveSearches">
+         <wsdl:input message="uid:SaveSearchesRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteSearches">
+         <wsdl:input message="uid:DeleteSearchesRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="CreateViews">
+         <wsdl:input message="uid:CreateViewsRequest"/>
+         <wsdl:output message="uid:CreateViewsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FindViews">
+         <wsdl:input message="uid:FindViewsRequest"/>
+         <wsdl:output message="uid:FindViewsResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadViews">
+         <wsdl:input message="uid:LoadViewsRequest"/>
+         <wsdl:output message="uid:LoadViewsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="uid:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="SaveViews">
+         <wsdl:input message="uid:SaveViewsRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteViews">
+         <wsdl:input message="uid:DeleteViewsRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="CreateHierarchyNodes">
+         <wsdl:input message="uid:CreateHierarchyNodesRequest"/>
+         <wsdl:output message="uid:CreateHierarchyNodesResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FindHierarchyNodes">
+         <wsdl:input message="uid:FindHierarchyNodesRequest"/>
+         <wsdl:output message="uid:FindHierarchyNodesResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadHierarchyNodes">
+         <wsdl:input message="uid:LoadHierarchyNodesRequest"/>
+         <wsdl:output message="uid:LoadHierarchyNodesResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="uid:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="SaveHierarchyNodes">
+         <wsdl:input message="uid:SaveHierarchyNodesRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteHierarchyNodes">
+         <wsdl:input message="uid:DeleteHierarchyNodesRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="uid:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="uid:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="GetChildren">
+         <wsdl:input message="uid:GetChildrenRequest"/>
+         <wsdl:output message="uid:GetChildrenResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="MoveChildren">
+         <wsdl:input message="uid:MoveChildrenRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="RemoveChildren">
+         <wsdl:input message="uid:RemoveChildrenRequest"/>
+         <wsdl:output message="uid:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="PathsToIds">
+         <wsdl:input message="uid:PathsToIdsRequest"/>
+         <wsdl:output message="uid:PathsToIdsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="IdsToPaths">
+         <wsdl:input message="uid:IdsToPathsRequest"/>
+         <wsdl:output message="uid:IdsToPathsResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="uid:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="uid:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="uid:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="uiDesignSOAP" type="uid:uiDesign">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="CreateActions">
+         <soap:operation soapAction="urn:CreateActions"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FindActions">
+         <soap:operation soapAction="urn:FindActions"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="FindActionsRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadActions">
+         <soap:operation soapAction="urn:LoadActions"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault name="ErrorResultsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="SaveActions">
+         <soap:operation soapAction="urn:SaveActions"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteActions">
+         <soap:operation soapAction="urn:DeleteActions"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="CreateDisplayFormats">
+         <soap:operation soapAction="urn:CreateDisplayFormats"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FindDisplayFormats">
+         <soap:operation soapAction="urn:FindDisplayFormats"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="FindDisplayFormatsRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadDisplayFormats">
+         <soap:operation soapAction="urn:LoadDisplayFormats"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault name="ErrorResultsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="SaveDisplayFormats">
+         <soap:operation soapAction="urn:SaveDisplayFormats"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteDisplayFormats">
+         <soap:operation soapAction="urn:DeleteDisplayFormats"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="CreateSearches">
+         <soap:operation soapAction="urn:CreateSearches"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FindSearches">
+         <soap:operation soapAction="urn:FindSearches"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="FindSearchesRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadSearches">
+         <soap:operation soapAction="urn:LoadSearches"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault name="ErrorResultsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="SaveSearches">
+         <soap:operation soapAction="urn:SaveSearches"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteSearches">
+         <soap:operation soapAction="urn:DeleteSearches"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="CreateViews">
+         <soap:operation soapAction="urn:CreateViews"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FindViews">
+         <soap:operation soapAction="urn:FindViews"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="FindViewsRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadViews">
+         <soap:operation soapAction="urn:LoadViews"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault name="ErrorResultsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="SaveViews">
+         <soap:operation soapAction="urn:SaveViews"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteViews">
+         <soap:operation soapAction="urn:DeleteViews"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="CreateHierarchyNodes">
+         <soap:operation soapAction="urn:CreateHierarchyNodes"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FindHierarchyNodes">
+         <soap:operation soapAction="urn:FindHierarchyNodes"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadHierarchyNodes">
+         <soap:operation soapAction="urn:LoadHierarchyNodes"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault name="ErrorResultsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="SaveHierarchyNodes">
+         <soap:operation soapAction="urn:SaveHierarchyNodes"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteHierarchyNodes">
+         <soap:operation soapAction="urn:DeleteHierarchyNodes"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault name="NotAuthorizedFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault name="ErrorsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="GetChildren">
+         <soap:operation soapAction="urn:GetChildren"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="MoveChildren">
+         <soap:operation soapAction="urn:MoveChildren"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="RemoveChildren">
+         <soap:operation soapAction="urn:RemoveChildren"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="PathsToIds">
+         <soap:operation soapAction="urn:PathsToIds"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="IdsToPaths">
+         <soap:operation soapAction="urn:IdsToPaths"/>
+         <wsdl:input>
+            <soap:header message="uid:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault name="ContractViolationFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault name="InvalidSessionFault" use="literal"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault name="ErrorResultsFault" use="literal"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+   <!--
+      Fault messages
+    -->
+</wsdl:definitions>

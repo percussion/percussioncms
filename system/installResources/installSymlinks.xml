@@ -1,0 +1,453 @@
+<?xml version="1.0"?>
+<!-- ##################################################################-->
+<!-- ##################################################################-->
+<!--
+	This ANT utility assumes a one-to-one relationship between SYMLINKS and RESOURCES
+	
+	In other words....this file assumes that any given directory and/or file may only
+	have ONE SYMLINK referencing it
+-->
+<!-- ##################################################################-->
+<!-- ##################################################################-->
+
+<project name="symlink_registration" basedir="." default="install">
+
+	<!-- ##################################################################-->
+	<!-- ##################################################################-->
+
+	<!-- This delay property is copied from outside source! -->
+
+	<!-- 
+	   Since the symlink task and some of these targets rely on
+	   calls to exec, it may be possible for the JVM to outrun the 
+	   execution of the command line  system calls, so this value is
+	   the number of seconds we give the operating system to
+	   catch up before executing a task that depends on the 
+	   completion of previous tasks. This delay is also added to
+	   the end of each target so junit doesn't go testing things
+	   before they have finnished (hopefully). Tweak if needed.
+	-->
+	<property name="delay" value="3"/>
+
+	<!-- ##################################################################-->
+	<!-- ##################################################################-->
+
+	<!-- 
+		 Load System Environment Variables 
+	-->
+	<property environment="env"/>
+
+	<!--
+		Property to turn on symlink registration 
+	-->
+	<property name="registerSymlinks" value="no"/>
+
+	<!-- 
+		 Name of the property file containing the symlink mappings
+		
+		 DEFAULT = "symlink_mappings.properties" 
+	-->
+	<property name="symlink.map" value="~/symlinks-filtered.properties"/>
+
+	<!-- 
+		 Import the ant-contrib utility tasks
+	-->
+	<taskdef resource="net/sf/antcontrib/antlib.xml" onerror="report">
+		<classpath>
+			<pathelement location="${ant.contrib.resource}"/>
+		</classpath>
+	</taskdef>
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" onerror="report">
+		<classpath>
+			<pathelement location="${ant.contrib.resource}"/>
+		</classpath>
+	</taskdef>
+
+	<!-- ##################################################################-->
+	<!-- ##################################################################-->
+
+	<!-- 
+		Define our common macros here
+	-->
+
+	<!-- 
+		MACRO to pull the canonical path of an input file 
+	-->
+	<macrodef name="getCanonicalPath">
+		<attribute name="filePath" />
+		<attribute name="outputproperty" />
+		<sequential>
+			<isSymlink filePath="${filePath}" outputproperty="rs_isSymlink"/>
+			<if>
+				<equals arg1="${rs_isSymlink}" arg2="true"/>
+				<then>
+					<exec executable="sh" outputproperty="@{outputproperty}">
+						<arg value="-c" />
+						<arg value="readlink -f @{filePath}" />
+					</exec>
+				</then>
+				<else>
+					<property name="@{outputproperty}" value="@{filePath}" />
+				</else>
+			</if>
+		</sequential>
+	</macrodef>
+
+
+	<!-- ##################################################################-->
+
+	<!--
+		MACRO to answer: Is the specified file/directory a SYMLINK?
+		
+		Sets a property call 'isSymlink' ... values are 'true' or 'false'
+	-->
+	<macrodef name="isSymlink">
+		<attribute name="filePath" />
+		<attribute name="outputproperty" />
+		<sequential>
+			<exec executable="sh" outputproperty="@{outputproperty}" resultproperty="sym.link.exit.code">
+				<arg value="-c" />
+				<arg value="readlink @{filePath}" />
+			</exec>
+			<if>
+				<equals arg1="${sym.link.exit.code}" arg2="0" />
+				<then>
+					<property name="@{outputproperty}" value="true" />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<!-- ##################################################################-->
+
+	<macrodef name="moveWithCare">
+		<attribute name="src"/>
+		<attribute name="dst"/>
+		<attribute name="overwrite" default="true"/>
+		<sequential>
+			<if>
+				<available file="@{src}"/>
+				<then>
+
+					<condition property="mwc_isFile">
+						<available file="@{src}" type="file"/>
+					</condition>
+
+					<!-- Create the destination parent directories if necessary -->
+					<dirname property="mwc_dstPath" file="@{dst}"/>
+
+					<if>
+						<not>
+							<available file="${mwc_dstPath}"/>
+						</not>
+						<then>
+							<mkdir dir="${mwc_dstPath}"/>
+						</then>
+					</if>
+
+					<if>
+						<equals arg1="${mwc_isFile}" arg2="true"/>
+						<then>
+							<move file="@{src}" tofile="@{dst}" overwrite="@{overwrite}"/>
+						</then>
+					</if>
+					<if>
+						<not>
+							<equals arg1="${mwc_isFile}" arg2="true"/>
+						</not>
+						<then>
+							<move todir="@{dst}" overwrite="@{overwrite}">
+								<fileset dir="@{src}"/>
+							</move>
+						</then>
+					</if>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<!-- ##################################################################-->
+
+	<macrodef name="loadMap">
+		<attribute name="propertyFile"/>
+		<attribute name="mapKeys"/>
+		<sequential>
+			<if>
+				<available file="@{propertyFile}" type="file"/>
+				<then>
+					<!-- 
+						 Load the file mappings...entries should be prefixed with 'mapping.folder'
+						 or 'mapping.file' so we can distinguish them...If this prefix is missing
+						 ...the entry will be ignored
+					-->
+					<loadproperties srcFile="@{propertyFile}"/>
+
+					<propertyselector property="lm_myProps" 
+									  delimiter="," 
+									  match="mapping\.(folder\.|file\.)(.*)" 
+									  select="\0"
+									  casesensitive="false"
+									  distinct="true"/>
+
+					<!-- 
+						 Load the map keys into an ANT List using the PropertySelector 
+					-->
+					<propertycopy name="@{mapKeys}" from="lm_myProps"/>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<!-- ##################################################################-->
+	<!-- ##################################################################-->
+
+	<!-- 
+		Targets from here on out 
+	-->
+
+	<!-- This target will auto-run... -->
+
+	<target name="install" depends="verify, register_symlinks"/>
+
+	<!-- ##################################################################-->
+
+	<!-- 
+		 Only proceed with SYMLINKING if 
+		 1. The register symlinks property is set 
+		 2. The properties file containing the mapping exists
+	-->
+
+	<target name="verify">
+		<condition property="do_symlinking">
+			<and>
+				<available file="${symlink.map}" type="file"/>
+				<not>
+					<os family="windows"/>
+				</not>
+				<or>
+					<istrue value="${env.DO_SAAS}"/>
+					<equals arg1="${doSAAS}" arg2="yes"/>
+					<equals arg1="${doSAAS}" arg2="true"/>
+				</or>
+			</and>
+		</condition>
+	</target>
+
+	<!-- ##################################################################-->
+
+	<!-- 
+		 Fire off the SYMLINKING Target only if the Verify Target set the 
+	     do_symlinking property 
+	-->
+
+	<target name="register_symlinks" if="do_symlinking">
+
+		<loadMap propertyFile="${symlink.map}" mapKeys="rss_propKeys"/>
+
+		<!-- 
+			 Iterate over our list of mappings and call the register_symlink 
+			 target for each mapping 
+		-->
+		<foreach list="${rss_propKeys}" 
+				 delimiter="," 
+				 inheritall="true"
+				 target="register_symlink" 
+				 param="rs_fromHere"/>
+	</target>
+
+	<!-- ################################################################## -->
+
+	<!--
+		 This target will do the following:
+		 
+	 	1. If the src location does not exist then
+	 		
+	 		Create the destination location if it DNE
+	 		
+	 	2. If the src location is NOT a symlink then:
+	 	
+	 		Call the create_symlink target
+	 	 		
+	 	3. The src location IS a symlink:
+	 	
+	 		Call the update_symlink target	
+	-->
+	<target name="register_symlink">
+
+		<!-- 
+			The SOURCE LOCATION
+		-->
+		<property name="rs_fromHere" value=""/>
+
+		<!--
+			The SOURCE TYPE
+		-->
+		<propertyregex property="rs_type"
+		              input="${rs_fromHere}"
+		              regexp="mapping\.(folder|file)\.(.*)"
+		              select="\1"
+		              casesensitive="false"/>
+
+		<!-- 
+			The DESTINATION LOCATION 
+		-->
+		<propertycopy property="rs_toHere" from="${rs_fromHere}" override="true"/>
+
+		<!--
+			Strip the mapping prefix from the source destination
+		-->
+		<propertyregex property="rs_fromHere"
+					   override="true"
+		               input="${rs_fromHere}"
+		               regexp="mapping\.(file|folder)\.(.*)"
+		               select="\2"
+		               casesensitive="false" />
+
+		<!--
+			1. If the src location does not exist then
+	 		
+	 			Create the destination location if it DNE
+	 	-->
+		<if>
+			<not>
+				<available file="${rs_fromHere}"/>
+			</not>
+			<then>
+				<if>
+					<equals arg1="${rs_type}" arg2="file"/>
+					<then>
+						<touch file="${rs_fromHere}" mkdirs="true"/>
+					</then>
+					<else>
+						<mkdir dir="${rs_fromHere}"/>
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<!-- 
+			TEST IF THE SRC LOCATION ITS A SYMLINK 
+		-->
+		<isSymlink filePath="${rs_fromHere}" outputproperty="rs_isSymlink"/>
+
+		<!--
+			 If the Absolute path does NOT match the canonical path 
+			 then we know we have a SYMLINK on UNIX
+		-->
+		<if>
+			<not>
+				<equals arg1="${rs_isSymlink}" arg2="true"/>
+			</not>
+			<then>
+				<antcall target="create_symlink">
+					<param name="cs_fromHere" value="${rs_fromHere}"/>
+					<param name="cs_toHere" value="${rs_toHere}"/>
+				</antcall>
+			</then>
+		</if>
+
+		<!--
+			We HAVE a SYMLINK HERE
+		-->
+		<if>
+			<equals arg1="${rs_isSymlink}" arg2="true"/>
+			<then>
+				<antcall target="update_symlink">
+					<param name="us_fromHere" value="${rs_fromHere}"/>
+					<param name="us_toHere" value="${rs_toHere}"/>
+				</antcall>
+			</then>
+		</if>
+	</target>
+
+	<!-- ################################################################## -->
+
+	<!--
+		Implements the following logic:
+		
+			Copy the src location to the new destination location (Overwite if necessary)
+	 	 		
+	 	 	Create a new symlink	
+	-->
+
+	<target name="create_symlink">
+
+		<property name="cs_fromHere" value=""/>
+
+		<property name="cs_toHere" value=""/>
+
+		<!--
+			Move the source (and its contents if its a dir) to the specified destination
+		-->
+		<moveWithCare src="${cs_fromHere}" dst="${cs_toHere}"/>
+
+		<!--
+			Create our new SYMLINK
+		-->
+		<symlink action="single" resource="${cs_toHere}" link="${cs_fromHere}" failonerror="no"/>
+
+		<echo message="Symlink Created...link = ${cs_fromHere} ... resource = ${cs_toHere}"/>
+
+		<sleep seconds="${delay}"/>
+	</target>
+
+	<!-- ################################################################## -->
+
+	<!--
+		Implements the following logic: 
+		
+		1. If the current symlink points to the specified destination
+	 			
+			DO NOTHING
+		
+		2. If the current symlink points to a different destination
+		
+			Move the old destination to the new location
+			
+			Update the symlink
+		
+	-->
+	<target name="update_symlink">
+
+		<property name="us_fromHere" value=""/>
+
+		<property name="us_toHere" value=""/>
+
+		<getCanonicalPath filePath="${us_fromHere}" outputproperty="us_targetpath"/>
+
+		<!-- 
+			Check if the current SYMLINK points to the 'new' destination
+		-->
+		<if>
+			<not>
+				<equals arg1="${us_targetpath}" arg2="${us_toHere}"/>
+			</not>
+			<then>
+				<!--
+					We have to update the SYMLINK :(
+				-->
+
+				<!-- Get rid of the old SYMLINK -->
+				<symlink action="delete" resource="${us_targetpath}" link="${us_fromHere}" failonerror="no"/>
+
+				<!-- Move the old destination to the new destination -->
+				<moveWithCare src="${us_targetpath}" dst="${us_toHere}"/>
+
+				<!-- Create the new SYMLINK -->
+				<symlink action="single" resource="${us_toHere}" link="${us_fromHere}" failonerror="no"/>
+
+				<echo message="Symlink Updated...link = ${us_fromHere} ... resource = ${us_toHere}"/>
+			</then>
+		</if>
+		<if>
+			<equals arg1="${us_targetpath}" arg2="${us_toHere}"/>
+			<then>
+				<echo message="Symlink already exists...link = ${us_fromHere} ... resource = ${us_toHere}"/>
+			</then>
+		</if>
+	</target>
+
+	<!-- ##################################################################-->
+
+</project>

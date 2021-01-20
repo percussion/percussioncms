@@ -1,0 +1,5 @@
+*****SERVER AND OTHER COMPONENTS INSTALLATION*****
+You must now run the InstallDaemon.sh script located 
+in the root of your installation directory to complete 
+the install.  You must have root privileges in order 
+to run this script.

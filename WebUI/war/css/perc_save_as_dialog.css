@@ -1,0 +1,58 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+#perc-saveas-dialog-location {
+    width: 250px;
+}
+
+#perc-saveas-dialog-direc {
+    border: 1px inset #FFFFFF;
+    height: 150px;
+    width: 250px;
+    overflow:auto;
+	background-color:#FFFFFF;
+}
+
+#perc-saveas-dialog-direc img {
+    margin-right:3px;
+}
+
+#perc-saveas-dialog-error {
+    color: red;
+}
+
+/* JGA { 1/7/2010 : removed dependency from perc_mcol.css
+.mcol-listing { white-space: nowrap; display: block; 
+*/
+.perc-saveas-dialog-listing { white-space: nowrap; display: block; 
+		padding-left: 20px; padding-right: 20px; margin-top: 10px; margin-bottom: 10px; margin-left: 1px; margin-right: 1px; }
+/* } JGA */
+
+/* JGA { 1/7/2010 : override layout.css's styling of text input fields: .perc-dialog input {width: 330px;} */
+#perc-saveas-dialog-assetname	{
+	width: 250px;
+}
+
+.perc-saveas-dialog { width: 500px; }
+/* } JGA */

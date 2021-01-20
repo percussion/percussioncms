@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editvariantslot (sloturlbyname*, add*, contentlookupurl*, userstatusincludeurl*, contvariantidurl* )>
+<!ELEMENT contvariantidurl (#PCDATA)>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT slottypeid (#PCDATA)>
+<!ELEMENT add (slottypeid* )>
+<!ELEMENT sloturlbyname (#PCDATA)>

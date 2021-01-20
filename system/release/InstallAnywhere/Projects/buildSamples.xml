@@ -1,0 +1,127 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="BuildSamples" default="updateSamples" basedir=".">
+	<description>
+        This process updates the version to the current server version and changes
+        the server name to a generic name.
+    </description>
+	<!-- set global properties for this build -->
+	<property environment="env"/>
+	<property name="E2Dir" location="../../.."/>
+	<property name="serverName" value="localhost:9992"/>
+	<property name="tmpDir" value="${E2Dir}/release/temp"/>
+	<property name="comspec" location="${env.SystemRoot}/system32/cmd.exe"/>
+	<property name="java.bin" location="${env.JAVA_HOME}/bin"/>
+	<!-- read the version properties -->
+	<property file="${E2Dir}/build/classes/com/percussion/util/Version.properties"/>
+	<target name="updateSamples" depends="updateRxSamples"/>
+	
+	<!-- Checks the operating system -->
+	    <target name="checkos">
+	        <condition property="isWindows">
+	                <os family="windows" />
+	        </condition>
+
+	        <condition property="isLinux">
+	                <os family="unix" />
+	        </condition>
+	    	
+	    	<condition property="java.exec" value="jar.exe">
+	    		<isset property="isWindows"/>
+	    	</condition>
+	    	
+	    	<condition property="java.exec" value="jar">
+	    				<isset property="isLinux"/>
+	    	</condition>
+	    </target>
+	
+	<target name="init" depends="checkos">
+		<!-- Create the time stamp -->
+		<tstamp/>			
+	</target>
+	
+	<macrodef name="updateArchiveInfo_func">
+	   <attribute name="buildDir" default="UNKNOWN"/>
+	   <attribute name="srcDir" default="UNKNOWN"/>
+	   <attribute name="archiveName" default="UNKNOWN"/>
+	   <sequential>
+                <!-- Delete temp directory -->
+                <delete includeEmptyDirs="true" quiet="true">
+   		   <fileset dir="${tmpDir}"/>
+		</delete>
+		<mkdir dir="${tmpDir}"/>
+                <!-- Delete the existing sample archive-->
+		<delete file="@{buildDir}/@{archiveName}" quiet="true"/>		
+		<!--Recreate the build directory -->
+		<mkdir dir="@{buildDir}"/>			
+		<!-- Extract the samples archive info file into the temp directory-->
+		
+		<!-- Must unjar via the command line as for some reason the unjar
+		     task is choking when unjaring the .pda archive             -->
+		<echo>unjar file</echo>
+		<exec dir="${tmpDir}" executable="${java.bin}/${java.exec}" failonerror="true">
+		    <arg value="-xf"/>
+		    <arg value="@{srcDir}/@{archiveName}"/>
+		    <arg value="psx_archiveInfo.xml"/>
+		    <env key="COMSPEC" path="${comspec}"/>
+                </exec>
+                
+		<!-- Update version and server info -->
+		<style in="${tmpDir}/psx_archiveInfo.xml" out="${tmpDir}/psx_archiveInfoTransformed.xml" extension="xml" style="updateSamples.xsl">
+			<param name="buildId" expression="${buildId}"/>
+			<param name="buildNumber" expression="${buildNumber}"/>
+			<param name="interfaceVersion" expression="${interfaceVersion}"/>
+			<param name="majorVersion" expression="${majorVersion}"/>
+			<param name="minorVersion" expression="${minorVersion}"/>
+			<param name="microVersion" expression="${microVersion}"/>
+			<param name="versionString" expression="${versionString}"/>
+			<param name="serverName" expression="${serverName}"/>
+		</style>
+		<move file="${tmpDir}/psx_archiveInfoTransformed.xml" tofile="${tmpDir}/psx_archiveInfo.xml"/>
+		<!-- Recreate the Rx samples archive -->
+		<copy file="@{srcDir}/@{archiveName}" 
+		      tofile="@{buildDir}/@{archiveName}"/>
+		
+		<!-- Must jar via the command line as for some reason the jar
+		     task is choking when jaring the .pda archive             -->
+		<echo>Updating jar</echo>
+		<exec dir="${tmpDir}" executable="${java.bin}/${java.exec}" failonerror="true">
+		    <arg value="-uf"/>
+		    <arg value="@{buildDir}/@{archiveName}"/>
+		    <arg value="psx_archiveInfo.xml"/>
+		    <env key="COMSPEC" path="${comspec}"/>
+                </exec>		
+	   </sequential>
+	</macrodef>
+
+	
+	<target name="updateRxSamples" depends="init" description="Update the deprecated Rx sample archive's version and server." unless="no.updateRxSamples">
+		<updateArchiveInfo_func
+		     srcDir="${E2Dir}/Samples"
+		     buildDir="${E2Dir}/build/rx"
+		     archiveName="DeprecatedSamples.pda"
+		/>		
+	</target>
+</project>

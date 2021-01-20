@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_stylesheets_controls_percGoogleCalendarControl-xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\stylesheets\controls\percGoogleCalendarControl.xsl</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_stylesheets_controls_percGoogleCalendarControl-xsl\percGoogleCalendarControl.xsl</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percCalendarTwo-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rxconfig\Resources\percCalendarTwo.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percCalendarTwo-xml\percCalendarTwo.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCalendarTwo_js_jquery-minicolors-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\percCalendarTwo\js\jquery.minicolors.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCalendarTwo_js_jquery-minicolors-js\jquery.minicolors.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_jquery--ui-min-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\jquery-ui.min.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_jquery--ui-min-css\jquery-ui.min.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percCalendar-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rxconfig\Resources\percCalendar.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percCalendar-xml\percCalendar.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percCalendarTwo/css/jquery.minicolors.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\jquery.minicolors.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percCalendarTwo\css\jquery.minicolors.css\jquery.minicolors.css</ArchiveFile>
+         <OriginalFile>widgets\percCalendarTwo\css\jquery.minicolors.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendar_css_fullcalendar-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendar\css\fullcalendar.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendar_css_fullcalendar-css\fullcalendar.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__glass__100__e4f1fb__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\images\ui-bg_glass_100_e4f1fb_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__glass__100__e4f1fb__1x400-png\ui-bg_glass_100_e4f1fb_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCalendarTwo_css_jquery-minicolors-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\percCalendarTwo\css\jquery.minicolors.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCalendarTwo_css_jquery-minicolors-css\jquery.minicolors.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_fullcalendar-print-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\fullcalendar.print.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_fullcalendar-print-css\fullcalendar.print.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percGoogleCalendarControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percGoogleCalendarControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percGoogleCalendarControl.xsl\percGoogleCalendarControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percGoogleCalendarControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_gcal-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\gcal.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_gcal-js\gcal.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendar_js_fullcalendar-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendar\js\fullcalendar.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendar_js_fullcalendar-min-js\fullcalendar.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--icons__72a7cf__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\images\ui-icons_72a7cf_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--icons__72a7cf__256x240-png\ui-icons_72a7cf_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCalendarTwo_css_percCalendarTwo-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\percCalendarTwo\css\percCalendarTwo.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCalendarTwo_css_percCalendarTwo-css\percCalendarTwo.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_moment-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\moment.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_moment-min-js\moment.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCalendarTwo_js_percCalendarTwo-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\percCalendarTwo\js\percCalendarTwo.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCalendarTwo_js_percCalendarTwo-js\percCalendarTwo.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery-qtip-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\jquery.qtip.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery-qtip-js\jquery.qtip.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendar_js_jquery-qtip-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendar\js\jquery.qtip.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendar_js_jquery-qtip-js\jquery.qtip.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_fullcalendar-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\fullcalendar.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_fullcalendar-js\fullcalendar.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_stylesheets_controls_percCalendarWidgetControl-xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\stylesheets\controls\percCalendarWidgetControl.xsl</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_stylesheets_controls_percCalendarWidgetControl-xsl\percCalendarWidgetControl.xsl</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--icons__2694e8__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\images\ui-icons_2694e8_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--icons__2694e8__256x240-png\ui-icons_2694e8_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__highlight--soft__25__ffef8f__1x100-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\images\ui-bg_highlight-soft_25_ffef8f_1x100.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__highlight--soft__25__ffef8f__1x100-png\ui-bg_highlight-soft_25_ffef8f_1x100.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_fullcalendar-min-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\fullcalendar.min.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_fullcalendar-min-css\fullcalendar.min.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__highlight--soft__100__deedf7__1x100-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\images\ui-bg_highlight-soft_100_deedf7_1x100.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__highlight--soft__100__deedf7__1x100-png\ui-bg_highlight-soft_100_deedf7_1x100.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/finderIconCalendar.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\images\ContentTypeIcons\finderIconCalendar.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\finderIconCalendar.png\finderIconCalendar.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCalendarTwo_images_widgetCalendarSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\percCalendarTwo\images\widgetCalendarSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCalendarTwo_images_widgetCalendarSampleBackground-png\widgetCalendarSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_calendar_images_widgetCalendarSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\calendar\images\widgetCalendarSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_calendar_images_widgetCalendarSampleBackground-png\widgetCalendarSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percCalendar-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rxconfig\Widgets\percCalendar.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percCalendar-xml\percCalendar.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percCalendarTwo/js/percCalendarTwo.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percCalendarTwo.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percCalendarTwo\js\percCalendarTwo.js\percCalendarTwo.js</ArchiveFile>
+         <OriginalFile>widgets\percCalendarTwo\js\percCalendarTwo.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCalendarTwo_images_calendarIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\percCalendarTwo\images\calendarIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCalendarTwo_images_calendarIcon-png\calendarIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-348">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percCalendarAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-348\percCalendarAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percCalendarAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-348\percCalendarAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percCalendarAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-348\percCalendarAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_calendar_images_calendarIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\calendar\images\calendarIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_calendar_images_calendarIcon-png\calendarIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percCalendarTwo/js/jquery.minicolors.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\jquery.minicolors.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percCalendarTwo\js\jquery.minicolors.js\jquery.minicolors.js</ArchiveFile>
+         <OriginalFile>widgets\percCalendarTwo\js\jquery.minicolors.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percCalendarTwo-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rxconfig\Widgets\percCalendarTwo.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percCalendarTwo-xml\percCalendarTwo.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_calendar_images_calendarIconOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\calendar\images\calendarIconOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_calendar_images_calendarIconOver-png\calendarIconOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_fullcalendar-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\fullcalendar.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_fullcalendar-min-js\fullcalendar.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\jquery.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery-min-js\jquery.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percCalendarWidgetControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percCalendarWidgetControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percCalendarWidgetControl.xsl\percCalendarWidgetControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percCalendarWidgetControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__highlight--hard__100__f2f5f7__1x100-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__highlight--hard__100__f2f5f7__1x100-png\ui-bg_highlight-hard_100_f2f5f7_1x100.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__glass__80__d7ebf9__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\css\images\ui-bg_glass_80_d7ebf9_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_css_images_ui--bg__glass__80__d7ebf9__1x400-png\ui-bg_glass_80_d7ebf9_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendar_images_calendar--bg-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendar\images\calendar-bg.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendar_images_calendar--bg-png\calendar-bg.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percCalendarTwo/css/percCalendarTwo.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percCalendarTwo.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percCalendarTwo\css\percCalendarTwo.css\percCalendarTwo.css</ArchiveFile>
+         <OriginalFile>widgets\percCalendarTwo\css\percCalendarTwo.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery--ui-custom-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\jquery-ui.custom.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery--ui-custom-min-js\jquery-ui.custom.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--4200511477578203065">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percCalendarAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--4200511477578203065\percCalendarAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_calendar_css_calendar-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\calendar\css\calendar.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_calendar_css_calendar-css\calendar.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_lang--all-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\lang-all.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_lang--all-js\lang-all.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percCalendarTwo_images_calendarIconOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Percussion\rx_resources\widgets\percCalendarTwo\images\calendarIconOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percCalendarTwo_images_calendarIconOver-png\calendarIconOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

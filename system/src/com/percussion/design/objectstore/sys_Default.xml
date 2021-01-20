@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE PSXContentEditor SYSTEM "/Rhythmyx/DTD/sys_ContentEditorLocalDef.dtd">
+<PSXContentEditor contentType="0" workflowId="0">
+  <PSXDataSet id="768">
+    <name>template</name>
+    <description>default template</description>
+    <transactionType>none</transactionType>
+    <PSXContentEditorPipe id="0">
+      <name>cePipe</name>
+      <description>This is the ContentEditorLocaDef for Default ContentType</description>
+      <PSXContainerLocator>
+	<PSXTableSet>
+	  <PSXTableLocator>
+            <PSXBackEndCredential id="0">
+              <alias>Cred1</alias>
+              <comment/>
+              <datasource/>
+            </PSXBackEndCredential>
+	  </PSXTableLocator>
+	  <PSXTableRef name="psx_dummy"/>
+	</PSXTableSet>
+      </PSXContainerLocator>
+      <PSXContentEditorMapper>  
+	<SystemFieldExcludes>
+	  <FieldRef>sys_contentstartdate</FieldRef>
+	  <FieldRef>sys_contentexpirydate</FieldRef>
+	  <FieldRef>sys_reminderdate</FieldRef>
+	  <FieldRef>sys_pubdate</FieldRef>
+	  <FieldRef>sys_pathname</FieldRef>
+          <FieldRef>sys_suffix</FieldRef>
+        </SystemFieldExcludes>
+	<PSXFieldSet name="main_editor">
+	</PSXFieldSet> 
+	<PSXUIDefinition>   
+		<PSXDisplayMapper id="0" fieldSetRef="main_editor">
+		</PSXDisplayMapper>  
+	</PSXUIDefinition>
+      </PSXContentEditorMapper>
+    </PSXContentEditorPipe>    
+      <PSXRequestor id="0" directDataStream="no">
+      <requestPage>default</requestPage>
+      <SelectionParams/>
+      <ValidationRules/>
+      <characterEncoding>UTF-8</characterEncoding>
+      <MimeProperties>
+        <htm>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </htm>
+        <html>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </html>
+      </MimeProperties>
+    </PSXRequestor>
+  </PSXDataSet>
+  <PSXValidationRules maxErrorsToStop="10"/>
+  <PSXInputTranslations/>
+  <PSXOutputTranslations/>
+</PSXContentEditor>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+   <display-name>testutil</display-name>
+   <description>Testing PSServletRequester</description>
+   <context-param>
+      <param-name>RxServletContextName</param-name>
+      <param-value>/Rhythmyx</param-value>
+      <description>The Rhythmyx Servlet context name, defaults to &quot;/Rhythmyx&quot;.</description>
+   </context-param>
+   <servlet>
+      <servlet-name>testutil</servlet-name>
+      <display-name>Testing PSServletRequester</display-name>
+      <description>Testing PSServletRequester</description>
+      <servlet-class>com.percussion.webdav.test.util.PSServletRequesterTest</servlet-class>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>testutil</servlet-name>
+      <url-pattern>/*</url-pattern>
+   </servlet-mapping>
+   
+   <!-- Define a Security Constraint on this Application -->
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Entire Application</web-resource-name>
+         <url-pattern>/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+         <!-- Define a list of roles with rights to access the Servlet - Roles need to exist in both the tomcat-users.xml file and Rhythmyx -->
+         <role-name>Admin</role-name>
+         <role-name>Author</role-name>
+         <role-name>Editor</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <!-- Define the Login Configuration for this Application -->
+   <login-config>
+      <auth-method>BASIC</auth-method>
+      <realm-name>Rhythmyx Servlet</realm-name>
+   </login-config>
+</web-app>

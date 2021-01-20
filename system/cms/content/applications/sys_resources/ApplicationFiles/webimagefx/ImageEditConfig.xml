@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Edited for use in Percussion Software's Rhythmyx -->
+<imgedit>
+    <interface name="standard" allowCustomize="false">
+    	<!-- Main menu bar -->
+        <menu name="mainmenu" newRow="false" showButtonsCaptions="false" wrap="false">
+           <caption localeRef="mnuMain">Main</caption>
+           <button command="menufile" popup="filesubmenu" />
+           <button command="menuedit" popup="editsubmenu" />
+           <button command="menuview" popup="viewsubmenu" />
+           <button command="menuimage" popup="imagesubmenu" />
+           <button command="menuannotations" popup="annotationsubmenu" />
+        </menu>
+		<popup name="filesubmenu">
+			<button command="cmdcreatenew" />
+			<button command="cmdopen" />
+			<button command="cmdsave" />
+			<button command="cmdsaveas" />
+			<!-- Disable upload 
+			<bar />
+			<button command="cmdmfuuploadall" />
+			 -->
+			<bar />
+			<button command="cmdtwainacquire" />
+			<button command="cmdtwainsource" />
+			<!-- Disable exit
+			<bar />			
+			<button command="cmdexit" />
+			-->
+		</popup>
+		<popup name="viewsubmenu">
+			<button command="cmdfullview" />
+			<button command="cmdzoomin" />
+			<button command="cmdzoomout" />
+		</popup>
+		<popup name="editsubmenu">
+			<button command="cmdcopy" />
+			<button command="cmdpastenew" />
+			<bar />
+			<button command="cmdundo" />
+			<button command="cmdredo" />
+			<bar />
+			<button command="cmdselect" />
+			<button command="cmdcrop" />
+			<button command="cmddelete" />
+		</popup>
+		<popup name="imagesubmenu">
+			<button command="cmdimageinfo" />
+			<button command="cmddimensions" />
+			<button command="cmdcolordepth" />
+			<bar />
+			<button command="cmdblur" />
+			<button command="cmdsharpen" />
+			<button command="cmdbrightness" />
+			<button command="cmdcontrast" />
+			<button command="cmdhorizflip" />
+			<button command="cmdvertflip" />
+			<button command="cmdrotate" />
+		</popup>
+		<popup name="annotationsubmenu">
+			<button command="cmdpointer" />
+			<bar />
+			<button command="cmdchoosecolor" />
+			<button command="cmdchoosefont" />
+			<bar />
+			<button command="cmdfreehand" />
+			<button command="cmdline" />
+			<button command="cmdoval" />
+			<button command="cmdpolygon" />
+			<button command="cmdrectangle" />
+			<button command="cmdtext" />
+		</popup>
+		
+	<!-- Editing toolbar -->
+        <menu name="editbar" newRow="true" showButtonsCaptions="false" wrap="false">
+            <caption localeRef="mnuEdit" />
+            <button command="cmdblur" />
+            <button command="cmdsharpen" />
+            <button command="cmdbrightness" />
+			<bar />
+            <button command="cmdcopy" />
+			<button command="cmdpastenew" />
+			<bar />
+            <button command="cmdselect" />
+            <button command="cmdcrop" />
+            <button command="cmddelete" />
+			<bar />
+            <button command="cmdrotate" />
+			<bar />
+            <button command="cmdundo" />
+            <button command="cmdredo" />
+			<bar />
+            <button command="cmdfullview" />
+            <button command="cmdzoomin" />
+            <button command="cmdzoomout" />
+        </menu>
+        
+        <!-- Annotation Toolbar -->
+        <menu name="annotationbar" newRow="false" showButtonsCaptions="false" wrap="false">
+            <caption localeRef="mnuAnnotation">Annotation</caption>
+            <button command="cmdpointer" />
+            <bar />
+			<button command="cmdchoosecolor" />
+			<button command="cmdchoosefont" />
+			<bar />
+			<button command="cmdfreehand" />
+            <button command="cmdline" />
+            <button command="cmdoval" />
+            <button command="cmdpolygon" />
+            <button command="cmdrectangle" />
+            <button command="cmdtext" />
+            <bar />
+            <button command="cmdhelp" />
+        </menu>
+    </interface>  
+    <operations>
+        <valformats>
+            <imgfmt>image/gif</imgfmt>
+            <imgfmt>image/jpg</imgfmt>
+            <imgfmt>image/png</imgfmt>
+        </valformats>
+        <imgcreate allow="true"/>
+        <fmtchange allow="true"/>
+        <namechange allow="true"/>
+		<!-- auto upload -->
+		<validext>gif,jpg,png,jpeg,jpe</validext>
+		<transport allowupload="true" type="ftp" xfer="binary" pasv="true">
+			<!-- autoupload defines the upload action when local files exist in the content. -->
+			<!-- If this section is not defined it will default to ASP,  -->
+			<!-- unless ASP is not available, then it defaults to FTP. -->
+			<!-- The attribute 'type' values "ftp", "file", "post", "auto", and "none" are handled within the editor. -->
+			<!-- If a page is specified in the type attribute then it is used to receive files -->
+			<!-- automatically sent up by the client.  (User intervention is always required.) -->
+			<autoupload type="[WIFXPath]/wifxreceive.asp"/>
+			<!-- Encrypt username and password using Ektron's encrypt.exe program. -->
+			<!-- Leave blank to force the user to enter the values. -->
+			<username encrypted="false"></username>
+			<password encrypted="false"></password>
+			<!-- Set to 0 for default port number -->
+			<port>0</port>
+			<!-- The domain to use for upload.  This is normally used by FTP. -->
+			<!-- Upload location is: [domain]+[xferdir]+[filename] -->
+			<!-- e.g., ftp.mydomain.com -->
+			<!-- If this is blank then the domain specified in xferdir is used. -->
+			<domain></domain>
+			<!-- The logical FTP/Web/other directory to transfer into. -->
+			<!-- (FTP upload directories normally do not match the corresponding web directory.) -->
+			<xferdir src="[WIFXPath]/upload" />
+			<!-- The directory where a file is referenced by a browser once uploaded. -->
+			<!-- Referencing a file through HTTP is: [webroot]+[filename] -->
+			<!-- If webroot is blank then it defaults to xferdir value. -->
+			<webroot src="" />
+			<!-- Possible values for resolvepath are: full, host, local, given -->
+			<resolvemethod value="local" src="" resolve="true" allowoverride="true" />
+		</transport>
+        
+        <!-- Selections on main menu -->
+        <command name="menufile">
+            <caption localeRef="btnFileMenu">File   </caption>
+        </command>
+        <command name="menuedit">
+            <caption localeRef="btnEditMenu">Edit   </caption>
+        </command>
+        <command name="menuview">
+            <caption localeRef="btnViewMenu">View   </caption>
+        </command>
+        <command name="menuimage">
+            <caption localeRef="btnImageMenu">Image   </caption>
+        </command>
+        <command name="menuannotations">
+            <caption localeRef="btnAnnotationsMenu">Annotations</caption>
+        </command>
+
+        <!-- Commands only on File menu -->
+        <command name="cmdcreatenew">
+            <image key="new" />
+            <caption localeRef="btnCreateNew">Create &amp;New</caption>
+            <tooltiptext localeRef="xltCreateNew">Create blank image</tooltiptext>
+        </command>
+        <command name="cmdopen">
+            <image key="open" />
+            <caption localeRef="btnOpen">&amp;Open...</caption>
+            <tooltiptext localeRef="xltOpen">Open image...</tooltiptext>
+        </command>
+        <command name="cmdsave">
+            <image key="save" />
+            <caption localeRef="btnSave">&amp;Save</caption>
+            <tooltiptext localeRef="xltSave">Save image</tooltiptext>
+        </command>
+        <command name="cmdsaveas">
+            <image key="saveas" />
+            <caption localeRef="btnSaveAs">Save &amp;As...</caption>
+            <tooltiptext localeRef="xltSaveAs">Save image using another filename or a different file format</tooltiptext>
+        </command>
+        <command name="cmdexit">
+            <image key="close" />
+            <caption localeRef="btnExit">E&amp;xit</caption>
+            <tooltiptext localeRef="xltExit">Close this window</tooltiptext>
+        </command>
+		<command name="cmdtwainacquire">
+            <image key="twain" />
+            <caption localeRef="btnTwainAcquire">TWAIN Acquire...</caption>
+            <tooltiptext localeRef="xltTwainAcquire">Import TWAIN image</tooltiptext>
+        </command>
+        <command name="cmdtwainsource">
+            <image key="digitalcamera" />
+            <caption localeRef="btnTwainSource">TWAIN Source...</caption>
+            <tooltiptext localeRef="xltTwainSource">Select TWAIN source</tooltiptext>
+        </command>
+		<command name="cmdthumbnail">
+            <image key="thumbnail" />
+            <caption localeRef="btnThumbnail">&amp;Thumbnail...</caption>
+            <tooltiptext localeRef="xltThumbnail">Create thumbnail for current image</tooltiptext>
+        </command>
+		<!-- Commands only on Image menu -->
+        <command name="cmdupdatecontent">
+            <image key="update" />
+            <caption localeRef="btnUpdateContent">Update Content</caption>
+            <tooltiptext localeRef="xltUpdateContent">Update image into content</tooltiptext>
+        </command>
+        <command name="cmdimageinfo">
+            <image key="information" />
+            <caption localeRef="btnImageInfo">&amp;Image Info...</caption>
+            <tooltiptext localeRef="xltImageInfo">Display image info</tooltiptext>
+        </command>
+        <command name="cmdcolordepth">
+            <image key="colordepth" />
+            <caption localeRef="btnColorDepth">Co&amp;lor Depth...</caption>
+            <tooltiptext localeRef="xltColorDepth">Change color depth of current image</tooltiptext>
+        </command>
+        <command name="cmdcontrast">
+            <image key="contrast" />
+            <caption localeRef="btnContrast">&amp;Contrast...</caption>
+            <tooltiptext localeRef="xltContrast">Change contrast of current image</tooltiptext>
+        </command>
+        <command name="cmddimensions">
+            <image key="dimensions" />
+            <caption localeRef="btnDimensions">&amp;Dimensions...</caption>
+            <tooltiptext localeRef="xltDimensions">Change dimensions of current image</tooltiptext>
+        </command>
+        <command name="cmdhorizflip">
+            <image key="horizflip" />
+            <caption localeRef="btnHorizFlip">&amp;Horizontal Flip</caption>
+            <tooltiptext localeRef="xltHorizFlip">Flip image on horizontal axis</tooltiptext>
+        </command>
+        <command name="cmdvertflip">
+            <image key="vertflip" />
+            <caption localeRef="btnVertFlip">&amp;Vertical Flip</caption>
+            <tooltiptext localeRef="xltVertFlip">Flip image on vertical axis</tooltiptext>
+        </command>
+
+        <!-- Commands for edit toolbar -->
+        <command name="cmdannotationtoolbar">
+            <image key="annotation" />
+            <caption localeRef="btnAnnotationToolbar">To&amp;ggle Annotation Toolbar</caption>
+            <tooltiptext localeRef="xltAnnotationToolbar">Toggle display of annotation tools</tooltiptext>
+        </command>
+        <command name="cmdblur">
+            <image key="blur" />
+            <!--image key="imageblur" /-->
+            <caption localeRef="btnBlur">Bl&amp;ur Image...</caption>
+            <tooltiptext localeRef="xltBlur">Blur Edges of the Image</tooltiptext>
+        </command>
+        <command name="cmdbrightness">
+            <image key="brightness" />
+            <caption localeRef="btnBrightness">&amp;Brightness...</caption>
+            <tooltiptext localeRef="xltBrightness">Change Brightness of the Image</tooltiptext>
+        </command>
+        <command name="cmdcopy">
+            <image key="copy" />
+            <caption localeRef="btnCopy">&amp;Copy</caption>
+            <tooltiptext localeRef="xltCopy">Copy</tooltiptext>
+        </command>
+        <command name="cmdcrop">
+            <image key="crop" />
+            <caption localeRef="btnCrop">Cr&amp;op</caption>
+            <tooltiptext localeRef="xltCrop">Crop</tooltiptext>
+        </command>
+        <command name="cmdcut">
+            <image key="cut" />
+            <caption localeRef="btnCut">Cu&amp;t</caption>
+            <tooltiptext localeRef="xltCut">Cut</tooltiptext>
+        </command>
+        <command name="cmdpaste">
+            <image key="paste" />
+            <caption localeRef="btnPaste">&amp;Paste</caption>
+            <tooltiptext localeRef="xltPaste">Paste</tooltiptext>
+        </command>
+        <command name="cmdpastenew">
+            <image key="paste" />
+            <caption localeRef="btnPasteNew">Paste As &amp;New Image</caption>
+            <tooltiptext localeRef="xltPasteNew">Paste As New Image</tooltiptext>
+        </command>
+        <command name="cmddelete">
+            <image key="delete" />
+            <caption localeRef="cmdDel">&amp;Delete</caption>
+            <tooltiptext localeRef="cmdDel">Delete</tooltiptext>
+        </command>
+        <command name="cmdfullview">
+            <image key="normalview" />
+            <caption localeRef="btnFullView">Reset &amp;Zoom Ratio</caption>
+            <tooltiptext localeRef="xltFullView">Resets Zoom Ratio Back to 1:1</tooltiptext>
+        </command>
+        <command name="cmdpalette">
+            <image key="palette" />
+            <caption localeRef="btnPalette">Edit &amp;Palette...</caption>
+            <tooltiptext localeRef="xltPalette">Edit Image Palette</tooltiptext>
+        </command>
+        <command name="cmdredo">
+            <image key="redo" />
+            <caption localeRef="btnRedo">&amp;Redo</caption>
+            <tooltiptext localeRef="xltRedo">Redo Undone Changes</tooltiptext>
+        </command>
+        <command name="cmdrotate">
+            <image key="rotate" />
+            <caption localeRef="btnRotate">&amp;Rotate...</caption>
+            <tooltiptext localeRef="xltRotate">Rotate Image</tooltiptext>
+        </command>
+        <command name="cmdselect" style="toggle">
+            <image key="select" />
+            <caption localeRef="btnSelect">&amp;Select</caption>
+            <tooltiptext localeRef="xltSelect">Select Area of Image</tooltiptext>
+        </command>
+        <command name="cmdsharpen">
+            <image key="eyeglasses1" />
+            <caption localeRef="btnSharpen">&amp;Sharpen...</caption>
+            <tooltiptext localeRef="xltSharpen">Sharpen Image</tooltiptext>
+        </command>
+        <command name="cmdtext" style="toggle">
+            <image key="text" />
+            <caption localeRef="hypTxt">&amp;Text</caption>
+            <tooltiptext localeRef="xltText">Add Text to Image</tooltiptext>
+        </command>
+        <command name="cmdundo">
+            <image key="undo" />
+            <caption localeRef="btnUndo">&amp;Undo</caption>
+            <tooltiptext localeRef="xltUndo">Undo Last Change</tooltiptext>
+        </command>
+        <command name="cmdzoomin">
+            <image key="zoomin" />
+            <caption localeRef="btnZoomIn">Zoom &amp;In</caption>
+            <tooltiptext localeRef="xltZoomIn">Zoom In on Image</tooltiptext>
+        </command>
+        <command name="cmdzoomout">
+            <image key="zoomout" />
+            <caption localeRef="btnZoomOut">Zoom &amp;Out</caption>
+            <tooltiptext localeRef="xltZoomOut">Zoom Away from Image</tooltiptext>
+        </command>
+	
+	<!-- Commands for annotation toolbar -->
+        <command name="cmdpointer" style="toggle">
+            <image key="deselect" />
+            <caption localeRef="btnPointer">&amp;Pointer</caption>
+            <tooltiptext localeRef="xltPointer">Select Annotations</tooltiptext>
+        </command>
+		<!-- This command is identical to cmddelete -->
+        <command name="cmderaser">
+            <image key="eraser" />
+            <caption localeRef="btnEraser">R&amp;emove Annotation</caption>
+            <tooltiptext localeRef="xltEraser">Remove currently selected annotation(s)</tooltiptext>
+        </command>
+        <command name="cmdchoosecolor">
+            <image key="fontcolpal" />
+            <caption localeRef="btnAnnotationColor">Choose C&amp;olor...</caption>
+            <tooltiptext localeRef="xltAnnotationColor">Choose Color...</tooltiptext>
+        </command>
+        <command name="cmdchoosefont">
+            <image key="fontsize" />
+            <caption localeRef="btnAnnotationFont">Choose Fo&amp;nt</caption>
+            <tooltiptext localeRef="xltAnnotationFont">Choose Font</tooltiptext>
+        </command>
+        <command name="cmdfloodfill">
+            <image key="floodfill" />
+            <caption localeRef="btnFloodFill">Floo&amp;d Fill</caption>
+            <tooltiptext localeRef="xltFloodFill">Fill selected area</tooltiptext>
+        </command>
+        <command name="cmdfreehand" style="toggle">
+            <image key="freehand" />
+            <caption localeRef="btnFreehand">&amp;Freehand</caption>
+            <tooltiptext localeRef="xltFreehand">Draw freehand</tooltiptext>
+        </command>
+        <command name="cmdline" style="toggle">
+            <image key="line" />
+            <caption localeRef="btnLine">&amp;Line</caption>
+            <tooltiptext localeRef="xltLine">Draw line</tooltiptext>
+        </command>
+        <command name="cmdoval" style="toggle">
+            <image key="oval" />
+            <caption localeRef="btnOval">&amp;Oval</caption>
+            <tooltiptext localeRef="xltOval">Draw oval</tooltiptext>
+        </command>
+        <command name="cmdpolygon" style="toggle">
+            <image key="polygon" />
+            <caption localeRef="btnPolygon">&amp;Polygon</caption>
+            <tooltiptext localeRef="xltPolygon">Draw polygon</tooltiptext>
+        </command>
+        <command name="cmdrectangle" style="toggle">
+            <image key="rectangle" />
+            <caption localeRef="btnRectangle">&amp;Rectangle</caption>
+            <tooltiptext localeRef="xltRectangle">Draw rectangle</tooltiptext>
+        </command>
+        <command name="cmdspraycan">
+            <image key="spraycan" />
+            <caption localeRef="btnSprayCan">&amp;Spray Can</caption>
+            <tooltiptext localeRef="xltSprayCan">Spray current color on image</tooltiptext>
+        </command>
+        <!-- Help -->
+      <command name="cmdhelp">
+         <image key="help"/>
+         <caption localeRef="btnHelp">Help</caption>
+         <tooltiptext localeRef="xltHelp">Help</tooltiptext>
+      </command>        
+		<!-- AutoUpload -->
+		<command name="cmdmfuuploadall">
+			 <image key="upload" />
+            <caption localeRef="btnUpldFiles">Image Upload</caption>
+            <tooltiptext localeRef="cmdUpldFiles">Image Upload</tooltiptext>
+        </command>
+    </operations>
+</imgedit>

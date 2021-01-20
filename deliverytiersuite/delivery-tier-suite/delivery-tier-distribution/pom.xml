@@ -1,0 +1,1253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>delivery-tier-suite</artifactId>
+        <groupId>com.percussion.deliverytier</groupId>
+        <version>8.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>delivery-tier-distribution</artifactId>
+
+    <properties>
+        <tomcat-directory>${basedir}/target/tomcat</tomcat-directory>
+        <assembly-directory>${basedir}/target/classes/distribution</assembly-directory>
+        <ant-installer>${assembly-directory}/rxconfig/Installer</ant-installer>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-metadata-services</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-caching</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-comments-services</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-form-processor</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-integrations</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-membership-services</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-polls-services</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-common-ui</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>feeds</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-secure-membership</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-tomcat-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-ant</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rxutils</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.velocity</groupId>
+                    <artifactId>velocity</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-betwixt</groupId>
+                    <artifactId>commons-betwixt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-jcl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
+            <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+            </exclusion>
+                <exclusion>
+                  <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-jul</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-appserver</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-web</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons.lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>servlet-utils</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-test</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-1.2-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-1.2-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-jcl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-jul</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-appserver</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-web</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>${derby.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.jtds</groupId>
+            <artifactId>jtds</artifactId>
+            <version>${jtds.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>${mariadb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>${sqlserver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>${oracle.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jul</artifactId>
+            <version>${log4j2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-appserver</artifactId>
+            <version>${log4j2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-web</artifactId>
+            <version>${log4j2.version}</version>
+            <scope>compile</scope>
+        </dependency> -->
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-1.2-api</artifactId>
+            <version>${log4j2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jcl</artifactId>
+            <version>${log4j2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j2.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikaricp.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rxutils</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.velocity</groupId>
+                    <artifactId>velocity</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-betwixt</groupId>
+                    <artifactId>commons-betwixt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-jcl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-jul</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-appserver</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-web</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+
+            </exclusions>
+        </dependency>
+
+    </dependencies>
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-maven-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <id>clean</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <id>genkey</id>
+                        <goals>
+                            <goal>generateKeyPair</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <keystore>${project.build.directory}/tomcat-ssl.keystore</keystore>
+                    <dname>cn=localhost</dname>
+                    <keypass>changeit</keypass>
+                    <storepass>changeit</storepass>
+                    <alias>tomcat</alias>
+                    <keyalg>RSA</keyalg>
+                    <validity>1825</validity>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.6.10</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat9x</containerId>
+                        <!-- <type>embedded</type>-->
+                        <!-- TODO: This really should be moved to be mirrored on Percussion's nexus server -->
+                        <zipUrlInstaller>
+                            <url>
+                                https://repo1.maven.org/maven2/org/apache/tomcat/tomcat/${tomcat.version}/tomcat-${tomcat.version}.zip
+                            </url>
+                        </zipUrlInstaller>
+                        <systemProperties>
+
+                            <systemProperties>
+                                <derby.system.home>derbydata</derby.system.home>
+                            </systemProperties>
+                        </systemProperties>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.derby</groupId>
+                                <artifactId>derby</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.apache.derby</groupId>
+                                <artifactId>derbyclient</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>net.sourceforge.jtds</groupId>
+                                <artifactId>jtds</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.mariadb.jdbc</groupId>
+                                <artifactId>mariadb-java-client</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>com.microsoft.sqlserver</groupId>
+                                <artifactId>mssql-jdbc</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>com.oracle</groupId>
+                                <artifactId>ojdbc6</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>com.zaxxer</groupId>
+                                <artifactId>HikariCP</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>commons-lang</groupId>
+                                <artifactId>commons-lang</artifactId>
+                            </dependency>
+
+                            <!-- log4j2 -->
+                            <dependency>
+                                <groupId>org.apache.logging.log4j</groupId>
+                                <artifactId>log4j-api</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.apache.logging.log4j</groupId>
+                                <artifactId>log4j-core</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.apache.logging.log4j</groupId>
+                                <artifactId>log4j-1.2-api</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.apache.logging.log4j</groupId>
+                                <artifactId>log4j-jcl</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.apache.logging.log4j</groupId>
+                                <artifactId>log4j-jul</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.apache.logging.log4j</groupId>
+                                <artifactId>log4j-appserver</artifactId>
+                            </dependency>
+                            <!--<dependency>
+                                <groupId>org.apache.logging.log4j</groupId>
+                                <artifactId>log4j-web</artifactId>
+                            </dependency> -->
+
+                            <dependency>
+                                    <groupId>com.percussion.deliverytier</groupId>
+                                    <artifactId>perc-tomcat-common</artifactId>
+                                </dependency>
+                            <dependency>
+                                <groupId>com.google.code.morphia</groupId>
+                                <artifactId>morphia</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>com.google.guava</groupId>
+                                <artifactId>guava</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.apache.commons</groupId>
+                                <artifactId>commons-email</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>net.sf.supercsv</groupId>
+                                <artifactId>super-csv</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.codehaus.jackson</groupId>
+                                <artifactId>jackson-mapper-asl</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.codehaus.jackson</groupId>
+                                <artifactId>jackson-core-asl</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.codehaus.jackson</groupId>
+                                <artifactId>jackson-jaxrs</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.codehaus.jackson</groupId>
+                                <artifactId>jackson-xc</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.jasypt</groupId>
+                                <artifactId>jasypt</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>xerces</groupId>
+                                <artifactId>xercesImpl</artifactId>
+                            </dependency>
+                            <dependency>
+                            <groupId>xml-apis</groupId>
+                            <artifactId>xml-apis</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>commons-logging</groupId>
+                                <artifactId>commons-logging</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>commons-io</groupId>
+                                <artifactId>commons-io</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.json</groupId>
+                                <artifactId>json</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>com.percussion</groupId>
+                                <artifactId>rxutils</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>net.sf.ehcache</groupId>
+                                <artifactId>ehcache-core</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>commons-collections</groupId>
+                                <artifactId>commons-collections</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>com.percussion</groupId>
+                                <artifactId>servlet-utils</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.springframework</groupId>
+                                <artifactId>spring-core</artifactId>
+                            </dependency>
+
+                            <dependency>
+                                <groupId>org.springframework</groupId>
+                                <artifactId>spring-beans</artifactId>
+                            </dependency>
+
+                            <dependency>
+                                <groupId>org.springframework</groupId>
+                                <artifactId>spring-web</artifactId>
+                            </dependency>
+
+                            <dependency>
+                                <groupId>org.springframework</groupId>
+                                <artifactId>spring-context</artifactId>
+                            </dependency>
+                        </dependencies>
+
+                    </container>
+                    <configuration>
+                        <files>
+                            <file>
+                                <file>${project.basedir}/src/main/tomcat9/webapps/ROOT/</file>
+                                <todir>webapps/ROOT</todir>
+                            </file>
+                            <file>
+                                <file>${project.build.directory}/tomcat-ssl.keystore</file>
+                                <tofile>conf/.keystore</tofile>
+                            </file>
+                        </files>
+                        <configfiles>
+						    <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-security.properties</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-datasources.properties.sample</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-datasources.xml.sample-MSSQL</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-datasources.xml.sample-MYSQL-MARIADB
+                                </file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-datasources.xml.sample-ORACLE</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-email.properties.sample</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-encryption.properties.sample</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-secured-sections.properties.sample
+                                </file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/caching-log4j2.xml</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/comments-log4j2.xml</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/feeds-log4j2.xml</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/forms-log4j2.xml</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/membership-log4j2.xml</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/metadata-log4j2.xml</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/polls-log4j2.xml</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/integrations-log4j2.xml</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/tomcat9/conf/context.xml</file>
+                                <todir>conf</todir>
+                            </configfile>
+
+                            <configfile>
+                                <file>${project.basedir}/src/main/tomcat9/conf/server.xml</file>
+                                <todir>conf</todir>
+                            </configfile>
+
+                            <configfile>
+                                <file>${project.basedir}/src/main/tomcat9/conf/log4j2-tomcat.xml</file>
+                                <todir>log4j2/conf</todir>
+                            </configfile>
+
+                            <configfile>
+                                <file>${project.basedir}/src/main/tomcat9/conf/catalina.properties</file>
+                                <todir>conf</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-catalina.properties</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/tomcat9/bin/setenv.bat</file>
+                                <todir>bin</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/tomcat9/bin/setenv.sh</file>
+                                <todir>bin</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/tomcat9/bin/catalina.sh</file>
+                                <todir>bin</todir>
+                            </configfile>
+                            <configfile>
+                                <file>${project.basedir}/src/main/tomcat9/conf/catalina.policy</file>
+                                <todir>conf</todir>
+                            </configfile>
+                        </configfiles>
+                        <properties>
+                            <cargo.runtime.args>dts-realm.xml</cargo.runtime.args>
+
+                            <!--<cargo.logging>high</cargo.logging>-->
+                            <cargo.jvmargs>-Xms256m -Xmx3072m -Xdebug -Xnoagent
+                                -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -XX:+DisableExplicitGC
+                                -Xverify:none -Djava.awt.headless=true
+                            </cargo.jvmargs>
+
+
+                            <cargo.servlet.port>9980</cargo.servlet.port>
+
+                        </properties>
+
+                        <users>
+                            <user>
+                                <name>ps_manager</name>
+                                <password>f2c57870308dc87f432e5912d4de6f8e322721ba</password>
+                                <roles>
+                                    <role>deliverymanager</role>
+                                </roles>
+                            </user>
+                        </users>
+
+                    </configuration>
+                    <deployables>
+
+                        <deployable>
+                            <groupId>com.percussion.deliverytier</groupId>
+                            <artifactId>perc-metadata-services</artifactId>
+                            <type>war</type>
+                        </deployable>
+
+                        <deployable>
+                            <groupId>com.percussion.deliverytier</groupId>
+                            <artifactId>perc-caching</artifactId>
+                            <type>war</type>
+                        </deployable>
+
+                        <deployable>
+                            <groupId>com.percussion.deliverytier</groupId>
+                            <artifactId>perc-comments-services</artifactId>
+                            <type>war</type>
+                        </deployable>
+
+                        <deployable>
+                            <groupId>com.percussion.deliverytier</groupId>
+                            <artifactId>perc-form-processor</artifactId>
+                            <type>war</type>
+                        </deployable>
+
+                        <deployable>
+                            <groupId>com.percussion.deliverytier</groupId>
+                            <artifactId>perc-integrations</artifactId>
+                            <type>war</type>
+                        </deployable>
+
+                        <deployable>
+                            <groupId>com.percussion.deliverytier</groupId>
+                            <artifactId>perc-membership-services</artifactId>
+                            <type>war</type>
+                        </deployable>
+
+                        <deployable>
+                            <groupId>com.percussion.deliverytier</groupId>
+                            <artifactId>perc-polls-services</artifactId>
+                            <type>war</type>
+                        </deployable>
+
+                        <deployable>
+                            <groupId>com.percussion.deliverytier</groupId>
+                            <artifactId>feeds</artifactId>
+
+                            <type>war</type>
+                        </deployable>
+                        <deployable>
+                            <groupId>com.percussion</groupId>
+                            <artifactId>perc-common-ui</artifactId>
+
+                            <type>war</type>
+                        </deployable>
+                    </deployables>
+                    <packager>
+                        <outputLocation>${assembly-directory}/Deployment/Server</outputLocation>
+                    </packager>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>configure-cargo</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>configure</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>prepare-cargo-package</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+            <execution>
+                <id>copy</id>
+                <phase>generate-resources</phase>
+                <goals>
+                    <goal>copy</goal>
+                </goals>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>com.percussion</groupId>
+                            <artifactId>perc-service-wrapper</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>${assembly-directory}</outputDirectory>
+                            <destFileName>perc-service-wrapper.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>com.percussion</groupId>
+                            <artifactId>perc-ant</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>${ant-installer}</outputDirectory>
+                        </artifactItem>
+                    </artifactItems>
+                    <outputDirectory>${project.build.directory}/wars</outputDirectory>
+                    <overWriteReleases>false</overWriteReleases>
+                    <overWriteSnapshots>true</overWriteSnapshots>
+                </configuration>
+            </execution>
+            </executions>
+            </plugin>
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.1.2</version>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>
+                            com.percussion.preinstall.MainDTSPreInstall
+                        </mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>populate perc distribution</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- TODO Add additional deployment files here -->
+                                <copy todir="${assembly-directory}">
+                                    <fileset dir="${basedir}/src/main/rootFiles"/>
+                                </copy>
+                                <!-- Version.properties -->
+                                <copy todir="${assembly-directory}">
+                                    <fileset dir="{basedir}/../../../../system/target/classes/com/percussion/util/">
+                                        <include name="Version.properties"/>
+                                    </fileset>
+                                </copy>
+                                <delete dir="${assembly-directory}/Deployment/Server/webapps/manager" />
+                                <delete dir="${assembly-directory}/Deployment/Server/webapps/host-manager" />
+                                <delete file="${assembly-directory}/Deployment/Server/conf/logging.properties" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+        </plugins>
+
+
+    </build>
+    <profiles>
+
+        <profile>
+            <id>jetty9x</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <version>1.6.10</version>
+                        <configuration>
+
+                            <container>
+                                <containerId>jetty9x</containerId>
+                                <timeout>240000</timeout>
+                                <systemProperties>
+                                    <catalina.base>C:\temp</catalina.base>
+                                    <catalina.home>.</catalina.home>
+                                </systemProperties>
+                                <!-- <type>embedded</type>-->
+                                <zipUrlInstaller>
+                                    <url>
+                                        https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.12.v20180830/jetty-distribution-9.4.12.v20180830.zip
+                                    </url>
+                                </zipUrlInstaller>
+                                <dependencies>
+                                    <!-- https://mvnrepository.com/artifact/c3p0/c3p0 -->
+                                    <dependency>
+                                        <groupId>c3p0</groupId>
+                                        <artifactId>c3p0</artifactId>
+
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>org.apache.derby</groupId>
+                                        <artifactId>derby</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>org.apache.derby</groupId>
+                                        <artifactId>derbyclient</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>net.sourceforge.jtds</groupId>
+                                        <artifactId>jtds</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>org.mariadb.jdbc</groupId>
+                                        <artifactId>mariadb-java-client</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>com.microsoft.sqlserver</groupId>
+                                        <artifactId>mssql-jdbc</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>com.oracle</groupId>
+                                        <artifactId>ojdbc6</artifactId>
+                                    </dependency>
+
+                                    <dependency>
+                                        <groupId>org.apache.logging.log4j</groupId>
+                                        <artifactId>log4j-api</artifactId>
+                                    </dependency>
+
+                                    <dependency>
+                                        <groupId>org.apache.logging.log4j</groupId>
+                                        <artifactId>log4j-core</artifactId>
+                                    </dependency>
+
+                                    <dependency>
+                                        <groupId>org.apache.logging.log4j</groupId>
+                                        <artifactId>log4j-1.2-api</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>org.apache.logging.log4j</groupId>
+                                        <artifactId>log4j-1.2-api</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>org.apache.logging.log4j</groupId>
+                                        <artifactId>log4j-slf4j-impl</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>org.slf4j</groupId>
+                                        <artifactId>slf4j-api</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>com.lmax</groupId>
+                                        <artifactId>disruptor</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>commons-logging</groupId>
+                                        <artifactId>commons-logging</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>commons-lang</groupId>
+                                        <artifactId>commons-lang</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>com.percussion</groupId>
+                                        <artifactId>rxutils</artifactId>
+
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>com.percussion</groupId>
+                                        <artifactId>servlet-utils</artifactId>
+
+                                    </dependency>
+
+                                    <dependency>
+                                        <groupId>org.springframework</groupId>
+                                        <artifactId>spring-core</artifactId>
+                                    </dependency>
+
+                                    <dependency>
+                                        <groupId>org.springframework</groupId>
+                                        <artifactId>spring-beans</artifactId>
+                                    </dependency>
+
+                                    <dependency>
+                                        <groupId>org.springframework</groupId>
+                                        <artifactId>spring-web</artifactId>
+                                    </dependency>
+
+                                    <dependency>
+                                        <groupId>org.springframework</groupId>
+                                        <artifactId>spring-context</artifactId>
+                                    </dependency>
+
+                                </dependencies>
+
+                            </container>
+
+                            <configuration>
+                                <filters>
+                                    <filter>
+                                        <artifact>*:*</artifact>
+                                        <excludes>
+                                            <exclude>META-INF/*.SF</exclude>
+                                            <exclude>META-INF/*.DSA</exclude>
+                                            <exclude>META-INF/*.RSA</exclude>
+                                        </excludes>
+                                    </filter>
+                                </filters>
+
+                                <properties>
+                                    <cargo.servlet.port>9980</cargo.servlet.port>
+                                    <cargo.runtime.args>${project.basedir}/src/main/resources/etc/dts-realm.xml
+                                        ${project.basedir}/src/main/resources/etc/dts-realm.properties
+                                    </cargo.runtime.args>
+                                    <cargo.datasource.datasource.derby>
+                                        cargo.datasource.driver=org.apache.derby.jdbc.EmbeddedDriver|
+                                        cargo.datasource.url=jdbc:derby:derbyDB;create=true|
+                                        cargo.datasource.jndi=jdbc/CargoDS|
+                                        cargo.datasource.username=APP|
+                                        cargo.datasource.password=nonemptypassword
+                                    </cargo.datasource.datasource.derby>
+                                    <!--  <cargo.jetty.realm.name>metadata</cargo.jetty.realm.name>-->
+                                </properties>
+
+                                <configfiles>
+                                    <configfile>
+                                        <file>${project.basedir}/src/main/resources/log4j2.xml</file>
+                                        <todir>resources</todir>
+
+                                    </configfile>
+                                    <configfile>
+
+                                        <file>${project.basedir}/src/main/resources/etc/dts-realm.xml</file>
+                                        <todir>etc</todir>
+
+                                    </configfile>
+                                    <configfile>
+                                        <file>${project.basedir}/src/main/resources/etc/dts-realm.properties</file>
+                                        <todir>etc</todir>
+                                    </configfile>
+                                </configfiles>
+                                <users>
+                                    <user>
+                                        <name>ps_manager</name>
+                                        <password>f2c57870308dc87f432e5912d4de6f8e322721ba</password>
+                                        <roles>
+                                            <role>deliverymanager</role>
+                                        </roles>
+                                    </user>
+                                </users>
+                            </configuration>
+                            <deployables>
+
+                                <deployable>
+                                    <groupId>com.percussion.deliverytier</groupId>
+                                    <artifactId>perc-metadata-services</artifactId>
+
+                                    <type>war</type>
+                                </deployable>
+                                <deployable>
+                                         <groupId>com.percussion.deliverytier</groupId>
+                                         <artifactId>perc-caching</artifactId>
+
+                                         <type>war</type>
+                                     </deployable>
+                                     <deployable>
+                                         <groupId>com.percussion.deliverytier</groupId>
+                                         <artifactId>perc-comments-services</artifactId>
+
+                                         <type>war</type>
+                                     </deployable>
+                                     <deployable>
+                                         <groupId>com.percussion.deliverytier</groupId>
+                                         <artifactId>perc-form-processor</artifactId>
+
+                                         <type>war</type>
+                                     </deployable>
+
+                                     <deployable>
+                                         <groupId>com.percussion.deliverytier</groupId>
+                                         <artifactId>perc-membership-services</artifactId>
+
+                                         <type>war</type>
+                                     </deployable>
+                                     <deployable>
+                                         <groupId>com.percussion.deliverytier</groupId>
+                                         <artifactId>perc-polls-services</artifactId>
+
+                                         <type>war</type>
+                                     </deployable>
+
+                            </deployables>
+                            <packager>
+                                <outputLocation>${assembly-directory}/Deployment/Server</outputLocation>
+                            </packager>
+                        </configuration>
+
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+</project>

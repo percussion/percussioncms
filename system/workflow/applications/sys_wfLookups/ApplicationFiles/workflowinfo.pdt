@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflowinfo (workflowlink, workflowslink )>
+<!ELEMENT workflowslink (#PCDATA)>
+<!ELEMENT workflowlink (#PCDATA)>
+<!ATTLIST  workflowinfo workflowid CDATA #IMPLIED>
+<!ATTLIST  workflowinfo workflowname CDATA #IMPLIED>

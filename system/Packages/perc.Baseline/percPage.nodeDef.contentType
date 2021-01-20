@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description/>
+    <hide-from-menu>false</hide-from-menu>
+    <id>317</id>
+    <internal-name>percPage</internal-name>
+    <label>page</label>
+    <mandatory>false</mandatory>
+    <name>rx:percPage</name>
+    <new-request>../psx_cepercPage/percPage.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercPage/percPage.html</query-request>
+    <raw-content-type>317</raw-content-type>
+    <template-ids>
+      <template-id>0-4-590</template-id>
+      <template-id>0-4-606</template-id>
+      <template-id>0-4-604</template-id>
+      <template-id>0-4-608</template-id>
+    </template-ids>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

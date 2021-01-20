@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflowtransitionedit (relatedlinks, componentname, stateinfourl, agingtypesurl, isaging, fromstateid, transitionid, workflowid, stateid, URL, transition )>
+<!ELEMENT transition (approvals, trigger, label, roles, fromstateid, prompt, actions, aginginterval, agingtype, systemfield, transitiontype, tostateid, commentrequired, desc )>
+<!ELEMENT desc (#PCDATA)>
+<!ELEMENT commentrequired (#PCDATA)>
+<!ELEMENT tostateid (#PCDATA)>
+<!ELEMENT transitiontype (#PCDATA)>
+<!ELEMENT systemfield (#PCDATA)>
+<!ELEMENT agingtype (#PCDATA)>
+<!ELEMENT aginginterval (#PCDATA)>
+<!ELEMENT actions (#PCDATA)>
+<!ELEMENT prompt (#PCDATA)>
+<!ELEMENT roles (#PCDATA)>
+<!ELEMENT label (#PCDATA)>
+<!ELEMENT trigger (#PCDATA)>
+<!ELEMENT approvals (#PCDATA)>
+<!ELEMENT URL (extstates, extroles, exttransitionnotifs )>
+<!ELEMENT exttransitionnotifs (#PCDATA)>
+<!ELEMENT extroles (#PCDATA)>
+<!ELEMENT extstates (#PCDATA)>
+<!ELEMENT stateid (#PCDATA)>
+<!ELEMENT workflowid (#PCDATA)>
+<!ELEMENT transitionid (#PCDATA)>
+<!ELEMENT fromstateid (#PCDATA)>
+<!ELEMENT isaging (#PCDATA)>
+<!ELEMENT agingtypesurl (#PCDATA)>
+<!ELEMENT stateinfourl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

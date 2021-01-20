@@ -1,0 +1,497 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- Build file for Rhythmyx repository install -->
+<project name="install" default="install" basedir="..\..\..">
+
+    <target name="install">
+        <property environment="env"/>
+        <property name="DEVELOPMENT" value="${env.DEVELOPMENT}"/>
+        <property name="perc.version" value="${env.percversion}" />
+        <property name="assembly-directory" value="${basedir}/target/classes/distribution"/>
+        <property name="rxbase" value="${basedir}/../../system"/>
+
+        <property name="releasedir" value="${rxbase}/release"/>
+        <property name="configdir" value="${rxbase}/config"/>
+        <property name="ffconfigdir" value="${rxbase}/FastForward/Core/Config"/>
+
+        <property name="release.configdir" value="${basedir}/../../system/release/config"/>
+        <property name="design.dtddir" value="${basedir}/../../system/design/dtd"/>
+        <property name="deployer.dir" value="${basedir}/../../deployer"/>
+        <property name="errorpagesdir" location="${basedir}/../../system/Defaults/ErrorPages"/>
+        <property name="stylesheetsdir" location="${basedir}/../../system/Defaults/Stylesheets"/>
+
+        <property name="install.upgrade" location="${assembly-directory}/upgrade"/>
+
+        <property name="install.config" location="${assembly-directory}/rxconfig"/>
+        <property name="install.I18n" location="${install.config}/i18n"/>
+        <property name="install.Categories" location="${install.config}/Categories"/>
+        <property name="install.Server" location="${install.config}/Server"/>
+        <property name="install.Workflow" location="${install.config}/Workflow"/>
+
+        <condition property="isMac">
+            <os family="mac" />
+        </condition>
+        <condition property="isWindows">
+            <os family="windows" />
+        </condition>
+        <condition property="isLinux">
+            <os family="unix" />
+        </condition>
+
+        <taskdef resource="com/percussion/ant/antlib.xml"/>
+
+        <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+        <!-- start db install -->
+        <property name="APPS_DIR" location="${assembly-directory}"/>
+
+        <copy todir="${assembly-directory}/jetty">
+            <fileset dir="${jetty-directory}/perc-jetty-${project.version}/" />
+        </copy>
+
+        <echo>Updating patch Jetty jars...</echo>
+        <copy todir="${assembly-directory}/jetty/upstream/lib/" failonerror="false" overwrite="true">
+            <fileset dir="{basedir}/../../../system/Tools/jetty/upstream/lib/" followsymlinks="false" includes="*.jar"/>
+        </copy>
+
+        <copy todir="${assembly-directory}/Docs">
+            <fileset dir="{basedir}/../../../system/Docs" />
+        </copy>
+
+        <copy todir="${assembly-directory}">
+            <fileset dir="{basedir}/../../../system/target/classes/com/percussion/util/">
+                <include name="Version.properties"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${assembly-directory}/sys_resources">
+            <fileset dir="${basedir}/../../system/cms/content/applications/sys_resources/ApplicationFiles">
+            </fileset>
+        </copy>
+
+        <copy todir="${assembly-directory}/rx_resources">
+            <fileset dir="${basedir}/../../system/cms/content/applications/rx_resources/ApplicationFiles">
+            </fileset>
+        </copy>
+        <copy todir="${assembly-directory}/rx_resources">
+            <fileset dir="${basedir}/../../system/cms/content/applications/rx_resources/ApplicationFiles">
+            </fileset>
+        </copy>
+        <copy todir="${assembly-directory}">
+            <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxApp/rxAppSupport">
+            </fileset>
+        </copy>
+
+        <copy todir="${assembly-directory}">
+            <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxApp/sysAppSupport">
+            </fileset>
+        </copy>
+        <copy todir="${assembly-directory}/ObjectStore">
+            <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxApp/ObjectStore">
+            </fileset>
+        </copy>
+
+        <copy todir="${assembly-directory}">
+            <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxFastForward/Core/rxsAppSupport">
+            </fileset>
+        </copy>
+
+        <copy todir="${assembly-directory}/ObjectStore">
+            <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxFastForward/Core/rxsObjectStore">
+            </fileset>
+        </copy>
+        <copy todir="${assembly-directory}">
+            <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxFastForward/ManagedNav/rxsAppSupport">
+            </fileset>
+        </copy>
+
+        <copy todir="${assembly-directory}/ObjectStore">
+            <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxFastForward/ManagedNav/rxsObjectStore">
+            </fileset>
+        </copy>
+        <copy todir="${assembly-directory}/ObjectStore">
+            <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxFastForward/SiteFolderPublishing/rxsObjectStore">
+            </fileset>
+        </copy>
+
+        <copy todir="${assembly-directory}/rxconfig">
+            <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxFastForward/Core/Config">
+            </fileset>
+        </copy>
+
+        <mkdir dir="${assembly-directory}/rxconfig/secure"/>
+
+        <copy todir="${assembly-directory}/rxconfig/secure">
+            <fileset dir="${basedir}/../../system/utils/src/main/resources/com/percussion/security/encryption/"/>
+        </copy>
+
+        <!-- Deployment Table Definition -->
+        <copy todir="${assembly-directory}/Packages/Percussion">
+            <fileset dir="${packages-directory}/perc-packages-${project.version}/Packages">
+            </fileset>
+        </copy>
+
+
+
+        <copy todir="${assembly-directory}/DTD">
+            <!--<fileset dir="${basedir}/../../system/cms/dbpublisher/dtd" includes="sys_DatabasePublisher.dtd, aliasmap.dtd" />-->
+            <fileset dir="${basedir}/../../system/Tools/TableFactory/src/main/resources/dtd" includes="sys_Tabledata.dtd, sys_Tabledef.dtd" />
+        </copy>
+
+        <!--<copy todir="${assembly-directory}/cm">
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm">
+            </fileset>
+        </copy>
+        -->
+
+        <!--
+        <copy todir="${assembly-directory}/web_resources/cm">
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm">
+                <include name="themes/" />
+                <include name="css/" />
+                <include name="jslib/" />
+                <include name="jslibMin/" />
+            </fileset>
+        </copy>
+        -->
+
+        <!-- Create rx_resources/default_theme and web_resources/themes/percussion -->
+        <mkdir dir="${assembly-directory}/web_resources/themes/percussion" />
+        <copy todir="${assembly-directory}/web_resources/themes/percussion">
+            <fileset dir="${assembly-directory}/rx_resources/default_theme" />
+        </copy>
+
+        <if>
+            <available file="${install.rx_resources}/default_theme" />
+            <then>
+                <move tofile="${assembly-directory}/web_resources/themes/percussion/perc_theme.css" file="${assembly-directory}/web_resources/themes/percussion/theme.css" />
+                <move tofile="${assembly-directory}/web_resources/themes/percussion/perc_theme.png" file="${assembly-directory}/web_resources/themes/percussion/theme.png" />
+            </then>
+        </if>
+
+
+        <copy tofile="${assembly-directory}/web_resources/cm/common/js/perc_common_ui.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/common/js/perc_common_ui.js"/>
+
+        <copy tofile="${assembly-directory}/web_resources/cm/common/js/perc_common_ui_slim.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/common/js/perc_common_ui_slim.js"/>
+
+        <!-- Copy Java Script that is "Global" but not really global. -->
+        <!-- jQuery.cookie-->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.cookie.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.cookie.min.js"/>
+
+        <!-- jQuery.dynatree -->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.dynatree.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.dynatree.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.dynatree.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.dynatree.min.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/ui.dynatree.css" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/ui.dynatree.css"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/vline.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/vline.gif"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/loading.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/loading.gif"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/icons2.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/icons2.gif"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/icons.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/icons.gif"/>
+
+        <!-- jQuery Validate -->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.validate.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.validate.js"/>
+
+        <!-- Global Variables -->
+
+        <!-- Install the workflow properties file -->
+        <mkdir dir="${install.Workflow}"/>
+        <PSCopy tofile="${assembly-directory}/rxconfig/Workflow/rxworkflow.properties" file="${rxbase}/workflow/config/rxworkflow.properties" replaceType="never"/>
+
+
+
+        <!-- Add widget folder -->
+        <mkdir dir="${assembly-directory}/rxconfig/Widgets" />
+
+        <!-- Add ssh-keys folder for sftp with keys publishing -->
+        <mkdir dir="${assembly-directory}/rxconfig/ssh-keys" />
+        <touch file="${assembly-directory}/rxconfig/ssh-keys/config"/>
+        <mkdir dir="${assembly-directory}/rxconfig/trusted_certificates" />
+
+        <!-- DTD Files -->
+        <mkdir dir="${assembly-directory}/DTD" />
+        <PSCopy todir="${assembly-directory}/DTD">
+            <fileset dir="${design.dtddir}" />
+        </PSCopy>
+
+        <!-- MSM System Files -->
+        <mkdir dir="${assembly-directory}/sys_MultiServerManager/server/cfg" />
+        <PSCopy todir="${assembly-directory}/sys_MultiServerManager/server/cfg" file="${configdir}/Deployment/sys_DependencyMap.xml" />
+        <PSCopy todir="${assembly-directory}/sys_MultiServerManager/server/cfg" file="${configdir}/Deployment/featureset.xml" />
+
+        <!-- Deployer System Files -->
+        <mkdir dir="${assembly-directory}/sys_Packager/server/cfg" />
+        <mkdir dir="${assembly-directory}/sys_Packager/schema" />
+        <PSCopy todir="${assembly-directory}/sys_Packager/server/cfg" file="${configdir}/Deployer/sys_PackageConfiguration.xml" />
+        <PSCopy todir="${assembly-directory}/sys_Packager/schema">
+            <fileset dir="${deployer.dir}/schema" />
+        </PSCopy>
+
+        <!-- Error Pages -->
+        <mkdir dir="${assembly-directory}/ErrorPages" />
+        <PSCopy todir="${assembly-directory}/ErrorPages">
+            <fileset dir="${errorpagesdir}" />
+        </PSCopy>
+
+        <!-- Default StyleSheets -->
+        <mkdir dir="${assembly-directory}/StyleSheets" />
+        <PSCopy todir="${assembly-directory}/StyleSheets">
+            <fileset dir="${stylesheetsdir}" />
+        </PSCopy>
+
+
+        <!-- Upgrade Files -->
+        <PSCopy todir="${assembly-directory}/upgrade">
+            <fileset dir="${rxbase}/release/src/com/percussion/rxupgrade" />
+        </PSCopy>
+        <!-- Upgrade DTD Files -->
+        <mkdir dir="${assembly-directory}/upgrade" />
+        <PSCopy todir="${install.upgrade}/DTD">
+            <fileset dir="${design.dtddir}">
+                <include name="sys_BasicObjects.dtd" />
+                <include name="sys_ContentEditorSystemDef.dtd" />
+                <include name="sys_StoredActions.dtd" />
+            </fileset>
+        </PSCopy>
+
+
+        <mkdir dir="${assembly-directory}/rxlt/DTD" />
+        <PSCopy todir="${assembly-directory}/rxlt/DTD">
+            <fileset dir="${design.dtddir}">
+                <include name="sys_BasicObjects.dtd" />
+                <include name="sys_ContentEditorSystemDef.dtd" />
+                <include name="sys_StoredActions.dtd" />
+            </fileset>
+        </PSCopy>
+
+
+        <!-- Categories -->
+        <mkdir dir="${install.config}/Categories" />
+        <PSCopy todir="${install.config}/Categories" file="${configdir}/Categories/default.xml" replaceType="never" />
+
+        <!-- Proxy configuration -->
+        <mkdir dir="${install.config}/Proxy" />
+        <PSCopy todir="${install.config}/Proxy" file="${configdir}/proxy-config.xml" replaceType="never" />
+        <!-- CMS Config Files -->
+        <mkdir dir="${install.config}/DeliveryServer" />
+        <mkdir dir="${install.config}/LDAP" />
+        <PSCopy todir="${install.config}/LDAP" file="${configdir}/LDAP/ldapserver.xml" replaceType="never" />
+
+        <!-- Package Installer config -->
+        <!--  <if>
+              <isset property="DEVELOPMENT" />
+              <then>
+                  <PSCopy tofile="${install.config}/Installer/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.dev.xml" />
+              </then>
+              <elseif>
+                  <equals arg1="${install.type}" arg2="new" />
+                  <then>
+                  -->
+       <!-- <PSCopy tofile="${install.config}/Installer/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.new.xml" />
+    -->    <!-- </then>
+     </elseif>
+     <else>
+         <PSCopy tofile="${install.config}/Installer/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.upgrade.xml" />
+     </else>
+ </if>
+-->
+        <if>
+            <and>
+                <isset property="delivery.target" />
+                <equals arg1="${delivery.target}" arg2="dev" />
+            </and>
+            <then>
+                <PSCopy tofile="${install.config}/DeliveryServer/delivery-servers.xml" file="${configdir}/delivery-servers.xml.dev" replaceType="always" />
+            </then>
+            <elseif>
+                <and>
+                    <isset property="delivery.target" />
+                    <equals arg1="${delivery.target}" arg2="qa" />
+                </and>
+                <then>
+                    <PSCopy tofile="${install.config}/DeliveryServer/delivery-servers.xml" file="${configdir}/delivery-servers.xml.qa" replaceType="always" />
+                </then>
+            </elseif>
+            <else>
+                <PSCopy todir="${install.config}/DeliveryServer" file="${configdir}/delivery-servers.xml" replaceType="never" />
+            </else>
+        </if>
+
+        <mkdir dir="${install.config}/Server/ContentEditors/shared" />
+
+        <!-- ContentEditor DTD Files -->
+        <mkdir dir="${install.config}/Server/ContentEditors/DTD" />
+        <PSCopy todir="${install.config}/Server/ContentEditors/DTD">
+            <fileset dir="${design.dtddir}">
+                <include name="sys_ContentEditorSystemDef.dtd" />
+                <include name="sys_BasicObjects.dtd" />
+            </fileset>
+        </PSCopy>
+
+        <!-- RequestHandler DTD Files -->
+        <mkdir dir="${install.config}/Server/requestHandlers/DTD" />
+        <PSCopy todir="${install.config}/Server/requestHandlers/DTD">
+            <fileset dir="${design.dtddir}">
+                <include name="sys_StoredActions.dtd" />
+                <include name="sys_BasicObjects.dtd" />
+            </fileset>
+        </PSCopy>
+
+        <PSCopy todir="${assembly-directory}">
+            <fileset dir="${releasedir}/installer/config" includes="rxW2KserverPageTags.xml,rxW2Ktidy.properties" />
+        </PSCopy>
+
+
+        <!-- Server Config Files -->
+        <PSCopy todir="${install.config}/Server" replaceType="never">
+            <fileset dir="${configdir}">
+                <include name="config.xml" />
+                <include name="RequestHandlers.xml" />
+                <include name="mimemap.properties" />
+                <include name="objectstore.properties" />
+                <include name="server.properties" />
+                <include name="rw_processes.xml" />
+                <include name="sys_library_loader.xml" />
+                <include name="authtypes.properties" />
+                <include name="stylesheetCleanupFilter.xml" />
+                <include name="addThumbnailURL.properties" />
+            </fileset>
+        </PSCopy>
+
+        <!-- Always Replace Files -->
+        <!-- Server System Files -->
+        <PSCopy todir="${install.Server}">
+            <fileset dir="${configdir}">
+                <include name="csmaps.xml" />
+                <include name="featureset.xml" />
+                <include name="sys_DatabaseFunctionDefs.xml" />
+                <include name="sys_macros.xml" />
+                <include name="sys_library_loader.xml" />
+                <include name="startupProcessManager.properties" />
+            </fileset>
+        </PSCopy>
+
+        <!-- Always overwrite mimemap.properties, no need for users to edit -->
+        <PSCopy todir="${install.config}/Server">
+            <fileset dir="${configdir}">
+                <include name="mimemap.properties" />
+            </fileset>
+        </PSCopy>
+
+        <PSCopy todir="${install.config}/Server/ContentEditors">
+            <fileset dir="${configdir}/ContentEditors" />
+        </PSCopy>
+
+        <PSCopy todir="${install.config}/Server/ContentEditors">
+            <fileset dir="${ffconfigdir}/ContentEditors" />
+        </PSCopy>
+
+        <PSCopy todir="${install.config}/Server/requestHandlers" replaceType="never">
+            <fileset dir="${configdir}/requestHandlers" />
+        </PSCopy>
+
+        <!-- Data files -->
+        <mkdir dir="${install.config}/Installer/data" />
+
+        <!-- TODO: Spamming these files for now - not sure why the instance fails if not in all locations ideally should only be in data -->
+        <PSCopy tofile="${install.config}/Installer/data/cmsTableData.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/cmsTableData.xml" replaceType="always" />
+        <PSCopy tofile="${install.config}/Installer/data/cmsTableDef.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/cmsTableDef.xml" replaceType="always" />
+        <PSCopy tofile="${install.config}/Data/cmsTableData.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/cmsTableData.xml" replaceType="always" />
+        <PSCopy tofile="${install.config}/Data/cmsTableDef.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/cmsTableDef.xml" replaceType="always" />
+        <PSCopy tofile="${install.config}/Server/sys_cmsTableData.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/cmsTableData.xml" replaceType="always" />
+        <PSCopy tofile="${install.config}/Server/sys_cmsTableDef.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/cmsTableDef.xml" replaceType="always" />
+
+        <PSCopy tofile="${install.config}/Installer/data/RxffTableData.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/RxffTableData.xml" replaceType="always" />
+        <PSCopy tofile="${install.config}/Installer/data/RxffTableDef.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/RxffTableDef.xml" replaceType="always" />
+
+        <!-- I18n Config Files -->
+        <mkdir dir="${install.config}/I18n" />
+        <PSCopy tofile="${install.config}/I18n/sys_createTranslations.properties" file="${configdir}/I18n/sys_createTranslations.properties" replaceType="never" />
+
+        <!-- Remove incorrect XSpLit Config directory -->
+        <delete dir="${install.config}/XSplit"/>
+
+        <!--  Fails startup if OOB category file does not exist -->
+        <mkdir dir="${assembly-directory}/rx_resources/category" />
+        <copy todir="${assembly-directory}/rx_resources/category" overwrite="false">
+            <fileset file="${rxbase}/../projects/sitemanage/src/main/resources/category-xyz.xml">
+            </fileset>
+        </copy>
+        <copy todir="${assembly-directory}/sys_resources" overwrite="false">
+            <fileset file="${rxbase}/../projects/sitemanage/src/main/resources/Rhythmyx/sys_resources/**">
+            </fileset>
+        </copy>
+
+        <mkdir dir="${assembly-directory}/sys_resources/webapps/secure/WEB-INF/lib"/>
+        <mkdir dir="${assembly-directory}/sys_resources/webapps/secure/WEB-INF/classes"/>
+        <mkdir dir="${assembly-directory}/sys_resources/ant/lib"/>
+
+        <copy todir="${assembly-directory}/sys_resources/webapps/secure/WEB-INF/lib" overwrite="true">
+            <fileset file="${rxbase}/../deliverytiersuite/delivery-tier-suite/secure-membership/target/dependency/**">
+            </fileset>
+        </copy>
+
+        <copy todir="${assembly-directory}/sys_resources/webapps/secure/WEB-INF/classes" overwrite="true">
+            <fileset file="${rxbase}/../deliverytiersuite/delivery-tier-suite/secure-membership/target/classes/**">
+            </fileset>
+        </copy>
+
+        <copy todir="${assembly-directory}/sys_resources/ant/lib" overwrite="true">
+            <fileset file="${rxbase}/../system/Tools/Ant/lib/**">
+            </fileset>
+        </copy>
+
+        <path id="ant2.deps">
+            <fileset dir="${assembly-directory}/jetty/defaults/lib/perc" includes="*.jar"/>
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/lib" includes="*.jar"/>
+        </path>
+
+        <!-- percSystem.xml Resources -->
+        <copy todir="${assembly-directory}/rxconfig" overwrite="false">
+            <fileset file="${rxbase}/../projects/sitemanage/src/main/resources/Rhythmyx/rxconfig/**">
+            </fileset>
+            <!-- Add additional config files here -->
+            <filelist dir="${rxbase}/config">
+                <file name="tika-config.xml"/>
+            </filelist>
+        </copy>
+
+        <echo>Creating jetty work directory..</echo>
+        <mkdir dir="${assembly-directory}/jetty/base/work"/>
+
+        <if>
+            <equals arg1="${DEVELOPMENT}" arg2="true"/>
+            <then>
+                <echo>Copying MySQL connector for development install..</echo>
+                <mkdir dir="${assembly-directory}/jetty/base/lib/jdbc/" />
+                <copy file="${basedir}../../../system/Tools/mysql/mysql-connector-java-8.0.18.jar" tofile="${assembly-directory}/jetty/base/lib/jdbc/mysql-connector.jar" />
+            </then>
+        </if>
+
+        <echo>Fixing Line Feed for sh files...</echo>
+        <fixcrlf includes="**/*.sh" eol="unix" eof="remove" srcdir="${assembly-directory}"  preservelastmodified="true" />
+
+    </target>
+
+</project>

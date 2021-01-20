@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+        <!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="Flash"
+                 contenttype_name="percFlashAsset"
+                 category="rich media"
+                 description="Display a flash movie"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/flash/images/widgetIconFlash.png"
+                 preferred_editor_width="605"
+                 preferred_editor_height="525"
+                 is_responsive="true"
+    />
+
+    <!-- Resource href="/rx_resources/widgets/flash/css/perc-flash-widget.css"
+        type="css"
+        placement="head" />  -->
+    <UserPref name="height"
+              display_name="Height in pixels or percent"
+              required="false"
+              default_value=""
+              datatype="string"/>
+    <UserPref name="width"
+              display_name="Width in pixels or percent"
+              required="false"
+              default_value=""
+              datatype="string"/>
+    <UserPref name="rendering"
+              display_name="Embedding method"
+              required="true"
+              default_value="static"
+              datatype="enum">
+        <EnumValue value="static" display_value="Static embedded tags"/>
+        <EnumValue value="dynamic" display_value="Dynamic JavaScript"/>
+    </UserPref>
+    <UserPref name="play"
+              display_name="Play"
+              required="true"
+              default_value="true"
+              datatype="bool"/>
+    <UserPref name="loop"
+              display_name="Loop"
+              required="true"
+              default_value="true"
+              datatype="bool"/>
+    <UserPref name="menu"
+              display_name="Show full menu"
+              default_value="false"
+              datatype="bool"/>
+    <UserPref name="quality"
+              display_name="Quality"
+              required="false"
+              datatype="enum">
+        <EnumValue value="&quot;&quot;" display_value="-Not specified-"/>
+        <EnumValue value="low" display_value="Low"/>
+        <EnumValue value="medium" display_value="Medium"/>
+        <EnumValue value="high" display_value="High"/>
+        <EnumValue value="autolow" display_value="Auto-Low"/>
+        <EnumValue value="autohigh" display_value="Auto-High"/>
+        <EnumValue value="best" display_value="Best"/>
+    </UserPref>
+    <UserPref name="scale"
+              display_name="Scale"
+              required="false"
+              datatype="enum">
+        <EnumValue value="&quot;&quot;" display_value="-Not specified-"/>
+        <EnumValue value="default" display_value="Default"/>
+        <EnumValue value="noborder" display_value="No border"/>
+        <EnumValue value="exactfit" display_value="Exact fit"/>
+    </UserPref>
+    <UserPref name="wmode"
+              display_name="Window mode"
+              required="true"
+              default_value="transparent"
+              datatype="enum">
+        <EnumValue value="window" display_value="Window"/>
+        <EnumValue value="opaque" display_value="Opaque"/>
+        <EnumValue value="transparent" display_value="Transparent"/>
+    </UserPref>
+    <UserPref name="bgcolor"
+              display_name="Background color"
+              required="false"
+              datatype="string"/>
+    <UserPref name="flashvars"
+              display_name="Additional Flash variables"
+              required="false"
+              datatype="string"/>
+    <UserPref name="allowscriptaccess"
+              display_name="Allow script access"
+              default_value="samedomain"
+              datatype="enum">
+        <EnumValue value="always" display_value="Always"/>
+        <EnumValue value="samedomain" display_value="Same domain"/>
+        <EnumValue value="never" display_value="Never"/>
+    </UserPref>
+
+    <CssPref name="rootclass"
+             display_name="CSS Root Class"
+             datatype="string"/>
+    <Code type="jexl">
+        <![CDATA[
+        $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+        if(!empty($rootclass)) {
+            $rootclass = $rootclass + " ";
+        }
+
+        $linkContext = $perc.linkContext;
+        $props = $perc.widget.item.properties;
+        $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+        $perc.setWidgetContents($assetItems);
+        if ( ! $assetItems.isEmpty() ) {
+            $assetItem = $assetItems.get(0);
+            $link = $rx.pageutils.itemLink($linkContext, $assetItem, "percFlash.flashBinary");
+            $title = $rx.pageutils.html($assetItem,'displaytitle');
+            $flashversion = $rx.pageutils.html($assetItem,'flashversion');
+            $aheight = $rx.pageutils.html($assetItem,'item_file_attachment_height');
+            $awidth = $rx.pageutils.html($assetItem,'item_file_attachment_width');
+            ## $link = $tools.esc.html($link);
+        }
+
+        $height = $props.get("height");
+        if(empty($height) && !empty($aheight)) {
+           $height = $aheight;
+        }
+        if(empty($height)){
+           $height='100%';
+        }
+        $width = $props.get("width");
+        if(empty($width) && !empty($awidth)){
+           $width = $awidth;
+        }
+        if(empty($width)){
+           $width='100%';
+        }
+        $rendering = $props.get("rendering");
+        $play = $props.get("play");
+        $loop = $props.get("loop");
+        $menu = $props.get("menu");
+        $quality = $props.get("quality");
+        $scale = $props.get("scale");
+        $wmode = $props.get("wmode");
+        $bgcolor = $props.get("bgcolor");
+        $flashvars = $props.get("flashvars");
+        $allowscript = $props.get("allowscriptaccess");
+        $flashid="perc-flash-" + $perc.widget.item.id;
+
+		$dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+        if ($dsUrl.indexOf("http://localhost") != -1 )
+			$dsUrl = "";
+        $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[
+<div class="$!{rootclass}perc-flash" data="$!{dynamicListData}">
+#if( ! $perc.widgetContents.isEmpty() )
+#if($rendering == "static")
+    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+#if(! $height.isEmpty())
+    height="$!{height}"
+#end
+#if(! $width.isEmpty())
+    width="$!{width}"
+#end
+    >
+    <param name="movie" value="${link}" />
+    <param name="play" value="${play}" />
+    <param name="loop" value="${loop}" />
+    <param name="menu" value="${menu}" />
+    <param name="quality" value="$!{quality}" />
+    <param name="scale" value="$!{scale}" />
+    <param name="wmode" value="$!{wmode}" />
+    <param name="bgcolor" value="$!{bgcolor}" />
+#if(! $flashvars.isEmpty())##
+        <param name="flashvars" value="$!{flashvars}" />
+#end
+	    <param name="allowscriptaccess" value="$!{allowscript}" />
+      <embed type="application/x-shockwave-flash" src="${link}" height="$!{height}"
+         width="$!{width}" play="$!{play}" loop="$!{loop}" menu="$!{menu}" quality="$!{quality}"
+         scale="$!{scale}" wmode="$!{wmode}" bgcolor="$!{bgcolor}"
+#if(! $flashvars.isEmpty())##
+    flashvars="$!{flashvars}"
+#end
+    allowscriptaccess="$!{allowscript}"
+    />
+    <noembed>${title}</noembed>
+
+    </object>
+#else
+    <script >
+        window.addEventListener('DOMContentLoaded', function() {
+            var attribs = {};
+            var params = {
+                play: "$!{play}",
+                loop: "$!{loop}",
+                menu: "$!{menu}",
+                quality: "$!{quality}",
+                scale: "$!{scale}",
+                wmode: "$!{wmode}",
+                bgcolor: "$!{bgcolor}",
+                flashvars: "$!{flashvars}",
+                allowscriptaccess: "$!{allowscript}"
+            };
+            var flashvars = {};
+            swfobject.embedSWF("$!{link}", "$!{flashid}", "$!{width}", "$!{height}", "$!{flashversion}", "", flashvars, params, attribs );
+        });
+    </script>
+    <div class="perc-flash-contents" id="$!{flashid}" style="height:100%">$!{title}</div>
+#end
+#elseif ($perc.isEditMode())
+    #createEmptyWidgetContent("flash-sample-content", "This flash widget is showing sample content.")
+#end
+</div>
+    ]]>
+    </Content>
+</Widget>

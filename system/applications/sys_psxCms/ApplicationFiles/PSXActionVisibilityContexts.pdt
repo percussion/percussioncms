@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXVisibilityContextEntry (PSXKey, Value, Description? )>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT Value (#PCDATA)>
+<!ELEMENT PSXKey (VISIBILITYCONTEXT, VALUE, ACTIONID )>
+<!ELEMENT ACTIONID (#PCDATA)>
+<!ELEMENT VALUE (#PCDATA)>
+<!ELEMENT VISIBILITYCONTEXT (#PCDATA)>
+<!ATTLIST  PSXVisibilityContextEntry state CDATA #REQUIRED>
+<!ATTLIST  PSXVisibilityContextEntry propName CDATA #REQUIRED>
+<!ATTLIST  PSXVisibilityContextEntry keyControl CDATA #REQUIRED>
+<!ELEMENT PSXActionVisibilityContext (PSXVisibilityContextEntry+ )>
+<!ATTLIST  PSXActionVisibilityContext state CDATA #REQUIRED>
+<!ATTLIST  PSXActionVisibilityContext propName CDATA #REQUIRED>
+<!ATTLIST PSXActionVisibilityContext ordered (yes | no ) "no">
+<!ATTLIST  PSXActionVisibilityContext className CDATA #IMPLIED>
+<!ELEMENT PSXActionVisibilityContexts (PSXActionVisibilityContext )>
+<!ATTLIST  PSXActionVisibilityContexts state CDATA #REQUIRED>
+<!ATTLIST  PSXActionVisibilityContexts ordered CDATA #REQUIRED>
+<!ATTLIST  PSXActionVisibilityContexts className CDATA #REQUIRED>

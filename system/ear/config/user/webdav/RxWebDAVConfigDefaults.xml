@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- The WebDAV configuration information
+
+     "root" - the virtual root path of the Rhythmyx for all resource 
+              specified in the request. It must start from "Site" or "Folder"
+              For example, root="//Site/mysite", root="//Folder/myfolder".
+              It must be an existing folder. 
+
+     "communityid" - the name of the community, which is used to communicate
+                     with Rhythmyx Server.
+              
+     "communityname" - the name of the community, this is only a reference
+                       to the communityid, but is not used by the WebDAV.
+
+     "locale" - the locale that is used for the created items
+
+     "deleteas" - an optional attribute, indicating the behavior of the 
+                  DELETE operation (in DELETE, COPY and MOVE method). 
+                  The possible values are:
+                  
+                  "purge":   indicate the DELETE operation will purge the
+                             target items and/or folders. The purged items
+                             will not be able to recovered afterwards.
+                  "remove":  indicate the DELETE operation will remove the
+                             folder relationships with the target items. The
+                             removed items can be recovered afterwards. This
+                             is the default behavior if this attribute is not
+                             specified.
+                             
+      "publicValidTokens"  - comma separated list of chars for public state
+                             default "y"
+ 
+      "QEValidTokens"  - comma separated list of chars for quick-edit state
+                         default "i"        					 
+-->
+<PSXWebdavConfigDef root="//" communityname="Default" 
+	communityid="10" locale="en-us" deleteas="remove"
+   publicValidTokens="y" QEValidTokens="i">
+	
+	<PSXWebdavContentType id="309" name="rffFile" contentfield="item_file_attachment" 
+		ownerfield="webdavowner" default="true">
+		<PropertyMap>
+			<PSXPropertyFieldNameMapping name="displayname">
+				<FieldName>displaytitle</FieldName>
+			</PSXPropertyFieldNameMapping>
+			<PSXPropertyFieldNameMapping name="getcontenttype">
+				<FieldName>item_file_attachment_type</FieldName>
+			</PSXPropertyFieldNameMapping>
+			<PSXPropertyFieldNameMapping name="getcontentlength">
+				<FieldName>item_file_attachment_size</FieldName>
+			</PSXPropertyFieldNameMapping>
+		</PropertyMap>
+	</PSXWebdavContentType>
+	
+	<!--
+	   A list of excluded folder properties when creating a folder in WebDAV. 
+	   A created folder will inherit all properties of its parent folder except
+	   the list of excluded properties and the folder name.
+	-->
+	<ExcludeFolderProperties>
+		<PropertyName>sys_pubFileName</PropertyName>
+	</ExcludeFolderProperties>
+	
+</PSXWebdavConfigDef>

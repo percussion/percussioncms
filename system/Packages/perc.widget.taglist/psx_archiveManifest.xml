@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_widgetLinkTagListSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\widgetLinkTagListSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_widgetLinkTagListSampleBackground-png\widgetLinkTagListSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_buttonBluePlus-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\buttonBluePlus.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_buttonBluePlus-gif\buttonBluePlus.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_buttonBlueMinusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\buttonBlueMinusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_buttonBlueMinusOver-gif\buttonBlueMinusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-347">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percTagList.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-347\percTagList.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percTagList.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-347\percTagList.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percTagList.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-347\percTagList.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/tagList/js/jquery.tagList.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\jquery.tagList.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\tagList\js\jquery.tagList.js\jquery.tagList.js</ArchiveFile>
+         <OriginalFile>widgets\tagList\js\jquery.tagList.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percTagList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rxconfig\Resources\percTagList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percTagList-xml\percTagList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_ButtonBrowseOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\ButtonBrowseOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_ButtonBrowseOver-png\ButtonBrowseOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_calendar-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\calendar.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_calendar-gif\calendar.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_widgetIconLinkTagList-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\widgetIconLinkTagList.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_widgetIconLinkTagList-png\widgetIconLinkTagList.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_widgetIconLinkTagListOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\widgetIconLinkTagListOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_widgetIconLinkTagListOver-png\widgetIconLinkTagListOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_buttonBluePlusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\buttonBluePlusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_buttonBluePlusOver-gif\buttonBluePlusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_expandable-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\expandable.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_expandable-gif\expandable.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/tagList/css/jquery.tagList.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\jquery.tagList.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\tagList\css\jquery.tagList.css\jquery.tagList.css</ArchiveFile>
+         <OriginalFile>widgets\tagList\css\jquery.tagList.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/tagListIcon.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\images\ContentTypeIcons\tagListIcon.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\tagListIcon.png\tagListIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_collapsable-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\collapsable.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_collapsable-gif\collapsable.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/tagListWidgetControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\tagListWidgetControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\tagListWidgetControl.xsl\tagListWidgetControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\tagListWidgetControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_buttonBlueMinus-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\buttonBlueMinus.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_buttonBlueMinus-gif\buttonBlueMinus.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percTagList-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rxconfig\Widgets\percTagList.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percTagList-xml\percTagList.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-89617967259582535">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percTagList.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-89617967259582535\percTagList.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_tagList_images_ButtonBrowse-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\tagList\images\ButtonBrowse.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_tagList_images_ButtonBrowse-png\ButtonBrowse.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

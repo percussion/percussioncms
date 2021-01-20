@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Value (#PCDATA)>
+<!ELEMENT Attribute (Value* )>
+<!ATTLIST  Attribute name CDATA #REQUIRED>
+<!ELEMENT Role (Attribute* )>
+<!ATTLIST  Role name CDATA #REQUIRED>
+<!ELEMENT Roles (Role* )>
+

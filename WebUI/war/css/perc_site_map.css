@@ -1,0 +1,335 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+#perc_site_map{
+    background-color: #ffffff;
+    color:#999999;
+    font-size:11px;
+    font-weight:normal;
+    text-decoration:none;
+}
+
+.perc-site-map-level{
+    height: 139px;
+    margin-bottom: 7px;
+}
+
+.perc-site-map-root{
+    background-color: #ffffff;
+}
+
+.perc-site-map-sub{
+    background-color: #e6e6e9;
+}
+
+.perc-site-map-level-title{
+    font-size: 11px;
+    font-weight: normal;
+    color:#5a6877;
+    padding: 10px;
+}
+
+.perc-site-map-addpage-button{
+    width: 47px;
+    height: 39px;
+    margin-left: 29px;
+    margin-top: 32px;
+    cursor: pointer;
+}
+
+.perc-site-map-node-topline{
+    position: relative;
+    left: 46px;
+}
+
+.perc-site-map-node-bottomline{
+    position: relative;
+    top: -7px;
+}
+
+.perc-site-map-node-bottomline img{
+    height: 43px;
+    width: 2px;
+}
+
+.perc-site-map-level-line{
+    position: absolute;
+}
+
+.perc-site-map-box{
+    width: 92px;
+    height: 66px;
+    background-color: #e6e6e9;
+    opacity: 0.7;
+    border: 1px solid #000033;
+}
+
+.perc-site-map-sitetitle{
+    color: #000033;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    position: absolute;
+
+}
+
+.perc-site-map-actions{
+    position: absolute;
+}
+
+.perc-site-map-action-item{
+    color: #0055ff;
+    font-size: 11px;
+    font-weight: normal;
+    text-align: right;
+    cursor: pointer;
+    position: relative;
+}
+
+.perc-site-map-action-item-disabled{
+    cursor: default;
+    color: #656581;
+}
+
+.perc-site-map-sectiontitle{
+    color: #000033;
+    font-size: 11px;
+    padding-top: 3px;
+    padding-bottom: 9px;
+    text-align: center;
+}
+
+.perc-site-map-root{
+
+}
+
+.perc-site-map-node{
+    position: absolute;
+}
+
+.perc-site-map-level-parent{
+    display: none;
+}
+
+.perc-site-map-node-buttons{
+    margin-right: 2px;
+    margin-top: 2px;
+    float: right;
+    cursor: pointer;
+}
+
+.perc-site-map-nodecount{
+    margin-top: 42px;
+    margin-left:25px;
+    height: 18px;
+    width: 41px;
+    cursor: pointer;
+}
+.perc-site-map-sectionlink{
+    margin-top: 42px;
+    margin-left: 10px;
+    height: 18px;
+    width: 120px;
+    cursor: pointer;
+}
+.perc-site-map-externallink{
+    margin-top: 42px;
+    margin-left: 10px;
+    height: 18px;
+    width: 120px;
+    cursor: pointer;
+}
+.perc-button-ellipse{
+    margin-left:5px;
+    vertical-align:top;
+}
+.perc-readonly-div {
+    background-color:#CCCCCC;
+    border:1px inset #999999;
+    color:#333333;
+    display:inline-block;
+    font-size:11px;
+    font-weight:normal;
+    margin-top:5px;
+    min-height:16px;
+    overflow:auto;
+    padding:3px 3px 0;
+    width:310px;
+}
+.perc-site-map-expanded .perc-site-map-nodecount{
+    background-image: url("../images/images/bgPageNumber.gif");
+    background-repeat: no-repeat;
+}
+
+.perc-site-map-pagecount{
+    font-size: 11px;
+    color: #006F94;
+    margin-left: 12px;
+    width: 41px;
+}
+
+.perc-site-map-expanded .perc-site-map-nodecount .perc-site-map-pagecount{
+    color: #ffffff;
+}
+
+.perc-site-map-expanded .perc-site-map-box{
+    background-color: #e6e6e9;
+    opacity: 0.7;
+}
+
+.perc-site-map-pagecount img{
+    padding-right: 2px;
+}
+
+.perc-site-map-droparea{
+    position: absolute;
+    width: 38px;
+    height: 68px;
+
+}
+
+.perc-site-map-droparea-over{
+    background-color: #caf589;
+    opacity: 0.7;
+}
+
+.perc-site-map-box-selected{
+    background-color: #ffffff !important;
+    opacity: 0.7;
+    border: 1px solid #000033 !important;
+}
+
+.perc-site-map-box-over{
+    background-color: #caf589 !important;
+    opacity: 0.7 !important;
+    z-index: 1 !important;
+}
+
+
+
+#perc-movesection-tree{
+    width: 530px;
+    height: 300px;
+    margin-top: 10px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    overflow: auto;
+}
+
+#perc-site-login-page-browse,
+#perc-site-registration-page-browse,
+#perc-site-registration-confirmation-page-browse,
+#perc-site-reset-pw-request-page-browse,
+#perc-site-reset-password-page-browse
+{
+    background-image : url("../images/images/ButtonBrowse.png");
+    width:63px;
+    height:22px;
+    text-indent:-10000px;
+    border:0px;
+    position:absolute;
+    cursor:pointer;
+    margin: 5px 0 0 10px;
+}
+#perc-site-login-page-browse:hover,
+#perc-site-registration-page-browse:hover,
+#perc-site-registration-confirmation-page-browse:hover,
+#perc-site-reset-pw-request-page-browse:hover,
+#perc-site-reset-password-page-browse:hover
+{
+    background-image : url("../images/images/ButtonBrowseOver.png");
+}
+
+.fieldGroup
+{
+    background: #E6E6E9;
+    margin: 0 0 7px 0;
+    padding: 0 0 0 35px;
+}
+
+.perc-section-header
+{
+    padding: 15px 0 15px 0;
+    cursor: default;
+}
+.perc-section-label{
+    color:#0099CC;
+    font-size:11px;
+    font-weight:bold;
+    height: 16px;
+}
+
+#perc-edit-section-dialog .ui-dialog-content.ui-widget-content,
+#perc-edit-site-section-dialog .ui-dialog-content.ui-widget-content
+{
+    background: #fff;
+    padding: 0;
+}
+
+#perc-site-general-container,
+#perc-section-general-container,
+#perc-site-security-container
+#perc-section-security-container
+{
+    padding: 0 0 15px 0;
+}
+#perc-site-users-container,
+#perc-section-users-container
+{
+    width: 340px;
+    padding: 0 0 25px 0;
+}
+
+.perc-site-Login-page-table p{
+    margin-bottom: 15px;
+}
+
+#perc-group-name-allowed{
+    margin-bottom: 5px;
+}
+
+#perc-site-login-page-browse.perc-browse-button-disabled,
+#perc-site-login-page-browse.perc-browse-button-disabled:hover{
+    background-image : url("../images/images/ButtonBrowse_Disable.png");
+    cursor: default;
+}
+
+.perc-remove-section-confirm-container{
+    font-size: 11px;
+
+}
+.perc-remove-section-option-container  input {
+    float: left;
+    display: block;
+    width: 20px;
+    margin-top:1px;
+}
+.perc-remove-section-option-container  label {
+    position: relative;
+    margin-left: 30px;
+    display: block;
+}
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

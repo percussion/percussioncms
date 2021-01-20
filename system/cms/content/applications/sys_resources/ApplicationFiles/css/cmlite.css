@@ -1,0 +1,403 @@
+/*Global style for iframe form */
+form label, form input, form textarea    {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    color: #000000;
+    margin-left: 2px;
+}
+
+form .perc_field_error, #perc-content-form .perc_field_error, .perc_field_error{
+    color: red;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+/* Styles for input fields */
+
+form input[type='text'], form textarea {
+    border-top:1px solid #CECFCE;
+    border-right:1px solid #CECFCE;
+    border-left:1px solid #D6D7DE;
+    border-bottom:1px solid #D6D7DE;
+    padding-left:3px;
+    display: inline-block;
+}
+
+input[type="checkbox"]{
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    margin:0 5px 0 0;
+    vertical-align: top;
+    position: relative;
+}
+
+form input[type='text']{
+    height:19px;
+}
+body{
+    margin:0px;
+    background-color:#FFFFFF;
+    overflow:auto;
+}
+
+#perc-content-edit-content,  #perc-content-edit-metadata-panel, #perc-site-impact-panel{
+    min-width:560px;
+    background-color: #E6E6E9;
+}
+
+.perc-content-edit-data{
+
+    min-width:525px
+}
+/* Adjusting the height above and below the input field */
+.datadisplay, .hasDatepicker{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    margin-top:5px;
+    margin-bottom:12px;
+}
+
+.perc-singlecheckbox{
+}
+
+.perc-readonly-checkbox{
+    vertical-align: sub;
+    position: relative;
+}
+
+.perc-tinymce-readonly{
+    min-height:120px !important;
+    min-width:400px;
+    overflow:auto;
+}
+
+/* Styling for ImageWidget's Meta Data section and Image Detail section */
+#perc-content-edit-metadata-link, #perc-content-edit-site-link {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    color: #0099CC ;
+    text-decoration: none;
+    background-color:#E6E6E9;
+    padding: 15px 30px 15px 33px;
+    background-repeat:no-repeat;
+    cursor:pointer;
+    min-width:532px;
+}
+/** Padding for Metadata Title **/
+
+.perc-content-edit-data{
+    background-color: #E6E6E9;
+    margin: 0px 0px 0px 0px;
+    padding: 9px 0px 0px 35px;
+}
+
+/** Style for Metadata expander Icon **/
+.perc-spacer{
+    background-image:url('../images/cm/buttonBluePlusOver.gif');
+    background-position: 13px 15px;
+    border-top:7px solid #ffffff;
+}
+.perc-tab-open{
+    background-image:url('../images/cm/buttonBlueMinusOver.gif');
+    background-position: 13px 15px;
+    border-top:7px solid #ffffff;
+}
+
+.asset-details{
+    padding-left: 35px;
+    padding-top: 25px;
+    padding-right: 25px;
+    background-color: #E6E6E9;
+    padding-bottom: 25px;
+}
+
+
+/* Fixes bottom height of Event and Richt Text widgets dialogs (content editor) */
+form[action^="percEventAsset.html"] .asset-details,
+form[action^="percRichTextAsset.html"] .asset-details {
+    padding-bottom: 35px;
+}
+.perc-asset-edit-info-line{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+/* To control the width of Start date and end date input field and spacing between calendar icons. */
+.ctl_daterange input{
+    width:102px;
+}
+.ui-perc-ctl_daterange img{
+    vertical-align:middle;
+    padding-left:3px;
+}
+.ui-perc-ctl_daterange {
+    margin-top:1px;
+}
+
+/* Style for calendar image under Image widget's Meta data section - Assets */
+
+#perc-asset-browser-dialog-direc{
+    padding:7px;
+    background-color:#FFFFFF;
+    border: 1px inset #FFFFFF;
+    width:304px;
+}
+
+#perc-saveas-dialog-direc{
+    padding:7px;
+    background-color:#FFFFFF;
+    border: 1px inset #FFFFFF;
+}
+
+
+/* Styles for Event Widget Calendar */
+
+.ui-widget {
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:bold;
+}
+.ui-datepicker table{
+    font-weight:bold;
+}
+#ui-timepicker-div{
+    width:80px;
+}
+#ui-datepicker-div    {
+    border:1px solid #AAAAAA;
+    display : none;
+}
+.ui-datepicker-current .ui-state-default .ui-priority-secondary{
+    font-weight:bold;
+    color:#555555;
+}
+.ui-priority-secondary, .ui-widget-content .ui-priority-secondary {
+    font-weight:bold;
+    opacity:1;
+}
+
+/**
+ * Commenting out the next two css classes as they conflict with teh I18n work being done.
+ * They were basically placing an image over top of the buttons styled using css as opposed to images.
+ * All images should now have css and button tags as opposed to images.
+ */
+#perc-alert-generic-ok {
+    /*background-image:url("../images/cm/buttonOk.png") !important;*/
+}
+#perc-alert-generic-ok:hover {
+    /*background-image:url("../images/cm/buttonOkOver.png") !important;*/
+}
+
+/* CSS for read only fields in the form of Content Editor */
+#perc-content-form div.datadisplay {
+    background-color:#cccccc;
+    border:1px inset #999999;
+    color: #333333;
+    margin-top:5px;
+    min-height:16px;
+    overflow:auto;
+    padding:3px 3px 0;
+    width:310px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    display:inline-block;
+}
+
+/* Read only date range fields */
+#display_start_date, #display_end_date, #display_query_published_after, #display_query_published_before {
+    background-color:#cccccc;
+    border:1px inset #999999;
+    color: #333333;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    margin-top:5px;
+}
+
+.perc_shared_asset_edit_warning{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    padding: 10px 0px 10px 0px;
+}
+
+.perc-preview-file-link{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+}
+
+#percpagehead   {
+    height: 120px;
+    width: 700px;
+    overflow: auto;
+}
+#percpagebodybefore, #percpagebodyafter   {
+    height: 60px;
+    width: 700px;
+    overflow: auto;
+}
+/* tinymce control label  */
+#elm1_parent  {
+    position: relative;
+    top: 5px;
+}
+
+input.perc-rss-disabled, textarea.perc-rss-disabled {
+    background-color: #CCCCCC;
+    border: 1px inset #999999;
+    color: #333333;
+    border-style:inset;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+.perc-section-label{
+    color:#0099CC;
+    font-size:11px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight:bold;
+}
+
+#perc-date-override, .perc-date-override-msg{
+    color:black;
+    font-size:11px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.perc-date-override-msg {
+    font-weight:normal;
+}
+#perc-calendar-container, #perc-pageSum-container , #perc-seo-container,  #perc-tagCat-container,  #perc-headCode-container{
+    border-top: 7px solid white;
+    margin:0px -35px;
+    padding:15px;
+    padding-left:35px;
+    cursor:pointer;
+}
+
+#perc-calendar-container ~ br {
+    display:none;
+}
+#perc-pageSum-container {
+    border-top: 0px solid white;
+    padding-top:0px;
+}
+
+.perc-items-wrapper{
+    display:none;
+    margin-top:14px;
+}
+
+.perc-pageSum-default.perc-items-wrapper {
+    margin-top:14px;
+    display:block;
+}
+
+.perc-min-max {
+    cursor:pointer;
+}
+
+.perc-items-minimizer, .perc-items-maximizer  {
+    height:16px;
+    margin:0px 2px 2px 0;
+    width:16px;
+    margin-right:5px;
+    margin-left:-20px;
+    float:left;
+}
+
+.perc-items-minimizer   {
+    background-image:url(images/buttonBlueMinus.png);
+}
+.perc-items-minimizer:hover {
+    background-image:url(images/buttonBlueMinusOver.png);
+}
+
+.perc-items-maximizer {
+    background-image:url(images/buttonBluePlus.png);
+}
+
+.perc-items-maximizer:hover {
+    background-image:url(images/buttonBluePlusOver.png);
+}
+
+#perc-content-edit-content .perc-datetime-picker,
+.perc-content-edit-data .perc-datetime-picker{
+    background-color: #CCCCCC;
+    border: 1px inset #999999;
+    color: #333333;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+#perc-content-edit-content .ui-datepicker-trigger,
+.perc-content-edit-data .ui-datepicker-trigger{
+    padding-left: 3px;
+    padding-top:3px;
+    vertical-align:top;
+}
+#perc-content-edit-content .perc-form-datepicker .ui-datepicker-trigger,
+.perc-content-edit-data .ui-datepicker-trigger{
+    padding-left: 3px;
+    padding-top:0px;
+    vertical-align:top;
+}
+
+#perc-content-edit-metadata-panel .perc-content-edit-data{
+    padding-bottom:0px;
+}
+/* Styles related to Site Impact section of Meta-data dialog */
+
+.perc-site-impact-pages {
+    margin-bottom:25px;
+}
+
+.perc-site-impact-pages .perc-datatable{
+    table-layout:fixed;
+}
+
+.perc-site-impact-templates, .perc-site-impact-pages  {
+    background-color:#f7f7f8;
+    min-width:500px;
+}
+.perc-content-edit-data {
+    padding-bottom:30px;
+    padding-right:35px;
+}
+.perc-site-impact-templates .perc-datatable {
+    text-align:left;
+    table-layout:fixed;
+}
+#perc-site-impact-panel .perc-datatable tbody td .perc-first {
+    color:black;
+    padding-left:5px;
+}
+.perc-site-impact-templates .perc-datatable th.perc-datatable-head-column.perc-last {
+    text-align:left;
+}
+#perc-site-impact-panel .perc-datatable th {
+    padding-left:5px;
+}
+
+.font_normal_07em_black {
+    font-weight: bold;
+    margin-bottom: 17px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    display: block;
+    color: black;
+}
+
+.perc-hide-node-expander .dynatree-expander
+{
+    visibility:hidden !important;
+}

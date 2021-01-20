@@ -1,0 +1,81 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   $Id: isapiextension.html 1.2 1999/01/13 15:54:51Z Administrator Release $
+
+   Version Labels  : $Name: Pre_CEEditorUI RX_40_REL 20010618_3_5 20001027_3_0 20000724_2_0 20000522_1_1 20000501_1_1 20000327_1_1 20000111_1_0 991227_1_0 991214_1_0 991213_1_0 991202_1_0 Release_1_0_Intl Release_10_1 Release_10 $
+
+   Locked By       : $Locker: $
+
+   Revision History:
+                     $Log: isapiextension.html $
+                     Revision 1.2  1999/01/13 15:54:51Z  Administrator
+                      added RCS headers
+-->
+
+<BODY>
+
+<H2>E2 Hook - ISAPI Extension</H2>
+
+The ISAPI Extension allows E2 to hook Microsoft IIS and Apache web servers.
+Extensions are written as DLLs implementing three functions. These are:
+<UL>
+<LI>GetExtensionVersion - initialize the extension and return to IIS the
+supported version info</LI>
+<LI>HttpExtensionProc - this is the work horse, called for each request</LI>
+<LI>TerminateExtension - shutdown the extension</LI>
+</UL>
+
+<P>When HttpExtensionProc is called, we first need to locate the E2 server
+we will be communicating with. This could optionally be moved to the
+GetExtensionVersion call, but that would prevent us from implementing a
+load balancing model. Since we will want to support such a model in the
+future, we may as well start with that logic here.</P>
+
+<P>Once we know the E2 server we'll be sending the request to, we need to
+open a connection to that server (if we don't have one cached). Reuse of
+connections is important so we don't bog down the server. Once connected,
+the client request data will be packaged as an HTTP request and sent to the
+E2 server for processing. No pre-processing is done by the hook. The E2
+request will be packaged as follows:</P>
+<OL>
+<LI>write the request line containing: lpECB-&gt;lpszMethod + " " + 
+(lpECB-&gt;lpszPathTranslated ? lpECB-&gt;lpszPathTranslated : 
+lpECB-&gt;lpszPathInfo) + " " + SERVER_PROTOCOL value 
+(use lpECB-&gt;GetServerVariable)</LI>
+<LI>write the header line(s) using lpECB-&gt;GetServerVariable(ALL_RAW)</LI>
+<LI>write the body of the request using lpECB-&gt;lpbData
+and lpECB-&gt;ReadClient() (if needed)</LI>
+</OL>
+
+<P>The hook will now wait for a response from the E2 server. Once the
+response is received, it will be packaged and sent back to the requestor.
+This is done by sending a properly formed response message. E2 sends
+the appropriate response message to the hook, which can in turn send
+it's output directly to the client using the lpECB-&gt;WriteClient()
+call.</P>
+
+</BODY>
+

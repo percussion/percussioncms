@@ -1,0 +1,113 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+3.perc-css-theme-editor-buttonbar {
+    margin-top: 0px;
+    left: 0px;
+    z-index: 2;
+    position: relative;
+	margin-right:21px;
+}
+
+.perc-css-theme-editor-button {
+    float: right;
+}
+
+.perc-css-theme-editor-button a {
+    float: right;
+    padding: 4px;
+}
+
+.perc-css-gallery-item {
+    padding: 10px;
+    margin: 4px;
+    float: left;
+}
+
+#perc-css-gallery-button-bar {
+    float: right;
+}
+
+.perc-icon-top-right {
+    float: right;	
+    margin-left: 4px;
+}
+
+.perc-css-gallery-themeHighlighted {
+    background-color: #CAF589;
+	border: 2px solid #CAF589;
+}
+
+#perc-css-theme-editor-area {
+    text-align: left;
+    font-family: Courier New, Courier, monospace;
+    width: 100%;
+    border: 1px solid black;
+    overflow: auto;
+    height: 174px;
+    clear: both;   
+}
+
+#perc-css-override-editor-area{
+	width: 99%;
+	/* This value would ideally be 199 for FF, but 197 is required for IE to not overlap the bottom border. */
+	height: 197px;
+}
+
+#perc-styleTabs-1,#perc-styleTabs-2,#perc-styleTabs-3{
+	height:220px;
+}
+	
+#perc-css-override-editor-alert-text{
+	float:left;
+}	
+
+#perc-styleTabs-1{
+	overflow-x:auto;
+}
+

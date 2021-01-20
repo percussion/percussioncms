@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editcategory (dbactiontype*, categoryid*, lookupvalue*, lookupname*, newlookupitemurl*, entry*, contenttypeurl*, contentlookupurl*, userstatusincludeurl* )>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT contenttypeurl (#PCDATA)>
+<!ELEMENT entry (deleteurl*, name*, editurl*, value*, sequence* )>
+<!ELEMENT sequence (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
+<!ELEMENT editurl (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT deleteurl (#PCDATA)>
+<!ELEMENT newlookupitemurl (#PCDATA)>
+<!ELEMENT lookupname (#PCDATA)>
+<!ELEMENT lookupvalue (#PCDATA)>
+<!ELEMENT categoryid (#PCDATA)>
+<!ELEMENT dbactiontype (#PCDATA)>

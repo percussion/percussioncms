@@ -1,0 +1,17 @@
+;INF file for TestInf.ocx
+;DestDir can be 10 for Windows directory, 11 for Windows\System(32) directory, or left blank for the Occache directory.
+
+[version]
+signature="$CHICAGO$"
+AdvancedINF=2.0
+
+[Add.Code]
+word_prj.ocx=word_prj.ocx
+
+[word_prj.ocx]
+file-win32-x86=thiscab
+RegisterServer=yes
+clsid={DA87CB4F-8EDF-4087-8F04-87EC3C938202}
+DestDir= 
+FileVersion=5,5,0,3
+

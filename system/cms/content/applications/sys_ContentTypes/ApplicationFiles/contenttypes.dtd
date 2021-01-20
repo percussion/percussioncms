@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT contenttypes (newcontenttypeurl, relatedlinks, componentname, contenttype* )>
+<!ELEMENT contenttype (contenttypedesc, contenttypeid, editcontenttypeurl, contenttypename, deletecontenttypeurl )>
+<!ELEMENT deletecontenttypeurl (#PCDATA)>
+<!ELEMENT contenttypename (#PCDATA)>
+<!ELEMENT editcontenttypeurl (#PCDATA)>
+<!ELEMENT contenttypeid (#PCDATA)>
+<!ELEMENT contenttypedesc (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT newcontenttypeurl (#PCDATA)>

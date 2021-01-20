@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+ 
+<!--
+    Dependencies:
+    
+    ./images/gadgetIconFormTracker.png
+    /cm/jsp/dashboard.jsp
+    /cm/gadgets/repository/PercFormTrackerGadget/PercFormTrackerGadget.css
+    /cm/gadgets/repository/PercFormTrackerGadget/PercFormTrackerGadget.js
+    /cm/gadgets/repository/common/perc_common_gadget.css
+    /cm/gadgets/repository/common/PercDataTable.css
+    /cm/jslib/jquery.dataTables.js
+    /cm/widgets/PercCollapsibleMore.js
+    /cm/widgets/PercCollapsibleTitle.js
+    /cm/widgets/PercSimpleMenu.js
+    /cm/widgets/PercDataTable.js
+    /cm/plugins/PercNavigationManager.js/openAsset()
+    /cm/services/PercFormService.js
+    /cm/services/PercPathService.js/getPathItemById()
+-->
+<Module>
+    <ModulePrefs title="Forms Tracker" category="integration" description="This gadget keeps track of all forms on your site(s)." thumbnail="images/gadgetIconFormTracker.png" height="320">
+        <Require feature="perc_core"/>
+        <Require feature="settitle" />
+        <Require feature="perc_getDashboardColumn" />
+        <Require feature="minimessage" />
+        <Require feature="perc_jquery_ui"/>
+    </ModulePrefs>
+    <UserPref name="site" display_name="Site" required="true" datatype="enum" default_value="">
+        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+    </UserPref>
+    <UserPref name="zrows" display_name="Display height" required="false" datatype="enum" default_value="5">
+        <EnumValue value="5" display_value="5 results"/>
+        <EnumValue value="10" display_value="10 results"/>
+        <EnumValue value="15" display_value="15 results"/>
+        <EnumValue value="20" display_value="20 results"/>
+        <EnumValue value="25" display_value="25 results"/>
+    </UserPref>
+    <Content type="html">
+    <![CDATA[
+    
+<link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
+<link rel="stylesheet" type="text/css" href="/cm/css/perc_default.css" />
+<link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+<link href="/cm/gadgets/repository/PercFormTrackerGadget/PercFormTrackerGadget.css" rel="stylesheet" type="text/css" />
+
+<link href="/cm/widgets/PercSimpleMenu/PercSimpleMenu.css" rel="stylesheet" type="text/css" />
+<link href="/cm/widgets/PercDataTable/PercDataTable.css" rel="stylesheet" type="text/css" />
+<link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css" />
+
+<script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+  
+<script  src="/cm/jslib/jquery.dataTables.js"></script>
+<script  src="/cm/widgets/PercCollapsibleMore.js"></script>
+<script  src="/cm/widgets/PercCollapsibleTitle.js"></script>
+
+<script  src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
+<script  src="/cm/jslib/jquery.dataTables.js"></script>
+<script  src="/cm/widgets/PercActionDataTable/PercActionDataTable.js"></script>
+<script  src="/cm/widgets/PercDataTable/PercDataTable.js"></script>
+
+<script  src="/cm/gadgets/repository/PercFormTrackerGadget/PercFormTrackerGadget.js"></script>
+
+<style>
+    .actionTitle {
+        cursor : default;
+        text-align : right;
+    }
+</style>
+
+<script >
+    var loadingMsg = null;
+    var miniMsg = null;
+    $(document).ready(function() {
+        miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
+        loadingMsg = miniMsg.createStaticMessage("Loading...");
+    });
+</script>    
+    
+<script>
+     $(document).ready(function() {
+            var prefs    = new gadgets.Prefs();
+            var rows     = parseInt(prefs.getString("zrows"));
+             var site = prefs.getString("site");
+			if(!site)
+			site = "";
+
+            if(rows === NaN)
+               rows = 5;
+
+
+        $("#perc-formtracker-gadget").PercFormTrackerGadget(site,rows);
+    });
+</script>
+<div id="perc-formtracker-gadget">
+</div>
+     ]]>
+  </Content> 
+</Module>

@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+   <WidgetPrefs title="File Auto List"
+        contenttype_name="percFileAutoList"
+        category="rich media,search"
+        description="Display a list of files"
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/fileAutoList/images/widgetIconFileAutoList.png"
+        preferred_editor_width="780"
+        preferred_editor_height="665"
+		is_responsive="true"/>
+    <UserPref name="listType"
+              display_name="List Type"
+              required="false"
+              datatype="enum" default_value="unordered">
+        <EnumValue value="unordered" display_value="Unordered List"/>
+        <EnumValue value="ordered" display_value="Ordered List"/>
+    </UserPref>
+    <UserPref name="listTitleFormat"
+        display_name="Format of list title"
+        required="false"
+        datatype="enum" default_value="div">
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="div" display_value="Div" />
+    </UserPref>
+    <UserPref name="autoListDivId"
+        display_name="File Auto List div id"
+        datatype="string"/>
+    <UserPref name="listItemFormat"
+        display_name="Format of list items"
+        required="false"
+        datatype="enum" default_value="none">
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="div" display_value="Div" />
+        <EnumValue value="none" display_value="None" />
+    </UserPref>
+    <UserPref name="showPostDate"
+        display_name="Show Post Date"
+        default_value="false"
+        datatype="bool"/>
+    <UserPref name="postDateTimeFormat"
+        display_name="Format of page post date"
+        default_value="EEEE MM dd, yyyy"
+        datatype="string" />
+    <UserPref name="locale"
+        display_name="Date Format Locale"
+        required="true"
+        default_value="en-US"
+        datatype="enum">
+        <EnumValue value="sq-AL" display_value="Albanian Albania (AL)"/>
+        <EnumValue value="ar-DZ" display_value="Arabic Algeria (DZ)"/>
+        <EnumValue value="ar-BH" display_value="Arabic Bahrain (BH)"/>
+        <EnumValue value="ar-EG" display_value="Arabic Egypt (EG)"/>
+        <EnumValue value="ar-IQ" display_value="Arabic Iraq (IQ)"/>
+        <EnumValue value="ar-JO" display_value="Arabic Jordan (JO)"/>
+        <EnumValue value="ar-KW" display_value="Arabic Kuwait (KW)"/>
+        <EnumValue value="ar-LB" display_value="Arabic Lebanon (LB)"/>
+        <EnumValue value="ar-LY" display_value="Arabic Libya (LY)"/>
+        <EnumValue value="ar-MA" display_value="Arabic Morocco (MA)"/>
+        <EnumValue value="ar-OM" display_value="Arabic Oman (OM)"/>
+        <EnumValue value="ar-QA" display_value="Arabic Qatar (QA)"/>
+        <EnumValue value="ar-SA" display_value="Arabic Saudi Arabia (SA)"/>
+        <EnumValue value="ar-SD" display_value="Arabic Sudan (SD)"/>
+        <EnumValue value="ar-SY" display_value="Arabic Syria (SY)"/>
+        <EnumValue value="ar-TN" display_value="Arabic Tunisia (TN)"/>
+        <EnumValue value="ar-AE" display_value="Arabic United Arab Emirates (AE)"/>
+        <EnumValue value="ar-YE" display_value="Arabic Yemen (YE)"/>
+        <EnumValue value="be-BY" display_value="Belarusian Belarus (BY)"/>
+        <EnumValue value="bg-BG" display_value="Bulgarian Bulgaria (BG)"/>
+        <EnumValue value="ca-ES" display_value="Catalan Spain (ES)"/>
+        <EnumValue value="zh-CN" display_value="Chinese China (CN)"/>
+        <EnumValue value="zh-SG" display_value="Chinese Singapore (SG)"/>
+        <EnumValue value="zh-HK" display_value="Chinese Hong Kong (HK)"/>
+        <EnumValue value="zh-TW" display_value="Chinese Taiwan (TW)"/>
+        <EnumValue value="hr-HR" display_value="Croatian Croatia (HR)"/>
+        <EnumValue value="cs-CZ" display_value="Czech Czech Republic (CZ)"/>
+        <EnumValue value="da-DK" display_value="Danish Denmark (DK)"/>
+        <EnumValue value="nl-BE" display_value="Dutch Belgium (BE)"/>
+        <EnumValue value="nl-NL" display_value="Dutch Netherlands (NL)"/>
+        <EnumValue value="en-AU" display_value="English Australia (AU)"/>
+        <EnumValue value="en-CA" display_value="English Canada (CA)"/>
+        <EnumValue value="en-IN" display_value="English India (IN)"/>
+        <EnumValue value="en-IE" display_value="English Ireland (IE)"/>
+        <EnumValue value="en-MT" display_value="English Malta (MT)"/>
+        <EnumValue value="en-NZ" display_value="English New Zealand (NZ)"/>
+        <EnumValue value="en-PH" display_value="English Philippines (PH)"/>
+        <EnumValue value="en-SG" display_value="English Singapore (SG)"/>
+        <EnumValue value="en-ZA" display_value="English South Africa (ZA)"/>
+        <EnumValue value="en-GB" display_value="English United Kingdom (GB)"/>
+        <EnumValue value="en-US" display_value="English United States (US)"/>
+        <EnumValue value="et-EE" display_value="Estonian Estonia (EE)"/>
+        <EnumValue value="fi-FI" display_value="Finnish Finland (FI)"/>
+        <EnumValue value="fr-BE" display_value="French Belgium (BE)"/>
+        <EnumValue value="fr-CA" display_value="French Canada (CA)"/>
+        <EnumValue value="fr-FR" display_value="French France (FR)"/>
+        <EnumValue value="fr-LU" display_value="French Luxembourg (LU)"/>
+        <EnumValue value="fr-CH" display_value="French Switzerland (CH)"/>
+        <EnumValue value="de-AT" display_value="German Austria (AT)"/>
+        <EnumValue value="de-DE" display_value="German Germany (DE)"/>
+        <EnumValue value="de-LU" display_value="German Luxembourg (LU)"/>
+        <EnumValue value="de-CH" display_value="German Switzerland (CH)"/>
+        <EnumValue value="el-CY" display_value="Greek Cyprus (CY)"/>
+        <EnumValue value="el-GR" display_value="Greek Greece (GR)"/>
+        <EnumValue value="iw-IL" display_value="Hebrew Israel (IL)"/>
+        <EnumValue value="hi-IN" display_value="Hindi India (IN)"/>
+        <EnumValue value="hu-HU" display_value="Hungarian Hungary (HU)"/>
+        <EnumValue value="is-IS" display_value="Icelandic Iceland (IS)"/>
+        <EnumValue value="in-ID" display_value="Indonesian Indonesia (ID)"/>
+        <EnumValue value="ga-IE" display_value="Irish Ireland (IE)"/>
+        <EnumValue value="it-IT" display_value="Italian Italy (IT)"/>
+        <EnumValue value="it-CH" display_value="Italian Switzerland (CH)"/>
+        <EnumValue value="ja-JP" display_value="Japanese Japan (JP)"/>
+        <EnumValue value="ko-KR" display_value="Korean South Korea (KR)"/>
+        <EnumValue value="lv-LV" display_value="Latvian Latvia (LV)"/>
+        <EnumValue value="lt-LT" display_value="Lithuanian Lithuania (LT)"/>
+        <EnumValue value="mk-MK" display_value="Macedonian Macedonia (MK)"/>
+        <EnumValue value="ms-MY" display_value="Malay Malaysia (MY)"/>
+        <EnumValue value="mt-MT" display_value="Maltese (mt)    Malta (MT)"/>
+        <EnumValue value="no-NO" display_value="Norwegian Norway (NO)"/>
+        <EnumValue value="nb-NO" display_value="Norwegian Bokmal Norway (NO)"/>
+        <EnumValue value="nn-NO" display_value="Norwegian Nynorsk Norway (NO)"/>
+        <EnumValue value="pl-PL" display_value="Polish Poland (PL)"/>
+        <EnumValue value="pt-BR" display_value="Portuguese Brazil (BR)"/>
+        <EnumValue value="pt-PT" display_value="Portuguese Portugal (PT)"/>
+        <EnumValue value="ro-RO" display_value="Romanian Romania (RO)"/>
+        <EnumValue value="ru-RU" display_value="Russian Russia (RU)"/>
+        <EnumValue value="sr-BA" display_value="Serbian Bosnia and Herzegovina (BA)"/>
+        <EnumValue value="sr-ME" display_value="Serbian Montenegro (ME)"/>
+        <EnumValue value="sr-RS" display_value="Serbian Serbia (RS)"/>
+        <EnumValue value="sk-SK" display_value="Slovak Slovakia (SK)"/>
+        <EnumValue value="sl-SI" display_value="Slovenian Slovenia (SI)"/>
+        <EnumValue value="es-AR" display_value="Spanish Argentina (AR)"/>
+        <EnumValue value="es-BO" display_value="Spanish Bolivia (BO)"/>
+        <EnumValue value="es-CL" display_value="Spanish Chile (CL)"/>
+        <EnumValue value="es-CO" display_value="Spanish Colombia (CO)"/>
+        <EnumValue value="es-CR" display_value="Spanish Costa Rica (CR)"/>
+        <EnumValue value="es-DO" display_value="Spanish Dominican Republic (DO)"/>
+        <EnumValue value="es-EC" display_value="Spanish Ecuador (EC)"/>
+        <EnumValue value="es-SV" display_value="Spanish El Salvador (SV)"/>
+        <EnumValue value="es-GT" display_value="Spanish Guatemala (GT)"/>
+        <EnumValue value="es-HN" display_value="Spanish Honduras (HN)"/>
+        <EnumValue value="es-MX" display_value="Spanish Mexico (MX)"/>
+        <EnumValue value="es-NI" display_value="Spanish Nicaragua (NL)"/>
+        <EnumValue value="es-PA" display_value="Spanish Panama (PA)"/>
+        <EnumValue value="es-PY" display_value="Spanish Paraguay (PY)"/>
+        <EnumValue value="es-PE" display_value="Spanish Peru (PE)"/>
+        <EnumValue value="es-PR" display_value="Spanish Puerto Rico (PR)"/>
+        <EnumValue value="es-ES" display_value="Spanish Spain (ES)"/>
+        <EnumValue value="es-US" display_value="Spanish United States (US)"/>
+        <EnumValue value="es-UY" display_value="Spanish Uruguay (UY)"/>
+        <EnumValue value="es-VE" display_value="Spanish Venezuela (VE)"/>
+        <EnumValue value="sv-SE" display_value="Swedish Sweden (SE)"/>
+        <EnumValue value="th-TH" display_value="Thai Thailand (TH)"/>
+        <EnumValue value="tr-TR" display_value="Turkish Turkey (TR)"/>
+        <EnumValue value="uk-UA" display_value="Ukrainian Ukraine (UA)"/>
+        <EnumValue value="vi-VN" display_value="Vietnamese Vietnam (VN)"/>
+    </UserPref>
+    <UserPref name="maxlength" 
+      display_name="Max list length"
+      datatype="number" /> 
+    <UserPref name="sortby"
+      display_name="Sort by" 
+      required="true"
+      default_value="rx:displaytitle"
+      datatype="enum">
+	  <EnumValue value="none" display_value="None" />
+      <EnumValue value="rx:displaytitle" display_value="Title" />
+      <EnumValue value="rx:sys_contentcreateddate desc" display_value="Latest created date" />
+      <EnumValue value="rx:sys_contentcreateddate" display_value="Earliest created date" />
+      <EnumValue value="rx:sys_contentpostdate desc" display_value="Latest post date" />
+      <EnumValue value="rx:sys_contentpostdate" display_value="Earliest post date" />
+    </UserPref>
+    <UserPref name="sortDirection"
+      display_name="Sort Order (not used with created/post date sorting)"
+      required="true"
+      default_value="asc"
+      datatype="enum">
+      <EnumValue value="desc" display_value="Descending" />
+      <EnumValue value="asc" display_value="Ascending" />
+    </UserPref>
+    <UserPref name="listAriaLabel"
+      display_name="File Auto List aria-label"
+      datatype="string" />
+    <UserPref name="listAriaRole"
+      display_name="File Auto List aria-role"
+      datatype="string" />
+    <UserPref name="perc_hide_when_empty"
+      display_name="Hide auto list when empty"
+      default_value="false"
+      datatype="bool" />
+    <UserPref name="layout"
+      display_name="Layout"
+      required="true"
+      default_value="perc-list-vertical"
+      datatype="enum">
+      <EnumValue value="perc-list-horizontal" display_value="Horizontal" />
+      <EnumValue value="perc-list-vertical" display_value="Vertical" />
+    </UserPref>    
+	<UserPref name="target"
+      display_name="Link target"
+      required="true"
+      default_value="_self"
+      datatype="enum">
+      <EnumValue value="_self" display_value="Current window" />
+      <EnumValue value="_blank" display_value="New window" />
+    </UserPref>  
+    <CssPref name="rootclass"
+      display_name="CSS root class" 
+      datatype="string" />
+    <CssPref name="listclass"
+      display_name="CSS file list class" 
+      datatype="string" />
+
+
+    <Code type="jexl">
+    <![CDATA[
+   $linkContext = $perc.linkContext;
+   $rendering = $perc.widget.item.properties.get('listType');
+   $listTitleFormat = $perc.widget.item.properties.get('listTitleFormat');
+   $listItemFormat = $perc.widget.item.properties.get('listItemFormat');
+   $listAriaLabel = $perc.widget.item.properties.get('listAriaLabel');
+   $showPostDate = $perc.widget.item.properties.get('showPostDate');
+   $listAriaRole = $perc.widget.item.properties.get('listAriaRole');
+   $postDateTimeFormat = $perc.widget.item.properties.get('postDateTimeFormat');
+   $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+   $autoListDivId = $perc.widget.item.properties.get('autoListDivId');
+   $perc_hide_when_empty = $perc.widget.item.properties.get('perc_hide_when_empty');
+   $perc.setWidgetContents($assetItems);
+   $target = $perc.widget.item.properties.get('target');
+   $layout = $perc.widget.item.properties.get('layout');
+   $locale = $perc.widget.item.properties.get('locale');
+   if($locale == null) {
+      $locale = "en-US";
+   }
+   $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+   if (!empty($rootclass)) { 
+      $rootclass = $rootclass;
+   }
+   if($autoListDivId == '' || $autoListDivId == null) {
+      $autoListDivId = $perc.widget.item.id + "_list";
+   }
+   if ($listAriaRole == '' || $listAriaRole == null) {
+      $listAriaRole = '';
+   }
+   else {
+       $listAriaRole = 'role="' + $listAriaRole + '"';
+   }
+   $headerId = $autoListDivId + '_header';
+   $listclass = $perc.widget.item.cssProperties.get('listclass');
+   if (!empty($listclass)) { 
+      $listclass = $listclass.trim();
+   }
+   $sortDirection = $perc.widget.item.properties.get('sortDirection');
+   if($sortDirection == null){
+      $sortDirection = "asc";
+   }
+   $maxlength = $perc.widget.item.properties.get('maxlength');
+   if (empty($maxlength)) {
+      $maxlength = 0;
+   }
+   $sortby = $perc.widget.item.properties.get('sortby');
+   if ($sortby != "none") {
+      $sortby = " order by "+$sortby;
+   } 
+   else {
+      $sortby = "";
+   }
+   $target = $perc.widget.item.properties.get('target');
+
+   if ( ! $assetItems.isEmpty() ) {
+      $assetItem = $assetItems.get(0);
+      $params = $rx.string.stringToMap(null);
+      $query = $assetItem.getNode().getProperty('query').String;
+      if($sortby.contains('rx:sys_contentpostdate') || $sortby.contains('rx:sys_contentcreateddate') || $sortby == '') {
+          $query = $query + $sortby;
+      }
+      else {
+         $query = $query + $sortby + " " + $sortDirection;
+      }
+
+      $params.put('query', $query);
+      $params.put('max_results', $maxlength);
+      $finderName="Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder"; 
+      $relresults=  $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+      $title = $rx.pageutils.html($assetItem, 'displaytitle');
+      $rowtag = $tools.alternator.auto('perc-list-odd', 'perc-list-even');
+
+      if ($listTitleFormat != 'none') {
+         $titleFormatStartTag = '<' + $listTitleFormat + ' id="' + $headerId + '"' + ' class="perc-list-title" aria-label="' + $title + '" title="' + $title + '"' + '>';
+         $titleFormatEndTag = '</' + $listTitleFormat + '>';
+      }
+
+      if ($listItemFormat != 'none') {
+         $itemFormatStartTag = '<' + $listItemFormat + '>';
+         $itemFormatEndTag = '</' + $listItemFormat + '>';
+      }
+
+      if ($listAriaLabel == '' || $listAriaLabel == null) {
+          if ($title != null && $title != '') {
+              $listAriaLabel = 'aria-label="' + $title + ' file list"';
+          } else {
+              $listAriaLabel = 'aria-label="File list"';
+          }
+      } else {
+          $listAriaLabel = 'aria-label="' + $listAriaLabel + '"';
+      }
+   }
+   else {
+      ;
+   }
+
+   $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+
+   $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}"); 
+
+    ]]>
+    </Code>
+    <Content type="velocity">
+<![CDATA[
+#define($ariaLabelString)##
+#if($title && $title.length() > 0)##
+aria-labelledby="$!{headerId}"##
+#else##
+$!{listAriaLabel}##
+#end##
+#end##
+## Split locale to get language and country
+#if("" == "$!{locale}")##
+#set($locale="en-US")##
+#end##
+#set($localeSplit = $locale.split("-"))##
+#set($locale_lang = $localeSplit.get(0))##
+#set($locale_country = $localeSplit.get(1))##
+#set($ctor = $sys.getClass().forName('java.util.Locale').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.lang.String')))##
+#set($locale = $ctor.newInstance($locale_lang, $locale_country))##
+##Setup Date Formatting
+#set($format_ctorOut  = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.util.Locale')))##
+#set($formatterOut = $format_ctorOut.newInstance("$!{postDateTimeFormat}",$locale))##
+#set($postDateObject="")##
+#set($postDate="")##
+<div id="$!{autoListDivId}" $!{ariaLabelString} class="$!{rootclass} $!{layout} perc-file-auto-list" $!{listAriaRole} #if($perc_hide_when_empty && $relresults.size() <= 0)hidden #end data-query="$!{dynamicListData}">
+#if( ! $perc.widgetContents.isEmpty() )
+#if($title && $title.length() > 0)##
+$!{titleFormatStartTag}$title$!{titleFormatEndTag}
+#end
+#if($relresults && $relresults.size() > 0)
+#if($rendering == "ordered")##
+<ol class="$!{listclass} perc-list-main">##
+#else##
+<ul class="$!{listclass} perc-list-main">##
+#end##
+#foreach($result in $relresults)
+#set($postDateObject=$result.node.getProperty('rx:sys_contentpostdate'))##
+#set($postDateObjectString=$result.node.getProperty('rx:sys_contentpostdate').String)##
+#if("$!{postDateObjectString}" == "")##
+#set($postDateObject=$tools.date.getDate())##
+#else##
+#set($postDateObject=$result.node.getProperty('rx:sys_contentpostdate').getDate())##
+#end##
+#if("$!{postDateObject}" != "")##
+#set($postDate = $formatterOut.format($postDateObject.getTime()))##
+#end##
+#if($velocityCount == 1)##
+#set($firstrow = 'perc-list-first')##
+#else##
+#set($firstrow = ' ')##
+#end##
+#if($velocityCount == $relresults.size())##
+#set($lastrow = 'perc-list-last')##
+#else
+#set($lastrow = ' ')##
+#end
+#set($pagelink=$tools.esc.html($rx.pageutils.itemLink($linkContext, $result)))##
+#set($linkTitle=$rx.pageutils.html($result.node,"resource_link_title,sys_title", "-no-title-"))##
+#set($link=$tools.esc.html($rx.pageutils.itemLink($linkContext, $result, "percSystem.fileBinary")))##
+#set($file_title=$rx.pageutils.html($result,'displaytitle'))##
+##
+#set( $analyticsId = "" )##
+#if ( $result.getNode().hasProperty('analyticsId') )##
+#set( $analyticsId_raw = $result.getNode().getProperty('analyticsId').String )##
+#if( $analyticsId_raw.length() == 1 && $analyticsId_raw != "?" )##
+#set( $analyticsId = $tools.esc.url($analyticsId_raw) )##
+#end##
+#if ($analyticsId_raw.length() > 1 )
+#set( $analyticsId_Array = $analyticsId_raw.toCharArray() )##
+#set( $analyticsId_firstChar = $analyticsId_Array.get(0).toString() )##
+#if( $analyticsId_firstChar == "?" )##
+#set( $analyticsId = "?" + $tools.esc.url( $analyticsId_raw.substring( 1, $analyticsId_raw.length() ) ) )##
+#else## 
+#set( $analyticsId = $tools.esc.url( $analyticsId_raw ) )##
+#end##
+#end##
+#end##
+#if($perc.isEditMode() && $file_title == "")##
+#set($file_title_attr = "")##
+#else##
+#set($file_title_attr = 'title="' + $file_title + '"')##
+#end
+<li class="$rowtag $!{firstrow} $!{lastrow} perc-list-element">$!{itemFormatStartTag}
+<a href="${link}$!{analyticsId}" $file_title_attr target="$target">$file_title</a>
+#if($showPostDate)##
+#if("$!{postDate}" != "")##
+<span class="perc-file-auto-list-date">$!{postDate}</span>
+#end##
+#end##
+$!{itemFormatEndTag}</li>
+#end##
+#if($rendering == "ordered")##
+</ol>##
+#else##
+</ul>##
+#end##
+#end##
+#elseif ($perc.isEditMode())
+#createEmptyWidgetContent("filelist-sample-content", "This file auto list widget is showing sample content.")
+#end
+</div>
+]]>
+    </Content>
+</Widget>

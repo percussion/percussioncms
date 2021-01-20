@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_title--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\title-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_title--icon--over-png\title-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_email--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\email-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_email--icon--over-png\email-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_title--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\title-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_title--icon-png\title-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonClosePreference-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ButtonClosePreference.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonClosePreference-png\ButtonClosePreference.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_perc--honeypot--field--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\commentsForm\images\perc-honeypot-field-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_perc--honeypot--field--icon--over-png\perc-honeypot-field-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_perc--honeypot--field--icon--over--disable-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\commentsForm\images\perc-honeypot-field-icon-disable.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_perc--honeypot--field--icon--over-png\perc-honeypot-field-icon-disable.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_perc--honeypot--field--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\commentsForm\images\perc-honeypot-field-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_perc--honeypot--field--icon-png\perc-honeypot-field-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_control--top-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\control-top.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_control--top-png\control-top.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_control-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\control.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_control-png\control.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--icons__222222__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ui-icons_222222_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--icons__222222__256x240-png\ui-icons_222222_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_button--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\button-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_button--icon-png\button-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonClosePreferenceOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ButtonClosePreferenceOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonClosePreferenceOver-png\ButtonClosePreferenceOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonBrowse-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ButtonBrowse.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonBrowse-png\ButtonBrowse.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-6915426834423218241">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percCommentsFormAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-6915426834423218241\percCommentsFormAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_check--box--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\check-box-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_check--box--icon-png\check-box-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_radio--button--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\radio-button-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_radio--button--icon--over-png\radio-button-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_edit-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\edit.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_edit-png\edit.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_buttonSave-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\buttonSave.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_buttonSave-png\buttonSave.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/commentsForm/css/perc-comments-form-widget.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\perc-comments-form-widget.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\commentsForm\css\perc-comments-form-widget.css\perc-comments-form-widget.css</ArchiveFile>
+         <OriginalFile>widgets\commentsForm\css\perc-comments-form-widget.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_buttonBluePlusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\buttonBluePlusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_buttonBluePlusOver-gif\buttonBluePlusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_delete-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\delete.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_delete-png\delete.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_drop--down--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\drop-down-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_drop--down--icon-png\drop-down-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--bg__glass__55__fbf9ee__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ui-bg_glass_55_fbf9ee_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--bg__glass__55__fbf9ee__1x400-png\ui-bg_glass_55_fbf9ee_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_calendar-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\calendar.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_calendar-gif\calendar.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsComments.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\images\ContentTypeIcons\filetypeIconsComments.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsComments.png\filetypeIconsComments.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_configure2-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\configure2.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_configure2-png\configure2.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_email--icon--disable-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\email-icon-disable.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_email--icon--disable-png\email-icon-disable.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_radio--button--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\radio-button-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_radio--button--icon-png\radio-button-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_website--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\website-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_website--icon--over-png\website-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_email--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\email-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_email--icon-png\email-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_title--icon--disable-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\title-icon-disable.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_title--icon--disable-png\title-icon-disable.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_text--box--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\text-box-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_text--box--icon-png\text-box-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--bg__glass__75__e6e6e6__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ui-bg_glass_75_e6e6e6_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--bg__glass__75__e6e6e6__1x400-png\ui-bg_glass_75_e6e6e6_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_website--icon--disable-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\website-icon-disable.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_website--icon--disable-png\website-icon-disable.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_text--box--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\text-box-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_text--box--icon--over-png\text-box-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_widgetCommentsformEmpty-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\widgetCommentsformEmpty.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_widgetCommentsformEmpty-png\widgetCommentsformEmpty.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_username--icon--disable-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\username-icon-disable.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_username--icon--disable-png\username-icon-disable.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_date-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\date.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_date-png\date.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_buttonBlueMinusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\buttonBlueMinusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_buttonBlueMinusOver-gif\buttonBlueMinusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_text--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\text-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_text--icon-png\text-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_username--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\username-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_username--icon-png\username-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_Form__DropDown__Active-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\Form_DropDown_Active.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_Form__DropDown__Active-png\Form_DropDown_Active.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--bg__glass__75__dadada__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ui-bg_glass_75_dadada_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--bg__glass__75__dadada__1x400-png\ui-bg_glass_75_dadada_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/commentsForm/js/PercCommentsFormView.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\PercCommentsFormView.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\commentsForm\js\PercCommentsFormView.js\PercCommentsFormView.js</ArchiveFile>
+         <OriginalFile>widgets\commentsForm\js\PercCommentsFormView.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_WidgetIconComntForm-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\WidgetIconComntForm.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_WidgetIconComntForm-png\WidgetIconComntForm.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_check--box--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\check-box-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_check--box--icon--over-png\check-box-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_form--minus-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\form-minus.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_form--minus-png\form-minus.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percCommentsForm-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rxconfig\Widgets\percCommentsForm.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percCommentsForm-xml\percCommentsForm.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonApplyOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ButtonApplyOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonApplyOver-png\ButtonApplyOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_buttonCancel-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\buttonCancel.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_buttonCancel-gif\buttonCancel.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percCommentsForm-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rxconfig\Resources\percCommentsForm.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percCommentsForm-xml\percCommentsForm.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--bg__flat__75__ffffff__40x100-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ui-bg_flat_75_ffffff_40x100.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ui--bg__flat__75__ffffff__40x100-png\ui-bg_flat_75_ffffff_40x100.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonApply-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ButtonApply.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonApply-png\ButtonApply.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_text--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\text-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_text--icon--over-png\text-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_configure-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\configure.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_configure-png\configure.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-343">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percCommentsFormAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-343\percCommentsFormAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percCommentsFormAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-343\percCommentsFormAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percCommentsFormAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-343\percCommentsFormAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_website--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\website-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_website--icon-png\website-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_button--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\button-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_button--icon--over-png\button-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_username--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\username-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_username--icon--over-png\username-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/commentsForm/js/PercCommentsFormController.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\PercCommentsFormController.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\commentsForm\js\PercCommentsFormController.js\PercCommentsFormController.js</ArchiveFile>
+         <OriginalFile>widgets\commentsForm\js\PercCommentsFormController.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonBrowseOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\ButtonBrowseOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_ButtonBrowseOver-png\ButtonBrowseOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/commentsFormWidgetControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\commentsFormWidgetControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\commentsFormWidgetControl.xsl\commentsFormWidgetControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\commentsFormWidgetControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_deleteInactive-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\deleteInactive.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_deleteInactive-png\deleteInactive.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_form--plus-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\form-plus.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_form--plus-png\form-plus.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_website--icon--disable--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\website-icon-disable-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_website--icon--disable--over-png\website-icon-disable-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/commentsForm/js/TinymceConfig.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\TinymceConfig.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\commentsForm\js\TinymceConfig.js\TinymceConfig.js</ArchiveFile>
+         <OriginalFile>widgets\commentsForm\js\TinymceConfig.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_drop--down--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\drop-down-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_drop--down--icon--over-png\drop-down-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_date--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\date-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_date--over-png\date-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_commentsForm_images_WidgetIconComntFormOVER-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\widgets\commentsForm\images\WidgetIconComntFormOVER.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_commentsForm_images_WidgetIconComntFormOVER-png\WidgetIconComntFormOVER.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

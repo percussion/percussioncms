@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT communitylogin (#PCDATA)>
+<!ATTLIST  communitylogin caurl CDATA #IMPLIED>
+<!ATTLIST  communitylogin defaulturl CDATA #IMPLIED>
+<!ATTLIST  communitylogin xml:lang CDATA #IMPLIED>
+<!ATTLIST  communitylogin logincommunity CDATA #IMPLIED>
+<!ATTLIST  communitylogin itemsurl CDATA #IMPLIED>
+<!ATTLIST  communitylogin communitypage CDATA #IMPLIED>
+<!ATTLIST  communitylogin langurl CDATA #IMPLIED>
+<!ATTLIST  communitylogin loginurl CDATA #IMPLIED>

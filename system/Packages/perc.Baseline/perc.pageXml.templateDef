@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings/>
+    <template-slot-ids/>
+    <guid>0-4-608</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/pageVariantAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description>Template used to render the page as XML.</description>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>perc.pageXml</label>
+    <location-prefix/>
+    <location-suffix>.xml</location-suffix>
+    <mime-type>text/xml</mime-type>
+    <name>perc.pageXml</name>
+    <output-format>Snippet</output-format>
+    <publish-when>Never</publish-when>
+    <style-sheet-path/>
+    <template>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;percPage id="$!perc.page.id"&gt;
+	#generateXMLMetadata()
+	#generateXMLContent()
+&lt;/percPage&gt;</template>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_image_images_widgetImageSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\image\images\widgetImageSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_image_images_widgetImageSampleBackground-png\widgetImageSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_image_lightbox_images_next-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\image\lightbox\images\next.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_image_lightbox_images_next-png\next.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_image_images_rotate__right-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\image\images\rotate_right.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_image_images_rotate__right-png\rotate_right.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/image/js/jquery.imageAssetControl.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\jquery.imageAssetControl.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\image\js\jquery.imageAssetControl.js\jquery.imageAssetControl.js</ArchiveFile>
+         <OriginalFile>widgets\image\js\jquery.imageAssetControl.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_image_lightbox_lightbox-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\image\lightbox\lightbox.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_image_lightbox_lightbox-js\lightbox.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_image_images_imageWidgetSteps-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\image\images\imageWidgetSteps.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_image_images_imageWidgetSteps-png\imageWidgetSteps.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_image_images_rotate__left-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\image\images\rotate_left.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_image_images_rotate__left-png\rotate_left.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/image/css/style.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\style.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\image\css\style.css\style.css</ArchiveFile>
+         <OriginalFile>widgets\image\css\style.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/imageWidgetControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\imageWidgetControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\imageWidgetControl.xsl\imageWidgetControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\imageWidgetControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-620">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\perc.imageThumbBinary.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-620\perc.imageThumbBinary.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_image_lightbox_images_prev-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\image\lightbox\images\prev.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_image_lightbox_images_prev-png\prev.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7911077494327869512">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\perc.imageMainBinary.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-7911077494327869512\perc.imageMainBinary.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7911077494327869513">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\perc.imageThumbBinary.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-7911077494327869513\perc.imageThumbBinary.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_image_images_widgetIconImage-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\image\images\widgetIconImage.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_image_images_widgetIconImage-png\widgetIconImage.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7911077494327869511">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\percImageAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-7911077494327869511\percImageAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_image_lightbox_images_loading-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\image\lightbox\images\loading.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_image_lightbox_images_loading-gif\loading.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_image_lightbox_close-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\image\lightbox\close.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_image_lightbox_close-png\close.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-384">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\percImageAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-384\percImageAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\percImageAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-384\percImageAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\percImageAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-384\percImageAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_image_lightbox_images_close-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\image\lightbox\images\close.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_image_lightbox_images_close-png\close.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percImage-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Resources\percImage.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percImage-xml\percImage.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/widgets/rx_ImageAssetOutputTranslation">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\rx_ImageAssetOutputTranslation.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\widgets\rx_ImageAssetOutputTranslation\rx_ImageAssetOutputTranslation.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_image_lightbox_lightbox-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\image\lightbox\lightbox.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_image_lightbox_lightbox-css\lightbox.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_image_images_widgetIconImageOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\image\images\widgetIconImageOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_image_images_widgetIconImageOver-png\widgetIconImageOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/widgets/rx_ImageAssetInputTranslation">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\rx_ImageAssetInputTranslation.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\widgets\rx_ImageAssetInputTranslation\rx_ImageAssetInputTranslation.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percImage-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Widgets\percImage.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percImage-xml\percImage.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-618">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\ANDREW~1\AppData\Local\Temp\perc.imageMainBinary.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-618\perc.imageMainBinary.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

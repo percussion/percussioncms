@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT deleterows (row*, Transition* )>
+<!ELEMENT Transition (Workflowid, Transitionid )>
+<!ELEMENT Transitionid (#PCDATA)>
+<!ELEMENT Workflowid (#PCDATA)>
+<!ELEMENT row (#PCDATA)>
+<!ATTLIST  row pkey CDATA #IMPLIED>

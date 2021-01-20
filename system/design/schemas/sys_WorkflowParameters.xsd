@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xs:schema targetNamespace="urn:www.percussion.com/webservices/workflow" xmlns:com="urn:www.percussion.com/webservices/common" xmlns:si="urn:www.percussion.com/webservices/standarditem" xmlns="urn:www.percussion.com/webservices/workflow" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="urn:www.percussion.com/webservices/common" schemaLocation="sys_Common.xsd"/>
+	<xs:import namespace="urn:www.percussion.com/webservices/standarditem" schemaLocation="sys_StandardItem.xsd"/>
+	<xs:element name="auditTrail">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AuditTrailRequest">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="si:ContentKey"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AuditTrailResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:annotation>
+					<xs:documentation>Choice</xs:documentation>
+				</xs:annotation>
+				<xs:element name="AuditTrail" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Date" type="xs:string"/>
+							<xs:element name="Transition">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="id" type="xs:integer"/>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Revision" type="xs:positiveInteger"/>
+							<xs:element name="State">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="id" type="xs:positiveInteger"/>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Publishable" type="xs:string"/>
+							<xs:element name="Username" type="xs:string"/>
+							<xs:element name="Comment" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="com:ResultResponse" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="transitionItem">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TransitionItemRequest">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="si:ContentKey"/>
+							<xs:element name="TransitionId" type="xs:string"/>
+							<xs:element name="Comment" type="xs:string" minOccurs="0"/>
+							<xs:element name="AdhocUsers" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TransitionItemResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="com:ResultResponse"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="transitionList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TransitionListRequest">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="si:ContentKey"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TransitionListResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:annotation>
+					<xs:documentation>Choice</xs:documentation>
+				</xs:annotation>
+				<xs:element name="Transition" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AdhocUser" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+						<xs:attribute name="comment" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="com:ResultResponse" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

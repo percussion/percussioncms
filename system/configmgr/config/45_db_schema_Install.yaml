@@ -1,0 +1,17 @@
+# Install Schema table defintions and data into Database
+# The configuration manager effectively runs on the instance:  java -cp /opt/Percussion/Administration/rxclient.jar:/opt/Percussion/Administration/rxtablefactory.jar com.percussion.tablefactory.PSJdbcTableFactory /opt/Percussion/rxconfig/Installer/rxrepository.properties -m /opt/Percussion/rxconfig/Installer/Schema/schemaDefinitions.xml /opt/Percussion/rxconfig/Installer/Schema/schemaData.xml
+# using server properties: rxrepository.properties.
+# using -m switch for default data map table.
+# using schemaDefinitions as defintions to install.
+# using schemaData as data to install to db.
+# Should run when creating the docker container image and whenever the container refreshes on a regular docker cm1-app container.
+- Name: 3_5InstallSchemas  
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskCommand
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP 
+  RunInEnv :
+     - DOCKER_INITIAL_STARTUP
+     - DOCKER
+  Parameters:
+    BaseCommand: java -cp 
+    Arguments: /opt/Percussion/Administration/rxclient.jar:/opt/Percussion/Administration/rxtablefactory.jar com.percussion.tablefactory.PSJdbcTableFactory /opt/Percussion/rxconfig/Installer/rxrepository.properties -m /opt/Percussion/rxconfig/Installer/Schema/schemaDefinitions.xml /opt/Percussion/rxconfig/Installer/Schema/schemaData.xml

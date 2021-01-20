@@ -1,0 +1,2669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentEditorSystemDef cacheTimeout="15">
+	<SystemLocator>
+		<PSXContainerLocator>
+			<PSXTableSet>
+				<PSXTableLocator alias="">
+					<PSXBackEndCredential id="0">
+						<alias>systemCredential</alias>
+						<datasource/>
+					</PSXBackEndCredential>
+				</PSXTableLocator>
+				<PSXTableRef name="RXLOOKUP"/>
+				<PSXTableRef name="NEXTNUMBER"/>
+				<PSXTableRef name="CONTENTSTATUS"/>
+			</PSXTableSet>
+		</PSXContainerLocator>
+	</SystemLocator>
+	<PSXCommandHandlerStylesheets>
+		<CommandHandler name="edit">
+			<PSXConditionalStylesheet>
+				<PSXStylesheet>
+					<PSXUrlRequest>
+						<Href>file:../sys_resources/stylesheets/activeEdit.xsl</Href>
+					</PSXUrlRequest>
+				</PSXStylesheet>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>sys_All</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>OR</boolean>
+						</PSXConditional>
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>sys_Content</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>OR</boolean>
+						</PSXConditional>
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>sys_ItemMeta</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>OR</boolean>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalStylesheet>
+			<PSXConditionalStylesheet>
+				<PSXStylesheet>
+					<PSXUrlRequest>
+						<Href>file:../sys_resources/stylesheets/singleFieldEdit.xsl</Href>
+					</PSXUrlRequest>
+				</PSXStylesheet>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>LIKE</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>sys_SingleField:%</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalStylesheet>
+			<PSXStylesheet>
+				<PSXUrlRequest>
+					<Href>file:../sys_resources/stylesheets/activeEdit.xsl</Href>
+				</PSXUrlRequest>
+			</PSXStylesheet>
+		</CommandHandler>
+		<CommandHandler name="preview">
+			<PSXConditionalStylesheet>
+				<PSXStylesheet>
+					<PSXUrlRequest>
+						<Href>file:../sys_resources/stylesheets/activeEdit.xsl</Href>
+					</PSXUrlRequest>
+				</PSXStylesheet>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>sys_All</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>OR</boolean>
+						</PSXConditional>
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>sys_Content</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>OR</boolean>
+						</PSXConditional>
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>sys_ItemMeta</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>OR</boolean>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalStylesheet>
+			<PSXConditionalStylesheet>
+				<PSXStylesheet>
+					<PSXUrlRequest>
+						<Href>file:../sys_resources/stylesheets/revisionEdit.xsl</Href>
+					</PSXUrlRequest>
+				</PSXStylesheet>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_userview</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>sys_Revisions</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalStylesheet>
+			<PSXConditionalStylesheet>
+				<PSXStylesheet>
+					<PSXUrlRequest>
+						<Href>file:../sys_resources/stylesheets/auditTrail.xsl</Href>
+					</PSXUrlRequest>
+				</PSXStylesheet>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_userview</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>sys_audittrail</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalStylesheet>
+			<PSXStylesheet>
+				<PSXUrlRequest>
+					<Href>file:../sys_resources/stylesheets/activeEdit.xsl</Href>
+				</PSXUrlRequest>
+			</PSXStylesheet>
+		</CommandHandler>
+	</PSXCommandHandlerStylesheets>
+	<PSXApplicationFlow>
+		<CommandHandler name="modify">
+			<PSXConditionalRequest>
+				<PSXUrlRequest>
+					<PSXExtensionCall id="1">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="2">
+							<value>
+								<PSXSingleHtmlParameter id="3">
+									<name>sys_searchpage</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="4">
+							<value>
+								<PSXTextLiteral id="5">
+									<text>sys_command</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="6">
+							<value>
+								<PSXTextLiteral id="7">
+									<text>modify</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="8">
+							<value>
+								<PSXTextLiteral id="9">
+									<text>sys_contentid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="10">
+							<value>
+								<PSXSingleHtmlParameter id="11">
+									<name>sys_contentid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="12">
+							<value>
+								<PSXTextLiteral id="13">
+									<text>sys_revision</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="14">
+							<value>
+								<PSXSingleHtmlParameter id="15">
+									<name>sys_revision</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="16">
+							<value>
+								<PSXTextLiteral id="17">
+									<text>sys_pageid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="18">
+							<value>
+								<PSXSingleHtmlParameter id="19">
+									<name>sys_pageid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="20">
+							<value>
+								<PSXTextLiteral id="21">
+									<text>sys_childid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="22">
+							<value>
+								<PSXSingleHtmlParameter id="23">
+									<name>sys_modifychildid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="24">
+							<value>
+								<PSXTextLiteral id="25">
+									<text>referrer</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="26">
+							<value>
+								<PSXSingleHtmlParameter id="27">
+									<name>referrer</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="8">
+							<value>
+								<PSXTextLiteral id="9">
+									<text>sys_view</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="10">
+							<value>
+								<PSXSingleHtmlParameter id="11">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXUrlRequest>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_searchpage</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>IS NOT NULL</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalRequest>
+			<PSXUrlRequest>
+				<PSXExtensionCall id="31">
+					<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+					<PSXExtensionParamValue id="32">
+						<value>
+							<PSXTextLiteral id="33">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="34">
+						<value>
+							<PSXTextLiteral id="35">
+								<text>sys_command</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="36">
+						<value>
+							<PSXTextLiteral id="37">
+								<text>edit</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="38">
+						<value>
+							<PSXTextLiteral id="39">
+								<text>sys_contentid</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="40">
+						<value>
+							<PSXSingleHtmlParameter id="41">
+								<name>sys_contentid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="42">
+						<value>
+							<PSXTextLiteral id="43">
+								<text>sys_revision</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="44">
+						<value>
+							<PSXSingleHtmlParameter id="45">
+								<name>sys_revision</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="46">
+						<value>
+							<PSXTextLiteral id="47">
+								<text>sys_pageid</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="48">
+						<value>
+							<PSXSingleHtmlParameter id="49">
+								<name>sys_pageid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="8">
+						<value>
+							<PSXTextLiteral id="9">
+								<text>sys_view</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="10">
+						<value>
+							<PSXSingleHtmlParameter id="11">
+								<name>sys_view</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="54">
+						<value>
+							<PSXTextLiteral id="55">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="56">
+						<value>
+							<PSXTextLiteral id="57">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXUrlRequest>
+		</CommandHandler>
+		<CommandHandler name="workflow">
+			<PSXConditionalRequest>
+				<PSXUrlRequest>
+					<PSXExtensionCall id="58">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="59">
+							<value>
+								<PSXTextLiteral id="60">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="61">
+							<value>
+								<PSXTextLiteral id="62">
+									<text>sys_command</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="63">
+							<value>
+								<PSXTextLiteral id="64">
+									<text>edit</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="65">
+							<value>
+								<PSXTextLiteral id="66">
+									<text>sys_contentid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="67">
+							<value>
+								<PSXSingleHtmlParameter id="68">
+									<name>sys_contentid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="69">
+							<value>
+								<PSXTextLiteral id="70">
+									<text>sys_revision</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="71">
+							<value>
+								<PSXSingleHtmlParameter id="72">
+									<name>sys_revision</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="73">
+							<value>
+								<PSXTextLiteral id="74">
+									<text>sys_pageid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="75">
+							<value>
+								<PSXSingleHtmlParameter id="76">
+									<name>sys_pageid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="8">
+							<value>
+								<PSXTextLiteral id="9">
+									<text>sys_view</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="10">
+							<value>
+								<PSXSingleHtmlParameter id="11">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="81">
+							<value>
+								<PSXTextLiteral id="82">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="83">
+							<value>
+								<PSXTextLiteral id="84">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXUrlRequest>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="85">
+							<variable>
+								<PSXSingleHtmlParameter id="86">
+									<name>WFAction</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="87">
+									<text>checkout</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalRequest>
+			<PSXConditionalRequest>
+				<PSXUrlRequest>
+					<PSXExtensionCall id="88">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="89">
+							<value>
+								<PSXTextLiteral id="90">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="91">
+							<value>
+								<PSXTextLiteral id="92">
+									<text>sys_command</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="93">
+							<value>
+								<PSXTextLiteral id="94">
+									<text>preview</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="95">
+							<value>
+								<PSXTextLiteral id="96">
+									<text>sys_contentid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="97">
+							<value>
+								<PSXSingleHtmlParameter id="98">
+									<name>sys_contentid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="99">
+							<value>
+								<PSXTextLiteral id="100">
+									<text>sys_revision</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="101">
+							<value>
+								<PSXSingleHtmlParameter id="102">
+									<name>sys_revision</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="8">
+							<value>
+								<PSXTextLiteral id="9">
+									<text>sys_view</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="10">
+							<value>
+								<PSXSingleHtmlParameter id="11">
+									<name>sys_view</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="107">
+							<value>
+								<PSXTextLiteral id="108">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="109">
+							<value>
+								<PSXTextLiteral id="110">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="111">
+							<value>
+								<PSXTextLiteral id="112">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="113">
+							<value>
+								<PSXTextLiteral id="114">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXUrlRequest>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="115">
+							<variable>
+								<PSXSingleHtmlParameter id="116">
+									<name>WFAction</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="117">
+									<text>checkin</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalRequest>
+			<PSXUrlRequest>
+				<PSXExtensionCall id="118">
+					<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+					<PSXExtensionParamValue id="119">
+						<value>
+							<PSXTextLiteral id="120">
+								<text>../sys_cx/mainpage.html</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXUrlRequest>
+		</CommandHandler>
+		<CommandHandler name="clone">
+			<PSXUrlRequest>
+				<PSXExtensionCall id="145">
+					<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+					<PSXExtensionParamValue id="146">
+						<value>
+							<PSXTextLiteral id="147">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="148">
+						<value>
+							<PSXTextLiteral id="149">
+								<text>sys_command</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="150">
+						<value>
+							<PSXTextLiteral id="151">
+								<text>edit</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="152">
+						<value>
+							<PSXTextLiteral id="153">
+								<text>sys_contentid</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="154">
+						<value>
+							<PSXSingleHtmlParameter id="155">
+								<name>sys_contentid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="156">
+						<value>
+							<PSXTextLiteral id="157">
+								<text>sys_revision</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="158">
+						<value>
+							<PSXSingleHtmlParameter id="159">
+								<name>sys_revision</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="160">
+						<value>
+							<PSXTextLiteral id="161">
+								<text>sys_pageid</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="158">
+						<value>
+							<PSXTextLiteral id="163">
+								<text>0</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="8">
+						<value>
+							<PSXTextLiteral id="9">
+								<text>sys_view</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="10">
+						<value>
+							<PSXSingleHtmlParameter id="11">
+								<name>sys_view</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="166">
+						<value>
+							<PSXTextLiteral id="167">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="168">
+						<value>
+							<PSXTextLiteral id="169">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="170">
+						<value>
+							<PSXTextLiteral id="171">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXUrlRequest>
+		</CommandHandler>
+		<CommandHandler name="relate">
+			<PSXConditionalRequest>
+				<PSXUrlRequest>
+					<PSXExtensionCall id="145">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="119">
+							<value>
+								<PSXTextLiteral id="120">
+									<text>../sys_action/checkoutedit.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="148">
+							<value>
+								<PSXTextLiteral id="149">
+									<text>sys_command</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="150">
+							<value>
+								<PSXTextLiteral id="151">
+									<text>edit</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="8">
+							<value>
+								<PSXTextLiteral id="9">
+									<text>sys_view</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="10">
+							<value>
+								<PSXTextLiteral id="9">
+									<text>sys_All</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="152">
+							<value>
+								<PSXTextLiteral id="153">
+									<text>sys_contentid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="154">
+							<value>
+								<PSXSingleHtmlParameter id="155">
+									<name>sys_contentid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="156">
+							<value>
+								<PSXTextLiteral id="157">
+									<text>sys_revision</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="158">
+							<value>
+								<PSXSingleHtmlParameter id="159">
+									<name>sys_revision</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="156">
+							<value>
+								<PSXTextLiteral id="157">
+									<text>sys_contenttypeid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="158">
+							<value>
+								<PSXSingleHtmlParameter id="159">
+									<name>sys_contenttypeid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="156">
+							<value>
+								<PSXTextLiteral id="157">
+									<text>refreshHint</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="158">
+							<value>
+								<PSXSingleHtmlParameter id="159">
+									<name>refreshHint</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXUrlRequest>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_relationshiptype</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>NewCopy</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>OR</boolean>
+						</PSXConditional>
+						<PSXConditional id="29">
+							<variable>
+								<PSXSingleHtmlParameter id="30">
+									<name>sys_relationshiptype</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="31">
+									<text>PromotableVersion</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalRequest>
+			<PSXConditionalRequest>
+				<PSXUrlRequest>
+					<PSXExtensionCall id="145">
+						<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+						<PSXExtensionParamValue id="119">
+							<value>
+								<PSXTextLiteral id="120">
+									<text>../sys_psxRelationshipSupport/translationresult.html</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="152">
+							<value>
+								<PSXTextLiteral id="153">
+									<text>sys_contentid</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="154">
+							<value>
+								<PSXSingleHtmlParameter id="155">
+									<name>sys_contentid</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="156">
+							<value>
+								<PSXTextLiteral id="157">
+									<text>sys_revision</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="158">
+							<value>
+								<PSXSingleHtmlParameter id="159">
+									<name>sys_revision</name>
+								</PSXSingleHtmlParameter>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="166">
+							<value>
+								<PSXTextLiteral id="167">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="168">
+							<value>
+								<PSXTextLiteral id="169">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="170">
+							<value>
+								<PSXTextLiteral id="171">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</PSXUrlRequest>
+				<Conditions>
+					<PSXRule boolean="and">
+						<PSXConditional id="28">
+							<variable>
+								<PSXSingleHtmlParameter id="29">
+									<name>sys_relationshiptype</name>
+								</PSXSingleHtmlParameter>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="30">
+									<text>Translation</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXRule>
+				</Conditions>
+			</PSXConditionalRequest>
+			<PSXUrlRequest>
+				<PSXExtensionCall id="118">
+					<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+					<PSXExtensionParamValue id="119">
+						<value>
+							<PSXTextLiteral id="120">
+								<text>../sys_cx/mainpage.html</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXUrlRequest>
+		</CommandHandler>
+	</PSXApplicationFlow>
+	<SectionLinkList>
+		<PSXUrlRequest name="ComponentLookupURL">
+			<PSXExtensionCall id="0">
+				<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>../sys_ComponentSupport/componentsupport.xml</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>sys_componentname</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>ce_main</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+			</PSXExtensionCall>
+		</PSXUrlRequest>
+		<PSXUrlRequest name="bannerincludeurl">
+			<PSXExtensionCall id="0">
+				<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>../sys_ComponentSupport/component.xml</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>sys_componentname</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>cmp_banner</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+			</PSXExtensionCall>
+		</PSXUrlRequest>
+		<PSXUrlRequest name="DependencyViewer">
+			<PSXExtensionCall id="172">
+				<name>Java/global/percussion/generic/sys_MakeAbsLink</name>
+				<PSXExtensionParamValue id="173">
+					<value>
+						<PSXTextLiteral id="174">
+							<text>../sys_ceDependency/Depend.html</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+			</PSXExtensionCall>
+		</PSXUrlRequest>
+		<PSXUrlRequest name="RelatedLookupURL">
+			<PSXExtensionCall id="0">
+				<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>../sys_rcSupport/relatedcontent.xml</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>sys_contentid</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXSingleHtmlParameter id="0">
+							<name>sys_contentid</name>
+						</PSXSingleHtmlParameter>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>sys_revision</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXSingleHtmlParameter id="0">
+							<name>sys_revision</name>
+						</PSXSingleHtmlParameter>
+					</value>
+				</PSXExtensionParamValue>
+			</PSXExtensionCall>
+		</PSXUrlRequest>
+		<PSXUrlRequest name="VariantListURL">
+			<PSXExtensionCall id="0">
+				<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>../sys_rcSupport/variantlistwithslots.xml</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>sys_contentid</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXSingleHtmlParameter id="0">
+							<name>sys_contentid</name>
+						</PSXSingleHtmlParameter>
+					</value>
+				</PSXExtensionParamValue>
+			</PSXExtensionCall>
+		</PSXUrlRequest>
+		<PSXUrlRequest name="ContentSlotLookupURL">
+			<PSXExtensionCall id="0">
+				<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>../sys_rcSupport/contentslotvariantlist.xml</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>sys_contentid</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXSingleHtmlParameter id="0">
+							<name>sys_contentid</name>
+						</PSXSingleHtmlParameter>
+					</value>
+				</PSXExtensionParamValue>
+			</PSXExtensionCall>
+		</PSXUrlRequest>
+		<PSXUrlRequest name="userstatusincludeurl">
+			<PSXExtensionCall id="0">
+				<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>../sys_ComponentSupport/component.xml</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>sys_componentname</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>cmp_userstatus</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+			</PSXExtensionCall>
+		</PSXUrlRequest>
+		<PSXUrlRequest name="helpincludeurl">
+			<PSXExtensionCall id="0">
+				<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>../sys_ComponentSupport/component.xml</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>sys_componentname</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>ca_help</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+			</PSXExtensionCall>
+		</PSXUrlRequest>
+		<PSXUrlRequest name="actionlisturl">
+			<PSXExtensionCall id="0">
+				<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>../sys_uiSupport/ActionList.xml</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>sys_mode</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+				<PSXExtensionParamValue id="0">
+					<value>
+						<PSXTextLiteral id="0">
+							<text>CMS Centric</text>
+						</PSXTextLiteral>
+					</value>
+				</PSXExtensionParamValue>
+			</PSXExtensionCall>
+		</PSXUrlRequest>
+	</SectionLinkList>
+	<CommandHandlerExits commandName="edit">
+		<InputDataExits>
+			<PSXExtensionCallSet id="175">
+				<PSXExtensionCall id="284">
+					<name>Java/global/percussion/communities/sys_commAuthenticateUser</name>
+				</PSXExtensionCall>
+				<PSXExtensionCall id="176">
+					<name>Java/global/percussion/workflow/sys_wfAuthenticateUser</name>
+					<PSXExtensionParamValue id="177">
+						<value>
+							<PSXSingleHtmlParameter id="178">
+								<name>sys_contentid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="179">
+						<value>
+							<PSXUserContext id="180">
+								<name>User/Name</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="181">
+						<value>
+							<PSXUserContext id="182">
+								<name>Roles/RoleName</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="183">
+						<value>
+							<PSXSingleHtmlParameter id="184">
+								<name>sys_checkinoutcondition</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="185">
+						<value>
+							<PSXTextLiteral id="186">
+								<text>3</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="187">
+						<value>
+							<PSXSingleHtmlParameter id="188">
+								<name>sys_workflowappid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXExtensionCallSet>
+		</InputDataExits>
+		<ResultDataExits>
+			<PSXExtensionCallSet id="189">
+				<PSXExtensionCall id="190">
+					<name>Java/global/percussion/workflow/sys_wfAddPossibleTransitions</name>
+					<PSXExtensionParamValue id="191">
+						<value>
+							<PSXUserContext id="192">
+								<name>User/Name</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="193">
+						<value>
+							<PSXTextLiteral id="194">
+								<text>Workflow</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="195">
+						<value>
+							<PSXTextLiteral id="196">
+								<text>@contentId</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXExtensionCallSet>
+		</ResultDataExits>
+	</CommandHandlerExits>
+	<CommandHandlerExits commandName="modify">
+		<InputDataExits>
+			<PSXExtensionCallSet id="197">
+				<PSXExtensionCall id="285">
+					<name>Java/global/percussion/communities/sys_commAuthenticateUser</name>
+				</PSXExtensionCall>
+				<PSXExtensionCall id="198">
+					<name>Java/global/percussion/workflow/sys_wfAuthenticateUser</name>
+					<PSXExtensionParamValue id="199">
+						<value>
+							<PSXSingleHtmlParameter id="200">
+								<name>sys_contentid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="201">
+						<value>
+							<PSXUserContext id="202">
+								<name>User/Name</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="203">
+						<value>
+							<PSXUserContext id="204">
+								<name>Roles/RoleName</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="205">
+						<value>
+							<PSXSingleHtmlParameter id="206">
+								<name>sys_checkinoutcondition</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="207">
+						<value>
+							<PSXSingleHtmlParameter id="208">
+								<name>sys_minaccesslevel</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="209">
+						<value>
+							<PSXSingleHtmlParameter id="210">
+								<name>sys_workflowappid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXExtensionCallSet>
+		</InputDataExits>
+		<ResultDataExits>
+			<PSXExtensionCallSet id="211">
+				<PSXExtensionCall id="285">
+					<name>Java/global/percussion/assemblers/sys_casInsertAsRelatedItem</name>
+				</PSXExtensionCall>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/cx/sys_addNewItemToFolder</name>
+				</PSXExtensionCall>
+			</PSXExtensionCallSet>
+		</ResultDataExits>
+	</CommandHandlerExits>
+	<CommandHandlerExits commandName="preview">
+		<InputDataExits>
+			<PSXExtensionCallSet id="212">
+				<PSXExtensionCall id="286">
+					<name>Java/global/percussion/communities/sys_commAuthenticateUser</name>
+				</PSXExtensionCall>
+				<PSXExtensionCall id="213">
+					<name>Java/global/percussion/workflow/sys_wfAuthenticateUser</name>
+					<PSXExtensionParamValue id="214">
+						<value>
+							<PSXSingleHtmlParameter id="215">
+								<name>sys_contentid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="216">
+						<value>
+							<PSXUserContext id="217">
+								<name>User/Name</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="218">
+						<value>
+							<PSXUserContext id="219">
+								<name>Roles/RoleName</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="220">
+						<value>
+							<PSXTextLiteral id="221">
+								<text>ignore</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="222">
+						<value>
+							<PSXTextLiteral id="223">
+								<text>2</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="224">
+						<value>
+							<PSXSingleHtmlParameter id="225">
+								<name>sys_workflowappid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXExtensionCallSet>
+		</InputDataExits>
+		<ResultDataExits>
+			<PSXExtensionCallSet id="226">
+				<PSXExtensionCall id="227">
+					<name>Java/global/percussion/workflow/sys_wfAddPossibleTransitions</name>
+					<PSXExtensionParamValue id="228">
+						<value>
+							<PSXUserContext id="229">
+								<name>User/Name</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="230">
+						<value>
+							<PSXTextLiteral id="231">
+								<text>Workflow</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="232">
+						<value>
+							<PSXTextLiteral id="233">
+								<text>@contentId</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXExtensionCallSet>
+		</ResultDataExits>
+	</CommandHandlerExits>
+	<CommandHandlerExits commandName="workflow">
+		<InputDataExits>
+			<PSXExtensionCallSet id="234">
+				<PSXExtensionCall id="287">
+					<name>Java/global/percussion/communities/sys_commAuthenticateUser</name>
+				</PSXExtensionCall>
+				<PSXExtensionCall id="235">
+					<name>Java/global/percussion/workflow/sys_wfAuthenticateUser</name>
+					<PSXExtensionParamValue id="236">
+						<value>
+							<PSXSingleHtmlParameter id="237">
+								<name>sys_contentid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="238">
+						<value>
+							<PSXUserContext id="239">
+								<name>User/Name</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="240">
+						<value>
+							<PSXUserContext id="241">
+								<name>Roles/RoleName</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="242">
+						<value>
+							<PSXSingleHtmlParameter id="243">
+								<name>sys_checkinoutcondition</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="244">
+						<value>
+							<PSXSingleHtmlParameter id="245">
+								<name>sys_minaccesslevel</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="246">
+						<value>
+							<PSXSingleHtmlParameter id="247">
+								<name>sys_workflowappid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+				<PSXExtensionCall id="248">
+					<name>Java/global/percussion/workflow/sys_wfPerformTransition</name>
+					<PSXExtensionParamValue id="249">
+						<value>
+							<PSXSingleHtmlParameter id="250">
+								<name>sys_contentid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="251">
+						<value>
+							<PSXUserContext id="252">
+								<name>User/Name</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="253">
+						<value>
+							<PSXSingleHtmlParameter id="254">
+								<name>WFAction</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXExtensionCallSet>
+		</InputDataExits>
+		<ResultDataExits>
+			<PSXExtensionCallSet id="255">
+				<PSXExtensionCall id="256">
+					<name>Java/global/percussion/workflow/sys_wfUpdateHistory</name>
+					<PSXExtensionParamValue id="257">
+						<value>
+							<PSXSingleHtmlParameter id="258">
+								<name>sys_contentid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="259">
+						<value>
+							<PSXUserContext id="260">
+								<name>User/Name</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+				<PSXExtensionCall id="261">
+					<name>Java/global/percussion/workflow/sys_wfExecuteActions</name>
+				</PSXExtensionCall>
+				<PSXExtensionCall id="262">
+					<name>Java/global/percussion/workflow/sys_wfSendNotifications</name>
+					<PSXExtensionParamValue id="263">
+						<value>
+							<PSXSingleHtmlParameter id="264">
+								<name>sys_contentid</name>
+							</PSXSingleHtmlParameter>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="265">
+						<value>
+							<PSXUserContext id="266">
+								<name>User/Name</name>
+							</PSXUserContext>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</PSXExtensionCallSet>
+		</ResultDataExits>
+	</CommandHandlerExits>
+	<InitParams>
+		<CommandName>edit</CommandName>
+		<CommandName>preview</CommandName>
+		<PSXParam name="com.percussion.defaultSummaryViewCtl">
+			<DataLocator>
+				<PSXTextLiteral id="267">
+					<text>sys_Table</text>
+				</PSXTextLiteral>
+			</DataLocator>
+		</PSXParam>
+		<PSXParam name="com.percussion.hidden_control_name">
+			<DataLocator>
+				<PSXTextLiteral id="268">
+					<text>sys_HiddenInput</text>
+				</PSXTextLiteral>
+			</DataLocator>
+		</PSXParam>
+		<PSXParam name="com.percussion.defaultSummaryEditCtl">
+			<DataLocator>
+				<PSXTextLiteral id="269">
+					<text>sys_Table</text>
+				</PSXTextLiteral>
+			</DataLocator>
+		</PSXParam>
+		<PSXParam name="com.percussion.rowModifyImage">
+			<DataLocator>
+				<PSXTextLiteral id="270">
+					<text>../sys_resources/images/edit.gif</text>
+				</PSXTextLiteral>
+			</DataLocator>
+		</PSXParam>
+		<PSXParam name="com.percussion.rowDeleteImage">
+			<DataLocator>
+				<PSXTextLiteral id="271">
+					<text>../sys_resources/images/delete.gif</text>
+				</PSXTextLiteral>
+			</DataLocator>
+		</PSXParam>
+		<PSXParam name="com.percussion.rowMoveUpImage">
+			<DataLocator>
+				<PSXTextLiteral id="272">
+					<text>../sys_resources/images/arrowup.gif</text>
+				</PSXTextLiteral>
+			</DataLocator>
+		</PSXParam>
+		<PSXParam name="com.percussion.rowMoveDownImage">
+			<DataLocator>
+				<PSXTextLiteral id="273">
+					<text>../sys_resources/images/arrowdown.gif</text>
+				</PSXTextLiteral>
+			</DataLocator>
+		</PSXParam>
+	</InitParams>
+	<InitParams>
+		<CommandName>workflow</CommandName>
+		<PSXParam name="com.percussion.defaultItemError">
+			<DataLocator>
+				<PSXTextLiteral id="274">
+					<text>file:../rx_resources/stylesheets/errors/defaultItemError.xsl</text>
+				</PSXTextLiteral>
+			</DataLocator>
+		</PSXParam>
+	</InitParams>
+	<PSXContainerLocator>
+		<PSXTableSet>
+			<PSXTableLocator>
+				<PSXBackEndCredential id="275">
+					<alias>contentCredential</alias>
+					<datasource/>
+				</PSXBackEndCredential>
+			</PSXTableLocator>
+			<PSXTableRef name="CONTENTSTATUS"/>
+		</PSXTableSet>
+	</PSXContainerLocator>
+	<PSXFieldSet name="systemFieldset" repeatability="zeroOrMore" supportsSequencing="yes" type="parent">
+		<PSXField defaultSearchLabel="Content start date" forceBinary="no" modificationType="user" name="sys_contentstartdate" showInPreview="yes" showInSummary="yes" userCustomizable="yes" userSearchable="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="276">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTSTARTDATE</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<DataType>datetime</DataType>
+			<DefaultValue>
+				<DataLocator>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_DateFormat</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>yyyy-MM-dd</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</DataLocator>
+			</DefaultValue>
+			<OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Content expiration date" forceBinary="no" modificationType="user" name="sys_contentexpirydate" showInPreview="yes" showInSummary="yes" userCustomizable="yes" userSearchable="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="277">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTEXPIRYDATE</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Reminder date" forceBinary="no" modificationType="user" name="sys_reminderdate" showInPreview="yes" showInSummary="yes" userCustomizable="yes" userSearchable="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="283">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>REMINDERDATE</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="System title" forceBinary="no" modificationType="user" name="sys_title" showInPreview="yes" showInSummary="yes" userCustomizable="yes" userSearchable="yes" systemMandatory="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="278">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>TITLE</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+			<FieldRules>
+				<PSXFieldValidationRules name="isValidSysTitle">
+					<PSXRule boolean="and">
+						<PSXExtensionCallSet id="0">
+							<PSXExtensionCall id="1">
+								<name>Java/global/percussion/generic/sys_validateString</name>
+								<PSXExtensionParamValue id="2">
+									<value>
+										<PSXSingleHtmlParameter id="3">
+											<name>sys_title</name>
+										</PSXSingleHtmlParameter>
+									</value>
+								</PSXExtensionParamValue>
+							</PSXExtensionCall>
+						</PSXExtensionCallSet>
+					</PSXRule>
+					<PSXApplyWhen ifFieldEmpty="yes"/>
+					<ErrorMessage>
+						<PSXDisplayText>This field cannot be empty or contain only spaces</PSXDisplayText>
+					</ErrorMessage>
+				</PSXFieldValidationRules>
+			</FieldRules>
+		</PSXField>
+		<PSXField defaultSearchLabel="Publication date" forceBinary="no" modificationType="user" name="sys_pubdate" showInPreview="yes" showInSummary="yes" userCustomizable="yes" userSearchable="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="279">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTPUBLISHDATE</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Path name" forceBinary="no" modificationType="user" name="sys_pathname" showInPreview="yes" showInSummary="yes" userCustomizable="yes" userSearchable="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="280">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTPATHNAME</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Suffix" forceBinary="no" modificationType="user" name="sys_suffix" showInPreview="yes" showInSummary="yes" userCustomizable="yes" userSearchable="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="281">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTSUFFIX</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<DefaultValue>
+				<DataLocator>
+					<PSXTextLiteral id="0">
+						<text>.html</text>
+					</PSXTextLiteral>
+				</DataLocator>
+			</DefaultValue>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+			<FieldRules>
+				<PSXVisibilityRules dataHiding="xsl">
+					<PSXRule boolean="and">
+						<PSXConditional id="0">
+							<variable>
+								<PSXTextLiteral id="0">
+									<text>1</text>
+								</PSXTextLiteral>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="0">
+									<text>2</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXRule>
+				</PSXVisibilityRules>
+			</FieldRules>
+		</PSXField>
+		<PSXField defaultSearchLabel="Community Id" forceBinary="no" modificationType="userCreate" name="sys_communityid" showInPreview="yes" showInSummary="yes" userCustomizable="yes" userSearchable="yes" systemMandatory="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="282">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>COMMUNITYID</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<DefaultValue>
+				<DataLocator>
+					<PSXUserContext id="0">
+						<name>User/SessionObject/sys_community</name>
+					</PSXUserContext>
+				</DataLocator>
+			</DefaultValue>
+			<OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+			<FieldRules>
+				<PSXVisibilityRules dataHiding="xsl">
+					<PSXRule boolean="and">
+						<PSXConditional id="0">
+							<variable>
+								<PSXTextLiteral id="0">
+									<text>1</text>
+								</PSXTextLiteral>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="0">
+									<text>2</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXRule>
+				</PSXVisibilityRules>
+			</FieldRules>
+			<PSXChoices sortOrder="ascending" type="internalLookup">
+				<PSXUrlRequest>
+					<Href>../sys_commSupport/communitynamelookup.xml</Href>
+				</PSXUrlRequest>
+			</PSXChoices>
+		</PSXField>
+		<PSXField forceBinary="no" modificationType="userCreate" name="sys_lang" showInPreview="yes" showInSummary="yes" systemMandatory="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="282">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>LOCALE</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<DefaultValue>
+				<DataLocator>
+					<PSXUserContext id="0">
+						<name>User/SessionObject/sys_lang</name>
+					</PSXUserContext>
+				</DataLocator>
+			</DefaultValue>
+			<OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+			<FieldRules>
+				<PSXVisibilityRules dataHiding="xsl">
+					<PSXRule boolean="and">
+						<PSXConditional id="0">
+							<variable>
+								<PSXTextLiteral id="0">
+									<text>1</text>
+								</PSXTextLiteral>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="0">
+									<text>2</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXRule>
+				</PSXVisibilityRules>
+			</FieldRules>
+			<PSXSearchProperties id="0" defaultSearchLabel="Locale ID" tokenizeSearchContent="yes"/>
+		</PSXField>
+		<PSXField forceBinary="no" modificationType="user" name="sys_currentview" showInPreview="yes" showInSummary="yes" userCustomizable="yes" userSearchable="no" systemMandatory="yes">
+			<DataLocator>
+				<PSXSingleHtmlParameter id="29">
+					<name>sys_view</name>
+				</PSXSingleHtmlParameter>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Workflow" forceBinary="no" modificationType="userCreate" name="sys_workflowid" showInPreview="yes" showInSummary="yes" systemMandatory="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="282">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>WORKFLOWAPPID</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
+			<FieldRules>
+				<PSXVisibilityRules dataHiding="xsl">
+					<PSXRule boolean="and">
+						<PSXConditional id="0">
+							<variable>
+								<PSXTextLiteral id="0">
+									<text>1</text>
+								</PSXTextLiteral>
+							</variable>
+							<operator>=</operator>
+							<value>
+								<PSXTextLiteral id="0">
+									<text>2</text>
+								</PSXTextLiteral>
+							</value>
+							<boolean>AND</boolean>
+						</PSXConditional>
+					</PSXRule>
+				</PSXVisibilityRules>
+			</FieldRules>
+		</PSXField>
+		<PSXField defaultSearchLabel="Assignees" forceBinary="no" modificationType="none" name="sys_assignees" showInPreview="no" showInSummary="no" type="system">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/workflow/sys_ComputeAssignees</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>CONTENTID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Assignment type ID" forceBinary="no" modificationType="none" name="sys_assignmenttypeid" showInPreview="no" showInSummary="no" type="system">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/workflow/sys_ComputeAssignmenType</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>CONTENTID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>1</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>2</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>3</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>4</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Assignment type" forceBinary="no" modificationType="none" name="sys_assignmenttype" showInPreview="no" showInSummary="no" type="system">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/workflow/sys_ComputeAssignmenType</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>CONTENTID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>None</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>Reader</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>Assignee</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>Admin</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Publishable status" forceBinary="no" modificationType="none" name="sys_publishabletype" showInPreview="no" showInSummary="no" type="system">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/cms/sys_CmsObjectNameLookup</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>ContentValid</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>WORKFLOWAPPID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="1">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>CONTENTSTATEID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Checkout status" forceBinary="no" modificationType="none" name="sys_checkoutstatus" showInPreview="no" showInSummary="no" type="system">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/workflow/sys_ComputeUserCheckoutStatus</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>CONTENTCHECKOUTUSERNAME</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<DataType>image</DataType>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Variant Name" forceBinary="no" modificationType="none" name="sys_variantname" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/generic/sys_MakeIntLink</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>../sys_psxCms/Variant.xml</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Content Type Name" forceBinary="no" modificationType="none" name="sys_contenttypename" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/cms/sys_CmsObjectNameLookup</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>ContentType</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>CONTENTTYPEID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Variant" forceBinary="no" modificationType="none" name="sys_variantid" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXTextLiteral id="0">
+					<text>sys_variantid</text>
+				</PSXTextLiteral>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Site" forceBinary="no" modificationType="none" name="sys_siteid" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXTextLiteral id="0">
+					<text>sys_siteid</text>
+				</PSXTextLiteral>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Folder Path" forceBinary="no" modificationType="none" name="sys_folderid" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXTextLiteral id="0">
+					<text>sys_folderid</text>
+				</PSXTextLiteral>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Workflow State Name" forceBinary="no" modificationType="none" name="sys_statename" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/cms/sys_CmsObjectNameLookup</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>WorkflowState</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>CONTENTSTATEID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>WORKFLOWAPPID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXChoices sortOrder="ascending" type="internalLookup">
+                <PSXUrlRequest>
+                  <Href>../sys_commSupport/communitystatenames.xml</Href>
+                </PSXUrlRequest>
+                <PSXChoiceFilter>
+                  <DependentField fieldRef="sys_workflowid" dependencyType="required"/>
+                  <PSXUrlRequest>
+                     <Href>sys_commSupport/workflowstatenames.xml</Href>
+                  </PSXUrlRequest>
+                </PSXChoiceFilter>
+            </PSXChoices>
+		</PSXField>
+		<PSXField defaultSearchLabel="Community Name" forceBinary="no" modificationType="none" name="sys_communityname" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/cms/sys_CmsObjectNameLookup</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>Community</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>COMMUNITYID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Locale Name" forceBinary="no" modificationType="none" name="sys_localename" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/cms/sys_CmsObjectNameLookup</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>Locale</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>LOCALE</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Workflow Name" forceBinary="no" modificationType="none" name="sys_workflowname" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/cms/sys_CmsObjectNameLookup</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>Workflow</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXBackEndColumn id="0">
+								<tableAlias>CONTENTSTATUS</tableAlias>
+								<column>WORKFLOWAPPID</column>
+								<columnAlias/>
+							</PSXBackEndColumn>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Content id" forceBinary="no" modificationType="systemCreate" name="sys_contentid" showInPreview="yes" showInSummary="yes" type="system">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTID</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Workflow State ID" forceBinary="no" modificationType="system" name="sys_contentstateid" showInPreview="yes" showInSummary="yes" type="system">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTSTATEID</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Checked out user name" forceBinary="no" modificationType="system" name="sys_contentcheckoutusername" showInPreview="yes" showInSummary="yes" type="system">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTCHECKOUTUSERNAME</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Last modified by" forceBinary="no" modificationType="system" name="sys_contentlastmodifier" showInPreview="yes" showInSummary="yes" type="system">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTLASTMODIFIER</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Last modified date" forceBinary="no" modificationType="system" name="sys_contentlastmodifieddate" showInPreview="yes" showInSummary="yes" type="system">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTLASTMODIFIEDDATE</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Object type" forceBinary="no" modificationType="systemCreate" name="sys_objecttype" showInPreview="yes" showInSummary="yes" type="system" userSearchable="no">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>OBJECTTYPE</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Content Type" forceBinary="no" modificationType="systemCreate" name="sys_contenttypeid" showInPreview="yes" showInSummary="yes" type="system">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTTYPEID</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+			<PSXChoices sortOrder="ascending" type="internalLookup">
+				<PSXUrlRequest>
+					<Href>../sys_psxContentEditorCataloger/ContentTypeLookup.xml</Href>
+				</PSXUrlRequest>
+				<PSXChoiceFilter>
+					<DependentField fieldRef="sys_communityid" dependencyType="required"/>
+					<PSXUrlRequest>
+						<Href>sys_psxContentEditorCataloger/ContentTypeCommunityLookup.xml</Href>
+					</PSXUrlRequest>
+				</PSXChoiceFilter>
+			</PSXChoices>
+		</PSXField>
+		<PSXField defaultSearchLabel="Created on" forceBinary="no" modificationType="systemCreate" name="sys_contentcreateddate" showInPreview="yes" showInSummary="yes" type="system">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTCREATEDDATE</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField defaultSearchLabel="Created by" forceBinary="no" modificationType="systemCreate" name="sys_contentcreatedby" showInPreview="yes" showInSummary="yes" type="system">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>CONTENTCREATEDBY</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<!--
+          The sys_relevancy field is used to provide the relevancy ranking returned by the 
+          external search engine.  The field value is overwritten by the search engine at
+          the time the search results are processed.  If no rank is available, or if the 
+          search was performed against the internal engine, the value is left at -1.
+      -->
+		<PSXField defaultSearchLabel="Rank" forceBinary="no" modificationType="none" name="sys_relevancy" showInPreview="no" showInSummary="no" type="system" userSearchable="yes">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/generic/sys_Literal</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text>-1</text>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<DataType>integer</DataType>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<!-- Thumbnail image column -->
+		<PSXField defaultSearchLabel="Thumbnail" forceBinary="no" modificationType="none" name="sys_thumbnail" showInPreview="no" showInSummary="no" systemMandatory="no" type="system" userCustomizable="yes" userSearchable="yes">
+			<DataLocator>
+				<PSXExtensionCall id="0">
+					<name>Java/global/percussion/generic/sys_Literal</name>
+					<PSXExtensionParamValue id="0">
+						<value>
+							<PSXTextLiteral id="0">
+								<text/>
+							</PSXTextLiteral>
+						</value>
+					</PSXExtensionParamValue>
+				</PSXExtensionCall>
+			</DataLocator>
+			<DataType>image</DataType>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+		<PSXField forceBinary="no" modificationType="system" name="sys_hibernateVersion" showInPreview="no" showInSummary="no" systemMandatory="yes" userSearchable="no" systemInternal="yes">
+			<DataLocator>
+				<PSXBackEndColumn id="1">
+					<tableAlias>CONTENTSTATUS</tableAlias>
+					<column>HIB_VER</column>
+					<columnAlias/>
+				</PSXBackEndColumn>
+			</DataLocator>
+			<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+		</PSXField>
+	</PSXFieldSet>
+	<PSXUIDefinition>
+		<PSXDisplayMapper fieldSetRef="systemFieldset" id="282">
+			<PSXDisplayMapping>
+				<FieldRef>sys_title</FieldRef>
+				<PSXUISet defaultSet="" name="" accessKey="T">
+					<Label>
+						<PSXDisplayText>System Title:</PSXDisplayText>
+					</Label>
+					<PSXControlRef name="sys_EditBox"/>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_contentstartdate</FieldRef>
+				<PSXUISet defaultSet="" name="" accessKey="S">
+					<Label>
+						<PSXDisplayText>Start Date:</PSXDisplayText>
+					</Label>
+					<PSXControlRef name="sys_CalendarSimple"/>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_contentexpirydate</FieldRef>
+				<PSXUISet defaultSet="" name="" accessKey="E">
+					<Label>
+						<PSXDisplayText>Expiration Date:</PSXDisplayText>
+					</Label>
+					<PSXControlRef name="sys_CalendarSimple"/>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_pubdate</FieldRef>
+				<PSXUISet defaultSet="" name="" accessKey="B">
+					<Label>
+						<PSXDisplayText>Pub Date:</PSXDisplayText>
+					</Label>
+					<PSXControlRef name="sys_CalendarSimple"/>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_pathname</FieldRef>
+				<PSXUISet defaultSet="" name="" accessKey="H">
+					<Label>
+						<PSXDisplayText>Path Name:</PSXDisplayText>
+					</Label>
+					<PSXControlRef name="sys_EditBox"/>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_suffix</FieldRef>
+				<PSXUISet defaultSet="" name="" accessKey="F">
+					<Label>
+						<PSXDisplayText>Suffix:</PSXDisplayText>
+					</Label>
+					<PSXControlRef name="sys_EditBox"/>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_communityid</FieldRef>
+				<PSXUISet defaultSet="" name="" accessKey="M">
+					<Label>
+						<PSXDisplayText>Community:</PSXDisplayText>
+					</Label>
+					<PSXControlRef name="sys_DropDownSingle"/>
+					<PSXChoices sortOrder="ascending" type="internalLookup">
+						<PSXUrlRequest>
+							<Href>../sys_commSupport/communitynamelookup.xml</Href>
+						</PSXUrlRequest>
+					</PSXChoices>
+					<ReadOnlyRules>
+						<PSXRule boolean="and">
+							<PSXConditional id="0">
+								<variable>
+									<PSXTextLiteral id="0">
+										<text>1</text>
+									</PSXTextLiteral>
+								</variable>
+								<operator>=</operator>
+								<value>
+									<PSXTextLiteral id="0">
+										<text>1</text>
+									</PSXTextLiteral>
+								</value>
+								<boolean>AND</boolean>
+							</PSXConditional>
+						</PSXRule>
+					</ReadOnlyRules>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_lang</FieldRef>
+				<PSXUISet defaultSet="" name="" accessKey="L">
+					<Label>
+						<PSXDisplayText>Locale:</PSXDisplayText>
+					</Label>
+					<PSXControlRef name="sys_DropDownSingle"/>
+					<PSXChoices sortOrder="ascending" type="internalLookup">
+						<PSXUrlRequest>
+							<Href>../sys_i18nSupport/languagelookup.xml</Href>
+						</PSXUrlRequest>
+					</PSXChoices>
+					<ReadOnlyRules>
+						<PSXRule boolean="and">
+							<PSXConditional id="0">
+								<variable>
+									<PSXSingleHtmlParameter id="0">
+										<name>sys_contentid</name>
+									</PSXSingleHtmlParameter>
+								</variable>
+								<operator>IS NOT NULL</operator>
+								<value>
+									<PSXTextLiteral id="0">
+										<text/>
+									</PSXTextLiteral>
+								</value>
+								<boolean>AND</boolean>
+							</PSXConditional>
+						</PSXRule>
+					</ReadOnlyRules>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_currentview</FieldRef>
+				<PSXUISet defaultSet="" name="">
+					<Label>
+						<PSXDisplayText/>
+					</Label>
+					<PSXControlRef name="sys_HiddenInput"/>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_workflowid</FieldRef>
+				<PSXUISet defaultSet="" name="" accessKey="W">
+					<Label>
+						<PSXDisplayText>Workflow:</PSXDisplayText>
+					</Label>
+					<PSXControlRef name="sys_DropDownSingle"/>
+					<PSXChoices sortOrder="ascending" type="internalLookup">
+						<PSXUrlRequest>
+							<Href>../sys_commSupport/communityworkflows.xml</Href>
+						</PSXUrlRequest>
+						<PSXChoiceFilter>
+							<DependentField fieldRef="sys_communityid" dependencyType="required"/>
+							<PSXUrlRequest>
+								<Href>sys_commSupport/communityworkflowchoices.xml</Href>
+							</PSXUrlRequest>
+						</PSXChoiceFilter>
+					</PSXChoices>
+					<ReadOnlyRules>
+						<PSXRule boolean="and">
+							<PSXConditional id="0">
+								<variable>
+									<PSXSingleHtmlParameter id="0">
+										<name>sys_contentid</name>
+									</PSXSingleHtmlParameter>
+								</variable>
+								<operator>IS NOT NULL</operator>
+								<value>
+									<PSXTextLiteral id="0">
+										<text/>
+									</PSXTextLiteral>
+								</value>
+								<boolean>AND</boolean>
+							</PSXConditional>
+						</PSXRule>
+					</ReadOnlyRules>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_reminderdate</FieldRef>
+				<PSXUISet>
+					<Label>
+						<PSXDisplayText>Reminder Date:</PSXDisplayText>
+					</Label>
+					<PSXControlRef id="0" name="sys_CalendarSimple"/>
+				</PSXUISet>
+			</PSXDisplayMapping>
+			<PSXDisplayMapping>
+				<FieldRef>sys_hibernateVersion</FieldRef>
+				<PSXUISet defaultSet="" name="">
+					<Label>
+						<PSXDisplayText/>
+					</Label>
+					<PSXControlRef name="sys_HiddenInput"/>
+				</PSXUISet>
+			</PSXDisplayMapping>
+		</PSXDisplayMapper>
+	</PSXUIDefinition>
+</ContentEditorSystemDef>

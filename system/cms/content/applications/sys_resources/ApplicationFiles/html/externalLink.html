@@ -1,0 +1,53 @@
+<html>
+  <head>
+  <title>External Link</title>
+  <style type="text/css">
+     .labels {color:#000000; font-family: Arial; font-weight:bold; font-size:12px;}
+     .sublabels {color:#0000FF; font-family: Arial; font-weight:bold; font-size:11px;}
+     .buttons {width:60;}
+  </style>
+
+  <script language="javascript1.2">
+  function insertLink()
+  {
+     if(top.opener == null)
+        return;
+
+     var sEditorName = top.opener.dataObject.sEditorName;
+     var linkSrc = "";
+     var linkUrl = document.forms[0].linkurl.value;
+     var linkTitle = document.forms[0].linktitle.value;
+     var selectedText = top.opener.eWebEditPro[sEditorName].getSelectedText();
+     var selectedHtml = top.opener.eWebEditPro[sEditorName].getSelectedHTML();
+     //We allow nested links for only images.
+     if(top.opener.isStringValidForLink(selectedHtml))
+     {
+         selectedText = selectedHtml;
+     }
+
+     linkSrc = "<a href=\"" + linkUrl +"\" title=\"" + linkTitle + "\">" + selectedText + "</a>";
+     top.opener.formatOutput(linkSrc);
+     self.close();
+
+  }
+
+
+
+  </script>
+
+  </head>
+  <body bgcolor="#bec5e7">
+     <form name="extLinkForm">
+     <table>
+        <tbody>
+           <tr><td><span class="labels">Enter link location (e.g.</span> <span class="sublabels">http://www.yahoo.com</span><span class="labels">):</span></td></tr>
+           <tr><td><input type="text" name="linkurl" value="http://" size="80"></td></tr>
+           <tr><td><span class="labels">Title:</span></td></tr>
+           <tr><td><input type="text" name="linktitle" value="" size="80"></td></tr>
+           <tr><td align="right"><input class="buttons" type="button" value="OK" onclick="insertLink();">
+           <input type="button" value="Cancel" onclick="self.close();"></td></tr>
+        </tbody>
+     </table>
+     </form>
+  </body>
+  </html>

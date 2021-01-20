@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<!-- $Id: uil2-service.xml,v 1.5.2.4 2005/08/25 15:03:20 starksm Exp $ -->
+
+<server>
+
+  <!-- JBossMQ using the Unified Invocation Layer
+       All communication uses one socket connection -->
+
+  <mbean code="org.jboss.mq.il.uil2.UILServerILService"
+	 name="jboss.mq:service=InvocationLayer,type=UIL2">
+
+    <!-- The server chain -->
+    <depends optional-attribute-name="Invoker">jboss.mq:service=Invoker</depends>
+    <!-- JNDI binding -->
+    <attribute name="ConnectionFactoryJNDIRef">ConnectionFactory</attribute>
+    <!-- JNDI binding for XA -->
+    <attribute name="XAConnectionFactoryJNDIRef">XAConnectionFactory</attribute>
+    <!-- The bind address -->
+    <attribute name="BindAddress">${jboss.bind.address}</attribute>
+    <!-- The bind port -->
+    <attribute name="ServerBindPort">{{UIL2_PORT}}</attribute>
+    <!-- The ping period in millis -->
+    <attribute name="PingPeriod">60000</attribute>
+    <!-- Whether tcp/ip does not wait for buffer fills -->
+    <attribute name="EnableTcpNoDelay">true</attribute>
+    <!-- Used to disconnect the client on the serverside if there is no activity -->
+    <!-- Ensure this is greater than the ping period -->
+    <attribute name="ReadTimeout">120000</attribute>
+    <!-- Used to disconnect the client on the clientside if there is no activity -->
+    <!-- Ensure this is greater than the ping period -->
+    <attribute name="ClientReadTimeout">120000</attribute>
+    <!-- The size of the buffer (in bytes) wrapping the socket -->
+    <!-- The buffer is flushed after each request -->
+    <attribute name="BufferSize">2048</attribute>
+    <!-- Large messages may block the ping/pong -->
+    <!-- A pong is simulated after each chunk (in bytes) for both reading and writing -->
+    <!-- It must be larger than the buffer size -->
+    <attribute name="ChunkSize">1000000</attribute>
+  </mbean>
+
+  <!-- Aliases UIL -> UIL2 for backwards compatibility 
+       the deprecated UIL deployment can be found in docs/examples/jca -->
+   <mbean code="org.jboss.naming.NamingAlias" name="jboss.mq:service=InvocationLayer,type=UIL">
+      <attribute name="FromName">UILConnectionFactory</attribute>
+      <attribute name="ToName">ConnectionFactory</attribute>
+      <depends>jboss:service=Naming</depends>
+   </mbean>
+   <mbean code="org.jboss.naming.NamingAlias" name="jboss.mq:service=InvocationLayer,type=UILXA">
+      <attribute name="FromName">UILXAConnectionFactory</attribute>
+      <attribute name="ToName">XAConnectionFactory</attribute>
+      <depends>jboss:service=Naming</depends>
+   </mbean>
+   <mbean code="org.jboss.naming.NamingAlias"
+      name="jboss.mq:service=InvocationLayer,type=UIL2,alias=UIL2ConnectionFactory">
+      <attribute name="FromName">UIL2ConnectionFactory</attribute>
+      <attribute name="ToName">ConnectionFactory</attribute>
+      <depends>jboss:service=Naming</depends>
+   </mbean>
+   <mbean code="org.jboss.naming.NamingAlias"
+      name="jboss.mq:service=InvocationLayer,type=UIL2XA,alias=UIL2XAConnectionFactory">
+      <attribute name="FromName">UIL2XAConnectionFactory</attribute>
+      <attribute name="ToName">XAConnectionFactory</attribute>
+      <depends>jboss:service=Naming</depends>
+   </mbean>
+
+   <!--
+      Two JNDI bindings that act like jms client connections remotely
+      but have j2ee defined semantics inside JBoss
+   -->
+   <mbean code="org.jboss.naming.LinkRefPairService"
+          name="jboss.jms:alias=QueueConnectionFactory">
+      <attribute name="JndiName">QueueConnectionFactory</attribute>
+      <attribute name="RemoteJndiName">ConnectionFactory</attribute>
+      <attribute name="LocalJndiName">java:/JmsXA</attribute>
+      <depends>jboss:service=Naming</depends>
+   </mbean>
+   <mbean code="org.jboss.naming.LinkRefPairService"
+          name="jboss.jms:alias=TopicConnectionFactory">
+      <attribute name="JndiName">TopicConnectionFactory</attribute>
+      <attribute name="RemoteJndiName">ConnectionFactory</attribute>
+      <attribute name="LocalJndiName">java:/JmsXA</attribute>
+      <depends>jboss:service=Naming</depends>
+   </mbean>
+</server>

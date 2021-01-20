@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<tables>
+	<table name="CATALOGER" allowSchemaChanges="n">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="DISPLAYTITLE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="DESCRIPTION">
+				<jdbctype>CLOB</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+		<primarykey>
+			<name>CONTENTID</name>
+			<name>REVISIONID</name>
+		</primarykey>
+	</table>
+	<table name="CATALOGER_AVAILABLE_SET" allowSchemaChanges="n">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="SORTRANK">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="AVAILABLE">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+	</table>
+	<table name="CATALOGER_CATALOGS" allowSchemaChanges="n">
+		<row>
+			<column name="CONTENTID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="REVISIONID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="SYSID">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="SORTRANK">
+				<jdbctype>INTEGER</jdbctype>
+				<size/>
+				<allowsnull>no</allowsnull>
+			</column>
+			<column name="NAME">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="CATALOG">
+				<jdbctype>BLOB</jdbctype>
+				<size/>
+				<allowsnull>yes</allowsnull>
+			</column>
+		</row>
+	</table>
+</tables>

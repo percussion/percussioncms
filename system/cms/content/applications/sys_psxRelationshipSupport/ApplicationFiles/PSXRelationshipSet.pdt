@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXRelationship (Owner, Dependent, PSXPropertySet? )>
+<!ELEMENT PSXProperty (Value, Description? )>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT Value (#PCDATA)>
+<!ATTLIST  PSXProperty name CDATA #REQUIRED>
+<!ATTLIST PSXProperty locked (yes | no ) "no">
+<!ELEMENT PSXPropertySet (PSXProperty+ )>
+<!ELEMENT Dependent (PSXLocator )>
+<!ATTLIST  Dependent objecttype CDATA #IMPLIED>
+<!ATTLIST  Dependent communityid CDATA #IMPLIED>
+<!ELEMENT PSXLocator (CONTENTID, REVISIONID )>
+<!ELEMENT REVISIONID (#PCDATA)>
+<!ELEMENT CONTENTID (#PCDATA)>
+<!ATTLIST PSXLocator isPersisted (yes | no ) "yes">
+<!ELEMENT Owner (PSXLocator )>
+<!ATTLIST  PSXRelationship id CDATA #REQUIRED>
+<!ATTLIST  PSXRelationship config CDATA #REQUIRED>
+<!ELEMENT PSXRelationshipSet (PSXRelationship* )>

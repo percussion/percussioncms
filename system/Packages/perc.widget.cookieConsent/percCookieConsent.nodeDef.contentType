@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description>A widget that displays an 'accept consent' dialog on the website.</description>
+    <hide-from-menu>false</hide-from-menu>
+    <id>402</id>
+    <internal-name>percCookieConsent</internal-name>
+    <label>percCookieConsent</label>
+    <mandatory>false</mandatory>
+    <name>rx:percCookieConsent</name>
+    <new-request>../psx_cepercCookieConsent/percCookieConsent.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercCookieConsent/percCookieConsent.html</query-request>
+    <raw-content-type>402</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids>
+      <string>0-23-6</string>
+      <string>0-23-5</string>
+      <string>0-23-4</string>
+      <string>0-23-7</string>
+    </workflow-ids>
+  </node-definition>

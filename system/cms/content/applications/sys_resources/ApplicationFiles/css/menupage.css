@@ -1,0 +1,41 @@
+a {
+	color: #0000a0;
+	font-weight: bold;
+	text-decoration: none
+}
+
+a.command {
+	font-size: 10pt;
+	font-weight: bold;
+	color: #0000a0;
+	text-decoration: none
+}
+
+a:focus {
+	color: #0000FF;
+	text-decoration: underline
+}
+
+a:hover {
+	color: #0000FF;
+	text-decoration: underline
+}
+
+body {
+	background-color: #ffffff;
+	font-family: arial,sans-serif;
+	font-size: 10pt
+}
+
+h3 {
+	font-size: 120%
+}
+
+h2 {
+	font-size: 150%
+}
+
+h1 { 
+	font-size: 190%;
+	font-family: sans-serif;
+}

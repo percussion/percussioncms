@@ -1,0 +1,62 @@
+################################################################################
+#
+# $Id: package.nmk 1.1 2002/06/04 20:54:12Z ScottMorales Exp $
+#
+# Version Labels  : $Name: $
+#
+# Locked By    : $Locker: $
+#
+# Revision History:
+#  $Log: package.nmk $
+#  Revision 1.1  2002/06/04 20:54:12Z  ScottMorales
+#  Initial revision
+#  Revision 1.1  2002/05/29 17:23:24Z  scottmorales
+#  Initial revision
+#
+################################################################################
+
+PACKAGE=com.percussion.support.handlers
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = 
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+   EXCLUDED_CLASSES += \
+      $(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = PSWepHandler
+  
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = 
+
+#
+# Properties files
+#
+PROPERTIES = eks.properties \
+  rxwep.properties
+
+#
+# Image files
+#
+IMAGES = 
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+   $(PROPERTIES) \
+   $(IMAGES)
+
+ALL_CLASSES = $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-328">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\FF_NavImageSelector.keyword</RxFile>
+         <ArchiveFile>Keyword-328\FF_NavImageSelector.keyword</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SharedGroup-shared">
+      <PSXDependencyFile fileType="SHARED_GROUP_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\shared.sharedGroup</RxFile>
+         <ArchiveFile>SharedGroup-shared\shared.sharedGroup</ArchiveFile>
+         <OriginalFile>rxs_ct_shared.xml</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SlotDef-513">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\perc.nav.image.slotDef</RxFile>
+         <ArchiveFile>SlotDef-513\perc.nav.image.slotDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Application-rxs_navSupport">
+      <DBMSInfoList/>
+      <PSXDependencyFile fileType="APPLICATION_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport.application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport.application</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(1).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(1).application</ArchiveFile>
+         <OriginalFile>flushed.rpg</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(2).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(2).application</ArchiveFile>
+         <OriginalFile>flushed.xsl</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(3).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(3).application</ArchiveFile>
+         <OriginalFile>rxnavtheme.dtd</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(4).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(4).application</ArchiveFile>
+         <OriginalFile>rxnavtheme.pdt</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(5).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(5).application</ArchiveFile>
+         <OriginalFile>rxsiteinfo.dtd</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(6).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(6).application</ArchiveFile>
+         <OriginalFile>rxsiteinfo.pdt</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(7).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(7).application</ArchiveFile>
+         <OriginalFile>sys_Lookup.dtd</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(8).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(8).application</ArchiveFile>
+         <OriginalFile>sys_Lookup.pdt</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(9).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(9).application</ArchiveFile>
+         <OriginalFile>_RXDUAL.dtd</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_navSupport(10).application</RxFile>
+         <ArchiveFile>Application-rxs_navSupport\rxs_navSupport(10).application</ArchiveFile>
+         <OriginalFile>_RXDUAL.pdt</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Server_Navigation-properties">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rxconfig\Server\Navigation.properties</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Server_Navigation-properties\Navigation.properties</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SlotDef-516">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\perc.nav.subMenu.slotDef</RxFile>
+         <ArchiveFile>SlotDef-516\perc.nav.subMenu.slotDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-3772753221890605126">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavTree.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-3772753221890605126\percNavTree.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/percNavon.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\images\ContentTypeIcons\percNavon.gif</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\percNavon.gif\percNavon.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-3772753221890605125">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavon.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-3772753221890605125\percNavon.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/fastforward/managednav/rxs_NavReset">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rxs_NavReset.extension</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\fastforward\managednav\rxs_NavReset\rxs_NavReset.extension</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-3772753221890605124">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavImage.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-3772753221890605124\percNavImage.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/percNavTree.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\images\ContentTypeIcons\percNavTree.gif</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\percNavTree.gif\percNavTree.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-315">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavTree.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-315\percNavTree.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavTree.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-315\percNavTree.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavTree.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-315\percNavTree.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Schema-RXS_CT_SHARED">
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\RXS_CT_SHARED.schema</RxFile>
+         <ArchiveFile>Schema-RXS_CT_SHARED\RXS_CT_SHARED.schema</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Stylesheet-rx_resources/stylesheets/assemblers/rx_Globals.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rx_Globals.xsl.stylesheet</RxFile>
+         <ArchiveFile>Stylesheet-rx_resources\stylesheets\assemblers\rx_Globals.xsl\rx_Globals.xsl.stylesheet</ArchiveFile>
+         <OriginalFile>stylesheets\assemblers\rx_Globals.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-314">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavon.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-314\percNavon.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavon.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-314\percNavon.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavon.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-314\percNavon.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-313">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavImage.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-313\percNavImage.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavImage.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-313\percNavImage.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavImage.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-313\percNavImage.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Stylesheet-rx_resources/stylesheets/assemblers/rx_InlineLinks.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rx_InlineLinks.xsl.stylesheet</RxFile>
+         <ArchiveFile>Stylesheet-rx_resources\stylesheets\assemblers\rx_InlineLinks.xsl\rx_InlineLinks.xsl.stylesheet</ArchiveFile>
+         <OriginalFile>stylesheets\assemblers\rx_InlineLinks.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Stylesheet-rx_resources/stylesheets/assemblers/rx_Slots.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\rx_Slots.xsl.stylesheet</RxFile>
+         <ArchiveFile>Stylesheet-rx_resources\stylesheets\assemblers\rx_Slots.xsl\rx_Slots.xsl.stylesheet</ArchiveFile>
+         <OriginalFile>stylesheets\assemblers\rx_Slots.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SlotDef-511">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\perc.nav.slot.slotDef</RxFile>
+         <ArchiveFile>SlotDef-511\perc.nav.slot.slotDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SlotDef-510">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\perc.nav.landingPage.slotDef</RxFile>
+         <ArchiveFile>SlotDef-510\perc.nav.landingPage.slotDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-331">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Usuario\AppData\Local\Temp\FF_Nav_Theme.keyword</RxFile>
+         <ArchiveFile>Keyword-331\FF_Nav_Theme.keyword</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/percNavImage.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\ins\dev\rx_resources\images\ContentTypeIcons\percNavImage.gif</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\percNavImage.gif\percNavImage.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

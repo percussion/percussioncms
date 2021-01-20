@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<wsdl:definitions name="securityDesign" targetNamespace="urn:www.percussion.com/6.0.0/securityDesign" xmlns:secd="urn:www.percussion.com/6.0.0/securityDesign" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/faults" schemaLocation="../faults.xsd">
+         </xsd:import>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/securityDesign" schemaLocation="securityDesign.xsd">
+         </xsd:import>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="AuthenticationHeader">
+      <wsdl:part name="Session" element="com:PSAuthenticationHeader"/>
+   </wsdl:message>
+   <wsdl:message name="empty"/>
+   <wsdl:message name="IsValidRhythmyxUserRequest">
+      <wsdl:part name="IsValidRhythmyxUserRequest" element="secd:IsValidRhythmyxUserRequest"/>
+   </wsdl:message>
+   <wsdl:message name="IsValidRhythmyxUserResponse">
+      <wsdl:part name="IsValidRhythmyxUserResponse" element="secd:IsValidRhythmyxUserResponse"/>
+   </wsdl:message>
+   <wsdl:message name="CreateCommunitiesRequest">
+      <wsdl:part name="CreateCommunitiesRequest" element="secd:CreateCommunitiesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="CreateCommunitiesResponse">
+      <wsdl:part name="CreateCommunitiesResponse" element="secd:CreateCommunitiesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FindCommunitiesRequest">
+      <wsdl:part name="FindCommunitiesRequest" element="secd:FindCommunitiesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FindCommunitiesResponse">
+      <wsdl:part name="FindCommunitiesResponse" element="secd:FindCommunitiesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="LoadCommunitiesRequest">
+      <wsdl:part name="LoadCommunitiesRequest" element="secd:LoadCommunitiesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="LoadCommunitiesResponse">
+      <wsdl:part name="LoadCommunitiesResponse" element="secd:LoadCommunitiesResponse"/>
+   </wsdl:message>
+   <wsdl:message name="SaveCommunitiesRequest">
+      <wsdl:part name="SaveCommunitiesRequest" element="secd:SaveCommunitiesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="DeleteCommunitiesRequest">
+      <wsdl:part name="DeleteCommunitiesRequest" element="secd:DeleteCommunitiesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="GetVisibilityByCommunityRequest">
+      <wsdl:part name="GetVisibilityByCommunityRequest" element="secd:GetVisibilityByCommunityRequest"/>
+   </wsdl:message>
+   <wsdl:message name="GetVisibilityByCommunityResponse">
+      <wsdl:part name="GetVisibilityByCommunityResponse" element="secd:GetVisibilityByCommunityResponse"/>
+   </wsdl:message>
+   <wsdl:message name="FindRolesRequest">
+      <wsdl:part name="FindRolesRequest" element="secd:FindRolesRequest"/>
+   </wsdl:message>
+   <wsdl:message name="FindRolesResponse">
+      <wsdl:part name="FindRolesResponse" element="secd:FindRolesResponse"/>
+   </wsdl:message>
+   <!--
+      Fault messages
+    -->
+   <wsdl:message name="ContractViolationFaultMessage">
+      <wsdl:part name="fault" element="flt:PSContractViolationFault"/>
+   </wsdl:message>
+   <wsdl:message name="InvalidSessionFaultMessage">
+      <wsdl:part name="fault" element="flt:PSInvalidSessionFault"/>
+   </wsdl:message>
+   <wsdl:message name="NotAuthorizedFaultMessage">
+      <wsdl:part name="fault" element="flt:PSNotAuthorizedFault"/>
+   </wsdl:message>
+   <wsdl:message name="ErrorResultsFaultMessage">
+      <wsdl:part name="fault" element="flt:PSErrorResultsFault"/>
+   </wsdl:message>
+   <wsdl:message name="ErrorsFaultMessage">
+      <wsdl:part name="fault" element="flt:PSErrorsFault"/>
+   </wsdl:message>
+   <wsdl:portType name="securityDesign">
+      <wsdl:operation name="IsValidRhythmyxUser">
+         <wsdl:input message="secd:IsValidRhythmyxUserRequest"/>
+         <wsdl:output message="secd:IsValidRhythmyxUserResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="secd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="secd:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="CreateCommunities">
+         <wsdl:input message="secd:CreateCommunitiesRequest"/>
+         <wsdl:output message="secd:CreateCommunitiesResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="secd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="secd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="secd:NotAuthorizedFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FindCommunities">
+         <wsdl:input message="secd:FindCommunitiesRequest"/>
+         <wsdl:output message="secd:FindCommunitiesResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="secd:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="LoadCommunities">
+         <wsdl:input message="secd:LoadCommunitiesRequest"/>
+         <wsdl:output message="secd:LoadCommunitiesResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="secd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="secd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="secd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="secd:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="SaveCommunities">
+         <wsdl:input message="secd:SaveCommunitiesRequest"/>
+         <wsdl:output message="secd:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="secd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="secd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="secd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="secd:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteCommunities">
+         <wsdl:input message="secd:DeleteCommunitiesRequest"/>
+         <wsdl:output message="secd:empty"/>
+         <wsdl:fault name="ContractViolationFault" message="secd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="secd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="secd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorsFault" message="secd:ErrorsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="GetVisibilityByCommunity">
+         <wsdl:input message="secd:GetVisibilityByCommunityRequest"/>
+         <wsdl:output message="secd:GetVisibilityByCommunityResponse"/>
+         <wsdl:fault name="ContractViolationFault" message="secd:ContractViolationFaultMessage"/>
+         <wsdl:fault name="InvalidSessionFault" message="secd:InvalidSessionFaultMessage"/>
+         <wsdl:fault name="NotAuthorizedFault" message="secd:NotAuthorizedFaultMessage"/>
+         <wsdl:fault name="ErrorResultsFault" message="secd:ErrorResultsFaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="FindRoles">
+         <wsdl:input message="secd:FindRolesRequest"/>
+         <wsdl:output message="secd:FindRolesResponse"/>
+         <wsdl:fault name="InvalidSessionFault" message="secd:InvalidSessionFaultMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="securityDesignSOAP" type="secd:securityDesign">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="IsValidRhythmyxUser">
+         <soap:operation soapAction="urn:IsValidRhythmyxUser"/>
+         <wsdl:input>
+            <soap:header message="secd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="CreateCommunities">
+         <soap:operation soapAction="urn:CreateCommunities"/>
+         <wsdl:input>
+            <soap:header message="secd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FindCommunities">
+         <soap:operation soapAction="urn:FindCommunities"/>
+         <wsdl:input>
+            <soap:header message="secd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="FindCommunitiesRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="LoadCommunities">
+         <soap:operation soapAction="urn:LoadCommunities"/>
+         <wsdl:input>
+            <soap:header message="secd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault use="literal" name="ErrorResultsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="SaveCommunities">
+         <soap:operation soapAction="urn:SaveCommunities"/>
+         <wsdl:input>
+            <soap:header message="secd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault use="literal" name="ErrorsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="DeleteCommunities">
+         <soap:operation soapAction="urn:DeleteCommunities"/>
+         <wsdl:input>
+            <soap:header message="secd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorsFault">
+            <soap:fault use="literal" name="ErrorsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="GetVisibilityByCommunity">
+         <soap:operation soapAction="urn:GetVisibilityByCommunity"/>
+         <wsdl:input>
+            <soap:header message="secd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="ContractViolationFault">
+            <soap:fault use="literal" name="ContractViolationFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="NotAuthorizedFault">
+            <soap:fault use="literal" name="NotAuthorizedFault"/>
+         </wsdl:fault>
+         <wsdl:fault name="ErrorResultsFault">
+            <soap:fault use="literal" name="ErrorResultsFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="FindRoles">
+         <soap:operation soapAction="urn:FindRoles"/>
+         <wsdl:input>
+            <soap:header message="secd:AuthenticationHeader" part="Session" use="literal"/>
+            <soap:body parts="FindRolesRequest" use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="InvalidSessionFault">
+            <soap:fault use="literal" name="InvalidSessionFault"/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+</wsdl:definitions>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- The WebDAV configuration information
+
+     "root" - the virtual root path of the Rhythmyx for all resource 
+              specified in the request. It must start from "Site" or "Folder"
+              For example, root="//Site/intranet", root="//Folder/internet" 
+
+     "communityid" - the name of the community, which is used to communicate
+                     with Rhythmyx Server.
+              
+     "communityname" - the name of the community, this is only a reference
+                       to the communityid, but is not used by the WebDAV.
+                       
+     "locale" - the locale that is used for the created items
+
+     "deleteas" - an optional attribute, indicating the behavior of the 
+                  DELETE operation (in DELETE, COPY and MOVE method). 
+                  The possible values are:
+                  
+                  "purge":   indicate the DELETE operation will purge the
+                             target items and/or folders. The purged items
+                             will not be able to recovered afterwards.
+                  "remove":  indicate the DELETE operation will remove the
+                             folder relationships with the target items. The
+                             removed items can be recovered afterwards. This
+                             is the default behavior if this attribute is not
+                             specified.
+        
+                  "publicValidTokens" - comma separated list of chars for public state
+                                        default "y"
+ 
+                  "QEValidTokens"  - comma separated list of chars for quick-edit state
+                                     default "i"        					 
+   
+
+-->
+<!ELEMENT PSXWebdavConfig (PSXWebdavContentType+, ExcludeFolderProperties?)>
+<!ATTLIST PSXWebdavConfig
+	root CDATA #REQUIRED
+	communityid CDATA #REQUIRED
+	communityname CDATA #REQUIRED
+	locale CDATA #REQUIRED
+	deleteas CDATA #OPTIONAL
+	publicValid CDATA #OPTIONAL
+        QEValid CDATA #OPTIONAL
+>
+<!--
+   The supported content type for WebDAV
+   
+     "id" - the id of the content type in Rhythmyx
+     
+     "name" - the name of the content type in Rhythmyx, this is only used as a
+              reference to the id above.
+
+     "contentfield" - the field name for the content
+     
+     "ownerfield" - the field name for the lock owner
+          
+     "default" - "true" or "false". There must be only one element
+                  with the value "true". 
+                  If it is "false", then the "Mimetypes" element must exist;
+                  If it is "true", the "Mimetypes" element is ignored.
+                  
+                  
+  Required properties:
+  
+     "getcontenttype" - maps to a field for the mime-type.
+     
+     "getcontentlength" - maps to a field for the content length
+-->
+<!ELEMENT PSXWebdavContentType (Mimetypes?, PropertyMap)>
+<!ATTLIST PSXWebdavContentType
+	name CDATA #REQUIRED
+	contentfield CDATA #REQUIRED
+	ownerfield CDATA #REQUIRED	
+	default CDATA #REQUIRED
+>
+<!--
+   The supported mime types for a Rhythmyx content type
+-->
+<!ELEMENT MimeTypes (MimeType+)>
+<!--
+   The mime type that the current content type will accept.
+   
+   name - the mime type name, e.g. image/gif. 
+-->
+<!ELEMENT MimeType (#PCDATA)>
+<!--
+   This collection of properties specifies all supported WebDAV 
+   properties and its related content fields in Rhythmyx.
+-->
+<!ELEMENT PropertyMap (PSXPropertyFieldNameMapping+)>
+<!--
+   A property specifies a WebDAV property name and a RX field name.
+   
+   name - the name of the WebDAV property, must be unique within its container.
+-->
+<!ELEMENT PSXPropertyFieldNameMapping (FieldName)>
+<!ATTLIST PSXPropertyFieldNameMapping 
+	name CDATA #REQUIRED
+>
+<!--
+   The name of a content field in Rhythmyx
+-->
+<!ELEMENT FieldName (#PCDATA)>
+<!--
+   A list of excluded folder properties when creating a folder in WebDAV. 
+   A created folder will inherit all properties of its parent folder except
+   the list of excluded properties and the folder name.
+-->
+<!ELEMENT ExcludeFolderProperties (PropertyName+)>
+<!--
+   The property name
+-->
+<!ELEMENT PropertyName (#PCDATA)>
+

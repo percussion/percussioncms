@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-9205446771801587954">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\perc.resp.Basic.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-9205446771801587954\perc.resp.Basic.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-resp-Banded__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\images\TemplateImages\AnySite\perc.resp.Banded_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-resp-Banded__Thumb-png\perc.resp.Banded_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-9205446771801587953">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\perc.resp.Banded.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-9205446771801587953\perc.resp.Banded.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-resp-plain__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\images\TemplateImages\AnySite\perc.resp.plain_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-resp-plain__Thumb-png\perc.resp.plain_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_foundation_css_normalize-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\cm\foundation\css\normalize.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_foundation_css_normalize-css\normalize.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_foundation_js_foundation-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\cm\foundation\js\foundation.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_foundation_js_foundation-min-js\foundation.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-599">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\perc.resp.Basic.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-599\perc.resp.Basic.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-resp-Basic__Thumb-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\images\TemplateImages\AnySite\perc.resp.Basic_Thumb.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_images_TemplateImages_AnySite_perc-resp-Basic__Thumb-png\perc.resp.Basic_Thumb.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_foundation_css_foundation-min-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\cm\foundation\css\foundation.min.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_cm_foundation_css_foundation-min-css\foundation.min.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-627">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\perc.resp.plain.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-627\perc.resp.plain.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-597">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\perc.resp.Banded.templateDef</RxFile>
+         <ArchiveFile>TemplateDef-597\perc.resp.Banded.templateDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-4472257021923557487">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\BJOGIN~1\AppData\Local\Temp\perc.resp.plain.templateDef.aclDef</RxFile>
+         <ArchiveFile>AclDef-4472257021923557487\perc.resp.plain.templateDef.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

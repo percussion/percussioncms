@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXPortalPublisher (ConnectionInfo, Content, MetaData?, AccessControl? )>
+<!ELEMENT AccessControl (Property* )>
+<!ELEMENT Property EMPTY>
+<!ATTLIST Property type (string | integer | date ) "string">
+<!ATTLIST  Property name CDATA #REQUIRED>
+<!ATTLIST  Property pattern CDATA #REQUIRED >
+<!ELEMENT MetaData (Property* )>
+<!ELEMENT Content EMPTY>
+<!ATTLIST  Content target CDATA #REQUIRED>
+<!ATTLIST Content encoding (none | base64 | escaped ) "none">
+<!ATTLIST  Content id CDATA #REQUIRED>
+<!ELEMENT Target (User?, Password?, Driver?, Class?, Schema?, Server?, URL? )>
+<!ELEMENT URL EMPTY>
+<!ELEMENT Server EMPTY>
+<!ELEMENT Schema EMPTY>
+<!ELEMENT Class EMPTY>
+<!ELEMENT Driver EMPTY>
+<!ELEMENT Password EMPTY>
+<!ELEMENT User EMPTY>
+<!ATTLIST  Target name CDATA #REQUIRED>
+<!ATTLIST Target type CDATA #REQUIRED >
+<!ELEMENT ConnectionInfo (Target+ )>

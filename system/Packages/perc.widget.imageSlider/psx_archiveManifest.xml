@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_imageSlider_css_fonts_slick-woff">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\imageSlider\css\fonts\slick.woff</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_imageSlider_css_fonts_slick-woff\slick.woff</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_imageSlider_css_fonts_slick-eot">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\imageSlider\css\fonts\slick.eot</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_imageSlider_css_fonts_slick-eot\slick.eot</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percImageSliderControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percImageSliderControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\percImageSliderControl.xsl\percImageSliderControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\percImageSliderControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percImageSlider_js_percImageSlider-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percImageSlider\js\percImageSlider.js</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percImageSlider_js_percImageSlider-js\percImageSlider.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_imageSlider_css_slick-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\imageSlider\css\slick.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_imageSlider_css_slick-css\slick.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percImageSlider-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Widgets\percImageSlider.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percImageSlider-xml\percImageSlider.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_imageSlider_js_slick-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\imageSlider\js\slick.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_imageSlider_js_slick-min-js\slick.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percImageSlider_images_percImageSliderPlaceholder-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percImageSlider\images\percImageSliderPlaceholder.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percImageSlider_images_percImageSliderPlaceholder-png\percImageSliderPlaceholder.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-397">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percImageSlider.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-397\percImageSlider.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percImageSlider.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-397\percImageSlider.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percImageSlider.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-397\percImageSlider.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percImageSlider/js/percImageSlider.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percImageSlider.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percImageSlider\js\percImageSlider.js\percImageSlider.js</ArchiveFile>
+         <OriginalFile>widgets\percImageSlider\js\percImageSlider.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--5277929518705672109">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percImageSlider.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--5277929518705672109\percImageSlider.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_imageSlider_css_percImageSlider-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\imageSlider\css\percImageSlider.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_imageSlider_css_percImageSlider-css\percImageSlider.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_imageSlider_css_fonts_slick-ttf">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\imageSlider\css\fonts\slick.ttf</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_imageSlider_css_fonts_slick-ttf\slick.ttf</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/percImageSlider/css/percImageSlider.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\MICHAE~1\AppData\Local\Temp\percImageSlider.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\percImageSlider\css\percImageSlider.css\percImageSlider.css</ArchiveFile>
+         <OriginalFile>widgets\percImageSlider\css\percImageSlider.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_imageSlider_css_fonts_slick-svg">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\imageSlider\css\fonts\slick.svg</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_imageSlider_css_fonts_slick-svg\slick.svg</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percImageSlider-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rxconfig\Resources\percImageSlider.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percImageSlider-xml\percImageSlider.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percImageSlider_images_percImageSliderIcon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percImageSlider\images\percImageSliderIcon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percImageSlider_images_percImageSliderIcon-png\percImageSliderIcon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_percImageSlider_css_percImageSlider-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\rx_resources\widgets\percImageSlider\css\percImageSlider.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_percImageSlider_css_percImageSlider-css\percImageSlider.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_imageSlider_css_ajax--loader-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\imageSlider\css\ajax-loader.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_imageSlider_css_ajax--loader-gif\ajax-loader.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_imageSlider_css_slick--theme-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DevEnv\Installs\dev\web_resources\widgets\imageSlider\css\slick-theme.css</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_imageSlider_css_slick--theme-css\slick-theme.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

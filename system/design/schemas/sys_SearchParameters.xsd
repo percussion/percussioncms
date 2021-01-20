@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xs:schema targetNamespace="urn:www.percussion.com/webservices/search" xmlns:com="urn:www.percussion.com/webservices/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:www.percussion.com/webservices/search" xmlns:si="urn:www.percussion.com/webservices/standarditem" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xs:import namespace="urn:www.percussion.com/webservices/common" schemaLocation="sys_Common.xsd"/>
+   <xs:element name="search">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="SearchRequest">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:annotation>
+                        <xs:documentation>Choice</xs:documentation>
+                     </xs:annotation>
+                     <xs:sequence minOccurs="0">
+                        <xs:element name="SearchName" type="xs:string"/>
+                        <xs:element name="ReqParameter" minOccurs="0" maxOccurs="unbounded">
+                           <xs:annotation>
+                              <xs:documentation>Parameters passed as html parameters to the internal search resouce.</xs:documentation>
+                           </xs:annotation>
+                           <xs:complexType>
+                              <xs:simpleContent>
+                                 <xs:extension base="xs:string">
+                                    <xs:attribute name="name" type="xs:string"/>
+                                 </xs:extension>
+                              </xs:simpleContent>
+                           </xs:complexType>
+                        </xs:element>
+                     </xs:sequence>
+                     <xs:element name="SearchParams" minOccurs="0">
+                        <xs:complexType>
+                           <xs:sequence>
+                              <xs:element name="Title" minOccurs="0">
+                                 <xs:complexType>
+                                    <xs:simpleContent>
+                                       <xs:extension base="xs:string">
+                                          <xs:attribute name="operator" type="operatorTypes" use="optional"/>
+                                          <xs:attribute name="connector" type="connectorTypes" use="optional"/>
+                                       </xs:extension>
+                                    </xs:simpleContent>
+                                 </xs:complexType>
+                              </xs:element>
+                              <xs:element name="ContentType" type="xs:string" minOccurs="0"/>
+                              <xs:element name="FullTextQuery" type="xs:string" minOccurs="0">
+                                 <xs:annotation>
+                                    <xs:documentation>Specifies a full text query to pass to an external search engine.  If such an engine has not been configured on the server, an error is returned.</xs:documentation>
+                                 </xs:annotation>
+                              </xs:element>
+                              <xs:element name="FolderFilter" minOccurs="0">
+                                 <xs:annotation>
+                                    <xs:documentation>If this element is present, then its value will be interpreted as a path to a folder in the system. The results from the standard search are intersected with all children of this folder (and sub folders if the 'includeSubFolders' attribute is true) and only the results that are in both sets are returned. If the path does not specify an existing folder, an error is returned.</xs:documentation>
+                                 </xs:annotation>
+                                 <xs:complexType>
+                                    <xs:simpleContent>
+                                       <xs:extension base="xs:string">
+                                          <xs:attribute name="includeSubFolders" type="xs:boolean" use="optional" default="true">
+                                             <xs:annotation>
+                                                <xs:documentation>If true, then objects in the specified folder or any of its sub-folders are allowed. If false, only objects that are direct children of this folder are allowed in the search results.</xs:documentation>
+                                             </xs:annotation>
+                                          </xs:attribute>
+                                       </xs:extension>
+                                    </xs:simpleContent>
+                                 </xs:complexType>
+                              </xs:element>
+                              <xs:element name="Parameter" minOccurs="0">
+                                 <xs:complexType>
+                                    <xs:sequence>
+                                       <xs:element name="SearchField" minOccurs="0" maxOccurs="unbounded">
+                                          <xs:complexType>
+                                             <xs:simpleContent>
+                                                <xs:extension base="xs:string">
+                                                   <xs:attribute name="name" type="xs:string" use="required"/>
+                                                   <xs:attribute name="operator" type="operatorTypes">
+                                                      <xs:annotation>
+                                                         <xs:documentation>Specifies the operator to pass to the internal search engine.  Ignored if the externalOperator attribute is specified with a non-empty value.  Otherwise the search results are filtered by this condition using the internal search engine.</xs:documentation>
+                                                      </xs:annotation>
+                                                   </xs:attribute>
+                                                   <xs:attribute name="connector" type="connectorTypes" default="and">
+                                                      <xs:annotation>
+                                                         <xs:documentation>Determines the logical operator to use when the result of this condition is evaluated with the next condition.  May be ignored if the externalOperator attribute is supplied such that the condition will be evaluated by an external search engine. If ignored, the default behavior of the external engine will define how multiple conditions are evaluated.</xs:documentation>
+                                                      </xs:annotation>
+                                                   </xs:attribute>
+                                                   <xs:attribute name="externalOperator" type="xs:string">
+                                                      <xs:annotation>
+                                                         <xs:documentation>Specifies the operator to pass to an external search engine.  If not supplied, this condition will be evaluate by the internal search engine to filter the results.  Otherwise the search results will be filtered by this condition using the external search engine.  Possible values are defined by the engine configured on the server.  If such an engine has not been configured on the server, an error is returned.  If empty, it is ignored. </xs:documentation>
+                                                      </xs:annotation>
+                                                   </xs:attribute>
+                                                </xs:extension>
+                                             </xs:simpleContent>
+                                          </xs:complexType>
+                                       </xs:element>
+                                    </xs:sequence>
+                                 </xs:complexType>
+                              </xs:element>
+                              <xs:element name="SearchResults" minOccurs="0">
+                                 <xs:annotation>
+                                    <xs:documentation>Whether requested or not, the following fields are guaranteed to be included in the search results: sys_contentid, sys_contenttypeid, sys_title, sys_workflowappid, sys_contentstateid, sys_contentcheckoutusername, sys_publishabletype, sys_assignmenttypeid, sys_checkoutstatus</xs:documentation>
+                                 </xs:annotation>
+                                 <xs:complexType>
+                                    <xs:sequence>
+                                       <xs:element ref="ResultField" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="startIndex" type="xs:positiveInteger" default="1">
+                                       <xs:annotation>
+                                          <xs:documentation>Use to limit the returned results. All results between this value and endIndex are returned, inclusive.</xs:documentation>
+                                       </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="endIndex" type="xs:positiveInteger">
+                                       <xs:annotation>
+                                          <xs:documentation>Use to limit the returned results. All results between startIndex and this value are returned, inclusive. If not present, defaults to the # of results in the current request.</xs:documentation>
+                                       </xs:annotation>
+                                    </xs:attribute>
+                                 </xs:complexType>
+                              </xs:element>
+                              <xs:element name="Properties" minOccurs="0">
+                                 <xs:annotation>
+                                    <xs:documentation>One or more properties that are passed through to the search engine.</xs:documentation>
+                                 </xs:annotation>
+                                 <xs:complexType>
+                                    <xs:sequence>
+                                       <xs:element name="Property" minOccurs="0" maxOccurs="unbounded">
+                                          <xs:complexType>
+                                             <xs:simpleContent>
+                                                <xs:extension base="xs:string">
+                                                   <xs:attribute name="name" type="xs:string" use="required"/>
+                                                </xs:extension>
+                                             </xs:simpleContent>
+                                          </xs:complexType>
+                                       </xs:element>
+                                    </xs:sequence>
+                                 </xs:complexType>
+                              </xs:element>
+                           </xs:sequence>
+                           <xs:attribute name="searchForFolders" type="xs:boolean" use="optional" default="false">
+                              <xs:annotation>
+                                 <xs:documentation>This attribute can be used to enable searching for folders. This property determines if folders are returned in the results as opposed to only allowing results that are in a folder (see FolderFilter element).  For backwards compatibility, this value defaults to false.</xs:documentation>
+                              </xs:annotation>
+                           </xs:attribute>
+                        </xs:complexType>
+                     </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="useDatabaseCase" type="xs:boolean" default="true">
+                     <xs:annotation>
+                        <xs:documentation>If useDatabaseCase is false or not present, a case-insensitive search is used for all search fields. If it is true, then the default behavior of the database is used.</xs:documentation>
+                     </xs:annotation>
+                  </xs:attribute>
+                  <xs:attribute name="useExternalSearchEngine" type="xs:boolean" default="false">
+                     <xs:annotation>
+                        <xs:documentation>This flag specifies whether or not to use the external search engine for this request. Defaults to false if not specified.</xs:documentation>
+                     </xs:annotation>
+                  </xs:attribute>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="SearchResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element name="Result" minOccurs="0" maxOccurs="unbounded">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="ResultField" minOccurs="0" maxOccurs="unbounded"/>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="optional">
+                     <xs:annotation>
+                        <xs:documentation>This is an optional attribute, used as a workaround for an issue in .NET 2003, otherwise the generated C# by .NET 2003 will not be usable.</xs:documentation>
+                     </xs:annotation>
+                  </xs:attribute>
+               </xs:complexType>
+            </xs:element>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+         <xs:attribute name="endIndex" type="xs:positiveInteger"/>
+         <xs:attribute name="truncated" type="xs:boolean" use="optional" default="false"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="internalSearchList">
+      <xs:annotation>
+         <xs:documentation>This is deprecated operation. The list of search names are not the same with the ones that are displayed in Content Explorer</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="InternalSearchListRequest">
+               <xs:annotation>
+                  <xs:documentation>no parameters</xs:documentation>
+               </xs:annotation>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="InternalSearchListResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:annotation>
+               <xs:documentation>Choice</xs:documentation>
+            </xs:annotation>
+            <xs:element name="InternalSearch" minOccurs="0" maxOccurs="unbounded">
+               <xs:complexType>
+                  <xs:simpleContent>
+                     <xs:extension base="xs:string"/>
+                  </xs:simpleContent>
+               </xs:complexType>
+            </xs:element>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="ResultField">
+      <xs:complexType>
+         <xs:simpleContent>
+            <xs:extension base="xs:string">
+               <xs:attribute name="name" type="xs:string" use="required"/>
+            </xs:extension>
+         </xs:simpleContent>
+      </xs:complexType>
+   </xs:element>
+   <xs:simpleType name="operatorTypes">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="equal"/>
+         <xs:enumeration value="notEqual"/>
+         <xs:enumeration value="lessThan"/>
+         <xs:enumeration value="lessThanEqual"/>
+         <xs:enumeration value="greaterThan"/>
+         <xs:enumeration value="greaterThanEqual"/>
+         <xs:enumeration value="isNull"/>
+         <xs:enumeration value="isNotNull"/>
+         <xs:enumeration value="in"/>
+         <xs:enumeration value="notIn"/>
+         <xs:enumeration value="like"/>
+         <xs:enumeration value="notLike"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="connectorTypes">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="and"/>
+         <xs:enumeration value="or"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:element name="searchConfiguration">
+      <xs:annotation>
+         <xs:documentation>The search configuration request asks the server for public information about the seach configuration. </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="SearchConfigurationRequest"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="searchConfigurationResponse">
+      <xs:annotation>
+         <xs:documentation>The search configuration response presents the names and values of the publicly available information about the search engine.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="property" minOccurs="0" maxOccurs="unbounded">
+               <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required"/>
+                  <xs:attribute name="value" type="xs:string" use="required"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:element ref="com:ResultResponse" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>

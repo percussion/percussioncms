@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="utf-8"?>  <null id="1">
+    <choices>
+      <choice id="2">
+        <description/>
+        <label>Albanian Albania (AL)</label>
+        <sequence>1</sequence>
+        <value>sq_AL</value>
+      </choice>
+      <choice id="3">
+        <description/>
+        <label>Arabic Algeria (DZ)</label>
+        <sequence>2</sequence>
+        <value>ar_DZ</value>
+      </choice>
+      <choice id="4">
+        <description/>
+        <label>Arabic Bahrain (BH)</label>
+        <sequence>3</sequence>
+        <value>ar_BH</value>
+      </choice>
+      <choice id="5">
+        <description/>
+        <label>Arabic Egypt (EG)</label>
+        <sequence>4</sequence>
+        <value>ar_EG</value>
+      </choice>
+      <choice id="6">
+        <description/>
+        <label>Arabic Iraq (IQ)</label>
+        <sequence>5</sequence>
+        <value>ar_IQ</value>
+      </choice>
+      <choice id="7">
+        <description/>
+        <label>Arabic Jordan (JO)</label>
+        <sequence>6</sequence>
+        <value>ar_JO</value>
+      </choice>
+      <choice id="8">
+        <description/>
+        <label>Arabic Kuwait (KW)</label>
+        <sequence>7</sequence>
+        <value>ar_KW</value>
+      </choice>
+      <choice id="9">
+        <description/>
+        <label>Arabic Lebanon (LB)</label>
+        <sequence>8</sequence>
+        <value>ar_LB</value>
+      </choice>
+      <choice id="10">
+        <description/>
+        <label>Arabic Libya (LY)</label>
+        <sequence>9</sequence>
+        <value>ar_LY</value>
+      </choice>
+      <choice id="11">
+        <description/>
+        <label>Arabic Morocco (MA)</label>
+        <sequence>10</sequence>
+        <value>ar_MA</value>
+      </choice>
+      <choice id="12">
+        <description/>
+        <label>Arabic Oman (OM)</label>
+        <sequence>11</sequence>
+        <value>ar_OM</value>
+      </choice>
+      <choice id="13">
+        <description/>
+        <label>Arabic Qatar (QA)</label>
+        <sequence>12</sequence>
+        <value>ar_QA</value>
+      </choice>
+      <choice id="14">
+        <description/>
+        <label>Arabic Saudi Arabia (SA)</label>
+        <sequence>13</sequence>
+        <value>ar_SA</value>
+      </choice>
+      <choice id="15">
+        <description/>
+        <label>Arabic Sudan (SD)</label>
+        <sequence>14</sequence>
+        <value>ar_SD</value>
+      </choice>
+      <choice id="16">
+        <description/>
+        <label>Arabic Syria (SY)</label>
+        <sequence>15</sequence>
+        <value>ar_SY</value>
+      </choice>
+      <choice id="17">
+        <description/>
+        <label>Arabic Tunisia (TN)</label>
+        <sequence>16</sequence>
+        <value>ar_TN</value>
+      </choice>
+      <choice id="18">
+        <description/>
+        <label>Arabic United Arab Emirates (AE)</label>
+        <sequence>17</sequence>
+        <value>ar_AE</value>
+      </choice>
+      <choice id="19">
+        <description/>
+        <label>Arabic Yemen (YE)</label>
+        <sequence>18</sequence>
+        <value>ar_YE</value>
+      </choice>
+      <choice id="20">
+        <description/>
+        <label>Belarusian Belarus (BY)</label>
+        <sequence>19</sequence>
+        <value>be_BY</value>
+      </choice>
+      <choice id="21">
+        <description/>
+        <label>Bulgarian Bulgaria (BG)</label>
+        <sequence>20</sequence>
+        <value>bg_BG</value>
+      </choice>
+      <choice id="22">
+        <description/>
+        <label>Catalan Spain (ES)</label>
+        <sequence>21</sequence>
+        <value>ca_ES</value>
+      </choice>
+      <choice id="23">
+        <description/>
+        <label>Chinese China (CN)</label>
+        <sequence>22</sequence>
+        <value>zh_CN</value>
+      </choice>
+      <choice id="24">
+        <description/>
+        <label>Chinese Singapore (SG)</label>
+        <sequence>23</sequence>
+        <value>zh_SG</value>
+      </choice>
+      <choice id="25">
+        <description/>
+        <label>Chinese Hong Kong (HK)</label>
+        <sequence>24</sequence>
+        <value>zh_HK</value>
+      </choice>
+      <choice id="26">
+        <description/>
+        <label>Chinese Taiwan (TW)</label>
+        <sequence>25</sequence>
+        <value>zh_TW</value>
+      </choice>
+      <choice id="27">
+        <description/>
+        <label>Croatian Croatia (HR)</label>
+        <sequence>26</sequence>
+        <value>hr_HR</value>
+      </choice>
+      <choice id="28">
+        <description/>
+        <label>Czech Czech Republic (CZ)</label>
+        <sequence>27</sequence>
+        <value>cs_CZ</value>
+      </choice>
+      <choice id="29">
+        <description/>
+        <label>Danish Denmark (DK)</label>
+        <sequence>28</sequence>
+        <value>da_DK</value>
+      </choice>
+      <choice id="30">
+        <description/>
+        <label>Dutch Belgium (BE)</label>
+        <sequence>29</sequence>
+        <value>nl_BE</value>
+      </choice>
+      <choice id="31">
+        <description/>
+        <label>Dutch Netherlands (NL)</label>
+        <sequence>30</sequence>
+        <value>nl_NL</value>
+      </choice>
+      <choice id="32">
+        <description/>
+        <label>English Australia (AU)</label>
+        <sequence>31</sequence>
+        <value>en_AU</value>
+      </choice>
+      <choice id="33">
+        <description/>
+        <label>English Canada (CA)</label>
+        <sequence>32</sequence>
+        <value>en_CA</value>
+      </choice>
+      <choice id="34">
+        <description/>
+        <label>English India (IN)</label>
+        <sequence>33</sequence>
+        <value>en_IN</value>
+      </choice>
+      <choice id="35">
+        <description/>
+        <label>English Ireland (IE)</label>
+        <sequence>34</sequence>
+        <value>en_IE</value>
+      </choice>
+      <choice id="36">
+        <description/>
+        <label>English Malta (MT)</label>
+        <sequence>35</sequence>
+        <value>en_MT</value>
+      </choice>
+      <choice id="37">
+        <description/>
+        <label>English New Zealand (NZ)</label>
+        <sequence>36</sequence>
+        <value>en_NZ</value>
+      </choice>
+      <choice id="38">
+        <description/>
+        <label>English Philippines (PH)</label>
+        <sequence>37</sequence>
+        <value>en_PH</value>
+      </choice>
+      <choice id="39">
+        <description/>
+        <label>English Singapore (SG)</label>
+        <sequence>38</sequence>
+        <value>en_SG</value>
+      </choice>
+      <choice id="40">
+        <description/>
+        <label>English South Africa (ZA)</label>
+        <sequence>39</sequence>
+        <value>en_ZA</value>
+      </choice>
+      <choice id="41">
+        <description/>
+        <label>English United Kingdom (GB)</label>
+        <sequence>40</sequence>
+        <value>en_GB</value>
+      </choice>
+      <choice id="42">
+        <description/>
+        <label>English United States (US)</label>
+        <sequence>41</sequence>
+        <value>en_US</value>
+      </choice>
+      <choice id="43">
+        <description/>
+        <label>Estonian Estonia (EE)</label>
+        <sequence>42</sequence>
+        <value>et_EE</value>
+      </choice>
+      <choice id="44">
+        <description/>
+        <label>Finnish Finland (FI)</label>
+        <sequence>43</sequence>
+        <value>fi_FI</value>
+      </choice>
+      <choice id="45">
+        <description/>
+        <label>French Belgium (BE)</label>
+        <sequence>44</sequence>
+        <value>fr_BE</value>
+      </choice>
+      <choice id="46">
+        <description/>
+        <label>French Canada (CA)</label>
+        <sequence>45</sequence>
+        <value>fr_CA</value>
+      </choice>
+      <choice id="47">
+        <description/>
+        <label>French France (FR)</label>
+        <sequence>46</sequence>
+        <value>fr_FR</value>
+      </choice>
+      <choice id="48">
+        <description/>
+        <label>French Luxembourg (LU)</label>
+        <sequence>47</sequence>
+        <value>fr_LU</value>
+      </choice>
+      <choice id="49">
+        <description/>
+        <label>French Switzerland (CH)</label>
+        <sequence>48</sequence>
+        <value>fr_CH</value>
+      </choice>
+      <choice id="50">
+        <description/>
+        <label>German Austria (AT)</label>
+        <sequence>49</sequence>
+        <value>de_AT</value>
+      </choice>
+      <choice id="51">
+        <description/>
+        <label>German Germany (DE)</label>
+        <sequence>50</sequence>
+        <value>de_DE</value>
+      </choice>
+      <choice id="52">
+        <description/>
+        <label>German Luxembourg (LU)</label>
+        <sequence>51</sequence>
+        <value>de_LU</value>
+      </choice>
+      <choice id="53">
+        <description/>
+        <label>German Switzerland (CH)</label>
+        <sequence>52</sequence>
+        <value>de_CH</value>
+      </choice>
+      <choice id="54">
+        <description/>
+        <label>Greek Cyprus (CY)</label>
+        <sequence>53</sequence>
+        <value>el_CY</value>
+      </choice>
+      <choice id="55">
+        <description/>
+        <label>Greek Greece (GR)</label>
+        <sequence>54</sequence>
+        <value>el_GR</value>
+      </choice>
+      <choice id="56">
+        <description/>
+        <label>Hebrew Israel (IL)</label>
+        <sequence>55</sequence>
+        <value>iw_IL</value>
+      </choice>
+      <choice id="57">
+        <description/>
+        <label>Hindi India (IN)</label>
+        <sequence>56</sequence>
+        <value>hi_IN</value>
+      </choice>
+      <choice id="58">
+        <description/>
+        <label>Hungarian Hungary (HU)</label>
+        <sequence>57</sequence>
+        <value>hu_HU</value>
+      </choice>
+      <choice id="59">
+        <description/>
+        <label>Icelandic Iceland (IS)</label>
+        <sequence>58</sequence>
+        <value>is_IS</value>
+      </choice>
+      <choice id="60">
+        <description/>
+        <label>Indonesian Indonesia (ID)</label>
+        <sequence>59</sequence>
+        <value>in_ID</value>
+      </choice>
+      <choice id="61">
+        <description/>
+        <label>Irish Ireland (IE)</label>
+        <sequence>60</sequence>
+        <value>ga_IE</value>
+      </choice>
+      <choice id="62">
+        <description/>
+        <label>Italian Italy (IT)</label>
+        <sequence>61</sequence>
+        <value>it_IT</value>
+      </choice>
+      <choice id="63">
+        <description/>
+        <label>Italian Switzerland (CH)</label>
+        <sequence>62</sequence>
+        <value>it_CH</value>
+      </choice>
+      <choice id="64">
+        <description/>
+        <label>Japanese Japan (JP)</label>
+        <sequence>63</sequence>
+        <value>ja_JP</value>
+      </choice>
+      <choice id="65">
+        <description/>
+        <label>Korean South Korea (KR)</label>
+        <sequence>64</sequence>
+        <value>ko_KR</value>
+      </choice>
+      <choice id="66">
+        <description/>
+        <label>Latvian Latvia (LV)</label>
+        <sequence>65</sequence>
+        <value>lv_LV</value>
+      </choice>
+      <choice id="67">
+        <description/>
+        <label>Lithuanian Lithuania (LT)</label>
+        <sequence>66</sequence>
+        <value>lt_LT</value>
+      </choice>
+      <choice id="68">
+        <description/>
+        <label>Macedonian Macedonia (MK)</label>
+        <sequence>67</sequence>
+        <value>mk_MK</value>
+      </choice>
+      <choice id="69">
+        <description/>
+        <label>Malay Malaysia (MY)</label>
+        <sequence>68</sequence>
+        <value>ms_MY</value>
+      </choice>
+      <choice id="70">
+        <description/>
+        <label>Maltese (mt) Malta (MT)</label>
+        <sequence>69</sequence>
+        <value>mt_MT</value>
+      </choice>
+      <choice id="71">
+        <description/>
+        <label>Norwegian Norway (NO)</label>
+        <sequence>70</sequence>
+        <value>no_NO</value>
+      </choice>
+      <choice id="72">
+        <description/>
+        <label>Norwegian Bokmal Norway (NO)</label>
+        <sequence>71</sequence>
+        <value>nb_NO</value>
+      </choice>
+      <choice id="73">
+        <description/>
+        <label>Norwegian Nynorsk Norway (NO)</label>
+        <sequence>72</sequence>
+        <value>nn_NO</value>
+      </choice>
+      <choice id="74">
+        <description/>
+        <label>Polish Poland (PL)</label>
+        <sequence>73</sequence>
+        <value>pl_PL</value>
+      </choice>
+      <choice id="75">
+        <description/>
+        <label>Portuguese Brazil (BR)</label>
+        <sequence>74</sequence>
+        <value>pt_BR</value>
+      </choice>
+      <choice id="76">
+        <description/>
+        <label>Portuguese Portugal (PT)</label>
+        <sequence>75</sequence>
+        <value>pt_PT</value>
+      </choice>
+      <choice id="77">
+        <description/>
+        <label>Romanian Romania (RO)</label>
+        <sequence>76</sequence>
+        <value>ro_RO</value>
+      </choice>
+      <choice id="78">
+        <description/>
+        <label>Russian Russia (RU)</label>
+        <sequence>77</sequence>
+        <value>ru_RU</value>
+      </choice>
+      <choice id="79">
+        <description/>
+        <label>Serbian Bosnia and Herzegovina (BA)</label>
+        <sequence>78</sequence>
+        <value>sr_BA</value>
+      </choice>
+      <choice id="80">
+        <description/>
+        <label>Serbian Montenegro (ME)</label>
+        <sequence>79</sequence>
+        <value>sr_ME</value>
+      </choice>
+      <choice id="81">
+        <description/>
+        <label>Serbian Serbia (RS)</label>
+        <sequence>80</sequence>
+        <value>sr_RS</value>
+      </choice>
+      <choice id="82">
+        <description/>
+        <label>Slovak Slovakia (SK)</label>
+        <sequence>81</sequence>
+        <value>sk_SK</value>
+      </choice>
+      <choice id="83">
+        <description/>
+        <label>Slovenian Slovenia (SI)</label>
+        <sequence>82</sequence>
+        <value>sl_SI</value>
+      </choice>
+      <choice id="84">
+        <description/>
+        <label>Spanish Argentina (AR)</label>
+        <sequence>83</sequence>
+        <value>es_AR</value>
+      </choice>
+      <choice id="85">
+        <description/>
+        <label>Spanish Bolivia (BO)</label>
+        <sequence>84</sequence>
+        <value>es_BO</value>
+      </choice>
+      <choice id="86">
+        <description/>
+        <label>Spanish Chile (CL)</label>
+        <sequence>85</sequence>
+        <value>es_CL</value>
+      </choice>
+      <choice id="87">
+        <description/>
+        <label>Spanish Colombia (CO)</label>
+        <sequence>86</sequence>
+        <value>es_CO</value>
+      </choice>
+      <choice id="88">
+        <description/>
+        <label>Spanish Costa Rica (CR)</label>
+        <sequence>87</sequence>
+        <value>es_CR</value>
+      </choice>
+      <choice id="89">
+        <description/>
+        <label>Spanish Dominican Republic (DO)</label>
+        <sequence>88</sequence>
+        <value>es_DO</value>
+      </choice>
+      <choice id="90">
+        <description/>
+        <label>Spanish Ecuador (EC)</label>
+        <sequence>89</sequence>
+        <value>es_EC</value>
+      </choice>
+      <choice id="91">
+        <description/>
+        <label>Spanish El Salvador (SV)</label>
+        <sequence>90</sequence>
+        <value>es_SV</value>
+      </choice>
+      <choice id="92">
+        <description/>
+        <label>Spanish Guatemala (GT)</label>
+        <sequence>91</sequence>
+        <value>es_GT</value>
+      </choice>
+      <choice id="93">
+        <description/>
+        <label>Spanish Honduras (HN)</label>
+        <sequence>92</sequence>
+        <value>es_HN</value>
+      </choice>
+      <choice id="94">
+        <description/>
+        <label>Spanish Mexico (MX)</label>
+        <sequence>93</sequence>
+        <value>es_MX</value>
+      </choice>
+      <choice id="95">
+        <description/>
+        <label>Spanish Nicaragua (NL)</label>
+        <sequence>94</sequence>
+        <value>es_NI</value>
+      </choice>
+      <choice id="96">
+        <description/>
+        <label>Spanish Panama (PA)</label>
+        <sequence>95</sequence>
+        <value>es_PA</value>
+      </choice>
+      <choice id="97">
+        <description/>
+        <label>Spanish Paraguay (PY)</label>
+        <sequence>96</sequence>
+        <value>es_PY</value>
+      </choice>
+      <choice id="98">
+        <description/>
+        <label>Spanish Peru (PE)</label>
+        <sequence>97</sequence>
+        <value>es_PE</value>
+      </choice>
+      <choice id="99">
+        <description/>
+        <label>Spanish Puerto Rico (PR)</label>
+        <sequence>98</sequence>
+        <value>es_PR</value>
+      </choice>
+      <choice id="100">
+        <description/>
+        <label>Spanish Spain (ES)</label>
+        <sequence>99</sequence>
+        <value>es_ES</value>
+      </choice>
+      <choice id="101">
+        <description/>
+        <label>Spanish United States (US)</label>
+        <sequence>100</sequence>
+        <value>es_US</value>
+      </choice>
+      <choice id="102">
+        <description/>
+        <label>Spanish Uruguay (UY)</label>
+        <sequence>101</sequence>
+        <value>es_UY</value>
+      </choice>
+      <choice id="103">
+        <description/>
+        <label>Spanish Venezuela (VE)</label>
+        <sequence>102</sequence>
+        <value>es_VE</value>
+      </choice>
+      <choice id="104">
+        <description/>
+        <label>Swedish Sweden (SE)</label>
+        <sequence>103</sequence>
+        <value>sv_SE</value>
+      </choice>
+      <choice id="105">
+        <description/>
+        <label>Thai Thailand (TH)</label>
+        <sequence>104</sequence>
+        <value>th_TH</value>
+      </choice>
+      <choice id="106">
+        <description/>
+        <label>Turkish Turkey (TR)</label>
+        <sequence>105</sequence>
+        <value>tr_TR</value>
+      </choice>
+      <choice id="107">
+        <description/>
+        <label>Ukrainian Ukraine (UA)</label>
+        <sequence>106</sequence>
+        <value>uk_UA</value>
+      </choice>
+      <choice id="108">
+        <description/>
+        <label>Vietnamese Vietnam (VN)</label>
+        <sequence>107</sequence>
+        <value>vi_VN</value>
+      </choice>
+    </choices>
+    <guid>0-14-1027</guid>
+    <description/>
+    <id>1027</id>
+    <keyword-type>1</keyword-type>
+    <label>perc_Locale_With_Underscore</label>
+    <name>perc_Locale_With_Underscore</name>
+    <sequence>0</sequence>
+    <type>KEYWORD_DEF</type>
+    <value>1027</value>
+  </null>

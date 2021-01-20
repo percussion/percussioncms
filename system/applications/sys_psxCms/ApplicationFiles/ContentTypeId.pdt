@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXContentType EMPTY>
+<!ATTLIST  PSXContentType typeId CDATA #REQUIRED>
+<!ELEMENT ContentTypeId (PSXContentType? )>

@@ -1,0 +1,38 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/*TABLE {border: 2px solid purple !important;
+   margin: 5px !important; border-collapse: 
+   separate !important; border-spacing: 1px !important; 
+   empty-cells: show !important;}
+TH {border: 1px solid blue !important; 
+   padding: 3px !important;}
+TD {border: 1px solid red !important; 
+   padding: 3px !important;}*/
+	 
+table { background:#e7e7e7; width:200px; border:0; margin:0; margin-bottom:40px; padding:10px 4px; font-family:Arial, Helvetica, sans-serif; font-size:0.7em; }
+th { font-size:1em; font-weight:normal; color:#999; padding:1px; }
+td { border:1px solid #e0e0e0; border-bottom:1px solid #f0f0f0; border-right:1px solid #f0f0f0; text-align:center; }
+td a:link, td a:visited { padding:2px; color:#999; text-decoration:none; width:auto; display:block; }
+td a:hover { color:#333; text-decoration:underline; background:#fff; }

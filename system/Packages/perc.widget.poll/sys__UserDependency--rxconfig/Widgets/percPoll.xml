@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+	<WidgetPrefs title="Polls" category="social,blog" contenttype_name="percPollAsset" description="Widget to build and render polls." author="Percussion Software Inc" thumbnail="/rx_resources/widgets/percPoll/images/widgetIconPoll.png" preferred_editor_width="780" preferred_editor_height="600" is_responsive="true"/>
+	<UserPref name="pollRestrictionType" display_name="Restrict poll submission by" required="true" default_value="Unrestricted" datatype="enum">
+		<EnumValue value="Unrestricted" display_value="Unrestricted"/>
+		<EnumValue value="Session" display_value="Session"/>
+		<EnumValue value="Cookie" display_value="Cookie"/>
+	</UserPref>
+	<UserPref name="submitLabel" display_name="Submit button label" required="true" default_value="Vote" datatype="string"/>
+	<UserPref name="viewResultsLink" display_name="Show view results link" required="true" default_value="true" datatype="bool"/>
+	<UserPref name="viewResultsLinkText" display_name="Text for view results" required="true" default_value="View results" datatype="string"/>
+	<UserPref name="validationText" display_name="Validation text" required="true" default_value="Please choose an answer first!" datatype="string"/>
+	<UserPref name="totalVotesText" display_name="Text for total votes" required="true" default_value="Total votes" datatype="string"/>
+	<UserPref name="backToPollText" display_name="Text to return" required="true" default_value="Back to poll" datatype="string"/>
+	<CssPref name="rootclass" display_name="CSS Root Class" datatype="string"/>
+	<Code type="jexl"><![CDATA[
+			## Widget Properties
+			$rootclass = $perc.widget.item.cssProperties.get('rootclass');
+            $props = $perc.widget.item.properties;
+            $viewResultsLink = $props.get("viewResultsLink");
+            $viewResultsLinkText = $props.get("viewResultsLinkText");
+			$pollSubmitLabel = $props.get("submitLabel");
+			$restrictionType = $props.get("pollRestrictionType");
+			$validationText = $props.get("validationText");
+			$backToPollText = $props.get("backToPollText");
+			$totalVotesText = $props.get("totalVotesText");
+
+			## Asset properties
+			$assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+			$perc.setWidgetContents($assetItems);
+			$pollQuestion = "";
+	        if ( ! $assetItems.isEmpty() ) {
+				$assetItem = $assetItems.get(0);
+				$pollName = $assetItem.Node.getProperty('rx:sys_title').getString();
+				$pollTitle = $assetItem.Node.getProperty('rx:pollTitle').getString();
+				$pollQuestion = $assetItem.Node.getProperty('rx:pollQuestion').getString();
+				$qJson = $rx.pageutils.createJsonObject($pollQuestion);
+				$question = $qJson.getString("question");
+				$answerType = $qJson.getString("answerType");
+				$inputType = "radio";
+				if($answerType.equals("multi"))
+					$inputType = "checkbox";
+				$ansArray = $qJson.getJSONArray("answerChoices").toArray();
+
+				## Create data JSON object
+				$dataJson = $rx.pageutils.createJsonObject("{}");
+				$dataJson.put("pollName",$pollName);
+				$dataJson.put("restrictionType",$restrictionType);
+			}
+
+			$dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+
+        ]]></Code>
+	<Content type="velocity"><![CDATA[
+		#if( ! $perc.widgetContents.isEmpty())
+			<div class = "perc-polls $!{rootclass}" data-poll='{"pollName":"$pollName","restrictionType":"$restrictionType","deliveryurl":"$dsUrl"}'>
+				#if($perc.isEditMode())
+					<div class="perc-poll-render-container">
+				#else
+					<div class="perc-poll-render-container" style="display:none">
+				#end
+					<div class="perc-poll-title">$!{pollTitle}</div>
+					<div class="perc-poll-question">$!{question}</div>
+					#foreach($ans in $ansArray)
+						<div class="perc-poll-answer-container"><input type="$inputType" name="perc-poll-answer"/><span class="perc-poll-answer">$ans</span></div>
+					#end
+					#if($perc.isEditMode() || $perc.isPreviewMode() )
+						#set($subspanclass = "perc-poll-submit-button-span")
+					#else
+						#set($subspanclass = "perc-poll-submit-button-span perc-poll-submit-button-span-action")
+					#end
+					<div class="poll-submit-button"><input type="button" value="$pollSubmitLabel" name="perc-poll-submit-button"/><span class="$subspanclass" >$pollSubmitLabel</span></div>
+					#if($viewResultsLink)
+						#if($perc.isEditMode() || $perc.isPreviewMode() )
+							#set($rlclass = "view-results-link")
+						#else
+							#set($rlclass = "view-results-link view-results-link-action")
+						#end
+						<div class="$rlclass"><a href="javascript:void(0)">$viewResultsLinkText</a></div>
+					#end
+					<div class="poll-validation-text" style="display:none;">$validationText</div>
+				</div>
+				<div class="perc-poll-results-container" style="display:none">
+					<div class="perc-poll-title">$!{pollTitle}</div>
+					<div class="perc-poll-question">$!{question}</div>
+					#foreach($ans in $ansArray)
+						<div class="perc-poll-answer-container"><span class="perc-poll-answer">$ans</span><span class="perc-poll-result-percent"></span><span class="perc-poll-result-count"></span></div>
+						<div class="perc-poll-result-container"><span class="perc-poll-result-fill"></span><span class="perc-poll-result-empty"></span></div>
+					#end
+					<div class="perc-poll-total-votes">$totalVotesText:<span></span></div>
+					<div class="perc-poll-backto-poll"><a href="javascript:void(0)">$backToPollText</a></div>
+				</div>
+
+			</div>
+		#elseif ($perc.isEditMode())
+            #createEmptyWidgetContent("poll-sample-content", "This polls widget is showing sample content.")
+		#end
+		#if($perc.isPreviewMode())
+				<script>
+				window.addEventListener('DOMContentLoaded', function() {
+					jQuery("input[name = 'perc-poll-submit-button']").attr('disabled', 'disabled');
+					jQuery(".perc-poll-render-container").show();
+				});
+				</script>
+		#end
+    ]]></Content>
+</Widget>

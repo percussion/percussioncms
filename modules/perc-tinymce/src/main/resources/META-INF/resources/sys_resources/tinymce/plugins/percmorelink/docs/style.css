@@ -1,0 +1,175 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+
+body {
+	background-color: #FFFFFF;
+	color: black;
+	font-size: 11px;
+	line-height: 1.5em;
+	font-family: Verdana, sans-serif;
+	margin: 0;
+	padding: 0 5px 0 0;
+}
+
+h1 {
+	font-size: 150%;
+	border: 1px solid #aaaaaa;
+	padding: 3px 10px;
+	margin: 3px;
+}
+
+h2 {
+	font-size: 120%;
+	margin: 10px 0 10px 0;
+	padding: 0;
+	border-bottom: 1px solid #aaaaaa;
+}
+
+h3 {
+	font-size: 110%;
+	margin: 10px 0 10px 0;
+	padding: 0;
+}
+
+p {
+	margin: 0 0 0.5em 0;
+}
+
+acronym {
+	cursor: help;
+}
+
+p.toc-link {
+	text-align: right;
+	margin: -0.5em 0 0 0;
+	padding: 0;
+}
+
+p img.align-right {
+	float: right;
+	margin: 0 0 5px 5px;
+}
+
+p img.align-left {
+	float: left;
+	margin: 0 5px 5px 0;
+}
+
+p code {
+	font-family: monospace;
+	font-size: 12px;
+	background: #f0f0ff;
+	padding: 0 3px;
+}
+
+.new-line {
+	clear: both;
+}
+
+table {
+	font-size: 11px;
+}
+
+.beispieltabelle {
+	float: left;
+	margin: 10px;
+	border: 1px solid #808080;
+	border-collapse: collapse;
+}
+
+.beispieltabelle th {
+	margin: 0;
+	padding: 5px;
+	background: #e0e080;
+	border: 1px dotted #808080;
+}
+
+.beispieltabelle td {
+	margin: 0;
+	padding: 5px;
+	background: efefef;
+	border: 1px dotted #808080;
+}
+
+
+.button_col {
+	width: 30px;
+}
+
+
+/* Buttons */
+
+.button {
+	border: 1px solid #6779aa;
+	background-color: #d4d5d8;
+	background-image: url(../../../themes/advanced/img/icons.gif);
+	padding: 5px 10px 2px;
+}
+
+.button.anchor {background-position:-200px 0}
+.button.bold {background-position:0 0}
+.button.browse {background-position: -860px 0px;}
+.button.bullist {background-position:-20px 0}
+.button.cell_props {background-position:-600px -20px}
+.button.charmap {background-position:-240px 0}
+.button.cleanup {background-position:-40px 0}
+.button.copy {background-position:-700px 0}
+.button.cut {background-position:-680px 0}
+.button.code {background-position:-260px 0}
+.button.col_after {background-position:-680px -20px}
+.button.col_before {background-position:-700px -20px}
+.button.delete_col {background-position:-640px -20px}
+.button.delete_row {background-position:-660px -20px}
+.button.delete_table {background-position:-620px -20px}
+.button.help {background-position:-340px 0}
+.button.hr {background-position:-360px 0}
+.button.image {background-position:-380px 0}
+.button.italic {background-position:-60px 0}
+.button.link {background-position:-500px 0}
+.button.merge_cells {background-position:-760px -20px}
+.button.multimedia {background-position: -320px -20px;}
+.button.new {background-position:-520px 0}
+.button.numlist {background-position:-80px 0}
+.button.paste {background-position:-560px 0}
+.button.preview {background-position: -420px -20px;}
+.button.redo {background-position:-100px 0}
+.button.removeformat {background-position:-580px 0}
+.button.replace {background-position:-500px -20px}
+.button.row_after {background-position:-720px -20px}
+.button.row_before {background-position:-740px -20px}
+.button.row_props {background-position:-780px -20px}
+.button.save {background-position: -480px -20px;}
+.button.search {background-position:-520px -20px}
+.button.split_cells {background-position:-800px -20px}
+.button.strikethrough {background-position:-120px 0}
+.button.sub {background-position:-600px 0}
+.button.sup {background-position:-620px 0}
+.button.table {background-position:-580px -20px}
+.button.table_props {background-position:-980px -20px}
+.button.underline {background-position:-140px 0}
+.button.undo {background-position:-160px 0}
+.button.unlink {background-position:-640px 0}
+.button.visualaid {background-position:-660px 0}
+.button.visualchars {background-position:-840px -20px}

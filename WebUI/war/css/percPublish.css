@@ -1,0 +1,596 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+
+.perc-publish-detail-first-table
+{
+    background-color:#F5F5F5;
+    width:100%;
+    padding:20px 0;
+}
+
+.perc-publish-detail-first-table tr
+{
+    border-bottom:2px solid #E6E6E9;
+}
+
+
+
+/************ Publishing sortable tables styles **************/
+.dataTables_wrapper table th.sorting
+{
+    color:#006F94 !important;
+}
+
+.dataTables_wrapper table th.sorting:hover,.dataTables_wrapper .sorting_asc:hover,.dataTables_wrapper .sorting_desc:hover
+{
+    cursor:pointer;
+}
+
+.dataTables_wrapper table tr.odd
+{
+    background-color:#F0F0F0;
+}
+
+.dataTables_wrapper .sorting_asc
+{
+    background-image:url(../images/images/buttonSortAsc.gif);
+    background-repeat:no-repeat;
+    background-position:left center;
+    font-style:italic;
+    color:#006F94 !important;
+}
+
+.dataTables_wrapper .sorting_desc
+{
+    background-image:url(../images/images/buttonSortDesc.gif);
+    background-repeat:no-repeat;
+    background-position:left center;
+    font-style:italic;
+    color:#006F94 !important;
+}
+
+.perc-publish-section
+{
+    padding:5px 5px 0;
+    font-family:Verdana;
+    font-size:11px;
+    color:#000;
+}
+
+.perc-foldable
+{
+    background-color:#E6E6E9;
+    height:31px;
+    padding:15px 10px 0;
+    display:block;
+    color:#006F94;
+    font-family:Verdana;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.perc-publish,.perc-delete,.perc-back
+{
+    height:29px;
+    padding:0;
+}
+
+.perc-foldable:hover
+{
+    cursor:pointer;
+}
+
+.perc-container
+{
+    background-color:#E6E6E9;
+    padding:0 30px 20px;
+}
+
+.perc-maximizer
+{
+    margin-top:0 !important;
+}
+
+#perc-publish-back
+{
+}
+
+#perc-publish-back:hover
+{
+}
+
+#perc-publish-log-delete
+{   
+    background-position: 0 0;
+}
+
+#perc-publish-log-delete:hover
+{
+}
+
+li.ui-tabs-selected #perc-tab-servers,#perc-tab-servers:hover,#perc-tab-servers,li.ui-state-disabled #perc-tab-servers:hover,li.ui-tabs-selected #perc-tab-reports,#perc-tab-reports:hover,#perc-tab-reports,li.ui-state-disabled #perc-tab-reports:hover
+{
+    background:url("../images/text/publishTabs.png") no-repeat;
+    width:115px;
+}
+
+li.ui-tabs-selected #perc-tab-servers,#perc-tab-servers:hover
+{
+    background-position:0 -156px;
+}
+
+#perc-tab-servers,li.ui-state-disabled #perc-tab-servers:hover
+{
+    background-position:0 -104px;
+}
+
+li.ui-tabs-selected #perc-tab-reports,#perc-tab-reports:hover
+{
+    background-position:0 -52px;
+}
+
+#perc-tab-reports,li.ui-state-disabled #perc-tab-reports:hover
+{
+    background-position:0 -2px;
+}
+
+#perc-publish-now
+{
+    background-image:url("../images/images/buttonWfpublish.png");
+    float:right;
+    width:100px;
+    position:absolute;
+    top:10px;
+    right:10px;
+}
+
+#perc-publish-now:hover
+{
+    background-image:url("../images/images/buttonWfpublishOver.png");
+    cursor:pointer;
+}
+
+#perc-full-publish-now
+{
+   /* background-image:url("../images/images/buttonFullPublish.png"); */
+    position:absolute;
+    top:10px;
+    right:10px;
+    background-color: #007ea8 !important;
+    border-color: #007ea8 !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    display: inline-block;
+    cursor: pointer !important;
+    padding-top:6px ;
+    padding-bottom:6px ;
+    padding-left:12px ;
+    padding-right:80px ;
+    text-align: center !important;
+    font: 13.333px Arial !important;
+    font-weight: normal !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    border-style: outset !important;
+    border-width: 2px !important;
+}
+
+#perc-full-publish-now:hover
+{
+    /*background-image:url("../images/images/buttonFullPublishOver.png");
+    cursor:pointer;*/
+    background-color: #00a8df !important;
+    border-color: #00a3d9 !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    display: inline-block;
+    cursor: pointer !important;
+    padding-top:6px ;
+    padding-bottom:6px ;
+    padding-left:12px ;
+    padding-right:80px ;
+    text-align: center !important;
+    font: 13.333px Arial !important;
+    font-weight: normal !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    border-style: outset !important;
+    border-width: 2px !important;
+}
+
+#perc-publish-now.perc-disabled
+{
+    background-image:url("../images/images/buttonWfPublishGray.png");
+}
+#perc-publish-now.perc-disabled:hover
+{
+    background-image:url("../images/images/buttonWfPublishGray.png");
+    cursor: default
+}
+
+#perc-selected-site-name
+{
+    float:right;
+    font-size:11px;
+    font-weight:normal;
+    padding-right:10px;
+    padding-top:12px;
+    text-decoration:none;
+}
+
+.perc-site-name-label
+{
+    color:#41434F;
+    font-weight:bold;
+}
+
+#tabs .ui-corner-all
+{
+    border-radius:0px;
+    padding-bottom:1px;
+}
+
+#perc-servers-wrapper {
+    background-color: #FFFFFF;
+    height: auto;
+    margin: 20px auto auto;
+    padding: 7px 2px 7px 20px;
+    
+}
+
+#perc-servers-container {
+    min-width: 594px;    
+    margin-left:25px;
+    padding: 25px 7px 25px 7px;
+    background-color:#e6e6e9;
+    position:relative;
+}
+#perc-servers-list {
+    padding:0px 25px 0px 0px;
+    clear: left;
+    float: left;    
+    text-align: left;
+    width: 240px;       
+}
+
+#perc-servers-list .perc-item-list-label {    
+    color: #0055ee;
+    margin-top: 0;
+}
+
+.perc-itemname-list li.perc-default-server-marker {
+    background:url("../images/images/defaultCheck.png") no-repeat scroll 220px 6px #E6E6E9;
+    padding-right:20px;   
+}
+.perc-itemname-list li.perc-default-server-marker.perc-disabled{
+    background:url("../images/images/defaultCheck.png") no-repeat scroll 220px -16px #E6E6E9;
+}
+.perc-itemname-list li.perc-staging-server-marker{
+	background:url("../images/images/staging-marker.png") no-repeat scroll 220px 6px #E6E6E9;
+    padding-right:10px;
+}
+
+#perc-editor-filter-wrapper {
+    padding:0px 20px 0px 13px;    
+}
+
+#perc-editor-filter {        
+    height:100%;
+}
+
+#perc-servers-container input[type=text], #perc-servers-container input[type=password] {
+    width:315px;
+    height:16px;
+    margin-top:3px;
+    margin-bottom:15px;
+    margin-right:40px;
+}
+#perc-servers-container  input[type=text].perc-right-col, #perc-servers-container input[type=password].perc-right-col {
+    margin-right:0px;
+}
+
+#perc-servers-container label {
+    display:block;
+    font-family:verdana;
+}
+
+#perc-servers-container select {
+    height:20px;
+    margin-top:5px;
+    width:100px;
+}
+
+#perc-servers-container select#perc-ftp-private-file-key {
+    width:321px;
+    height:20px;
+    margin-bottom:17px;
+    margin-right:0px;
+}
+#perc-type-filter{
+    float:left;
+    margin-right:20px; 
+}
+
+
+#perc-editor-wrapper {
+    min-height:15px;
+    background-color:  #f0f0f2; 
+    margin-top:10px; 
+    padding:15px 13px 20px 13px; 
+}
+#perc-filter-actions {
+    padding:3px 13px;
+    margin-bottom:-25px;
+    overflow:auto;
+}
+
+#perc-editor-filter-wrapper .perc_field_error {
+    margin-top:7px;
+}
+#perc-pub-now {
+    margin-top:15px;
+    margin-right:10px;
+}
+#perc-ignore-unmodified-assets, #perc-publish-related-wrapper{
+    margin-top:15px;
+    margin-right:10px;
+    margin-left:10px;
+}
+
+#perc-servers-container  span.perc-required-label label {
+    float: right;
+    font-family: Verdana;
+    font-size: 11px;
+    margin-right: 10px;
+    font-weight:normal;
+    margin-top: -15px;
+    position: relative;
+}
+
+/* ReadOnly Editor styles */
+
+#perc-server-name-wrapper {
+    margin-left:25px;
+    margin-bottom:22px;
+    
+}
+#perc-server-name {
+    font-family:Arial;
+    font-size:18px;
+    color:#70708f;
+    font-weight:normal;
+}
+
+#perc-server-summary {
+    
+    font-weight:bold;
+    font-size:11px;
+    color:#616670;
+}
+#perc-editor-summary {
+    margin:-2px 3px 0px;
+}
+
+#perc-publish-header {
+    height:16px;
+    margin-bottom:10px;
+}
+#perc-server-summary {    
+    float:left;
+}
+
+#perc-server-edit{
+    background-image: url("../images/icons/editor/editFull.png");
+    cursor: pointer;
+    float: right;
+    height: 22px;
+    width: 22px;
+}
+#perc-server-edit:hover {
+    background-image: url("../images/icons/editor/editFullOver.png");
+}
+#perc-servers-container li {
+    padding:0px;
+    margin:0px;
+    background:#ffffff;
+    border-bottom:2px solid #e6e6e9; 
+    font-family:verdana;
+    padding:4px 5px;   
+}
+
+#perc-servers-container li span.perc-prop-name {
+    color:#6c717d;
+    font-size:10px;
+    font-weight:normal;       
+}
+
+#perc-default-server {
+    font-weight:bold;
+    margin: 10px 0 -15px 10px;
+    padding-left: 20px;
+    background:url("../images/images/defaultCheck.png") no-repeat scroll 0px 0px;
+    display:none;    
+}
+
+#perc-default-server.perc-disabled{
+    background:url("../images/images/defaultCheck.png") no-repeat scroll 0px -20px;
+}
+
+.perc-warning-message{
+    color: #6C717D;
+    display: none;
+    float: left;
+    font-weight: bold;
+    margin-left: 25px;
+    padding-left: 15px;
+    padding-top: 5px;
+}
+
+/* Reports Actions Styles */
+.perc-que-bar {
+    background:#0099CC;
+    text-align:right;  
+    color:white;
+}
+
+.perc-stop-button {
+    width:63px;
+    height:23px;
+    background:url("../images/images/pubReportsActions.png");
+    cursor:pointer;
+}
+
+.perc-stop-active {
+
+    background-position: 0 -81px;
+}
+
+.perc-stop-active:hover {
+    background-position: 0 -135px;
+    cursor:pointer;  
+}
+
+.perc-stop-inactive {
+     cursor:default;
+     background-position: 0 -108px;
+}
+
+.perc_field_error{
+    display:block;
+}
+#perc-publish-button{
+	float:right;
+}
+#perc-publish-button .perc-publish-split-button-incremental
+{
+    width: 82px;
+    background-image: url("/cm/images/images/splitButtonWfsubmit.gif");
+}
+
+/*Drop down styles*/
+#perc-publish-button .perc-dropdown-title
+{
+    width: 29px;
+    height: 29px;
+    padding: 0;
+}
+
+#perc-publish-button ul ul
+{
+    left: auto !important;
+    right: 2px !important;
+    top: 100% !important;
+    margin-top: 0 !important;
+    background-color: #FFFFFF;
+}
+#perc-publish-button .perc-dropdown.sf-menu li
+{
+    background-color: inherit;
+    padding:0px;
+}
+#perc-publish-button .perc-dropdown.sf-menu a
+{
+    border-width: 0;
+    padding-right: 0;
+}
+#perc-publish-button > a:first-child span
+{
+    display: none;
+}
+#perc-publish-button .perc-dropdown.sf-menu li li a.perc-drop-disabled
+{
+    background-color: #FFFFFF;
+}
+
+#perc-publish-button:hover li.current > a
+{
+    background-image: url("../images/images/splitButtonArrowOver.gif") !important;
+    z-index: 9999;
+}
+#perc-publish-button .sf-menu li.current:hover > a
+{
+    background-image: url("../images/images/splitButtonArrowOn.gif") !important;
+    z-index: 9999;
+}
+#perc-publish-button .perc-dropdown.sf-menu li li
+{
+    background: #FFFFFF none repeat scroll 0 0;
+}
+#perc-publish-button, #perc-publish-button > a, #perc-publish-button > div
+{
+    height: 29px;
+}
+#perc-publish-button .perc-publish-split-button-incremental
+{
+    width: 151px;
+    background-image: url("/cm/images/images/splitButtonPubIncremental.png");
+}
+#perc-publish-button:hover .perc-publish-split-button-incremental
+{
+    background-image: url("/cm/images/images/splitButtonPubIncrementalOver.png");
+}
+
+#perc-publish-button > a, #perc-publish-button li.current > a
+{
+    margin: 0 !important;
+}
+#perc-publish-button > a
+{
+    overflow: auto;
+    vertical-align:top; /* Safari Fix */    
+}
+#perc-publish-button.perc-publish-split-button
+{
+    margin-top:-13px;  
+}
+#perc-incremental-preview-table{
+	margin-right: 25px;
+}
+#perc-incremental-preview-table .perc-datatable-head-column, #perc-incremental-preview-table .perc-datatable-column{
+    padding : 5px 10px !important;
+    cursor : default;
+    text-align : left !important; 
+    font-family: Verdana !important;
+    font-weight: normal;
+    font-size: 11px !important;
+}
+#perc-incremental-preview-table .perc-sort{
+    cursor : default;	
+}
+#perc-incremental-preview-table .perc-datatable-head-column{
+	font-weight: bold;
+}
+#perc-incremental-preview-table .perc-datatable-columnrow{
+	font-weight: normal;
+	padding : 0px 0px !important;
+}
+#perc-incremental-preview-paging, #perc-incremental-related-preview-paging{
+	position: absolute;
+	bottom: 14px;
+	right: 30px;	
+}
+#perc-incremental-preview-table .dataTables_empty, #perc-incremental-related-preview-table .dataTables_empty{
+    padding:20px;
+}

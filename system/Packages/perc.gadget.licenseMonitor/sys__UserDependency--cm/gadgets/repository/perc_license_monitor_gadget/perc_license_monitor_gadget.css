@@ -1,0 +1,464 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+body *
+{
+    overflow: visible;
+    font-family: 'Open Sans', sans-serif;
+}
+
+html *
+{
+    font-weight: normal;
+    font-family: 'Open Sans', sans-serif;
+    box-sizing: content-box;
+}
+
+a
+{
+    outline: 0;
+}
+
+.mmlib_table
+{
+    height: 16px;
+}
+
+.gadget-content *
+{
+    font-size: 11px;
+}
+
+h1
+{
+    color: #777;
+    height: 13px;
+}
+.title-usage
+{
+    margin: 20px 0 0 0;
+}
+.title-alerts
+{
+    border-bottom: 1px solid lightGrey;
+    margin: 0 0 7px;
+    padding-bottom: 7px;
+}
+
+.text-color-grey
+{
+    color: #6C717C;
+}
+
+.nodisplay
+{
+    display: none;
+}
+
+.hidden
+{
+    visibility: hidden;
+}
+
+.100widthrelative
+    {
+        height: 100%;
+        position: relative
+    }
+
+.perc-lmg-basic-info
+{
+    position: relative;
+}
+
+.perc-lmg-basic-info ul
+{
+    color: #777;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.perc-lmg-basic-info ul span
+{
+    color: #000;
+}
+.perc-lmg-basic-info li
+{
+    height: 18px;
+}
+
+.perc-lmg-button
+{
+    background-image: url(images/gadgetSprites.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    direction: ltr;
+    height: 22px;
+    text-indent: -9999px;
+    width: 63px;
+}
+
+.perc-lmg-activate
+{
+    text-decoration:none;
+    color:#FFFFFF;
+}
+
+.perc-lmg-activate:hover
+{
+}
+
+.perc-lmg-edit
+{
+    text-decoration:none;
+    color:#FFFFFF;
+}
+
+.perc-lmg-edit:hover
+{
+}
+
+.perc-lmg-resolve
+{
+    background-position: 0 -198px;
+    float:right;
+    /* Compensates button images that have extra 2px */
+    bottom: 1px;
+    right: -2px;
+
+}
+
+.perc-lmg-resolve:hover
+{
+    background-position: 0 -221px;
+}
+
+.perc-lmg-refresh
+{
+    background-position: 0 -92px;
+    float: right;
+    /* Compensates button images that have extra 2px */
+}
+
+.perc-lmg-refresh:hover
+{
+    background-position: 0 -138px;
+}
+
+.perc-lmg-refresh.disabled,
+.perc-lmg-refresh.disabled:hover
+{
+    background-position: 0 -115px;
+    cursor: default;
+}
+
+
+.perc-lmg-current-usage-info
+{
+    border-top: 1px solid lightGrey;
+    margin-top: 7px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.perc-lmg-icon-status
+{
+    background-image: url(images/gadgetSprites.png);
+    background-position: 400px -1px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    margin: 0 0 -3px 0;
+    width: 15px;
+}
+
+.status-active
+{
+    background-position: 0 -183px;
+}
+
+.status-warning
+{
+    background-position: -15px -183px;
+}
+
+.status-suspended
+{
+    background-position: -30px -183px;
+}
+
+.perc-lmg-alert-info
+{
+    bottom: 40;
+    height: 50px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    color: #000;
+    width: 100%;
+}
+
+.alerts-container
+{
+    float:left;
+    margin: 0;
+    padding: 0;
+}
+
+.alert-item
+{
+    list-style: none;
+    margin-left: 2px;
+}
+
+.alert-item-message
+{
+    margin-left: 7px;
+}
+
+.last-refresh-date
+{
+    bottom: 0;
+    float: left;
+    left: 0;
+}
+
+.perc-lmg-refresh-info
+{
+    border-top: 1px solid lightGrey;
+    bottom: 0;
+    margin-bottom: 3px;
+    padding: 15px 0 0 0;
+    color: #777;
+    width: 100%;
+}
+
+.placeholder-bar-container
+{
+    background-color: #fafcfb;
+    height: 10px;
+    margin: 16px 0;
+    text-align: center;
+    width: auto;
+}
+
+.placeholder-bar
+{
+    background-image: url(images/gadgetSprites.png);
+    background-position: 0 -161px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 10px;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 384px;
+}
+
+.placeholder-bar-unlimited
+{
+    background-image: url(images/gadgetSprites.png);
+    background-position: 0 -172px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 10px;
+    margin: 16px auto;
+    width: 420px;
+}
+
+.indicator
+{
+    height: 20px;
+    line-height: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.bar-container
+{
+    background-color: #a1a1a1;
+    height: 16px;
+    margin: 4px 0 0 0;
+    overflow: hidden;
+}
+
+.bar-container.shadow
+{
+    box-shadow: 2px 2px 10px #bbb;
+    filter:
+                    progid:DXImageTransform.Microsoft.Shadow(color=#cccccc,direction=180,strength=6),
+}
+
+.bar
+{
+    background-color: #e6e6e9;
+    height: 16px;
+    left: 0;
+    line-height: 10px;
+    overflow: hidden;
+    position: absolute;
+}
+
+.limited
+{
+    width: 80%;
+}
+.unlimited
+{
+    width: 100%;
+}
+
+.usage
+{
+    height: 10px;
+    left: 4px;
+    overflow: hidden;
+    position: absolute;
+    top: 3px;
+    width: 100%;
+}
+
+.level-ok
+{
+    background-color: #80bc22;
+}
+.level-warning
+{
+    background-color: #f8971d;
+}
+.level-exceeded
+{
+    background-color: #ff0000;
+}
+.level-unlimited-start
+{
+    position: absolute;
+    left: 0;
+    width: 50%;
+    /* For WebKit (Safari, Google Chrome etc) */
+    background: -webkit-gradient(linear, left top, right top, from(#e6e6e9), to(#133c55), color-stop(0.8, #133c55));
+    /* For Mozilla/Gecko (Firefox etc) */
+    background: -moz-linear-gradient(left top, #e6e6e9, #133c55);
+    /* For Internet Explorer 8 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffe6e6e9, endColorstr=#ff00a8cb, GradientType=1);
+}
+.level-unlimited-end
+{
+    height: 10px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 3px;
+    width: 50%;
+    background: -webkit-gradient(linear, right top, left top, from(#e6e6e9), to(#133c55), color-stop(0.8, #133c55));
+    background: -moz-linear-gradient(right top, #e6e6e9, #133c55);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff00a8cb, endColorstr=#ffe6e6e9, GradientType=1);
+}
+
+.limit-marker
+{
+    bottom: 2px;
+    color: #777;
+    font-size: 10px;
+    left: 80%;
+    position: absolute;
+}
+
+.bar-exceeded
+{
+    background-color: #a01d22;
+    height: 10px;
+    left: 80%;
+    margin-top: 3px;
+    overflow: hidden;
+    position: absolute;
+    width: 0;
+}
+
+.bar-exceeded-end
+{
+    background-color: #a1a1a1;
+    height: 16px;
+    position: absolute;
+    right: 0;
+    width: 3px;
+}
+
+.loading
+{
+    bottom: -3px;
+    height: 16px;
+    overflow: hidden;
+    float:left;
+    width: auto;
+}
+
+.shadow
+{
+    -moz-box-shadow:    0 0 10px #999;
+    -webkit-box-shadow: 0 0 10px #999;
+    box-shadow:         0 0 10px #999;
+}
+
+.perc-lmg-category
+{
+    height:20px;
+    background-color:#133c55;
+    padding:8px 8px 0px 8px;
+    color:#FFFFFF;
+    margin:10px 0px 8px 0px;
+}
+.perc-lmg-category > a:visited
+{
+    color:#FFFFFF;
+}
+.perc-lmg-category-name
+{
+    float:left;
+    font-weight:bold;
+}
+.perc-lmg-category-edit
+{
+    float:right;
+    margin-right:10px;
+    font-weight:normal;
+}
+#perc-lmg-module-license-info
+{
+    height:65px;
+}
+.perc-lmg-modulelicense-label
+{
+    color:#777;
+}
+.perc-lmg-modulelicense-loading{
+    width: 100%;
+    font: normal 12px Verdana;
+    color: #777777;
+    background-color: #ffffff;
+    border-collapse: separate;
+    border-spacing: 0px;
+    padding: 1px 0px 0px 20px;
+    background-image: url(/cm/gadgets/repository/common/images/loading_white.gif);
+    background-repeat: no-repeat;
+}
+

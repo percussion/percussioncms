@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT variant EMPTY>
+<!ATTLIST  variant variantname CDATA #REQUIRED>
+<!ATTLIST  variant variantid CDATA #REQUIRED>
+<!ELEMENT contenttype (variant* )>
+<!ATTLIST  contenttype contenttypename CDATA #REQUIRED>
+<!ATTLIST  contenttype contenttypeurl CDATA #REQUIRED>
+<!ATTLIST  contenttype contenttypeid CDATA #REQUIRED>
+<!ELEMENT slot (contenttype* )>
+<!ATTLIST  slot slotediturl CDATA #REQUIRED>
+<!ATTLIST  slot slotname CDATA #REQUIRED>
+<!ATTLIST  slot slotid CDATA #REQUIRED>
+<!ELEMENT slotcontentvariantlist (slot* )>
+<!ATTLIST  slotcontentvariantlist xml:lang CDATA #IMPLIED>

@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT ContentType (#PCDATA)>
+<!ATTLIST  ContentType name CDATA #IMPLIED>
+<!ATTLIST  ContentType id CDATA #IMPLIED>
+<!ELEMENT CommunityContentTypes (ContentType* )>

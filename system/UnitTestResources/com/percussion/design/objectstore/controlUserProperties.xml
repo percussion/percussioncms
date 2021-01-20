@@ -1,0 +1,13 @@
+<!--
+	Set of test user properties used by the PSControlDependencyMapTest
+-->
+<userProperties>
+   <userProperty name="Control1_Dependency1">sys_FileInfo</userProperty>
+   <userProperty name="Control1_DependencyIds">1</userProperty>
+   <userProperty name="Control2_Dependency1">sys_FileInfo</userProperty>
+   <userProperty name="Control2_DependencyIds">1</userProperty>   
+   <userProperty name="Control3_Dependency2">sys_xdTextCleanup</userProperty>
+   <userProperty name="Control3_DependencyIds">2</userProperty>
+   <userProperty name="Control4_Dependency3">sys_xdTextCleanup</userProperty>
+   <userProperty name="Control4_DependencyIds">3</userProperty>   
+</userProperties>

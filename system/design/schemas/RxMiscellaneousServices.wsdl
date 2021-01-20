@@ -1,0 +1,170 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/miscellaneous/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://www.w3.org/2001/XMLSchema" xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:mp="urn:www.percussion.com/webservices/miscellaneous" targetNamespace="urn:www.percussion.com/webservices/miscellaneous/wsdl">
+	<import location="sys_Header.xsd" namespace="urn:www.percussion.com/webservices/header"/>
+	<import location="sys_MiscellaneousParameters.xsd" namespace="urn:www.percussion.com/webservices/miscellaneous"/>
+	<message name="header-request">
+		<part name="Authentication" element="hdr:Authentication"/>
+	</message>
+	<message name="header-response">
+		<part name="HeaderResponse" element="hdr:HeaderResponse"/>
+	</message>
+	<message name="checkIn-request">
+		<part name="parameters" element="mp:checkIn"/>
+	</message>
+	<message name="checkIn-response">
+		<part name="parameters" element="mp:CheckInResponse"/>
+	</message>
+	<message name="checkOut-request">
+		<part name="parameters" element="mp:checkOut"/>
+	</message>
+	<message name="checkOut-response">
+		<part name="parameters" element="mp:CheckOutResponse"/>
+	</message>
+	<message name="lockRevision-request">
+		<part name="parameters" element="mp:lockRevision"/>
+	</message>
+	<message name="lockRevision-response">
+		<part name="parameters" element="mp:LockRevisionResponse"/>
+	</message>
+	<message name="login-request">
+		<part name="parameters" element="mp:login"/>
+	</message>
+	<message name="login-response">
+		<part name="parameters" element="mp:LoginResponse"/>
+	</message>
+	<message name="logout-request">
+		<part name="parameters" element="mp:logout"/>
+	</message>
+	<message name="logout-response">
+		<part name="parameters" element="mp:LogoutResponse"/>
+	</message>
+	<message name="callDirect-request">
+		<part name="parameters" element="mp:callDirect"/>
+	</message>
+	<message name="callDirect-response">
+		<part name="parameters" element="mp:CallDirectResponse"/>
+	</message>
+	<portType name="MiscellaneousPort">
+		<operation name="checkIn">
+			<input message="tns:checkIn-request"/>
+			<output message="tns:checkIn-response"/>
+		</operation>
+		<operation name="checkOut">
+			<input message="tns:checkOut-request"/>
+			<output message="tns:checkOut-response"/>
+		</operation>
+		<operation name="lockRevision">
+			<input message="tns:lockRevision-request"/>
+			<output message="tns:lockRevision-response"/>
+		</operation>
+		<operation name="login">
+			<input message="tns:login-request"/>
+			<output message="tns:login-response"/>
+		</operation>
+		<operation name="logout">
+			<input message="tns:logout-request"/>
+			<output message="tns:logout-response"/>
+		</operation>
+		<operation name="callDirect">
+			<input message="tns:callDirect-request"/>
+			<output message="tns:callDirect-response"/>
+		</operation>
+	</portType>
+	<binding name="MiscellaneousBinding" type="tns:MiscellaneousPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="checkIn">
+			<soap:operation soapAction="urn:#checkIn"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="checkOut">
+			<soap:operation soapAction="urn:#checkOut"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="lockRevision">
+			<soap:operation soapAction="urn:#lockRevision"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="login">
+			<soap:operation soapAction="urn:#login"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="logout">
+			<soap:operation soapAction="urn:#logout"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="callDirect">
+			<soap:operation soapAction="urn:#callDirect"/>
+			<input>
+				<soap:header message="tns:header-request" part="Authentication" use="literal"/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:header message="tns:header-response" part="HeaderResponse" use="literal"/>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="MiscellaneousServices">
+		<port name="MiscellaneousPort" binding="tns:MiscellaneousBinding">
+			<soap:address location="http://localhost:9980/RxServices/servlet/messagerouter"/>
+		</port>
+	</service>
+</definitions>

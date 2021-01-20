@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-328">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percSimpleTextAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-328\percSimpleTextAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percSimpleTextAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-328\percSimpleTextAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percSimpleTextAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-328\percSimpleTextAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-326">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percRichTextAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-326\percRichTextAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percRichTextAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-326\percRichTextAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percRichTextAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-326\percRichTextAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__RichText_images_widgetTextSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_RichText\images\widgetTextSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__RichText_images_widgetTextSampleBackground-png\widgetTextSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--6465701143866507251">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\PSWidgetProperties.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--6465701143866507251\PSWidgetProperties.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-324">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percRawHtmlAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-324\percRawHtmlAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percRawHtmlAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-324\percRawHtmlAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percRawHtmlAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-324\percRawHtmlAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--6465701143866507252">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percRawHtmlAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--6465701143866507252\percRawHtmlAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__RawHtml_images_widgetIconHtmOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_RawHtml\images\widgetIconHtmOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__RawHtml_images_widgetIconHtmOver-png\widgetIconHtmOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--4720746503772045209">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percSimpleTextAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--4720746503772045209\percSimpleTextAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__SimpleText_images_widgetIconSimpleText-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_SimpleText\images\widgetIconSimpleText.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__SimpleText_images_widgetIconSimpleText-png\widgetIconSimpleText.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__RawHtml_images_widgetHtmSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_RawHtml\images\widgetHtmSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__RawHtml_images_widgetHtmSampleBackground-png\widgetHtmSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percRawHtml-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rxconfig\Widgets\percRawHtml.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percRawHtml-xml\percRawHtml.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-330">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\PSWidgetProperties.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-330\PSWidgetProperties.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\PSWidgetProperties.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-330\PSWidgetProperties.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\PSWidgetProperties.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-330\PSWidgetProperties.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__SimpleText_images_widgetSimpleTextSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_SimpleText\images\widgetSimpleTextSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__SimpleText_images_widgetSimpleTextSampleBackground-png\widgetSimpleTextSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__RawHtml_images_widgetIconHtm-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_RawHtml\images\widgetIconHtm.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__RawHtml_images_widgetIconHtm-png\widgetIconHtm.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-2125591344993796177">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\Santi\AppData\Local\Temp\percRichTextAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef-2125591344993796177\percRichTextAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsSimpleText.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\images\ContentTypeIcons\filetypeIconsSimpleText.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsSimpleText.png\filetypeIconsSimpleText.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percRichText-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rxconfig\Widgets\percRichText.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percRichText-xml\percRichText.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__RichText_images_widgetIconTextOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_RichText\images\widgetIconTextOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__RichText_images_widgetIconTextOver-png\widgetIconTextOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsGenericHtml.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\images\ContentTypeIcons\filetypeIconsGenericHtml.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsGenericHtml.png\filetypeIconsGenericHtml.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsRichText.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\images\ContentTypeIcons\filetypeIconsRichText.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsRichText.png\filetypeIconsRichText.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__RichText_images_widgetIconText-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_RichText\images\widgetIconText.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__RichText_images_widgetIconText-png\widgetIconText.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__SimpleText_images_widgetIconSimpleTextOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_SimpleText\images\widgetIconSimpleTextOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__SimpleText_images_widgetIconSimpleTextOver-png\widgetIconSimpleTextOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percSimpleText-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\Percussion\ins\dev\rxconfig\Widgets\percSimpleText.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percSimpleText-xml\percSimpleText.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_jslib_jquery-js">
+        <PSXDependencyFile fileType="SUPPORT_FILE">
+            <RxFile>D:\Percussion\ins\dev\web_resources\cm\jslib\jquery.js</RxFile>
+            <ArchiveFile>sys__UserDependency--web__resources_cm_jslib_jquery-js\jquery.js</ArchiveFile>
+        </PSXDependencyFile>
+    </PSXDepFilesIdTypes>
+
+    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_jslib_jquery--ui-1-12-1-js">
+        <PSXDependencyFile fileType="SUPPORT_FILE">
+            <RxFile>D:\Percussion\ins\dev\web_resources\cm\jslib\jquery-ui.1.12.1.js</RxFile>
+            <ArchiveFile>sys__UserDependency--web__resources_cm_jslib_jquery--ui-1-12-1-js\jquery-ui.1.12.1.js</ArchiveFile>
+        </PSXDependencyFile>
+    </PSXDepFilesIdTypes>
+
+    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_jslib_jquery--ui-js">
+        <PSXDependencyFile fileType="SUPPORT_FILE">
+            <RxFile>D:\Percussion\ins\dev\web_resources\cm\jslib\jquery-ui.js</RxFile>
+            <ArchiveFile>sys__UserDependency--web__resources_cm_jslib_jquery--ui-js\jquery-ui.js</ArchiveFile>
+        </PSXDependencyFile>
+    </PSXDepFilesIdTypes>
+    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_jquery--ui--1-8-9-custom-css">
+        <PSXDependencyFile fileType="SUPPORT_FILE">
+            <RxFile>D:\Percussion\ins\dev\web_resources\cm\themes\smoothness\jquery-ui-1.8.9.custom.css</RxFile>
+            <ArchiveFile>sys__UserDependency--web__resources_cm_themes_smoothness_jquery--ui--1-8-9-custom-css\jquery-ui-1.8.9.custom.css</ArchiveFile>
+        </PSXDependencyFile>
+    </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

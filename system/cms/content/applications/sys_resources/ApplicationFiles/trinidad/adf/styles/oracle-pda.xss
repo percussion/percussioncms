@@ -1,0 +1,457 @@
+<?xml version="1.0"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+	   
+-->
+<styleSheetDocument xmlns="http://myfaces.apache.org/uix/style"
+                    >
+  <import href="oracle-desktop.xss"/>
+
+  <styleSheet>
+  <!-- The default font family -->
+  <!-- Removing font family as this doesn't seem to make a 
+       difference and makes the stylesheet much bigger -->
+  <style name="AFDefaultFontFamily">
+    <property name="font-family"/>
+  </style>
+
+  <!-- The default font -->
+  <style name="AFDefaultFont">
+    <includeStyle name="AFDefaultFontFamily"/>
+    <property name="font-size">9pt</property>
+  </style>
+
+  <!-- The default bold font -->
+  <style name="AFDefaultBoldFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-weight">bold</property>
+  </style>
+
+  <!-- A very small font -->
+  <style name="AFVerySmallFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">-2pt</property>
+  </style>
+
+  <!-- A small font -->
+  <style name="AFSmallFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">-1pt</property>
+  </style>
+
+  <!-- A medium font - just slightly bigger than default -->
+  <style name="AFMediumFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">+1pt</property>
+  </style>
+
+  <!-- A large font -->
+  <style name="AFLargeFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">+2pt</property>
+  </style>
+
+  <!-- A very large font -->
+  <style name="AFVeryLargeFont">
+    <includeStyle name="AFDefaultFont"/>
+    <property name="font-size">+3pt</property>
+  </style>
+
+
+
+    <!-- darken to make visible on lcd displays -->
+    <style name="AFLightAccentBackground">
+      <property name="background-color">#ffffcc</property>
+    </style>
+
+    <!-- set the text style on the body so that it doesn' -->
+    <!-- have to be repeated -->
+
+    <style selector="BODY">
+      <includeStyle name="AFTextBackground"/>
+      <includeStyle name="AFDefaultFont"/>
+    </style>
+
+    <!-- Header Text -->
+
+     <style name="AFHeaderText">
+        <property name="margin-top">0px</property>
+    </style> 
+    <style selector=".AFHeaderLevelTwo">
+      <property name="margin-top">4px</property>
+    </style> 
+    <style selector=".AFHeaderLevelThreePlus">
+      <property name="margin-top">4px</property>
+    </style> 
+  
+   <style selector="af|panelHeader::error">
+      <property name="margin-top">0px</property>
+   </style>
+   
+    
+    <!-- styles used in af|panelPage::privacy, copyright, and about -->
+    <style name="AFFooterMessageText">
+      <property name="text-align">center</property>
+      <property name="padding"/>
+    </style>
+  
+    <style name="AFFooterMessageLink">
+      <includeStyle name="AFLinkForeground"/>
+    </style>
+    
+    
+    <!-- Instruction Text == .AFInstructionText, OK -->
+    <!-- Text == AFDefaultFont OK -->
+    <!-- Subtext TBD -->
+
+    <!-- Label -->
+    <style selector=".AFLabelText"> 
+      <includeStyle name="AFVerySmallFont"/>
+      <property name="font-weight">bold</property>
+    </style>
+
+    <style selector=".AFLabelTextDisabled"> 
+      <includeStyle name="AFVerySmallFont"/>
+      <property name="font-weight">bold</property>
+    </style>
+    <!-- Link == A:link, OraLinkText, OK -->
+    <!-- MicroLink == .OraGlobalButtonText..., Others? -->
+    <!-- Column Header == af|column::header-text, OK -->
+    <!-- Error! == OraErrorNameText, OK --> 
+    <!-- Error Message Font == OraMessageBoxErrorText, OK --> 
+    <!-- Help Text == OraInlineInfoText, OK -->
+
+    <!-- navigation bar styles shrunken -->
+    <style selector=".OraNavBarActiveLink">
+      <includeStyle name="AFSmallFont"/>
+    </style>
+
+    <style selector=".OraNavBarInactiveLink">
+      <includeStyle name="AFSmallFont"/>
+    </style>
+
+    <style selector=".OraNavBarViewOnly">
+      <includeStyle name="AFSmallFont"/>
+      <property name="color">#000000</property>
+    </style>
+
+    <!-- menuButtons -->
+   
+    <style selector="af|menuButtons::text"> 
+      <includeStyle name="SmallLinkFont"/>
+      <includeStyle name="AFLinkForeground"/>
+      <property name="vertical-align"/>
+      <property name="padding"/>
+    </style>
+
+    <!-- Can't change link color, so setting to bold -->
+   <style selector="af|menuButtons::text-selected">
+      <includeStyle name="AFSmallFont"/>
+      <includeStyle name="AFDarkForeground"/>
+      <property name="font-weight">bold</property>
+      <property name="vertical-align"/>
+      <property name="padding"/>
+    </style>
+
+   <style selector="af|menuButtons::text-disabled">
+      <includeStyle name="AFSmallFont"/>
+      <includeStyle name="AFVeryDarkAccentForeground"/>
+      <property name="vertical-align"/>
+      <property name="padding"/>
+    </style>
+   
+
+
+    <style selector=".OraCrumbsSelected">
+      <includeStyle name="AFVerySmallFont"/>
+      <!--property name="font-size">xx-small</property-->
+    </style>
+
+    <style selector=".OraCrumbsEnabled">
+      <includeStyle name="VerySmallLinkFont"/>
+      <!--property name="font-size">xx-small</property-->
+    </style>
+
+    <!-- don't change font-size of disabled links -->
+    <style selector=".p_OraDisabled">
+        <property name="font-size"/>
+    </style>  
+
+    
+    <style selector=".p_OraTabBar">
+      <includeStyle name="SmallLinkFont"/>
+      <includeStyle name="AFLightBackground"/>
+    </style>
+    
+      
+    <style selector="OraLinkSelected">
+      <property name="background-color"/>
+    </style>
+
+    <style selector="OraLinkSelectedLink">
+      <includeStyle name="AFVeryDarkForeground"/>
+    <property name="text-decoration">none</property>
+    </style>
+  
+    <style selector="OraLinkSelectedActive">
+      <includeStyle name="AFVeryDarkForeground"/>
+    <property name="text-decoration">none</property>
+    </style>
+  
+    <style selector="OraLinkSelectedVisited">
+      <includeStyle name="AFVeryDarkForeground"/>
+    <property name="text-decoration">none</property>
+    </style>
+      
+
+    <style selector="OraLinkEnabled">
+      <property name="background-color"/>
+    </style>    
+    
+    <style selector="OraLinkEnabledLink">
+      <includeStyle name="AFVeryDarkForeground"/>
+    <property name="text-decoration">none</property>
+    </style>
+  
+    <style selector="OraLinkEnabledActive">
+      <includeStyle name="AFVeryDarkForeground"/>
+    <property name="text-decoration">none</property>
+    </style>
+  
+    <style selector="OraLinkEnabledVisited">
+      <includeStyle name="AFVeryDarkForeground"/>
+    <property name="text-decoration">none</property>
+    </style>
+      
+    <style selector="af|menuTabs::selected">
+      <property name="background-color"/>
+    </style>
+
+    <style selector="af|menuTabs::selected-link">
+      <includeStyle name="AFVeryDarkForeground"/>
+    <property name="text-decoration">none</property>
+    </style>
+
+    <style selector="af|menuTabs::enabled">
+      <property name="background-color"/>
+    </style>    
+    
+    <style selector="af|menuTabs::enabled-link">
+      <includeStyle name="AFVeryDarkForeground"/>
+    <property name="text-decoration">none</property>
+    </style>
+
+    <style selector="af|menuBar::selected">
+      <property name="background-color"/>
+    </style>
+
+    <style selector="af|menuBar::selected-link">
+      <includeStyle name="AFVeryDarkForeground"/>
+    </style>
+   
+
+    <style selector="af|menuBar::enabled">
+      <property name="background-color"/>
+    </style>    
+    
+    <style selector="af|menuBar::enabled-link">
+      <includeStyle name="AFVeryDarkForeground"/>
+    </style>
+
+    
+      <style selector=".p_OraGlobalHeader">  
+          <includeStyle name="SmallLinkFont"/>
+          <includeStyle name="LightExtraAccentBackground"/>
+          <includeStyle name="AFTextForeground"/>        
+      </style>
+    
+      <style selector="af|table::control-bar-top">
+        <property name="background-color"/>
+        <property name="border-style"/>
+        <property name="border-color"/>
+        <property name="padding"/>
+      </style>
+     
+      <style selector="af|treeTable::control-bar-top">
+        <property name="background-color"/>
+        <property name="border-style"/>
+        <property name="border-color"/>
+        <property name="padding"/>
+      </style>
+      
+      <style selector="af|column::sortable-header-text">
+        <property name="border-width">1px</property>
+      </style>    
+      <!-- used only in pda mode. private for now -->
+      <style selector=".OraButtonText">
+        <includeStyle name="AFSmallFont"/>
+        <includeStyle name="AFLightAccentBackground"/>
+        <includeStyle name="AFTextForeground"/>
+      </style>
+      
+      <style selector=".AFFieldText">    
+        <includeStyle name="AFSmallFont"/>
+      </style>               
+      <style selector=".AFFieldTextDisabled">    
+        <includeStyle name="AFSmallFont"/>
+      </style>
+      <!-- private for now -->
+      <style selector=".AFFieldNumber">    
+        <includeStyle name="AFSmallFont"/>
+      </style>               
+      <style selector=".AFFieldNumberDisabled">    
+        <includeStyle name="AFSmallFont"/>
+      </style>   
+      
+      <style selector=".AFDataText">    
+        <includeStyle name="AFSmallFont"/>
+      </style>
+      <style selector=".AFDataTextDisabled">    
+        <includeStyle name="AFSmallFont"/>
+      </style>        
+      <style selector=".AFDataNumber">    
+        <includeStyle name="AFSmallFont"/>
+      </style>
+      <style selector=".AFDataNumberDisabled">    
+        <includeStyle name="AFSmallFont"/>
+      </style>            
+      <style selector=".AFPhoneFieldText">    
+        <includeStyle name="AFSmallFont"/>
+      </style> 
+      <style selector=".AFPhoneFieldTextDisabled">    
+        <includeStyle name="AFSmallFont"/>
+      </style>            
+      <style selector=".AFPostalCodeFieldText">    
+        <includeStyle name="AFSmallFont"/>
+      </style>
+      <style selector=".AFPostalCodeFieldTextDisabled">    
+        <includeStyle name="AFSmallFont"/>
+      </style>         
+      <style selector=".AFAddressFieldText">    
+        <includeStyle name="AFSmallFont"/>
+      </style>       
+      <style selector=".AFAddressFieldTextDisabled">    
+        <includeStyle name="AFSmallFont"/>
+      </style>      
+  </styleSheet>
+
+  <styleSheet platforms="windows ppc" browsers="ie">
+    <!-- use Tahoma for everything -->
+    <style name="AFDefaultFontFamily">
+      <property name="font-family">Tahoma</property>
+    </style>
+    
+
+    <style name="AFDefaultFont">
+      <includeStyle name="AFDefaultFontFamily"/>
+      <property name="font-size">x-small</property>
+    </style>
+
+    <style name="AFVerySmallFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">xx-small</property>
+    </style>
+
+
+    <style name="AFSmallFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">xx-small</property>
+    </style>
+
+    <style name="AFMediumFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">x-small</property>
+    </style>
+
+    <style name="AFLargeFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">small</property>
+    </style>
+
+    <style name="AFVeryLargeFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">medium</property>
+    </style>
+
+
+    <!-- If I include AFVerySmallFont, which is defined above, shouldn't that work? 
+         I'm getting the attributes in blaf.xss -->
+    <style name="VerySmallLinkFont">
+      <!--includeStyle name="AFVerySmallFont"/-->
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">xx-small</property>
+    </style>    
+
+    <!-- Same problem as above -->
+    <style name="SmallLinkFont">
+      <!--includeStyle name="AFSmallFont"/-->
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">xx-small</property>    
+    </style>    
+  </styleSheet>  
+  
+  <styleSheet platforms="blackberry" browsers="blackberry">
+   <style name="AFDefaultFont">
+      <includeStyle name="AFDefaultFontFamily"/>
+      <property name="font-size">x-small</property>
+    </style>
+
+    <style name="AFVerySmallFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">xx-small</property>
+    </style>
+
+
+    <style name="AFSmallFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">xx-small</property>
+    </style>
+
+    <style name="AFMediumFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">x-small</property>
+    </style>
+
+    <style name="AFLargeFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">small</property>
+    </style>
+
+    <style name="AFVeryLargeFont">
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">medium</property>
+    </style>
+
+
+    <!-- If I include AFVerySmallFont, which is defined above, shouldn't that work? 
+         I'm getting the attributes in blaf.xss -->
+    <style name="VerySmallLinkFont">
+      <!--includeStyle name="AFVerySmallFont"/-->
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">xx-small</property>
+    </style>    
+
+    <!-- Same problem as above -->
+    <style name="SmallLinkFont">
+      <!--includeStyle name="AFSmallFont"/-->
+      <includeStyle name="AFDefaultFont"/>
+      <property name="font-size">xx-small</property>    
+    </style>    
+  </styleSheet>    
+
+</styleSheetDocument>

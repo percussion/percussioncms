@@ -1,0 +1,156 @@
+/* Our own styles */
+
+/* Force scrollbar off for IE */
+html
+{
+	overflow: hidden;
+}
+
+.PsAabody
+{
+   overflow: auto;
+   margin: 0px;
+   padding: 0px;
+   font-family:Arial, Helvetica, sans-serif; 
+   font-size:12px; 
+   background:#dde;
+}
+
+.PsAaPage
+{
+    border: gray 1px dotted;
+}
+.PsAaSlot
+{
+    border: gray 1px dotted;
+}
+.PsAaSnippet
+{
+    border: red 1px dotted;
+    cursor: move;
+}
+.PsAaField
+{
+    border: gray 1px dotted;
+}
+.PsAaField:hover {
+	background-color: #ffc;
+}
+
+.PsAaObjectImage
+{
+	border:0px;
+	position: relative; 
+	left: 0px; 
+	top: 0px; 
+	z-index: 100;
+}
+
+.PsAaFieldButtonsbox 
+{
+}
+
+.PsAaFieldButtonsbox .dojoButton 
+{
+	font-size: 8pt;
+	cursor: pointer;
+	font-family: Myriad, Tahoma, Verdana, sans-serif;
+	margin: 5px;
+}
+
+.PsAaAboutDlg
+{
+   background:white url("../../images/aa/about_rx_mid.gif");
+   height:332px;
+   width:480px;
+   text-align:center;
+}
+
+.PsAaAboutDlg a:link, .PsAaAboutDlg a:visited
+{
+   color:red;
+   text-decoration:none;
+}
+
+.PsAaPlaceholder
+{
+   color:#666666;
+   background-color:#cccccc;
+   font-weight:normal;
+   font-family: Myriad, Tahoma, Verdana, sans-serif;
+}
+
+.PsDojoLabelText
+{
+   font-family: Verdana, Helvetica, Garamond, sans-serif;
+   font-size: 12px;
+}
+/* Override (or force) dojo styles */
+.dojoMenuBar2
+{
+	height: 25px;
+}
+
+/* scroll bars in outline view if required */
+.TreeContainer.dojoSplitPane
+{
+	overflow: auto;
+}
+
+/* Overridden to give a menubar background to the Modal dialog title bar */
+.dojoFloatingPaneTitleBar
+{
+	background:#85aeec url(../../images/aa/soriaBarBg.gif) repeat-x top left;
+}
+
+.dojoTabPaneWrapper
+{
+  padding : 10px 0px 10px 0px;
+}
+
+/* Force horizontal scrollbar off (works differently for IE and Firefox) */
+#ps\.aa\.ContentPane
+{
+	width: "100%";
+}
+
+/* Make inplace field editor pane skinny. */
+#ps\.field\.inplaceTextBoxDiv_container
+{
+   border: 0px;
+   padding: 0px;
+   margin: 0px;
+   offset: 0px;
+}
+/* Force the inline text field to render with o pixel laeft margin */
+#ps\.field\.inplaceTextBoxDiv_container input
+{
+   margin-left:0px !important;
+}
+/*Initial style for Snippet Picker Dialog Snippet Item*/
+.PSAASnippetPickerItem
+{
+   border: gray 1px dotted;
+   margin: 1px;
+}
+/*Initial style for Snippet Picker Dialog Titles*/
+.PSAASnippetPickerTitle
+{
+   border: gray 1px dotted;
+   margin: 1px;
+}
+.PsAaTextInput
+{
+   border: 1px #85aeec solid;
+   margin-bottom:2px;
+}
+.PsAaButtonBox 
+{
+   display: block;
+   text-align: center;
+}
+.PsAaButtonBox .dojoButton 
+{
+   float: right;
+   margin-right: 10px;
+}

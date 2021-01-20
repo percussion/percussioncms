@@ -1,0 +1,3 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT rolelist (#PCDATA)>
+<!ATTLIST  rolelist xml:lang CDATA #IMPLIED>

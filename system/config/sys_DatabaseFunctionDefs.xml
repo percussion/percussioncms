@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Supported functions:
+
+1.   DAY
+2.   CURRENT_DATE
+3.   CURRENT_TIMESTAMP
+4.   LEFT
+5.   LOWER
+6.   LTRIM
+7.   MONTH
+8.   RIGHT
+9.   RTRIM
+10.  SOUNDEX
+11.  SUBSTRING
+12.  TRIM
+13.  UPPER
+14.  YEAR
+15.  IN-NUMBER
+16.  IN-TEXT
+17.  IN-NUMBER-ARRAY
+18.  CHAR_TO_INT
+19.  DAYSFROMDATE
+
+**Note: You must escape single quotes in the body with another single quote or the single quote will get stripped
+when the message is formatted.
+
+   i.e    this:    'example'   =  ''example''   
+
+-->
+<PSXDatabaseFunctionsColl>
+   <!-- DAY -->
+   <PSXDatabaseFunction standardFunctionName="DAY">
+      <PSXDatabaseFunctionDef standardFunctionName="DAY" driver="inetdae7">
+         <Body>DAY({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer representing the day datepart of the specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="DAY" driver="jtds:sqlserver">
+         <Body>DAY({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer representing the day datepart of the specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="DAY" driver="sqlserver">
+         <Body>DAY({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer representing the day datepart of the specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="DAY" driver="db2">
+         <Body>DAY({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer representing the day datepart of the specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="DAY" driver="derby">
+         <Body>DAY({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer (1-31) representing the day in the specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="DAY" driver="mysql">
+         <Body>DAY({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer (1-31) representing the day in the specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="DAY" driver="oracle:thin">
+          <Body>TO_CHAR({0},''DD'')</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer representing the day datepart of the specified date.</Description>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- CURRENT_DATE -->
+   <PSXDatabaseFunction standardFunctionName="CURRENT_DATE">
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_DATE" driver="*">
+         <Body>GETDATE( )</Body>
+         <Description>Returns the current date and time.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_DATE" driver="oracle:thin">
+         <Body>SYSDATE</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_DATE" driver="db2">
+         <Body>CURRENT DATE</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_DATE" driver="derby">
+         <Body>CURRENT_DATE</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_DATE" driver="mysql">
+         <Body>CURDATE()</Body>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- CURRENT_TIMESTAMP -->
+   <PSXDatabaseFunction standardFunctionName="CURRENT_TIMESTAMP">
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_TIMESTAMP" driver="*">
+         <Body>GETDATE( )</Body>
+         <Description>Returns the current date and time.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_TIMESTAMP" driver="oracle:thin">
+         <Body>SYSDATE</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_TIMESTAMP" driver="db2">
+         <Body>CURRENT TIMESTAMP</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_TIMESTAMP" driver="derby">
+         <Body>CURRENT_TIMESTAMP</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="CURRENT_TIMESTAMP" driver="mysql">
+         <Body>SYSDATE()</Body>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- LEFT -->
+   <PSXDatabaseFunction standardFunctionName="LEFT">
+      <PSXDatabaseFunctionDef standardFunctionName="LEFT" driver="*">
+         <Body>LEFT({0}, {1})</Body>
+         <Param name="source">
+            <Description>Required. Allowed values are backend column containing text data or any replacement value which evaluates to a string.</Description>
+         </Param>
+         <Param name="length" type="number">
+            <Description>Required. Valid values are positive integers. This specifies the number of characters of the source string to include in the returned string.</Description>
+         </Param>
+         <Description>Returns a substring of the source string containing the specified number of characters from the left.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="LEFT" driver="oracle:thin">
+         <Body>SUBSTR({0}, {1})</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="LEFT" driver="derby">
+         <Body>SUBSTR({0}, 1, {1})</Body>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- LOWER -->
+   <PSXDatabaseFunction standardFunctionName="LOWER">
+      <PSXDatabaseFunctionDef standardFunctionName="LOWER" driver="*">
+         <Body>LOWER({0})</Body>
+         <Param name="source">
+            <Description>Required. Allowed values are backend column containing text data or any replacement value which evaluates to a string.</Description>
+         </Param>
+         <Description>Returns a string containing all the characters of the source string converted to lowercase.</Description>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- LTRIM -->
+   <PSXDatabaseFunction standardFunctionName="LTRIM">
+      <PSXDatabaseFunctionDef standardFunctionName="LTRIM" driver="*">
+         <Body>LTRIM({0})</Body>
+         <Param name="source">
+            <Description>Required. Allowed values are backend column containing text data or any replacement value which evaluates to a string.</Description>
+         </Param>
+         <Description>Returns the source string after removing leading blanks.</Description>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- MONTH -->
+   <PSXDatabaseFunction standardFunctionName="MONTH">
+      <PSXDatabaseFunctionDef standardFunctionName="MONTH" driver="inetdae7">
+         <Body>MONTH({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the month part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="MONTH" driver="jtds:sqlserver">
+         <Body>MONTH({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the month part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+       <PSXDatabaseFunctionDef standardFunctionName="MONTH" driver="sqlserver">
+         <Body>MONTH({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the month part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="MONTH" driver="oracle:thin">
+         <Body>TO_CHAR({0},''MM'')</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the month part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="MONTH" driver="db2">
+         <Body>MONTH({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the month part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="MONTH" driver="derby">
+         <Body>MONTH({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer (1-12) that represents the month part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="MONTH" driver="mysql">
+         <Body>MONTH({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer (1-12) that represents the month part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- RIGHT -->
+   <PSXDatabaseFunction standardFunctionName="RIGHT">
+      <PSXDatabaseFunctionDef standardFunctionName="RIGHT" driver="*">
+         <Body>RIGHT({0}, {1})</Body>
+         <Param name="source">
+            <Description>Required. Allowed values are backend column containing text data or any replacement value which evaluates to a string.</Description>
+         </Param>
+         <Param name="length" type="number">
+            <Description>Required. Valid values are positive integers. This specifies the number of characters of the source string to include in the returned string.</Description>
+         </Param>
+         <Description>Returns a substring of the source string containing the specified number of characters from the right.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="RIGHT" driver="oracle:thin">
+         <Body>SUBSTR({0}, -{1})</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="RIGHT" driver="derby">
+         <Body>SUBSTR({0}, LENGTH({0})-{1}, {1})</Body>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- RTRIM -->
+   <PSXDatabaseFunction standardFunctionName="RTRIM">
+      <PSXDatabaseFunctionDef standardFunctionName="RTRIM" driver="*">
+         <Body>RTRIM({0})</Body>
+         <Param name="source">
+            <Description>Required. Allowed values are backend column containing text data or any replacement value which evaluates to a string.</Description>
+         </Param>
+         <Description>Returns the source string after removing trailing blanks.</Description>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- SOUNDEX -->
+   <PSXDatabaseFunction standardFunctionName="SOUNDEX">
+      <PSXDatabaseFunctionDef standardFunctionName="SOUNDEX" driver="*">
+         <Body>SOUNDEX({0})</Body>
+         <Param name="source">
+            <Description>Required. Allowed values are backend column containing text data or any replacement value which evaluates to a string.</Description>
+         </Param>
+         <Description>Returns a four-character (SOUNDEX) code to evaluate the similarity of two strings.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="SOUNDEX" driver="oracle:thin">
+         <Description>Returns a character string containing the phonetic representation of the source string. This function allows comparison of words that are spelled differently, but sound alike in English.</Description>
+      </PSXDatabaseFunctionDef>
+      <!-- Soundex Not currently supported in Derby - Could be implemented using Apache Commons Codec Soundex code and CREATE FUNCTION  
+      <PSXDatabaseFunctionDef standardFunctionName="SOUNDEX" driver="derby">
+         <Description>Returns a character string containing the phonetic representation of the source string. This function allows comparison of words that are spelled differently, but sound alike in English.</Description>
+      </PSXDatabaseFunctionDef>
+      -->
+   </PSXDatabaseFunction>
+   <!-- SUBSTRING -->
+   <PSXDatabaseFunction standardFunctionName="SUBSTRING">
+      <PSXDatabaseFunctionDef standardFunctionName="SUBSTRING" driver="*">
+         <Body>SUBSTRING({0}, {1}, {2})</Body>
+         <Param name="source">
+            <Description>Required. Allowed values are backend column containing text data or any replacement value which evaluates to a string.</Description>
+         </Param>
+         <Param name="start" type="number">
+            <Description>Required. Valid values are positive integers. This specifies the first character where the substring begins.</Description>
+         </Param>
+         <Param name="length" type="number">
+            <Description>Required. Valid values are positive integers. This specifies the number of characters of the source string to include in the returned string.</Description>
+         </Param>
+         <Description>Returns a substring of the source string containing the specified number of characters beginning with the character specified by start.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="SUBSTRING" driver="oracle:thin">
+         <Body>SUBSTR({0}, {1}, {2})</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="SUBSTRING" driver="db2">
+         <Body>SUBSTR({0}, {1}, {2})</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="SUBSTRING" driver="derby">
+         <Body>SUBSTR({0}, {1}, {2})</Body>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- TRIM -->
+   <PSXDatabaseFunction standardFunctionName="TRIM">
+      <PSXDatabaseFunctionDef standardFunctionName="TRIM" driver="*">
+         <Body>LTRIM(RTRIM{0})</Body>
+         <Param name="source">
+            <Description>Required. Allowed values are backend column containing text data or any replacement value which evaluates to a string.</Description>
+         </Param>
+         <Description>Returns the source string after removing leading and trailing blanks.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="TRIM" driver="derby">
+         <Body>TRIM({0})</Body>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="TRIM" driver="mysql">
+         <Body>TRIM({0})</Body>
+      </PSXDatabaseFunctionDef>
+    </PSXDatabaseFunction>
+   <!-- UPPER -->
+   <PSXDatabaseFunction standardFunctionName="UPPER">
+      <PSXDatabaseFunctionDef standardFunctionName="UPPER" driver="*">
+         <Body>UPPER({0})</Body>
+         <Param name="source">
+            <Description>Required. Allowed values are backend column containing text data or any replacement value which evaluates to a string.</Description>
+         </Param>
+         <Description>Returns a string containing all the characters of the source string converted to uppercase.</Description>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- YEAR -->
+   <PSXDatabaseFunction standardFunctionName="YEAR">
+      <PSXDatabaseFunctionDef standardFunctionName="YEAR" driver="inetdae7">
+         <Body>YEAR({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the year part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="YEAR" driver="jtds:sqlserver">
+         <Body>YEAR({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the year part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+       <PSXDatabaseFunctionDef standardFunctionName="YEAR" driver="sqlserver">
+         <Body>YEAR({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the year part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="YEAR" driver="oracle:thin">
+         <Body>TO_CHAR({0},''YYYY'')</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the year part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="YEAR" driver="db2">
+         <Body>YEAR({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer that represents the year part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="YEAR" driver="derby">
+         <Body>YEAR({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer (1-9999) that represents the year part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="YEAR" driver="mysql">
+         <Body>YEAR({0})</Body>
+         <Param name="source">
+            <Description>Required. Valid values are any replacement value containing string representation of a date or timestamp.</Description>
+         </Param>
+         <Description>Returns an integer (1-9999) that represents the year part of a specified date.</Description>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- IN-NUMBER -->
+   <PSXDatabaseFunction standardFunctionName="IN-NUMBER">
+      <PSXDatabaseFunctionDef standardFunctionName="IN-NUMBER" driver="*">
+         <Body>({0,choice,0#inclause|1#defaultValue})</Body>
+         <Param name="inclause" type="number">
+            <Description>Required. A single number or a collection (java.util.Collection) of numbers which make up the in clause.</Description>
+         </Param>
+         <Param name="defaultValue" type="number">
+            <Description>Optional. This should be specified if the value of the parameter "inclause" may be null or empty. If specified, this should be a value for which no rows will be returned. The purpose of this parameter is to make sure that a valid sql statement is created even if the value of parameter "inclause" is null or empty.</Description>
+         </Param>
+         <Description>Returns the string corresponding to the IN clause. On Oracle, use this function only if the inlist is guaranteed to contain less than 1000 numbers (Use IN-NUMBER-ARRAY function if the inlist can contain more than 1000 numbers). There is no size limitation for other databases.</Description>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- IN-TEXT -->
+   <PSXDatabaseFunction standardFunctionName="IN-TEXT">
+      <PSXDatabaseFunctionDef standardFunctionName="IN-TEXT" driver="*">
+         <Body>({0,choice,0#inclause|1#defaultValue})</Body>
+         <Param name="inclause">
+            <Description>Required. A single string or a collection (java.util.Collection) of strings which make up the in clause.</Description>
+         </Param>
+         <Param name="defaultValue">
+            <Description>Optional. This should be specified if the value of the parameter "inclause" may be null or empty. If specified, this should be a value for which no rows will be returned. The purpose of this parameter is to make sure that a valid sql statement is created even if the value of parameter "inclause" is null or empty.</Description>
+         </Param>
+         <Description>Returns the string corresponding to the IN clause. Use this function if the inlist contains strings.</Description>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- IN-NUMBER-ARRAY -->
+   <PSXDatabaseFunction standardFunctionName="IN-NUMBER-ARRAY">
+      <PSXDatabaseFunctionDef standardFunctionName="IN-NUMBER-ARRAY" driver="*">
+         <Body>({0})</Body>
+         <Param name="inclause" type="number">
+            <Description>Required. A collection (java.util.Collection) of numbers which make up the in clause.</Description>
+         </Param>
+         <Description>Returns the string corresponding to the IN clause. On Oracle, use this function if the inlist can contain more than 1000 numbers. This function is same as IN-NUMBER for other databases.</Description>
+      </PSXDatabaseFunctionDef>
+      <PSXDatabaseFunctionDef standardFunctionName="IN-NUMBER-ARRAY" driver="oracle:thin">
+         <Body>(SELECT * FROM TABLE (SELECT CAST({0} AS RX_NUMBER_TABLE) FROM DUAL))</Body>
+         <Param name="inclause" type="array" staticBind="n">
+            <Description>Required. A collection (java.util.Collection) of numbers which make up the in clause.</Description>
+         </Param>
+      </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+   <!-- CHAR-TO-INT -->
+   <PSXDatabaseFunction standardFunctionName="CHAR_TO_INT">
+         <PSXDatabaseFunctionDef standardFunctionName="CHAR_TO_INT" driver="inetdae7">
+            <Body>CONVERT(INT,{0})</Body>
+            <Param name="source">
+               <Description>Required. Valid values are any replacement value containing string representation of an integer.</Description>
+            </Param>
+            <Description>Converts a CHAR type to an integer</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="CHAR_TO_INT" driver="jtds:sqlserver">
+            <Body>CONVERT(INT,{0})</Body>
+            <Param name="source">
+               <Description>Required. Valid values are any replacement value containing string representation of an integer.</Description>
+            </Param>
+            <Description>Converts a CHAR type to an integer</Description>
+         </PSXDatabaseFunctionDef>
+          <PSXDatabaseFunctionDef standardFunctionName="CHAR_TO_INT" driver="sqlserver">
+            <Body>CONVERT(INT,{0})</Body>
+            <Param name="source">
+               <Description>Required. Valid values are any replacement value containing string representation of an integer.</Description>
+            </Param>
+            <Description>Converts a CHAR type to an integer</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="CHAR_TO_INT" driver="db2">
+            <Body>CAST({0} as integer)</Body>
+            <Param name="source">
+               <Description>Required. Valid values are any replacement value containing string representation of an integer.</Description>
+            </Param>
+            <Description>Converts a CHAR type to an integer</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="CHAR_TO_INT" driver="derby">
+            <Body>CAST({0} as integer)</Body>
+            <Param name="source">
+               <Description>Required. Valid values are any replacement value containing string representation of an integer.</Description>
+            </Param>
+            <Description>Converts a CHAR type to an integer</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="CHAR_TO_INT" driver="mysql">
+            <Body>CAST({0} as integer)</Body>
+            <Param name="source">
+               <Description>Required. Valid values are any replacement value containing string representation of an integer.</Description>
+            </Param>
+            <Description>Converts a CHAR type to an integer</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="CHAR_TO_INT" driver="oracle:thin">
+             <Body>TO_NUMBER({0})</Body>
+            <Param name="source">
+               <Description>Required. Valid values are any replacement value containing string representation of an integer.</Description>
+            </Param>
+            <Description>Converts a CHAR type to an integer</Description>
+         </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>   
+   <!-- DATEDIFF -->
+   <PSXDatabaseFunction standardFunctionName="DAYSFROMDATE">
+         <PSXDatabaseFunctionDef standardFunctionName="DAYSFROMDATE" driver="inetdae7">
+            <Body>DATEDIFF([DAY], {0}, GETDATE())</Body>
+            <Param name="first date">
+               <Description>Required. Valid values are database columns that contain a date.</Description>
+            </Param>
+            <Description>Compares two dates</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="DAYSFROMDATE" driver="jtds:sqlserver">
+            <Body>DATEDIFF([DAY], {0}, GETDATE())</Body>
+            <Param name="first date">
+               <Description>Required. Valid values are database columns that contain a date.</Description>
+            </Param>
+            <Description>Compares two dates</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="DAYSFROMDATE" driver="sqlserver">
+            <Body>DATEDIFF([DAY], {0}, GETDATE())</Body>
+            <Param name="first date">
+               <Description>Required. Valid values are database columns that contain a date.</Description>
+            </Param>
+            <Description>Compares two dates</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="DAYSFROMDATE" driver="oracle:thin">
+            <Body>ROUND(TO_NUMBER(SYSDATE - {0}))</Body>
+            <Param name="first date">
+               <Description>Required. Valid values are database columns that contain a date.</Description>
+            </Param>
+            <Description>Compares two dates</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="DAYSFROMDATE" driver="db2">
+            <Body>DAYS(CURRENT DATE) - DAYS({0})</Body>
+            <Param name="first date">
+               <Description>Required. Valid values are database columns that contain a date.</Description>
+            </Param>
+            <Description>Compares two dates</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="DAYSFROMDATE" driver="derby">
+            <Body>'{'fn TIMESTAMPDIFF(SQL_TSI_DAY,CURRENT_TIMESTAMP, CAST({0} AS TIMESTAMP) '}'</Body>
+            <Param name="first date">
+               <Description>Required. Valid values are database columns that contain a date.</Description>
+            </Param>
+            <Description>Compares two dates</Description>
+         </PSXDatabaseFunctionDef>
+         <PSXDatabaseFunctionDef standardFunctionName="DAYSFROMDATE" driver="mysql">
+            <Body>CURDATE() - INTERVAL {0} DAY</Body>
+            <Param name="first date">
+               <Description>Required. Valid values are database columns that contain a date.</Description>
+            </Param>
+            <Description>Compares two dates</Description>
+         </PSXDatabaseFunctionDef>
+   </PSXDatabaseFunction>
+</PSXDatabaseFunctionsColl>

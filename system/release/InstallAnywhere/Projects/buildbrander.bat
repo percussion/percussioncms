@@ -1,0 +1,1 @@
+ismp %1\%2\release\installshield\projects\configuration\brand.xml -build -is:log log.txt

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   $Id: actionSetWithExits.xml 1.1 2002/04/29 16:31:35Z jamesschultz Exp $
+   
+   This file is loaded by the PSActionSetTest class to verify the XML loading
+   methods when extensions are specified.  The action set defined in this file
+   is not designed to be executed.
+  -->
+<ActionSet name="insertandtransition">
+   <Action name="insert">
+      <PSXParam name="sys_command">
+         <DataLocator>
+            <PSXTextLiteral id="20">
+               <text>modify</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="DBActionType">
+         <DataLocator>
+            <PSXTextLiteral id="21">
+               <text>INSERT</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="sys_title">
+         <DataLocator>
+            <PSXTextLiteral id="21">
+               <text>inserted by action</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+      <PSXExtensionCallSet id="2217">
+         <PSXExtensionCall id="0">
+            <name>Java/global/percussion/contentassembler/sys_casAddAssemblerInfo</name>
+         </PSXExtensionCall>
+         <PSXExtensionCall id="0">
+            <name>Java/global/percussion/xmldom/sys_xdTextToTree</name>
+            <PSXExtensionParamValue id="0">
+               <value>
+                  <PSXTextLiteral id="0">
+                     <text>body</text>
+                  </PSXTextLiteral>
+               </value>
+            </PSXExtensionParamValue>
+            <PSXExtensionParamValue id="0">
+               <value>
+                  <PSXTextLiteral id="0">
+                     <text/>
+                  </PSXTextLiteral>
+               </value>
+            </PSXExtensionParamValue>
+            <PSXExtensionParamValue id="0">
+               <value>
+                  <PSXTextLiteral id="0">
+                     <text/>
+                  </PSXTextLiteral>
+               </value>
+            </PSXExtensionParamValue>
+         </PSXExtensionCall>
+      </PSXExtensionCallSet>
+   </Action>
+   <Action name="checkin">
+      <!-- propagate contentid and revision from the insert -->
+      <PSXParam name="sys_contentid">
+         <DataLocator>
+            <PSXSingleHtmlParameter id="22">
+               <name>sys_contentid</name>
+            </PSXSingleHtmlParameter>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="sys_revision">
+         <DataLocator>
+            <PSXSingleHtmlParameter id="22">
+               <name>sys_revision</name>
+            </PSXSingleHtmlParameter>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="sys_command">
+         <DataLocator>
+            <PSXTextLiteral id="20">
+               <text>workflow</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="WFAction">
+         <DataLocator>
+            <PSXTextLiteral id="21">
+               <text>checkin</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="commenttext">
+         <DataLocator>
+            <PSXTextLiteral id="21">
+               <text>Auto checkin by action</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+   </Action>
+   <Action name="transition">
+      <!-- propagate contentid and revision from the insert -->
+      <PSXParam name="sys_contentid">
+         <DataLocator>
+            <PSXSingleHtmlParameter id="22">
+               <name>sys_contentid</name>
+            </PSXSingleHtmlParameter>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="sys_revision">
+         <DataLocator>
+            <PSXSingleHtmlParameter id="22">
+               <name>sys_revision</name>
+            </PSXSingleHtmlParameter>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="sys_command">
+         <DataLocator>
+            <PSXTextLiteral id="20">
+               <text>workflow</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="WFAction">
+         <DataLocator>
+            <PSXTextLiteral id="21">
+               <text>submit</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="commenttext">
+         <DataLocator>
+            <PSXTextLiteral id="21">
+               <text>Auto checkin by action</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+   </Action>
+   <PSXUrlRequest>
+      <!-- can't put an PSXExtensionCall here, because the unit test does not
+		have an inited server instance -->
+      <Href/>
+      <PSXParam name="sys_contentid">
+         <DataLocator>
+            <PSXSingleHtmlParameter id="22">
+               <name>sys_contentid</name>
+            </PSXSingleHtmlParameter>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="sys_revision">
+         <DataLocator>
+            <PSXSingleHtmlParameter id="22">
+               <name>sys_revision</name>
+            </PSXSingleHtmlParameter>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="sys_command">
+         <DataLocator>
+            <PSXTextLiteral id="20">
+               <text>workflow</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="WFAction">
+         <DataLocator>
+            <PSXTextLiteral id="21">
+               <text>submit</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+      <PSXParam name="commenttext">
+         <DataLocator>
+            <PSXTextLiteral id="21">
+               <text>Auto checkin by action</text>
+            </PSXTextLiteral>
+         </DataLocator>
+      </PSXParam>
+   </PSXUrlRequest>
+</ActionSet>

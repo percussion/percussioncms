@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="Comments"
+                 contenttype_name=""
+                 category="blog,social"
+                 description="Display a list of comments submitted to the page"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/comments/images/WidgetIconComment.png"
+                 preferred_editor_width="965"
+                 preferred_editor_height="680"
+                 is_responsive="true"/>
+    <UserPref name="titleFormat"
+              display_name="Heading format for Title field"
+              required="true"
+              datatype="enum" default_value="h3">
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="div" display_value="Div" />
+    </UserPref>
+    <CssPref name="rootclass"
+             display_name="CSS Root Class"
+             datatype="string" />
+    <Code type="jexl">
+        <![CDATA[
+      if(! $perc.isPreviewMode())
+      {
+          $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+
+          if (empty($rootclass)) {
+            $rootclass = "";
+          }
+
+          $titleFormat = $perc.widget.item.properties.get('titleFormat');
+
+          $pageId = $perc.page.id;
+          $widgetId = $perc.widget.item.id;
+
+          $dUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+          $dsUrl = $dUrl + "/perc-comments-services/comment/jsonp";
+          if ($dUrl.indexOf("http://localhost") != -1 )
+          $dUrl = "";
+           $dynamicListData ="{&quot;serviceurl&quot;: &quot;" + $dsUrl +"&quot;, &quot;finderpath&quot;: &quot;" + $rx.pageutils.getItemPath($pageId) + "&quot;, &quot;deliveryurl&quot;: &quot;" + $dUrl + "&quot;, &quot;titleFormat&quot;: &quot;" + $titleFormat + "&quot;}";
+      }
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[
+     #if ($perc.isEditMode())
+         #createEmptyWidgetContent("comments-sample-content", "This Comments widget is showing sample content.")
+     #elseif (!$perc.isPreviewMode())
+         <div class="$!rootclass perc-comments perc-comments-view" data-query="$dynamicListData"></div>
+     #end
+    ]]>
+    </Content>
+</Widget>

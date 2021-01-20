@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percRedirect - Version 1.0.0]
+-->
+<Widget>
+ <WidgetPrefs title="Redirect"
+              contenttype_name="percRedirect"
+              description="Adds a client side redirect to a Page."
+              author="www.percussion.com"
+              thumbnail="/rx_resources/widgets/percRedirect/images/redirect-widget-icon-tray.png"
+              preferred_editor_width="800"
+              preferred_editor_height="600"
+              is_responsive="true"/>
+
+ <!-- User prefs define input needed when in layout config for a widget -->
+ <!-- Available data types are bool, number, enum, string -->
+
+ <Code type="jexl">
+  <!-- This section is used to set up data that will be used in the content section -->
+  <![CDATA[
+       $pageId = $perc.page.id;
+       $widgetId = $perc.widget.item.id;
+       $rootclass = 'percRedirect';
+
+       ## Get asset item(s)
+       $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+       $perc.setWidgetContents($assets);
+
+       if (! $assets.isEmpty())
+       {
+           $assetItem = $assets.get(0); ## Get first item (which may be only item)
+           $targetUrl = $assetItem.getNode().getProperty('targetUrl').String;
+	   $enabled = $assetItem.getNode().getProperty('enabled').String;
+	   $delayInSeconds = $assetItem.getNode().getProperty('delayInSeconds').String;
+
+	   if($enabled == null)
+		$enabled = "yes";
+
+	   if($delayInSeconds == null || $delayInSeconds < 0)
+		$delayInSeconds = 0;
+       }
+
+
+    ]]>
+ </Code>
+ <Content type="velocity">
+  <!-- This section defines the rendered content -->
+  <![CDATA[
+        #if(($perc.widget.item.definitionId !='percRedirect' && ! $perc.widgetContents.isEmpty() && ! $perc.isEditMode()) ||  (! $perc.isEditMode() && ! $perc.isPreviewMode()))##
+	#if( "$!enabled" != "no")##
+
+		#set($addlHead = $perc.page.getAdditionalHeadContent())##
+		#set($quot = '"')##
+		$perc.page.setAdditionalHeadContent("<meta http-equiv=$!{quot}refresh$!{quot} content=$!{quot}$!{delayInSeconds};URL='$!{targetUrl}'$!{quot} />")##
+       #end##
+        #end##
+        #if ($perc.isEditMode())##
+           <div style="background: transparent url(/Rhythmyx/rx_resources/widgets/percRedirect/images/redirect-widget-placeholder-small.png) no-repeat scroll center center;filter: alpha(opacity=50);opacity: .50;" title="Client Side Redirect Widget">
+	   <h3>Client side redirect widget</h3>
+	   </div>
+        #end##
+    ]]>
+ </Content>
+</Widget>

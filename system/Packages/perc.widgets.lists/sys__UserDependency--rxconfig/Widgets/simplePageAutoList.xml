@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+   <WidgetPrefs title="Auto List"
+        contenttype_name="percSimpleAutoList"
+        category="content,search"
+        description="Simple List widget for page links"
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/simpleList/images/widgetIconLinkAutoList.png"
+		is_responsive="true"/>
+    <Resource href="/rx_resources/widgets/simpleList/css/style.css" 
+        type="css" 
+        placement="head" />
+    <UserPref name="maxlength" 
+      display_name="Max List Length"
+      default_value="0"
+      datatype="number" /> 
+    <UserPref name="layout"
+      display_name="Layout"
+      required="true"
+      datatype="string">
+      <EnumValue value="ui-perc-list-horizontal" display_value="Horizontal" />
+      <EnumValue value="ui-perc-list-vertical" display_value="Vertical" />
+    </UserPref>
+    <UserPref name="target"
+      display_name="Link Target"
+      datatype="string" /> 
+    <CssPref name="rootclass"
+      display_name="CSS Root Class" 
+      datatype="string" /> 
+    <Code type="jexl">
+    <![CDATA[
+   $linkContext = $perc.linkContext;
+   $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+   if (empty($rootclass)) { 
+      $rootclass = "";
+   }   
+   $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+   $perc.setWidgetContents($assetItems);
+   if ( ! $assetItems.isEmpty() ) {
+      $assetItem = $assetItems.get(0); 
+      $params = $rx.string.stringToMap(null);
+      $params.put('query', $assetItem.getNode().getProperty('query').String);
+      $params.put('max_results', $assetItem.node.getProperty('max_results').Long); 
+      $finderName = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
+      $relresults=  $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);       
+      $title = $rx.pageutils.html($assetItem,'displaytitle');
+      $rowtag = $tools.alternator.auto('.ui-perc-list-odd', '.ui-perc-list-even');
+   }
+   else {
+      ;
+   }
+   
+    ]]>
+    </Code>
+    <Content type="velocity">
+    <![CDATA[
+    <div class="$rootclass $layout .ui-widget .ui-widget-content .ui-perc-list-widget">
+#if (!$assetItems.isEmpty())
+    #if($title && $title.length() > 0)##
+       <div class=".ui-perc-list-title">$title</div>
+    #end
+    #if($relresults && $relresults.size() > 0)
+       #if($rendering == "ordered")##
+          <ol class=".ui-perc-list-main">##
+       #else##
+	  <ul class=".ui-perc-list-main">##
+       #end##
+       #foreach($result in $relresults)
+          #if($velocityCount == 1)##
+             #set($firstrow = '.ui-perc-list-first')##
+          #else##
+             #set($firstrow = ' ')##
+          #end##
+          #if($velocityCount == $relresults.size())##
+             #set($lastrow = '.ui-perc-list-last')##
+          #else
+             #set($lastrow = ' ')##
+          #end
+             #set($pagelink = $tools.esc.html($rx.pageutils.itemLink($linkContext, $result)))##
+             #set($linkTitle = $rx.pageutils.html($result.node,"resource_link_title,sys_title", "-no-title-"))##
+             <li class="$rowtag $firstrow $lastrow .ui-perc-list-element"><a href="$!{pagelink}"
+             #if($target.length() > 0)##
+                target="${target}"
+             #end
+                >$!{linkTitle}</a></li>
+       #end##
+       #if($rendering == "ordered")##
+          </ol>##
+       #else##
+          </ul>##
+       #end##
+    #end##
+#elseif ($perc.isEditMode())
+        Insert list of links based on query here.
+#end
+    </div>
+    ]]>
+    </Content>    
+</Widget>

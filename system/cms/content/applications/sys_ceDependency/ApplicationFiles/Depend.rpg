@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Depend (sessionid*, revision*, title*, contentid*, contenttypename*, statename*, parents*, children*, createcontentlookupurl*, userstatusincludeurl* )>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT createcontentlookupurl (#PCDATA)>
+<!ELEMENT children (#PCDATA)>
+<!ELEMENT parents (#PCDATA)>
+<!ELEMENT statename (#PCDATA)>
+<!ELEMENT contenttypename (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT revision (#PCDATA)>
+<!ELEMENT sessionid (#PCDATA)>

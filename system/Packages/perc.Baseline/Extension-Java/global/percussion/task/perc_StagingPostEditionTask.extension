@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="editiontask" context="global/percussion/task/" deprecated="no" handler="Java" name="perc_StagingPostEditionTask" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">
+		Workflows the edition
+		</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.sitemanage.task.impl.PSStagingPostEditionTask</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.rx.publisher.IPSEditionTask"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

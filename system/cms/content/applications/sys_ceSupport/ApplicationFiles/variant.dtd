@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT DisplayEntry (DisplayLabel*, contenttypeid*, Value* )>
+<!ELEMENT Value (#PCDATA)>
+<!ELEMENT contenttypeid (#PCDATA)>
+<!ELEMENT DisplayLabel (#PCDATA)>
+<!ELEMENT variant (DisplayEntry* )>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xsd:schema xmlns:com="urn:www.percussion.com/6.0.0/common" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/common" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="BasicObjects.xsd" />
+  <xsd:element name="PSContentEditorSharedDef">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="com:PSXSharedFieldGroup" />
+        <xsd:element minOccurs="0" ref="com:PSXCommandHandlerStylesheets" />
+        <xsd:element minOccurs="0" ref="com:PSXApplicationFlow" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PSXSharedFieldGroup">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="com:PSXContainerLocator" />
+        <xsd:element ref="com:PSXFieldSet" />
+        <xsd:element ref="com:PSXUIDefinition" />
+        <xsd:element minOccurs="0" ref="com:PSXValidationRules" />
+        <xsd:element minOccurs="0" ref="com:PSXInputTranslations" />
+        <xsd:element minOccurs="0" ref="com:PSXOutputTranslations" />
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" use="required" />
+      <xsd:attribute name="filename" type="xsd:string" use="required">
+        <xsd:annotation>
+          <xsd:documentation>The name of the file from which this was loaded and will be stored back, a relative path including file extension from the default shared definition directory.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

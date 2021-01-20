@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT relatedsearch (slotid*, contentid*, revision*, slotname*, selcontenttype*, author*, contenttitle*, enddate*, startdate*, createcontentlookupurl* )>
+<!ELEMENT createcontentlookupurl (#PCDATA)>
+<!ELEMENT startdate (#PCDATA)>
+<!ELEMENT enddate (#PCDATA)>
+<!ELEMENT contenttitle (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT selcontenttype (#PCDATA)>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT revision (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT slotid (#PCDATA)>

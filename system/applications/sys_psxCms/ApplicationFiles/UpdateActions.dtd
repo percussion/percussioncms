@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Action (PSXAction, PSXActionProperty?, PSXActionParameter?, PSXVisibilityContextEntry?, PSXMenuModeContextMapping?, PSXMenuChild? )>
+<!ELEMENT PSXMenuChild (PSXKey )>
+<!ATTLIST  PSXMenuChild state CDATA #REQUIRED>
+<!ATTLIST  PSXMenuChild childId CDATA #REQUIRED>
+<!ELEMENT PSXMenuModeContextMapping (PSXKey )>
+<!ATTLIST  PSXMenuModeContextMapping state CDATA #REQUIRED>
+<!ATTLIST  PSXMenuModeContextMapping uiContextId CDATA #REQUIRED>
+<!ATTLIST  PSXMenuModeContextMapping modeId CDATA #REQUIRED>
+<!ELEMENT PSXVisibilityContextEntry (PSXKey, Value )>
+<!ATTLIST  PSXVisibilityContextEntry state CDATA #REQUIRED>
+<!ATTLIST  PSXVisibilityContextEntry propName CDATA #REQUIRED>
+<!ATTLIST  PSXVisibilityContextEntry keyControl CDATA #REQUIRED>
+<!ELEMENT PSXActionParameter (PSXKey, Value )>
+<!ATTLIST  PSXActionParameter state CDATA #REQUIRED>
+<!ATTLIST  PSXActionParameter propName CDATA #REQUIRED>
+<!ATTLIST  PSXActionParameter keyControl CDATA #REQUIRED>
+<!ELEMENT PSXActionProperty (PSXKey, Value )>
+<!ELEMENT Value (#PCDATA)>
+<!ELEMENT PSXKey (PROPNAME?, PARAMNAME?, VISIBILITYCONTEXT?, VALUE?, MODEID?, UICONTEXTID?, CHILDACTIONID?, ACTIONID )>
+<!ELEMENT CHILDACTIONID (#PCDATA)>
+<!ELEMENT UICONTEXTID (#PCDATA)>
+<!ELEMENT MODEID (#PCDATA)>
+<!ELEMENT VALUE (#PCDATA)>
+<!ELEMENT VISIBILITYCONTEXT (#PCDATA)>
+<!ELEMENT PARAMNAME (#PCDATA)>
+<!ELEMENT PROPNAME (#PCDATA)>
+<!ATTLIST  PSXActionProperty state CDATA #REQUIRED>
+<!ATTLIST  PSXActionProperty propName CDATA #REQUIRED>
+<!ATTLIST  PSXActionProperty keyControl CDATA #REQUIRED>
+<!ELEMENT PSXAction (PSXSimpleKey, Description?, VERSION )>
+<!ELEMENT VERSION (#PCDATA)>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT ACTIONID (#PCDATA)>
+<!ELEMENT PSXSimpleKey (ACTIONID )>
+<!ATTLIST  PSXAction url CDATA #REQUIRED>
+<!ATTLIST  PSXAction type CDATA #REQUIRED>
+<!ATTLIST  PSXAction state CDATA #REQUIRED>
+<!ATTLIST  PSXAction sortrank CDATA #REQUIRED>
+<!ATTLIST  PSXAction name CDATA #REQUIRED>
+<!ATTLIST  PSXAction label CDATA #REQUIRED>
+<!ATTLIST  PSXAction handler CDATA #REQUIRED>
+<!ELEMENT UpdateActions (Action* )>

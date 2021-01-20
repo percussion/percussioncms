@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings>
+      <binding id="2">
+        <execution-order>1</execution-order>
+        <expression>$sys.item.getProperty('rx:img')</expression>
+        <id>7911077421313436108</id>
+        <jexl-script id="3">
+          <text>$sys.item.getProperty('rx:img');</text>
+        </jexl-script>
+        <variable>$sys.binary</variable>
+      </binding>
+      <binding id="4">
+        <execution-order>2</execution-order>
+        <expression>$sys.item.getProperty('rx:img_type')</expression>
+        <id>7911077421313436109</id>
+        <jexl-script id="5">
+          <text>$sys.item.getProperty('rx:img_type');</text>
+        </jexl-script>
+        <variable>$sys.mimetype</variable>
+      </binding>
+      <binding id="6">
+        <execution-order>3</execution-order>
+        <expression>$sys.item.getProperty('displaytitle').String </expression>
+        <id>7911077421313436110</id>
+        <jexl-script id="7">
+          <text>$sys.item.getProperty('displaytitle').String;</text>
+        </jexl-script>
+        <variable>$sys.metadata.linktext</variable>
+      </binding>
+      <binding id="8">
+        <execution-order>4</execution-order>
+        <expression>$tools.date.format("yyyy-MM-dd'T'HH:mm:ss",$sys.item.getProperty("rx:sys_contentcreateddate").Date)</expression>
+        <id>7911077421313436111</id>
+        <jexl-script id="9">
+          <text>$tools.date.format("yyyy-MM-dd'T'HH:mm:ss",$sys.item.getProperty("rx:sys_contentcreateddate").Date);</text>
+        </jexl-script>
+        <variable>$sys.metadata.dcterms:created</variable>
+      </binding>
+      <binding id="10">
+        <execution-order>5</execution-order>
+        <expression>$sys.item.getProperty('displaytitle').String </expression>
+        <id>7911077421313436112</id>
+        <jexl-script idref="7"/>
+        <variable>$sys.metadata.dcterms:title</variable>
+      </binding>
+      <binding id="11">
+        <execution-order>6</execution-order>
+        <expression>$sys.mimetype.String</expression>
+        <id>7911077421313436113</id>
+        <jexl-script id="12">
+          <text>$sys.mimetype.String;</text>
+        </jexl-script>
+        <variable>$sys.metadata.dcterms:format</variable>
+      </binding>
+    </bindings>
+    <template-slot-ids/>
+    <guid>0-4-618</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/binaryAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset/>
+    <description/>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>perc.imageMainBinary</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type/>
+    <name>perc.imageMainBinary</name>
+    <output-format>Binary</output-format>
+    <publish-when>Default</publish-when>
+    <style-sheet-path/>
+    <template/>
+    <template-type>Local</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

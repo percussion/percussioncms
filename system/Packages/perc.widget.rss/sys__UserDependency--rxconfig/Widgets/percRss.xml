@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!DOCTYPE Widget [
+<!ENTITY defaultDateFormat "D M d, yy 'at' hh:nn">
+]>
+<Widget>
+   <WidgetPrefs title="RSS"
+        contenttype_name="percRssAsset"
+        category="blog,social"
+        description="Display a list of external RSS feeds"
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/rss/images/widgetIconRss.gif"
+        preferred_editor_width="780"
+        preferred_editor_height="275"
+        is_responsive="true"
+        />
+    <UserPref name="perc-feed-item-limit"
+        display_name="Feed item limit"
+        required="false"
+        datatype="enum" default_value="1">
+        <EnumValue value="limit_1" display_value="1" />
+        <EnumValue value="limit_5" display_value="5" />
+        <EnumValue value="limit_10" display_value="10" />
+        <EnumValue value="limit_15" display_value="15" />
+        <EnumValue value="limit_20" display_value="20" />
+        <EnumValue value="limit_25" display_value="25" />
+        <EnumValue value="limit_50" display_value="50" />
+        <EnumValue value="limit_100" display_value="100" />
+        <EnumValue value="limit_-1" display_value="Unlimited" />
+    </UserPref>
+    <UserPref name="perc-feed-show-title" 
+      display_name="Show feed title"
+      default_value="true"
+      datatype="bool" />
+    <UserPref name="perc-feed-show-item-title" 
+      display_name="Show item title"
+      default_value="true"
+      datatype="bool" />
+    <UserPref name="perc-feed-show-item-date" 
+      display_name="Show date"
+      default_value="true"
+      datatype="bool" />
+    <UserPref name="perc-feed-show-item-description" 
+      display_name="Show description"
+      default_value="true"
+      datatype="bool" />
+    <UserPref name="perc-feed-remove-html" 
+      display_name="Remove HTML from fields before displaying"
+      default_value="true"
+      datatype="bool" />
+    <UserPref name="perc-feed-description-length"
+      display_name="Maximum characters in description"
+      default_value="100"
+      datatype="number" />
+    <UserPref name="perc-feed-item-date-format"
+      display_name="Published date format"
+      default_value="&defaultDateFormat;"
+      datatype="string" /> 
+    <UserPref name="wrappingElement"
+        display_name="HTML element to wrap feed items"
+        required="false"
+        datatype="enum" default_value="none">
+        <EnumValue value="ul" display_value="Unordered List (ul)" />
+        <EnumValue value="ol" display_value="Ordered List (ol)" />
+        <EnumValue value="div" display_value="Block (div)" />
+        <EnumValue value="none" display_value="None - Items are unwrapped" />
+    </UserPref>
+    <UserPref name="wrappingElemAriaLabel"
+      display_name="Wrapped feed items aria label"
+      datatype="string" default_value=""/>
+    <UserPref name="titleElement"
+        display_name="HTML Format to use for feed title"
+        required="false"
+        datatype="enum" default_value="div">
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="div" display_value="Div" />
+        <EnumValue value="span" display_value="Span" />
+    </UserPref>
+    <UserPref name="itemTitleElement"
+        display_name="HTML Format to use for feed Item Titles"
+        required="false"
+        datatype="enum" default_value="div">
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="div" display_value="Div" />
+        <EnumValue value="span" display_value="Span" />
+    </UserPref>
+    <UserPref name="itemDateElement"
+        display_name="HTML Format to use for feed Item Dates"
+        required="false"
+        datatype="enum" default_value="div">
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="div" display_value="Div" />
+        <EnumValue value="span" display_value="Span" />
+    </UserPref>
+    <UserPref name="itemDescriptionElement"
+        display_name="HTML Format to use for feed item Descriptions"
+        required="false"
+        datatype="enum" default_value="div">
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="div" display_value="Div" />
+        <EnumValue value="span" display_value="Span" />
+    </UserPref>
+    <UserPref name="feedId"
+      display_name="id attribute for feed"
+      datatype="string" />
+    <UserPref name="ariaRole"
+      display_name="RSS Feed aria-role"
+      datatype="string" default_value="region"/>
+    <CssPref name="rootclass"
+      display_name="CSS Root Class" 
+      datatype="string" /> 
+    <Code type="jexl">
+    <![CDATA[
+        $percFeedItemLimit = $perc.widget.item.properties.get('perc-feed-item-limit');
+        $percFeedShowTitle = $perc.widget.item.properties.get('perc-feed-show-title');
+        $percFeedShowItemTitle = $perc.widget.item.properties.get('perc-feed-show-item-title');
+        $percFeedShowItemDate = $perc.widget.item.properties.get('perc-feed-show-item-date');
+        $percFeedShowItemDescription = $perc.widget.item.properties.get('perc-feed-show-item-description');
+        $percFeedRemoveHtml = $perc.widget.item.properties.get('perc-feed-remove-html');
+        $percFeedDescriptionLength = $perc.widget.item.properties.get('perc-feed-description-length');
+        $percFeedDescriptionEmpty = $perc.widget.item.properties.get('perc-feed-description-length').toString().isEmpty();
+        $percFeedItemDateFormat = $perc.widget.item.properties.get('perc-feed-item-date-format');
+        $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+        $wrappingElement = $perc.widget.item.properties.get('wrappingElement');
+        if ($wrappingElement.equals('ol') || $wrappingElement.equals('ul') )
+        {
+        $itemElement = "li";
+        } else {
+        $itemElement = "div";
+        }
+
+        $titleElement = $perc.widget.item.properties.get('titleElement');
+        $itemTitleElement = $perc.widget.item.properties.get('itemTitleElement');
+        $itemDateElement = $perc.widget.item.properties.get('itemDateElement');
+        $itemDescriptionElement = $perc.widget.item.properties.get('itemDescriptionElement');
+
+        if ($titleElement == '' || $titleElement == null) {
+            $titleElement = 'div';
+        }
+        if ($itemTitleElement == '' || $itemTitleElement == null) {
+            $itemTitleElement = 'div';
+        }
+        if ($itemDateElement == '' || $itemDateElement == null) {
+            $itemDateElement = 'div';
+        }
+        if ($itemDescriptionElement == '' || $itemDescriptionElement == null) {
+          $itemDescriptionElement = 'div';
+        }
+        
+        $feedId = $perc.widget.item.properties.get('feedId');
+        if ($feedId == '' || $feedId == null) {
+          $feedId = $perc.widget.item.id + "_feed";
+        }
+
+        $wrappingElemAriaLabel = $perc.widget.item.properties.get('wrappingElemAriaLabel');
+
+        $ariaRole = $perc.widget.item.properties.get('ariaRole');
+        if ($ariaRole != '' && $ariaRole != null) {
+          $ariaRole = ' role = "' + $ariaRole + '"';
+        }
+        
+        $q = $tools.esc.q;
+
+        $linkContext = $perc.linkContext;
+        $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+        if ( ! $assetItems.isEmpty() ) {
+            $assetItem = $assetItems.get(0);
+            $percUrlFeed = $rx.pageutils.html($assetItem, 'rss_url');
+        } else {
+            $percUrlFeed = "";
+        }
+        
+        if($percFeedDescriptionLength == ''){
+            $percFeedDescriptionLength = -1;
+        }
+        
+        $dLdata = $rx.string.getJSONObject();
+        $dLdata.put("urlFeed",$rx.pageutils.encryptString($percUrlFeed));
+        $dLdata.put("itemLimit",$percFeedItemLimit);
+        $dLdata.put("showTitle",$percFeedShowTitle);
+        $dLdata.put("showItemTitle",$percFeedShowItemTitle);
+        $dLdata.put("showItemDate",$percFeedShowItemDate);
+        $dLdata.put("showItemDescription",$percFeedShowItemDescription);
+        $dLdata.put("itemRemoveHtml",$percFeedRemoveHtml);
+        $dLdata.put("itemDescriptionLength",$percFeedDescriptionLength);
+        $dLdata.put("itemDescriptionEmpty",$percFeedDescriptionEmpty);
+        $dLdata.put("itemDateFormat",$percFeedItemDateFormat);
+        $dLdata.put("wrappingElement",$wrappingElement);
+        $dLdata.put("titleElement",$titleElement);
+        $dLdata.put("itemElement",$itemElement);
+        $dLdata.put("itemTitleElement",$itemTitleElement);
+        $dLdata.put("itemDateElement",$itemDateElement);
+        $dLdata.put("itemDescriptionElement",$itemDescriptionElement);
+        $dLdata.put("feedId",$feedId);
+        $dLdata.put("wrappingElemAriaLabel",$wrappingElemAriaLabel);
+
+        $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+
+        $dLdata.put("deliveryurl",$dsUrl);
+        $dynamicListData = $tools.esc.xml($dLdata);
+    ]]>
+    
+    </Code>
+    <Content type="velocity">
+    <![CDATA[
+    #loadRelatedWidgetContents()
+
+    <div aria-busy="true" id="$!{feedId}" $!{ariaRole} aria-live="polite" aria-relevant="additions" aria-atomic="true" class="perc-feed-widget $!{rootclass}" data-query="$!dynamicListData">
+        #if ($perc.isEditMode())
+            #if ($percUrlFeed == "")
+                #createEmptyWidgetContent("feed-sample-content", "This rss widget is showing sample content.")
+            #else
+                #createEmptyWidgetContent("feed-edit-content", "Preview the page or asset to view this rss.")
+            #end
+        #else
+            #if ($percUrlFeed != "" && $perc.isPreviewMode())
+                <${itemElement} class="feed-edit-content" title="Preview the page or asset to view this rss"></$itemElement>
+            #else
+              
+            #end
+        #end
+    </div>
+    ]]>
+    </Content>
+</Widget>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT RelatedContentItem (ItemText, ItemDescription )>
+<!ELEMENT ItemDescription (#PCDATA)>
+<!ELEMENT ItemText (#PCDATA)>
+<!ATTLIST  RelatedContentItem relationship CDATA #REQUIRED>
+<!ATTLIST  RelatedContentItem revisionid CDATA #REQUIRED>
+<!ATTLIST  RelatedContentItem variantid CDATA #REQUIRED>
+<!ATTLIST  RelatedContentItem sysid CDATA #REQUIRED>
+<!ATTLIST  RelatedContentItem contentid CDATA #REQUIRED>
+<!ATTLIST  RelatedContentItem sortrank CDATA #REQUIRED>
+<!ATTLIST  RelatedContentItem syssortorder CDATA #REQUIRED>
+<!ATTLIST  RelatedContentItem itemcontentid CDATA #REQUIRED>
+<!ELEMENT RelatedContentItemSet (RelatedContentItem* )>

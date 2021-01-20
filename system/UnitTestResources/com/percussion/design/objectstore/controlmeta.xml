@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	List of test control meta objects used by the PSControlDependencyMapTest
+-->
+<Controls xmlns="http://www.w3.org/1999/xhtml" xmlns:psxctl="URN:percussion.com/control">
+	<psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_CalendarSimple" dimension="single" choiceset="none">
+		<psxctl:Description>A input box with icon to pop-up calendar picker</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="tabindex" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="alt" datatype="String" paramtype="img">
+				<psxctl:Description>This parameter specifies alternate text the calendar picker icon, for user agents that cannot display images. The default value is "Calendar Pop-up"</psxctl:Description>
+				<psxctl:DefaultValue>Calendar Pop-up</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="src" datatype="String" paramtype="img">
+				<psxctl:Description>This parameter specifies the location of the image resource used for the calendar picker icon. The default value is "../sys_resources/images/cal.gif"</psxctl:Description>
+				<psxctl:DefaultValue>../sys_resources/images/cal.gif</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="height" datatype="String" paramtype="img">
+				<psxctl:Description>This parameter specifies the height of the calendar picker icon. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 20.</psxctl:Description>
+				<psxctl:DefaultValue>20</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="width" datatype="String" paramtype="img">
+				<psxctl:Description>This parameter specifies the width of the calendar picker icon. This parameter may be either a pixel or a percentage of the available horizontal space. The default value is 20.</psxctl:Description>
+				<psxctl:DefaultValue>20</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="formname" datatype="String" paramtype="jscript">
+				<psxctl:Description>This parameter specifies the name of the form that contains this control. It is used by the calendar's JavaScript. The default value is "EditForm"</psxctl:Description>
+				<psxctl:DefaultValue>EditForm</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="time" datatype="String" paramtype="jscript">
+				<psxctl:Description>This parameter specifies whether time is to be displayed or not.If 0 then no time.</psxctl:Description>
+				<psxctl:DefaultValue>0</psxctl:DefaultValue>
+			</psxctl:Param>
+		</psxctl:ParamList>
+		<psxctl:AssociatedFileList>
+			<psxctl:FileDescriptor name="calPopup.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../sys_resources/js/calPopup.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+			<psxctl:FileDescriptor name="datePatternValidation.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../sys_resources/js/datePatternValidation.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+		</psxctl:AssociatedFileList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_CheckBoxGroup" dimension="array" choiceset="required">
+		<psxctl:Description>a group of check boxes with the same HTML param name</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="columncount" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the number of column(s) displayed.</psxctl:Description>
+				<psxctl:DefaultValue>1</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="columnwidth" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the width of the column in pixels or percentage.</psxctl:Description>
+				<psxctl:DefaultValue>100%</psxctl:DefaultValue>
+			</psxctl:Param>
+		</psxctl:ParamList>
+		<psxctl:AssociatedFileList>
+			<psxctl:FileDescriptor name="selectall.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../sys_resources/js/selectall.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+		</psxctl:AssociatedFileList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_CheckBoxTree" dimension="array" choiceset="required">
+	      <psxctl:Description>Tree of check boxes</psxctl:Description>
+	      <psxctl:ParamList>
+	         <psxctl:Param name="width" datatype="String" paramtype="generic">
+	            <psxctl:Description>This parameter specifies the width of the applet. This parameter may be either a pixel or a percentage of the available horizontal space. The default value is "700".</psxctl:Description>
+	            <psxctl:DefaultValue>400</psxctl:DefaultValue>
+	         </psxctl:Param>
+	         <psxctl:Param name="height" datatype="String" paramtype="generic">
+	            <psxctl:Description>This parameter specifies the height of the applet. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 250.</psxctl:Description>
+	            <psxctl:DefaultValue>300</psxctl:DefaultValue>
+	         </psxctl:Param>
+	         <psxctl:Param name="tree_src_url" datatype="String" paramtype="generic">
+	            <psxctl:Description>This parameter specifies the location of the xml that will defines the tree</psxctl:Description>
+	            <psxctl:DefaultValue>../rx_resources/treedef.xml</psxctl:DefaultValue>
+	         </psxctl:Param>
+	         <psxctl:Param name="formname" datatype="String" paramtype="jscript">
+	            <psxctl:Description>name of the form that contains this control</psxctl:Description>
+	            <psxctl:DefaultValue>EditForm</psxctl:DefaultValue>
+	         </psxctl:Param>
+	      </psxctl:ParamList>
+	      <psxctl:AssociatedFileList>
+	      </psxctl:AssociatedFileList>
+	      
+	      <psxctl:Dependencies>
+	         <psxctl:Dependency status="setupOptional" occurrence="multiple">
+	         <psxctl:Default>
+	             
+	              <PSXExtensionCall id="0">
+	                     <name>Java/global/percussion/exit/sys_paramStringListToParamArray</name>
+	                     <PSXExtensionParamValue id="0">
+	                        <value>
+	                           <PSXTextLiteral id="0">
+	                              <text>$(fieldName)</text>
+	                           </PSXTextLiteral>
+	                        </value>
+	                     </PSXExtensionParamValue>
+	                     <PSXExtensionParamValue id="0">
+	                        <value>
+	                           <PSXTextLiteral id="0">
+	                              <text>;</text>
+	                           </PSXTextLiteral>
+	                        </value>
+	                     </PSXExtensionParamValue>
+	                     <PSXExtensionParamValue id="0">
+	                        <value>
+	                           <PSXTextLiteral id="0">
+	                              <text>$(fieldName)</text>
+	                           </PSXTextLiteral>
+	                        </value>
+	                     </PSXExtensionParamValue>
+	                     <PSXExtensionParamValue id="0">
+	                        <value>
+	                           <PSXTextLiteral id="0">
+	                              <text>yes</text>
+	                           </PSXTextLiteral>
+	                        </value>
+	                     </PSXExtensionParamValue>
+	                  </PSXExtensionCall>
+	         </psxctl:Default>	        
+	         </psxctl:Dependency>
+	      </psxctl:Dependencies>
+	     
+	   </psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_DropDownSingle" dimension="single" choiceset="required">
+		<psxctl:Description>a drop down combo box for selecting a single value</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="size" datatype="Number" paramtype="generic">
+				<psxctl:Description>If the element is presented as a scrolled list box, This parameter specifies the number of rows in the list that should be visible at the same time.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="multiple" datatype="String" paramtype="generic">
+				<psxctl:Description>If set, this boolean attribute allows multiple selections. If not set, the element only permits single selections.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="tabindex" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="disabled" datatype="String" paramtype="generic">
+				<psxctl:Description>If set, this boolean attribute disables the control for user input.</psxctl:Description>
+			</psxctl:Param>
+		</psxctl:ParamList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_EditBox" dimension="single" choiceset="none">
+		<psxctl:Description>The standard control for editing text:  an &lt;input type="text"&gt; tag.</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="size" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter tells the user agent the initial width of the control. The width is given in number of characters.  The default value is 50.</psxctl:Description>
+				<psxctl:DefaultValue>50</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="maxlength" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the maximum number of characters the user may enter. This number may exceed the specified size, in which case the user agent should offer a scrolling mechanism. The default value for This parameter is an unlimited number.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="tabindex" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+			</psxctl:Param>
+		</psxctl:ParamList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_EditLive" dimension="single" choiceset="none">
+		<psxctl:Description>Ephox EditLive HTML Editor</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="width" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the width of the inline frame. This parameter may be either a pixel or a percentage of the available horizontal space. The default value is "700".</psxctl:Description>
+				<psxctl:DefaultValue>760</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="height" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the height of the inline frame. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 250.</psxctl:Description>
+				<psxctl:DefaultValue>250</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. This file must be in the /rx_resources/ephox folder.  The default value is "config.xml".</psxctl:Description>
+				<psxctl:DefaultValue>../rx_resources/ephox/elj_config.xml</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="config_download" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the location of the download directory The default value is "../rx_resources/ephox/editlivejava".</psxctl:Description>
+				<psxctl:DefaultValue>../rx_resources/ephox/editlivejava</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="InlineLinkSlot" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline link slot. The inline search dialog box shows the content types that have at least one variant added to the inline link slot. The default value is system inline link slotid 103.</psxctl:Description>
+				<psxctl:DefaultValue>103</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="InlineImageSlot" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline image slot. The inline search dialog box shows the content types that have at least one variant added to the inline image slot. The default value is system inline image slotid 104.</psxctl:Description>
+				<psxctl:DefaultValue>104</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="InlineVariantSlot" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline variant slot. The inline search dialog box shows the content types that have at least one variant added to the inline variant slot. The default value is system inline variant slotid 105.</psxctl:Description>
+				<psxctl:DefaultValue>105</psxctl:DefaultValue>
+			</psxctl:Param>
+                        <psxctl:Param name="DebugLevel" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the debug level for the EditLive Applet. The allowed levels are (fatal, error, warn, info, debug, http) </psxctl:Description>
+				<psxctl:DefaultValue>info</psxctl:DefaultValue>
+			</psxctl:Param>			
+		</psxctl:ParamList>
+		<psxctl:AssociatedFileList>
+			<psxctl:FileDescriptor name="editlivejava.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../rx_resources/ephox/editlivejava/editlivejava.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+			<psxctl:FileDescriptor name="rx_ephox.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../rx_resources/ephox/rx_ephox.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+		</psxctl:AssociatedFileList>
+		<psxctl:Dependencies>
+			<psxctl:Dependency status="setupOptional" occurrence="multiple">
+				<psxctl:Default>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>$(fieldName)</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>rxW2Ktidy.properties</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>rxW2KserverPageTags.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>yes</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</psxctl:Default>
+			</psxctl:Dependency>
+			
+		</psxctl:Dependencies>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_File" dimension="single" choiceset="none">
+		<psxctl:Description>The standard control for uploading files:  an &lt;input type="file"&gt; tag.</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="size" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter tells the user agent the initial width of the control. The width is given in pixels. The default value is 50.</psxctl:Description>
+				<psxctl:DefaultValue>50</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="tabindex" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="cleartext" datatype="String" paramtype="custom">
+				<psxctl:Description>This parameter determines the text that will be displayed along with a checkbox when the field supports being cleared.  The default value is 'Clear'.</psxctl:Description>
+				<psxctl:DefaultValue>Clear</psxctl:DefaultValue>
+			</psxctl:Param>
+		</psxctl:ParamList>
+		<psxctl:Dependencies>
+			<psxctl:Dependency status="readyToGo" occurrence="single">
+				<psxctl:Default>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_FileInfo</name>
+					</PSXExtensionCall>
+				</psxctl:Default>
+			</psxctl:Dependency>
+		</psxctl:Dependencies>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" choiceset="none" dimension="single" name="sys_FileWord">
+		<psxctl:Description>a file upload input control with MS Word launcher</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param datatype="String" name="id" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param datatype="String" name="class" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param datatype="String" name="style" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param datatype="Number" name="size" paramtype="generic">
+				<psxctl:Description>This parameter tells the user agent the initial width of the control. The width is given in pixels. The default value is 50.</psxctl:Description>
+				<psxctl:DefaultValue>50</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param datatype="Number" name="tabindex" paramtype="generic">
+				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param datatype="String" name="cleartext" paramtype="custom">
+				<psxctl:Description>This parameter determines the text that will be displayed along with a checkbox when the field supports being cleared.  The default value is 'Clear Word'.</psxctl:Description>
+				<psxctl:DefaultValue>Clear Word</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param datatype="String" name="RxContentEditorURL" paramtype="msword">
+				<psxctl:Description>This parameter specifies the absolute URL to the content editor of the current content item.  The value is passed to the OCX control, which uses it to obtain the metadata fields of the current content item.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param datatype="String" name="WordTemplateURL" paramtype="msword">
+				<psxctl:Description>This parameter specifies the absolute URL to retrieve the Microsoft Word template document which provides the macros used to edit content items within Word.  The value is passed to the OCX control.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param datatype="String" name="ContentBodyURL" paramtype="msword">
+				<psxctl:Description>This parameter specifies the absolute URL to retrieve the Microsoft Word document associated with the current content item.  The value is passed to the OCX control.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param datatype="String" name="InlineLinkSlot" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline link slot. The inline search dialog box shows the content types that have at least one variant added to the inline link slot. The default value is system inline link slotid 103.</psxctl:Description>
+				<psxctl:DefaultValue>103</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param datatype="String" name="InlineImageSlot" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline image slot. The inline search dialog box shows the content types that have at least one variant added to the inline image slot. The default value is system inline image slotid 104.</psxctl:Description>
+				<psxctl:DefaultValue>104</psxctl:DefaultValue>
+			</psxctl:Param>
+		</psxctl:ParamList>
+		<psxctl:Dependencies>
+			<psxctl:Dependency occurrence="single" status="readyToGo">
+				<psxctl:Default>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_FileInfo</name>
+					</PSXExtensionCall>
+				</psxctl:Default>
+			</psxctl:Dependency>
+		</psxctl:Dependencies>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_HiddenInput" dimension="single" choiceset="none">
+		<psxctl:Description>a hidden input field</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+		</psxctl:ParamList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_HtmlEditor" dimension="single" choiceset="none" deprecate="yes" replacewith="sys_eWebEditPro">
+		<psxctl:Description>WYSIWYG HTML Editor</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="NAME" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to the inline frame. The default value is "dynamsg".</psxctl:Description>
+				<psxctl:DefaultValue>dynamsg</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to the inline frame element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to the inline frame element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the inline frame element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="width" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the width of the inline frame. This parameter may be either a pixel or a percentage of the available horizontal space. The default value is "100%".</psxctl:Description>
+				<psxctl:DefaultValue>100%</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="height" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the height of the inline frame. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 250.</psxctl:Description>
+				<psxctl:DefaultValue>250</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="SCROLLING" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies scrolling information for the inline frame.  The default value is "auto".</psxctl:Description>
+				<psxctl:DefaultValue>auto</psxctl:DefaultValue>
+				<psxctl:ChoiceList>
+					<psxctl:Entry>auto</psxctl:Entry>
+					<psxctl:Entry>yes</psxctl:Entry>
+					<psxctl:Entry>no</psxctl:Entry>
+				</psxctl:ChoiceList>
+			</psxctl:Param>
+			<psxctl:Param name="SRC" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the location of the HTML that will populate the inline frame. The default value is "../sys_resources/texteditor/deditor.html".</psxctl:Description>
+				<psxctl:DefaultValue>../sys_resources/texteditor/deditor.html</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="formname" datatype="String" paramtype="jscript">
+				<psxctl:Description>This parameter specifies the name of the form that contains this control. It is used by the editor's JavaScript. The default value is "EditForm"</psxctl:Description>
+				<psxctl:DefaultValue>EditForm</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="InlineLinkSlot" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline link slot. The inline search dialog box shows the content types that have at least one variant added to the inline link slot. The default value is system inline link slotid 103.</psxctl:Description>
+				<psxctl:DefaultValue>103</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="InlineImageSlot" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline image slot. The inline search dialog box shows the content types that have at least one variant added to the inline image slot. The default value is system inline image slotid 104.</psxctl:Description>
+				<psxctl:DefaultValue>104</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="InlineVariantSlot" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inlinevariant slot. The inline search dialog box shows the content types that have at least one variant added to the inline variant slot. The default value is system inline variant slotid 105.</psxctl:Description>
+				<psxctl:DefaultValue>105</psxctl:DefaultValue>
+			</psxctl:Param>
+		</psxctl:ParamList>
+		<psxctl:AssociatedFileList>
+			<psxctl:FileDescriptor name="textedit.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../sys_resources/js/textedit.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+		</psxctl:AssociatedFileList>
+		<psxctl:Dependencies>
+			<psxctl:Dependency status="setupOptional" occurrence="multiple">
+				<psxctl:Default>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>$(fieldName)</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>rxW2Ktidy.properties</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>rxW2KserverPageTags.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>yes</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</psxctl:Default>
+			</psxctl:Dependency>
+		</psxctl:Dependencies>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_RadioButtons" dimension="single" choiceset="required">
+		<psxctl:Description>A set of radio buttons for selecting a single value</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="tabindex" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+			</psxctl:Param>
+			<!--		<psxctl:Param name="disabled" datatype="String" paramtype="generic">
+				<psxctl:Description>If set, this boolean attribute disables the control for user input.</psxctl:Description>
+			</psxctl:Param> -->
+		</psxctl:ParamList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_RelatedContentTable" dimension="table" choiceset="none">
+		<psxctl:Description>A related content table</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to the inline frame element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to the inline frame element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the inline frame element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="summary" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter provides a summary of the table's purpose and structure for user agents rendering to non-visual media such as speech and Braille.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="width" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the desired width of the entire table.  This parameter may be either a number of pixels or a percentage of the available horizontal space. The default value is "100%".</psxctl:Description>
+				<psxctl:DefaultValue>100%</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="cellspacing" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies how much space the user agent should leave between the left side of the table and the left-hand side of the leftmost column, the top of the table and the top side of the topmost row, and so on for the right and bottom of the table. The attribute also specifies the amount of space to leave between cells.  The default value is 0.</psxctl:Description>
+				<psxctl:DefaultValue>0</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="cellpadding" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the amount of space between the border of the cell and its contents. If the value of this attribute is a pixel length, all four margins should be this distance from the contents. If the value of the attribute is a percentage length, the top and bottom margins should be equally separated from the content based on a percentage of the available vertical space, and the left and right margins should be equally separated from the content based on a percentage of the available horizontal space. The default value is 5.</psxctl:Description>
+				<psxctl:DefaultValue>5</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="border" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the width (in pixels only) of the frame around the table. The default value is 1.</psxctl:Description>
+				<psxctl:DefaultValue>1</psxctl:DefaultValue>
+			</psxctl:Param>
+		</psxctl:ParamList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_SingleCheckBox" dimension="single" choiceset="required">
+		<psxctl:Description>a group of check boxes with the same HTML param name</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>XHTML 1.0 attribute</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>XHTML 1.0 attribute</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>XHTML 1.0 attribute</psxctl:Description>
+			</psxctl:Param>
+		</psxctl:ParamList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_Table" dimension="table" choiceset="none">
+		<psxctl:Description>A simple table</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to the inline frame element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the inline frame element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="summary" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter provides a summary of the table's purpose and structure for user agents rendering to non-visual media such as speech and Braille.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="width" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the desired width of the entire table.  This parameter may be either a number of pixels or a percentage of the available horizontal space. The default value is "100%".</psxctl:Description>
+				<psxctl:DefaultValue>100%</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="cellspacing" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies how much space the user agent should leave between the left side of the table and the left-hand side of the leftmost column, the top of the table and the top side of the topmost row, and so on for the right and bottom of the table. The attribute also specifies the amount of space to leave between cells.  The default value is 0.</psxctl:Description>
+				<psxctl:DefaultValue>0</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="cellpadding" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the amount of space between the border of the cell and its contents. If the value of this attribute is a pixel length, all four margins should be this distance from the contents. If the value of the attribute is a percentage length, the top and bottom margins should be equally separated from the content based on a percentage of the available vertical space, and the left and right margins should be equally separated from the content based on a percentage of the available horizontal space. The default value is 5.</psxctl:Description>
+				<psxctl:DefaultValue>5</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="border" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the width (in pixels only) of the frame around the table. The default value is 1.</psxctl:Description>
+				<psxctl:DefaultValue>1</psxctl:DefaultValue>
+			</psxctl:Param>
+		</psxctl:ParamList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_TextArea" dimension="single" choiceset="none">
+		<psxctl:Description>A simple text area</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="rows" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the number of visible text lines. The default value is 4.</psxctl:Description>
+				<psxctl:DefaultValue>4</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="cols" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the visible width in average character widths. The default value is 80.</psxctl:Description>
+				<psxctl:DefaultValue>80</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="tabindex" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+			</psxctl:Param>
+		</psxctl:ParamList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_VariantDropDown" dimension="single" choiceset="optional" deprecated="yes">
+		<psxctl:Description>a drop down combo box for selecting a single variant</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to the inline frame element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to the inline frame element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the inline frame element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="size" datatype="Number" paramtype="generic">
+				<psxctl:Description>If the element is presented as a scrolled list box, This parameter specifies the number of rows in the list that should be visible at the same time.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="multiple" datatype="String" paramtype="generic">
+				<psxctl:Description>If set, this boolean attribute allows multiple selections. If not set, the element only permits single selections.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="tabindex" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="disabled" datatype="String" paramtype="generic">
+				<psxctl:Description>If set, this boolean attribute disables the control for user input.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="OutputFormat" datatype="String" paramtype="custom">
+				<psxctl:Description>This parameter selects the output format (snippet or page).</psxctl:Description>
+			</psxctl:Param>
+		</psxctl:ParamList>
+	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_webImageFX" dimension="single" choiceset="none">
+		<psxctl:Description>Custom Ektron control for editing and uploading image files:  an &lt;input type="file"&gt; tag.</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="id" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="class" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+				<psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="style" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+			</psxctl:Param>
+			<psxctl:Param name="width" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter tells the user agent the initial width of the control. The width is given in pixels. The default value is 50.</psxctl:Description>
+				<psxctl:DefaultValue>800</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="height" datatype="Number" paramtype="generic">
+				<psxctl:Description>This parameter tells the user agent the initial width of the control. The width is given in pixels. The default value is 50.</psxctl:Description>
+				<psxctl:DefaultValue>400</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. The default value is "../rx_resources/webimagefx/ImageEditConfig.xml".</psxctl:Description>
+				<psxctl:DefaultValue>../rx_resources/webimagefx/ImageEditConfig.xml</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="cleartext" datatype="String" paramtype="custom">
+				<psxctl:Description>This parameter determines the text that will be displayed along with a checkbox when the field supports being cleared.  The default value is 'Clear'.</psxctl:Description>
+				<psxctl:DefaultValue>Clear</psxctl:DefaultValue>
+			</psxctl:Param>
+		</psxctl:ParamList>
+		<psxctl:AssociatedFileList>
+			<psxctl:FileDescriptor name="webimagefx.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../rx_resources/webimagefx/webimagefx.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+		</psxctl:AssociatedFileList>
+		<psxctl:Dependencies>
+			<psxctl:Dependency status="readyToGo" occurrence="single">
+				<psxctl:Default>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_FileInfo</name>
+					</PSXExtensionCall>
+				</psxctl:Default>
+			</psxctl:Dependency>
+			<psxctl:Dependency status="readyToGo" occurrence="multiple">
+				<psxctl:Default>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_OtherExit</name>
+					</PSXExtensionCall>
+				</psxctl:Default>
+			</psxctl:Dependency>			
+		</psxctl:Dependencies>
+	</psxctl:ControlMeta>
+</Controls>

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (display*, type*, value*, sequence*, id* )>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT sequence (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT display (#PCDATA)>
+<!ELEMENT CreateContentlookup (item* )>

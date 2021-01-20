@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="generic" context="global/percussion/generic/" deprecated="no" handler="Java" name="perc_AssetRename" restoreRequestParamsOnError="yes">
+      <initParam name="com.percussion.user.description">Renames the assets sys_title based on a filename field and will continue to try to rename if its not unique</initParam>
+      <initParam name="com.percussion.extension.version">2</initParam>
+      <initParam name="className">com.percussion.assetmanagement.dao.impl.PSAssetRenameItemInputTransformer</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <interface name="com.percussion.extension.IPSItemInputTransformer"/>
+      <PSXExtensionParamDef id="0">
+         <name>fileNameField</name>
+         <dataType>java.lang.String</dataType>
+         <description>The field from which the sys_title should be derived from.</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

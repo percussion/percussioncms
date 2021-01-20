@@ -1,0 +1,108 @@
+<script src="{ROOT}/sys_resources/js/href.js">;</script>
+<link rel="stylesheet" type="text/css" href="{ROOT}/sys_resources/css/aa/styles.css"/>
+<script>
+   var ___sys_aamode = {AAMODE};
+   if(___sys_aamode == 1)
+      document.writeln('<link rel="stylesheet" type="text/css" href="{ROOT}/sys_resources/css/aa/styles_noborders.css"/>');
+   
+</script>
+<link rel="stylesheet" type="text/css" href="{ROOT}/sys_resources/ps/widget/TreeIcon.css"/>
+<script src="{ROOT}/sys_resources/js/globalErrorMessages.js">;</script>
+<script src="{ROOT}/rx_resources/js/{LOCALE}/globalErrorMessages.js">;</script>
+<script src="{ROOT}/tmx/tmx.jsp?sys_lang={LOCALE}">;</script>
+<script src="{ROOT}/sys_resources/js/browser.js">;</script>
+<script src="{ROOT}/sys_resources/js/datePatternValidation.js">;</script>
+<script src="{ROOT}/sys_resources/js/popmenu.js">;</script>
+<script src="{ROOT}/sys_resources/js/calPopup.js">;</script>
+<script src="{ROOT}/sys_resources/js/formChangeCheck.js">;</script>
+<script src="{ROOT}/sys_resources/dojo/dojo.js">;</script>
+
+<!--
+// DEBUG: Do the following steps to debug any "ps.aa*.js" files
+//        (1) replace the sys_resources/dojo/dojo.js with ../build/dojoTmp/dojo/dojo.js
+//        (2) uncomment the following javascript.
+//
+//        The above 2 steps can be done automatically
+//            by specify "DEBUG_DOJO=true" property with the following Ant scripts
+//               install.xml
+//               rxCopyJarsToAppServer.xml
+//
+//        NOTE, the following "@@DEBUG.TOKEN...." are used by the above Ant scripts
+//              for setting up the debug/development environment
+//
+@@DEBUG.TOKEN.CLOSE.COMMENT@@
+<script src="{ROOT}/sys_resources/dojo/src/io/BrowserIO.js">;</script>
+<script src="{ROOT}/sys_resources/dojo/src/dnd/HtmlDragManager.js">;</script>
+<script src="{ROOT}/sys_resources/dojo/src/dnd/HtmlDragAndDrop.js">;</script>
+<script src="{ROOT}/sys_resources/dojo/src/lfx/html.js">;</script>
+
+<script src="{ROOT}/sys_resources/ps/aa.js">;</script>
+<script src="{ROOT}/sys_resources/ps/aa/controller.js">;</script>
+<script src="{ROOT}/sys_resources/ps/aa/dnd.js">;</script>
+<script src="{ROOT}/sys_resources/ps/aa/Field.js">;</script>
+<script src="{ROOT}/sys_resources/ps/aa/Menu.js">;</script>
+<script src="{ROOT}/sys_resources/ps/aa/Page.js">;</script>
+<script src="{ROOT}/sys_resources/ps/aa/Tree.js">;</script>
+<script src="{ROOT}/sys_resources/ps/aa/SnippetMove.js">;</script>
+<script src="{ROOT}/sys_resources/ps/UserInfo.js">;</script>
+<script src="{ROOT}/sys_resources/ps/io/Actions.js">;</script>
+<script src="{ROOT}/sys_resources/ps/io/Response.js">;</script>
+<script src="{ROOT}/sys_resources/ps/util.js">;</script>
+<script src="{ROOT}/sys_resources/ps/workflow/WorkflowActions.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/Autoscroller.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/ContentPaneProgress.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/keyboard.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/PopupMenu.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/MenuBar2.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/MenuBarIcon.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/MenuBarItem2.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/MenuBarItemDropDown.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/PSSplitContainer.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/ScrollableNodes.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/Tree.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/TreeSelector.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/TreeIcon.js">;</script>
+<script src="{ROOT}/sys_resources/ps/widget/TreeDndController.js">;</script>
+<script src="{ROOT}/sys_resources/ps/content/Browse.js">;</script>
+<script src="{ROOT}/sys_resources/ps/content/BrowseTabPanel.js">;</script>
+<script src="{ROOT}/sys_resources/ps/content/FolderSitesBaseTabPanel.js">;</script>
+<script src="{ROOT}/sys_resources/ps/content/FoldersTabPanel.js">;</script>
+<script src="{ROOT}/sys_resources/ps/content/SitesTabPanel.js">;</script>
+<script src="{ROOT}/sys_resources/ps/content/SearchTabPanel.js">;</script>
+
+@@DEBUG.TOKEN.REMOVE.COMMENT@@-->
+
+<!--
+The following JavaScript files need to be included explicitly (instead of
+include them in the compressed dojo.js); otherwise, the UI may not work.
+Have not found the cause of the problem yet.
+-->
+<script src="{ROOT}/sys_resources/ps/content/History.js">;</script>
+<script src="{ROOT}/sys_resources/ps/content/SelectTemplates.js">;</script>
+<script src="{ROOT}/sys_resources/ps/content/SnippetPicker.js">;</script>
+<script src="{ROOT}/sys_resources/ps/content/CreateItem.js">;</script>
+<!-- This file should not be compressed as it is setting some event handlers as soon as it is loaded -->
+<script src="{ROOT}/sys_resources/ps/DivActionHelper.js">;</script>
+
+
+<!-- Required only to debug IE/Safari. To be removed for production. Hit F12 to show debug console on Windows (IE)
+<script language="javascript" src="{ROOT}/sys_resources/firebug/firebug.js"></script>
+ -->
+
+<script >
+
+var rawurl = self.location.href;
+var pos = rawurl.indexOf("/",9);
+var __rxroot = (pos == -1 ? rawurl : rawurl.substring(0, pos)) + "/Rhythmyx";
+
+//Global flag to indicate that the dojo initialization is required for active assembly
+var __isAa = true;
+
+// Turn on console for dojo.debug.
+dojo.require("dojo.debug.console");
+
+dojo.hostenv.writeIncludes();
+
+</script>
+
+{POPUPMENU}

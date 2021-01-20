@@ -1,0 +1,3757 @@
+<?xml version="1.0" encoding="utf-8"?>  <null id="1">
+    <choices>
+      <choice id="2">
+        <description/>
+        <label>-- Select Time Zone --</label>
+        <sequence>1</sequence>
+        <value>Default</value>
+      </choice>
+      <choice id="3">
+        <description/>
+        <label>ACT</label>
+        <sequence>2</sequence>
+        <value>ACT</value>
+      </choice>
+      <choice id="4">
+        <description/>
+        <label>AET</label>
+        <sequence>3</sequence>
+        <value>AET</value>
+      </choice>
+      <choice id="5">
+        <description/>
+        <label>AGT</label>
+        <sequence>4</sequence>
+        <value>AGT</value>
+      </choice>
+      <choice id="6">
+        <description/>
+        <label>ART</label>
+        <sequence>5</sequence>
+        <value>ART</value>
+      </choice>
+      <choice id="7">
+        <description/>
+        <label>AST</label>
+        <sequence>6</sequence>
+        <value>AST</value>
+      </choice>
+      <choice id="8">
+        <description/>
+        <label>Africa/Abidjan</label>
+        <sequence>7</sequence>
+        <value>Africa/Abidjan</value>
+      </choice>
+      <choice id="9">
+        <description/>
+        <label>Africa/Accra</label>
+        <sequence>8</sequence>
+        <value>Africa/Accra</value>
+      </choice>
+      <choice id="10">
+        <description/>
+        <label>Africa/Addis_Ababa</label>
+        <sequence>9</sequence>
+        <value>Africa/Addis_Ababa</value>
+      </choice>
+      <choice id="11">
+        <description/>
+        <label>Africa/Algiers</label>
+        <sequence>10</sequence>
+        <value>Africa/Algiers</value>
+      </choice>
+      <choice id="12">
+        <description/>
+        <label>Africa/Asmara</label>
+        <sequence>11</sequence>
+        <value>Africa/Asmara</value>
+      </choice>
+      <choice id="13">
+        <description/>
+        <label>Africa/Asmera</label>
+        <sequence>12</sequence>
+        <value>Africa/Asmera</value>
+      </choice>
+      <choice id="14">
+        <description/>
+        <label>Africa/Bamako</label>
+        <sequence>13</sequence>
+        <value>Africa/Bamako</value>
+      </choice>
+      <choice id="15">
+        <description/>
+        <label>Africa/Bangui</label>
+        <sequence>14</sequence>
+        <value>Africa/Bangui</value>
+      </choice>
+      <choice id="16">
+        <description/>
+        <label>Africa/Banjul</label>
+        <sequence>15</sequence>
+        <value>Africa/Banjul</value>
+      </choice>
+      <choice id="17">
+        <description/>
+        <label>Africa/Bissau</label>
+        <sequence>16</sequence>
+        <value>Africa/Bissau</value>
+      </choice>
+      <choice id="18">
+        <description/>
+        <label>Africa/Blantyre</label>
+        <sequence>17</sequence>
+        <value>Africa/Blantyre</value>
+      </choice>
+      <choice id="19">
+        <description/>
+        <label>Africa/Brazzaville</label>
+        <sequence>18</sequence>
+        <value>Africa/Brazzaville</value>
+      </choice>
+      <choice id="20">
+        <description/>
+        <label>Africa/Bujumbura</label>
+        <sequence>19</sequence>
+        <value>Africa/Bujumbura</value>
+      </choice>
+      <choice id="21">
+        <description/>
+        <label>Africa/Cairo</label>
+        <sequence>20</sequence>
+        <value>Africa/Cairo</value>
+      </choice>
+      <choice id="22">
+        <description/>
+        <label>Africa/Casablanca</label>
+        <sequence>21</sequence>
+        <value>Africa/Casablanca</value>
+      </choice>
+      <choice id="23">
+        <description/>
+        <label>Africa/Ceuta</label>
+        <sequence>22</sequence>
+        <value>Africa/Ceuta</value>
+      </choice>
+      <choice id="24">
+        <description/>
+        <label>Africa/Conakry</label>
+        <sequence>23</sequence>
+        <value>Africa/Conakry</value>
+      </choice>
+      <choice id="25">
+        <description/>
+        <label>Africa/Dakar</label>
+        <sequence>24</sequence>
+        <value>Africa/Dakar</value>
+      </choice>
+      <choice id="26">
+        <description/>
+        <label>Africa/Dar_es_Salaam</label>
+        <sequence>25</sequence>
+        <value>Africa/Dar_es_Salaam</value>
+      </choice>
+      <choice id="27">
+        <description/>
+        <label>Africa/Djibouti</label>
+        <sequence>26</sequence>
+        <value>Africa/Djibouti</value>
+      </choice>
+      <choice id="28">
+        <description/>
+        <label>Africa/Douala</label>
+        <sequence>27</sequence>
+        <value>Africa/Douala</value>
+      </choice>
+      <choice id="29">
+        <description/>
+        <label>Africa/El_Aaiun</label>
+        <sequence>28</sequence>
+        <value>Africa/El_Aaiun</value>
+      </choice>
+      <choice id="30">
+        <description/>
+        <label>Africa/Freetown</label>
+        <sequence>29</sequence>
+        <value>Africa/Freetown</value>
+      </choice>
+      <choice id="31">
+        <description/>
+        <label>Africa/Gaborone</label>
+        <sequence>30</sequence>
+        <value>Africa/Gaborone</value>
+      </choice>
+      <choice id="32">
+        <description/>
+        <label>Africa/Harare</label>
+        <sequence>31</sequence>
+        <value>Africa/Harare</value>
+      </choice>
+      <choice id="33">
+        <description/>
+        <label>Africa/Johannesburg</label>
+        <sequence>32</sequence>
+        <value>Africa/Johannesburg</value>
+      </choice>
+      <choice id="34">
+        <description/>
+        <label>Africa/Juba</label>
+        <sequence>33</sequence>
+        <value>Africa/Juba</value>
+      </choice>
+      <choice id="35">
+        <description/>
+        <label>Africa/Kampala</label>
+        <sequence>34</sequence>
+        <value>Africa/Kampala</value>
+      </choice>
+      <choice id="36">
+        <description/>
+        <label>Africa/Khartoum</label>
+        <sequence>35</sequence>
+        <value>Africa/Khartoum</value>
+      </choice>
+      <choice id="37">
+        <description/>
+        <label>Africa/Kigali</label>
+        <sequence>36</sequence>
+        <value>Africa/Kigali</value>
+      </choice>
+      <choice id="38">
+        <description/>
+        <label>Africa/Kinshasa</label>
+        <sequence>37</sequence>
+        <value>Africa/Kinshasa</value>
+      </choice>
+      <choice id="39">
+        <description/>
+        <label>Africa/Lagos</label>
+        <sequence>38</sequence>
+        <value>Africa/Lagos</value>
+      </choice>
+      <choice id="40">
+        <description/>
+        <label>Africa/Libreville</label>
+        <sequence>39</sequence>
+        <value>Africa/Libreville</value>
+      </choice>
+      <choice id="41">
+        <description/>
+        <label>Africa/Lome</label>
+        <sequence>40</sequence>
+        <value>Africa/Lome</value>
+      </choice>
+      <choice id="42">
+        <description/>
+        <label>Africa/Luanda</label>
+        <sequence>41</sequence>
+        <value>Africa/Luanda</value>
+      </choice>
+      <choice id="43">
+        <description/>
+        <label>Africa/Lubumbashi</label>
+        <sequence>42</sequence>
+        <value>Africa/Lubumbashi</value>
+      </choice>
+      <choice id="44">
+        <description/>
+        <label>Africa/Lusaka</label>
+        <sequence>43</sequence>
+        <value>Africa/Lusaka</value>
+      </choice>
+      <choice id="45">
+        <description/>
+        <label>Africa/Malabo</label>
+        <sequence>44</sequence>
+        <value>Africa/Malabo</value>
+      </choice>
+      <choice id="46">
+        <description/>
+        <label>Africa/Maputo</label>
+        <sequence>45</sequence>
+        <value>Africa/Maputo</value>
+      </choice>
+      <choice id="47">
+        <description/>
+        <label>Africa/Maseru</label>
+        <sequence>46</sequence>
+        <value>Africa/Maseru</value>
+      </choice>
+      <choice id="48">
+        <description/>
+        <label>Africa/Mbabane</label>
+        <sequence>47</sequence>
+        <value>Africa/Mbabane</value>
+      </choice>
+      <choice id="49">
+        <description/>
+        <label>Africa/Mogadishu</label>
+        <sequence>48</sequence>
+        <value>Africa/Mogadishu</value>
+      </choice>
+      <choice id="50">
+        <description/>
+        <label>Africa/Monrovia</label>
+        <sequence>49</sequence>
+        <value>Africa/Monrovia</value>
+      </choice>
+      <choice id="51">
+        <description/>
+        <label>Africa/Nairobi</label>
+        <sequence>50</sequence>
+        <value>Africa/Nairobi</value>
+      </choice>
+      <choice id="52">
+        <description/>
+        <label>Africa/Ndjamena</label>
+        <sequence>51</sequence>
+        <value>Africa/Ndjamena</value>
+      </choice>
+      <choice id="53">
+        <description/>
+        <label>Africa/Niamey</label>
+        <sequence>52</sequence>
+        <value>Africa/Niamey</value>
+      </choice>
+      <choice id="54">
+        <description/>
+        <label>Africa/Nouakchott</label>
+        <sequence>53</sequence>
+        <value>Africa/Nouakchott</value>
+      </choice>
+      <choice id="55">
+        <description/>
+        <label>Africa/Ouagadougou</label>
+        <sequence>54</sequence>
+        <value>Africa/Ouagadougou</value>
+      </choice>
+      <choice id="56">
+        <description/>
+        <label>Africa/Porto-Novo</label>
+        <sequence>55</sequence>
+        <value>Africa/Porto-Novo</value>
+      </choice>
+      <choice id="57">
+        <description/>
+        <label>Africa/Sao_Tome</label>
+        <sequence>56</sequence>
+        <value>Africa/Sao_Tome</value>
+      </choice>
+      <choice id="58">
+        <description/>
+        <label>Africa/Timbuktu</label>
+        <sequence>57</sequence>
+        <value>Africa/Timbuktu</value>
+      </choice>
+      <choice id="59">
+        <description/>
+        <label>Africa/Tripoli</label>
+        <sequence>58</sequence>
+        <value>Africa/Tripoli</value>
+      </choice>
+      <choice id="60">
+        <description/>
+        <label>Africa/Tunis</label>
+        <sequence>59</sequence>
+        <value>Africa/Tunis</value>
+      </choice>
+      <choice id="61">
+        <description/>
+        <label>Africa/Windhoek</label>
+        <sequence>60</sequence>
+        <value>Africa/Windhoek</value>
+      </choice>
+      <choice id="62">
+        <description/>
+        <label>America/Adak</label>
+        <sequence>61</sequence>
+        <value>America/Adak</value>
+      </choice>
+      <choice id="63">
+        <description/>
+        <label>America/Anchorage</label>
+        <sequence>62</sequence>
+        <value>America/Anchorage</value>
+      </choice>
+      <choice id="64">
+        <description/>
+        <label>America/Anguilla</label>
+        <sequence>63</sequence>
+        <value>America/Anguilla</value>
+      </choice>
+      <choice id="65">
+        <description/>
+        <label>America/Antigua</label>
+        <sequence>64</sequence>
+        <value>America/Antigua</value>
+      </choice>
+      <choice id="66">
+        <description/>
+        <label>America/Araguaina</label>
+        <sequence>65</sequence>
+        <value>America/Araguaina</value>
+      </choice>
+      <choice id="67">
+        <description/>
+        <label>America/Argentina/Buenos_Aires</label>
+        <sequence>66</sequence>
+        <value>America/Argentina/Buenos_Aires</value>
+      </choice>
+      <choice id="68">
+        <description/>
+        <label>America/Argentina/Catamarca</label>
+        <sequence>67</sequence>
+        <value>America/Argentina/Catamarca</value>
+      </choice>
+      <choice id="69">
+        <description/>
+        <label>America/Argentina/ComodRivadavia</label>
+        <sequence>68</sequence>
+        <value>America/Argentina/ComodRivadavia</value>
+      </choice>
+      <choice id="70">
+        <description/>
+        <label>America/Argentina/Cordoba</label>
+        <sequence>69</sequence>
+        <value>America/Argentina/Cordoba</value>
+      </choice>
+      <choice id="71">
+        <description/>
+        <label>America/Argentina/Jujuy</label>
+        <sequence>70</sequence>
+        <value>America/Argentina/Jujuy</value>
+      </choice>
+      <choice id="72">
+        <description/>
+        <label>America/Argentina/La_Rioja</label>
+        <sequence>71</sequence>
+        <value>America/Argentina/La_Rioja</value>
+      </choice>
+      <choice id="73">
+        <description/>
+        <label>America/Argentina/Mendoza</label>
+        <sequence>72</sequence>
+        <value>America/Argentina/Mendoza</value>
+      </choice>
+      <choice id="74">
+        <description/>
+        <label>America/Argentina/Rio_Gallegos</label>
+        <sequence>73</sequence>
+        <value>America/Argentina/Rio_Gallegos</value>
+      </choice>
+      <choice id="75">
+        <description/>
+        <label>America/Argentina/Salta</label>
+        <sequence>74</sequence>
+        <value>America/Argentina/Salta</value>
+      </choice>
+      <choice id="76">
+        <description/>
+        <label>America/Argentina/San_Juan</label>
+        <sequence>75</sequence>
+        <value>America/Argentina/San_Juan</value>
+      </choice>
+      <choice id="77">
+        <description/>
+        <label>America/Argentina/San_Luis</label>
+        <sequence>76</sequence>
+        <value>America/Argentina/San_Luis</value>
+      </choice>
+      <choice id="78">
+        <description/>
+        <label>America/Argentina/Tucuman</label>
+        <sequence>77</sequence>
+        <value>America/Argentina/Tucuman</value>
+      </choice>
+      <choice id="79">
+        <description/>
+        <label>America/Argentina/Ushuaia</label>
+        <sequence>78</sequence>
+        <value>America/Argentina/Ushuaia</value>
+      </choice>
+      <choice id="80">
+        <description/>
+        <label>America/Aruba</label>
+        <sequence>79</sequence>
+        <value>America/Aruba</value>
+      </choice>
+      <choice id="81">
+        <description/>
+        <label>America/Asuncion</label>
+        <sequence>80</sequence>
+        <value>America/Asuncion</value>
+      </choice>
+      <choice id="82">
+        <description/>
+        <label>America/Atikokan</label>
+        <sequence>81</sequence>
+        <value>America/Atikokan</value>
+      </choice>
+      <choice id="83">
+        <description/>
+        <label>America/Atka</label>
+        <sequence>82</sequence>
+        <value>America/Atka</value>
+      </choice>
+      <choice id="84">
+        <description/>
+        <label>America/Bahia</label>
+        <sequence>83</sequence>
+        <value>America/Bahia</value>
+      </choice>
+      <choice id="85">
+        <description/>
+        <label>America/Bahia_Banderas</label>
+        <sequence>84</sequence>
+        <value>America/Bahia_Banderas</value>
+      </choice>
+      <choice id="86">
+        <description/>
+        <label>America/Barbados</label>
+        <sequence>85</sequence>
+        <value>America/Barbados</value>
+      </choice>
+      <choice id="87">
+        <description/>
+        <label>America/Belem</label>
+        <sequence>86</sequence>
+        <value>America/Belem</value>
+      </choice>
+      <choice id="88">
+        <description/>
+        <label>America/Belize</label>
+        <sequence>87</sequence>
+        <value>America/Belize</value>
+      </choice>
+      <choice id="89">
+        <description/>
+        <label>America/Blanc-Sablon</label>
+        <sequence>88</sequence>
+        <value>America/Blanc-Sablon</value>
+      </choice>
+      <choice id="90">
+        <description/>
+        <label>America/Boa_Vista</label>
+        <sequence>89</sequence>
+        <value>America/Boa_Vista</value>
+      </choice>
+      <choice id="91">
+        <description/>
+        <label>America/Bogota</label>
+        <sequence>90</sequence>
+        <value>America/Bogota</value>
+      </choice>
+      <choice id="92">
+        <description/>
+        <label>America/Boise</label>
+        <sequence>91</sequence>
+        <value>America/Boise</value>
+      </choice>
+      <choice id="93">
+        <description/>
+        <label>America/Buenos_Aires</label>
+        <sequence>92</sequence>
+        <value>America/Buenos_Aires</value>
+      </choice>
+      <choice id="94">
+        <description/>
+        <label>America/Cambridge_Bay</label>
+        <sequence>93</sequence>
+        <value>America/Cambridge_Bay</value>
+      </choice>
+      <choice id="95">
+        <description/>
+        <label>America/Campo_Grande</label>
+        <sequence>94</sequence>
+        <value>America/Campo_Grande</value>
+      </choice>
+      <choice id="96">
+        <description/>
+        <label>America/Cancun</label>
+        <sequence>95</sequence>
+        <value>America/Cancun</value>
+      </choice>
+      <choice id="97">
+        <description/>
+        <label>America/Caracas</label>
+        <sequence>96</sequence>
+        <value>America/Caracas</value>
+      </choice>
+      <choice id="98">
+        <description/>
+        <label>America/Catamarca</label>
+        <sequence>97</sequence>
+        <value>America/Catamarca</value>
+      </choice>
+      <choice id="99">
+        <description/>
+        <label>America/Cayenne</label>
+        <sequence>98</sequence>
+        <value>America/Cayenne</value>
+      </choice>
+      <choice id="100">
+        <description/>
+        <label>America/Cayman</label>
+        <sequence>99</sequence>
+        <value>America/Cayman</value>
+      </choice>
+      <choice id="101">
+        <description/>
+        <label>America/Chicago</label>
+        <sequence>100</sequence>
+        <value>America/Chicago</value>
+      </choice>
+      <choice id="102">
+        <description/>
+        <label>America/Chihuahua</label>
+        <sequence>101</sequence>
+        <value>America/Chihuahua</value>
+      </choice>
+      <choice id="103">
+        <description/>
+        <label>America/Coral_Harbour</label>
+        <sequence>102</sequence>
+        <value>America/Coral_Harbour</value>
+      </choice>
+      <choice id="104">
+        <description/>
+        <label>America/Cordoba</label>
+        <sequence>103</sequence>
+        <value>America/Cordoba</value>
+      </choice>
+      <choice id="105">
+        <description/>
+        <label>America/Costa_Rica</label>
+        <sequence>104</sequence>
+        <value>America/Costa_Rica</value>
+      </choice>
+      <choice id="106">
+        <description/>
+        <label>America/Creston</label>
+        <sequence>105</sequence>
+        <value>America/Creston</value>
+      </choice>
+      <choice id="107">
+        <description/>
+        <label>America/Cuiaba</label>
+        <sequence>106</sequence>
+        <value>America/Cuiaba</value>
+      </choice>
+      <choice id="108">
+        <description/>
+        <label>America/Curacao</label>
+        <sequence>107</sequence>
+        <value>America/Curacao</value>
+      </choice>
+      <choice id="109">
+        <description/>
+        <label>America/Danmarkshavn</label>
+        <sequence>108</sequence>
+        <value>America/Danmarkshavn</value>
+      </choice>
+      <choice id="110">
+        <description/>
+        <label>America/Dawson</label>
+        <sequence>109</sequence>
+        <value>America/Dawson</value>
+      </choice>
+      <choice id="111">
+        <description/>
+        <label>America/Dawson_Creek</label>
+        <sequence>110</sequence>
+        <value>America/Dawson_Creek</value>
+      </choice>
+      <choice id="112">
+        <description/>
+        <label>America/Denver</label>
+        <sequence>111</sequence>
+        <value>America/Denver</value>
+      </choice>
+      <choice id="113">
+        <description/>
+        <label>America/Detroit</label>
+        <sequence>112</sequence>
+        <value>America/Detroit</value>
+      </choice>
+      <choice id="114">
+        <description/>
+        <label>America/Dominica</label>
+        <sequence>113</sequence>
+        <value>America/Dominica</value>
+      </choice>
+      <choice id="115">
+        <description/>
+        <label>America/Edmonton</label>
+        <sequence>114</sequence>
+        <value>America/Edmonton</value>
+      </choice>
+      <choice id="116">
+        <description/>
+        <label>America/Eirunepe</label>
+        <sequence>115</sequence>
+        <value>America/Eirunepe</value>
+      </choice>
+      <choice id="117">
+        <description/>
+        <label>America/El_Salvador</label>
+        <sequence>116</sequence>
+        <value>America/El_Salvador</value>
+      </choice>
+      <choice id="118">
+        <description/>
+        <label>America/Ensenada</label>
+        <sequence>117</sequence>
+        <value>America/Ensenada</value>
+      </choice>
+      <choice id="119">
+        <description/>
+        <label>America/Fort_Wayne</label>
+        <sequence>118</sequence>
+        <value>America/Fort_Wayne</value>
+      </choice>
+      <choice id="120">
+        <description/>
+        <label>America/Fortaleza</label>
+        <sequence>119</sequence>
+        <value>America/Fortaleza</value>
+      </choice>
+      <choice id="121">
+        <description/>
+        <label>America/Glace_Bay</label>
+        <sequence>120</sequence>
+        <value>America/Glace_Bay</value>
+      </choice>
+      <choice id="122">
+        <description/>
+        <label>America/Godthab</label>
+        <sequence>121</sequence>
+        <value>America/Godthab</value>
+      </choice>
+      <choice id="123">
+        <description/>
+        <label>America/Goose_Bay</label>
+        <sequence>122</sequence>
+        <value>America/Goose_Bay</value>
+      </choice>
+      <choice id="124">
+        <description/>
+        <label>America/Grand_Turk</label>
+        <sequence>123</sequence>
+        <value>America/Grand_Turk</value>
+      </choice>
+      <choice id="125">
+        <description/>
+        <label>America/Grenada</label>
+        <sequence>124</sequence>
+        <value>America/Grenada</value>
+      </choice>
+      <choice id="126">
+        <description/>
+        <label>America/Guadeloupe</label>
+        <sequence>125</sequence>
+        <value>America/Guadeloupe</value>
+      </choice>
+      <choice id="127">
+        <description/>
+        <label>America/Guatemala</label>
+        <sequence>126</sequence>
+        <value>America/Guatemala</value>
+      </choice>
+      <choice id="128">
+        <description/>
+        <label>America/Guayaquil</label>
+        <sequence>127</sequence>
+        <value>America/Guayaquil</value>
+      </choice>
+      <choice id="129">
+        <description/>
+        <label>America/Guyana</label>
+        <sequence>128</sequence>
+        <value>America/Guyana</value>
+      </choice>
+      <choice id="130">
+        <description/>
+        <label>America/Halifax</label>
+        <sequence>129</sequence>
+        <value>America/Halifax</value>
+      </choice>
+      <choice id="131">
+        <description/>
+        <label>America/Havana</label>
+        <sequence>130</sequence>
+        <value>America/Havana</value>
+      </choice>
+      <choice id="132">
+        <description/>
+        <label>America/Hermosillo</label>
+        <sequence>131</sequence>
+        <value>America/Hermosillo</value>
+      </choice>
+      <choice id="133">
+        <description/>
+        <label>America/Indiana/Indianapolis</label>
+        <sequence>132</sequence>
+        <value>America/Indiana/Indianapolis</value>
+      </choice>
+      <choice id="134">
+        <description/>
+        <label>America/Indiana/Knox</label>
+        <sequence>133</sequence>
+        <value>America/Indiana/Knox</value>
+      </choice>
+      <choice id="135">
+        <description/>
+        <label>America/Indiana/Marengo</label>
+        <sequence>134</sequence>
+        <value>America/Indiana/Marengo</value>
+      </choice>
+      <choice id="136">
+        <description/>
+        <label>America/Indiana/Petersburg</label>
+        <sequence>135</sequence>
+        <value>America/Indiana/Petersburg</value>
+      </choice>
+      <choice id="137">
+        <description/>
+        <label>America/Indiana/Tell_City</label>
+        <sequence>136</sequence>
+        <value>America/Indiana/Tell_City</value>
+      </choice>
+      <choice id="138">
+        <description/>
+        <label>America/Indiana/Vevay</label>
+        <sequence>137</sequence>
+        <value>America/Indiana/Vevay</value>
+      </choice>
+      <choice id="139">
+        <description/>
+        <label>America/Indiana/Vincennes</label>
+        <sequence>138</sequence>
+        <value>America/Indiana/Vincennes</value>
+      </choice>
+      <choice id="140">
+        <description/>
+        <label>America/Indiana/Winamac</label>
+        <sequence>139</sequence>
+        <value>America/Indiana/Winamac</value>
+      </choice>
+      <choice id="141">
+        <description/>
+        <label>America/Indianapolis</label>
+        <sequence>140</sequence>
+        <value>America/Indianapolis</value>
+      </choice>
+      <choice id="142">
+        <description/>
+        <label>America/Inuvik</label>
+        <sequence>141</sequence>
+        <value>America/Inuvik</value>
+      </choice>
+      <choice id="143">
+        <description/>
+        <label>America/Iqaluit</label>
+        <sequence>142</sequence>
+        <value>America/Iqaluit</value>
+      </choice>
+      <choice id="144">
+        <description/>
+        <label>America/Jamaica</label>
+        <sequence>143</sequence>
+        <value>America/Jamaica</value>
+      </choice>
+      <choice id="145">
+        <description/>
+        <label>America/Jujuy</label>
+        <sequence>144</sequence>
+        <value>America/Jujuy</value>
+      </choice>
+      <choice id="146">
+        <description/>
+        <label>America/Juneau</label>
+        <sequence>145</sequence>
+        <value>America/Juneau</value>
+      </choice>
+      <choice id="147">
+        <description/>
+        <label>America/Kentucky/Louisville</label>
+        <sequence>146</sequence>
+        <value>America/Kentucky/Louisville</value>
+      </choice>
+      <choice id="148">
+        <description/>
+        <label>America/Kentucky/Monticello</label>
+        <sequence>147</sequence>
+        <value>America/Kentucky/Monticello</value>
+      </choice>
+      <choice id="149">
+        <description/>
+        <label>America/Knox_IN</label>
+        <sequence>148</sequence>
+        <value>America/Knox_IN</value>
+      </choice>
+      <choice id="150">
+        <description/>
+        <label>America/Kralendijk</label>
+        <sequence>149</sequence>
+        <value>America/Kralendijk</value>
+      </choice>
+      <choice id="151">
+        <description/>
+        <label>America/La_Paz</label>
+        <sequence>150</sequence>
+        <value>America/La_Paz</value>
+      </choice>
+      <choice id="152">
+        <description/>
+        <label>America/Lima</label>
+        <sequence>151</sequence>
+        <value>America/Lima</value>
+      </choice>
+      <choice id="153">
+        <description/>
+        <label>America/Los_Angeles</label>
+        <sequence>152</sequence>
+        <value>America/Los_Angeles</value>
+      </choice>
+      <choice id="154">
+        <description/>
+        <label>America/Louisville</label>
+        <sequence>153</sequence>
+        <value>America/Louisville</value>
+      </choice>
+      <choice id="155">
+        <description/>
+        <label>America/Lower_Princes</label>
+        <sequence>154</sequence>
+        <value>America/Lower_Princes</value>
+      </choice>
+      <choice id="156">
+        <description/>
+        <label>America/Maceio</label>
+        <sequence>155</sequence>
+        <value>America/Maceio</value>
+      </choice>
+      <choice id="157">
+        <description/>
+        <label>America/Managua</label>
+        <sequence>156</sequence>
+        <value>America/Managua</value>
+      </choice>
+      <choice id="158">
+        <description/>
+        <label>America/Manaus</label>
+        <sequence>157</sequence>
+        <value>America/Manaus</value>
+      </choice>
+      <choice id="159">
+        <description/>
+        <label>America/Marigot</label>
+        <sequence>158</sequence>
+        <value>America/Marigot</value>
+      </choice>
+      <choice id="160">
+        <description/>
+        <label>America/Martinique</label>
+        <sequence>159</sequence>
+        <value>America/Martinique</value>
+      </choice>
+      <choice id="161">
+        <description/>
+        <label>America/Matamoros</label>
+        <sequence>160</sequence>
+        <value>America/Matamoros</value>
+      </choice>
+      <choice id="162">
+        <description/>
+        <label>America/Mazatlan</label>
+        <sequence>161</sequence>
+        <value>America/Mazatlan</value>
+      </choice>
+      <choice id="163">
+        <description/>
+        <label>America/Mendoza</label>
+        <sequence>162</sequence>
+        <value>America/Mendoza</value>
+      </choice>
+      <choice id="164">
+        <description/>
+        <label>America/Menominee</label>
+        <sequence>163</sequence>
+        <value>America/Menominee</value>
+      </choice>
+      <choice id="165">
+        <description/>
+        <label>America/Merida</label>
+        <sequence>164</sequence>
+        <value>America/Merida</value>
+      </choice>
+      <choice id="166">
+        <description/>
+        <label>America/Metlakatla</label>
+        <sequence>165</sequence>
+        <value>America/Metlakatla</value>
+      </choice>
+      <choice id="167">
+        <description/>
+        <label>America/Mexico_City</label>
+        <sequence>166</sequence>
+        <value>America/Mexico_City</value>
+      </choice>
+      <choice id="168">
+        <description/>
+        <label>America/Miquelon</label>
+        <sequence>167</sequence>
+        <value>America/Miquelon</value>
+      </choice>
+      <choice id="169">
+        <description/>
+        <label>America/Moncton</label>
+        <sequence>168</sequence>
+        <value>America/Moncton</value>
+      </choice>
+      <choice id="170">
+        <description/>
+        <label>America/Monterrey</label>
+        <sequence>169</sequence>
+        <value>America/Monterrey</value>
+      </choice>
+      <choice id="171">
+        <description/>
+        <label>America/Montevideo</label>
+        <sequence>170</sequence>
+        <value>America/Montevideo</value>
+      </choice>
+      <choice id="172">
+        <description/>
+        <label>America/Montreal</label>
+        <sequence>171</sequence>
+        <value>America/Montreal</value>
+      </choice>
+      <choice id="173">
+        <description/>
+        <label>America/Montserrat</label>
+        <sequence>172</sequence>
+        <value>America/Montserrat</value>
+      </choice>
+      <choice id="174">
+        <description/>
+        <label>America/Nassau</label>
+        <sequence>173</sequence>
+        <value>America/Nassau</value>
+      </choice>
+      <choice id="175">
+        <description/>
+        <label>America/New_York</label>
+        <sequence>174</sequence>
+        <value>America/New_York</value>
+      </choice>
+      <choice id="176">
+        <description/>
+        <label>America/Nipigon</label>
+        <sequence>175</sequence>
+        <value>America/Nipigon</value>
+      </choice>
+      <choice id="177">
+        <description/>
+        <label>America/Nome</label>
+        <sequence>176</sequence>
+        <value>America/Nome</value>
+      </choice>
+      <choice id="178">
+        <description/>
+        <label>America/Noronha</label>
+        <sequence>177</sequence>
+        <value>America/Noronha</value>
+      </choice>
+      <choice id="179">
+        <description/>
+        <label>America/North_Dakota/Beulah</label>
+        <sequence>178</sequence>
+        <value>America/North_Dakota/Beulah</value>
+      </choice>
+      <choice id="180">
+        <description/>
+        <label>America/North_Dakota/Center</label>
+        <sequence>179</sequence>
+        <value>America/North_Dakota/Center</value>
+      </choice>
+      <choice id="181">
+        <description/>
+        <label>America/North_Dakota/New_Salem</label>
+        <sequence>180</sequence>
+        <value>America/North_Dakota/New_Salem</value>
+      </choice>
+      <choice id="182">
+        <description/>
+        <label>America/Ojinaga</label>
+        <sequence>181</sequence>
+        <value>America/Ojinaga</value>
+      </choice>
+      <choice id="183">
+        <description/>
+        <label>America/Panama</label>
+        <sequence>182</sequence>
+        <value>America/Panama</value>
+      </choice>
+      <choice id="184">
+        <description/>
+        <label>America/Pangnirtung</label>
+        <sequence>183</sequence>
+        <value>America/Pangnirtung</value>
+      </choice>
+      <choice id="185">
+        <description/>
+        <label>America/Paramaribo</label>
+        <sequence>184</sequence>
+        <value>America/Paramaribo</value>
+      </choice>
+      <choice id="186">
+        <description/>
+        <label>America/Phoenix</label>
+        <sequence>185</sequence>
+        <value>America/Phoenix</value>
+      </choice>
+      <choice id="187">
+        <description/>
+        <label>America/Port-au-Prince</label>
+        <sequence>186</sequence>
+        <value>America/Port-au-Prince</value>
+      </choice>
+      <choice id="188">
+        <description/>
+        <label>America/Port_of_Spain</label>
+        <sequence>187</sequence>
+        <value>America/Port_of_Spain</value>
+      </choice>
+      <choice id="189">
+        <description/>
+        <label>America/Porto_Acre</label>
+        <sequence>188</sequence>
+        <value>America/Porto_Acre</value>
+      </choice>
+      <choice id="190">
+        <description/>
+        <label>America/Porto_Velho</label>
+        <sequence>189</sequence>
+        <value>America/Porto_Velho</value>
+      </choice>
+      <choice id="191">
+        <description/>
+        <label>America/Puerto_Rico</label>
+        <sequence>190</sequence>
+        <value>America/Puerto_Rico</value>
+      </choice>
+      <choice id="192">
+        <description/>
+        <label>America/Rainy_River</label>
+        <sequence>191</sequence>
+        <value>America/Rainy_River</value>
+      </choice>
+      <choice id="193">
+        <description/>
+        <label>America/Rankin_Inlet</label>
+        <sequence>192</sequence>
+        <value>America/Rankin_Inlet</value>
+      </choice>
+      <choice id="194">
+        <description/>
+        <label>America/Recife</label>
+        <sequence>193</sequence>
+        <value>America/Recife</value>
+      </choice>
+      <choice id="195">
+        <description/>
+        <label>America/Regina</label>
+        <sequence>194</sequence>
+        <value>America/Regina</value>
+      </choice>
+      <choice id="196">
+        <description/>
+        <label>America/Resolute</label>
+        <sequence>195</sequence>
+        <value>America/Resolute</value>
+      </choice>
+      <choice id="197">
+        <description/>
+        <label>America/Rio_Branco</label>
+        <sequence>196</sequence>
+        <value>America/Rio_Branco</value>
+      </choice>
+      <choice id="198">
+        <description/>
+        <label>America/Rosario</label>
+        <sequence>197</sequence>
+        <value>America/Rosario</value>
+      </choice>
+      <choice id="199">
+        <description/>
+        <label>America/Santa_Isabel</label>
+        <sequence>198</sequence>
+        <value>America/Santa_Isabel</value>
+      </choice>
+      <choice id="200">
+        <description/>
+        <label>America/Santarem</label>
+        <sequence>199</sequence>
+        <value>America/Santarem</value>
+      </choice>
+      <choice id="201">
+        <description/>
+        <label>America/Santiago</label>
+        <sequence>200</sequence>
+        <value>America/Santiago</value>
+      </choice>
+      <choice id="202">
+        <description/>
+        <label>America/Santo_Domingo</label>
+        <sequence>201</sequence>
+        <value>America/Santo_Domingo</value>
+      </choice>
+      <choice id="203">
+        <description/>
+        <label>America/Sao_Paulo</label>
+        <sequence>202</sequence>
+        <value>America/Sao_Paulo</value>
+      </choice>
+      <choice id="204">
+        <description/>
+        <label>America/Scoresbysund</label>
+        <sequence>203</sequence>
+        <value>America/Scoresbysund</value>
+      </choice>
+      <choice id="205">
+        <description/>
+        <label>America/Shiprock</label>
+        <sequence>204</sequence>
+        <value>America/Shiprock</value>
+      </choice>
+      <choice id="206">
+        <description/>
+        <label>America/Sitka</label>
+        <sequence>205</sequence>
+        <value>America/Sitka</value>
+      </choice>
+      <choice id="207">
+        <description/>
+        <label>America/St_Barthelemy</label>
+        <sequence>206</sequence>
+        <value>America/St_Barthelemy</value>
+      </choice>
+      <choice id="208">
+        <description/>
+        <label>America/St_Johns</label>
+        <sequence>207</sequence>
+        <value>America/St_Johns</value>
+      </choice>
+      <choice id="209">
+        <description/>
+        <label>America/St_Kitts</label>
+        <sequence>208</sequence>
+        <value>America/St_Kitts</value>
+      </choice>
+      <choice id="210">
+        <description/>
+        <label>America/St_Lucia</label>
+        <sequence>209</sequence>
+        <value>America/St_Lucia</value>
+      </choice>
+      <choice id="211">
+        <description/>
+        <label>America/St_Thomas</label>
+        <sequence>210</sequence>
+        <value>America/St_Thomas</value>
+      </choice>
+      <choice id="212">
+        <description/>
+        <label>America/St_Vincent</label>
+        <sequence>211</sequence>
+        <value>America/St_Vincent</value>
+      </choice>
+      <choice id="213">
+        <description/>
+        <label>America/Swift_Current</label>
+        <sequence>212</sequence>
+        <value>America/Swift_Current</value>
+      </choice>
+      <choice id="214">
+        <description/>
+        <label>America/Tegucigalpa</label>
+        <sequence>213</sequence>
+        <value>America/Tegucigalpa</value>
+      </choice>
+      <choice id="215">
+        <description/>
+        <label>America/Thule</label>
+        <sequence>214</sequence>
+        <value>America/Thule</value>
+      </choice>
+      <choice id="216">
+        <description/>
+        <label>America/Thunder_Bay</label>
+        <sequence>215</sequence>
+        <value>America/Thunder_Bay</value>
+      </choice>
+      <choice id="217">
+        <description/>
+        <label>America/Tijuana</label>
+        <sequence>216</sequence>
+        <value>America/Tijuana</value>
+      </choice>
+      <choice id="218">
+        <description/>
+        <label>America/Toronto</label>
+        <sequence>217</sequence>
+        <value>America/Toronto</value>
+      </choice>
+      <choice id="219">
+        <description/>
+        <label>America/Tortola</label>
+        <sequence>218</sequence>
+        <value>America/Tortola</value>
+      </choice>
+      <choice id="220">
+        <description/>
+        <label>America/Vancouver</label>
+        <sequence>219</sequence>
+        <value>America/Vancouver</value>
+      </choice>
+      <choice id="221">
+        <description/>
+        <label>America/Virgin</label>
+        <sequence>220</sequence>
+        <value>America/Virgin</value>
+      </choice>
+      <choice id="222">
+        <description/>
+        <label>America/Whitehorse</label>
+        <sequence>221</sequence>
+        <value>America/Whitehorse</value>
+      </choice>
+      <choice id="223">
+        <description/>
+        <label>America/Winnipeg</label>
+        <sequence>222</sequence>
+        <value>America/Winnipeg</value>
+      </choice>
+      <choice id="224">
+        <description/>
+        <label>America/Yakutat</label>
+        <sequence>223</sequence>
+        <value>America/Yakutat</value>
+      </choice>
+      <choice id="225">
+        <description/>
+        <label>America/Yellowknife</label>
+        <sequence>224</sequence>
+        <value>America/Yellowknife</value>
+      </choice>
+      <choice id="226">
+        <description/>
+        <label>Antarctica/Casey</label>
+        <sequence>225</sequence>
+        <value>Antarctica/Casey</value>
+      </choice>
+      <choice id="227">
+        <description/>
+        <label>Antarctica/Davis</label>
+        <sequence>226</sequence>
+        <value>Antarctica/Davis</value>
+      </choice>
+      <choice id="228">
+        <description/>
+        <label>Antarctica/DumontDUrville</label>
+        <sequence>227</sequence>
+        <value>Antarctica/DumontDUrville</value>
+      </choice>
+      <choice id="229">
+        <description/>
+        <label>Antarctica/Macquarie</label>
+        <sequence>228</sequence>
+        <value>Antarctica/Macquarie</value>
+      </choice>
+      <choice id="230">
+        <description/>
+        <label>Antarctica/Mawson</label>
+        <sequence>229</sequence>
+        <value>Antarctica/Mawson</value>
+      </choice>
+      <choice id="231">
+        <description/>
+        <label>Antarctica/McMurdo</label>
+        <sequence>230</sequence>
+        <value>Antarctica/McMurdo</value>
+      </choice>
+      <choice id="232">
+        <description/>
+        <label>Antarctica/Palmer</label>
+        <sequence>231</sequence>
+        <value>Antarctica/Palmer</value>
+      </choice>
+      <choice id="233">
+        <description/>
+        <label>Antarctica/Rothera</label>
+        <sequence>232</sequence>
+        <value>Antarctica/Rothera</value>
+      </choice>
+      <choice id="234">
+        <description/>
+        <label>Antarctica/South_Pole</label>
+        <sequence>233</sequence>
+        <value>Antarctica/South_Pole</value>
+      </choice>
+      <choice id="235">
+        <description/>
+        <label>Antarctica/Syowa</label>
+        <sequence>234</sequence>
+        <value>Antarctica/Syowa</value>
+      </choice>
+      <choice id="236">
+        <description/>
+        <label>Antarctica/Troll</label>
+        <sequence>235</sequence>
+        <value>Antarctica/Troll</value>
+      </choice>
+      <choice id="237">
+        <description/>
+        <label>Antarctica/Vostok</label>
+        <sequence>236</sequence>
+        <value>Antarctica/Vostok</value>
+      </choice>
+      <choice id="238">
+        <description/>
+        <label>Arctic/Longyearbyen</label>
+        <sequence>237</sequence>
+        <value>Arctic/Longyearbyen</value>
+      </choice>
+      <choice id="239">
+        <description/>
+        <label>Asia/Aden</label>
+        <sequence>238</sequence>
+        <value>Asia/Aden</value>
+      </choice>
+      <choice id="240">
+        <description/>
+        <label>Asia/Almaty</label>
+        <sequence>239</sequence>
+        <value>Asia/Almaty</value>
+      </choice>
+      <choice id="241">
+        <description/>
+        <label>Asia/Amman</label>
+        <sequence>240</sequence>
+        <value>Asia/Amman</value>
+      </choice>
+      <choice id="242">
+        <description/>
+        <label>Asia/Anadyr</label>
+        <sequence>241</sequence>
+        <value>Asia/Anadyr</value>
+      </choice>
+      <choice id="243">
+        <description/>
+        <label>Asia/Aqtau</label>
+        <sequence>242</sequence>
+        <value>Asia/Aqtau</value>
+      </choice>
+      <choice id="244">
+        <description/>
+        <label>Asia/Aqtobe</label>
+        <sequence>243</sequence>
+        <value>Asia/Aqtobe</value>
+      </choice>
+      <choice id="245">
+        <description/>
+        <label>Asia/Ashgabat</label>
+        <sequence>244</sequence>
+        <value>Asia/Ashgabat</value>
+      </choice>
+      <choice id="246">
+        <description/>
+        <label>Asia/Ashkhabad</label>
+        <sequence>245</sequence>
+        <value>Asia/Ashkhabad</value>
+      </choice>
+      <choice id="247">
+        <description/>
+        <label>Asia/Baghdad</label>
+        <sequence>246</sequence>
+        <value>Asia/Baghdad</value>
+      </choice>
+      <choice id="248">
+        <description/>
+        <label>Asia/Bahrain</label>
+        <sequence>247</sequence>
+        <value>Asia/Bahrain</value>
+      </choice>
+      <choice id="249">
+        <description/>
+        <label>Asia/Baku</label>
+        <sequence>248</sequence>
+        <value>Asia/Baku</value>
+      </choice>
+      <choice id="250">
+        <description/>
+        <label>Asia/Bangkok</label>
+        <sequence>249</sequence>
+        <value>Asia/Bangkok</value>
+      </choice>
+      <choice id="251">
+        <description/>
+        <label>Asia/Beirut</label>
+        <sequence>250</sequence>
+        <value>Asia/Beirut</value>
+      </choice>
+      <choice id="252">
+        <description/>
+        <label>Asia/Bishkek</label>
+        <sequence>251</sequence>
+        <value>Asia/Bishkek</value>
+      </choice>
+      <choice id="253">
+        <description/>
+        <label>Asia/Brunei</label>
+        <sequence>252</sequence>
+        <value>Asia/Brunei</value>
+      </choice>
+      <choice id="254">
+        <description/>
+        <label>Asia/Calcutta</label>
+        <sequence>253</sequence>
+        <value>Asia/Calcutta</value>
+      </choice>
+      <choice id="255">
+        <description/>
+        <label>Asia/Chita</label>
+        <sequence>254</sequence>
+        <value>Asia/Chita</value>
+      </choice>
+      <choice id="256">
+        <description/>
+        <label>Asia/Choibalsan</label>
+        <sequence>255</sequence>
+        <value>Asia/Choibalsan</value>
+      </choice>
+      <choice id="257">
+        <description/>
+        <label>Asia/Chongqing</label>
+        <sequence>256</sequence>
+        <value>Asia/Chongqing</value>
+      </choice>
+      <choice id="258">
+        <description/>
+        <label>Asia/Chungking</label>
+        <sequence>257</sequence>
+        <value>Asia/Chungking</value>
+      </choice>
+      <choice id="259">
+        <description/>
+        <label>Asia/Colombo</label>
+        <sequence>258</sequence>
+        <value>Asia/Colombo</value>
+      </choice>
+      <choice id="260">
+        <description/>
+        <label>Asia/Dacca</label>
+        <sequence>259</sequence>
+        <value>Asia/Dacca</value>
+      </choice>
+      <choice id="261">
+        <description/>
+        <label>Asia/Damascus</label>
+        <sequence>260</sequence>
+        <value>Asia/Damascus</value>
+      </choice>
+      <choice id="262">
+        <description/>
+        <label>Asia/Dhaka</label>
+        <sequence>261</sequence>
+        <value>Asia/Dhaka</value>
+      </choice>
+      <choice id="263">
+        <description/>
+        <label>Asia/Dili</label>
+        <sequence>262</sequence>
+        <value>Asia/Dili</value>
+      </choice>
+      <choice id="264">
+        <description/>
+        <label>Asia/Dubai</label>
+        <sequence>263</sequence>
+        <value>Asia/Dubai</value>
+      </choice>
+      <choice id="265">
+        <description/>
+        <label>Asia/Dushanbe</label>
+        <sequence>264</sequence>
+        <value>Asia/Dushanbe</value>
+      </choice>
+      <choice id="266">
+        <description/>
+        <label>Asia/Gaza</label>
+        <sequence>265</sequence>
+        <value>Asia/Gaza</value>
+      </choice>
+      <choice id="267">
+        <description/>
+        <label>Asia/Harbin</label>
+        <sequence>266</sequence>
+        <value>Asia/Harbin</value>
+      </choice>
+      <choice id="268">
+        <description/>
+        <label>Asia/Hebron</label>
+        <sequence>267</sequence>
+        <value>Asia/Hebron</value>
+      </choice>
+      <choice id="269">
+        <description/>
+        <label>Asia/Ho_Chi_Minh</label>
+        <sequence>268</sequence>
+        <value>Asia/Ho_Chi_Minh</value>
+      </choice>
+      <choice id="270">
+        <description/>
+        <label>Asia/Hong_Kong</label>
+        <sequence>269</sequence>
+        <value>Asia/Hong_Kong</value>
+      </choice>
+      <choice id="271">
+        <description/>
+        <label>Asia/Hovd</label>
+        <sequence>270</sequence>
+        <value>Asia/Hovd</value>
+      </choice>
+      <choice id="272">
+        <description/>
+        <label>Asia/Irkutsk</label>
+        <sequence>271</sequence>
+        <value>Asia/Irkutsk</value>
+      </choice>
+      <choice id="273">
+        <description/>
+        <label>Asia/Istanbul</label>
+        <sequence>272</sequence>
+        <value>Asia/Istanbul</value>
+      </choice>
+      <choice id="274">
+        <description/>
+        <label>Asia/Jakarta</label>
+        <sequence>273</sequence>
+        <value>Asia/Jakarta</value>
+      </choice>
+      <choice id="275">
+        <description/>
+        <label>Asia/Jayapura</label>
+        <sequence>274</sequence>
+        <value>Asia/Jayapura</value>
+      </choice>
+      <choice id="276">
+        <description/>
+        <label>Asia/Jerusalem</label>
+        <sequence>275</sequence>
+        <value>Asia/Jerusalem</value>
+      </choice>
+      <choice id="277">
+        <description/>
+        <label>Asia/Kabul</label>
+        <sequence>276</sequence>
+        <value>Asia/Kabul</value>
+      </choice>
+      <choice id="278">
+        <description/>
+        <label>Asia/Kamchatka</label>
+        <sequence>277</sequence>
+        <value>Asia/Kamchatka</value>
+      </choice>
+      <choice id="279">
+        <description/>
+        <label>Asia/Karachi</label>
+        <sequence>278</sequence>
+        <value>Asia/Karachi</value>
+      </choice>
+      <choice id="280">
+        <description/>
+        <label>Asia/Kashgar</label>
+        <sequence>279</sequence>
+        <value>Asia/Kashgar</value>
+      </choice>
+      <choice id="281">
+        <description/>
+        <label>Asia/Kathmandu</label>
+        <sequence>280</sequence>
+        <value>Asia/Kathmandu</value>
+      </choice>
+      <choice id="282">
+        <description/>
+        <label>Asia/Katmandu</label>
+        <sequence>281</sequence>
+        <value>Asia/Katmandu</value>
+      </choice>
+      <choice id="283">
+        <description/>
+        <label>Asia/Khandyga</label>
+        <sequence>282</sequence>
+        <value>Asia/Khandyga</value>
+      </choice>
+      <choice id="284">
+        <description/>
+        <label>Asia/Kolkata</label>
+        <sequence>283</sequence>
+        <value>Asia/Kolkata</value>
+      </choice>
+      <choice id="285">
+        <description/>
+        <label>Asia/Krasnoyarsk</label>
+        <sequence>284</sequence>
+        <value>Asia/Krasnoyarsk</value>
+      </choice>
+      <choice id="286">
+        <description/>
+        <label>Asia/Kuala_Lumpur</label>
+        <sequence>285</sequence>
+        <value>Asia/Kuala_Lumpur</value>
+      </choice>
+      <choice id="287">
+        <description/>
+        <label>Asia/Kuching</label>
+        <sequence>286</sequence>
+        <value>Asia/Kuching</value>
+      </choice>
+      <choice id="288">
+        <description/>
+        <label>Asia/Kuwait</label>
+        <sequence>287</sequence>
+        <value>Asia/Kuwait</value>
+      </choice>
+      <choice id="289">
+        <description/>
+        <label>Asia/Macao</label>
+        <sequence>288</sequence>
+        <value>Asia/Macao</value>
+      </choice>
+      <choice id="290">
+        <description/>
+        <label>Asia/Macau</label>
+        <sequence>289</sequence>
+        <value>Asia/Macau</value>
+      </choice>
+      <choice id="291">
+        <description/>
+        <label>Asia/Magadan</label>
+        <sequence>290</sequence>
+        <value>Asia/Magadan</value>
+      </choice>
+      <choice id="292">
+        <description/>
+        <label>Asia/Makassar</label>
+        <sequence>291</sequence>
+        <value>Asia/Makassar</value>
+      </choice>
+      <choice id="293">
+        <description/>
+        <label>Asia/Manila</label>
+        <sequence>292</sequence>
+        <value>Asia/Manila</value>
+      </choice>
+      <choice id="294">
+        <description/>
+        <label>Asia/Muscat</label>
+        <sequence>293</sequence>
+        <value>Asia/Muscat</value>
+      </choice>
+      <choice id="295">
+        <description/>
+        <label>Asia/Nicosia</label>
+        <sequence>294</sequence>
+        <value>Asia/Nicosia</value>
+      </choice>
+      <choice id="296">
+        <description/>
+        <label>Asia/Novokuznetsk</label>
+        <sequence>295</sequence>
+        <value>Asia/Novokuznetsk</value>
+      </choice>
+      <choice id="297">
+        <description/>
+        <label>Asia/Novosibirsk</label>
+        <sequence>296</sequence>
+        <value>Asia/Novosibirsk</value>
+      </choice>
+      <choice id="298">
+        <description/>
+        <label>Asia/Omsk</label>
+        <sequence>297</sequence>
+        <value>Asia/Omsk</value>
+      </choice>
+      <choice id="299">
+        <description/>
+        <label>Asia/Oral</label>
+        <sequence>298</sequence>
+        <value>Asia/Oral</value>
+      </choice>
+      <choice id="300">
+        <description/>
+        <label>Asia/Phnom_Penh</label>
+        <sequence>299</sequence>
+        <value>Asia/Phnom_Penh</value>
+      </choice>
+      <choice id="301">
+        <description/>
+        <label>Asia/Pontianak</label>
+        <sequence>300</sequence>
+        <value>Asia/Pontianak</value>
+      </choice>
+      <choice id="302">
+        <description/>
+        <label>Asia/Pyongyang</label>
+        <sequence>301</sequence>
+        <value>Asia/Pyongyang</value>
+      </choice>
+      <choice id="303">
+        <description/>
+        <label>Asia/Qatar</label>
+        <sequence>302</sequence>
+        <value>Asia/Qatar</value>
+      </choice>
+      <choice id="304">
+        <description/>
+        <label>Asia/Qyzylorda</label>
+        <sequence>303</sequence>
+        <value>Asia/Qyzylorda</value>
+      </choice>
+      <choice id="305">
+        <description/>
+        <label>Asia/Rangoon</label>
+        <sequence>304</sequence>
+        <value>Asia/Rangoon</value>
+      </choice>
+      <choice id="306">
+        <description/>
+        <label>Asia/Riyadh</label>
+        <sequence>305</sequence>
+        <value>Asia/Riyadh</value>
+      </choice>
+      <choice id="307">
+        <description/>
+        <label>Asia/Riyadh87</label>
+        <sequence>306</sequence>
+        <value>Asia/Riyadh87</value>
+      </choice>
+      <choice id="308">
+        <description/>
+        <label>Asia/Riyadh88</label>
+        <sequence>307</sequence>
+        <value>Asia/Riyadh88</value>
+      </choice>
+      <choice id="309">
+        <description/>
+        <label>Asia/Riyadh89</label>
+        <sequence>308</sequence>
+        <value>Asia/Riyadh89</value>
+      </choice>
+      <choice id="310">
+        <description/>
+        <label>Asia/Saigon</label>
+        <sequence>309</sequence>
+        <value>Asia/Saigon</value>
+      </choice>
+      <choice id="311">
+        <description/>
+        <label>Asia/Sakhalin</label>
+        <sequence>310</sequence>
+        <value>Asia/Sakhalin</value>
+      </choice>
+      <choice id="312">
+        <description/>
+        <label>Asia/Samarkand</label>
+        <sequence>311</sequence>
+        <value>Asia/Samarkand</value>
+      </choice>
+      <choice id="313">
+        <description/>
+        <label>Asia/Seoul</label>
+        <sequence>312</sequence>
+        <value>Asia/Seoul</value>
+      </choice>
+      <choice id="314">
+        <description/>
+        <label>Asia/Shanghai</label>
+        <sequence>313</sequence>
+        <value>Asia/Shanghai</value>
+      </choice>
+      <choice id="315">
+        <description/>
+        <label>Asia/Singapore</label>
+        <sequence>314</sequence>
+        <value>Asia/Singapore</value>
+      </choice>
+      <choice id="316">
+        <description/>
+        <label>Asia/Srednekolymsk</label>
+        <sequence>315</sequence>
+        <value>Asia/Srednekolymsk</value>
+      </choice>
+      <choice id="317">
+        <description/>
+        <label>Asia/Taipei</label>
+        <sequence>316</sequence>
+        <value>Asia/Taipei</value>
+      </choice>
+      <choice id="318">
+        <description/>
+        <label>Asia/Tashkent</label>
+        <sequence>317</sequence>
+        <value>Asia/Tashkent</value>
+      </choice>
+      <choice id="319">
+        <description/>
+        <label>Asia/Tbilisi</label>
+        <sequence>318</sequence>
+        <value>Asia/Tbilisi</value>
+      </choice>
+      <choice id="320">
+        <description/>
+        <label>Asia/Tehran</label>
+        <sequence>319</sequence>
+        <value>Asia/Tehran</value>
+      </choice>
+      <choice id="321">
+        <description/>
+        <label>Asia/Tel_Aviv</label>
+        <sequence>320</sequence>
+        <value>Asia/Tel_Aviv</value>
+      </choice>
+      <choice id="322">
+        <description/>
+        <label>Asia/Thimbu</label>
+        <sequence>321</sequence>
+        <value>Asia/Thimbu</value>
+      </choice>
+      <choice id="323">
+        <description/>
+        <label>Asia/Thimphu</label>
+        <sequence>322</sequence>
+        <value>Asia/Thimphu</value>
+      </choice>
+      <choice id="324">
+        <description/>
+        <label>Asia/Tokyo</label>
+        <sequence>323</sequence>
+        <value>Asia/Tokyo</value>
+      </choice>
+      <choice id="325">
+        <description/>
+        <label>Asia/Ujung_Pandang</label>
+        <sequence>324</sequence>
+        <value>Asia/Ujung_Pandang</value>
+      </choice>
+      <choice id="326">
+        <description/>
+        <label>Asia/Ulaanbaatar</label>
+        <sequence>325</sequence>
+        <value>Asia/Ulaanbaatar</value>
+      </choice>
+      <choice id="327">
+        <description/>
+        <label>Asia/Ulan_Bator</label>
+        <sequence>326</sequence>
+        <value>Asia/Ulan_Bator</value>
+      </choice>
+      <choice id="328">
+        <description/>
+        <label>Asia/Urumqi</label>
+        <sequence>327</sequence>
+        <value>Asia/Urumqi</value>
+      </choice>
+      <choice id="329">
+        <description/>
+        <label>Asia/Ust-Nera</label>
+        <sequence>328</sequence>
+        <value>Asia/Ust-Nera</value>
+      </choice>
+      <choice id="330">
+        <description/>
+        <label>Asia/Vientiane</label>
+        <sequence>329</sequence>
+        <value>Asia/Vientiane</value>
+      </choice>
+      <choice id="331">
+        <description/>
+        <label>Asia/Vladivostok</label>
+        <sequence>330</sequence>
+        <value>Asia/Vladivostok</value>
+      </choice>
+      <choice id="332">
+        <description/>
+        <label>Asia/Yakutsk</label>
+        <sequence>331</sequence>
+        <value>Asia/Yakutsk</value>
+      </choice>
+      <choice id="333">
+        <description/>
+        <label>Asia/Yekaterinburg</label>
+        <sequence>332</sequence>
+        <value>Asia/Yekaterinburg</value>
+      </choice>
+      <choice id="334">
+        <description/>
+        <label>Asia/Yerevan</label>
+        <sequence>333</sequence>
+        <value>Asia/Yerevan</value>
+      </choice>
+      <choice id="335">
+        <description/>
+        <label>Atlantic/Azores</label>
+        <sequence>334</sequence>
+        <value>Atlantic/Azores</value>
+      </choice>
+      <choice id="336">
+        <description/>
+        <label>Atlantic/Bermuda</label>
+        <sequence>335</sequence>
+        <value>Atlantic/Bermuda</value>
+      </choice>
+      <choice id="337">
+        <description/>
+        <label>Atlantic/Canary</label>
+        <sequence>336</sequence>
+        <value>Atlantic/Canary</value>
+      </choice>
+      <choice id="338">
+        <description/>
+        <label>Atlantic/Cape_Verde</label>
+        <sequence>337</sequence>
+        <value>Atlantic/Cape_Verde</value>
+      </choice>
+      <choice id="339">
+        <description/>
+        <label>Atlantic/Faeroe</label>
+        <sequence>338</sequence>
+        <value>Atlantic/Faeroe</value>
+      </choice>
+      <choice id="340">
+        <description/>
+        <label>Atlantic/Faroe</label>
+        <sequence>339</sequence>
+        <value>Atlantic/Faroe</value>
+      </choice>
+      <choice id="341">
+        <description/>
+        <label>Atlantic/Jan_Mayen</label>
+        <sequence>340</sequence>
+        <value>Atlantic/Jan_Mayen</value>
+      </choice>
+      <choice id="342">
+        <description/>
+        <label>Atlantic/Madeira</label>
+        <sequence>341</sequence>
+        <value>Atlantic/Madeira</value>
+      </choice>
+      <choice id="343">
+        <description/>
+        <label>Atlantic/Reykjavik</label>
+        <sequence>342</sequence>
+        <value>Atlantic/Reykjavik</value>
+      </choice>
+      <choice id="344">
+        <description/>
+        <label>Atlantic/South_Georgia</label>
+        <sequence>343</sequence>
+        <value>Atlantic/South_Georgia</value>
+      </choice>
+      <choice id="345">
+        <description/>
+        <label>Atlantic/St_Helena</label>
+        <sequence>344</sequence>
+        <value>Atlantic/St_Helena</value>
+      </choice>
+      <choice id="346">
+        <description/>
+        <label>Atlantic/Stanley</label>
+        <sequence>345</sequence>
+        <value>Atlantic/Stanley</value>
+      </choice>
+      <choice id="347">
+        <description/>
+        <label>Australia/ACT</label>
+        <sequence>346</sequence>
+        <value>Australia/ACT</value>
+      </choice>
+      <choice id="348">
+        <description/>
+        <label>Australia/Adelaide</label>
+        <sequence>347</sequence>
+        <value>Australia/Adelaide</value>
+      </choice>
+      <choice id="349">
+        <description/>
+        <label>Australia/Brisbane</label>
+        <sequence>348</sequence>
+        <value>Australia/Brisbane</value>
+      </choice>
+      <choice id="350">
+        <description/>
+        <label>Australia/Broken_Hill</label>
+        <sequence>349</sequence>
+        <value>Australia/Broken_Hill</value>
+      </choice>
+      <choice id="351">
+        <description/>
+        <label>Australia/Canberra</label>
+        <sequence>350</sequence>
+        <value>Australia/Canberra</value>
+      </choice>
+      <choice id="352">
+        <description/>
+        <label>Australia/Currie</label>
+        <sequence>351</sequence>
+        <value>Australia/Currie</value>
+      </choice>
+      <choice id="353">
+        <description/>
+        <label>Australia/Darwin</label>
+        <sequence>352</sequence>
+        <value>Australia/Darwin</value>
+      </choice>
+      <choice id="354">
+        <description/>
+        <label>Australia/Eucla</label>
+        <sequence>353</sequence>
+        <value>Australia/Eucla</value>
+      </choice>
+      <choice id="355">
+        <description/>
+        <label>Australia/Hobart</label>
+        <sequence>354</sequence>
+        <value>Australia/Hobart</value>
+      </choice>
+      <choice id="356">
+        <description/>
+        <label>Australia/LHI</label>
+        <sequence>355</sequence>
+        <value>Australia/LHI</value>
+      </choice>
+      <choice id="357">
+        <description/>
+        <label>Australia/Lindeman</label>
+        <sequence>356</sequence>
+        <value>Australia/Lindeman</value>
+      </choice>
+      <choice id="358">
+        <description/>
+        <label>Australia/Lord_Howe</label>
+        <sequence>357</sequence>
+        <value>Australia/Lord_Howe</value>
+      </choice>
+      <choice id="359">
+        <description/>
+        <label>Australia/Melbourne</label>
+        <sequence>358</sequence>
+        <value>Australia/Melbourne</value>
+      </choice>
+      <choice id="360">
+        <description/>
+        <label>Australia/NSW</label>
+        <sequence>359</sequence>
+        <value>Australia/NSW</value>
+      </choice>
+      <choice id="361">
+        <description/>
+        <label>Australia/North</label>
+        <sequence>360</sequence>
+        <value>Australia/North</value>
+      </choice>
+      <choice id="362">
+        <description/>
+        <label>Australia/Perth</label>
+        <sequence>361</sequence>
+        <value>Australia/Perth</value>
+      </choice>
+      <choice id="363">
+        <description/>
+        <label>Australia/Queensland</label>
+        <sequence>362</sequence>
+        <value>Australia/Queensland</value>
+      </choice>
+      <choice id="364">
+        <description/>
+        <label>Australia/South</label>
+        <sequence>363</sequence>
+        <value>Australia/South</value>
+      </choice>
+      <choice id="365">
+        <description/>
+        <label>Australia/Sydney</label>
+        <sequence>364</sequence>
+        <value>Australia/Sydney</value>
+      </choice>
+      <choice id="366">
+        <description/>
+        <label>Australia/Tasmania</label>
+        <sequence>365</sequence>
+        <value>Australia/Tasmania</value>
+      </choice>
+      <choice id="367">
+        <description/>
+        <label>Australia/Victoria</label>
+        <sequence>366</sequence>
+        <value>Australia/Victoria</value>
+      </choice>
+      <choice id="368">
+        <description/>
+        <label>Australia/West</label>
+        <sequence>367</sequence>
+        <value>Australia/West</value>
+      </choice>
+      <choice id="369">
+        <description/>
+        <label>Australia/Yancowinna</label>
+        <sequence>368</sequence>
+        <value>Australia/Yancowinna</value>
+      </choice>
+      <choice id="370">
+        <description/>
+        <label>BET</label>
+        <sequence>369</sequence>
+        <value>BET</value>
+      </choice>
+      <choice id="371">
+        <description/>
+        <label>BST</label>
+        <sequence>370</sequence>
+        <value>BST</value>
+      </choice>
+      <choice id="372">
+        <description/>
+        <label>Brazil/Acre</label>
+        <sequence>371</sequence>
+        <value>Brazil/Acre</value>
+      </choice>
+      <choice id="373">
+        <description/>
+        <label>Brazil/DeNoronha</label>
+        <sequence>372</sequence>
+        <value>Brazil/DeNoronha</value>
+      </choice>
+      <choice id="374">
+        <description/>
+        <label>Brazil/East</label>
+        <sequence>373</sequence>
+        <value>Brazil/East</value>
+      </choice>
+      <choice id="375">
+        <description/>
+        <label>Brazil/West</label>
+        <sequence>374</sequence>
+        <value>Brazil/West</value>
+      </choice>
+      <choice id="376">
+        <description/>
+        <label>CAT</label>
+        <sequence>375</sequence>
+        <value>CAT</value>
+      </choice>
+      <choice id="377">
+        <description/>
+        <label>CET</label>
+        <sequence>376</sequence>
+        <value>CET</value>
+      </choice>
+      <choice id="378">
+        <description/>
+        <label>CNT</label>
+        <sequence>377</sequence>
+        <value>CNT</value>
+      </choice>
+      <choice id="379">
+        <description/>
+        <label>CST</label>
+        <sequence>378</sequence>
+        <value>CST</value>
+      </choice>
+      <choice id="380">
+        <description/>
+        <label>CST6CDT</label>
+        <sequence>379</sequence>
+        <value>CST6CDT</value>
+      </choice>
+      <choice id="381">
+        <description/>
+        <label>CTT</label>
+        <sequence>380</sequence>
+        <value>CTT</value>
+      </choice>
+      <choice id="382">
+        <description/>
+        <label>Canada/Atlantic</label>
+        <sequence>381</sequence>
+        <value>Canada/Atlantic</value>
+      </choice>
+      <choice id="383">
+        <description/>
+        <label>Canada/Central</label>
+        <sequence>382</sequence>
+        <value>Canada/Central</value>
+      </choice>
+      <choice id="384">
+        <description/>
+        <label>Canada/East-Saskatchewan</label>
+        <sequence>383</sequence>
+        <value>Canada/East-Saskatchewan</value>
+      </choice>
+      <choice id="385">
+        <description/>
+        <label>Canada/Eastern</label>
+        <sequence>384</sequence>
+        <value>Canada/Eastern</value>
+      </choice>
+      <choice id="386">
+        <description/>
+        <label>Canada/Mountain</label>
+        <sequence>385</sequence>
+        <value>Canada/Mountain</value>
+      </choice>
+      <choice id="387">
+        <description/>
+        <label>Canada/Newfoundland</label>
+        <sequence>386</sequence>
+        <value>Canada/Newfoundland</value>
+      </choice>
+      <choice id="388">
+        <description/>
+        <label>Canada/Pacific</label>
+        <sequence>387</sequence>
+        <value>Canada/Pacific</value>
+      </choice>
+      <choice id="389">
+        <description/>
+        <label>Canada/Saskatchewan</label>
+        <sequence>388</sequence>
+        <value>Canada/Saskatchewan</value>
+      </choice>
+      <choice id="390">
+        <description/>
+        <label>Canada/Yukon</label>
+        <sequence>389</sequence>
+        <value>Canada/Yukon</value>
+      </choice>
+      <choice id="391">
+        <description/>
+        <label>Chile/Continental</label>
+        <sequence>390</sequence>
+        <value>Chile/Continental</value>
+      </choice>
+      <choice id="392">
+        <description/>
+        <label>Chile/EasterIsland</label>
+        <sequence>391</sequence>
+        <value>Chile/EasterIsland</value>
+      </choice>
+      <choice id="393">
+        <description/>
+        <label>Cuba</label>
+        <sequence>392</sequence>
+        <value>Cuba</value>
+      </choice>
+      <choice id="394">
+        <description/>
+        <label>EAT</label>
+        <sequence>393</sequence>
+        <value>EAT</value>
+      </choice>
+      <choice id="395">
+        <description/>
+        <label>ECT</label>
+        <sequence>394</sequence>
+        <value>ECT</value>
+      </choice>
+      <choice id="396">
+        <description/>
+        <label>EET</label>
+        <sequence>395</sequence>
+        <value>EET</value>
+      </choice>
+      <choice id="397">
+        <description/>
+        <label>EST</label>
+        <sequence>396</sequence>
+        <value>EST</value>
+      </choice>
+      <choice id="398">
+        <description/>
+        <label>EST5EDT</label>
+        <sequence>397</sequence>
+        <value>EST5EDT</value>
+      </choice>
+      <choice id="399">
+        <description/>
+        <label>Egypt</label>
+        <sequence>398</sequence>
+        <value>Egypt</value>
+      </choice>
+      <choice id="400">
+        <description/>
+        <label>Eire</label>
+        <sequence>399</sequence>
+        <value>Eire</value>
+      </choice>
+      <choice id="401">
+        <description/>
+        <label>Etc/GMT</label>
+        <sequence>400</sequence>
+        <value>Etc/GMT</value>
+      </choice>
+      <choice id="402">
+        <description/>
+        <label>Etc/GMT+0</label>
+        <sequence>401</sequence>
+        <value>Etc/GMT+0</value>
+      </choice>
+      <choice id="403">
+        <description/>
+        <label>Etc/GMT+1</label>
+        <sequence>402</sequence>
+        <value>Etc/GMT+1</value>
+      </choice>
+      <choice id="404">
+        <description/>
+        <label>Etc/GMT+10</label>
+        <sequence>403</sequence>
+        <value>Etc/GMT+10</value>
+      </choice>
+      <choice id="405">
+        <description/>
+        <label>Etc/GMT+11</label>
+        <sequence>404</sequence>
+        <value>Etc/GMT+11</value>
+      </choice>
+      <choice id="406">
+        <description/>
+        <label>Etc/GMT+12</label>
+        <sequence>405</sequence>
+        <value>Etc/GMT+12</value>
+      </choice>
+      <choice id="407">
+        <description/>
+        <label>Etc/GMT+2</label>
+        <sequence>406</sequence>
+        <value>Etc/GMT+2</value>
+      </choice>
+      <choice id="408">
+        <description/>
+        <label>Etc/GMT+3</label>
+        <sequence>407</sequence>
+        <value>Etc/GMT+3</value>
+      </choice>
+      <choice id="409">
+        <description/>
+        <label>Etc/GMT+4</label>
+        <sequence>408</sequence>
+        <value>Etc/GMT+4</value>
+      </choice>
+      <choice id="410">
+        <description/>
+        <label>Etc/GMT+5</label>
+        <sequence>409</sequence>
+        <value>Etc/GMT+5</value>
+      </choice>
+      <choice id="411">
+        <description/>
+        <label>Etc/GMT+6</label>
+        <sequence>410</sequence>
+        <value>Etc/GMT+6</value>
+      </choice>
+      <choice id="412">
+        <description/>
+        <label>Etc/GMT+7</label>
+        <sequence>411</sequence>
+        <value>Etc/GMT+7</value>
+      </choice>
+      <choice id="413">
+        <description/>
+        <label>Etc/GMT+8</label>
+        <sequence>412</sequence>
+        <value>Etc/GMT+8</value>
+      </choice>
+      <choice id="414">
+        <description/>
+        <label>Etc/GMT+9</label>
+        <sequence>413</sequence>
+        <value>Etc/GMT+9</value>
+      </choice>
+      <choice id="415">
+        <description/>
+        <label>Etc/GMT-0</label>
+        <sequence>414</sequence>
+        <value>Etc/GMT-0</value>
+      </choice>
+      <choice id="416">
+        <description/>
+        <label>Etc/GMT-1</label>
+        <sequence>415</sequence>
+        <value>Etc/GMT-1</value>
+      </choice>
+      <choice id="417">
+        <description/>
+        <label>Etc/GMT-10</label>
+        <sequence>416</sequence>
+        <value>Etc/GMT-10</value>
+      </choice>
+      <choice id="418">
+        <description/>
+        <label>Etc/GMT-11</label>
+        <sequence>417</sequence>
+        <value>Etc/GMT-11</value>
+      </choice>
+      <choice id="419">
+        <description/>
+        <label>Etc/GMT-12</label>
+        <sequence>418</sequence>
+        <value>Etc/GMT-12</value>
+      </choice>
+      <choice id="420">
+        <description/>
+        <label>Etc/GMT-13</label>
+        <sequence>419</sequence>
+        <value>Etc/GMT-13</value>
+      </choice>
+      <choice id="421">
+        <description/>
+        <label>Etc/GMT-14</label>
+        <sequence>420</sequence>
+        <value>Etc/GMT-14</value>
+      </choice>
+      <choice id="422">
+        <description/>
+        <label>Etc/GMT-2</label>
+        <sequence>421</sequence>
+        <value>Etc/GMT-2</value>
+      </choice>
+      <choice id="423">
+        <description/>
+        <label>Etc/GMT-3</label>
+        <sequence>422</sequence>
+        <value>Etc/GMT-3</value>
+      </choice>
+      <choice id="424">
+        <description/>
+        <label>Etc/GMT-4</label>
+        <sequence>423</sequence>
+        <value>Etc/GMT-4</value>
+      </choice>
+      <choice id="425">
+        <description/>
+        <label>Etc/GMT-5</label>
+        <sequence>424</sequence>
+        <value>Etc/GMT-5</value>
+      </choice>
+      <choice id="426">
+        <description/>
+        <label>Etc/GMT-6</label>
+        <sequence>425</sequence>
+        <value>Etc/GMT-6</value>
+      </choice>
+      <choice id="427">
+        <description/>
+        <label>Etc/GMT-7</label>
+        <sequence>426</sequence>
+        <value>Etc/GMT-7</value>
+      </choice>
+      <choice id="428">
+        <description/>
+        <label>Etc/GMT-8</label>
+        <sequence>427</sequence>
+        <value>Etc/GMT-8</value>
+      </choice>
+      <choice id="429">
+        <description/>
+        <label>Etc/GMT-9</label>
+        <sequence>428</sequence>
+        <value>Etc/GMT-9</value>
+      </choice>
+      <choice id="430">
+        <description/>
+        <label>Etc/GMT0</label>
+        <sequence>429</sequence>
+        <value>Etc/GMT0</value>
+      </choice>
+      <choice id="431">
+        <description/>
+        <label>Etc/Greenwich</label>
+        <sequence>430</sequence>
+        <value>Etc/Greenwich</value>
+      </choice>
+      <choice id="432">
+        <description/>
+        <label>Etc/UCT</label>
+        <sequence>431</sequence>
+        <value>Etc/UCT</value>
+      </choice>
+      <choice id="433">
+        <description/>
+        <label>Etc/UTC</label>
+        <sequence>432</sequence>
+        <value>Etc/UTC</value>
+      </choice>
+      <choice id="434">
+        <description/>
+        <label>Etc/Universal</label>
+        <sequence>433</sequence>
+        <value>Etc/Universal</value>
+      </choice>
+      <choice id="435">
+        <description/>
+        <label>Etc/Zulu</label>
+        <sequence>434</sequence>
+        <value>Etc/Zulu</value>
+      </choice>
+      <choice id="436">
+        <description/>
+        <label>Europe/Amsterdam</label>
+        <sequence>435</sequence>
+        <value>Europe/Amsterdam</value>
+      </choice>
+      <choice id="437">
+        <description/>
+        <label>Europe/Andorra</label>
+        <sequence>436</sequence>
+        <value>Europe/Andorra</value>
+      </choice>
+      <choice id="438">
+        <description/>
+        <label>Europe/Athens</label>
+        <sequence>437</sequence>
+        <value>Europe/Athens</value>
+      </choice>
+      <choice id="439">
+        <description/>
+        <label>Europe/Belfast</label>
+        <sequence>438</sequence>
+        <value>Europe/Belfast</value>
+      </choice>
+      <choice id="440">
+        <description/>
+        <label>Europe/Belgrade</label>
+        <sequence>439</sequence>
+        <value>Europe/Belgrade</value>
+      </choice>
+      <choice id="441">
+        <description/>
+        <label>Europe/Berlin</label>
+        <sequence>440</sequence>
+        <value>Europe/Berlin</value>
+      </choice>
+      <choice id="442">
+        <description/>
+        <label>Europe/Bratislava</label>
+        <sequence>441</sequence>
+        <value>Europe/Bratislava</value>
+      </choice>
+      <choice id="443">
+        <description/>
+        <label>Europe/Brussels</label>
+        <sequence>442</sequence>
+        <value>Europe/Brussels</value>
+      </choice>
+      <choice id="444">
+        <description/>
+        <label>Europe/Bucharest</label>
+        <sequence>443</sequence>
+        <value>Europe/Bucharest</value>
+      </choice>
+      <choice id="445">
+        <description/>
+        <label>Europe/Budapest</label>
+        <sequence>444</sequence>
+        <value>Europe/Budapest</value>
+      </choice>
+      <choice id="446">
+        <description/>
+        <label>Europe/Busingen</label>
+        <sequence>445</sequence>
+        <value>Europe/Busingen</value>
+      </choice>
+      <choice id="447">
+        <description/>
+        <label>Europe/Chisinau</label>
+        <sequence>446</sequence>
+        <value>Europe/Chisinau</value>
+      </choice>
+      <choice id="448">
+        <description/>
+        <label>Europe/Copenhagen</label>
+        <sequence>447</sequence>
+        <value>Europe/Copenhagen</value>
+      </choice>
+      <choice id="449">
+        <description/>
+        <label>Europe/Dublin</label>
+        <sequence>448</sequence>
+        <value>Europe/Dublin</value>
+      </choice>
+      <choice id="450">
+        <description/>
+        <label>Europe/Gibraltar</label>
+        <sequence>449</sequence>
+        <value>Europe/Gibraltar</value>
+      </choice>
+      <choice id="451">
+        <description/>
+        <label>Europe/Guernsey</label>
+        <sequence>450</sequence>
+        <value>Europe/Guernsey</value>
+      </choice>
+      <choice id="452">
+        <description/>
+        <label>Europe/Helsinki</label>
+        <sequence>451</sequence>
+        <value>Europe/Helsinki</value>
+      </choice>
+      <choice id="453">
+        <description/>
+        <label>Europe/Isle_of_Man</label>
+        <sequence>452</sequence>
+        <value>Europe/Isle_of_Man</value>
+      </choice>
+      <choice id="454">
+        <description/>
+        <label>Europe/Istanbul</label>
+        <sequence>453</sequence>
+        <value>Europe/Istanbul</value>
+      </choice>
+      <choice id="455">
+        <description/>
+        <label>Europe/Jersey</label>
+        <sequence>454</sequence>
+        <value>Europe/Jersey</value>
+      </choice>
+      <choice id="456">
+        <description/>
+        <label>Europe/Kaliningrad</label>
+        <sequence>455</sequence>
+        <value>Europe/Kaliningrad</value>
+      </choice>
+      <choice id="457">
+        <description/>
+        <label>Europe/Kiev</label>
+        <sequence>456</sequence>
+        <value>Europe/Kiev</value>
+      </choice>
+      <choice id="458">
+        <description/>
+        <label>Europe/Lisbon</label>
+        <sequence>457</sequence>
+        <value>Europe/Lisbon</value>
+      </choice>
+      <choice id="459">
+        <description/>
+        <label>Europe/Ljubljana</label>
+        <sequence>458</sequence>
+        <value>Europe/Ljubljana</value>
+      </choice>
+      <choice id="460">
+        <description/>
+        <label>Europe/London</label>
+        <sequence>459</sequence>
+        <value>Europe/London</value>
+      </choice>
+      <choice id="461">
+        <description/>
+        <label>Europe/Luxembourg</label>
+        <sequence>460</sequence>
+        <value>Europe/Luxembourg</value>
+      </choice>
+      <choice id="462">
+        <description/>
+        <label>Europe/Madrid</label>
+        <sequence>461</sequence>
+        <value>Europe/Madrid</value>
+      </choice>
+      <choice id="463">
+        <description/>
+        <label>Europe/Malta</label>
+        <sequence>462</sequence>
+        <value>Europe/Malta</value>
+      </choice>
+      <choice id="464">
+        <description/>
+        <label>Europe/Mariehamn</label>
+        <sequence>463</sequence>
+        <value>Europe/Mariehamn</value>
+      </choice>
+      <choice id="465">
+        <description/>
+        <label>Europe/Minsk</label>
+        <sequence>464</sequence>
+        <value>Europe/Minsk</value>
+      </choice>
+      <choice id="466">
+        <description/>
+        <label>Europe/Monaco</label>
+        <sequence>465</sequence>
+        <value>Europe/Monaco</value>
+      </choice>
+      <choice id="467">
+        <description/>
+        <label>Europe/Moscow</label>
+        <sequence>466</sequence>
+        <value>Europe/Moscow</value>
+      </choice>
+      <choice id="468">
+        <description/>
+        <label>Europe/Nicosia</label>
+        <sequence>467</sequence>
+        <value>Europe/Nicosia</value>
+      </choice>
+      <choice id="469">
+        <description/>
+        <label>Europe/Oslo</label>
+        <sequence>468</sequence>
+        <value>Europe/Oslo</value>
+      </choice>
+      <choice id="470">
+        <description/>
+        <label>Europe/Paris</label>
+        <sequence>469</sequence>
+        <value>Europe/Paris</value>
+      </choice>
+      <choice id="471">
+        <description/>
+        <label>Europe/Podgorica</label>
+        <sequence>470</sequence>
+        <value>Europe/Podgorica</value>
+      </choice>
+      <choice id="472">
+        <description/>
+        <label>Europe/Prague</label>
+        <sequence>471</sequence>
+        <value>Europe/Prague</value>
+      </choice>
+      <choice id="473">
+        <description/>
+        <label>Europe/Riga</label>
+        <sequence>472</sequence>
+        <value>Europe/Riga</value>
+      </choice>
+      <choice id="474">
+        <description/>
+        <label>Europe/Rome</label>
+        <sequence>473</sequence>
+        <value>Europe/Rome</value>
+      </choice>
+      <choice id="475">
+        <description/>
+        <label>Europe/Samara</label>
+        <sequence>474</sequence>
+        <value>Europe/Samara</value>
+      </choice>
+      <choice id="476">
+        <description/>
+        <label>Europe/San_Marino</label>
+        <sequence>475</sequence>
+        <value>Europe/San_Marino</value>
+      </choice>
+      <choice id="477">
+        <description/>
+        <label>Europe/Sarajevo</label>
+        <sequence>476</sequence>
+        <value>Europe/Sarajevo</value>
+      </choice>
+      <choice id="478">
+        <description/>
+        <label>Europe/Simferopol</label>
+        <sequence>477</sequence>
+        <value>Europe/Simferopol</value>
+      </choice>
+      <choice id="479">
+        <description/>
+        <label>Europe/Skopje</label>
+        <sequence>478</sequence>
+        <value>Europe/Skopje</value>
+      </choice>
+      <choice id="480">
+        <description/>
+        <label>Europe/Sofia</label>
+        <sequence>479</sequence>
+        <value>Europe/Sofia</value>
+      </choice>
+      <choice id="481">
+        <description/>
+        <label>Europe/Stockholm</label>
+        <sequence>480</sequence>
+        <value>Europe/Stockholm</value>
+      </choice>
+      <choice id="482">
+        <description/>
+        <label>Europe/Tallinn</label>
+        <sequence>481</sequence>
+        <value>Europe/Tallinn</value>
+      </choice>
+      <choice id="483">
+        <description/>
+        <label>Europe/Tirane</label>
+        <sequence>482</sequence>
+        <value>Europe/Tirane</value>
+      </choice>
+      <choice id="484">
+        <description/>
+        <label>Europe/Tiraspol</label>
+        <sequence>483</sequence>
+        <value>Europe/Tiraspol</value>
+      </choice>
+      <choice id="485">
+        <description/>
+        <label>Europe/Uzhgorod</label>
+        <sequence>484</sequence>
+        <value>Europe/Uzhgorod</value>
+      </choice>
+      <choice id="486">
+        <description/>
+        <label>Europe/Vaduz</label>
+        <sequence>485</sequence>
+        <value>Europe/Vaduz</value>
+      </choice>
+      <choice id="487">
+        <description/>
+        <label>Europe/Vatican</label>
+        <sequence>486</sequence>
+        <value>Europe/Vatican</value>
+      </choice>
+      <choice id="488">
+        <description/>
+        <label>Europe/Vienna</label>
+        <sequence>487</sequence>
+        <value>Europe/Vienna</value>
+      </choice>
+      <choice id="489">
+        <description/>
+        <label>Europe/Vilnius</label>
+        <sequence>488</sequence>
+        <value>Europe/Vilnius</value>
+      </choice>
+      <choice id="490">
+        <description/>
+        <label>Europe/Volgograd</label>
+        <sequence>489</sequence>
+        <value>Europe/Volgograd</value>
+      </choice>
+      <choice id="491">
+        <description/>
+        <label>Europe/Warsaw</label>
+        <sequence>490</sequence>
+        <value>Europe/Warsaw</value>
+      </choice>
+      <choice id="492">
+        <description/>
+        <label>Europe/Zagreb</label>
+        <sequence>491</sequence>
+        <value>Europe/Zagreb</value>
+      </choice>
+      <choice id="493">
+        <description/>
+        <label>Europe/Zaporozhye</label>
+        <sequence>492</sequence>
+        <value>Europe/Zaporozhye</value>
+      </choice>
+      <choice id="494">
+        <description/>
+        <label>Europe/Zurich</label>
+        <sequence>493</sequence>
+        <value>Europe/Zurich</value>
+      </choice>
+      <choice id="495">
+        <description/>
+        <label>GB</label>
+        <sequence>494</sequence>
+        <value>GB</value>
+      </choice>
+      <choice id="496">
+        <description/>
+        <label>GB-Eire</label>
+        <sequence>495</sequence>
+        <value>GB-Eire</value>
+      </choice>
+      <choice id="497">
+        <description/>
+        <label>GMT</label>
+        <sequence>496</sequence>
+        <value>GMT</value>
+      </choice>
+      <choice id="498">
+        <description/>
+        <label>GMT0</label>
+        <sequence>497</sequence>
+        <value>GMT0</value>
+      </choice>
+      <choice id="499">
+        <description/>
+        <label>Greenwich</label>
+        <sequence>498</sequence>
+        <value>Greenwich</value>
+      </choice>
+      <choice id="500">
+        <description/>
+        <label>HST</label>
+        <sequence>499</sequence>
+        <value>HST</value>
+      </choice>
+      <choice id="501">
+        <description/>
+        <label>Hongkong</label>
+        <sequence>500</sequence>
+        <value>Hongkong</value>
+      </choice>
+      <choice id="502">
+        <description/>
+        <label>IET</label>
+        <sequence>501</sequence>
+        <value>IET</value>
+      </choice>
+      <choice id="503">
+        <description/>
+        <label>IST</label>
+        <sequence>502</sequence>
+        <value>IST</value>
+      </choice>
+      <choice id="504">
+        <description/>
+        <label>Iceland</label>
+        <sequence>503</sequence>
+        <value>Iceland</value>
+      </choice>
+      <choice id="505">
+        <description/>
+        <label>Indian/Antananarivo</label>
+        <sequence>504</sequence>
+        <value>Indian/Antananarivo</value>
+      </choice>
+      <choice id="506">
+        <description/>
+        <label>Indian/Chagos</label>
+        <sequence>505</sequence>
+        <value>Indian/Chagos</value>
+      </choice>
+      <choice id="507">
+        <description/>
+        <label>Indian/Christmas</label>
+        <sequence>506</sequence>
+        <value>Indian/Christmas</value>
+      </choice>
+      <choice id="508">
+        <description/>
+        <label>Indian/Cocos</label>
+        <sequence>507</sequence>
+        <value>Indian/Cocos</value>
+      </choice>
+      <choice id="509">
+        <description/>
+        <label>Indian/Comoro</label>
+        <sequence>508</sequence>
+        <value>Indian/Comoro</value>
+      </choice>
+      <choice id="510">
+        <description/>
+        <label>Indian/Kerguelen</label>
+        <sequence>509</sequence>
+        <value>Indian/Kerguelen</value>
+      </choice>
+      <choice id="511">
+        <description/>
+        <label>Indian/Mahe</label>
+        <sequence>510</sequence>
+        <value>Indian/Mahe</value>
+      </choice>
+      <choice id="512">
+        <description/>
+        <label>Indian/Maldives</label>
+        <sequence>511</sequence>
+        <value>Indian/Maldives</value>
+      </choice>
+      <choice id="513">
+        <description/>
+        <label>Indian/Mauritius</label>
+        <sequence>512</sequence>
+        <value>Indian/Mauritius</value>
+      </choice>
+      <choice id="514">
+        <description/>
+        <label>Indian/Mayotte</label>
+        <sequence>513</sequence>
+        <value>Indian/Mayotte</value>
+      </choice>
+      <choice id="515">
+        <description/>
+        <label>Indian/Reunion</label>
+        <sequence>514</sequence>
+        <value>Indian/Reunion</value>
+      </choice>
+      <choice id="516">
+        <description/>
+        <label>Iran</label>
+        <sequence>515</sequence>
+        <value>Iran</value>
+      </choice>
+      <choice id="517">
+        <description/>
+        <label>Israel</label>
+        <sequence>516</sequence>
+        <value>Israel</value>
+      </choice>
+      <choice id="518">
+        <description/>
+        <label>JST</label>
+        <sequence>517</sequence>
+        <value>JST</value>
+      </choice>
+      <choice id="519">
+        <description/>
+        <label>Jamaica</label>
+        <sequence>518</sequence>
+        <value>Jamaica</value>
+      </choice>
+      <choice id="520">
+        <description/>
+        <label>Japan</label>
+        <sequence>519</sequence>
+        <value>Japan</value>
+      </choice>
+      <choice id="521">
+        <description/>
+        <label>Kwajalein</label>
+        <sequence>520</sequence>
+        <value>Kwajalein</value>
+      </choice>
+      <choice id="522">
+        <description/>
+        <label>Libya</label>
+        <sequence>521</sequence>
+        <value>Libya</value>
+      </choice>
+      <choice id="523">
+        <description/>
+        <label>MET</label>
+        <sequence>522</sequence>
+        <value>MET</value>
+      </choice>
+      <choice id="524">
+        <description/>
+        <label>MIT</label>
+        <sequence>523</sequence>
+        <value>MIT</value>
+      </choice>
+      <choice id="525">
+        <description/>
+        <label>MST</label>
+        <sequence>524</sequence>
+        <value>MST</value>
+      </choice>
+      <choice id="526">
+        <description/>
+        <label>MST7MDT</label>
+        <sequence>525</sequence>
+        <value>MST7MDT</value>
+      </choice>
+      <choice id="527">
+        <description/>
+        <label>Mexico/BajaNorte</label>
+        <sequence>526</sequence>
+        <value>Mexico/BajaNorte</value>
+      </choice>
+      <choice id="528">
+        <description/>
+        <label>Mexico/BajaSur</label>
+        <sequence>527</sequence>
+        <value>Mexico/BajaSur</value>
+      </choice>
+      <choice id="529">
+        <description/>
+        <label>Mexico/General</label>
+        <sequence>528</sequence>
+        <value>Mexico/General</value>
+      </choice>
+      <choice id="530">
+        <description/>
+        <label>Mideast/Riyadh87</label>
+        <sequence>529</sequence>
+        <value>Mideast/Riyadh87</value>
+      </choice>
+      <choice id="531">
+        <description/>
+        <label>Mideast/Riyadh88</label>
+        <sequence>530</sequence>
+        <value>Mideast/Riyadh88</value>
+      </choice>
+      <choice id="532">
+        <description/>
+        <label>Mideast/Riyadh89</label>
+        <sequence>531</sequence>
+        <value>Mideast/Riyadh89</value>
+      </choice>
+      <choice id="533">
+        <description/>
+        <label>NET</label>
+        <sequence>532</sequence>
+        <value>NET</value>
+      </choice>
+      <choice id="534">
+        <description/>
+        <label>NST</label>
+        <sequence>533</sequence>
+        <value>NST</value>
+      </choice>
+      <choice id="535">
+        <description/>
+        <label>NZ</label>
+        <sequence>534</sequence>
+        <value>NZ</value>
+      </choice>
+      <choice id="536">
+        <description/>
+        <label>NZ-CHAT</label>
+        <sequence>535</sequence>
+        <value>NZ-CHAT</value>
+      </choice>
+      <choice id="537">
+        <description/>
+        <label>Navajo</label>
+        <sequence>536</sequence>
+        <value>Navajo</value>
+      </choice>
+      <choice id="538">
+        <description/>
+        <label>PLT</label>
+        <sequence>537</sequence>
+        <value>PLT</value>
+      </choice>
+      <choice id="539">
+        <description/>
+        <label>PNT</label>
+        <sequence>538</sequence>
+        <value>PNT</value>
+      </choice>
+      <choice id="540">
+        <description/>
+        <label>PRC</label>
+        <sequence>539</sequence>
+        <value>PRC</value>
+      </choice>
+      <choice id="541">
+        <description/>
+        <label>PRT</label>
+        <sequence>540</sequence>
+        <value>PRT</value>
+      </choice>
+      <choice id="542">
+        <description/>
+        <label>PST</label>
+        <sequence>541</sequence>
+        <value>PST</value>
+      </choice>
+      <choice id="543">
+        <description/>
+        <label>PST8PDT</label>
+        <sequence>542</sequence>
+        <value>PST8PDT</value>
+      </choice>
+      <choice id="544">
+        <description/>
+        <label>Pacific/Apia</label>
+        <sequence>543</sequence>
+        <value>Pacific/Apia</value>
+      </choice>
+      <choice id="545">
+        <description/>
+        <label>Pacific/Auckland</label>
+        <sequence>544</sequence>
+        <value>Pacific/Auckland</value>
+      </choice>
+      <choice id="546">
+        <description/>
+        <label>Pacific/Bougainville</label>
+        <sequence>545</sequence>
+        <value>Pacific/Bougainville</value>
+      </choice>
+      <choice id="547">
+        <description/>
+        <label>Pacific/Chatham</label>
+        <sequence>546</sequence>
+        <value>Pacific/Chatham</value>
+      </choice>
+      <choice id="548">
+        <description/>
+        <label>Pacific/Chuuk</label>
+        <sequence>547</sequence>
+        <value>Pacific/Chuuk</value>
+      </choice>
+      <choice id="549">
+        <description/>
+        <label>Pacific/Easter</label>
+        <sequence>548</sequence>
+        <value>Pacific/Easter</value>
+      </choice>
+      <choice id="550">
+        <description/>
+        <label>Pacific/Efate</label>
+        <sequence>549</sequence>
+        <value>Pacific/Efate</value>
+      </choice>
+      <choice id="551">
+        <description/>
+        <label>Pacific/Enderbury</label>
+        <sequence>550</sequence>
+        <value>Pacific/Enderbury</value>
+      </choice>
+      <choice id="552">
+        <description/>
+        <label>Pacific/Fakaofo</label>
+        <sequence>551</sequence>
+        <value>Pacific/Fakaofo</value>
+      </choice>
+      <choice id="553">
+        <description/>
+        <label>Pacific/Fiji</label>
+        <sequence>552</sequence>
+        <value>Pacific/Fiji</value>
+      </choice>
+      <choice id="554">
+        <description/>
+        <label>Pacific/Funafuti</label>
+        <sequence>553</sequence>
+        <value>Pacific/Funafuti</value>
+      </choice>
+      <choice id="555">
+        <description/>
+        <label>Pacific/Galapagos</label>
+        <sequence>554</sequence>
+        <value>Pacific/Galapagos</value>
+      </choice>
+      <choice id="556">
+        <description/>
+        <label>Pacific/Gambier</label>
+        <sequence>555</sequence>
+        <value>Pacific/Gambier</value>
+      </choice>
+      <choice id="557">
+        <description/>
+        <label>Pacific/Guadalcanal</label>
+        <sequence>556</sequence>
+        <value>Pacific/Guadalcanal</value>
+      </choice>
+      <choice id="558">
+        <description/>
+        <label>Pacific/Guam</label>
+        <sequence>557</sequence>
+        <value>Pacific/Guam</value>
+      </choice>
+      <choice id="559">
+        <description/>
+        <label>Pacific/Honolulu</label>
+        <sequence>558</sequence>
+        <value>Pacific/Honolulu</value>
+      </choice>
+      <choice id="560">
+        <description/>
+        <label>Pacific/Johnston</label>
+        <sequence>559</sequence>
+        <value>Pacific/Johnston</value>
+      </choice>
+      <choice id="561">
+        <description/>
+        <label>Pacific/Kiritimati</label>
+        <sequence>560</sequence>
+        <value>Pacific/Kiritimati</value>
+      </choice>
+      <choice id="562">
+        <description/>
+        <label>Pacific/Kosrae</label>
+        <sequence>561</sequence>
+        <value>Pacific/Kosrae</value>
+      </choice>
+      <choice id="563">
+        <description/>
+        <label>Pacific/Kwajalein</label>
+        <sequence>562</sequence>
+        <value>Pacific/Kwajalein</value>
+      </choice>
+      <choice id="564">
+        <description/>
+        <label>Pacific/Majuro</label>
+        <sequence>563</sequence>
+        <value>Pacific/Majuro</value>
+      </choice>
+      <choice id="565">
+        <description/>
+        <label>Pacific/Marquesas</label>
+        <sequence>564</sequence>
+        <value>Pacific/Marquesas</value>
+      </choice>
+      <choice id="566">
+        <description/>
+        <label>Pacific/Midway</label>
+        <sequence>565</sequence>
+        <value>Pacific/Midway</value>
+      </choice>
+      <choice id="567">
+        <description/>
+        <label>Pacific/Nauru</label>
+        <sequence>566</sequence>
+        <value>Pacific/Nauru</value>
+      </choice>
+      <choice id="568">
+        <description/>
+        <label>Pacific/Niue</label>
+        <sequence>567</sequence>
+        <value>Pacific/Niue</value>
+      </choice>
+      <choice id="569">
+        <description/>
+        <label>Pacific/Norfolk</label>
+        <sequence>568</sequence>
+        <value>Pacific/Norfolk</value>
+      </choice>
+      <choice id="570">
+        <description/>
+        <label>Pacific/Noumea</label>
+        <sequence>569</sequence>
+        <value>Pacific/Noumea</value>
+      </choice>
+      <choice id="571">
+        <description/>
+        <label>Pacific/Pago_Pago</label>
+        <sequence>570</sequence>
+        <value>Pacific/Pago_Pago</value>
+      </choice>
+      <choice id="572">
+        <description/>
+        <label>Pacific/Palau</label>
+        <sequence>571</sequence>
+        <value>Pacific/Palau</value>
+      </choice>
+      <choice id="573">
+        <description/>
+        <label>Pacific/Pitcairn</label>
+        <sequence>572</sequence>
+        <value>Pacific/Pitcairn</value>
+      </choice>
+      <choice id="574">
+        <description/>
+        <label>Pacific/Pohnpei</label>
+        <sequence>573</sequence>
+        <value>Pacific/Pohnpei</value>
+      </choice>
+      <choice id="575">
+        <description/>
+        <label>Pacific/Ponape</label>
+        <sequence>574</sequence>
+        <value>Pacific/Ponape</value>
+      </choice>
+      <choice id="576">
+        <description/>
+        <label>Pacific/Port_Moresby</label>
+        <sequence>575</sequence>
+        <value>Pacific/Port_Moresby</value>
+      </choice>
+      <choice id="577">
+        <description/>
+        <label>Pacific/Rarotonga</label>
+        <sequence>576</sequence>
+        <value>Pacific/Rarotonga</value>
+      </choice>
+      <choice id="578">
+        <description/>
+        <label>Pacific/Saipan</label>
+        <sequence>577</sequence>
+        <value>Pacific/Saipan</value>
+      </choice>
+      <choice id="579">
+        <description/>
+        <label>Pacific/Samoa</label>
+        <sequence>578</sequence>
+        <value>Pacific/Samoa</value>
+      </choice>
+      <choice id="580">
+        <description/>
+        <label>Pacific/Tahiti</label>
+        <sequence>579</sequence>
+        <value>Pacific/Tahiti</value>
+      </choice>
+      <choice id="581">
+        <description/>
+        <label>Pacific/Tarawa</label>
+        <sequence>580</sequence>
+        <value>Pacific/Tarawa</value>
+      </choice>
+      <choice id="582">
+        <description/>
+        <label>Pacific/Tongatapu</label>
+        <sequence>581</sequence>
+        <value>Pacific/Tongatapu</value>
+      </choice>
+      <choice id="583">
+        <description/>
+        <label>Pacific/Truk</label>
+        <sequence>582</sequence>
+        <value>Pacific/Truk</value>
+      </choice>
+      <choice id="584">
+        <description/>
+        <label>Pacific/Wake</label>
+        <sequence>583</sequence>
+        <value>Pacific/Wake</value>
+      </choice>
+      <choice id="585">
+        <description/>
+        <label>Pacific/Wallis</label>
+        <sequence>584</sequence>
+        <value>Pacific/Wallis</value>
+      </choice>
+      <choice id="586">
+        <description/>
+        <label>Pacific/Yap</label>
+        <sequence>585</sequence>
+        <value>Pacific/Yap</value>
+      </choice>
+      <choice id="587">
+        <description/>
+        <label>Poland</label>
+        <sequence>586</sequence>
+        <value>Poland</value>
+      </choice>
+      <choice id="588">
+        <description/>
+        <label>Portugal</label>
+        <sequence>587</sequence>
+        <value>Portugal</value>
+      </choice>
+      <choice id="589">
+        <description/>
+        <label>ROK</label>
+        <sequence>588</sequence>
+        <value>ROK</value>
+      </choice>
+      <choice id="590">
+        <description/>
+        <label>SST</label>
+        <sequence>589</sequence>
+        <value>SST</value>
+      </choice>
+      <choice id="591">
+        <description/>
+        <label>Singapore</label>
+        <sequence>590</sequence>
+        <value>Singapore</value>
+      </choice>
+      <choice id="592">
+        <description/>
+        <label>SystemV/AST4</label>
+        <sequence>591</sequence>
+        <value>SystemV/AST4</value>
+      </choice>
+      <choice id="593">
+        <description/>
+        <label>SystemV/AST4ADT</label>
+        <sequence>592</sequence>
+        <value>SystemV/AST4ADT</value>
+      </choice>
+      <choice id="594">
+        <description/>
+        <label>SystemV/CST6</label>
+        <sequence>593</sequence>
+        <value>SystemV/CST6</value>
+      </choice>
+      <choice id="595">
+        <description/>
+        <label>SystemV/CST6CDT</label>
+        <sequence>594</sequence>
+        <value>SystemV/CST6CDT</value>
+      </choice>
+      <choice id="596">
+        <description/>
+        <label>SystemV/EST5</label>
+        <sequence>595</sequence>
+        <value>SystemV/EST5</value>
+      </choice>
+      <choice id="597">
+        <description/>
+        <label>SystemV/EST5EDT</label>
+        <sequence>596</sequence>
+        <value>SystemV/EST5EDT</value>
+      </choice>
+      <choice id="598">
+        <description/>
+        <label>SystemV/HST10</label>
+        <sequence>597</sequence>
+        <value>SystemV/HST10</value>
+      </choice>
+      <choice id="599">
+        <description/>
+        <label>SystemV/MST7</label>
+        <sequence>598</sequence>
+        <value>SystemV/MST7</value>
+      </choice>
+      <choice id="600">
+        <description/>
+        <label>SystemV/MST7MDT</label>
+        <sequence>599</sequence>
+        <value>SystemV/MST7MDT</value>
+      </choice>
+      <choice id="601">
+        <description/>
+        <label>SystemV/PST8</label>
+        <sequence>600</sequence>
+        <value>SystemV/PST8</value>
+      </choice>
+      <choice id="602">
+        <description/>
+        <label>SystemV/PST8PDT</label>
+        <sequence>601</sequence>
+        <value>SystemV/PST8PDT</value>
+      </choice>
+      <choice id="603">
+        <description/>
+        <label>SystemV/YST9</label>
+        <sequence>602</sequence>
+        <value>SystemV/YST9</value>
+      </choice>
+      <choice id="604">
+        <description/>
+        <label>SystemV/YST9YDT</label>
+        <sequence>603</sequence>
+        <value>SystemV/YST9YDT</value>
+      </choice>
+      <choice id="605">
+        <description/>
+        <label>Turkey</label>
+        <sequence>604</sequence>
+        <value>Turkey</value>
+      </choice>
+      <choice id="606">
+        <description/>
+        <label>UCT</label>
+        <sequence>605</sequence>
+        <value>UCT</value>
+      </choice>
+      <choice id="607">
+        <description/>
+        <label>US/Alaska</label>
+        <sequence>606</sequence>
+        <value>US/Alaska</value>
+      </choice>
+      <choice id="608">
+        <description/>
+        <label>US/Aleutian</label>
+        <sequence>607</sequence>
+        <value>US/Aleutian</value>
+      </choice>
+      <choice id="609">
+        <description/>
+        <label>US/Arizona</label>
+        <sequence>608</sequence>
+        <value>US/Arizona</value>
+      </choice>
+      <choice id="610">
+        <description/>
+        <label>US/Central</label>
+        <sequence>609</sequence>
+        <value>US/Central</value>
+      </choice>
+      <choice id="611">
+        <description/>
+        <label>US/East-Indiana</label>
+        <sequence>610</sequence>
+        <value>US/East-Indiana</value>
+      </choice>
+      <choice id="612">
+        <description/>
+        <label>US/Eastern</label>
+        <sequence>611</sequence>
+        <value>US/Eastern</value>
+      </choice>
+      <choice id="613">
+        <description/>
+        <label>US/Hawaii</label>
+        <sequence>612</sequence>
+        <value>US/Hawaii</value>
+      </choice>
+      <choice id="614">
+        <description/>
+        <label>US/Indiana-Starke</label>
+        <sequence>613</sequence>
+        <value>US/Indiana-Starke</value>
+      </choice>
+      <choice id="615">
+        <description/>
+        <label>US/Michigan</label>
+        <sequence>614</sequence>
+        <value>US/Michigan</value>
+      </choice>
+      <choice id="616">
+        <description/>
+        <label>US/Mountain</label>
+        <sequence>615</sequence>
+        <value>US/Mountain</value>
+      </choice>
+      <choice id="617">
+        <description/>
+        <label>US/Pacific</label>
+        <sequence>616</sequence>
+        <value>US/Pacific</value>
+      </choice>
+      <choice id="618">
+        <description/>
+        <label>US/Pacific-New</label>
+        <sequence>617</sequence>
+        <value>US/Pacific-New</value>
+      </choice>
+      <choice id="619">
+        <description/>
+        <label>US/Samoa</label>
+        <sequence>618</sequence>
+        <value>US/Samoa</value>
+      </choice>
+      <choice id="620">
+        <description/>
+        <label>UTC</label>
+        <sequence>619</sequence>
+        <value>UTC</value>
+      </choice>
+      <choice id="621">
+        <description/>
+        <label>Universal</label>
+        <sequence>620</sequence>
+        <value>Universal</value>
+      </choice>
+      <choice id="622">
+        <description/>
+        <label>VST</label>
+        <sequence>621</sequence>
+        <value>VST</value>
+      </choice>
+      <choice id="623">
+        <description/>
+        <label>W-SU</label>
+        <sequence>622</sequence>
+        <value>W-SU</value>
+      </choice>
+      <choice id="624">
+        <description/>
+        <label>WET</label>
+        <sequence>623</sequence>
+        <value>WET</value>
+      </choice>
+      <choice id="625">
+        <description/>
+        <label>Zulu</label>
+        <sequence>624</sequence>
+        <value>Zulu</value>
+      </choice>
+    </choices>
+    <guid>0-14-401</guid>
+    <description/>
+    <id>401</id>
+    <keyword-type>1</keyword-type>
+    <label>Time_Zones</label>
+    <name>Time_Zones</name>
+    <sequence>0</sequence>
+    <type>KEYWORD_DEF</type>
+    <value>401</value>
+  </null>

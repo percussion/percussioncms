@@ -1,0 +1,144 @@
+ ############################################################################
+ #
+ # COPYRIGHT (c) 1999 - 2005 by Percussion Software, Inc., Stoneham, MA USA.
+ # All rights reserved. This material contains unpublished, copyrighted
+ # work including confidential and proprietary information of Percussion.
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.server
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+        PSCustomControlManagerTest \
+	PSRequestTest \
+	PSServerTest \
+	PSServerLockManagerTest \
+	PSStartupProcessManagerTest \
+	PSPageCacheTest \
+	ThreadLocalPropertiesTest
+	
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = \
+   IPSHandlerInitListener \
+   IPSHandlerStateListener \
+   IPSHttpErrors \
+	IPSLoadableRequestHandler \
+	IPSInternalRequest \
+	IPSStartupProcess \
+	IPSStartupProcessManager \
+   PSAddServerConfigParams \
+   PSApplicationHandler \
+   PSApplicationStatistics \
+   PSBaseResponse \
+   PSCachedResponse \
+   PSCustomControlManager \
+   PSDefaultPageRedirectHandler \
+   PSFileRequestHandler \
+   PSHandlerStateEvent \
+   PSHandlerStatistics \
+   PSHookRequestHandler \
+   PSInternalRequest \
+   PSInternalRequestProxy \
+   PSObjectStoreListener \
+   PSPersistentProperty \
+   PSPersistentPropertyPK \
+   PSPersistentPropertyManager \
+   PSPersistentPropertyMeta \
+   PSRemoteConsoleHandler \
+   PSRequestHandlerConfiguration \
+   PSRequestHandlerDef \
+   PSResponse \
+   PSServer \
+   PSServerBrand \
+   PSServerLock \
+   PSServerLockManager \
+   PSServerLockResult \
+   PSServerEventStats \
+   PSServerLogHandler \
+   PSServerPropertiesDialog \
+   PSServerStatistics \
+   PSServerThreadStats \
+   PSServerUserStats \
+   PSStartupProcessManager \
+   PSUserSession \
+   PSUserSessionManager \
+   PSExecutionDataLight \
+   PSSystemControlManager \
+   PSBaseControlManager \
+   ThreadLocalProperties
+
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+   IPSCgiVariables \
+   IPSRequestContext \
+   IPSRequestHandler \
+   IPSServerErrors \
+   PSAuthenticationError \
+   PSInvalidRequestTypeException \
+   PSRemoteConsole \
+   PSRequestParsingException \
+   IPSConsoleCommand \
+   PSConsole \
+   PSRequest \
+   PSRequestContext \
+   PSRequestPageMap \
+   PSRequestStatistics \
+   PSRequestValidationException \
+   PSInvalidRequestException \
+   IPSValidateSession \
+   PSPageCache \
+   IPSRootedHandler \
+   PSServerLockException \
+   PSServiceWrapper
+
+#
+# Properties files
+#
+PROPERTIES = \
+  PSStringResources.properties \
+  PSServerPropertiesDialogResources.properties
+
+#
+# XML files
+#
+XML_FILES = \
+   classregistry.xml
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (xml, properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES) \
+	$(XML_FILES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)

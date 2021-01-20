@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>  <item-filter id="1">
+    <guid>1921648-7-1</guid>
+    <description>Public Asset Filter.</description>
+    <label>perc_publishNow</label>
+    <legacy-authtype-id>1</legacy-authtype-id>
+    <name>perc_publishNow</name>
+    <parent-filter-id/>
+    <rule-defs>
+      <rule-def id="2">
+        <filter idref="1"/>
+        <params/>
+        <rule-name>Java/global/percussion/itemfilter/perc_publicAssetFilter</rule-name>
+      </rule-def>
+    </rule-defs>
+  </item-filter>

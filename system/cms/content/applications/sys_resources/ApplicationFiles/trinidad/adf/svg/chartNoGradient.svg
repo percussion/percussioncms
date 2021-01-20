@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="borderGradient">
+    <stop stop-opacity="0.7" offset="0.0" stop-color="#3F2F83"/>
+    <stop stop-opacity="1.0" offset="0.1" stop-color="#3F2F83"/>
+    <stop stop-opacity="0.8" offset="0.9" stop-color="#3F2F83"/>
+    <stop stop-opacity="1.0" offset="1.0" stop-color="#3F2F83"/>
+  </linearGradient>
+  
+  <!-- prototype for border-->
+  <rect id="borderPrototype" fill="url(#borderGradient)" stroke="#DFA726"/>
+
+  <!-- START Prototypes for chart grid-->
+    <rect id="gridRectPrototype" stroke="#000000" stroke-width="1" fill="none"/>
+    <path id="gridPathPrototype" stroke="#A0A0A0" stroke-width="1" fill="none"/>
+    <path id="gridPath3dRectPrototype" stroke="#000000" stroke-width="1" fill="none"/>
+        <!-- Used for Radar Chart -->
+    <circle id="radarCirclePrototype" fill="none" stroke="#000000" stroke-width="1"/>
+    <circle id="radarInnerCirclePrototype" stroke="#A0A0A0" fill="none"/>
+    <path id="radarGridPathPrototype" stroke="#A0A0A0" stroke-width="1" fill="none"/>
+  <!-- END Prototypes for chart grid-->
+
+  <!-- START DATA Elements Prototypes-->
+    <rect id="barRectPrototype" fill-opacity=".5" stroke-opacity="1.0"/>
+    <path id="barPathPrototype" fill-opacity=".5" stroke-opacity="1.0"/>
+    <path id="piePathPrototype" fill-opacity=".7" stroke-opacity="1.0"/>
+    <path id="areaPathPrototype" fill-opacity=".3" stroke-width="1"  stroke-opacity="1.0"/>
+    <path id="linePathPrototype" fill="none" stroke-width="2" stroke-opacity="1.0"/>
+    <path id="linePath3dPrototype" fill-opacity=".5" stroke-width="1"  stroke-opacity="1.0"/>
+    <circle id="lineDotPrototype" fill-opacity=".5" r="4" stroke-width="1" />
+    <circle id="scatter3dDotPrototype" fill-opacity=".5" r="4" stroke-width="1"/>
+    <circle id="scatterDotPrototype" fill-opacity=".5" r="2" stroke-width="1" />
+    <path id="funnelPathPrototype" fill-opacity=".5" stroke-opacity="1.0"/>
+  <!-- END DATA Elements Prototypes -->
+
+  <!-- START LABEL Elements Prototypes-->
+    <text xml:space="preserve" id="yLabelPrototype" style="font:11px Tahoma, Verdana, Helvetica, sans-serif" fill="#aaaaaa">label</text>
+    <text xml:space="preserve" id="groupLabelPrototype" style="font:11px Tahoma, Verdana, Helvetica, sans-serif" fill="#aaaaaa">label</text>
+    <text xml:space="preserve" id="legendTextPrototype" style="font:11px Tahoma, Verdana, Helvetica, sans-serif" fill="#aaaaaa">legend</text>
+    <rect id="legendRectPrototype" width="8" height="8"/>
+    <text xml:space="preserve" id="titleTextPrototype" style="font:14px Tahoma, Verdana, Helvetica, sans-serif; font-weight:bold" fill="#FF0000">title</text>
+    <text xml:space="preserve" id="subTitleTextPrototype" style="font:11px Tahoma, Verdana, Helvetica, sans-serif" fill="#cccccc">sub-title</text>
+    <text xml:space="preserve" id="footNoteTextPrototype" style="font:9px Tahoma, Verdana, Helvetica, sans-serif" fill="#999999">foot note</text>
+  <!-- END LABEL Elements Prototypes -->
+
+  <!-- START Gradients used by guagues -->
+    <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="gaugeRingGradient">
+      <stop offset="0.0" stop-color="#FFF299"/>
+      <stop offset="0.2" stop-color="#DB8827"/>
+      <stop offset="0.8" stop-color="#DB8827"/>
+      <stop offset="1.0" stop-color="#FFF299"/>
+    </linearGradient>
+    <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="gaugeGradient">
+      <stop stop-opacity=".7" offset="0.0" stop-color="#333333"/>
+      <stop stop-opacity=".9" offset="1.0" stop-color="#000000"/>
+    </linearGradient>
+  <!-- END Gradients used by guagues -->
+
+  <!-- START prototypes used by gauges -->
+    <text xml:space="preserve" id="gaugeTextPrototype" 
+        style="font:24px Tahoma, Verdana, Helvetica, sans-serif" fill="#aaaaaa">10</text>  
+    <path xml:space="preserve" id="gaugeMarkerMajor" d="M0,0 l-30,2 l0,-6 l30,2z" fill-opacity=".9" fill="#008984"/>
+    <path xml:space="preserve" id="gaugeMarkerMinor" d="M-8,1 l-15,0 l0,2 l15,0z" fill-opacity=".8" fill="#008984"/>
+    
+    <!-- Note "_markerRadius is  used to draw the markers-->
+    <g id="semiGauge" _markerRadius="165">
+      <!-- The dial shell -->
+      <path d="M0,225A225,225 0 1,1 450,225 A30,30 0 0,1 420,255 
+            l-150,0 a80,80 0 0,1 -90,0 l-150,0 a30,30 0 0,1 -30,-30" 
+          stroke="#cccccc" stroke-linejoin="round" fill="url(#gaugeGradient)" stroke-width="4"/>
+
+
+      <!-- The rest of the container can be customized for e.g. Redline -->
+      <path d="M370,80 l10,0 A215,215 0 0,1 440,225 l-10 0 A205,205 0 0,0 370,80" 
+            stroke-linejoin="round" fill="#FF0000" fill-opacity=".6"/>
+
+      <text x="125" y="200"  style="font: bold 24px fantasy" fill="#aaaaaa">MyFaces Rocks!</text>
+        
+      <path d="M60,225 l-30,0 A195,195 0 1,1 420,225 l-30 0 A165,165 0 1,0 60,225" 
+            fill="#FFF335" fill-opacity=".8"/>
+            
+      <!-- The last g must always be the gauge indicator. 
+           The "_pivotCenterX,Y" is the center of rotation-->
+      <g _pivotCenterX="225" _pivotCenterY="225">
+        <rect x="40" y="221" width="185" height="6" fill="#FF0000" fill-opacity=".5" stroke="#aaaaaa" stroke-width="1" />
+        <circle r="16" cx="227" cy="227" stroke-width="0" fill="#eeeeee" opacity=".5"/>
+          <!-- NOTE: The center of the last circle is the pivot for rotation -->
+        <circle r="16" cx="225" cy="225" fill="#EAEAFA" fill-opacity=".9" stroke="#000000" stroke-width="1" />
+      </g>
+    </g>
+    
+    <!-- Note "_markerRadius is  used to draw the markers-->
+    <g id="circularGauge" _markerRadius="165">
+      <!-- The dial shell -->
+      <g>
+        <circle cx="225" cy="225" r="225" fill="url(#gaugeRingGradient)"/>
+        <circle cx="225" cy="225" r="215" fill="#203D57" opacity=".4"/>
+        <circle cx="225" cy="225" r="210" fill="url(#gaugeGradient)" />
+      </g>
+              
+      <!-- The rest of the container can be customized for e.g. GreenLine -->
+      <path d="M427,225 l6,0 A208,208 0 0,1 329,405 L326,400 A202,202 0 0,0 427,225" 
+            fill="#00FF00" fill-opacity=".6"/>
+      
+      <text x="133" y="410" style="font: bold 24px fantasy" fill="#aaaaaa">MyFaces Rocks!</text>
+      
+      <path d="M143,368 L127,394 A195,195 0 1,1 323,394 L308,368 A165,165 0 1,0 143,368" 
+            fill="#FFF335" fill-opacity=".8"/>
+      
+      <!-- The last g must always be the gauge indicator. 
+           The "_pivotCenterX,Y" is the center of rotation-->
+      <g transform="rotate(300 225 225)" _pivotCenterX="225" _pivotCenterY="225">
+        <rect x="40" y="221" width="185" height="6" fill="#FF0000" fill-opacity=".5" stroke="#000000" stroke-width="1" />
+        <circle r="16" cx="227" cy="227" stroke-width="0" fill="#eeeeee" opacity=".5"/>
+        <!-- NOTE: The center of the last circle is the center of rotation -->
+        <circle r="16" cx="225" cy="225" fill="#EAEAFA" 
+                fill-opacity=".9" stroke="#000000" stroke-width="1" />
+      </g>
+    </g>
+  <!-- END prototypes used by gauges -->
+  
+  <!-- START Tooltip Prototype-->
+  <g id="toolTip" style="font:9px Tahoma, Verdana, Helvetica, sans-serif;">
+    <circle cx="0" cy="20" r="3" fill="#fefee6" stroke-width="2" stroke="#000000"/>
+    <rect height="25" rx="2" ry="2" style="opacity:.8;" fill="#fefee6" stroke-width="1" stroke="#000000"/>
+    <text dx="5" dy="10" fill="#000000">Series(Group)</text>
+    <text dy="20" fill="#000000">Value</text>
+  </g>
+  <!-- END Tooltip Prototype-->
+
+</defs>
+<g>
+  <g id="chartRoot"></g>
+</g>
+</svg>

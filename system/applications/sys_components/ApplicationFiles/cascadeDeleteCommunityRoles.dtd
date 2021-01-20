@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT CommunityRoles EMPTY>
+<!ATTLIST  CommunityRoles RoleId CDATA #REQUIRED>
+<!ELEMENT Action (CommunityRoles )>
+<!ATTLIST  Action type CDATA #REQUIRED>
+<!ELEMENT cascadeDeleteCommunityRoles (Action* )>

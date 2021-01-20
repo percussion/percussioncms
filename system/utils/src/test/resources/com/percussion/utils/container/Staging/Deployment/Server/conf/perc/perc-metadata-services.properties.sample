@@ -1,0 +1,8 @@
+#
+# Specific properties for perc-metadata-services app.
+#
+
+# The maximum number of results that can be returned by a query
+query.limit=500
+# Blog post visit tracker save interval in seconds
+blogpost.scheduler.interval=300

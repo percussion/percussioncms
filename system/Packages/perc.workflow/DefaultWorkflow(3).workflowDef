@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="TRANSITIONS">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONTYPE">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONLABEL">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONPROMPT">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONFROMSTATEID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONTOSTATEID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONACTIONTRIGGER">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONAPPROVALSREQUIRED">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONDESC">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONACTIONS">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONROLES">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONCOMMENTREQUIRED">
+            <jdbctype>CHAR</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="AGINGTYPE">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="AGINGINTERVAL">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SYSTEMFIELD">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="DEFAULTTRANSITION">
+            <jdbctype>CHAR</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>TRANSITIONID</name>
+         <name>WORKFLOWAPPID</name>
+      </primarykey>
+   </table>
+   <table name="TRANSITIONS" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">2</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Publish</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">7</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Publish</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Publish the item</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">16</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Remove</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">6</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">7</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Remove</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Remove the item</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">17</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Resubmit</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">6</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">1</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Resubmit</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Send the item back to Draft</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">15</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Publish</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">6</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Publish</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Publish the item</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">19</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Publish</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">2</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Publish</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Publish the item</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">5</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Publish</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">1</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Publish</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Publish the item</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">7</column>
+         <column encoding="text" name="TRANSITIONTYPE">1</column>
+         <column encoding="text" name="TRANSITIONLABEL">AutoUnPublishItem</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">5</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">AutoUnPublishItem</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Unpublishes item on expiry date</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS">Java/global/percussion/cms/publisher/sys_AutoUnPublishItem</column>
+         <column encoding="text" name="TRANSITIONROLES">*ALL*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE">3</column>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD">CONTENTEXPIRYDATE</column>
+         <column encoding="text" name="DEFAULTTRANSITION"/>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">10</column>
+         <column encoding="text" name="TRANSITIONTYPE">1</column>
+         <column encoding="text" name="TRANSITIONLABEL">AutoUnPublishItem</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">AutoUnPublishItem</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Unpublishes item on expiry date</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS">Java/global/percussion/cms/publisher/sys_AutoUnPublishItem</column>
+         <column encoding="text" name="TRANSITIONROLES">*ALL*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE">3</column>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD">CONTENTEXPIRYDATE</column>
+         <column encoding="text" name="DEFAULTTRANSITION"/>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">9</column>
+         <column encoding="text" name="TRANSITIONTYPE">1</column>
+         <column encoding="text" name="TRANSITIONLABEL">AutoPublishItem</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">AutoPublishItem</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Publishes items on startdate</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS">Java/global/percussion/cms/publisher/sys_AutoPublishItem</column>
+         <column encoding="text" name="TRANSITIONROLES">*ALL*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE">3</column>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD">CONTENTSTARTDATE</column>
+         <column encoding="text" name="DEFAULTTRANSITION"/>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">1</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Approve</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">7</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Approve</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Send it back to pending for republishing.</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">3</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Resubmit</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">7</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">1</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Resubmit</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">returns item back to review</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">4</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Approve</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">1</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Approve</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Move to pending state for publishing.</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/perc_LockLocalContent</column>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">6</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Submit</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">1</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">2</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Submit</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Submit for Review</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">8</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Edit</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">5</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Quick Edit</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Quick Edit content from public</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">11</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Edit</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Quick Edit</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Quick Edit content from pending</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">12</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Live</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">5</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">forcetolive</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Automatic transition to move items to live state.</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/sys_TouchParentItems</column>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">13</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Approve</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">6</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Approve</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">returns item to pending state</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/sys_TouchParentItems</column>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">14</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Archive</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">6</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">7</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Archive</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Moves to archive</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">18</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Approve</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">2</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">4</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Approve</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">approve content to pending</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS">Java/global/percussion/extensions/general/perc_LockLocalContent</column>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">y</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONID">20</column>
+         <column encoding="text" name="TRANSITIONTYPE">0</column>
+         <column encoding="text" name="TRANSITIONLABEL">Reject</column>
+         <column encoding="text" name="TRANSITIONPROMPT"/>
+         <column encoding="text" name="TRANSITIONFROMSTATEID">2</column>
+         <column encoding="text" name="TRANSITIONTOSTATEID">1</column>
+         <column encoding="text" name="TRANSITIONACTIONTRIGGER">Reject</column>
+         <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+         <column encoding="text" name="TRANSITIONDESC">Send it back to draft for reworking.</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="TRANSITIONACTIONS"/>
+         <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+         <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+         <column encoding="text" name="AGINGTYPE"/>
+         <column encoding="text" name="AGINGINTERVAL"/>
+         <column encoding="text" name="SYSTEMFIELD"/>
+         <column encoding="text" name="DEFAULTTRANSITION">n</column>
+      </row>
+   </table>
+</PSXDependencyData>

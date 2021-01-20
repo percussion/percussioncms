@@ -1,0 +1,51 @@
+
+ol#rxTabPanel {
+    height: 0px;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+}
+
+ol#rxTabPanel li {
+    float: left;
+    margin: 0px 0px 0px 0px;
+}
+
+ol#rxTabPanel a {
+    background: url(/Rhythmyx/sys_resources/images/tabLeft.png) no-repeat;
+    color: #FFF;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 8pt;
+    display: block;
+    float: left;
+    height: 30px;
+    padding-left: 8px;
+    text-decoration: none;
+   font-weight: bold;
+}
+
+ol#rxTabPanel a:hover {
+    background-position: 0px -60px;
+}
+
+ol#rxTabPanel a:hover span {
+    background-position: 100% -60px;
+}
+
+ol#rxTabPanel li.rxTabSelected a {
+    background-position: 0px -30px;
+}
+
+ol#rxTabPanel li.rxTabSelected span {
+    background-position: 100% -30px;
+}
+
+ol#rxTabPanel span {
+    background: url(/Rhythmyx/sys_resources/images/tab.png) 100% 0px;
+    display: block;
+    line-height: 30px;
+    padding-right: 10px;
+    margin-right: 0px;
+}
+

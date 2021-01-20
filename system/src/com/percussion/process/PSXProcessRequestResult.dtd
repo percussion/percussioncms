@@ -1,0 +1,52 @@
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!--
+   Attributes:
+   procName - The name supplied in the request.
+   
+   status - What were the results of handling the request. If the process 
+   completed successfully, the 'finished' code is returned. If it didn't
+   finish before the wait time passed, 'terminated' is returned. If it was
+   spawn and left running without waiting for completion then 'started' is
+   returned. Otherwise, if any other problems occur (such as incorrect request),
+   'error' is returned.
+   
+   resultCode - The numeric value returned by the executed process.
+   
+   actionHandle - If status is 'started', then this value will contain a
+   handle to the process that can be used to work with it later using the
+   command handler used for the original request. A valid handle is a positive
+   integer. -1 is used to indicate invalid handle.
+-->
+<!ELEMENT PSXProcessRequestResults (Result)>
+<!ATTLIST PSXProcessRequestResults
+   procName    	CDATA #REQUIRED
+   status      	(error|finished|terminated|started) "finished"
+   resultCode  	CDATA #IMPLIED
+   actionHandle CDATA #IMPLIED
+   >
+<!--
+   Contains the console output.
+-->
+<!ELEMENT Result (#PCDATA)>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" prefix="dcterms: http://purl.org/dc/terms/ rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns# perc: http://percussion.com/perc/elements/1.0/ og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#" >
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+    <script>
+        var percGlobalErrors = [];
+        window.onerror=function(msg, url, linenumber){
+            var jsErrorMsg = 'JavaScript error -- ' + msg;
+            percGlobalErrors.push(jsErrorMsg);
+            return false;
+        }
+    </script> <link rel="canonical" href="https://test/index.html" />
+    <script>
+        function percCanonicalRedirect(defaultDocument){
+            if(document.querySelector("link[rel='canonical']"))
+                canonicalLink=document.querySelector("link[rel='canonical']").getAttribute("href")
+        }
+        requestUrl=window.location.href;lastUrlElement=window.location.pathname.split('/').pop();urlPartsQueryString=requestUrl.split('?');urlPartsHash=requestUrl.split('#');
+        if(typeof(canonicalLink)!='undefined'&&lastUrlElement==defaultDocument){
+            if(urlPartsQueryString.length>1||urlPartsHash.length>1){
+                if(urlPartsQueryString.length>1){
+                    redirectUrl=canonicalLink+'?'+urlPartsQueryString[1]
+                }
+                else if(urlPartsHash.length>1){
+                    redirectUrl=canonicalLink+'#'+urlPartsHash[1]
+                }
+            }else{
+                redirectUrl=canonicalLink
+            }
+            window.location.replace(redirectUrl)
+        }
+
+    </script>
+    <title>Home</title>
+    <link rel="preload" as="style" href="/web_resources/widgets/imageSlider/css/slick.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+    <noscript><link rel="stylesheet" href="/web_resources/widgets/imageSlider/css/slick.css"></noscript>
+    <link rel="preload" as="style" href="/web_resources/widgets/imageSlider/css/percImageSlider.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+    <noscript><link rel="stylesheet" href="/web_resources/widgets/imageSlider/css/percImageSlider.css"></noscript>
+    <link rel="preload" as="style" href="/web_resources/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+    <noscript><link rel="stylesheet" href="/web_resources/cm/themes/smoothness/jquery-ui-1.8.9.custom.css"></noscript>
+    <link rel="preload" as="style" href="/web_resources/widgets/imageSlider/css/slick-theme.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+    <noscript><link rel="stylesheet" href="/web_resources/widgets/imageSlider/css/slick-theme.css"></noscript>
+    <link rel="preload" as="style" href="/web_resources/themes/percussion/perc_theme.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+    <noscript><link rel="stylesheet" href="/web_resources/themes/percussion/perc_theme.css"></noscript>
+    <link rel="preload" as="style" href="/web_resources/themes/percussion/perc/perc_region.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
+    <noscript><link rel="stylesheet" href="/web_resources/themes/percussion/perc/perc_region.css"></noscript>
+    <script>
+        /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+        /* This file is meant as a standalone workflow for
+        - testing support for link[rel=preload]
+        - enabling async CSS loading in browsers that do not support rel=preload
+        - applying rel preload css once loaded, whether supported or not.
+        */
+        (function( w ){
+            "use strict";
+// rel=preload support test
+            if( !w.loadCSS ){
+                w.loadCSS = function(){};
+            }
+// define on the loadCSS obj
+            var rp = loadCSS.relpreload = {};
+// rel=preload feature support test
+// runs once and returns a function for compat purposes
+            rp.support = (function(){
+                var ret;
+                try {
+                    ret = w.document.createElement( "link" ).relList.supports( "preload" );
+                } catch (e) {
+                    ret = false;
+                }
+                return function(){
+                    return ret;
+                };
+            })();
+// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+// then change that media back to its intended value on load
+            rp.bindMediaToggle = function( link ){
+// remember existing media attr for ultimate state, or default to 'all'
+                var finalMedia = link.media || "all";
+                function enableStylesheet(){
+                    link.media = finalMedia;
+                }
+// bind load handlers to enable media
+                if( link.addEventListener ){
+                    link.addEventListener( "load", enableStylesheet );
+                } else if( link.attachEvent ){
+                    link.attachEvent( "onload", enableStylesheet );
+                }
+// Set rel and non-applicable media type to start an async request
+// note: timeout allows this to happen async to let rendering continue in IE
+                setTimeout(function(){
+                    link.rel = "stylesheet";
+                    link.media = "only x";
+                });
+// also enable media after 3 seconds,
+// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+                setTimeout( enableStylesheet, 3000 );
+            };
+
+// loop through link elements in DOM
+            rp.poly = function(){
+// double check this to prevent external calls from running
+                if( rp.support() ){
+                    return;
+                }
+                var links = w.document.getElementsByTagName( "link" );
+                for( var i = 0; i < links.length; i++ ){
+                    var link = links[ i ];
+// qualify links to those with rel=preload and as=style attrs
+                    if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+// prevent rerunning on link
+                        link.setAttribute( "data-loadcss", true );
+// bind listeners to toggle media back
+                        rp.bindMediaToggle( link );
+                    }
+                }
+            };
+
+// if unsupported, run the polyfill
+            if( !rp.support() ){
+// run once at least
+                rp.poly();
+// rerun poly on an interval until onload
+                var run = w.setInterval( rp.poly, 500 );
+                if( w.addEventListener ){
+                    w.addEventListener( "load", function(){
+                        rp.poly();
+                        w.clearInterval( run );
+                    } );
+                } else if( w.attachEvent ){
+                    w.attachEvent( "onload", function(){
+                        rp.poly();
+                        w.clearInterval( run );
+                    } );
+                }
+            }
+// commonjs
+            if( typeof exports !== "undefined" ){
+                exports.loadCSS = loadCSS;
+            }
+            else {
+                w.loadCSS = loadCSS;
+            }
+        }( typeof global !== "undefined" ? global : this ) );
+    </script>
+    <meta property="dcterms:type" content="page"/>
+    <meta property="dcterms:source" content="test"/>
+    <meta property="dcterms:created" content="2020-08-20T14:38:18"/>
+    <meta property="dcterms:modified" content="2020-08-19T16:07:54"/>
+    <meta property="dcterms:alternative" content="Home"/>
+
+
+    <script src="/web_resources/cm/jslib/jquery.js"></script>
+
+
+
+
+</head>
+
+<body>
+<input type="hidden" id="perc_linkback_id" value="22-101-10006"/>
+<h3 style="display:none;">Home</h3>
+
+
+
+
+
+<div id="container" class="perc-region perc-vertical perc-container hspan_12">
+    <div class="perc-vertical">
+        <div id="header" class="perc-region perc-vertical vspan_2">
+            <div class="perc-vertical">
+                <div class="perc-widget" >
+
+                    <div style="display:none" hidden data-name="feedQuery_" data-hide-past-results="false" data-hide-past-results-filter-type="dcterms:created" data-query="{&quot;criteria&quot;:[&quot;type = 'page'&quot;, &quot;linktext LIKE '%test%'&quot;, &quot;site = 'test'&quot;, &quot;dcterms:source IN ('Box-Copy', 'COVID-info', 'COVID-info-Copy', 'plain-Copy', 'test')&quot;], &quot;maxResults&quot;:10, &quot;pagingPagesText&quot;:&quot;pages&quot;, &quot;orderBy&quot;:&quot;linktext_lower asc&quot;, &quot;totalMaxResults&quot;:500}"></div>
+                    <div id="307649031_list" aria-label="Page list" class="perc-list-vertical perc-page-auto-list"  data-hide-past-results="false" data-hide-past-results-filter-type="dcterms:created" data-query="{&quot;criteria&quot;:[&quot;type = 'page'&quot;, &quot;linktext LIKE '%test%'&quot;, &quot;site = 'test'&quot;, &quot;dcterms:source IN ('Box-Copy', 'COVID-info', 'COVID-info-Copy', 'plain-Copy', 'test')&quot;], &quot;maxResults&quot;:10, &quot;pagingPagesText&quot;:&quot;pages&quot;, &quot;orderBy&quot;:&quot;linktext_lower asc&quot;, &quot;totalMaxResults&quot;:500, &quot;deliveryurl&quot;:&quot;http://localhost:9980&quot;}" role="region" aria-live="polite" aria-relevant="additions" aria-atomic="true" aria-busy="true" data-locale="en-US" data-datefmt="EEEE MM dd, yyyy">
+                        <div style="display:none" hidden class="perc-page-auto-list-structure">
+                            <ul class="perc-list-main"><li class="perc-list-element">
+                                <a href="#" title="placeholder">Placeholder</a>
+
+                                <div class="perc-page-auto-list-summary-container"></div>
+                            </li>
+                            </ul></div>
+                        <div class = "perc-list-main-wrapper"><ul class="perc-list-main"><li class="perc-list-odd perc-list-first perc-list-last perc-list-element">
+                            <a href="/test.html" aria-label="test" title="test" >test</a>
+                            <div class="perc-page-auto-list-summary-container">
+                                <div class="rxbodyfield"><p><img alt="Test3" data-jcrpath="//Screen Shot 2020-07-13 at 3.18.29 PM.png" data-pathitem="{&quot;id&quot;:&quot;16777215-101-10533&quot;,&quot;category&quot;:&quot;ASSET&quot;,&quot;folderPaths&quot;:&quot;//Folders/$System$/Assets/uploads&quot;,&quot;name&quot;:&quot;Screen Shot 2020-07-13 at 3.18.29 PM.png&quot;,&quot;revisionable&quot;:true,&quot;type&quot;:&quot;percImageAsset&quot;,&quot;leaf&quot;:true,&quot;hasItemChildren&quot;:false,&quot;hasFolderChildren&quot;:false,&quot;hasSectionChildren&quot;:false,&quot;mobilePreviewEnabled&quot;:false,&quot;accessLevel&quot;:&quot;ADMIN&quot;,&quot;columnData&quot;:&quot;&quot;,&quot;typeProperties&quot;:{&quot;entries&quot;:&quot;&quot;}}" height="2240" src="/Assets/uploads/Screen%20Shot%202020-07-13%20at%203.18.29%20PM.png" title="Test" width="3584"/></p></div>
+                            </div>
+                        </li>
+                        </ul></div></div>
+
+                </div>
+                <div class="perc-widget" >
+
+
+
+                    <div class="percImageSlider">
+                        <script>
+                            window.addEventListener('DOMContentLoaded', function() {
+                                $(document).ready(function(){
+                                    /* main slider settings */
+                                    $('.my-slider-10566').slick({
+                                        fade: false,
+                                        arrows: true,
+                                        dots: true,
+                                        infinite: true,
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1,
+                                        autoplay: true,
+                                        autoplaySpeed: 2000,
+                                        speed: 500,                responsive: [
+                                            {
+                                                breakpoint: 1024,
+                                                settings: {
+                                                    slidesToShow: 1,
+                                                    slidesToScroll: 1
+                                                }
+                                            },
+                                            {
+                                                breakpoint: 480,
+                                                settings: {
+                                                    slidesToShow: 1,
+                                                    slidesToScroll: 1
+                                                }
+                                            }
+                                        ]
+                                    });
+
+                                });
+                            });
+                        </script>
+
+                        <style>
+
+                            .slick-prev:before {
+                                color: #000000;
+                            }
+                            .perc-slide-caption-container p {
+                                margin-bottom: 0px;
+                            }
+                            .slick-next:before
+                            {
+                                color: #000000;
+                            }
+                            .slick-dots li button:before {
+                                color: #000000;
+                            }
+                            .slick-dots li.slick-active button:before
+                            {
+                                color: #000000;
+                            }
+                            .slick-dots button {
+                                box-shadow: none !important;
+                            }
+                            .slick-next, .slick-prev {
+                                box-shadow: none !important;
+                                z-index: 9999;
+                            }
+                            .slick-prev {
+                                left: 10px;
+                            }
+                            .slick-next {
+                                right: 10px;
+                            }
+                            .perc-slide-image-container {
+                                background-size: cover;
+                                background-repeat: no-repeat;
+                                background-position: 50% 50%;
+                                height: 250px;
+                                position: relative;
+                            }
+                            .perc-slide-image-container p {
+                                width:100%;
+                                position: absolute;
+                            }
+                            .perc-slide-image-container h2 {
+                                width:100%;
+                                position: absolute;
+                            }
+                            .perc-slide-image-container h3 {
+                                width:100%;
+                                position: absolute;
+                            }
+                            .perc-slide-image-container h4 {
+                                width:100%;
+                                position: absolute;
+                            }
+                            .perc-slide-image-container h5 {
+                                width:100%;
+                                position: absolute;
+                            }
+                            .perc-slide-image-container h6 {
+                                width:100%;
+                                position: absolute;
+                            }
+                            .perc-slide-thumbnail-container {
+                                margin:5px;
+                                background-size: cover;
+                                background-repeat: no-repeat;
+                                background-position: 50% 50%;
+                                height: 8vw;
+                                position: relative;
+                            }
+                            .perc-slide-caption-horizontal-left {
+                                text-align: left;
+                            }
+                            .perc-slide-caption-horizontal-center {
+                                text-align: center;
+                            }
+                            .perc-slide-caption-horizontal-right {
+                                text-align: right;
+                            }
+                            .perc-slide-caption-overlay-container-vertical-middle {
+                                top:50% !important;
+                                transform: translateY(-50%) !important;
+                                width: 100%;
+                                position: absolute;
+                            }
+                            .perc-slide-caption-overlay-container-vertical-top {
+                                top:0;
+                            }
+                            .perc-slide-caption-overlay-container-vertical-bottom {
+                                bottom:10%;
+                                position: absolute;
+                                width: 100%;
+                            }
+                            .image-caption-overlay-divider {
+                                display: inline-block;
+                            }
+                            .perc-slide-caption-container {
+                                margin:5px;
+                                padding: 0px 10px 0px 10px;
+                            }
+                        </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="perc-image-slider my-slider-10566" >
+                            <div class="perc-slide-outer-container">
+                                <div class="perc-slide-image-container" style="background-image: url('/Assets/uploads/Screen%20Shot%202020-07-13%20at%203.18.29%20PM.png')" role="img" aria-label="Test3">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div id="middle" class="perc-region perc-horizontal">
+            <div class="perc-horizontal">
+                <div id="leftsidebar" class="perc-region perc-vertical  vspan_4  hspan_2">
+                    <div class="perc-vertical">
+                        <div class="perc-widget" >
+
+
+
+
+                            <div aria-busy="true" id="585441049_feed"  role = "region" aria-live="polite" aria-relevant="additions" aria-atomic="true" class="perc-feed-widget " data-query="{&quot;itemDescriptionEmpty&quot;:false,&quot;titleElement&quot;:&quot;div&quot;,&quot;itemDateElement&quot;:&quot;div&quot;,&quot;itemDescriptionElement&quot;:&quot;div&quot;,&quot;itemLimit&quot;:&quot;limit_5&quot;,&quot;itemDescriptionLength&quot;:100,&quot;itemDateFormat&quot;:&quot;D M d, yy &apos;at&apos; hh:nn&quot;,&quot;wrappingElement&quot;:&quot;none&quot;,&quot;showItemDescription&quot;:true,&quot;itemTitleElement&quot;:&quot;div&quot;,&quot;showItemTitle&quot;:true,&quot;wrappingElemAriaLabel&quot;:&quot;&quot;,&quot;feedId&quot;:&quot;585441049_feed&quot;,&quot;showTitle&quot;:true,&quot;itemRemoveHtml&quot;:true,&quot;urlFeed&quot;:&quot;280b507ebb6e550b5b9b44096cb65bd6fff39a43a90b7c2351437fd72fbc40a944305b248ca3fabb4cb5e77f7937a3e6bd4d6abdf4904b68&quot;,&quot;itemElement&quot;:&quot;div&quot;,&quot;deliveryurl&quot;:&quot;&quot;,&quot;showItemDate&quot;:true}">
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div id="content" class="perc-region perc-vertical vspan_4  hspan_8">
+                    <div class="perc-vertical">
+                        <div class="perc-widget" >
+                            <div>
+
+                                <div class="rxbodyfield"><p>Lorem ipsum <a data-jcrpath="/Assets/uploads/files/2016-2017 Calendar(15th)(SB 13-17)final-1-.pdf" data-pathitem="{&quot;id&quot;:&quot;16777215-101-10041&quot;,&quot;name&quot;:&quot;2016-2017 Calendar(15th)(SB 13-17)final-1-.pdf&quot;,&quot;folderPaths&quot;:[&quot;//Folders/$System$/Assets/uploads/files&quot;],&quot;category&quot;:&quot;ASSET&quot;,&quot;revisionable&quot;:true,&quot;type&quot;:&quot;percFileAsset&quot;,&quot;leaf&quot;:true,&quot;hasItemChildren&quot;:false,&quot;hasFolderChildren&quot;:false,&quot;hasSectionChildren&quot;:false,&quot;path&quot;:&quot;/Assets/uploads/files/2016-2017 Calendar(15th)(SB 13-17)final-1-.pdf&quot;,&quot;accessLevel&quot;:&quot;ADMIN&quot;,&quot;typeProperties&quot;:{&quot;entries&quot;:{}},&quot;folderPath&quot;:&quot;//Folders/$System$/Assets/uploads/files/2016-2017 Calendar(15th)(SB 13-17)final-1-.pdf&quot;,&quot;columnData&quot;:{}}" href="/Assets/uploads/files/2016-2017%20Calendar(15th)(SB%2013-17)final-1-.pdf" title="2016-2017 Calendar(15th)(SB 13-17)final[1].pdf">dolor</a> sit amet, consectetur adipiscing elit. Vivamus lobortis, velit at vehicula rutrum, lacus mi ultricies turpis, non tincidunt nunc nunc lacinia leo. Duis id euismod arcu. In quis mattis purus. Nunc in arcu scelerisque, ornare lorem sit amet, interdum sapien. Maecenas purus ante, commodo ac dui vel, porttitor suscipit sapien. Cras porta, leo eget dictum commodo, arcu ipsum egestas mauris, nec porttitor elit purus a odio. Nulla ipsum metus, malesuada a tincidunt at, faucibus at dolor. Pellentesque ullamcorper massa quis sollicitudin porta. Morbi bibendum semper rhoncus. Nam ultricies accumsan est, vitae mattis tellus volutpat at. Aliquam erat volutpat. Praesent tincidunt faucibus lacus, vitae convallis nisl porttitor vel. Suspendisse interdum iaculis augue, ut gravida risus commodo in. Nulla suscipit ultricies laoreet. Suspendisse in luctus tortor. test test test4 test5 test6 test7 test8 <a data-jcrpath="/Assets/uploads/files/file-sample_   100kB.doc" data-pathitem="{&quot;id&quot;:&quot;16777215-101-10035&quot;,&quot;name&quot;:&quot;file-sample_   100kB.doc&quot;,&quot;folderPaths&quot;:[&quot;//Folders/$System$/Assets/uploads/files&quot;],&quot;category&quot;:&quot;ASSET&quot;,&quot;revisionable&quot;:true,&quot;type&quot;:&quot;percFileAsset&quot;,&quot;leaf&quot;:true,&quot;hasItemChildren&quot;:false,&quot;hasFolderChildren&quot;:false,&quot;hasSectionChildren&quot;:false,&quot;path&quot;:&quot;/Assets/uploads/files/file-sample_   100kB.doc&quot;,&quot;accessLevel&quot;:&quot;ADMIN&quot;,&quot;typeProperties&quot;:{&quot;entries&quot;:{}},&quot;folderPath&quot;:&quot;//Folders/$System$/Assets/uploads/files/file-sample_   100kB.doc&quot;,&quot;columnData&quot;:{}}" href="/Assets/uploads/files/file-sample_%20%20%20100kB.doc" title="file-sample_   100kB.doc">test</a> 9 test 10 test 12 test 13 test14 test15 test16 test17 test 18 test19 test20 test21 <a href="https://www.google.com" rel="noopener noreferrer" target="_blank">test19</a> ddd test 30 31</p><p>test22 tes23 tes24 test25 tes26 test27 34</p><p>test23</p><p>test23</p><p>Pellentesque UPDATED eget neque efficitur lobortis. Phasellus imperdiet ligula non volutpat volutpat. In hac habitasse platea dictumst. Suspendisse leo metus, maximus nec sem nec, maximus dapibus mi. Fusce quis posuere ligula, sit amet laoreet est. Integer in lacinia erat. In ac justo risus. Duis vitae cursus eros, id pulvinar sapien. Ut sed varius augue, a sagittis mauris. Fusce eget vehicula ex, ut lobortis arcu.</p><p>Sed at sollicitudin ex, id sodales massa. Aliquam malesuada, orci at dapibus egestas, elit risus ornare lacus, quis cursus risus dui non dolor. Donec ac risus sodales, vestibulum nisl a, vestibulum dui. Vivamus vulputate, arcu sed placerat facilisis, diam tellus porttitor lacus, nec vehicula leo lorem a mi. Mauris tincidunt metus eros, in dignissim neque egestas ut. Pellentesque placerat augue quis purus interdum pretium. Etiam odio odio, pharetra in augue vel, cursus luctus mi. Donec tincidunt vel orci id ultrices. Sed sit amet ante quis lacus posuere euismod et iaculis magna. Sed ac dolor facilisis, rhoncus turpis eu, feugiat lectus.</p><p>Nullam ornare et libero quis tincidunt. Proin sed facilisis neque. Fusce mollis eros lorem, vel suscipit odio sagittis non. In vestibulum dui vel faucibus tempus. Curabitur id dolor elementum ipsum maximus faucibus. Vivamus sed arcu vel nibh interdum blandit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed ac justo gravida, vehicula est a, sagittis quam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce faucibus libero varius est venenatis, ac sagittis nisi egestas. Donec diam nibh, dignissim et augue non, accumsan tempus justo.</p><p>Aenean nec risus sit amet diam feugiat feugiat. Pellentesque luctus rutrum pellentesque. Aenean nec lacus eget turpis cursus euismod et a urna. Cras vitae blandit ligula. Quisque eu malesuada risus. Vivamus nec placerat justo. Suspendisse erat nulla, consequat at fringilla tincidunt, molestie sed turpis. Aliquam erat volutpat. Ut vitae ornare sem. Maecenas nec vestibulum mi. Nulla ut faucibus lorem. Cras porta nulla sem, id porttitor neque vestibulum at. Nunc ultrices purus sit amet mollis laoreet. Etiam elementum sed erat et iaculis. Aenean sit amet leo aliquet, imperdiet magna vitae, malesuada turpis. Duis cursus maximus imperdiet.</p></div></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="rightsidebar" class="perc-region perc-vertical vspan_4 hspan_2">
+                    <div class="perc-vertical">
+                    </div>
+                </div>
+                <div class="clear-float"></div>
+            </div>
+        </div>
+        <div id="footer" class="perc-region perc-vertical vspan_2">
+            <div class="perc-vertical">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="/web_resources/cm/jslib/jquery-ui.1.12.1.js"></script>
+<script src="/web_resources/widgets/imageSlider/js/slick.min.js"></script>
+<script src="/web_resources/cm/common/js/PercGlobalVariables.js"></script>
+<script src="/web_resources/cm/jslib/jquery.cookie.min.js"></script>
+<script src="/web_resources/cm/common/js/perc_common_ui_slim.js"></script>
+<script src="/web_resources/cm/common/js/perc_common_ui.js"></script>
+<script>(function() { jQuery.getDeliveryServiceBase = function(){ return 'http://localhost:9980';};jQuery.getCm1License = function(){ return 'JB-001';};jQuery.getCm1Version = function(){ return '5.4.0';};})();</script>
+</body>
+</html>

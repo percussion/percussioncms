@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<Widget>
+    <WidgetPrefs title="Twitter Summary Cards"
+                 contenttype_name="percTwitterCards"
+                 category="social"
+                 description="Adds support for Twitter cards to the Page or Template."
+                 author="Nate Chadwick"
+                 thumbnail="/rx_resources/widgets/percTwitterSummaryCards/images/twitter-card-icon.png"
+                 preferred_editor_width="800"
+                 preferred_editor_height="600"/>
+    <UserPref name="twittercard_type"
+              display_name="Summary Card Type"
+              default_value="summary_large_image"
+              datatype="enum"
+              required="true">
+        <EnumValue value="summary_large_image" display_value="Summary Card Large Image" />
+        <EnumValue value="summary" display_value="Summary Card" />
+    </UserPref>
+    <UserPref name="twitter_site"
+              display_name="@username"
+              default_value=""
+              datatype="string" />
+    <UserPref name="twitter_image"
+              display_name="Default Image Asset (Path)"
+              required="false"
+              default_value=""
+              datatype="string"/>
+    <UserPref name="twitter_image_alt"
+              display_name="Default Image Alt Text"
+              required="false"
+              default_value=""
+              datatype="string"/>
+    <CssPref name="rootclass"
+             display_name="CSS root class"
+             datatype="string" />
+    <Code type="jexl">
+        <!-- This section is used to set up data that will be used in the content section -->
+        <![CDATA[
+	  $percPageID = $perc.getPage().getId();
+	   $pageId = $perc.page.id;
+       $widgetId = $perc.widget.item.id;
+       $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+          if (empty($rootclass)) {
+            $rootclass = "";
+       }
+	$assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+	$perc.setWidgetContents($assetItems);
+
+
+   $twittercard_type = $perc.widget.item.properties.get('twittercard_type');
+   $twitter_site = $perc.widget.item.properties.get('twitter_site');
+   $twitter_image = $perc.widget.item.properties.get('twitter_image');
+   $twitter_image_alt = $perc.widget.item.properties.get('twitter_image_alt');
+   if($sys.assemblyItem.getNode().hasProperty("rx:page_summary")){
+   		$summary = $sys.assemblyItem.getNode().getProperty("rx:page_summary").value.String;
+	}else{
+		$summary = "";
+	}
+
+   $description = $perc.page.description;
+   $summary_text = "";
+
+	  if ( ! $assetItems.isEmpty() ) {
+        $assetItem = $assetItems.get(0);
+		if(!empty($assetItem)){
+			$twitter_site_override = $assetItem.getNode().getProperty('twitter_site_override').String;
+			$title_override = $assetItem.getNode().getProperty('title_override').String;
+			$description_override = $assetItem.getNode().getProperty('description_override').String;
+			$image_override = $assetItem.getNode().getProperty('image_override').String;
+			$image_override_linkId = $assetItem.getNode().getProperty('image_override_linkId').String;
+			$twitter_image_alt_override = $assetItem.getNode().getProperty('image_alt_override').String;
+
+		}
+	}
+
+	if(! empty($twitter_site_override)){
+			$use_twitter_site = $tools.esc.html($twitter_site_override);
+	}else{
+		$use_twitter_site= $tools.esc.html($twitter_site);
+	}
+    $meta_sitename='<meta property="twitter:site" content="' + $use_twitter_site + '" />';
+
+	if(! empty($title_override)){
+		$use_title = $tools.esc.html($title_override);
+	}else{
+		$use_title = $tools.esc.html($perc.page.title);
+	}
+	$meta_title = '<meta property="twitter:title" content="' + $use_title + '" />';
+
+	if(! empty($type_override)){
+		$use_type = $tools.esc.html($type_override);
+	}else{
+		$use_type = $tools.esc.html($twittercard_type);
+	}
+
+	if(! empty($summary)){
+			$doc = $sys.getClass().forName('org.jsoup.Jsoup').parseBodyFragment($summary);
+			$body = $doc.body();
+			$summary_images = $body.getElementsByTag("img");
+			if($summary_images.size() > 0){
+				$summary_image = $summary_images.first();
+			$twitter_image_summary = $summary_image.attr("src");
+			$twitter_image_alt = $summary_image.attr("alt");
+			}
+			$summary_text  = $doc.text();
+	}
+
+	if(! empty($description_override)){
+		$use_description = $tools.esc.html($description_override);
+	}else{
+		if(! empty($description))
+			$use_description = $tools.esc.html($description);
+		else{
+			if(!empty($summary_text)){
+				$use_description = $summary_text;
+			}
+			else{
+				$use_description = "";
+			}
+		}
+	}
+	$meta_description='<meta property="twitter:description" content="' + $use_description + '" />';
+
+	if(! empty($image_override) && ! empty($image_override_linkId )){
+
+   		    $image_path = $rx.pageutils.renderManagedItemPath($perc.linkContext,$image_override_linkId);
+			$use_image = $tools.esc.html($image_path);
+	}else{
+		if(! empty($twitter_image_summary)){
+			$use_image = $twitter_image_summary;
+		}else{
+			$use_image = $twitter_image;
+		}
+	}
+
+	if(empty($use_image))
+		$use_type="summary";
+
+	$meta_type='<meta property="twitter:card" content="' + $use_type + '" />';
+
+	$baseURL = $perc.linkContext.getSite().getSiteProtocol() + "://";
+	$pubSiteName = $perc.linkContext.getSite().getName();
+
+	if(! empty($use_image)){
+		if(! $use_image.startsWith("http")){
+
+			if( ! $use_image.startsWith("/") )
+				$use_image = "/" + $use_image;
+
+			if( ! $use_image.startsWith("/Rhythmyx/") ){
+				$use_image = $baseURL + $pubSiteName + $use_image;
+			}
+		}
+	}
+	if(!empty($use_image)){
+	$meta_image='<meta property="twitter:image" content="' + $use_image + '" />';
+	}else{
+		$meta_image="";
+	}
+
+	if(empty($use_image)){
+		$use_twitter_image_alt="";
+	}else{
+		if(! empty($twitter_image_alt_override)){
+			$use_twitter_image_alt = $tools.esc.html($twitter_image_alt_override);
+		}else{
+			$use_twitter_image_alt = $tools.esc.html($twitter_image_alt);
+		}
+	}
+    $meta_imagealt='<meta property="twitter:image:alt" content="' + $use_twitter_image_alt + '" />';
+
+
+	if( empty($perc.page.getAdditionalHeadContent())){
+		$perc.page.setAdditionalHeadContent("");
+		$addlHead = "";
+	}else{
+		$addlHead = $perc.page.getAdditionalHeadContent();
+	}
+	$nl="";
+	if(!empty($use_type)){
+		$perc.page.setAdditionalHeadContent($addlHead + $meta_type);
+	}
+
+	if(!empty($use_title)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_title));
+	}
+
+	if(!empty($use_description)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_description));
+	}
+
+	if(!empty($use_image)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_image));
+	}
+	if(!empty($use_twitter_image_alt)){
+		$addlHead = $perc.page.getAdditionalHeadContent();
+		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead, $meta_imagealt));
+	}
+
+	]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[
+#if($perc.isEditMode())##
+<img src="/Rhythmyx/rx_resources/widgets/percTwitterSummaryCards/images/twitter-card-placeholder-small.png" alt="Twitter Summary Cards Widget Placeholder" title="Twitter Summary Cards Widget" />
+#end##
+    ]]>
+    </Content>
+</Widget>

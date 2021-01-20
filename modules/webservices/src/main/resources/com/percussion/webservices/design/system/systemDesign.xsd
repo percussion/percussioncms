@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Melissa Morin (Percussion Software) -->
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/systemDesign" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:sys="urn:www.percussion.com/6.0.0/system" xmlns:sysd="urn:www.percussion.com/6.0.0/systemDesign" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="../common.xsd"/>
+	<xsd:import namespace="urn:www.percussion.com/6.0.0/system" schemaLocation="systemServices.xsd"/>
+	<xsd:element name="LoadSharedPropertiesRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Name" type="xsd:string" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>The name of the property to load, may be null or empty, wildcards are accepted.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>True to lock the found results for edit, false to return them read-only.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LoadSharedPropertiesResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSSharedProperty" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array with all found system properties for the 
+                     specified parameters, never null, may be empty.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="SaveSharedPropertiesRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSSharedProperty" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array with all system properties to be persisted to 
+                     the repository, new system properties will be inserted, 
+                     existing system properties will be updated.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="DeleteSharedPropertiesRequest">
+		<xsd:annotation>
+			<xsd:documentation>Deletes the shared properties for the supplied shared property ids. Deletes cannot be reverted. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSSharedProperty" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>An array of names for which to delete the shared properties, may be null or empty, asterisk wildcards are accepted. All properties are deleted if null or empty. We ignore cases where the object for a supplied name does not exist.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignored. If dependency checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that the client can deal with it appropriately.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="ExtendLocksRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array of object ids for each object the user wants to 
+                     create a new lock or extend an existing lock, not null 
+                     or empty.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="ReleaseLocksRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array of object ids for each object the user wants to 
+                     release, not null or empty.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="GetLockedSummariesResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="com:PSObjectSummary" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CreateLocksRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>A list with all object ids for which to create a lock.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="OverrideLock" type="xsd:boolean">
+					<xsd:annotation>
+						<xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="IsLockedRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="IsLockedResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="com:PSObjectSummary" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="FindDependenciesRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array of object ids, one for each object to find all 
+                     dependencies for, not null or empty. The ids must 
+                     reference existing objects.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="FindDependenciesResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSDependency" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array with all dependencies found for the supplied 
+                     objects, never null, may be empty.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LoadConfigurationRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Name" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The configuration name to be loaded, not null or empty, 
+                     must be the name of a supported configuration.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+                     True to lock the loaded configuration for edit, false to 
+                     return it read-only.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LoadConfigurationResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSMimeContentAdapter">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The configuration in the requested mode, never null.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="SaveConfigurationRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSMimeContentAdapter">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The configuration to be saved to the server, not null.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CreateRelationshipTypesRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Name" type="xsd:string" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>The names for the new relationship types, not null or empty. The names must be unique across all defined relationship types in the system, names are compared case-insensitive and cannot contain spaces.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Category" type="sys:RelationshipCategory" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>The categories of the new relationship types, not null or empty.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CreateRelationshipTypesResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSRelationshipConfig" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The new relationship type initialized with the supplied 
+                     parameters, never null. The user must call 
+                     SaveRelationshipTypes for the returned object to persist 
+                     the definition.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="FindRelationshipTypesRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Name" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The relationship type name to find, may be null or empty, 
+                     wildcards are accepted. If not supplied or empty, all 
+                     relationship type summaries will be returned.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Category" type="sys:RelationshipCategory" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The relationship category for which to find the 
+                     configurations, may be null but not empty. Must be an 
+                     existing category. All relationship configuration 
+                     summaries will be retunred if not supplied.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="FindRelationshipTypesResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array with all object summaries of type 
+                     PSRelationshipConfig found for the supplied parameters, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LoadRelationshipTypesRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array of relationship type ids to be loaded, not null 
+                     or empty, must be ids of existing relationship types.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+                     True to lock the found results for edit, false to return 
+                     them read-only.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LoadRelationshipTypesResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSRelationshipConfig" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array with all loaded relationship types in the 
+                     requested mode in the same order as requested, never null 
+                     or empty.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="SaveRelationshipTypesRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSRelationshipConfig" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array with all relationship types to be persisted to 
+                     the repository, new relationship types will be inserted, 
+                     existing relationship types will be updated.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="DeleteRelationshipTypesRequest">
+		<xsd:annotation>
+			<xsd:documentation>Deletes the relationship types for the supplied relationship type ids. Deletes cannot be reverted. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>An array of ids for which to delete the relationship types, not null or empty. We ignore cases where the object for a 
+ssupplied id does not exist.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignored. If dependency  checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that  the client can deal with it appropriately.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="FindWorkflowsRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Name" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The workflow name for which to find the summaries, 
+                     may be null or empty, wildcards are accepted. All 
+                     workflow summaries will be returned if null or empty.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="FindWorkflowsResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array with all object summaries of type PSWorkflow 
+                     found for the supplied name, never null, may be empty, 
+                     ordered in alpha order by name.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CreateAclsRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The object ids for which to create a new ACL, not null or empty. 
+                     Must be ids of an existing objects.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CreateAclsResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSAclImpl" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The new ACL created for the supplied object id with 
+                     default permissions, never null.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LoadAclsRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array of ids for which to load the ACL’s, not null or 
+                     empty.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+                     True to lock the loaded results for edit, false to return 
+                     them read-only. 
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LoadAclsResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSAclImpl" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array of ACL’s, one for each object id supplied with 
+                     the request in the same order, never null or empty. A 
+                     null array entry will be returned for objects that do not 
+                     have an ACL object.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="SaveAclsRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSAclImpl" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array of object ACL’s to be saved to the repository, 
+                     not null or empty. New ACL’s will be inserted, existing 
+                     ACL’s will be updated.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="SaveAclsResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Permissions" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Id" type="com:Id">
+								<xsd:annotation>
+									<xsd:documentation>The id of the design object for which this shows the user permissions.</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="Permission" type="xsd:int" minOccurs="0" maxOccurs="unbounded">
+								<xsd:annotation>
+									<xsd:documentation>An array of user permissions.</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="DeleteAclsRequest">
+		<xsd:annotation>
+			<xsd:documentation>Deletes the ACL’s for the supplied ids. Deletes cannot be reverted. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>An array of ACL ids to delete, not null or empty. We ignore cases where the ACL for a supplied id does not exist.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignored. If dependency checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that the client can deal with it appropriately.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CreateGuidsRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Type" type="xsd:int">
+					<xsd:annotation>
+						<xsd:documentation>The object type for which to create the guids, must be a type specified in PSTypeEnum.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Count" type="xsd:int" default="1" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>The number of guids to create.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CreateGuidsResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>The new guids created.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CreateItemFiltersRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Name" type="xsd:string" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>The names for all new item filters to create. Names must be unique across all item filters defined in a system.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CreateItemFiltersResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSItemFilter" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     The new keyword definition initialized with the supplied 
+                     parameters, never null. The user must call SaveKeywords 
+                     for the returned object to persist the definition to the 
+                     repository.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="FindItemFiltersRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Name" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+The name of the item filter to find, may be null or empty, wildcards are accepted. All item filter summaries will be returned if the supplied name is null or empty.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="FindItemFiltersResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="com:PSObjectSummary" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array of object summaries of type PSKeyword found for 
+                     the supplied name, never null, may be empty, ordered in 
+                     alpha order by name.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LoadItemFiltersRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>An array of ids for which to load the item filters, must be ids of existing filters.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Lock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>True to lock the found results for edit, false to return them read-only.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="OverrideLock" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>This flag allows the requesting user to override locks which he already owns through a different session.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LoadItemFiltersResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSItemFilter" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array with all loaded keywords in the requested mode 
+                     in the same order as requested, never null or empty.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="SaveItemFiltersRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sys:PSItemFilter" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+                     An array with all keywords to be saved to the repository, 
+                     not null or empty.
+                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Release" type="xsd:boolean" default="true" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>True to release all object locks after the save, false to keep the locks. All locks will be released, no matter whether the operation was successful or not. Defaults to false if not provided.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="DeleteItemFiltersRequest">
+		<xsd:annotation>
+			<xsd:documentation>Deletes the item filters for all supplied ids. Deletes cannot be reverted. Only objects that are unlocked or locked by the requesting user and session can be deleted, for all other cases an error will be returned. All locks for successfully deleted objects will be released, locks which exist for objects that failed to be deleted remain untouched.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Id" type="com:Id" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>
+An array of item filter ids to delete, not null or empty. We ignore cases where the filter for a supplied id does not exist.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="IgnoreDependencies" type="xsd:boolean" default="false" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>Specifies whether or not the dependency check prior to the delete of an object should be ignored. If dependency checks are enabled, only objects without depenencies will be deleted, for all others an error is returned so that the client can deal with it appropriately.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

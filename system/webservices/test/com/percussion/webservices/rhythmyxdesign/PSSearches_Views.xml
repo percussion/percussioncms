@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXDbComponentCollection className="com.percussion.cms.objectstore.PSSearch" ordered="no" state="db_unmodified">
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>3</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>All</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>3</PARENTCATEGORY>
+      <TYPE>View</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>View_All</INTERNALNAME>
+      <DESCRIPTION>All content for all communities</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentid</FIELDNAME>
+               <SEARCHID>3</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE>0</FIELDVALUE>
+            <FIELDDESCRIPTION>All content</FIELDDESCRIPTION>
+            <FIELDLABEL>ContentId</FIELDLABEL>
+            <OPERATOR>greaterthan</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="aadNewSearch" state="db_unmodified">
+            <PSXSProperty propName="aadNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>aadNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>3</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="cxNewSearch" state="db_unmodified">
+            <PSXSProperty propName="cxNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>cxNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>3</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>3</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL/>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>7</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>All</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>2</PARENTCATEGORY>
+      <TYPE>View</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>View_All_Comm</INTERNALNAME>
+      <DESCRIPTION>All content for user community</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_communityid</FIELDNAME>
+               <SEARCHID>7</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE>$$sys_community</FIELDVALUE>
+            <FIELDDESCRIPTION>User logged in communityid</FIELDDESCRIPTION>
+            <FIELDLABEL>Community ID</FIELDLABEL>
+            <OPERATOR>equal</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="aadNewSearch" state="db_unmodified">
+            <PSXSProperty propName="aadNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>aadNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>7</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="cxNewSearch" state="db_unmodified">
+            <PSXSProperty propName="cxNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>cxNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>7</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>7</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL/>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>9</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Checked Out By Me</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>1</PARENTCATEGORY>
+      <TYPE>View</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>Checked_Out_By_Me</INTERNALNAME>
+      <DESCRIPTION>All content checked out by login user</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentcheckoutusername</FIELDNAME>
+               <SEARCHID>9</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Text</FIELDTYPE>
+            <FIELDVALUE>$$sys_username</FIELDVALUE>
+            <FIELDDESCRIPTION>items checked out by me</FIELDDESCRIPTION>
+            <FIELDLABEL>Checked out user name</FIELDLABEL>
+            <OPERATOR>equal</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="aadNewSearch" state="db_unmodified">
+            <PSXSProperty propName="aadNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>aadNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>9</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="cxNewSearch" state="db_unmodified">
+            <PSXSProperty propName="cxNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>cxNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>9</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>9</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL>../sys_cxViews/checkedoutbyme.xml</CUSTOMURL>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>6</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Default AA New Search</DISPLAYNAME>
+      <DISPLAYFORMAT>7</DISPLAYFORMAT>
+      <PARENTCATEGORY>3</PARENTCATEGORY>
+      <TYPE>StandardSearch</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>RC_Search</INTERNALNAME>
+      <DESCRIPTION>Related Content Search</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_title</FIELDNAME>
+               <SEARCHID>6</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Text</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION>Content item title</FIELDDESCRIPTION>
+            <FIELDLABEL>Title</FIELDLABEL>
+            <OPERATOR>like</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentid</FIELDNAME>
+               <SEARCHID>6</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Content id</FIELDLABEL>
+            <OPERATOR>equal</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_communityid</FIELDNAME>
+               <SEARCHID>6</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Community</FIELDLABEL>
+            <OPERATOR>in</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contenttypeid</FIELDNAME>
+               <SEARCHID>6</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Content Type</FIELDLABEL>
+            <OPERATOR>in</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentcreatedby</FIELDNAME>
+               <SEARCHID>6</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Text</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Created by</FIELDLABEL>
+            <OPERATOR>like</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentstartdate</FIELDNAME>
+               <SEARCHID>6</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Date</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Start Date</FIELDLABEL>
+            <OPERATOR>equal</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="aadNewSearch" state="db_unmodified">
+            <PSXSProperty propName="aadNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>aadNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>6</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="cxNewSearch" state="db_unmodified">
+            <PSXSProperty propName="cxNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>cxNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>6</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>6</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="userCustomizable" state="db_unmodified">
+            <PSXSProperty propName="userCustomizable" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>userCustomizable</PROPERTYNAME>
+                  <PROPERTYVALUE>y</PROPERTYVALUE>
+                  <SEARCHID>6</SEARCHID>
+               </PSXKey>
+               <Value>y</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL/>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>0</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Default CX New Search</DISPLAYNAME>
+      <DISPLAYFORMAT>0</DISPLAYFORMAT>
+      <PARENTCATEGORY>5</PARENTCATEGORY>
+      <TYPE>StandardSearch</TYPE>
+      <MAXIMUMITEMS>200</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>Default_Search</INTERNALNAME>
+      <DESCRIPTION>Content Explorer Search</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_title</FIELDNAME>
+               <SEARCHID>0</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Text</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION>Content item title</FIELDDESCRIPTION>
+            <FIELDLABEL>Title</FIELDLABEL>
+            <OPERATOR>like</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentid</FIELDNAME>
+               <SEARCHID>0</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Content id</FIELDLABEL>
+            <OPERATOR>equal</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_communityid</FIELDNAME>
+               <SEARCHID>0</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Community</FIELDLABEL>
+            <OPERATOR>in</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contenttypeid</FIELDNAME>
+               <SEARCHID>0</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Content Type</FIELDLABEL>
+            <OPERATOR>in</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentcreatedby</FIELDNAME>
+               <SEARCHID>0</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Text</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Created by</FIELDLABEL>
+            <OPERATOR>like</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentstartdate</FIELDNAME>
+               <SEARCHID>0</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Date</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION/>
+            <FIELDLABEL>Start Date</FIELDLABEL>
+            <OPERATOR>equal</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>0</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL/>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>12</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Duplicate Folder Paths</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>4</PARENTCATEGORY>
+      <TYPE>View</TYPE>
+      <MAXIMUMITEMS>50</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>DuplicateFolderPaths</INTERNALNAME>
+      <DESCRIPTION>Produce a list of items and/or sub-folders, who have a parent folder and also have a sibling with the same name in the same parent folder.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS/>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="aadNewSearch" state="db_unmodified">
+            <PSXSProperty propName="aadNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>aadNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>12</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="cxNewSearch" state="db_unmodified">
+            <PSXSProperty propName="cxNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>cxNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>12</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>12</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="userCustomizable" state="db_unmodified">
+            <PSXSProperty propName="userCustomizable" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>userCustomizable</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>12</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL>../sys_cxViews/duplicatefolderpaths.xml</CUSTOMURL>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>1</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Inbox</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>1</PARENTCATEGORY>
+      <TYPE>View</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>Inbox</INTERNALNAME>
+      <DESCRIPTION>Inbox View</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentid</FIELDNAME>
+               <SEARCHID>1</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE>0</FIELDVALUE>
+            <FIELDDESCRIPTION>All content</FIELDDESCRIPTION>
+            <FIELDLABEL>ContentId</FIELDLABEL>
+            <OPERATOR>greaterthan</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="aadNewSearch" state="db_unmodified">
+            <PSXSProperty propName="aadNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>aadNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>1</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="cxNewSearch" state="db_unmodified">
+            <PSXSProperty propName="cxNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>cxNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>1</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>1</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL>../sys_cxViews/inbox.xml</CUSTOMURL>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>2</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Outbox</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>1</PARENTCATEGORY>
+      <TYPE>View</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>Outbox</INTERNALNAME>
+      <DESCRIPTION>Outbox view</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentid</FIELDNAME>
+               <SEARCHID>2</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE>0</FIELDVALUE>
+            <FIELDDESCRIPTION>All content</FIELDDESCRIPTION>
+            <FIELDLABEL>ContentId</FIELDLABEL>
+            <OPERATOR>greaterthan</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="aadNewSearch" state="db_unmodified">
+            <PSXSProperty propName="aadNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>aadNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>2</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="cxNewSearch" state="db_unmodified">
+            <PSXSProperty propName="cxNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>cxNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>2</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>2</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL>../sys_cxViews/outbox.xml</CUSTOMURL>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>5</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Recent</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>1</PARENTCATEGORY>
+      <TYPE>View</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>Recent</INTERNALNAME>
+      <DESCRIPTION>Content accessed/modified recently</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentid</FIELDNAME>
+               <SEARCHID>5</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE>0</FIELDVALUE>
+            <FIELDDESCRIPTION>All content</FIELDDESCRIPTION>
+            <FIELDLABEL>ContentId</FIELDLABEL>
+            <OPERATOR>greaterthan</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="aadNewSearch" state="db_unmodified">
+            <PSXSProperty propName="aadNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>aadNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>5</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="cxNewSearch" state="db_unmodified">
+            <PSXSProperty propName="cxNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>cxNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>5</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>5</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL>../sys_cxViews/recent.xml</CUSTOMURL>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>10</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Sample custom search</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>3</PARENTCATEGORY>
+      <TYPE>CustomSearch</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>custom_search1</INTERNALNAME>
+      <DESCRIPTION>Sample custom search with one simple and one choice list fields.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_title</FIELDNAME>
+               <SEARCHID>10</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Text</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION>Content item title</FIELDDESCRIPTION>
+            <FIELDLABEL>Title</FIELDLABEL>
+            <OPERATOR>like</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>10</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="userCustomizable" state="db_unmodified">
+            <PSXSProperty propName="userCustomizable" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>userCustomizable</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>10</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL>../sys_cxCustomSearches/sample1.xml</CUSTOMURL>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>11</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Sample standard search</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>3</PARENTCATEGORY>
+      <TYPE>StandardSearch</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>standard_search1</INTERNALNAME>
+      <DESCRIPTION>Sample standard search with two simple fields.</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentid</FIELDNAME>
+               <SEARCHID>11</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION>Content Id</FIELDDESCRIPTION>
+            <FIELDLABEL>ContentId</FIELDLABEL>
+            <OPERATOR>equal</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_title</FIELDNAME>
+               <SEARCHID>11</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Text</FIELDTYPE>
+            <FIELDVALUE/>
+            <FIELDDESCRIPTION>Content item title</FIELDDESCRIPTION>
+            <FIELDLABEL>Title</FIELDLABEL>
+            <OPERATOR>like</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>11</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="userCustomizable" state="db_unmodified">
+            <PSXSProperty propName="userCustomizable" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>userCustomizable</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>11</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL/>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>8</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Session</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>1</PARENTCATEGORY>
+      <TYPE>View</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>Session</INTERNALNAME>
+      <DESCRIPTION>Conent accessed/modifed in this session</DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS className="com.percussion.cms.objectstore.PSSearchField" ordered="yes" state="db_unmodified">
+         <PSXSearchField state="db_unmodified">
+            <PSXKey isPersisted="yes">
+               <FIELDNAME>sys_contentid</FIELDNAME>
+               <SEARCHID>8</SEARCHID>
+            </PSXKey>
+            <FIELDTYPE>Number</FIELDTYPE>
+            <FIELDVALUE>0</FIELDVALUE>
+            <FIELDDESCRIPTION>Dummy</FIELDDESCRIPTION>
+            <FIELDLABEL>ContentId</FIELDLABEL>
+            <OPERATOR>greaterthan</OPERATOR>
+            <EXTOPERATOR/>
+         </PSXSearchField>
+      </PSX_FIELDS>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="aadNewSearch" state="db_unmodified">
+            <PSXSProperty propName="aadNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>aadNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>8</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="cxNewSearch" state="db_unmodified">
+            <PSXSProperty propName="cxNewSearch" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>cxNewSearch</PROPERTYNAME>
+                  <PROPERTYVALUE>n</PROPERTYVALUE>
+                  <SEARCHID>8</SEARCHID>
+               </PSXKey>
+               <Value>n</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>-1</PROPERTYVALUE>
+                  <SEARCHID>8</SEARCHID>
+               </PSXKey>
+               <Value>-1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL>../sys_cxViews/session.xml</CUSTOMURL>
+   </PSXSearch>
+   <PSXSearch state="db_unmodified">
+      <PSXKey isPersisted="yes">
+         <SEARCHID>1002</SEARCHID>
+      </PSXKey>
+      <DISPLAYNAME>Test Search</DISPLAYNAME>
+      <DISPLAYFORMAT>1</DISPLAYFORMAT>
+      <PARENTCATEGORY>1</PARENTCATEGORY>
+      <TYPE>StandardSearch</TYPE>
+      <MAXIMUMITEMS>-1</MAXIMUMITEMS>
+      <CASESENSITIVE>0</CASESENSITIVE>
+      <INTERNALNAME>testSearch</INTERNALNAME>
+      <DESCRIPTION>This is created for testing </DESCRIPTION>
+	  <VERSION>0</VERSION>
+      <PSX_FIELDS/>
+      <PSX_PROPERTIES className="com.percussion.cms.objectstore.PSSearchMultiProperty" ordered="no" state="db_unmodified">
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="Property_1" state="db_unmodified">
+            <PSXSProperty propName="Property_1" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>Property_1</PROPERTYNAME>
+                  <PROPERTYVALUE>Value_1</PROPERTYVALUE>
+                  <SEARCHID>1002</SEARCHID>
+               </PSXKey>
+               <Value>Value_1</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="Property_2" state="db_unmodified">
+            <PSXSProperty propName="Property_2" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>Property_2</PROPERTYNAME>
+                  <PROPERTYVALUE>Value_2</PROPERTYVALUE>
+                  <SEARCHID>1002</SEARCHID>
+               </PSXKey>
+               <Value>Value_2</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="searchEngineType" state="db_unmodified">
+            <PSXSProperty propName="searchEngineType" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>searchEngineType</PROPERTYNAME>
+                  <PROPERTYVALUE>internal</PROPERTYVALUE>
+                  <SEARCHID>1002</SEARCHID>
+               </PSXKey>
+               <Value>internal</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="sys_community" state="db_unmodified">
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>10</PROPERTYVALUE>
+                  <SEARCHID>1002</SEARCHID>
+               </PSXKey>
+               <Value>10</Value>
+               <Description/>
+            </PSXSProperty>
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>1001</PROPERTYVALUE>
+                  <SEARCHID>1002</SEARCHID>
+               </PSXKey>
+               <Value>1001</Value>
+               <Description/>
+            </PSXSProperty>
+            <PSXSProperty propName="sys_community" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>sys_community</PROPERTYNAME>
+                  <PROPERTYVALUE>1004</PROPERTYVALUE>
+                  <SEARCHID>1002</SEARCHID>
+               </PSXKey>
+               <Value>1004</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+         <PSXSearchMultiProperty className="com.percussion.cms.objectstore.PSSProperty" ordered="no" propName="userCustomizable" state="db_unmodified">
+            <PSXSProperty propName="userCustomizable" state="db_unmodified">
+               <PSXKey isPersisted="yes" needGenerateId="no">
+                  <PROPERTYNAME>userCustomizable</PROPERTYNAME>
+                  <PROPERTYVALUE>y</PROPERTYVALUE>
+                  <SEARCHID>1002</SEARCHID>
+               </PSXKey>
+               <Value>y</Value>
+               <Description/>
+            </PSXSProperty>
+         </PSXSearchMultiProperty>
+      </PSX_PROPERTIES>
+      <CUSTOMURL/>
+   </PSXSearch>
+</PSXDbComponentCollection>

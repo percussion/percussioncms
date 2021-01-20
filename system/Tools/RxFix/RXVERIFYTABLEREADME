@@ -1,0 +1,32 @@
+Introduction
+------------
+
+RxVerifyTable provides an installation check module to verify your 
+Rhythmyx installation database. 
+
+Running
+-------
+
+To run RxVerifyTable, you must either have a java executable on your path, or
+use a full pathname to access the java executable in your Rhythmyx
+directory. To run the utility in the same directory you've unzipped the
+tool into:
+
+1) Run verification checks
+java -jar rxverifytable.jar rhythmyxdir [-help] [-debug]
+
+This will check the database for table existence, primary key, index, and foreign key
+
+use -help to display detailed help information
+use -debug to turn debugging on
+
+The tool will output its actions to the console, and will also record 
+them in a file in the current directory, rxverify.log. This file will not
+be overwritten on each run; instead it will be appended to. The log 
+entries include the date to allow you to see what was run when.
+
+
+
+
+
+

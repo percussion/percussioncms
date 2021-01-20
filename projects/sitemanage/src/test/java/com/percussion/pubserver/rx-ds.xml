@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<datasources>
+   <local-tx-datasource>
+      <jndi-name>jdbc/RhythmyxData</jndi-name>
+      <connection-url>jdbc:jtds:sqlserver://localhost</connection-url>
+      <driver-class>net.sourceforge.jtds.jdbc.Driver</driver-class>
+      <security-domain>rx.datasource.jdbc_RhythmyxData</security-domain>
+      <min-pool-size>5</min-pool-size>
+      <max-pool-size>100</max-pool-size>
+      <idle-timeout-minutes>15</idle-timeout-minutes>
+      <metadata>
+         <type-mapping>MS SQLSERVER2000</type-mapping>
+      </metadata>
+   </local-tx-datasource>
+   <local-tx-datasource>
+      <jndi-name>jdbc/oracle_db</jndi-name>
+      <connection-url>jdbc:oracle:thin:@perc-oracle.percussion.local:1521:UNICODE</connection-url>
+      <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+      <user-name>RXIDEXX9312</user-name>
+      <password>support</password>
+      <min-pool-size>5</min-pool-size>
+      <max-pool-size>150</max-pool-size>
+      <idle-timeout-minutes>15</idle-timeout-minutes>
+      <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleValidConnectionChecker</valid-connection-checker-class-name>
+      <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleExceptionSorter</exception-sorter-class-name>
+      <metadata>
+         <type-mapping>Oracle 10g</type-mapping>
+      </metadata>
+
+   </local-tx-datasource>
+   <local-tx-datasource>
+      <jndi-name>jdbc/mysql_db</jndi-name>
+      <connection-url>jdbc:mysql://localhost:3306/OOB9438</connection-url>
+      <driver-class>com.mysql.jdbc.Driver</driver-class>
+      <security-domain>rx.datasource.jdbc_mysql_db</security-domain>
+      <min-pool-size>5</min-pool-size>
+      <max-pool-size>100</max-pool-size>
+      <idle-timeout-minutes>15</idle-timeout-minutes>
+      <check-valid-connection-sql>/* ping */ SELECT 1</check-valid-connection-sql>
+      <metadata>
+         <type-mapping>MYSQL</type-mapping>
+      </metadata>
+   </local-tx-datasource>
+</datasources>

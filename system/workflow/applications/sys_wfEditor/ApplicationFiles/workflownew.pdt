@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT workflownew (workflowid, relatedlinks, componentname, workflowlink )>
+<!ELEMENT workflowlink (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT workflowid (#PCDATA)>

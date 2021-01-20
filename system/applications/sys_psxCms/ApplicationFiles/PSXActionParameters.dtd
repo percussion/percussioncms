@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXActionParameter (PSXKey, Value, Description? )>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT Value (#PCDATA)>
+<!ELEMENT PSXKey (PARAMNAME, ACTIONID )>
+<!ELEMENT ACTIONID (#PCDATA)>
+<!ELEMENT PARAMNAME (#PCDATA)>
+<!ATTLIST  PSXActionParameter keyControl CDATA #REQUIRED>
+<!ATTLIST  PSXActionParameter propName CDATA #REQUIRED>
+<!ATTLIST  PSXActionParameter state CDATA #REQUIRED>
+<!ELEMENT PSXActionParameters (PSXActionParameter+ )>
+<!ATTLIST  PSXActionParameters className CDATA #IMPLIED>
+<!ATTLIST  PSXActionParameters ordered CDATA #REQUIRED>
+<!ATTLIST  PSXActionParameters state CDATA #REQUIRED>

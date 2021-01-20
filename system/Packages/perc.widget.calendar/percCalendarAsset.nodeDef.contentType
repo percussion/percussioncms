@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
+    <auto-created>false</auto-created>
+    <description/>
+    <hide-from-menu>false</hide-from-menu>
+    <id>348</id>
+    <internal-name>percCalendarAsset</internal-name>
+    <label>Calendar</label>
+    <mandatory>false</mandatory>
+    <name>rx:percCalendarAsset</name>
+    <new-request>../psx_cepercCalendarAsset/percCalendarAsset.html</new-request>
+    <object-type>1</object-type>
+    <protected>false</protected>
+    <query-request>../psx_cepercCalendarAsset/percCalendarAsset.html</query-request>
+    <raw-content-type>348</raw-content-type>
+    <template-ids/>
+    <update-request/>
+    <workflow-ids/>
+  </node-definition>

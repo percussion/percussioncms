@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXMacroDefinitionSet>
+	<PSXMacroDefinition id="1">
+		<Name>$lastPublicRevision</Name>
+		<Class>com.percussion.data.macro.PSLastPublicRevisionExtractor</Class>
+		<Description>Retrieves the last public revision of the current item, returns -1 if the item has never been public. The processed request must supply the contentid as HTML parameter or backend column.</Description>
+	</PSXMacroDefinition>
+	<PSXMacroDefinition id="2">
+		<Name>$contextDependentRevision</Name>
+		<Class>com.percussion.data.macro.PSContextDependentRevisionExtractor</Class>
+		<Description>Extract the revision depending on the request context. The request context is retrievd from the HTML parameters. If not provided, it defaults to preview (0). For the preview context (0) this macro extracts the tip revision if the checkout user is the current user, otherwise the current revision. For all other contexts this will return the last public revision as determined from the item history or -1 if the item has never been public.</Description>
+	</PSXMacroDefinition>
+	<PSXMacroDefinition id="2">
+		<Name>$backendDefaultDriverName</Name>
+		<Class>com.percussion.data.macro.PSBackendDefaultDriverExtractor</Class>
+		<Description>Extracts the driver name of the default backend database. The name returned is always uppercased.</Description>
+	</PSXMacroDefinition>
+</PSXMacroDefinitionSet>

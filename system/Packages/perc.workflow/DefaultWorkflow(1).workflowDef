@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="TRANSITIONNOTIFICATIONS">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONNOTIFICATIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NOTIFICATIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="STATEROLERECIPIENTTYPES">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ADDITIONALRECIPIENTLIST">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="CCLIST">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+            <defaultvalue/>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+            <defaultvalue/>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>WORKFLOWAPPID</name>
+         <name>TRANSITIONNOTIFICATIONID</name>
+      </primarykey>
+      <indexdefinitions>
+         <index action="c" isUnique="n" name="IX_TNTIF_WID_TID">
+            <name>WORKFLOWAPPID</name>
+            <name>TRANSITIONID</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table name="TRANSITIONNOTIFICATIONS" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">17</column>
+         <column encoding="text" name="TRANSITIONID">1</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">16</column>
+         <column encoding="text" name="TRANSITIONID">2</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">15</column>
+         <column encoding="text" name="TRANSITIONID">14</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">14</column>
+         <column encoding="text" name="TRANSITIONID">13</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">13</column>
+         <column encoding="text" name="TRANSITIONID">15</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">12</column>
+         <column encoding="text" name="TRANSITIONID">17</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">11</column>
+         <column encoding="text" name="TRANSITIONID">16</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">10</column>
+         <column encoding="text" name="TRANSITIONID">8</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">9</column>
+         <column encoding="text" name="TRANSITIONID">12</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">8</column>
+         <column encoding="text" name="TRANSITIONID">11</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">7</column>
+         <column encoding="text" name="TRANSITIONID">20</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">6</column>
+         <column encoding="text" name="TRANSITIONID">18</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">5</column>
+         <column encoding="text" name="TRANSITIONID">19</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">4</column>
+         <column encoding="text" name="TRANSITIONID">4</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">3</column>
+         <column encoding="text" name="TRANSITIONID">5</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">2</column>
+         <column encoding="text" name="TRANSITIONID">6</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">1</column>
+         <column encoding="text" name="TRANSITIONID">3</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+   </table>
+</PSXDependencyData>

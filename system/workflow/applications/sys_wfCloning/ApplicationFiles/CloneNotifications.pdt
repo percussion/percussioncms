@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Notification (Body, Description, NotificationId, Subject, WorkflowId )>
+<!ELEMENT WorkflowId (#PCDATA)>
+<!ELEMENT Subject (#PCDATA)>
+<!ELEMENT NotificationId (#PCDATA)>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT Body (#PCDATA)>
+<!ELEMENT CloneNotifications (Notification* )>

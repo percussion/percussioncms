@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings>
+      <binding id="2">
+        <execution-order>0</execution-order>
+        <expression>"r"</expression>
+        <id>-3461056995564443546</id>
+        <jexl-script id="3">
+          <compilable>false</compilable>
+          <parsed-text>"r"</parsed-text>
+          <script-text>"r"</script-text>
+          <source-text>"r"</source-text>
+        </jexl-script>
+        <variable>$db.action</variable>
+      </binding>
+      <binding id="4">
+        <execution-order>0</execution-order>
+        <expression>"dbo"</expression>
+        <id>-3461056995564443545</id>
+        <jexl-script id="5">
+          <compilable>false</compilable>
+          <parsed-text>"dbo"</parsed-text>
+          <script-text>"dbo"</script-text>
+          <source-text>"dbo"</source-text>
+        </jexl-script>
+        <variable>$db.origin</variable>
+      </binding>
+      <binding id="6">
+        <execution-order>0</execution-order>
+        <expression>"jdbc/cmlite_db"</expression>
+        <id>-3461056995564443544</id>
+        <jexl-script id="7">
+          <compilable>false</compilable>
+          <parsed-text>"jdbc/cmlite_db"</parsed-text>
+          <script-text>"jdbc/cmlite_db"</script-text>
+          <source-text>"jdbc/cmlite_db"</source-text>
+        </jexl-script>
+        <variable>$db.resource</variable>
+      </binding>
+      <binding id="8">
+        <execution-order>0</execution-order>
+        <expression>"jtds:sqlserver"</expression>
+        <id>-3461056995564443543</id>
+        <jexl-script id="9">
+          <compilable>false</compilable>
+          <parsed-text>"jtds:sqlserver"</parsed-text>
+          <script-text>"jtds:sqlserver"</script-text>
+          <source-text>"jtds:sqlserver"</source-text>
+        </jexl-script>
+        <variable>$db.drivertype</variable>
+      </binding>
+      <binding id="10">
+        <execution-order>0</execution-order>
+        <expression>"cmlite_db"</expression>
+        <id>-3461056995564443542</id>
+        <jexl-script id="11">
+          <compilable>false</compilable>
+          <parsed-text>"cmlite_db"</parsed-text>
+          <script-text>"cmlite_db"</script-text>
+          <source-text>"cmlite_db"</source-text>
+        </jexl-script>
+        <variable>$db.database</variable>
+      </binding>
+      <binding id="12">
+        <execution-order>0</execution-order>
+        <expression>"PERC_EXPORT_PAGE"</expression>
+        <id>-3461056995564443541</id>
+        <jexl-script id="13">
+          <compilable>false</compilable>
+          <parsed-text>"PERC_EXPORT_PAGE"</parsed-text>
+          <script-text>"PERC_EXPORT_PAGE"</script-text>
+          <source-text>"PERC_EXPORT_PAGE"</source-text>
+        </jexl-script>
+        <variable>$db.parent</variable>
+      </binding>
+      <binding id="14">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getProperty('sys_contentid') </expression>
+        <id>-3461056995564443540</id>
+        <jexl-script id="15">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getProperty('sys_contentid') </parsed-text>
+          <script-text>$sys.item.getProperty('sys_contentid') </script-text>
+          <source-text>$sys.item.getProperty('sys_contentid') </source-text>
+        </jexl-script>
+        <variable>$row.CONTENT_ID</variable>
+      </binding>
+      <binding id="16">
+        <execution-order>0</execution-order>
+        <expression>$rx.pageutils.itemLink( $perc.getLinkContext(), $perc.getPage())</expression>
+        <id>-3461056995564443539</id>
+        <jexl-script id="17">
+          <compilable>false</compilable>
+          <parsed-text>$rx.pageutils.itemLink( $perc.getLinkContext(), $perc.getPage())</parsed-text>
+          <script-text>$rx.pageutils.itemLink( $perc.getLinkContext(), $perc.getPage())</script-text>
+          <source-text>$rx.pageutils.itemLink( $perc.getLinkContext(), $perc.getPage())</source-text>
+        </jexl-script>
+        <variable>$row.PATH</variable>
+      </binding>
+      <binding id="18">
+        <execution-order>0</execution-order>
+        <expression>$perc.getLinkContext().getSite().getName() </expression>
+        <id>-3461056995564443538</id>
+        <jexl-script id="19">
+          <compilable>false</compilable>
+          <parsed-text>$perc.getLinkContext().getSite().getName() </parsed-text>
+          <script-text>$perc.getLinkContext().getSite().getName() </script-text>
+          <source-text>$perc.getLinkContext().getSite().getName() </source-text>
+        </jexl-script>
+        <variable>$row.SITE_NAME</variable>
+      </binding>
+      <binding id="20">
+        <execution-order>0</execution-order>
+        <expression>$perc.page.linkTitle</expression>
+        <id>-3461056995564443537</id>
+        <jexl-script id="21">
+          <compilable>false</compilable>
+          <parsed-text>$perc.page.linkTitle</parsed-text>
+          <script-text>$perc.page.linkTitle</script-text>
+          <source-text>$perc.page.linkTitle</source-text>
+        </jexl-script>
+        <variable>$row.RESOURCE_LINK_TITLE</variable>
+      </binding>
+      <binding id="22">
+        <execution-order>0</execution-order>
+        <expression>$perc.page.summary</expression>
+        <id>-3461056995564443536</id>
+        <jexl-script id="23">
+          <compilable>false</compilable>
+          <parsed-text>$perc.page.summary</parsed-text>
+          <script-text>$perc.page.summary</script-text>
+          <source-text>$perc.page.summary</source-text>
+        </jexl-script>
+        <variable>$row.PAGE_SUMMARY</variable>
+      </binding>
+      <binding id="24">
+        <execution-order>0</execution-order>
+        <expression>'base64'</expression>
+        <id>-3461056995564443535</id>
+        <jexl-script id="25">
+          <compilable>false</compilable>
+          <parsed-text>'base64'</parsed-text>
+          <script-text>'base64'</script-text>
+          <source-text>'base64'</source-text>
+        </jexl-script>
+        <variable>$row.$encoding.PAGE_SUMMARY</variable>
+      </binding>
+      <binding id="26">
+        <execution-order>0</execution-order>
+        <expression>if ($sys.item.getProperty('rx:sys_contentpostdate').getDate() != null)   $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('rx:sys_contentpostdate').getDate())   </expression>
+        <id>-3461056995564443534</id>
+        <jexl-script id="27">
+          <compilable>false</compilable>
+          <parsed-text>if ($sys.item.getProperty('rx:sys_contentpostdate').getDate() != null)   $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('rx:sys_contentpostdate').getDate())   </parsed-text>
+          <script-text>if ($sys.item.getProperty('rx:sys_contentpostdate').getDate() != null)   $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('rx:sys_contentpostdate').getDate())   </script-text>
+          <source-text>if ($sys.item.getProperty('rx:sys_contentpostdate').getDate() != null)   $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('rx:sys_contentpostdate').getDate())   </source-text>
+        </jexl-script>
+        <variable>$row.CONTENT_POST_DATE</variable>
+      </binding>
+      <binding id="28">
+        <execution-order>0</execution-order>
+        <expression>if ($sys.item.getProperty('page_start_date').getDate() != null) $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('page_start_date').getDate())</expression>
+        <id>-3461056995564443533</id>
+        <jexl-script id="29">
+          <compilable>false</compilable>
+          <parsed-text>if ($sys.item.getProperty('page_start_date').getDate() != null) $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('page_start_date').getDate())</parsed-text>
+          <script-text>if ($sys.item.getProperty('page_start_date').getDate() != null) $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('page_start_date').getDate())</script-text>
+          <source-text>if ($sys.item.getProperty('page_start_date').getDate() != null) $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('page_start_date').getDate())</source-text>
+        </jexl-script>
+        <variable>$row.PAGE_START_DATE</variable>
+      </binding>
+      <binding id="30">
+        <execution-order>0</execution-order>
+        <expression>if ($sys.item.getProperty('page_end_date').getDate() != null) $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('page_end_date').getDate())</expression>
+        <id>-3461056995564443532</id>
+        <jexl-script id="31">
+          <compilable>false</compilable>
+          <parsed-text>if ($sys.item.getProperty('page_end_date').getDate() != null) $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('page_end_date').getDate())</parsed-text>
+          <script-text>if ($sys.item.getProperty('page_end_date').getDate() != null) $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('page_end_date').getDate())</script-text>
+          <source-text>if ($sys.item.getProperty('page_end_date').getDate() != null) $tools.date.format('yyyy-MM-dd HH:mm:ss', $sys.item.getProperty('page_end_date').getDate())</source-text>
+        </jexl-script>
+        <variable>$row.PAGE_END_DATE</variable>
+      </binding>
+      <binding id="32">
+        <execution-order>0</execution-order>
+        <expression>$perc.page.title</expression>
+        <id>-3461056995564443531</id>
+        <jexl-script id="33">
+          <compilable>false</compilable>
+          <parsed-text>$perc.page.title</parsed-text>
+          <script-text>$perc.page.title</script-text>
+          <source-text>$perc.page.title</source-text>
+        </jexl-script>
+        <variable>$row.PAGE_TITLE</variable>
+      </binding>
+      <binding id="34">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getProperty('page_description').String</expression>
+        <id>-3461056995564443530</id>
+        <jexl-script id="35">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getProperty('page_description').String</parsed-text>
+          <script-text>$sys.item.getProperty('page_description').String</script-text>
+          <source-text>$sys.item.getProperty('page_description').String</source-text>
+        </jexl-script>
+        <variable>$row.PAGE_DESCRIPTION</variable>
+      </binding>
+      <binding id="36">
+        <execution-order>0</execution-order>
+        <expression>'base64'</expression>
+        <id>-3461056995564443529</id>
+        <jexl-script id="37">
+          <compilable>false</compilable>
+          <parsed-text>'base64'</parsed-text>
+          <script-text>'base64'</script-text>
+          <source-text>'base64'</source-text>
+        </jexl-script>
+        <variable>$row.$encoding.PAGE_DESCRIPTION</variable>
+      </binding>
+      <binding id="38">
+        <execution-order>0</execution-order>
+        <expression>$perc.page.additionalHeadContent</expression>
+        <id>-3461056995564443528</id>
+        <jexl-script id="39">
+          <compilable>false</compilable>
+          <parsed-text>$perc.page.additionalHeadContent</parsed-text>
+          <script-text>$perc.page.additionalHeadContent</script-text>
+          <source-text>$perc.page.additionalHeadContent</source-text>
+        </jexl-script>
+        <variable>$row.ADDITIONAL_HEAD_CONTENT</variable>
+      </binding>
+      <binding id="40">
+        <execution-order>0</execution-order>
+        <expression>'base64'</expression>
+        <id>-3461056995564443527</id>
+        <jexl-script id="41">
+          <compilable>false</compilable>
+          <parsed-text>'base64'</parsed-text>
+          <script-text>'base64'</script-text>
+          <source-text>'base64'</source-text>
+        </jexl-script>
+        <variable>$row.$encoding.ADDITIONAL_HEAD_CONTENT</variable>
+      </binding>
+      <binding id="42">
+        <execution-order>0</execution-order>
+        <expression>$perc.page.afterBodyStartContent</expression>
+        <id>-3461056995564443526</id>
+        <jexl-script id="43">
+          <compilable>false</compilable>
+          <parsed-text>$perc.page.afterBodyStartContent</parsed-text>
+          <script-text>$perc.page.afterBodyStartContent</script-text>
+          <source-text>$perc.page.afterBodyStartContent</source-text>
+        </jexl-script>
+        <variable>$row.CODE_INSERT_AFTER_BODY_START</variable>
+      </binding>
+      <binding id="44">
+        <execution-order>0</execution-order>
+        <expression>'base64'</expression>
+        <id>-3461056995564443525</id>
+        <jexl-script id="45">
+          <compilable>false</compilable>
+          <parsed-text>'base64'</parsed-text>
+          <script-text>'base64'</script-text>
+          <source-text>'base64'</source-text>
+        </jexl-script>
+        <variable>$row.$encoding.CODE_INSERT_AFTER_BODY_START</variable>
+      </binding>
+      <binding id="46">
+        <execution-order>0</execution-order>
+        <expression>$perc.page.beforeBodyCloseContent</expression>
+        <id>-3461056995564443524</id>
+        <jexl-script id="47">
+          <compilable>false</compilable>
+          <parsed-text>$perc.page.beforeBodyCloseContent</parsed-text>
+          <script-text>$perc.page.beforeBodyCloseContent</script-text>
+          <source-text>$perc.page.beforeBodyCloseContent</source-text>
+        </jexl-script>
+        <variable>$row.CODE_INSERT_BEFORE_BODY_CLOSE</variable>
+      </binding>
+      <binding id="48">
+        <execution-order>0</execution-order>
+        <expression>'base64'</expression>
+        <id>-3461056995564443523</id>
+        <jexl-script id="49">
+          <compilable>false</compilable>
+          <parsed-text>'base64'</parsed-text>
+          <script-text>'base64'</script-text>
+          <source-text>'base64'</source-text>
+        </jexl-script>
+        <variable>$row.$encoding.CODE_INSERT_BEFORE_BODY_CLOSE</variable>
+      </binding>
+      <binding id="50">
+        <execution-order>0</execution-order>
+        <expression>$rx.pageutils.findWorkflow($perc.page.workflowId).getName()</expression>
+        <id>-3461056995564443522</id>
+        <jexl-script id="51">
+          <compilable>false</compilable>
+          <parsed-text>$rx.pageutils.findWorkflow($perc.page.workflowId).getName()</parsed-text>
+          <script-text>$rx.pageutils.findWorkflow($perc.page.workflowId).getName()</script-text>
+          <source-text>$rx.pageutils.findWorkflow($perc.page.workflowId).getName()</source-text>
+        </jexl-script>
+        <variable>$row.WORKFLOW</variable>
+      </binding>
+      <binding id="52">
+        <execution-order>0</execution-order>
+        <expression>$perc.template.name</expression>
+        <id>-3461056995564443521</id>
+        <jexl-script id="53">
+          <compilable>false</compilable>
+          <parsed-text>$perc.template.name</parsed-text>
+          <script-text>$perc.template.name</script-text>
+          <source-text>$perc.template.name</source-text>
+        </jexl-script>
+        <variable>$row.TEMPLATE_NAME</variable>
+      </binding>
+      <binding id="54">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getProperty('page_noindex')</expression>
+        <id>-3461056995564443520</id>
+        <jexl-script id="55">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getProperty('page_noindex')</parsed-text>
+          <script-text>$sys.item.getProperty('page_noindex')</script-text>
+          <source-text>$sys.item.getProperty('page_noindex')</source-text>
+        </jexl-script>
+        <variable>$row.PAGE_NOINDEX</variable>
+      </binding>
+      <binding id="56">
+        <execution-order>0</execution-order>
+        <expression>'PERC_EXPORT_PAGE_TAG'</expression>
+        <id>-3461056995564443519</id>
+        <jexl-script id="57">
+          <compilable>false</compilable>
+          <parsed-text>'PERC_EXPORT_PAGE_TAG'</parsed-text>
+          <script-text>'PERC_EXPORT_PAGE_TAG'</script-text>
+          <source-text>'PERC_EXPORT_PAGE_TAG'</source-text>
+        </jexl-script>
+        <variable>$db.child[0]</variable>
+      </binding>
+      <binding id="58">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getProperty('rx:sys_contentid') </expression>
+        <id>-3461056995564443518</id>
+        <jexl-script id="59">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getProperty('rx:sys_contentid') </parsed-text>
+          <script-text>$sys.item.getProperty('rx:sys_contentid') </script-text>
+          <source-text>$sys.item.getProperty('rx:sys_contentid') </source-text>
+        </jexl-script>
+        <variable>$child[0].CONTENT_ID</variable>
+      </binding>
+      <binding id="60">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getPropertyStringValues('page_tags') </expression>
+        <id>-3461056995564443517</id>
+        <jexl-script id="61">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getPropertyStringValues('page_tags') </parsed-text>
+          <script-text>$sys.item.getPropertyStringValues('page_tags') </script-text>
+          <source-text>$sys.item.getPropertyStringValues('page_tags') </source-text>
+        </jexl-script>
+        <variable>$child[0].TAG</variable>
+      </binding>
+      <binding id="62">
+        <execution-order>0</execution-order>
+        <expression>'PERC_EXPORT_PAGE_WIDGET'</expression>
+        <id>-3461056995564443516</id>
+        <jexl-script id="63">
+          <compilable>false</compilable>
+          <parsed-text>'PERC_EXPORT_PAGE_WIDGET'</parsed-text>
+          <script-text>'PERC_EXPORT_PAGE_WIDGET'</script-text>
+          <source-text>'PERC_EXPORT_PAGE_WIDGET'</source-text>
+        </jexl-script>
+        <variable>$db.child[1]</variable>
+      </binding>
+      <binding id="64">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getProperty('rx:sys_contentid') </expression>
+        <id>-3461056995564443515</id>
+        <jexl-script id="65">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getProperty('rx:sys_contentid') </parsed-text>
+          <script-text>$sys.item.getProperty('rx:sys_contentid') </script-text>
+          <source-text>$sys.item.getProperty('rx:sys_contentid') </source-text>
+        </jexl-script>
+        <variable>$child[1].CONTENT_ID</variable>
+      </binding>
+      <binding id="66">
+        <execution-order>0</execution-order>
+        <expression>$perc.getRenderResult().getWidgetIds()</expression>
+        <id>-3461056995564443514</id>
+        <jexl-script id="67">
+          <compilable>false</compilable>
+          <parsed-text>$perc.getRenderResult().getWidgetIds()</parsed-text>
+          <script-text>$perc.getRenderResult().getWidgetIds()</script-text>
+          <source-text>$perc.getRenderResult().getWidgetIds()</source-text>
+        </jexl-script>
+        <variable>$child[1].WIDGET_ID</variable>
+      </binding>
+      <binding id="68">
+        <execution-order>0</execution-order>
+        <expression>$perc.getRenderResult().getWidgetNames()</expression>
+        <id>-3461056995564443513</id>
+        <jexl-script id="69">
+          <compilable>false</compilable>
+          <parsed-text>$perc.getRenderResult().getWidgetNames()</parsed-text>
+          <script-text>$perc.getRenderResult().getWidgetNames()</script-text>
+          <source-text>$perc.getRenderResult().getWidgetNames()</source-text>
+        </jexl-script>
+        <variable>$child[1].WIDGET_NAME</variable>
+      </binding>
+      <binding id="70">
+        <execution-order>0</execution-order>
+        <expression>$perc.getRenderResult().getWidgetTypes() </expression>
+        <id>-3461056995564443512</id>
+        <jexl-script id="71">
+          <compilable>false</compilable>
+          <parsed-text>$perc.getRenderResult().getWidgetTypes() </parsed-text>
+          <script-text>$perc.getRenderResult().getWidgetTypes() </script-text>
+          <source-text>$perc.getRenderResult().getWidgetTypes() </source-text>
+        </jexl-script>
+        <variable>$child[1].WIDGET_TYPE</variable>
+      </binding>
+      <binding id="72">
+        <execution-order>0</execution-order>
+        <expression>$perc.getRenderResult().getRegionIds()</expression>
+        <id>-3461056995564443511</id>
+        <jexl-script id="73">
+          <compilable>false</compilable>
+          <parsed-text>$perc.getRenderResult().getRegionIds()</parsed-text>
+          <script-text>$perc.getRenderResult().getRegionIds()</script-text>
+          <source-text>$perc.getRenderResult().getRegionIds()</source-text>
+        </jexl-script>
+        <variable>$child[1].REGION_ID</variable>
+      </binding>
+      <binding id="74">
+        <execution-order>0</execution-order>
+        <expression>$perc.getRenderResult().getWidgetContents()</expression>
+        <id>-3461056995564443510</id>
+        <jexl-script id="75">
+          <compilable>false</compilable>
+          <parsed-text>$perc.getRenderResult().getWidgetContents()</parsed-text>
+          <script-text>$perc.getRenderResult().getWidgetContents()</script-text>
+          <source-text>$perc.getRenderResult().getWidgetContents()</source-text>
+        </jexl-script>
+        <variable>$child[1].WIDGET_CONTENT</variable>
+      </binding>
+      <binding id="76">
+        <execution-order>0</execution-order>
+        <expression>'base64'</expression>
+        <id>-3461056995564443509</id>
+        <jexl-script id="77">
+          <compilable>false</compilable>
+          <parsed-text>'base64'</parsed-text>
+          <script-text>'base64'</script-text>
+          <source-text>'base64'</source-text>
+        </jexl-script>
+        <variable>$child[1].$encoding.WIDGET_CONTENT</variable>
+      </binding>
+      <binding id="78">
+        <execution-order>0</execution-order>
+        <expression>'PERC_EXPORT_PAGE_CATEGORY'</expression>
+        <id>-3461056995564443508</id>
+        <jexl-script id="79">
+          <compilable>false</compilable>
+          <parsed-text>'PERC_EXPORT_PAGE_CATEGORY'</parsed-text>
+          <script-text>'PERC_EXPORT_PAGE_CATEGORY'</script-text>
+          <source-text>'PERC_EXPORT_PAGE_CATEGORY'</source-text>
+        </jexl-script>
+        <variable>$db.child[2]</variable>
+      </binding>
+      <binding id="80">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getProperty('rx:sys_contentid') </expression>
+        <id>-3461056995564443507</id>
+        <jexl-script id="81">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getProperty('rx:sys_contentid') </parsed-text>
+          <script-text>$sys.item.getProperty('rx:sys_contentid') </script-text>
+          <source-text>$sys.item.getProperty('rx:sys_contentid') </source-text>
+        </jexl-script>
+        <variable>$child[2].CONTENT_ID</variable>
+      </binding>
+      <binding id="82">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getProperty('page_categories_tree').getValues()</expression>
+        <id>-3461056995564443506</id>
+        <jexl-script id="83">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getProperty('page_categories_tree').getValues()</parsed-text>
+          <script-text>$sys.item.getProperty('page_categories_tree').getValues()</script-text>
+          <source-text>$sys.item.getProperty('page_categories_tree').getValues()</source-text>
+        </jexl-script>
+        <variable>$child[2].CATEGORY</variable>
+      </binding>
+      <binding id="84">
+        <execution-order>0</execution-order>
+        <expression>'PERC_EXPORT_PAGE_CALENDAR'</expression>
+        <id>-3461056995564443505</id>
+        <jexl-script id="85">
+          <compilable>false</compilable>
+          <parsed-text>'PERC_EXPORT_PAGE_CALENDAR'</parsed-text>
+          <script-text>'PERC_EXPORT_PAGE_CALENDAR'</script-text>
+          <source-text>'PERC_EXPORT_PAGE_CALENDAR'</source-text>
+        </jexl-script>
+        <variable>$db.child[3]</variable>
+      </binding>
+      <binding id="86">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getProperty('rx:sys_contentid') </expression>
+        <id>-3461056995564443504</id>
+        <jexl-script id="87">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getProperty('rx:sys_contentid') </parsed-text>
+          <script-text>$sys.item.getProperty('rx:sys_contentid') </script-text>
+          <source-text>$sys.item.getProperty('rx:sys_contentid') </source-text>
+        </jexl-script>
+        <variable>$child[3].CONTENT_ID</variable>
+      </binding>
+      <binding id="88">
+        <execution-order>0</execution-order>
+        <expression>$sys.item.getProperty('page_calendar').getValues()</expression>
+        <id>-3461056995564443503</id>
+        <jexl-script id="89">
+          <compilable>false</compilable>
+          <parsed-text>$sys.item.getProperty('page_calendar').getValues()</parsed-text>
+          <script-text>$sys.item.getProperty('page_calendar').getValues()</script-text>
+          <source-text>$sys.item.getProperty('page_calendar').getValues()</source-text>
+        </jexl-script>
+        <variable>$child[3].CALENDAR</variable>
+      </binding>
+    </bindings>
+    <template-slot-ids/>
+    <guid>0-4-604</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/pageDatabaseAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description/>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>perc.title</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/html</mime-type>
+    <name>perc.pageDatabase</name>
+    <output-format>Snippet</output-format>
+    <publish-when>Never</publish-when>
+    <style-sheet-path/>
+    <template>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;tabledefset&gt;
+   &lt;tabledef allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="PERC_EXPORT_PAGE"&gt;
+      &lt;rowdef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CONTENT_ID"&gt;
+            &lt;jdbctype&gt;INTEGER&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;no&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="PATH"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;2000&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="SITE_NAME"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;255&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="RESOURCE_LINK_TITLE"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;512&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="PAGE_SUMMARY"&gt;
+            &lt;jdbctype&gt;CLOB&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CONTENT_POST_DATE"&gt;
+            &lt;jdbctype&gt;TIMESTAMP&lt;/jdbctype&gt;
+            &lt;size/&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="PAGE_START_DATE"&gt;
+            &lt;jdbctype&gt;TIMESTAMP&lt;/jdbctype&gt;
+            &lt;size/&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="PAGE_END_DATE"&gt;
+            &lt;jdbctype&gt;TIMESTAMP&lt;/jdbctype&gt;
+            &lt;size/&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="PAGE_TITLE"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;512&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="PAGE_DESCRIPTION"&gt;
+            &lt;jdbctype&gt;CLOB&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="ADDITIONAL_HEAD_CONTENT"&gt;
+            &lt;jdbctype&gt;CLOB&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CODE_INSERT_AFTER_BODY_START"&gt;
+            &lt;jdbctype&gt;CLOB&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CODE_INSERT_BEFORE_BODY_CLOSE"&gt;
+            &lt;jdbctype&gt;CLOB&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="WORKFLOW"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;50&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="TEMPLATE_NAME"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;255&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="PAGE_NOINDEX"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;50&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+      &lt;/rowdef&gt;
+      &lt;primarykey action="c"&gt;
+         &lt;name&gt;CONTENT_ID&lt;/name&gt;
+      &lt;/primarykey&gt;
+   &lt;/tabledef&gt;
+   &lt;tabledef allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="PERC_EXPORT_PAGE_TAG"&gt;
+      &lt;rowdef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CONTENT_ID"&gt;
+            &lt;jdbctype&gt;INTEGER&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;no&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="TAG"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;255&lt;/size&gt;
+            &lt;allowsnull&gt;no&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+      &lt;/rowdef&gt;
+      &lt;primarykey action="c"&gt;
+         &lt;name&gt;CONTENT_ID&lt;/name&gt;
+         &lt;name&gt;TAG&lt;/name&gt;
+      &lt;/primarykey&gt;
+      &lt;foreignkey action="c"&gt;
+         &lt;fkColumn&gt;
+            &lt;name&gt;CONTENT_ID&lt;/name&gt;
+            &lt;externalTable&gt;PERC_EXPORT_PAGE&lt;/externalTable&gt;
+            &lt;externalColumn&gt;CONTENT_ID&lt;/externalColumn&gt;
+         &lt;/fkColumn&gt;
+      &lt;/foreignkey&gt;
+   &lt;/tabledef&gt;
+   &lt;tabledef allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="PERC_EXPORT_PAGE_CATEGORY"&gt;
+      &lt;rowdef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CONTENT_ID"&gt;
+            &lt;jdbctype&gt;INTEGER&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;no&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CATEGORY"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;255&lt;/size&gt;
+            &lt;allowsnull&gt;no&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+      &lt;/rowdef&gt;
+      &lt;primarykey action="c"&gt;
+         &lt;name&gt;CONTENT_ID&lt;/name&gt;
+         &lt;name&gt;CATEGORY&lt;/name&gt;
+      &lt;/primarykey&gt;
+      &lt;foreignkey action="c"&gt;
+         &lt;fkColumn&gt;
+            &lt;name&gt;CONTENT_ID&lt;/name&gt;
+            &lt;externalTable&gt;PERC_EXPORT_PAGE&lt;/externalTable&gt;
+            &lt;externalColumn&gt;CONTENT_ID&lt;/externalColumn&gt;
+         &lt;/fkColumn&gt;
+      &lt;/foreignkey&gt;
+   &lt;/tabledef&gt;
+   &lt;tabledef allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="PERC_EXPORT_PAGE_CALENDAR"&gt;
+      &lt;rowdef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CONTENT_ID"&gt;
+            &lt;jdbctype&gt;INTEGER&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;no&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CALENDAR"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;255&lt;/size&gt;
+            &lt;allowsnull&gt;no&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+      &lt;/rowdef&gt;
+      &lt;primarykey action="c"&gt;
+         &lt;name&gt;CONTENT_ID&lt;/name&gt;
+         &lt;name&gt;CALENDAR&lt;/name&gt;
+      &lt;/primarykey&gt;
+      &lt;foreignkey action="c"&gt;
+         &lt;fkColumn&gt;
+            &lt;name&gt;CONTENT_ID&lt;/name&gt;
+            &lt;externalTable&gt;PERC_EXPORT_PAGE&lt;/externalTable&gt;
+            &lt;externalColumn&gt;CONTENT_ID&lt;/externalColumn&gt;
+         &lt;/fkColumn&gt;
+      &lt;/foreignkey&gt;
+   &lt;/tabledef&gt;
+   &lt;tabledef allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="PERC_EXPORT_PAGE_WIDGET"&gt;
+      &lt;rowdef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="CONTENT_ID"&gt;
+            &lt;jdbctype&gt;INTEGER&lt;/jdbctype&gt;
+            &lt;allowsnull&gt;no&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="WIDGET_ID"&gt;
+            &lt;jdbctype&gt;BIGINT&lt;/jdbctype&gt;
+            &lt;size/&gt;
+            &lt;allowsnull&gt;no&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="WIDGET_NAME"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;255&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="WIDGET_TYPE"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;255&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="REGION_ID"&gt;
+            &lt;jdbctype&gt;VARCHAR&lt;/jdbctype&gt;
+            &lt;size&gt;255&lt;/size&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+         &lt;columndef action="c" limitSizeForIndex="n" name="WIDGET_CONTENT"&gt;
+            &lt;jdbctype&gt;CLOB&lt;/jdbctype&gt;
+            &lt;size/&gt;
+            &lt;allowsnull&gt;yes&lt;/allowsnull&gt;
+         &lt;/columndef&gt;
+      &lt;/rowdef&gt;
+      &lt;primarykey action="c"&gt;
+         &lt;name&gt;CONTENT_ID&lt;/name&gt;
+         &lt;name&gt;WIDGET_ID&lt;/name&gt;
+      &lt;/primarykey&gt;     
+      &lt;foreignkey action="c"&gt;
+         &lt;fkColumn&gt;
+            &lt;name&gt;CONTENT_ID&lt;/name&gt;
+            &lt;externalTable&gt;PERC_EXPORT_PAGE&lt;/externalTable&gt;
+            &lt;externalColumn&gt;CONTENT_ID&lt;/externalColumn&gt;
+         &lt;/fkColumn&gt;
+      &lt;/foreignkey&gt;
+   &lt;/tabledef&gt;      
+&lt;/tabledefset&gt;
+</template>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

@@ -1,0 +1,789 @@
+<?xml version="1.0"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE project [
+        <!ENTITY commonJS SYSTEM "commonJS.xml">
+        <!ENTITY commonCSS SYSTEM "commonCSS.xml">
+        <!ENTITY finderJS SYSTEM "finderJS.xml">
+        ]>
+<project name="project" default="webuiwar" basedir=".">
+    <!-- Pull in the environment variables -->
+    <property environment="env"/>
+    <property name="toolsdir" location="../system/Tools"/>
+    <property name="mainbuilddir" location="../system/build/lib"/>
+    <property name="wardir" location="war"/>
+    <property name="war.source.dir" location="${basedir}/war"/>
+    <property name="war.cui.source.dir" location="../cui"/>
+    <property name="build.dir" location="${basedir}/build"/>
+    <property name="source.dir" location="${basedir}/src"/>
+    <property name="servlets.source.dir" location="${source.dir}/com/percussion/webui/gadget/servlets"/>
+    <property name="lib.dir" location="${basedir}/lib"/>
+    <property name="dist.dir" location="${build.dir}/dist"/>
+    <property name="war.js.min.dest" location="${war.source.dir}/jslibMin"/>
+    <property name="war.css.min.dest" location="${war.source.dir}/cssMin"/>
+    <property name="build.temp.dir" location="${build.dir}/temp"/>
+    <property name="webuiappname" value="cm"/>
+    <property name="warname" value="${webuiappname}.war"/>
+    <property name="appdir" location="${basedir}/build/dist/${webuiappname}war"/>
+    <property name="deploydir" location="${install.dir}/cm"/>
+    <property name="jspdeploydir" location="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/cm/jsp"/>
+    <property name="jspsrcdir" location="${war.source.dir}/jsp"/>
+    <property name="thirdparty.tools.base" location="${env.THIRD_PARTY_TOOLS_BASE}"/>
+    <!-- Shindig 1.1 Source Code Base Directory Under Thirdparty -->
+    <property name="shindigdir" location="${thirdparty.tools.base}/shindig-1.1"/>
+    <!-- urlrewriter 3.0.2 Source Code Base Directory Under Thirdparty -->
+    <property name="urlrewriterdir" location="${thirdparty.tools.base}/urlrewriter-3.0.2"/>
+    <target name="clean">
+        <delete dir="${basedir}/build" quiet="true"/>
+        <delete dir="${war.js.min.dest}" quiet="true"/>
+        <delete dir="${war.css.min.dest}" quiet="true"/>
+    </target>
+    <target name="init">
+        <mkdir dir="${appdir}"/>
+        <mkdir dir="${build.temp.dir}"/>
+        <mkdir dir="${war.js.min.dest}"/>
+        <mkdir dir="${war.css.min.dest}"/>
+        <mkdir dir="${war.css.min.dest}/images"/>
+    </target>
+    <target name="webuiwar" depends="clean, init, package, minify">
+        <!-- copy the cui files to WebUi/war folder so that it gets picked up by the war -->
+        <copy toDir="${war.source.dir}/cui">
+            <fileset dir="${war.cui.source.dir}">
+                <exclude name="**/components/jasmine/**"/>
+                <exclude name="**/components/jasmine-jquery/**"/>
+                <exclude name="**/test/**"/>
+                <exclude name="**/node_modules/**"/>
+            </fileset>
+        </copy>
+        <war destfile="${appdir}/${warname}" webxml="${wardir}/WEB-INF/web.xml">
+            <webinf dir="${war.source.dir}/WEB-INF" includes="*.tld,urlrewrite.xml"/>
+            <fileset dir="${war.source.dir}">
+                <include name="**/*.*"/>
+                <exclude name="test/*.*"/>
+                <exclude name="mock/*.*"/>
+                <exclude name="WEB-INF/*.*"/>
+            </fileset>
+            <lib dir="${mainbuilddir}" includes="pssso.jar"/>
+            <lib dir="${mainbuilddir}" includes="rxclient.jar"/>
+            <lib dir="${mainbuilddir}" includes="rxutils.jar"/>
+            <lib dir="${dist.dir}" includes="*.jar"/>
+            <lib dir="${urlrewriterdir}/lib" includes="urlrewrite-3.2.0.jar"/>
+
+            <!-- Shindig files from Thirdparty Tools Directory. -->
+            <webinf dir="${shindigdir}/WEB-INF">
+                <exclude name="web.xml"/>
+                <exclude name="web.*.xml"/>
+                <exclude name="lib/commons-betwixt-0.8.jar"/>
+                <exclude name="classes/META-INF/**"/>
+                <exclude name="classes/gadgets/**"/>
+                <exclude name="classes/containers/**"/>
+                <exclude name="classes/shindig.properties"/>
+                <exclude name="authorize.jsp"/>
+            </webinf>
+        </war>
+    </target>
+    <target name="copywar" depends="webuiwar">
+        <fail unless="install.dir"/>
+        <mkdir dir="${deploydir}/${warname}"/>
+        <unzip src="${appdir}/${warname}" dest="${deploydir}"/>
+        <copy toDir="${jspdeploydir}">
+            <fileset dir="${jspsrcdir}">
+                <include name="**/*.*"/>
+                <include name="**/**/*.*"/>
+            </fileset>
+        </copy>
+        <mkdir dir="${install.dir}/web_resources/cm"/>
+        <unzip src="${appdir}/${warname}" dest="${install.dir}/web_resources/cm">
+            <patternset>
+                <include name="themes/"/>
+                <include name="css/"/>
+                <include name="jslib/"/>
+                <include name="jslibMin/"/>
+            </patternset>
+        </unzip>
+    </target>
+    <!-- Allows easy copy of war files from source control to an install for testing.
+         source.dir and install.dir must be defined for this target to work.
+        Does not copy in any jarfiles coming from the main build. 
+    -->
+    <target name="copywarfiles">
+        <fail unless="install.dir"/>
+        <mkdir dir="${deploydir}/cm.war"/>
+        <copy toDir="${deploydir}/cm.war">
+            <fileset dir="${war.source.dir}">
+                <include name="**/*.*"/>
+                <include name="**/**/*.*"/>
+            </fileset>
+        </copy>
+        <copy toDir="${deploydir}/cm.war/WEB-INF/lib">
+            <fileset dir="${dist.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        <mkdir dir="${install.dir}/web_resources/cm"/>
+        <copy toDir="${install.dir}/web_resources/cm">
+            <fileset dir="${war.source.dir}">
+                <include name="themes/**"/>
+                <include name="css/**"/>
+                <include name="jslib/**"/>
+                <include name="jslibMin/**"/>
+            </fileset>
+        </copy>
+
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}/classes"/>
+        <javac debug="${DEBUG}" debuglevel="vars,lines,source" srcdir="${source.dir}" destdir="${build.dir}/classes"
+               fork="true" source="1.8">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${thirdparty.tools.base}/shindig-1.1/WEB-INF/lib">
+                    <include name="google-collections-1.0-rc2.jar"/>
+                    <include name="shindig-common-1.1-BETA3-incubating-SNAPSHOT.jar"/>
+                    <include name="shindig-features-1.1-BETA3-incubating-SNAPSHOT.jar"/>
+                    <include name="shindig-gadgets-1.1-BETA3-incubating-SNAPSHOT.jar"/>
+                </fileset>
+                <fileset dir="${mainbuilddir}" includes="rxclient.jar"/>
+                <fileset dir="${mainbuilddir}" includes="rxutils.jar"/>
+            	<fileset dir="${mainbuilddir}" includes="rxi18n.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="package" depends="compile">
+        <jar destfile="${dist.dir}/pstmxtags.jar">
+            <fileset dir="${build.dir}/classes">
+                <include name="com/percussion/webui/tags/**"/>
+            </fileset>
+        </jar>
+        <copy toDir="${build.dir}/classes/com/percussion/webui/gadget/servlets">
+            <fileset dir="${servlets.source.dir}">
+                <include name="GadgetRegistry.xml"/>
+            </fileset>
+        </copy>
+        <jar destfile="${dist.dir}/psgadgetsupport.jar">
+            <fileset dir="${build.dir}/classes">
+                <include name="com/percussion/webui/gadget/**"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <!-- Concatinate and minify the javascript and css -->
+    <target name="minify" depends="init">
+        <property name="compressor.jar"
+                  location="${thirdparty.tools.base}/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar"/>
+        <echo>${thirdparty.tools.base}</echo>
+        <path id="task.classpath">
+            <pathelement
+                    location="${thirdparty.tools.base}/yui-compressor-ant-task-0.4/bin/yui-compressor-ant-task-0.4.jar"/>
+            <pathelement location="${compressor.jar}"/>
+        </path>
+
+        <!-- yui-compressor task definition -->
+        <taskdef name="yui-compressor" classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
+            <classpath refid="task.classpath"/>
+        </taskdef>
+
+        <macrodef name="yui-compress">
+            <attribute name="in"/>
+            <attribute name="out"/>
+            <sequential>
+                <echo>Compressing file @{in} with YUI Compressor</echo>
+                <java fork="true" failonerror="true" maxmemory="256m" jar="${compressor.jar}">
+                    <arg value="@{in}"/>
+                    <arg value="-o"/>
+                    <arg value="@{out}"/>
+                	<arg value="--preserve-semi" />
+                	<arg value="--nomunge" />
+                	<arg value="--disable-optimizations" />
+                </java>
+            </sequential>
+        </macrodef>
+    	
+        <!-- Concatenate "Dashboard" JavaScript -->
+        <echo>Concatenating file ${war.js.min.dest}/perc_dashboard.packed.js</echo>
+        <concat destfile="${war.js.min.dest}/perc_dashboard.packed.js" force="yes" encoding="UTF-8" eol="lf">
+            <!-- explicitly order js concat because ordering matters here -->
+            &commonJS;
+            &finderJS;
+            <fileset dir="${war.source.dir}" includes="jslib/Jeditable.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/PSJSUtils.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.dynatree.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercAutoScroll.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercDashboard.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercServiceUtils.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercSiteService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercFormService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercCookieConsentService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercPathService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercMetadataService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercDashboardService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercActivityService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercReusableSearchService.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercWizard/PercWizard.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_ChangePwDialog.js"/>
+        </concat>
+
+        <!-- Concatenate "Dashboard" CSS -->
+        <echo>Concatenating file ${war.css.min.dest}/perc_dashboard.packed.css</echo>
+        <concat destfile="${war.css.min.dest}/perc_dashboard.packed.css" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            &commonCSS;
+            <fileset dir="${war.source.dir}" includes="css/perc_mcol.css"/>
+            <fileset dir="${war.source.dir}" includes="css/styles.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_newsitedialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_new_page_button.css"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercWizard/PercWizard.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_ChangePw.css"/>
+        </concat>
+
+        <!-- Concatenate "Architecture" JavaScript -->
+        <echo>Concatenating file ${war.js.min.dest}/perc_architecture.packed.js</echo>
+        <concat destfile="${war.js.min.dest}/perc_architecture.packed.js" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            <!-- explicitly order js concat because ordering matters here -->
+            &commonJS;
+            &finderJS;
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.dynatree.js"/>
+            <fileset dir="${war.source.dir}" includes="services/perc_sectionServiceClient.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercSiteService.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercEditSectionLinksDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercSectionTreeDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercCopySiteDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercFolderService.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_newSectionDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_editSectionDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_editSiteSectionDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_site_map.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_save_as.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_ChangePwDialog.js" />
+        </concat>
+
+        <!-- Concatenate "Architecture" CSS -->
+        <echo>Concatenating file ${war.css.min.dest}/perc_architecture.packed.css</echo>
+        <concat destfile="${war.css.min.dest}/perc_architecture.packed.css" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            &commonCSS;
+            <fileset dir="${war.source.dir}" includes="css/perc_mcol.css"/>
+            <fileset dir="${war.source.dir}" includes="css/styles.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_site_map.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_newSectionDialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_newsitedialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_new_page_button.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_save_as_dialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_ChangePw.css" />
+        </concat>
+
+        <!-- Concatenate "Web Mgt" JavaScript -->
+        <echo>Concatenating file ${war.js.min.dest}/perc_webmgt.packed.js</echo>
+        <concat destfile="${war.js.min.dest}/perc_webmgt.packed.js" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            <!-- explicitly order js concat because ordering matters here -->
+            &commonJS;
+            <fileset dir="${war.source.dir}" includes="widgets/PercSimpleMenu/PercSimpleMenu.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercPageDataTable/PercPageDataTable.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercActionDataTable/PercActionDataTable.js"/>
+            
+
+            <!-- AutoScrolling capabilities plugin -->
+            <fileset dir="${war.source.dir}" includes="widgets/PercAutoScroll.js"/>
+
+            <!-- Services -->
+			<fileset dir="${war.source.dir}" includes="services/perc_sectionServiceClient.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercPathService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercAssetService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercItemPublisherService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercWorkflowService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercRevisionService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercFolderService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercSiteImpactService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercUtilService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercLicenseService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercReusableSearchService.js"/>
+
+            <!-- Adapters -->
+            <!-- Controllers -->
+            <fileset dir="${war.source.dir}" includes="controllers/PercCSSController.js"/>
+
+            <!-- Views -->
+            <fileset dir="${war.source.dir}" includes="views/PercNewAssetDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercCSSPreviewView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercChangeTemplateDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercSiteImpactView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercEditRegionPropertiesDialog.js"/>
+
+            <fileset dir="${war.source.dir}" includes="jslib/ajaxfileupload.js"/>
+
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.xmldom-1.0.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_page_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_asset_edit_dialog.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_page_edit_dialog.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_save_as.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_save_as_shared_asset_dialog.js"/>
+            &finderJS;
+            <fileset dir="${war.source.dir}" includes="widgets/perc_widget_library.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_contentEditDecorate.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_content_viewer.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_web_management.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.jmodal.js"/>
+            <fileset dir="${war.source.dir}" includes="classes/perc_page_class.js"/>
+            <fileset dir="${war.source.dir}" includes="classes/perc_template_layout_class.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_layout_helper.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_template_layout_widget.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_layout_controller.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.dynatree.js"/>
+
+            <!-- Jason's Refactoring { -->
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_manager.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_page_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="models/PercTemplateModel.js"/>
+            <fileset dir="${war.source.dir}" includes="models/PercPageModel.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercTemplateService.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercLayoutController.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercSizeController.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercDecorationController.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercLayoutView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercInspectionToolHandler.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercContentView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/widgetPropertiesDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.dataTables.js"/>
+
+            <fileset dir="${war.source.dir}" includes="plugins/PercContentEditorHandlers.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercRevisionDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercScheduleDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercCommentsDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercPublishingHistoryDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercPageOptimizerService.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercPageOptimizerDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercContributorUiAdaptor.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercBlogService.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_ChangePwDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercIFrameView.js"/>
+            <!-- } -->
+        </concat>
+
+        <!-- Concatenate "Web Mgt" CSS -->
+        <echo>Concatenating file ${war.css.min.dest}/perc_webmgt.packed.css</echo>
+        <concat destfile="${war.css.min.dest}/perc_webmgt.packed.css" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            &commonCSS;
+
+            <fileset dir="${war.source.dir}" includes="css/perc_default.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_mcol.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_widget_library.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_viewport.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_page_editor.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_collapsible.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_save_as_dialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_newsitedialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_new_page_button.css"/>
+            <fileset dir="${war.source.dir}" includes="css/jquery.jmodal.css"/>
+            <fileset dir="${war.source.dir}" includes="css/styles.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_template_layout.css"/>
+            <fileset dir="${war.source.dir}" includes="css/PercCommentsDialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/PercPageOptimizerDialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_ChangePw.css"/>
+        </concat>
+
+        <!-- Concatenate "Publish" JavaScript -->
+        <echo>Concatenating file ${war.js.min.dest}/perc_publish.packed.js</echo>
+        <concat destfile="${war.js.min.dest}/perc_publish.packed.js" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            <!-- explicitly order js concat because ordering matters here -->
+            &commonJS;
+            <!-- Create Template -->
+            <fileset dir="${war.source.dir}" includes="jslib/json.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercDataList.js"/>
+            <fileset dir="${war.source.dir}" includes="classes/perc_template_summary_class.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercUtilService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercTemplateService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercPublisherService.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercSiteTemplatesController.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercTemplateLibraryWidget.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercAddTemplateDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercSiteTemplatesWidget.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercServerEditor.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercPubReports.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PublishView.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercIncrementalPreviewDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercDataTableUtil.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_manager.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.xmldom-1.0.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_ChangePwDialog.js"/>
+            &finderJS;
+
+        </concat>
+
+        <!-- Concatenate "Publish" CSS -->
+        <echo>Concatenating file ${war.css.min.dest}/perc_publish.packed.css</echo>
+        <concat destfile="${war.css.min.dest}/perc_publish.packed.css" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            &commonCSS;
+            <fileset dir="${war.source.dir}" includes="css/perc_mcol.css"/>
+            <fileset dir="${war.source.dir}" includes="css/percPublish.css"/>
+            <fileset dir="${war.source.dir}" includes="css/styles.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_decoration.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_css_editor.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_template_layout.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_newsitedialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_new_page_button.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_ChangePw.css"/>
+        </concat>
+
+        <!-- Concatenate "Users" JavaScript -->
+        <echo>Concatenating file ${war.js.min.dest}/perc_users.packed.js</echo>
+        <concat destfile="${war.js.min.dest}/perc_users.packed.js" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            <!-- explicitly order js concat because ordering matters here -->
+            &commonJS;
+            <!-- Create Template -->
+            <fileset dir="${war.source.dir}" includes="plugins/PercDataList.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercAddItemDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercUserService.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercUserController.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercUserView.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercRoleController.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercRoleView.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercCategoryService.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercCategoryController.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercCategoryView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercEditWorkflowStepDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercWorkflowStepsView.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.dynatree.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercFolderService.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercDataTree.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_assign_workflow_sites_folder_dialog.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercWorkflowView.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_ChangePwDialog.js" />
+            &finderJS;
+
+        </concat>
+
+        <!-- Concatenate "Users" CSS -->
+        <echo>Concatenating file ${war.css.min.dest}/perc_users.packed.css</echo>
+        <concat destfile="${war.css.min.dest}/perc_users.packed.css" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            &commonCSS;
+            <fileset dir="${war.source.dir}" includes="css/perc_mcol.css"/>
+            <fileset dir="${war.source.dir}" includes="css/percWorkflow.css"/>
+            <fileset dir="${war.source.dir}" includes="css/styles.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_decoration.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_css_editor.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_template_layout.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_newsitedialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_new_page_button.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_ChangePw.css" />
+        </concat>
+
+        <!-- Concatenate "Edit Template" JavaScript  -->
+        <echo>Concatenating file ${war.js.min.dest}/perc_editTemplate.packed.js</echo>
+        <concat destfile="${war.js.min.dest}/perc_editTemplate.packed.js" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            <!-- explicitly order js concat because ordering matters here -->
+            &commonJS;
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.text-overflow.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/rAF.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/placeholder_polyfill.jquery.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercSimpleMenu/PercSimpleMenu.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercPageDataTable/PercPageDataTable.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercActionDataTable/PercActionDataTable.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercInlineEditDataTable.js"/>
+
+            <!-- Services -->
+            <fileset dir="${war.source.dir}" includes="services/PercTemplateService.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercSiteImpactService.js"/>
+
+            <!-- Models -->
+            <fileset dir="${war.source.dir}" includes="classes/perc_template_summary_class.js"/>
+
+            <!-- Widgets -->
+
+            <!-- Views -->
+            <fileset dir="${war.source.dir}" includes="views/PercIFrameView.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_template_metadata_dialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercAddTemplateDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercSiteTemplatesController.js"/>
+            <fileset dir="${war.source.dir}" includes="classes/perc_page_class.js"/>
+            <fileset dir="${war.source.dir}" includes="classes/perc_template_layout_class.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_layout_helper.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_template_layout_widget.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_layout_controller.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_manager.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.xmldom-1.0.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_page_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_contentEditDecorate.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.bbq.js"/>
+            &finderJS;
+            <fileset dir="${war.source.dir}" includes="widgets/perc_save_as.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_save_as_shared_asset_dialog.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_asset_edit_dialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_content_viewer.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_page_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="models/PercTemplateModel.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercLayoutController.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercSizeController.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercDecorationController.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercCSSController.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercAutoScroll.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercLayoutView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercInspectionToolHandler.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercTemplateView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercTemplateDesignView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercContentView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/widgetPropertiesDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercCSSPreviewView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercCSSGalleryView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercCSSThemeView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercOverrideView.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercContentEditorHandlers.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.dynatree.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercSiteImpactView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercLayoutErrorDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercRegionCSSHandler.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercEditRegionPropertiesDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_ChangePwDialog.js"/>
+        </concat>
+
+        <!-- Concatenate "Edit Template" CSS -->
+        <echo>Concatenating file ${war.css.min.dest}/perc_editTemplate.packed.css</echo>
+        <concat destfile="${war.css.min.dest}/perc_editTemplate.packed.css" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            &commonCSS;
+            <fileset dir="${war.source.dir}" includes="css/perc_css_editor.css"/>
+            <fileset dir="${war.source.dir}" includes="css/styles.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_template_layout.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_mcol.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_save_as_dialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_decoration.css"/>
+            <fileset dir="${war.source.dir}" includes="demos.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_newsitedialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_new_page_button.css"/>
+            <fileset dir="${war.source.dir}" includes="css/placeholder_polyfill.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_ChangePw.css" />
+        </concat>
+
+        <!-- Concatenate "Widget Builder" JavaScript  -->
+        <echo>Concatenating file ${war.js.min.dest}/perc_widgetBuilder.packed.js</echo>
+        <concat destfile="${war.js.min.dest}/perc_widgetBuilder.packed.js" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            <!-- explicitly order js concat because ordering matters here -->
+            &commonJS;
+            <fileset dir="${war.source.dir}" includes="jslib/underscore-min.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/backbone-min.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/backgridjs/backgrid.min.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/PercWidgetBuilder.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/PercWidgetBuilderExpander.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/PercWidgetBuilderService.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/PercWidgetDefsTable.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/models/PercWidgetBuilderDefinitionModel.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/models/PercWidgetFieldsModels.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/models/PercWidgetDisplayModels.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/models/PercWidgetResourceModels.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/views/PercWidgetBuilderDefinitionView.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/views/PercWidgetFieldsViews.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/views/PercWidgetDisplayViews.js"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/js/views/PercWidgetResourceViews.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercUserService.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_ChangePwDialog.js" />
+        </concat>
+
+        <!-- Concatenate "Widget Builder" CSS -->
+        <echo>Concatenating file ${war.css.min.dest}/perc_widgetBuilder.packed.css</echo>
+        <concat destfile="${war.css.min.dest}/perc_widgetBuilder.packed.css" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            &commonCSS;
+            <fileset dir="${war.source.dir}" includes="css/styles.css"/>
+            <fileset dir="${war.source.dir}" includes="jslib/backgridjs/backgrid.min.css"/>
+            <fileset dir="${war.source.dir}" includes="widgetbuilder/css/perc_widgetbuilder.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_ChangePw.css" />
+        </concat>
+
+        <!-- Concatenate "Administration" JavaScript -->
+        <echo>Concatenating file ${war.js.min.dest}/perc_admin.packed.js</echo>
+        <concat destfile="${war.js.min.dest}/perc_admin.packed.js" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            <!-- explicitly order js concat because ordering matters here -->
+            &commonJS;
+            <fileset dir="${war.source.dir}" includes="jslib/printThis.js"/>
+
+            <fileset dir="${war.source.dir}" includes="widgets/PercSimpleMenu/PercSimpleMenu.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercPageDataTable/PercPageDataTable.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercActionDataTable/PercActionDataTable.js"/>
+
+            <!-- AutoScrolling capabilities plugin -->
+            <fileset dir="${war.source.dir}" includes="widgets/PercAutoScroll.js"/>
+
+            <!-- Controllers -->
+            <!-- Views -->
+            <!-- Services -->
+            <!-- Create Template -->
+            <fileset dir="${war.source.dir}" includes="jslib/json.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/ajaxfileupload.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.text-overflow.js"/>
+            <fileset dir="${war.source.dir}" includes="classes/perc_template_summary_class.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercTemplateService.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercAddTemplateDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercSiteTemplatesController.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercTemplateLibraryWidget.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercSiteTemplatesWidget.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_css_utils.js"/>
+            <fileset dir="${war.source.dir}" includes="classes/perc_page_class.js"/>
+            <fileset dir="${war.source.dir}" includes="classes/perc_template_layout_class.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_layout_helper.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_template_layout_widget.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_layout_controller.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_page_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_manager.js"/>
+            <fileset dir="${war.source.dir}" includes="jslib/jquery.xmldom-1.0.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_contentEditDecorate.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_asset_manager.js"/>
+            &finderJS;
+            <fileset dir="${war.source.dir}" includes="widgets/perc_save_as.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_asset_edit_dialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_content_viewer.js"/>
+            <fileset dir="${war.source.dir}" includes="services/PercSiteImpactService.js"/>
+
+            <fileset dir="${war.source.dir}" includes="plugins/perc_page_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_template_schema.js"/>
+            <fileset dir="${war.source.dir}" includes="models/PercTemplateModel.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercLayoutController.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercSizeController.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercDecorationController.js"/>
+            <fileset dir="${war.source.dir}" includes="controllers/PercCSSController.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercCSSGalleryView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercCSSThemeView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercOverrideView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercCSSPreviewView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercChangeTemplateDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercLayoutView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercInspectionToolHandler.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercTemplateView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercTemplateDesignView.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/perc_template_metadata_dialog.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercContentView.js"/>
+            <fileset dir="${war.source.dir}" includes="views/widgetPropertiesDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="views/PercSiteImpactView.js"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercTooltip/PercImageTooltip.js"/>
+
+            <fileset dir="${war.source.dir}" includes="plugins/PercContentEditorHandlers.js"/>
+
+            <fileset dir="${war.source.dir}" includes="services/PercSiteSummaryService.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/PercSiteSummaryDialog.js"/>
+            <fileset dir="${war.source.dir}" includes="plugins/perc_ChangePwDialog.js" />
+
+        </concat>
+
+        <!-- Concatenate "Administration" CSS -->
+        <echo>Concatenating file ${war.css.min.dest}/perc_admin.packed.css</echo>
+        <concat destfile="${war.css.min.dest}/perc_admin.packed.css" force="yes" encoding="UTF-8" eol="lf"
+                fixlastline="yes">
+            &commonCSS;
+            <fileset dir="${war.source.dir}" includes="css/perc_mcol.css"/>
+            <fileset dir="${war.source.dir}" includes="css/styles.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_decoration.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_css_editor.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_save_as_dialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_template_layout.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_newsitedialog.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_new_page_button.css"/>
+            <fileset dir="${war.source.dir}" includes="widgets/PercTooltip/PercTooltip.css"/>
+            <fileset dir="${war.source.dir}" includes="css/perc_ChangePw.css" />
+        </concat>
+
+        <fixcrlf srcdir="${war.js.min.dest}" includes="*.js" eol="lf"/>
+        <fixcrlf srcdir="${war.css.min.dest}" includes="*.css" eol="lf"/>
+
+    	<!-- YUI Compress until Closure is Working and Tested -->
+    	 <yui-compress in="${war.js.min.dest}/perc_dashboard.packed.js"
+    	                      out="${war.js.min.dest}/perc_dashboard.packed.js"/>
+        <yui-compress in="${war.js.min.dest}/perc_architecture.packed.js"
+                      out="${war.js.min.dest}/perc_architecture.packed.js"/>
+        <yui-compress in="${war.js.min.dest}/perc_webmgt.packed.js" out="${war.js.min.dest}/perc_webmgt.packed.js"/>
+
+        <yui-compress in="${war.js.min.dest}/perc_admin.packed.js" out="${war.js.min.dest}/perc_admin.packed.js"/>
+
+        <yui-compress in="${war.js.min.dest}/perc_editTemplate.packed.js"
+                      out="${war.js.min.dest}/perc_editTemplate.packed.js"/>
+        <yui-compress in="${war.js.min.dest}/perc_publish.packed.js" out="${war.js.min.dest}/perc_publish.packed.js"/>
+
+        <yui-compress in="${war.js.min.dest}/perc_users.packed.js" out="${war.js.min.dest}/perc_users.packed.js"/>
+
+        <yui-compress in="${war.source.dir}/themes/smoothness/jquery-ui-1.8.9.custom.css" out="${war.source.dir}/themes/smoothness/jquery-ui-1.8.9.custom.min.css"/>
+
+    	<copy toDir="${war.css.min.dest}/images">
+            <fileset dir="${war.source.dir}/themes/base/images">
+                <include name="**/*.*"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Pull in the environment variables -->
+    <property environment="env"/>
+    <property name="gradle.bin" value="${env.GRADLE_HOME}/bin"/>
+
+    <!-- Checks the operating system -->
+    <target name="checkos">
+        <condition property="isWindows">
+            <os family="windows"/>
+        </condition>
+
+        <condition property="isLinux">
+            <os family="unix"/>
+        </condition>
+    </target>
+
+
+    <!--
+      Calls gradle to clean and then build the delivery tier suite projects.
+      This requires that gradle is installed and in the system path so that it
+      can be run from the command line.
+    -->
+    <target name="gradle-depends" depends="checkos">
+        <echo>Pulling in Gradle managed dependencies</echo>
+
+        <!-- exec executable="${gradle.bin}/${gradle.exec}" dir="${basedir}" failonerror="true" osfamily="windows">
+            <arg value="clean"/>
+         </exec
+         -->
+        <condition property="gradle.exec" value="gradle.bat">
+            <isset property="isWindows"/>
+        </condition>
+        <condition property="gradle.exec" value="gradle">
+            <isset property="isLinux"/>
+        </condition>
+
+        <exec executable="${gradle.bin}/${gradle.exec}" dir="${basedir}" failonerror="true">
+            <arg value="copy_lib"/>
+        </exec>
+
+    </target>
+</project>

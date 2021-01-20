@@ -1,0 +1,56 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http use-expressions="true">
+		
+		<!-- Some sample of: "secured URL patterns
+	    <intercept-url pattern="/perc-login-page" access="permitAll" requires-channel="any"  />
+	    <intercept-url pattern="/secure-folder/*" access="isAuthenticated()" requires-channel="https" />
+        <intercept-url pattern="/index" access="permitAll" />
+
+	    <intercept-url pattern="/perc-login-page" access="permitAll" requires-channel="any"  />
+	    <intercept-url pattern="/secure-folder/*" access="isAuthenticated()" requires-channel="https" />
+		<intercept-url pattern="/http-folder/*" access="isAuthenticated()"  />
+		<intercept-url pattern="/https-folder/*" access="hasAnyRole('EI_MEMBERS', 'USERS')" requires-channel="https" />
+		<intercept-url pattern="/any-folder/*" access="isAuthenticated()" requires-channel="any" />         <intercept-url pattern="/**" access="isAuthenticated()" />
+		-->
+		
+		<port-mappings>
+			<port-mapping http="${perc.webserver.http.port}" https="${perc.webserver.https.port}"/>
+		</port-mappings>
+		
+		<form-login login-processing-url="/perc-login" authentication-success-handler-ref="percMembershipLoginHandler" />
+		<logout logout-url="/perc-logout" success-handler-ref="percMembershipLogoutHandler"/>
+    </http>
+
+
+</beans:beans>   

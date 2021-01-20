@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editorurl (#PCDATA)>
+<!ELEMENT contentitem (editorurl )>
+<!ATTLIST  contentitem transitionid CDATA #REQUIRED>
+<!ATTLIST  contentitem title CDATA #REQUIRED>
+<!ATTLIST  contentitem contentid CDATA #REQUIRED>
+<!ATTLIST  contentitem workflowid CDATA #REQUIRED>
+<!ELEMENT agecontentlist (contentitem* )>
+<!ATTLIST  agecontentlist pollingtime CDATA #REQUIRED>

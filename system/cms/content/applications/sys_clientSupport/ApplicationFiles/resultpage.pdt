@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT resultpage (search*, slotid, slotname, contenttitle, contenttype, author, startdate, enddate, username )>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT enddate (#PCDATA)>
+<!ELEMENT startdate (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT contenttitle (#PCDATA)>
+<!ELEMENT slotname (#PCDATA)>
+<!ELEMENT slotid (#PCDATA)>
+<!ELEMENT search (item*, variantid, variantname )>
+<!ELEMENT item (contentname, conidvarid, contenttype, previewurl, contentid, revisionid, checkedoutby, variantid, variantname )>
+<!ELEMENT variantname (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>
+<!ELEMENT checkedoutby (#PCDATA)>
+<!ELEMENT revisionid (#PCDATA)>
+<!ELEMENT contentid (#PCDATA)>
+<!ELEMENT previewurl (#PCDATA)>
+<!ELEMENT contenttype (#PCDATA)>
+<!ELEMENT conidvarid (#PCDATA)>
+<!ELEMENT contentname (#PCDATA)>

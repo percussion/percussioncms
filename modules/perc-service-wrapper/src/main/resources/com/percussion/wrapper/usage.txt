@@ -1,0 +1,57 @@
+Usage: java -jar perc-service-wrapper.jar [options...] [jetty properties...] [jetty configs...]
+
+  The perc-service-wrapper.jar controls the startup and shutdown of the percussion services.
+  The location of the root distribution directory is discovered based upon the location of the jar file unless a system
+  -Drxdeploydir system property is provided.
+
+  Extra options and properties files can be passed through to the Jetty start.jar if this is not a standalone DTS Server
+  this is useful to check the jetty configuration in particular the --list-config option can help diagnosis of problems.
+
+  To see the full list of jetty options you can pass the --jettyHelp option to this command.
+
+Command Line Options:
+---------------------
+
+  --help            This help / usage information (default if other options not specified)
+  --jettyHelp       Shows the help from the main Jetty start.jar
+  --debugWrapper    Output extra information to help diagnose issues with this wrapper
+  --start           Start main jetty server and also DTS and Staging DTS if available
+  --startServer     Start main jetty server only
+  --startDTS        Start DTS server only
+  --startStagingDTS Start staging DTS server only
+  --stop            Stop main server, DTS server and Staging DTS if started
+  --stopServer      Stop main server only
+  --stopDTS         Stop DTS server only
+  --stopStatingDTS  Stop staging DTS server only
+  --force           If --stop specified also then kill processes if unable to stop cleanly
+  --status          Show status of services
+  --rxlt           for running the rxlt tool
+
+System properties:
+---------------------
+
+  -Drxdeploydir={path to distribution}  Specifies an alternate location to the distribution root
+
+
+Available Jetty options ( run with --jettyHelp for usage)
+---------------------
+
+  --version
+  --list-classpath
+  --list-config
+  --dry-run
+  --list-modules
+  --list-all-modules
+  --add-to-start
+  --update-ini
+  --create-startd
+  --write-module-graph
+  --create-files
+
+  Available rxlt options (run with --rxlt optional <args>)
+  ----------------------------
+   -noui       runs the tool without user interaction using default settings
+
+  -R<rxroot>   sets the Rhythmyx root directory to the specified one.
+  -?           displays the usage syntax
+

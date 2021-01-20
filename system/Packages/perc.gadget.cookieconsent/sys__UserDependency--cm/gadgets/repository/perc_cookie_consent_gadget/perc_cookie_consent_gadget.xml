@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+  <ModulePrefs title="Cookie Consent" description="This gadget provides statistics regarding cookie-consent entries." thumbnail="images/gadgetIconCookie.png" height="325" adminOnly="true">
+      <Require feature="perc_core"/>
+      <Require feature="perc_jquery_ui"/>
+      <Require feature="settitle" />
+      <Require feature="minimessage" />
+  </ModulePrefs>
+    <UserPref name="site" display_name="Site" required="true" datatype="enum" default_value="">
+        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+    </UserPref>
+    <UserPref name="zrows" display_name="Display height" required="false" datatype="enum" default_value="5">
+        <EnumValue value="5" display_value="5 results"/>
+        <EnumValue value="10" display_value="10 results"/>
+        <EnumValue value="15" display_value="15 results"/>
+        <EnumValue value="20" display_value="20 results"/>
+        <EnumValue value="25" display_value="25 results"/>
+    </UserPref>
+  <Content type="html">
+      <![CDATA[
+        <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+        <link href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="/cm/gadgets/repository/perc_cookie_consent_gadget/cookie_consent_gadget.css" rel="stylesheet" type="text/css" />
+        <link href="/cm/widgets/PercDataTable/PercDataTable.css" rel="stylesheet" type="text/css" />
+        <link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="/cm/css/perc_default.css" />
+
+        <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+
+        <script  src="/cm/plugins/perc_utils.js" ></script>
+        <script  src="/cm/cui/components/twitter-bootstrap-3.0.0/js/collapse.js"></script>
+        <script  src="/cm/services/PercUtilService.js"></script>
+        <script  src="/cm/services/PercServiceUtils.js"></script>
+        <script  src="/cm/gadgets/repository/perc_cookie_consent_gadget/cookie_consent_gadget.js"></script>
+        <script  src="/cm/jslib/jquery.dataTables.js"></script>
+        <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+
+        <div class="perc-gadget perc-cookie-consent-gadget" aria-label="cookie-consent gadget" data-moduleid="__MODULE_ID__">
+            <!-- Content.  Populated by cookie_consent_gadget.js -->
+            <div class="cookie-consent-content">
+                <table id="perc-cookie-table" class="perc-cookie-consent-table table">
+                    <thead>
+                        <tr>
+                            <th class="col-header">Site</th>
+                            <th class="col-header">Total cookie consents</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <!-- separator -->
+                <div class="perc-gadget-separator">
+                    <div class="perc-gadget-separator-inner"></div>
+                </div>
+                
+                <!-- export all consent entries button -->
+                <div class="export-button">
+                    <a href="#" id="export-link">Export All Cookie Consent Entries</a>
+                </div>
+            </div>
+
+            <!-- Site service/cookies div.  Hidden.  Shown when viewing a Site's stats. -->
+            <div class="cookie-consent-site-stats" style="display:none;">
+                <button id="perc-cookie-back-button" aria-label="Back to cookie consent main screen" title="Click to see cookie consent entries for all sites" class="btn btn-primary">Back</button>
+                <br/>
+                <div id="site-name-section">
+                    <span class="site-desc"><b>Site:</b></span>
+                    <span class="site-name"></span>
+                </div>
+                <table id="perc-cookie-site-table" class="perc-cookie-consent-site-table table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Service/Cookie
+                                <span class="perc-sort" style="padding: 0 10 0 0;">&nbsp;</span>
+                            </th>
+                            <th>
+                                Total consents
+                                <span class="perc-sort" style="padding: 0 10 0 0;">&nbsp;</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <!-- separator -->
+                <div class="perc-gadget-separator">
+                    <div class="perc-gadget-separator-inner"></div>
+                </div>
+
+                <!-- export all consent entries button -->
+                <div class="export-button">
+                    <a href="#" id="export-site-link">Export Link</a>
+                </div>
+            </div>
+
+            <!-- advanced button all sites -->
+            <div id="delete-btn-all">
+                <button id="advanced-all-sites-btn" type="button" aria-label="Advanced Settings" class="btn btn-info advanced" data-toggle="collapse" data-target="#advanced">Advanced</button>
+                <div id="advanced" class="collapse cookie-consent-advanced">
+                    <p>Delete all cookie consent entries.</p>
+                    <button id="cookie-consent-delete-btn" aria-label="Delete all cookie consent entries" class="cookie-consent-delete-btn">Delete entries</button>
+                </div>
+            </div>
+
+            <!-- advanced button for selected site -->
+            <div id="delete-btn-site" style="display: none;">
+                <button id="advanced-site-btn" type="button" aria-label="Advanced Settings" class="btn btn-info advanced" data-toggle="collapse" data-target="#advanced-site">Advanced</button>
+                <div id="advanced-site" class="collapse cookie-consent-advanced">
+                    <p>Delete cookie consent entries for site: </p>
+                    <button id="cookie-consent-site-delete-btn" aria-label="Delete cookie consent entries for selected site" class="cookie-consent-delete-btn">Delete entries for site</button>
+                </div>
+            </div>
+        </div>
+     ]]>
+  </Content> 
+</Module>

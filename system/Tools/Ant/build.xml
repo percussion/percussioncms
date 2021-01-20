@@ -1,0 +1,99 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="psantextensions" basedir="." default="jar">
+   
+   <property name="sandbox.root" location="../.."/>
+   <property name="toolkit.dir" value="${basedir}/PatchInstallToolkit"/>
+   <property name="toolkit.patchdir" value="${toolkit.dir}/Patch/InstallToolkit"/>
+	 
+   <!-- Define the project classpath -->
+   <path id="classpath">
+     <pathelement location="${basedir}/lib/p4.jar"/>
+     <pathelement location="${basedir}/lib/ant-apache-oro.jar"/>
+     <pathelement location="${sandbox.root}/Tools/Commons/commons-io-2.0.1.jar"/>
+     <pathelement location="${sandbox.root}/Tools/Commons/commons-lang-2.4.jar"/>
+     <pathelement location="${sandbox.root}/Tools/Jericho-html/jericho-html-1.2.jar"/>
+     <pathelement location="${sandbox.root}/Tools/junit/junit-4.11.jar"/>
+     <pathelement location="${sandbox.root}/Tools/log4j/log4j-1.2.14.jar"/>
+     <pathelement location="${sandbox.root}/Tools/SWT/swt.jar"/>
+     <pathelement location="${sandbox.root}/Tools/log4j/log4j.jar"/>
+     <pathelement location="${sandbox.root}/Tools/Jericho-html/jericho-html.jar"/>
+   </path>
+   
+   <target name="init">
+      <mkdir dir="${basedir}/classes"/>
+   </target>
+
+   <target name="compile" depends="init">
+    <echo>${basedir}</echo>
+   	<javac srcdir="${basedir}/src"
+         destdir="${basedir}/classes"
+         classpathref="classpath"
+         debug="on" target="1.7"
+         excludes="com/percussion/ant/install/**"/>
+      <copy todir="${basedir}/classes">
+        <fileset dir="${basedir}/src">
+	       <exclude name="**/*.java"/>
+	       <exclude name="**/*.class"/>
+	    </fileset>
+      </copy>
+   </target>
+   
+	<!-- build ant extensions jar -->
+   <target name="jar" depends="compile">
+      <jar destfile="${basedir}/build/lib/psantextensions.jar">
+		   <fileset dir="${basedir}/classes">
+			   <include name="com/percussion/**"/>
+		   </fileset>
+	   </jar>
+
+   </target>
+   
+	<target name="patchJar" depends="compile">
+      <!-- compile jar and send it to patch tool kit directory -->
+	  <mkdir dir="${toolkit.patchdir}/lib"/>
+	  <jar destfile="${toolkit.patchdir}/lib/psantextensions.jar">
+		   <fileset dir="${basedir}/classes">
+			   <include name="com/percussion/**"/>
+		   </fileset>
+	   </jar>
+	   
+	</target>
+	
+	<!-- build Patch install toolkit -->
+   <target name="buildPatchInstallToolkit" depends="patchJar">
+     <mkdir dir="${toolkit.patchdir}"/>
+     <copy todir="${toolkit.patchdir}">
+       <fileset dir="${basedir}" includes="bin/**,lib/**" excludes="lib/psantextensions.jar"/>
+       <fileset dir="${toolkit.dir}" includes="Version.properties"/>
+     </copy>
+     <fixcrlf srcdir="${toolkit.patchdir}" eol="lf" eof="remove" includes="bin/ant"/>
+   </target>
+
+   <target name="clean">
+      <delete dir="${basedir}/classes"/>
+      <delete file="${basedir}/build/lib/psantextensions.jar"/>
+   </target>
+</project>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<xs:schema targetNamespace="urn:www.percussion.com/webservices/contentmeta" xmlns:si="urn:www.percussion.com/webservices/standarditem" xmlns:com="urn:www.percussion.com/webservices/common" xmlns="urn:www.percussion.com/webservices/contentmeta" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="urn:www.percussion.com/webservices/common" schemaLocation="sys_Common.xsd"/>
+	<xs:import namespace="urn:www.percussion.com/webservices/standarditem" schemaLocation="sys_StandardItem.xsd"/>
+	<xs:element name="contentStatus">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ContentStatusRequest">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="si:ContentKey"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ContentStatusResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:annotation>
+					<xs:documentation>Choice</xs:documentation>
+				</xs:annotation>
+				<xs:element name="ContentStatus" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Workflow information about this document.
+Naming follows the column names.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="WorkflowName">
+								<xs:annotation>
+									<xs:documentation>The name of the workflow in which this item currently resides.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="workflowId" type="xs:positiveInteger" use="required">
+												<xs:annotation>
+													<xs:documentation>A unique identifier for the workflow that this document is currently in.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="StateName">
+								<xs:annotation>
+									<xs:documentation>The workflow state name with its associated unique identifier.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="stateId" type="xs:positiveInteger">
+												<xs:annotation>
+													<xs:documentation>A unique identifier (within the context of a specified workflow) 
+for the state currently occupied by this document.
+</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute name="isPublishable" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>Indicates whether a document in this state be published.
+</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ContentTypeName" type="xs:string"/>
+							<xs:element name="DataVariant" type="xs:string"/>
+							<xs:element name="Title" type="xs:string"/>
+							<xs:element name="CheckOutUserName">
+								<xs:annotation>
+									<xs:documentation>Who currently has the document checked out.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="checkOutStatus" type="xs:string"/>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="LastModifier" type="xs:string"/>
+							<xs:element name="LastModified" type="xs:string"/>
+							<xs:element name="CreatedBy" type="xs:string"/>
+							<xs:element name="CreatedDate" type="xs:string"/>
+							<xs:element name="StartDate" type="xs:string" minOccurs="0"/>
+							<xs:element name="ExpirationDate" type="xs:string" minOccurs="0"/>
+							<xs:element name="AgingTime" type="xs:string" minOccurs="0"/>
+							<xs:element name="PublishDate" type="xs:string" minOccurs="0"/>
+							<xs:element name="PathName" type="xs:string" minOccurs="0"/>
+							<xs:element name="Suffix" type="xs:string" minOccurs="0"/>
+							<xs:element name="Lock" type="xs:string"/>
+							<xs:element name="CommunityId" type="xs:positiveInteger"/>
+						</xs:sequence>
+						<xs:attribute name="contentid" type="xs:positiveInteger" use="required">
+							<xs:annotation>
+								<xs:documentation>The numeric value that uniquely identifies an item of content.
+This will be the value supplied with the request.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="currentRevision" type="xs:integer">
+							<xs:annotation>
+								<xs:documentation>The numeric identifier of the revision that is marked as the current 
+revision in the ContentStatus meta data. If there is no current 
+revision, the attribute is not included.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="editRevision" type="xs:integer">
+							<xs:annotation>
+								<xs:documentation>The numeric identifier of the revision that is being edited (which is 
+not necessarily this revision). If no revision is being edited, the 
+attribute is not added.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="revisionCount" type="xs:positiveInteger">
+							<xs:annotation>
+								<xs:documentation>How many revisions does this document have. Always 1 or greater.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="com:ResultResponse" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="revisionList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RevisionListRequest">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="si:ContentKey"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RevisionListResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:annotation>
+					<xs:documentation>Choice</xs:documentation>
+				</xs:annotation>
+				<xs:element name="RevisionList" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Revision" type="xs:positiveInteger"/>
+							<xs:element name="Date" type="xs:string"/>
+							<xs:element name="Username" type="xs:string"/>
+							<xs:element name="Comment" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="com:ResultResponse" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT extroles (newlink, componentname, role* )>
+<!ELEMENT role (roledesc, roleid, name, link, deletelink )>
+<!ELEMENT deletelink (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT roleid (#PCDATA)>
+<!ELEMENT roledesc (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT newlink (#PCDATA)>

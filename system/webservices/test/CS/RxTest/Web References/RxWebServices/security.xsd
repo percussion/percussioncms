@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<xsd:schema xmlns:secs="urn:www.percussion.com/6.0.0/securityServices" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:sec="urn:www.percussion.com/6.0.0/security" xmlns:com="urn:www.percussion.com/6.0.0/common" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/security" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="../common.xsd" namespace="urn:www.percussion.com/6.0.0/common" />
+  <xsd:import schemaLocation="securityServices.xsd" namespace="urn:www.percussion.com/6.0.0/securityServices" />
+  <xsd:element name="LoginRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Username" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation> The name of the user to authenticate, not null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Password" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The password of the user to authenticate, not null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="ClientId" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>An optional client id which will be used for object locking if provided. If the same client id is provided after a server crash the client will be able to reuse the locks created before the crash.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Community" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the community to which the requestor wants to be logged in. If not supplied the user will be logged in to his default, which is the last logged in or the first community by name if he never logged in before.
+</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="LocaleCode" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The local code for which the requestor wants to be logged in. If not supplied the user will be logged in to the default, which is the last logged in locale or us-en if he never logged in before.
+ </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoginResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="secs:PSLogin">
+          <xsd:annotation>
+            <xsd:documentation>
+                     The login response contains the session id for the 
+                     authenticated user, which must be used with all further 
+                     web service requests. Besides that it returns the users 
+                     community, locale and role information.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LogoutRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="SessionId" type="com:SessionId">
+          <xsd:annotation>
+            <xsd:documentation>A valid session id to be invalidated, not null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="RefreshSessionRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="SessionId" type="com:SessionId">
+          <xsd:annotation>
+            <xsd:documentation>A valid session id to be refreshed, not null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadCommunitiesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the community to load, may be null or empty, asterisk wildcards are accepted. All communities will be returned if not supplied or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadCommunitiesResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="secs:PSCommunity">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded communities in read-only mode, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadRolesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the role to load, not null or empty, asterisk wildcards are accepted. All roles will be returned if not supplied or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadRolesResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="secs:PSRole">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded roles in read-only mode, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FilterByRuntimeVisibilityRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The ids of the objects to filter for runtime visibility.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FilterByRuntimeVisibilityResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Ids" nillable="true">
+          <xsd:annotation>
+            <xsd:documentation>The subset of the supplied ids that are runtime visible for the current user.  Supplied ids of objects for which runtime visibility settings are not defined are also returned.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

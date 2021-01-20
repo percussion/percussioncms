@@ -1,0 +1,37 @@
+<PSXJobHandlerConfiguration>
+   <InitParams/>
+   <Categories>
+      <Category name="deploy">
+         <InitParams>
+            <InitParam name="role" value="admin"/>
+         </InitParams>
+         <Jobs>
+            <Job jobType="export" className="com.percussion.deploy.server.PSExportJob">
+               <InitParams/>
+            </Job>
+            <Job jobType="import" className="com.percussion.deploy.server.PSImportJob">
+               <InitParams/>
+            </Job>
+            <Job jobType="validation" className="com.percussion.deploy.server.PSValidationJob">
+               <InitParams/>
+            </Job>
+         </Jobs>
+      </Category>
+	  <Category name="deployer">
+         <InitParams>
+            <InitParam name="role" value="admin"/>
+         </InitParams>
+         <Jobs>
+            <Job jobType="export" className="com.percussion.deployer.server.PSExportJob">
+               <InitParams/>
+            </Job>
+            <Job jobType="import" className="com.percussion.deployer.server.PSImportJob">
+               <InitParams/>
+            </Job>
+            <Job jobType="validation" className="com.percussion.deployer.server.PSValidationJob">
+               <InitParams/>
+            </Job>
+         </Jobs>
+      </Category>
+   </Categories>
+</PSXJobHandlerConfiguration>

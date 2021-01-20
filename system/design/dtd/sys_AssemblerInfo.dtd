@@ -1,0 +1,88 @@
+<?xml encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- This DTD specifies the assembler information added to each document in content assemblers using the post exit sys_casAddAssemblerInfo. Note that xml:lang attribute (that indicates the user locale) is always added to the root element of the document -->
+<!ELEMENT sys_AssemblerInfo (RelatedContent, AssemblerProperties, InlineLink, VariantURL)>
+<!-- attributes type and outputformat are used for active assembly only -->
+<!ATTLIST sys_AssemblerInfo
+   previewurl CDATA #REQUIRED
+   sys_siteid CDATA #REQUIRED
+   pssessionid CDATA #REQUIRED
+   sys_command CDATA #REQUIRED
+   sys_contentid CDATA #REQUIRED
+   sys_variantid CDATA #REQUIRED
+   sys_revision CDATA #REQUIRED
+   sys_context CDATA #REQUIRED
+   sys_authtype CDATA #REQUIRED
+   type CDATA #REQUIRED
+   outputformat CDATA #REQUIRED
+>
+<!-- -->
+<!ELEMENT RelatedContent (infourls, linkurl*)>
+<!-- This is a place holder for additional URLs that may be required by stylesheets. Intended to be used by the assembly transformation stylesheet -->
+<!ELEMENT infourls EMPTY>
+<!ATTLIST infourls
+   UserAgent CDATA #REQUIRED
+   actionlisturl CDATA #REQUIRED
+   activeiteminfourl CDATA #REQUIRED
+   contentstatusurl CDATA #REQUIRED
+   rxinboxurl CDATA #REQUIRED
+   userstatusurl CDATA #REQUIRED
+>
+<!-- -->
+<!ELEMENT linkurl (Value)>
+<!ATTLIST linkurl
+   contentid CDATA #REQUIRED
+   relateditemid CDATA #REQUIRED
+   rxcontext CDATA #REQUIRED
+   slotid CDATA #REQUIRED
+   slotname CDATA #REQUIRED
+   sys_folderid CDATA #IMPLIED
+   sys_siteid CDATA #IMPLIED
+   sys_originalSiteid CDATA #IMPLIED
+   variantid CDATA #REQUIRED
+>
+<!-- -->
+<!ELEMENT AssemblerProperties (Property*)>
+<!-- -->
+<!ELEMENT Property (Value)>
+<!ATTLIST Property
+   name CDATA #REQUIRED
+>
+<!-- -->
+<!ELEMENT Value EMPTY>
+<!ATTLIST Value
+   current CDATA #REQUIRED
+>
+<!-- Internal link url to generate inline links. For internal use only -->
+<!ELEMENT InlineLink EMPTY>
+<!ATTLIST InlineLink
+   url CDATA #REQUIRED
+>
+<!-- Internal link URL to generate assembly URL given the contentid, revision and the variantid. For internal use only -->
+<!ELEMENT VariantURL EMPTY>
+<!ATTLIST VariantURL
+   url CDATA #REQUIRED
+>

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT image (link*, imgsrc*, displaytitle* )>
+<!ELEMENT displaytitle (#PCDATA)>
+<!ELEMENT imgsrc (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT thumtoimage (image* )>

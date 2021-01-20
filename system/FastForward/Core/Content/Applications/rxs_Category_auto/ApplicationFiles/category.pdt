@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT item (category_id*, category_name* )>
+<!ELEMENT category_name (#PCDATA)>
+<!ELEMENT category_id (#PCDATA)>
+<!ELEMENT category (item* )>

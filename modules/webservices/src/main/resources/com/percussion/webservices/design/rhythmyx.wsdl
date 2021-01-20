@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<wsdl:definitions name="rhythmyx" targetNamespace="urn:www.percussion.com/6.0.0/rhythmyx" xmlns:rx="urn:www.percussion.com/6.0.0/rhythmyx" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:asm="urn:www.percussion.com/6.0.0/assembly" xmlns:con="urn:www.percussion.com/6.0.0/content" xmlns:sec="urn:www.percussion.com/6.0.0/security" xmlns:sys="urn:www.percussion.com/6.0.0/system" xmlns:ui="urn:www.percussion.com/6.0.0/ui" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/assembly" location="assembly/assembly.wsdl">
+   </wsdl:import>
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/content" location="content/content.wsdl">
+   </wsdl:import>
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/security" location="security/security.wsdl">
+   </wsdl:import>
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/system" location="system/system.wsdl">
+   </wsdl:import>
+   <wsdl:import namespace="urn:www.percussion.com/6.0.0/ui" location="ui/ui.wsdl">
+   </wsdl:import>
+   <wsdl:types>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="common.xsd">
+         </xsd:import>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:service name="assembly">
+      <wsdl:port name="assemblySOAP" binding="asm:assemblySOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/webservices/assemblySOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="content">
+      <wsdl:port name="contentSOAP" binding="con:contentSOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/webservices/contentSOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="security">
+      <wsdl:port name="securitySOAP" binding="sec:securitySOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/webservices/securitySOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="system">
+      <wsdl:port name="systemSOAP" binding="sys:systemSOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/webservices/systemSOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="ui">
+      <wsdl:port name="uiSOAP" binding="ui:uiSOAP">
+         <soap:address location="http://localhost:9992/Rhythmyx/webservices/uiSOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

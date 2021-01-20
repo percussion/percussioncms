@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+   <WidgetPrefs title="jQuery Widget"
+        contenttype_name=""
+        category="Design"
+        description="Select your desired version of jQuery"
+        author="Percussion Software, Inc."
+        thumbnail="/rx_resources/widgets/percJQueryWidget/images/widgeticonjquery.png"
+        preferred_editor_width="800"
+        preferred_editor_height="685"
+        is_responsive="true"/>
+    <UserPref name="jQueryLocation"
+      display_name="jQuery CDN Link (http or https):"
+      default_value="/web_resources/cm/jslib/jquery.js"
+      required="true"
+      datatype="string" />
+      <UserPref name="jQueryLocationIntegrity" display_name="jQuery SRI Hash" default_value=""
+      required="false"
+      datatype="string"/>
+      <UserPref name="jQueryLocationCrossOrigin" display_name="jQuery Cross Origin" default_value=""
+      required="false"
+      datatype="string"/>
+      <UserPref name="jQueryMigrateLocation"
+      display_name="jQuery Migrate location (Absolute, Relative, or Remote paths are allowed)"
+      default_value=""
+      required="false"
+      datatype="string" />
+      <UserPref name="jQueryMigrateLocationIntegrity" display_name="jQuery Migrate SRI Hash" default_value=""
+      required="false"
+      datatype="string"/>
+      <UserPref name="jQueryMigrateLocationCrossOrigin" display_name="jQuery Migrate Cross Origin" default_value=""
+      required="false"
+      datatype="string"/>
+    <UserPref name="isDeferred"
+      display_name="Defer Loading"
+      default_value="no"
+      required="true"
+      datatype="enum">
+      <EnumValue value="no" display_value="No" />
+      <EnumValue value="yes" display_value="Yes" />
+    </UserPref>
+    <UserPref name="scriptLocation"
+      display_name="Script Location"
+      default_value="additionalHeadContent"
+      required="true"
+      datatype="enum">
+      <EnumValue value="additionalHeadContent" display_value="Head" />
+      <EnumValue value="afterBodyStart" display_value="After Body Start" />
+      <EnumValue value="beforeBodyClose" display_value="Before Body Close" />
+    </UserPref>
+    <UserPref name="includeOnPublishedPage"
+      display_name="Include on Published Page"
+      default_value="yes"
+      datatype="enum">
+      <EnumValue value="no" display_value="No" />
+      <EnumValue value="yes" display_value="Yes" />
+    </UserPref>
+    <Code type="jexl">
+    <![CDATA[
+    $jQueryLocation = $perc.widget.item.properties.get('jQueryLocation');
+    $jQueryMigrateLocation = $perc.widget.item.properties.get('jQueryMigrateLocation');
+    $isDeferred = $perc.widget.item.properties.get('isDeferred');
+    $scriptLocation = $perc.widget.item.properties.get('scriptLocation');
+    $includeOnPublishedPage = $perc.widget.item.properties.get('includeOnPublishedPage');
+    ]]>
+    </Code>
+    <Content type="velocity">
+    <![CDATA[
+    #if ($perc.isEditMode())##
+        #createEmptyWidgetContent("jquery-widget-sample-content", "This jQuery widget is showing sample content.","height: 32px;background: transparent url(/Rhythmyx/rx_resources/widgets/percJQueryWidget/images/widgeticonjqueryempty.png) no-repeat scroll center center;filter: alpha(opacity=50);opacity: .50;")##
+    #end##
+    ]]>
+    </Content>
+</Widget>
+

@@ -1,0 +1,57 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<Context>
+	<!-- Default set of monitored resources -->
+	<WatchedResource>WEB-INF/web.xml</WatchedResource>
+	<WatchedResource>META-INF/context.xml</WatchedResource>
+	<!-- Uncomment this to disable session persistence across Tomcat restarts -->
+	<!--
+	<Manager pathname="" />
+	-->
+	<!--  Uncomment this example for SQL Server -->
+	<!-- 
+	<Resource name="jdbc/jtdsexample" auth="Container"
+	   type="javax.sql.DataSource" 
+	   driverClassName="net.sourceforge.jtds.jdbc.Driver" 
+	   url="jdbc:jtds:sqlserver://localhost:1433/yourdb;user=sa;password=sa"
+	   maxActive="8" maxIdle="4"/>
+	-->
+	<!--  Uncomment this example for ORACLE -->
+	<!--
+	<Resource name="jdbc/oracle" auth="Container"
+	   type="javax.sql.DataSource" 
+	   username="auser" password="demo" 
+	   driverClassName="oracle.jdbc.OracleDriver" 
+	   url="jdbc:oracle:thin:@10.10.10.2:1521:SIDNAME" /> 
+	-->
+	<!--  Uncomment this example for DB2 -->
+	<!--
+	<Resource name="jdbc/db2" auth="Container"
+	   type="javax.sql.DataSource"  
+	   username="auser" password="demo"
+	   driverClassName="com.ibm.db2.jcc.DB2Driver"
+	   url="jdbc:db2://localhost:50000/yourdb" />
+	-->
+</Context>

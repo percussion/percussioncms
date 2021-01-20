@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXExtensionHandlerConfiguration handlerName="Java">
+   <Extension categorystring="managednav" context="global/percussion/fastforward/managednav" deprecated="no" handler="Java" name="rxs_NavFolderEffect" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description"/>
+      <initParam name="com.percussion.extension.version">7</initParam>
+      <initParam name="className">com.percussion.fastforward.managednav.PSNavFolderEffect</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.relationship.IPSEffect"/>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="managednav" context="global/percussion/fastforward/managednav" deprecated="no" handler="Java" name="rxs_NavReset" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Resets the managed navigation. The naviagtion xml is cached and any operation on navigation related items or slots or variants will not get affected till resetting it.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.fastforward.managednav.PSNavReset</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="managednav" context="global/percussion/fastforward/managednav" deprecated="no" handler="Java" name="rxs_NavAutoSlot" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Adds links to all navigation slots</initParam>
+      <initParam name="com.percussion.extension.version">8</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.fastforward.managednav.PSNavAutoSlotExtension</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="managednav" context="global/percussion/fastforward/managednav" deprecated="no" handler="Java" name="rxs_NavTreeBuilder" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description"/>
+      <initParam name="com.percussion.extension.version">26</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.fastforward.managednav.PSNavTreeExtension</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="managednav" context="global/percussion/fastforward/managednav" deprecated="no" handler="Java" name="rxs_NavTreeLink" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Builds a variant which references the nav tree</initParam>
+      <initParam name="com.percussion.extension.version">7</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.fastforward.managednav.PSNavTreeLinkExtension</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <suppliedResources/>
+   </Extension>
+	<Extension categorystring="managednav" context="global/percussion/fastforward/managednav" deprecated="no" handler="Java" name="rxs_NavFolderSelector" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Selects a given folder id by pathname.  Useful in assemblers of content types which need navigation, but are not in folders. </initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="className">com.percussion.fastforward.managednav.PSNavFolderSelector</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<interface name="com.percussion.extension.IPSUdfProcessor"/>
+		<interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>pathname</name>
+			<dataType>java.lang.String</dataType>
+			<description>full path of the folder to select.  Typically starts with //Sites</description>
+		</PSXExtensionParamDef>
+		<suppliedResources/>
+	</Extension>
+   <Extension categorystring="managednav" context="global/percussion/fastforward/managednav" deprecated="no" handler="Java" name="rxs_NavTreeSlotMarker" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">This exit is to be used along with the NavTreeLink extension for generation of a navigation tree for a specific navon.  When this extensionprocesses subsequent to NavTreeLink, it will walk down the navtree and check the info-url for each "ancestor" node.  If it determines that the navon has content in a specified slots, it will mark the navon element with a special attribute set to "yes" which can then be leveraged in XSLT processing.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="className">com.percussion.fastforward.managednav.PSNavTreeSlotMarker</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>markerName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the attribute to create on appropriate navon elements</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="1">
+         <name>slotName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the slot for which the exit should check for content</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="2">
+         <name>markerName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the attribute to create on appropriate navon elements</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="3">
+         <name>slotName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the slot for which the exit should check for content</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="4">
+         <name>markerName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the attribute to create on appropriate navon elements</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="5">
+         <name>slotName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the slot for which the exit should check for content</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="6">
+         <name>markerName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the attribute to create on appropriate navon elements</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="7">
+         <name>slotName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the slot for which the exit should check for content</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="8">
+         <name>markerName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the attribute to create on appropriate navon elements</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="9">
+         <name>slotName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the slot for which the exit should check for content</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="10">
+         <name>markerName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the attribute to create on appropriate navon elements</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="11">
+         <name>slotName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the slot for which the exit should check for content</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="12">
+         <name>markerName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the attribute to create on appropriate navon elements</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="13">
+         <name>slotName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the slot for which the exit should check for content</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="14">
+         <name>markerName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the attribute to create on appropriate navon elements</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="15">
+         <name>slotName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of the slot for which the exit should check for content</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="managednav" context="global/percussion/fastforward/managednav" deprecated="no" handler="Java" name="rxs_NavFolderCache" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Flushes an item out of the cache when it is added to or removed from a folder.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.fastforward.managednav.PSNavFolderCacheFlushEffect</initParam>
+      <interface name="com.percussion.relationship.IPSEffect"/>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="managednav" context="global/percussion/fastforward/managednav" deprecated="no" handler="Java" name="rxs_NavAddAttribute" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Adds an attribute to the Navon nodes in a Managed Navigation tree.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.fastforward.managednav.PSNavAddAttribute</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>attributeName</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the attribute to add</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="1">
+			<name>queryResource</name>
+			<dataType>java.lang.String</dataType>
+			<description>The query resource that returns the attribute, usually appname/queryresourcename</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="2">
+			<name>index</name>
+			<dataType>java.lang.String</dataType>
+			<description>The index of the column in the query resource, 1 based indexing</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="3">
+			<name>relativeLevelAttribute</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the relative level attribute. Optional. </description>
+		</PSXExtensionParamDef>						
+      <suppliedResources/>
+   </Extension>   
+   </PSXExtensionHandlerConfiguration>
+

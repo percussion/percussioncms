@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT communityrelation (relatedlinks, pagename, componentname, communityurl, communityname, communityid, cancelurl, reltypename, currentpsfirst, addurl, list* )>
+<!ELEMENT list (name, id, desc, deleteurl )>
+<!ELEMENT deleteurl (#PCDATA)>
+<!ELEMENT desc (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT addurl (#PCDATA)>
+<!ELEMENT currentpsfirst (#PCDATA)>
+<!ELEMENT reltypename (#PCDATA)>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT communityid (#PCDATA)>
+<!ELEMENT communityname (#PCDATA)>
+<!ELEMENT communityurl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXKey (CHILDACTIONID, ACTIONID )>
+<!ELEMENT ACTIONID (#PCDATA)>
+<!ELEMENT CHILDACTIONID (#PCDATA)>
+<!ELEMENT PSXMenuChild (PSXKey )>
+<!ATTLIST  PSXMenuChild childId CDATA #REQUIRED>
+<!ATTLIST  PSXMenuChild state CDATA #REQUIRED>
+<!ELEMENT PSXChildActions (PSXMenuChild+ )>
+<!ATTLIST  PSXChildActions className CDATA #IMPLIED>
+<!ATTLIST  PSXChildActions ordered CDATA #REQUIRED>
+<!ATTLIST  PSXChildActions state CDATA #REQUIRED>

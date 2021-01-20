@@ -1,0 +1,1 @@
+%~dp0/JRE/bin/java  -cp "%~dp0/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib/*;%~dp0/AppServer/server/rx/lib/*" com.percussion.tablefactory.PSJdbcTableFactory -dbimport -dbprops %~dp0/rxconfig/Installer/rxrepository.properties -storagepath %~dp0/exporteddata

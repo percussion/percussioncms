@@ -1,0 +1,13 @@
+- Name: 1copypackages
+  Class : com.percussion.service.conf.tasks.impl.PSConfigTaskFileCopy
+  RunFrequency: ON_CONTAINER_REFRESH
+  RunAtState: BEFORE_CM1_STARTUP
+  RunInEnv :
+     - DOCKER
+  Parameters:
+    Action: copy
+    Type: directory
+    Source: var/Packages
+    Destination: Packages/Percussion
+    PreserveFileDate: true
+    FailOnSourceNotFound: false

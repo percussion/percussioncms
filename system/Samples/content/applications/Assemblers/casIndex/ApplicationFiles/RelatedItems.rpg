@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT RelatedItems (displaytitle*, abstractcontent*, sys_AssemblerInfo* )>
+<!ELEMENT sys_AssemblerInfo (#PCDATA)>
+<!ELEMENT abstractcontent (#PCDATA)>
+<!ELEMENT displaytitle (#PCDATA)>

@@ -1,0 +1,82 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+
+/**
+   CSS Style for the Widget Library Widget. The visual layout of this widget is as follows:
+	+-------------------------------------------------------------+
+	|                            Header                      [x]  |
+	+-------------------------------------------------------------+
+	|                                                             |
+	|                                                             |
+	|                                                             |
+	|                                                             |
+	|                         ViewPort                            |
+	|                                                             |
+	|                                                             |
+	|                                                             |
+	|                                                            /|
+	|                                                           //|
+	+-------------------------------------------------------------+
+
+   and its HTML layout is as follows:
+
+   <div class="perc-widget-library ui-widget">
+      <div class="ui-widget-header">Widget Library <div class="perc-wlib-close-button">x</div></div>
+      <div class="perc-viewport" />
+   </div>
+
+   Inside the viewport:
+   <table class="perc-widget-library-display">
+     <tr> <td> (one widget) </td> ... </tr> 
+     ...
+   </table>
+
+   A single widget:
+   <div class="perc-widget-library-widget">
+      <img src="icon">
+      <span class="perc-widget-library-label"> ... </span>
+   </div>
+**/
+.perc-wlib-close-button { position: absolute; right: 0px; cursor: pointer; }
+.perc-widget-library { position: absolute; background: #fff; border: thin solid #330088; overflow: hidden; padding-bottom: 10px; z-index: 1000; }
+.perc-widget-library .ui-widget-header { cursor: move; }
+
+.perc-widget-library-display { position: relative; border-collapse: collapse; padding: 0; margin: 0; }
+.perc-widget-library-display td { border: 0; padding: 0; margin: 0; }
+
+.perc-widget-library-widget, .perc-widget-library-gadget { width: 150px; height: 50px; position: relative; }
+.perc-widget-library-widget img, .perc-widget-library-gadget img { position: absolute; left: 0px; }
+.perc-widget-library-widget span, .perc-widget-library-gadget span { margin-left: 50px; }
+
+.perc-widget-library-button { cursor: pointer;  }
+#perc-pageEditor-toolbar-content #perc-pageEditor-workflow-toolbar-content #perc-pageEditor-roles-toolbar-content, #perc-pageEditor-users-toolbar-content,
+#perc-pageEditor-categories-toolbar-content, #perc-pageEditor-publish-reports-toolbar-content, #perc-pageEditor-publish-servers-toolbar-content, #perc-pageEditor-edit-template-toolbar-content .ui-sortable-placeholder { display: none; }
+
+#perc-pageEditor-toolbar-content #perc-pageEditor-workflow-toolbar-content #perc-pageEditor-roles-toolbar-content, #perc-pageEditor-users-toolbar-content,
+#perc-pageEditor-categories-toolbar-content #perc-pageEditor-publish-reports-toolbar-content, #perc-pageEditor-publish-servers-toolbar-content, #perc-pageEditor-edit-template-toolbar-content .perc-widget { width: 150px; height: 50px; }
+
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

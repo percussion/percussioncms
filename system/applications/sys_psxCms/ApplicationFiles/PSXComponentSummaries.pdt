@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXLocator (CONTENTID, REVISIONID )>
+<!ELEMENT REVISIONID (#PCDATA)>
+<!ELEMENT CONTENTID (#PCDATA)>
+<!ATTLIST PSXLocator isPersisted (yes | no ) "yes">
+<!ELEMENT PSXComponentSummary (PSXLocator )>
+<!ATTLIST  PSXComponentSummary name CDATA #REQUIRED>
+<!ATTLIST  PSXComponentSummary objectType CDATA #REQUIRED>
+<!ATTLIST  PSXComponentSummary contentTypeId CDATA #REQUIRED>
+<!ATTLIST  PSXComponentSummary contentId CDATA #REQUIRED>
+<!ATTLIST  PSXComponentSummary currRevision CDATA #REQUIRED>
+<!ATTLIST  PSXComponentSummary tipRevision CDATA #REQUIRED>
+<!ATTLIST  PSXComponentSummary editRevision CDATA #REQUIRED>
+<!ATTLIST  PSXComponentSummary accessMask CDATA #IMPLIED>
+<!ELEMENT PSXComponentSummaries (PSXComponentSummary+ )>

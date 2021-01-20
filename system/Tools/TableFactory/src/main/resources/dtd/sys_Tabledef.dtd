@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+  This dtd specifies elements used to define the schema for a set of tables,
+  along with instructions for creating or updating each table. This set
+  is processed in the order in which it is specified.
+
+  Since tables may be dropped and recreated during processing, there may be
+  problems dropping tables that are referenced by foreign key constraints.
+  The solution to this is to specify the table containing the foreign key
+  constraint twice - once before the table(s) it references, excluding the
+  foreign key constraint defintion, and then again after, specifying
+  alter="y" and including just the foreign key constraint definition and
+  columns defintions for the internal columns it references. This will
+  allow both drops and creates to be processed without error. Any table
+  data provided will only be processed with the first table definition.
+-->
+<!ELEMENT tabledefset (tabledef+)>
+
+<!--
+  Specifies a single table's schema, including column, primary key, and
+  foreign keys.
+
+  Attributes:
+  name - The name of the table. This MUST be the simple table name, it will
+      be fully qualified internally.
+
+  create - Determines if the table is to be created if it does not already
+      exist, or recreated if it does already exist.
+
+      If "y", table is created if it does not aleady exist, and data is
+      inserted if supplied. If it already exists and is empty, existing
+      table is dropped and new table is created, and data is inserted if
+      supplied. If table exists and contains data, then the action taken
+      depends on the delolddata value. This is the default action if this
+      attribute is not specified.
+
+      If "n", table is only altered and/or data modified if it already exists.
+
+  delolddata - If the table exists and create = "y", this value is used to
+      determine the action taken. If the table does not exist, exists but
+      is empty, or if create = "n", then this value is ignored. Otherwise:
+
+      If "y", table is dropped, recreated, and data is inserted if
+      supplied.
+
+      If "n", and table has data, then backup of table is made, new table
+      is created, and data from the backup is copied to the new table. If
+      the creation of the new table fails, the backup is restored. Then any
+      data modifications supplied are processed. This is the default action
+      if this attribute is not specified.
+
+  alter - Determines if the child elements of the table are to be treated as
+      the complete schema definition, or only the changes to be made. This
+      value is ignored if create = "y".
+
+      If "y", then the elements supplied are treated as changes. Each
+      element (column, primary key, foreign key) are handled based
+      on their action attribute. Any data modifications specified will be
+      ignored (a message will be logged that they are being skipped).
+
+      If "n", then a the full table schema must be provided, and the action
+      attribute of each element is ignored.
+
+  allowSchemaChanges - Specifies whether or not table schema changes are
+      allowed or not. Optional, defaults to "y".
+
+      If "y" or not specified, schema changes are allowed and depend on the
+      attribute settings of this element.
+
+      If "n", schema changes are not allowed. This overwrites all attributes
+      regarding schema changes in this element.
+-->
+<!ELEMENT tabledef (rowdef, primarykey?, foreignkey?, updatekey?, indexdefinitions?)>
+<!ATTLIST tabledef
+	name CDATA #REQUIRED
+	create (y | n) "y"
+	delolddata (y | n) "n"
+	alter (y | n) "n"
+   allowSchemaChanges (y | n) "y"
+>
+
+<!--
+  Container for each of the column definitions for this table.
+-->
+<!ELEMENT rowdef (columndef+)>
+
+<!--
+  Container for each column that is part of the primary key.
+
+  Attributes:
+  action - The action to take:
+      c: create - primary key is created if it does not already exist
+      r: replace - existing primary key is removed and then re-created.
+      d: delete - existing primary key is removed.
+      n: none - no action taken.
+
+  name - The name of the constraint (optional). Should be provided if the
+      table name is more than 15 characters, and should be no more than 18
+      characters to ensure compatiblity with all databases.
+-->
+<!ELEMENT primarykey (name+)>
+<!ATTLIST primarykey
+	action (c | r | d | n) "c"
+	name CDATA #IMPLIED
+>
+
+<!--
+  Container for each column that is part of the foreign key.
+
+  Attributes:
+  action - The action to take:
+      c: create - foreign key is created if it does not already exist
+      r: replace - existing foreign key is removed and then re-created.
+      d: delete - existing foreign key is removed.
+      n: none - no action taken.
+-->
+<!ELEMENT foreignkey (fkColumn+)>
+<!ATTLIST foreignkey
+	action (c | r | d | n) "c"
+>
+
+<!--
+  Container for a list of unique index or constraint defintions.
+-->
+<!ELEMENT indexdefinitions (index+)>
+
+<!--
+  Container for each column that is part of the update key, used instead
+  of the primary key columns if defined.
+-->
+<!ELEMENT updatekey (name+)>
+
+<!--
+  Defines a column as part of a row.  Sub-elements are used
+  only when creating the column as part of a row.
+
+  Attributes:
+  name - The name of the column. This MUST be the simple column name, it will
+      be fully qualified internally.
+  action - The action to take for this column:
+      c: create - column is created if it does not already exist
+      r: replace - existing column is removed and then re-created.
+      d: delete - existing column is removed.
+      n: none - no action taken.
+
+  Sequence columns are used when adding key sequences to the target data.
+-->
+<!ELEMENT columndef (jdbctype, size?, allowsnull, scale?, defaultvalue?, sequence?)>
+<!ATTLIST columndef
+	name CDATA #REQUIRED
+	action (c | r | d | n) "c"
+>
+
+<!--
+   The sequence element contains the name of the sequence used to generate
+   this column. This element will normally be used with primary key columns.
+   For databases such as Sybase that support IDENTITY columns, a non-null
+   value for SEQUENCE indicates that this is an IDENTITY column.
+-->
+<!ELEMENT sequence (#PCDATA)>
+
+<!--
+  Container for each column that is part of a unique index or constraint.
+  This is used to represent both a unique index and a unique constraint
+  in a table schema, and the action to perform when that table schema is
+  used to create or modify a table.  Unique indexes and unique constriants
+  are considered to be interchangeable, and in most dbms systems, unique
+  constraints are implemented using unique indexes.  When a table is
+  cataloged, all unique index columns are queried to construct this
+  object.  If this object is being created in the database as a result of
+  processing a table schema,  it is created as a unique constraint.
+
+  Attributes:
+  action - The action to take:
+      c: create - constraint is created if it does not already exist
+      r: replace - existing constraint is removed and then re-created.
+      d: delete - existing constraint is removed.
+      n: none - no action taken.
+-->
+<!ELEMENT index (name+)>
+<!ATTLIST index
+	action (c | r | d | n) "c"
+>
+
+
+<!--
+  The jdbctype of the column. Must be a valid string representation of a
+  valid jdbctype.
+-->
+<!ELEMENT jdbctype (#PCDATA)>
+
+<!--
+  size = the length of the data type. This value will be interperated slightly
+  differently for each data type: number of characters for a string value,
+  number of bytes for a LOB value, or number of digits (precision) for a
+  numeric value. If this value is not supplied for a data type that supports
+  size, the data type map will provide a default value.
+-->
+<!ELEMENT size (#PCDATA)>
+
+<!--
+  scale = the number of digits to the right of the decimal point in numeric
+  data types. If this value is not supplied for a data type that supports
+  scale, the data type map will provide a default value.
+-->
+<!ELEMENT scale (#PCDATA)>
+
+<!--
+  If "yes" then field will be created to allow null values. If "no", it
+  will be created to required non-null values.
+-->
+<!ELEMENT allowsnull (#PCDATA)>
+
+<!--
+  If adding a column to an existing table, this will be used as the value.
+  This is not set as the default value in the columns definition in the
+  database.
+-->
+<!ELEMENT defaultvalue (#PCDATA)>
+
+<!--
+  Defines a column that is part of a foreign key constraint. Defines
+  the name of the column, the name of the external table, and the
+  name of the column in the external table.
+-->
+<!ELEMENT fkColumn (name, externalTable, externalColumn)>
+
+<!--
+  The name of a column that is part of a primary key, or foreign key column.
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!--
+  The name of the external table that contains the external column
+  referenced in a foreign key constraint.
+-->
+<!ELEMENT externalTable (#PCDATA)>
+
+<!--
+  The name of external column that is part of a foreign key constraint.
+-->
+<!ELEMENT externalColumn (#PCDATA)>

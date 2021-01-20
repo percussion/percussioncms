@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication id="444" active="no" hidden="no" enabled="yes" version="2.0">
+   <name>rx_ceFile</name>
+   <description/>
+   <requestRoot>rx_ceFile</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/_rxmaster_1002212723659/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20011005T100240640</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="6">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20011102T150349234</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="user">
+         <name>Anonymous</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataQuery="no" dataCreate="no" dataUpdate="no" dataDelete="no" designRead="no" designUpdate="no" designDelete="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataQuery="yes" dataCreate="yes" dataUpdate="yes" dataDelete="yes" designRead="yes" designUpdate="yes" designDelete="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>-1</maxThreads>
+   <maxRequestTime>-1</maxRequestTime>
+   <maxRequestsInQueue>-1</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>1</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="61">
+      <name>purge</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXUpdatePipe id="1029">
+         <name>UpdatePipe</name>
+         <description/>
+         <PSXBackEndDataTank id="1028">
+            <PSXBackEndTable id="1027">
+               <alias>RXFILE</alias>
+               <driver>inetdae7</driver>
+               <server>JB</server>
+               <database>rxmaster</database>
+               <origin>dbo</origin>
+               <table>RXFILE</table>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="1025" returnEmptyXml="no">
+            <PSXDataMapping id="0" groupId="1">
+               <PSXHtmlParameter id="0">
+                  <name>sys_contentid</name>
+               </PSXHtmlParameter>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXFILE</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSynchronizer id="1026" allowInserts="no" allowUpdates="no" allowDeletes="yes">
+            <PSXUpdateColumn id="0" isKey="yes" isEditable="no">
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXFILE</tableAlias>
+                  <column>CONTENTID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </PSXUpdateColumn>
+         </PSXDataSynchronizer>
+      </PSXUpdatePipe>
+      <PSXPageDataTank id="60">
+         <schemaSource>file:Rx40_RXFILE.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor id="0" directDataStream="no">
+         <requestPage>purge</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+         </MimeProperties>
+      </PSXRequestor>
+   </PSXDataSet>
+   <PSXContentEditor contentType="5" workflowId="1">
+      <PSXDataSet id="64">
+         <name>file</name>
+         <description/>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cdPipe</name>
+            <description/>
+            <InputDataExits>
+               <PSXExtensionCallSet id="62">
+                  <PSXExtensionCall id="0">
+                     <name>Java/global/percussion/generic/sys_FileInfo</name>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <driver>inetdae7</driver>
+                        <server>JB</server>
+                        <userId>sa</userId>
+                        <password encrypted="yes"/>
+                     </PSXBackEndCredential>
+                     <Database>rxmaster</Database>
+                     <Origin>dbo</Origin>
+                  </PSXTableLocator>
+                  <PSXTableRef name="RXFILE" alias="RXFILE"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="main" type="parent" repeatability="zeroOrMore" supportsSequencing="yes">
+                  <PSXField name="filedescription" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXFILE</tableAlias>
+                           <column>FILEDESCRIPTION</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="fileupload_type" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXFILE</tableAlias>
+                           <column>MIMETYPE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>128</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="fileupload_size" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXFILE</tableAlias>
+                           <column>FILESIZE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="fileupload_filename" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXFILE</tableAlias>
+                           <column>FILENAME</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="abstractcontent" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXFILE</tableAlias>
+                           <column>ABSTRACTCONTENT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="fileupload" showInSummary="no" showInPreview="yes" forceBinary="yes" type="local" clearBinaryParam="yes">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXFILE</tableAlias>
+                           <column>FILEDATA</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>binary</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="displaytitle" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXFILE</tableAlias>
+                           <column>DISPLAYTITLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>100</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="iconsrc" showInSummary="yes" showInPreview="no" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXFILE</tableAlias>
+                           <column>ICONSRC</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>128</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+                  <PSXField name="fileupload_ext" showInSummary="yes" showInPreview="yes" forceBinary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXFILE</tableAlias>
+                           <column>FILEEXTENSION</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>25</DataFormat>
+                     <OccurrenceSettings dimension="optional" multiValuedType="delimited" delimiter=";"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper id="0" fieldSetRef="main">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet accessKey="T">
+                           <Label>
+                              <PSXDisplayText>Content Title:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentstartdate</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef name="sys_CalendarSimple"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_contentexpirydate</FieldRef>
+                        <PSXUISet>
+                           <PSXControlRef name="sys_CalendarSimple"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_reminderdate</FieldRef>
+                        <PSXUISet accessKey="R">
+                           <Label>
+                              <PSXDisplayText>Reminder Date:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_CalendarSimple"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>fileupload</FieldRef>
+                        <PSXUISet accessKey="O">
+                           <Label>
+                              <PSXDisplayText>File Upload:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_File">
+                              <PSXParam name="clearBinaryParam">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="1">
+                                       <text>fileupload_clear</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>displaytitle</FieldRef>
+                        <PSXUISet accessKey="D">
+                           <Label>
+                              <PSXDisplayText>Display Title:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>filedescription</FieldRef>
+                        <PSXUISet accessKey="B">
+                           <Label>
+                              <PSXDisplayText>File Description:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>abstractcontent</FieldRef>
+                        <PSXUISet accessKey="W">
+                           <Label>
+                              <PSXDisplayText>Abstract:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>iconsrc</FieldRef>
+                        <PSXUISet accessKey="Y">
+                           <Label>
+                              <PSXDisplayText>Icon Source:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_DropDownSingle"/>
+                           <PSXChoices type="global" sortOrder="ascending">
+                              <Key>8</Key>
+                              <PSXNullEntry sortOrder="first" includeWhen="onlyIfNull">
+                                 <PSXEntry sequence="0" default="no">
+                                    <PSXDisplayText>-- Choose --</PSXDisplayText>
+                                    <Value>0</Value>
+                                 </PSXEntry>
+                              </PSXNullEntry>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>fileupload_filename</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Original File Name:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="2">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>fileupload_type</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Mime Type:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="2">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>fileupload_size</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>File Size (in bytes):</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef name="sys_EditBox"/>
+                           <ReadOnlyRules>
+                              <PSXRule boolean="and">
+                                 <PSXConditional id="2">
+                                    <variable>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </variable>
+                                    <operator>=</operator>
+                                    <value>
+                                       <PSXTextLiteral id="0">
+                                          <text>1</text>
+                                       </PSXTextLiteral>
+                                    </value>
+                                    <boolean>AND</boolean>
+                                 </PSXConditional>
+                              </PSXRule>
+                           </ReadOnlyRules>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>fileupload_ext</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText/>
+                           </Label>
+                           <PSXControlRef name="sys_HiddenInput"/>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+         </PSXContentEditorPipe>
+         <PSXPageDataTank id="63">
+            <schemaSource>file:file.xml</schemaSource>
+            <actionTypeXmlField/>
+         </PSXPageDataTank>
+         <PSXRequestor id="0" directDataStream="no">
+            <requestPage>file</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <SectionLinkList>
+         <PSXUrlRequest name="bannerincludeurl">
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/generic/sys_MakeIntLink</name>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>../sys_ComponentSupport/component.xml</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>sys_componentname</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>cmp_banner</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+            </PSXExtensionCall>
+         </PSXUrlRequest>
+         <PSXUrlRequest name="userstatusincludeurl">
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/generic/sys_MakeIntLink</name>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>../sys_ComponentSupport/component.xml</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>sys_componentname</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>cmp_userstatus</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+            </PSXExtensionCall>
+         </PSXUrlRequest>
+         <PSXUrlRequest name="helpincludeurl">
+            <PSXExtensionCall id="0">
+               <name>Java/global/percussion/generic/sys_MakeIntLink</name>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>../sys_ComponentSupport/component.xml</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>sys_componentname</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+               <PSXExtensionParamValue id="0">
+                  <value>
+                     <PSXTextLiteral id="0">
+                        <text>ca_help</text>
+                     </PSXTextLiteral>
+                  </value>
+               </PSXExtensionParamValue>
+            </PSXExtensionCall>
+         </PSXUrlRequest>
+      </SectionLinkList>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+   </PSXContentEditor>
+   <PSXLogger id="0" logErrors="no" logServerStartStop="no" logAppStartStop="yes" logAppStatistics="no" logExecutionPlan="no" logBasicUserActivity="no" logDetailedUserActivity="no" logFullUserActivity="no" logMultipleHandlers="no"/>
+   <PSXTraceInfo id="0" traceEnabled="no" traceOutputColumnWidth="80" traceTimestampOnlyEnabled="no" traceBasicRequestInfo="no" traceInitHttpVar="no" traceFileInfo="no" traceAppHandlerProc="no" traceAppSecurity="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceMapper="no" traceSessionInfo="no" traceDbPool="no" traceExitProc="no" traceExitExec="no" tracePostExitXml="no" tracePostExitCgi="no" traceOutputConv="no" traceResultSet="no" traceConditionalEval="no"/>
+   <PSXErrorWebPages id="58" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="59">
+      <providerType>SMTP</providerType>
+      <server>JB</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="locationY58">55</userProperty>
+   <userProperty name="locationY57">10</userProperty>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="pageDatatankFilePath63">C:\Rhythmyx40\rx_ceFile\src\file.xml</userProperty>
+   <userProperty name="locationY64">182</userProperty>
+   <userProperty name="locationX59">16</userProperty>
+   <userProperty name="locationY63">0</userProperty>
+   <userProperty name="locationX58">16</userProperty>
+   <userProperty name="locationY62">22</userProperty>
+   <userProperty name="locationX57">16</userProperty>
+   <userProperty name="locationY61">305</userProperty>
+   <userProperty name="schemaSourceReadOnly63">true</userProperty>
+   <userProperty name="schemaSourceReadOnly60">true</userProperty>
+   <userProperty name="pageDatatankSrcType63">1</userProperty>
+   <userProperty name="pageDatatankSrcType60">3</userProperty>
+   <userProperty name="locationX64">161</userProperty>
+   <userProperty name="locationX63">0</userProperty>
+   <userProperty name="locationX62">10</userProperty>
+   <userProperty name="locationX61">333</userProperty>
+   <userProperty name="locationY59">100</userProperty>
+</PSXApplication>

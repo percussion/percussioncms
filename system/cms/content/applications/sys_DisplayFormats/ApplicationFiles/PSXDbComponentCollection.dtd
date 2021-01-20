@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT PSXDisplayFormat (PSXKey, DISPLAYNAME, DISPLAYTYPE, INTERNALNAME, DESCRIPTION, VERSION, PSXDFColumns, PSX_PROPERTIES )>
+<!ELEMENT PSX_PROPERTIES EMPTY>
+<!ATTLIST  PSX_PROPERTIES url CDATA #REQUIRED>
+<!ELEMENT PSXDisplayColumn (PSXKey, Description, RenderType )>
+<!ELEMENT RenderType (#PCDATA)>
+<!ELEMENT Description (#PCDATA)>
+<!ATTLIST PSXDisplayColumn sortOrder (ascending | descending ) "ascending">
+<!ATTLIST  PSXDisplayColumn groupingType CDATA #IMPLIED>
+<!ATTLIST  PSXDisplayColumn displayName CDATA #IMPLIED>
+<!ATTLIST  PSXDisplayColumn sequence CDATA #IMPLIED>
+<!ATTLIST  PSXDisplayColumn state CDATA #REQUIRED>
+<!ELEMENT PSXDFColumns (PSXDisplayColumn+ )>
+<!ATTLIST  PSXDFColumns state CDATA #REQUIRED>
+<!ATTLIST PSXDFColumns ordered (yes | no ) "no">
+<!ATTLIST  PSXDFColumns className CDATA #REQUIRED>
+<!ELEMENT DESCRIPTION (#PCDATA)>
+<!ELEMENT INTERNALNAME (#PCDATA)>
+<!ELEMENT DISPLAYTYPE (#PCDATA)>
+<!ELEMENT DISPLAYNAME (#PCDATA)>
+<!ELEMENT VERSION (#PCDATA)>
+<!ELEMENT PSXKey (SOURCE, DISPLAYID )>
+<!ELEMENT DISPLAYID (#PCDATA)>
+<!ELEMENT SOURCE (#PCDATA)>
+<!ATTLIST PSXKey isPersisted (yes | no ) "yes">
+<!ATTLIST  PSXDisplayFormat state CDATA #REQUIRED>
+<!ELEMENT PSXDbComponentCollection (PSXDisplayFormat+ )>
+<!ATTLIST  PSXDbComponentCollection state CDATA #REQUIRED>
+<!ATTLIST  PSXDbComponentCollection ordered CDATA #REQUIRED>
+<!ATTLIST  PSXDbComponentCollection className CDATA #REQUIRED>

@@ -1,0 +1,1546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXExportDescriptor archiveType="normal">
+   <PSXDescriptor name="FF6_Communities_66">
+      <Description>MSM Archive for Communities</Description>
+   </PSXDescriptor>
+   <Packages>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1003" dependencyType="Shared" displayName="Corporate_Investments" isIncluded="yes" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1003" dependencyType="Local" displayName="Corporate_Investments" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="117" dependencyType="Shared" displayName="ca_all_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="118" dependencyType="Shared" displayName="ca_all_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="24" dependencyType="Shared" displayName="ca_byauthor" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="55" dependencyType="Shared" displayName="ca_byauthor_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="48" dependencyType="Shared" displayName="ca_bypublic" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="57" dependencyType="Shared" displayName="ca_bypublic_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="23" dependencyType="Shared" displayName="ca_bystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="54" dependencyType="Shared" displayName="ca_bystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="22" dependencyType="Shared" displayName="ca_bytype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="53" dependencyType="Shared" displayName="ca_bytype_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="120" dependencyType="Shared" displayName="ca_communitycontent_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="121" dependencyType="Shared" displayName="ca_communitycontent_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="103" dependencyType="Shared" displayName="ca_communitycontentbyauthor" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="113" dependencyType="Shared" displayName="ca_communitycontentbyauthor_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="104" dependencyType="Shared" displayName="ca_communitycontentbypublic" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="114" dependencyType="Shared" displayName="ca_communitycontentbypublic_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="102" dependencyType="Shared" displayName="ca_communitycontentbystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="112" dependencyType="Shared" displayName="ca_communitycontentbystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="101" dependencyType="Shared" displayName="ca_communitycontentbytype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="111" dependencyType="Shared" displayName="ca_communitycontentbytype_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="59" dependencyType="Shared" displayName="ca_deletecontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="58" dependencyType="Shared" displayName="ca_help" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="20" dependencyType="Shared" displayName="ca_inbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="51" dependencyType="Shared" displayName="ca_inbox_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="115" dependencyType="Shared" displayName="ca_inbox_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="116" dependencyType="Shared" displayName="ca_inbox_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="119" dependencyType="Shared" displayName="ca_inbox_session" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="122" dependencyType="Shared" displayName="ca_inbox_session_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="6" dependencyType="Shared" displayName="ca_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="21" dependencyType="Shared" displayName="ca_outbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="52" dependencyType="Shared" displayName="ca_outbox_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="25" dependencyType="Shared" displayName="ca_purge_bystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="56" dependencyType="Shared" displayName="ca_purge_bystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="68" dependencyType="Shared" displayName="ca_savedsearches" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="67" dependencyType="Shared" displayName="ca_savesearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="73" dependencyType="Shared" displayName="ca_search" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7" dependencyType="Shared" displayName="ca_searchbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="91" dependencyType="Shared" displayName="ca_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="86" dependencyType="Shared" displayName="ce_banner" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="84" dependencyType="Shared" displayName="ce_contentstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="87" dependencyType="Shared" displayName="ce_help" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="85" dependencyType="Shared" displayName="ce_history" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="81" dependencyType="Shared" displayName="ce_main" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="88" dependencyType="Shared" displayName="ce_relatedcontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="82" dependencyType="Shared" displayName="ce_userstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="89" dependencyType="Shared" displayName="ce_variantlist" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="83" dependencyType="Shared" displayName="ce_workflow" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="CI_Members" dependencyType="Shared" displayName="CI_Members" isIncluded="yes" objectType="RoleDef" objectTypeName="Role" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="2" dependencyType="Shared" displayName="cmp_banner" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="4" dependencyType="Shared" displayName="cmp_ca_allcontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="100" dependencyType="Shared" displayName="cmp_ca_communitycontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="19" dependencyType="Shared" displayName="cmp_ca_deletecontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="3" dependencyType="Shared" displayName="cmp_ca_mycontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="5" dependencyType="Shared" displayName="cmp_ca_newcontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="90" dependencyType="Shared" displayName="cmp_ca_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="12" dependencyType="Shared" displayName="cmp_pub_contentlists" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="62" dependencyType="Shared" displayName="cmp_pub_context" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="49" dependencyType="Shared" displayName="cmp_pub_deletelog" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="11" dependencyType="Shared" displayName="cmp_pub_editions" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="9" dependencyType="Shared" displayName="cmp_pub_publishers" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="13" dependencyType="Shared" displayName="cmp_pub_publogs" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="10" dependencyType="Shared" displayName="cmp_pub_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="65" dependencyType="Shared" displayName="cmp_pub_variables" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="124" dependencyType="Shared" displayName="cmp_sys_autotranslation" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="75" dependencyType="Shared" displayName="cmp_sys_communities" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="69" dependencyType="Shared" displayName="cmp_sys_components" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="17" dependencyType="Shared" displayName="cmp_sys_contenttype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="16" dependencyType="Shared" displayName="cmp_sys_keywords" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="15" dependencyType="Shared" displayName="cmp_sys_slots" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="74" dependencyType="Shared" displayName="cmp_usercommunity" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="cmp_userstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="123" dependencyType="Shared" displayName="cx_main" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="126" dependencyType="Shared" displayName="item_action_panel" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="33" dependencyType="Shared" displayName="pub_contentlistsbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="66" dependencyType="Shared" displayName="pub_variablesbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="61" dependencyType="Shared" displayName="rcsearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="60" dependencyType="Shared" displayName="rx_administrator" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="125" dependencyType="Shared" displayName="sys_atconfiguration" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="41" dependencyType="Shared" displayName="sys_cassltbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="42" dependencyType="Shared" displayName="sys_cectbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="43" dependencyType="Shared" displayName="sys_cekwbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="72" dependencyType="Shared" displayName="sys_cmpsearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="76" dependencyType="Shared" displayName="sys_commbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="71" dependencyType="Shared" displayName="sys_compbyid" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="70" dependencyType="Shared" displayName="sys_compbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="14" dependencyType="Shared" displayName="sys_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="18" dependencyType="Shared" displayName="sys_variants" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="46" dependencyType="Shared" displayName="wf_all" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="44" dependencyType="Shared" displayName="wf_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="47" dependencyType="Shared" displayName="wf_preview" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="45" dependencyType="Shared" displayName="wf_workflows" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1004" dependencyType="Shared" displayName="Corporate_Investments_Admin" isIncluded="yes" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1004" dependencyType="Local" displayName="Corporate_Investments_Admin" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="117" dependencyType="Shared" displayName="ca_all_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="118" dependencyType="Shared" displayName="ca_all_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="24" dependencyType="Shared" displayName="ca_byauthor" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="55" dependencyType="Shared" displayName="ca_byauthor_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="48" dependencyType="Shared" displayName="ca_bypublic" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="57" dependencyType="Shared" displayName="ca_bypublic_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="23" dependencyType="Shared" displayName="ca_bystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="54" dependencyType="Shared" displayName="ca_bystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="22" dependencyType="Shared" displayName="ca_bytype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="53" dependencyType="Shared" displayName="ca_bytype_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="120" dependencyType="Shared" displayName="ca_communitycontent_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="121" dependencyType="Shared" displayName="ca_communitycontent_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="103" dependencyType="Shared" displayName="ca_communitycontentbyauthor" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="113" dependencyType="Shared" displayName="ca_communitycontentbyauthor_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="104" dependencyType="Shared" displayName="ca_communitycontentbypublic" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="114" dependencyType="Shared" displayName="ca_communitycontentbypublic_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="102" dependencyType="Shared" displayName="ca_communitycontentbystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="112" dependencyType="Shared" displayName="ca_communitycontentbystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="101" dependencyType="Shared" displayName="ca_communitycontentbytype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="111" dependencyType="Shared" displayName="ca_communitycontentbytype_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="59" dependencyType="Shared" displayName="ca_deletecontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="58" dependencyType="Shared" displayName="ca_help" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="20" dependencyType="Shared" displayName="ca_inbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="51" dependencyType="Shared" displayName="ca_inbox_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="115" dependencyType="Shared" displayName="ca_inbox_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="116" dependencyType="Shared" displayName="ca_inbox_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="119" dependencyType="Shared" displayName="ca_inbox_session" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="122" dependencyType="Shared" displayName="ca_inbox_session_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="6" dependencyType="Shared" displayName="ca_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="21" dependencyType="Shared" displayName="ca_outbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="52" dependencyType="Shared" displayName="ca_outbox_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="25" dependencyType="Shared" displayName="ca_purge_bystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="56" dependencyType="Shared" displayName="ca_purge_bystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="68" dependencyType="Shared" displayName="ca_savedsearches" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="67" dependencyType="Shared" displayName="ca_savesearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="73" dependencyType="Shared" displayName="ca_search" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7" dependencyType="Shared" displayName="ca_searchbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="91" dependencyType="Shared" displayName="ca_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="86" dependencyType="Shared" displayName="ce_banner" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="84" dependencyType="Shared" displayName="ce_contentstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="87" dependencyType="Shared" displayName="ce_help" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="85" dependencyType="Shared" displayName="ce_history" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="81" dependencyType="Shared" displayName="ce_main" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="88" dependencyType="Shared" displayName="ce_relatedcontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="82" dependencyType="Shared" displayName="ce_userstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="89" dependencyType="Shared" displayName="ce_variantlist" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="83" dependencyType="Shared" displayName="ce_workflow" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="CI_Admin_Members" dependencyType="Shared" displayName="CI_Admin_Members" isIncluded="yes" objectType="RoleDef" objectTypeName="Role" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="2" dependencyType="Shared" displayName="cmp_banner" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="4" dependencyType="Shared" displayName="cmp_ca_allcontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="100" dependencyType="Shared" displayName="cmp_ca_communitycontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="19" dependencyType="Shared" displayName="cmp_ca_deletecontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="3" dependencyType="Shared" displayName="cmp_ca_mycontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="5" dependencyType="Shared" displayName="cmp_ca_newcontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="90" dependencyType="Shared" displayName="cmp_ca_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="12" dependencyType="Shared" displayName="cmp_pub_contentlists" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="62" dependencyType="Shared" displayName="cmp_pub_context" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="49" dependencyType="Shared" displayName="cmp_pub_deletelog" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="11" dependencyType="Shared" displayName="cmp_pub_editions" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="9" dependencyType="Shared" displayName="cmp_pub_publishers" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="13" dependencyType="Shared" displayName="cmp_pub_publogs" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="10" dependencyType="Shared" displayName="cmp_pub_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="65" dependencyType="Shared" displayName="cmp_pub_variables" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="124" dependencyType="Shared" displayName="cmp_sys_autotranslation" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="75" dependencyType="Shared" displayName="cmp_sys_communities" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="69" dependencyType="Shared" displayName="cmp_sys_components" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="17" dependencyType="Shared" displayName="cmp_sys_contenttype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="16" dependencyType="Shared" displayName="cmp_sys_keywords" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="15" dependencyType="Shared" displayName="cmp_sys_slots" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="74" dependencyType="Shared" displayName="cmp_usercommunity" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="cmp_userstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="123" dependencyType="Shared" displayName="cx_main" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="126" dependencyType="Shared" displayName="item_action_panel" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="33" dependencyType="Shared" displayName="pub_contentlistsbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="66" dependencyType="Shared" displayName="pub_variablesbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="61" dependencyType="Shared" displayName="rcsearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="60" dependencyType="Shared" displayName="rx_administrator" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="125" dependencyType="Shared" displayName="sys_atconfiguration" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="41" dependencyType="Shared" displayName="sys_cassltbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="42" dependencyType="Shared" displayName="sys_cectbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="43" dependencyType="Shared" displayName="sys_cekwbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="72" dependencyType="Shared" displayName="sys_cmpsearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="76" dependencyType="Shared" displayName="sys_commbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="71" dependencyType="Shared" displayName="sys_compbyid" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="70" dependencyType="Shared" displayName="sys_compbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="14" dependencyType="Shared" displayName="sys_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="18" dependencyType="Shared" displayName="sys_variants" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="46" dependencyType="Shared" displayName="wf_all" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="44" dependencyType="Shared" displayName="wf_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="47" dependencyType="Shared" displayName="wf_preview" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="45" dependencyType="Shared" displayName="wf_workflows" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1002" dependencyType="Shared" displayName="Enterprise_Investments" isIncluded="yes" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1002" dependencyType="Local" displayName="Enterprise_Investments" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="117" dependencyType="Shared" displayName="ca_all_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="118" dependencyType="Shared" displayName="ca_all_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="24" dependencyType="Shared" displayName="ca_byauthor" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="55" dependencyType="Shared" displayName="ca_byauthor_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="48" dependencyType="Shared" displayName="ca_bypublic" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="57" dependencyType="Shared" displayName="ca_bypublic_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="23" dependencyType="Shared" displayName="ca_bystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="54" dependencyType="Shared" displayName="ca_bystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="22" dependencyType="Shared" displayName="ca_bytype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="53" dependencyType="Shared" displayName="ca_bytype_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="120" dependencyType="Shared" displayName="ca_communitycontent_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="121" dependencyType="Shared" displayName="ca_communitycontent_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="103" dependencyType="Shared" displayName="ca_communitycontentbyauthor" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="113" dependencyType="Shared" displayName="ca_communitycontentbyauthor_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="104" dependencyType="Shared" displayName="ca_communitycontentbypublic" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="114" dependencyType="Shared" displayName="ca_communitycontentbypublic_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="102" dependencyType="Shared" displayName="ca_communitycontentbystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="112" dependencyType="Shared" displayName="ca_communitycontentbystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="101" dependencyType="Shared" displayName="ca_communitycontentbytype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="111" dependencyType="Shared" displayName="ca_communitycontentbytype_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="59" dependencyType="Shared" displayName="ca_deletecontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="58" dependencyType="Shared" displayName="ca_help" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="20" dependencyType="Shared" displayName="ca_inbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="51" dependencyType="Shared" displayName="ca_inbox_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="115" dependencyType="Shared" displayName="ca_inbox_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="116" dependencyType="Shared" displayName="ca_inbox_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="119" dependencyType="Shared" displayName="ca_inbox_session" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="122" dependencyType="Shared" displayName="ca_inbox_session_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="6" dependencyType="Shared" displayName="ca_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="21" dependencyType="Shared" displayName="ca_outbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="52" dependencyType="Shared" displayName="ca_outbox_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="25" dependencyType="Shared" displayName="ca_purge_bystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="56" dependencyType="Shared" displayName="ca_purge_bystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="68" dependencyType="Shared" displayName="ca_savedsearches" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="67" dependencyType="Shared" displayName="ca_savesearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="73" dependencyType="Shared" displayName="ca_search" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7" dependencyType="Shared" displayName="ca_searchbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="91" dependencyType="Shared" displayName="ca_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="86" dependencyType="Shared" displayName="ce_banner" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="84" dependencyType="Shared" displayName="ce_contentstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="87" dependencyType="Shared" displayName="ce_help" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="85" dependencyType="Shared" displayName="ce_history" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="81" dependencyType="Shared" displayName="ce_main" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="88" dependencyType="Shared" displayName="ce_relatedcontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="82" dependencyType="Shared" displayName="ce_userstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="89" dependencyType="Shared" displayName="ce_variantlist" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="83" dependencyType="Shared" displayName="ce_workflow" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="2" dependencyType="Shared" displayName="cmp_banner" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="4" dependencyType="Shared" displayName="cmp_ca_allcontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="100" dependencyType="Shared" displayName="cmp_ca_communitycontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="19" dependencyType="Shared" displayName="cmp_ca_deletecontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="3" dependencyType="Shared" displayName="cmp_ca_mycontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="5" dependencyType="Shared" displayName="cmp_ca_newcontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="90" dependencyType="Shared" displayName="cmp_ca_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="12" dependencyType="Shared" displayName="cmp_pub_contentlists" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="62" dependencyType="Shared" displayName="cmp_pub_context" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="49" dependencyType="Shared" displayName="cmp_pub_deletelog" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="11" dependencyType="Shared" displayName="cmp_pub_editions" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="9" dependencyType="Shared" displayName="cmp_pub_publishers" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="13" dependencyType="Shared" displayName="cmp_pub_publogs" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="10" dependencyType="Shared" displayName="cmp_pub_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="65" dependencyType="Shared" displayName="cmp_pub_variables" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="124" dependencyType="Shared" displayName="cmp_sys_autotranslation" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="75" dependencyType="Shared" displayName="cmp_sys_communities" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="69" dependencyType="Shared" displayName="cmp_sys_components" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="17" dependencyType="Shared" displayName="cmp_sys_contenttype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="16" dependencyType="Shared" displayName="cmp_sys_keywords" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="15" dependencyType="Shared" displayName="cmp_sys_slots" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="74" dependencyType="Shared" displayName="cmp_usercommunity" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="cmp_userstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="123" dependencyType="Shared" displayName="cx_main" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="EI_Members" dependencyType="Shared" displayName="EI_Members" isIncluded="yes" objectType="RoleDef" objectTypeName="Role" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="33" dependencyType="Shared" displayName="pub_contentlistsbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="66" dependencyType="Shared" displayName="pub_variablesbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="61" dependencyType="Shared" displayName="rcsearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="60" dependencyType="Shared" displayName="rx_administrator" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="125" dependencyType="Shared" displayName="sys_atconfiguration" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="41" dependencyType="Shared" displayName="sys_cassltbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="42" dependencyType="Shared" displayName="sys_cectbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="43" dependencyType="Shared" displayName="sys_cekwbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="72" dependencyType="Shared" displayName="sys_cmpsearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="76" dependencyType="Shared" displayName="sys_commbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="71" dependencyType="Shared" displayName="sys_compbyid" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="70" dependencyType="Shared" displayName="sys_compbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="14" dependencyType="Shared" displayName="sys_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="18" dependencyType="Shared" displayName="sys_variants" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="46" dependencyType="Shared" displayName="wf_all" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="44" dependencyType="Shared" displayName="wf_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="47" dependencyType="Shared" displayName="wf_preview" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="45" dependencyType="Shared" displayName="wf_workflows" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+      <PSXDeployableElement>
+         <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1001" dependencyType="Shared" displayName="Enterprise_Investments_Admin" isIncluded="yes" objectType="Community" objectTypeName="Community" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+            <Dependencies>
+               <PSXDeployableObject>
+                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1001" dependencyType="Local" displayName="Enterprise_Investments_Admin" isIncluded="yes" objectType="CommunityDef" objectTypeName="Community Definition" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                     <Dependencies>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="117" dependencyType="Shared" displayName="ca_all_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="118" dependencyType="Shared" displayName="ca_all_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="24" dependencyType="Shared" displayName="ca_byauthor" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="55" dependencyType="Shared" displayName="ca_byauthor_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="48" dependencyType="Shared" displayName="ca_bypublic" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="57" dependencyType="Shared" displayName="ca_bypublic_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="23" dependencyType="Shared" displayName="ca_bystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="54" dependencyType="Shared" displayName="ca_bystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="22" dependencyType="Shared" displayName="ca_bytype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="53" dependencyType="Shared" displayName="ca_bytype_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="120" dependencyType="Shared" displayName="ca_communitycontent_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="121" dependencyType="Shared" displayName="ca_communitycontent_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="103" dependencyType="Shared" displayName="ca_communitycontentbyauthor" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="113" dependencyType="Shared" displayName="ca_communitycontentbyauthor_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="104" dependencyType="Shared" displayName="ca_communitycontentbypublic" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="114" dependencyType="Shared" displayName="ca_communitycontentbypublic_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="102" dependencyType="Shared" displayName="ca_communitycontentbystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="112" dependencyType="Shared" displayName="ca_communitycontentbystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="101" dependencyType="Shared" displayName="ca_communitycontentbytype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="111" dependencyType="Shared" displayName="ca_communitycontentbytype_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="59" dependencyType="Shared" displayName="ca_deletecontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="58" dependencyType="Shared" displayName="ca_help" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="20" dependencyType="Shared" displayName="ca_inbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="51" dependencyType="Shared" displayName="ca_inbox_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="115" dependencyType="Shared" displayName="ca_inbox_recent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="116" dependencyType="Shared" displayName="ca_inbox_recent_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="119" dependencyType="Shared" displayName="ca_inbox_session" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="122" dependencyType="Shared" displayName="ca_inbox_session_title" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="6" dependencyType="Shared" displayName="ca_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="21" dependencyType="Shared" displayName="ca_outbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="52" dependencyType="Shared" displayName="ca_outbox_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="25" dependencyType="Shared" displayName="ca_purge_bystatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="56" dependencyType="Shared" displayName="ca_purge_bystatus_moddate" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="68" dependencyType="Shared" displayName="ca_savedsearches" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="67" dependencyType="Shared" displayName="ca_savesearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="73" dependencyType="Shared" displayName="ca_search" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="7" dependencyType="Shared" displayName="ca_searchbox" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="91" dependencyType="Shared" displayName="ca_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="86" dependencyType="Shared" displayName="ce_banner" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="84" dependencyType="Shared" displayName="ce_contentstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="87" dependencyType="Shared" displayName="ce_help" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="85" dependencyType="Shared" displayName="ce_history" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="81" dependencyType="Shared" displayName="ce_main" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="88" dependencyType="Shared" displayName="ce_relatedcontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="82" dependencyType="Shared" displayName="ce_userstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="89" dependencyType="Shared" displayName="ce_variantlist" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="83" dependencyType="Shared" displayName="ce_workflow" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="2" dependencyType="Shared" displayName="cmp_banner" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="4" dependencyType="Shared" displayName="cmp_ca_allcontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="100" dependencyType="Shared" displayName="cmp_ca_communitycontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="19" dependencyType="Shared" displayName="cmp_ca_deletecontent" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="3" dependencyType="Shared" displayName="cmp_ca_mycontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="5" dependencyType="Shared" displayName="cmp_ca_newcontentmenu" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="90" dependencyType="Shared" displayName="cmp_ca_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="12" dependencyType="Shared" displayName="cmp_pub_contentlists" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="62" dependencyType="Shared" displayName="cmp_pub_context" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="49" dependencyType="Shared" displayName="cmp_pub_deletelog" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="11" dependencyType="Shared" displayName="cmp_pub_editions" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="9" dependencyType="Shared" displayName="cmp_pub_publishers" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="13" dependencyType="Shared" displayName="cmp_pub_publogs" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="10" dependencyType="Shared" displayName="cmp_pub_sites" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="65" dependencyType="Shared" displayName="cmp_pub_variables" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="124" dependencyType="Shared" displayName="cmp_sys_autotranslation" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="75" dependencyType="Shared" displayName="cmp_sys_communities" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="69" dependencyType="Shared" displayName="cmp_sys_components" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="17" dependencyType="Shared" displayName="cmp_sys_contenttype" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="16" dependencyType="Shared" displayName="cmp_sys_keywords" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="15" dependencyType="Shared" displayName="cmp_sys_slots" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="74" dependencyType="Shared" displayName="cmp_usercommunity" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="1" dependencyType="Shared" displayName="cmp_userstatus" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="123" dependencyType="Shared" displayName="cx_main" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableObject>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="EI_Admin_Members" dependencyType="Shared" displayName="EI_Admin_Members" isIncluded="yes" objectType="RoleDef" objectTypeName="Role" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                              <Dependencies/>
+                           </PSXDependency>
+                           <RequiredClasses/>
+                        </PSXDeployableObject>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="33" dependencyType="Shared" displayName="pub_contentlistsbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="66" dependencyType="Shared" displayName="pub_variablesbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="61" dependencyType="Shared" displayName="rcsearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="60" dependencyType="Shared" displayName="rx_administrator" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="125" dependencyType="Shared" displayName="sys_atconfiguration" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="41" dependencyType="Shared" displayName="sys_cassltbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="42" dependencyType="Shared" displayName="sys_cectbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="43" dependencyType="Shared" displayName="sys_cekwbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="72" dependencyType="Shared" displayName="sys_cmpsearch" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="76" dependencyType="Shared" displayName="sys_commbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="71" dependencyType="Shared" displayName="sys_compbyid" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="70" dependencyType="Shared" displayName="sys_compbyname" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="14" dependencyType="Shared" displayName="sys_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="18" dependencyType="Shared" displayName="sys_variants" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="46" dependencyType="Shared" displayName="wf_all" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="44" dependencyType="Shared" displayName="wf_nav" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="47" dependencyType="Shared" displayName="wf_preview" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                        <PSXDeployableElement>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="45" dependencyType="Shared" displayName="wf_workflows" isIncluded="no" objectType="Component" objectTypeName="Component" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
+                           <Description/>
+                        </PSXDeployableElement>
+                     </Dependencies>
+                  </PSXDependency>
+                  <RequiredClasses/>
+               </PSXDeployableObject>
+            </Dependencies>
+         </PSXDependency>
+         <Description/>
+      </PSXDeployableElement>
+   </Packages>
+   <ModifiedPackages/>
+   <MissingPackages/>
+</PSXExportDescriptor>

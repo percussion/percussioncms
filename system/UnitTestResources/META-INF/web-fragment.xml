@@ -1,0 +1,35 @@
+<web-app metadata-complete="true" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+<filter>
+    <filter-name>FilterRedirector</filter-name>
+    <filter-class>org.apache.cactus.server.FilterTestRedirector</filter-class>
+</filter>
+
+<filter-mapping>
+<filter-name>FilterRedirector</filter-name>
+<url-pattern>/FilterRedirector</url-pattern>
+</filter-mapping>
+
+<servlet>
+<servlet-name>ServletRedirector</servlet-name>
+<servlet-class>org.apache.cactus.server.ServletTestRedirector</servlet-class>
+</servlet>
+
+<servlet>
+<servlet-name>JspRedirector</servlet-name>
+<jsp-file>/jspRedirector.jsp</jsp-file>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>ServletRedirector</servlet-name>
+<url-pattern>/ServletRedirector</url-pattern>
+</servlet-mapping>
+
+<servlet-mapping>
+<servlet-name>JspRedirector</servlet-name>
+<url-pattern>/JspRedirector</url-pattern>
+</servlet-mapping>
+</web-app>

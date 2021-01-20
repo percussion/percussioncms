@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>  <null id="1">
+    <choices>
+      <choice id="2">
+        <description/>
+        <label>* No Override</label>
+        <sequence>1</sequence>
+        <value>none</value>
+      </choice>
+      <choice id="3">
+        <description/>
+        <label>Article</label>
+        <sequence>2</sequence>
+        <value>article</value>
+      </choice>
+      <choice id="4">
+        <description/>
+        <label>Website</label>
+        <sequence>3</sequence>
+        <value>website</value>
+      </choice>
+      <choice id="5">
+        <description/>
+        <label>Book Author</label>
+        <sequence>4</sequence>
+        <value>books.author</value>
+      </choice>
+      <choice id="6">
+        <description/>
+        <label>Book</label>
+        <sequence>5</sequence>
+        <value>books.book</value>
+      </choice>
+      <choice id="7">
+        <description/>
+        <label>Book Genre</label>
+        <sequence>6</sequence>
+        <value>books.genre</value>
+      </choice>
+      <choice id="8">
+        <description/>
+        <label>Business</label>
+        <sequence>7</sequence>
+        <value>business.business</value>
+      </choice>
+      <choice id="9">
+        <description/>
+        <label>Fitness Course</label>
+        <sequence>8</sequence>
+        <value>fitness.course</value>
+      </choice>
+      <choice id="10">
+        <description/>
+        <label>Game Achievement</label>
+        <sequence>9</sequence>
+        <value>game.achievement</value>
+      </choice>
+      <choice id="11">
+        <description/>
+        <label>Music Album</label>
+        <sequence>10</sequence>
+        <value>music.album</value>
+      </choice>
+      <choice id="12">
+        <description/>
+        <label>Music Playlist</label>
+        <sequence>11</sequence>
+        <value>music.playlist</value>
+      </choice>
+      <choice id="13">
+        <description/>
+        <label>Music Radio Station</label>
+        <sequence>12</sequence>
+        <value>music.radio_station</value>
+      </choice>
+      <choice id="14">
+        <description/>
+        <label>Music Song</label>
+        <sequence>13</sequence>
+        <value>music.song</value>
+      </choice>
+      <choice id="15">
+        <description/>
+        <label>Place</label>
+        <sequence>14</sequence>
+        <value>place</value>
+      </choice>
+      <choice id="16">
+        <description/>
+        <label>Product</label>
+        <sequence>15</sequence>
+        <value>product</value>
+      </choice>
+      <choice id="17">
+        <description/>
+        <label>Product Group</label>
+        <sequence>16</sequence>
+        <value>product.group</value>
+      </choice>
+      <choice id="18">
+        <description/>
+        <label>Product Item</label>
+        <sequence>17</sequence>
+        <value>product.item</value>
+      </choice>
+      <choice id="19">
+        <description/>
+        <label>Profile</label>
+        <sequence>18</sequence>
+        <value>profile</value>
+      </choice>
+      <choice id="20">
+        <description/>
+        <label>Restaurant Menu</label>
+        <sequence>19</sequence>
+        <value>restaurant.menu</value>
+      </choice>
+      <choice id="21">
+        <description/>
+        <label>Restaurant Menu Item</label>
+        <sequence>20</sequence>
+        <value>restaurant.menu_item</value>
+      </choice>
+      <choice id="22">
+        <description/>
+        <label>Restaurant Menu Section</label>
+        <sequence>21</sequence>
+        <value>restaurant.menu_section</value>
+      </choice>
+      <choice id="23">
+        <description/>
+        <label>Restaurant</label>
+        <sequence>22</sequence>
+        <value>restaurant.restaurant</value>
+      </choice>
+      <choice id="24">
+        <description/>
+        <label>Video - Television Show Episode</label>
+        <sequence>23</sequence>
+        <value>video.episode</value>
+      </choice>
+      <choice id="25">
+        <description/>
+        <label>Video - Movie</label>
+        <sequence>24</sequence>
+        <value>video.movie</value>
+      </choice>
+      <choice id="26">
+        <description/>
+        <label>Video - General</label>
+        <sequence>25</sequence>
+        <value>video.other</value>
+      </choice>
+      <choice id="27">
+        <description/>
+        <label>Video - Television Show</label>
+        <sequence>26</sequence>
+        <value>video.tv_show</value>
+      </choice>
+    </choices>
+    <guid>0-14-1028</guid>
+    <description>A listing of Open Graph object types. </description>
+    <id>1028</id>
+    <keyword-type>1</keyword-type>
+    <label>perc_OpenGraph_ObjectTypes</label>
+    <name>perc_OpenGraph_ObjectTypes</name>
+    <sequence>0</sequence>
+    <type>KEYWORD_DEF</type>
+    <value>1028</value>
+  </null>

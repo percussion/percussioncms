@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -     Percussion CMS
+  -     Copyright (C) 1999-2020 Percussion Software, Inc.
+  -
+  -     This program is free software: you can redistribute it and/or modify
+  -     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  -
+  -     This program is distributed in the hope that it will be useful,
+  -     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -     GNU Affero General Public License for more details.
+  -
+  -     Mailing Address:
+  -
+  -      Percussion Software, Inc.
+  -      PO Box 767
+  -      Burlington, MA 01803, USA
+  -      +01-781-438-9900
+  -      support@percussion.com
+  -      https://www.percusssion.com
+  -
+  -     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+  This DTD defines the data to be inserted in a set of tables.  Any
+  Xml file conforming to this DTD is assumed to be accompanyed by an
+  Xml file conforming to the tabledef.dtd, which describes a the schemas
+  for a set of tables.  Any table defined in an Xml file conforming to this
+  DTD must have a definition in the tabledef Xml file.
+-->
+  
+<!-- 
+  A list of one or more tables, each defining its own set of data.
+
+  Attributes:
+  name - The name of the table.
+  onCreateOnly - Only process the supplied data if the table is being created.
+      yes - Do not process the data if the table does not already exist and is
+            being created.  This is the default.
+      no -  Process the data whether or not the table is being created.
+-->
+<!ELEMENT tables (table+)>
+<!ATTLIST table
+	name CDATA #REQUIRED
+	onCreateOnly (yes | no) "yes"
+>
+
+<!-- 
+  A list of zero or more rows of data.
+-->
+<!ELEMENT table (row*)>
+
+<!-- 
+  A row of data, defined by one or more columns.
+
+  Attributes:
+  action - The action to take with the specified row of data.
+      n - Insert the row.  This is the default action.
+      u - Update the row, based on the primary key columns defined in the
+          tabledef Xml file, or if update columns are defined, using those 
+          instead.
+      r - Replace the row.  This means insert if a matching row does
+          not already exist, or update it if it does, using update columns
+          if defined, otherwise based on the primary key columns.
+      d - Delete the row, based on the primary key columns defined in the
+          tabledef Xml file, or if update columns are defined, using those 
+          instead.
+      i - Insert the row only if it does not already exist in the table.
+
+  onTableCreateOnly - Only process the supplied data if the table containing this row is being created.
+      yes - Process the data only if the table containing this row does not already exist and is being created.  
+      no -  Process the data whether or not the table containing this row is being created. This is the default.
+-->
+<!ELEMENT row (column+)>
+<!ATTLIST row
+	action (n | u | r | d | i) "n"
+	onTableCreateOnly (yes | no) "no"
+>
+
+<!-- 
+  Defines the data to insert, update, or use as a value for a primary key
+  column.
+
+  Attributes:
+  name - the name of the column. 
+  isEmptyNull - when processing the data, if the columns value is empty, 
+          this determines how to handle it.  Optional, defaults to "yes" if
+          not specified.
+      yes - Treat this value as a SQL NULL, not an empty string.
+      no -  Treat this value as an empty string, not a SQL NULL.
+-->
+<!ELEMENT column (#PCDATA)>
+<!ATTLIST column
+	name CDATA #REQUIRED
+	isEmptyNull (yes | no) "yes"
+>

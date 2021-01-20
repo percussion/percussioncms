@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Result (sys_author, sys_modifed, sys_state, sys_contenttype, sys_checkedoutby, sys_role )>
+<!ELEMENT sys_role (#PCDATA)>
+<!ELEMENT sys_checkedoutby (#PCDATA)>
+<!ELEMENT sys_contenttype (#PCDATA)>
+<!ELEMENT sys_state (#PCDATA)>
+<!ELEMENT sys_modifed (#PCDATA)>
+<!ELEMENT sys_author (#PCDATA)>
+<!ATTLIST  Result title CDATA #IMPLIED>
+<!ATTLIST  Result contentTypeId CDATA #IMPLIED>
+<!ATTLIST  Result contentId CDATA #IMPLIED>
+<!ATTLIST  Result revision CDATA #IMPLIED>
+<!ELEMENT SearchResponse (Result* )>

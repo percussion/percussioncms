@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='utf-8'?>
+<datapublisher dbname="CONTENT_DEVELOPMENT" drivertype="jtds:sqlserver"
+   origin="dbo" resourceName="CONTENT_DEVELOPMENT">
+   <tabledefset>
+      <tabledef allowSchemaChanges="n" alter="n" create="y"
+         delolddata="n" isView="n" name="TEST_PARENT">
+         <rowdef>
+            <columndef action="c" limitSizeForIndex="n"
+               name="CONTENTID">
+               <jdbctype>INTEGER</jdbctype>
+               <allowsnull>no</allowsnull>
+            </columndef>
+            <columndef action="c" limitSizeForIndex="n" name="TITLE">
+               <jdbctype>VARCHAR</jdbctype>
+               <size>50</size>
+               <allowsnull>yes</allowsnull>
+            </columndef>
+            <columndef action="c" limitSizeForIndex="n" name="BODY">
+               <jdbctype>CLOB</jdbctype>
+               <allowsnull>yes</allowsnull>
+            </columndef>
+         </rowdef>
+         <primarykey action="c">
+            <name>CONTENTID</name>
+         </primarykey>
+      </tabledef>
+      <tabledef allowSchemaChanges="n" alter="n" create="y"
+         delolddata="n" isView="n" name="TEST_CHILD1">
+         <rowdef>
+            <columndef action="c" limitSizeForIndex="n"
+               name="CONTENTID">
+               <jdbctype>INTEGER</jdbctype>
+               <allowsnull>no</allowsnull>
+            </columndef>
+            <columndef action="c" limitSizeForIndex="n" name="ROWID">
+               <jdbctype>INTEGER</jdbctype>
+               <allowsnull>no</allowsnull>
+            </columndef>
+            <columndef action="c" limitSizeForIndex="n"
+               name="DESCRIPTION">
+               <jdbctype>VARCHAR</jdbctype>
+               <size>50</size>
+               <allowsnull>yes</allowsnull>
+            </columndef>
+         </rowdef>
+         <primarykey action="c">
+            <name>ROWID</name>
+         </primarykey>
+         <foreignkey action="c">
+            <fkColumn>
+               <name>CONTENTID</name>
+               <externalTable>TEST_PARENT</externalTable>
+               <externalColumn>CONTENTID</externalColumn>
+            </fkColumn>
+         </foreignkey>
+      </tabledef>
+      <tabledef allowSchemaChanges="n" alter="n" create="y"
+         delolddata="n" isView="n" name="TEST_CHILD2">
+         <rowdef>
+            <columndef action="c" limitSizeForIndex="n"
+               name="CONTENTID">
+               <jdbctype>INTEGER</jdbctype>
+               <allowsnull>no</allowsnull>
+            </columndef>
+            <columndef action="c" limitSizeForIndex="n" name="ROWID">
+               <jdbctype>INTEGER</jdbctype>
+               <allowsnull>no</allowsnull>
+            </columndef>
+            <columndef action="c" limitSizeForIndex="n" name="REGION">
+               <jdbctype>INTEGER</jdbctype>
+               <allowsnull>yes</allowsnull>
+            </columndef>
+         </rowdef>
+         <primarykey action="c">
+            <name>ROWID</name>
+         </primarykey>
+         <foreignkey action="c">
+            <fkColumn>
+               <name>CONTENTID</name>
+               <externalTable>TEST_PARENT</externalTable>
+               <externalColumn>CONTENTID</externalColumn>
+            </fkColumn>
+         </foreignkey>
+      </tabledef>
+   </tabledefset>
+   <tabledataset>
+      <table name="TEST_PARENT">
+         <row action="r">
+            <column name="TITLE">EI Home Page</column>
+            <column name="CONTENTID">466</column>
+            <childtable name="TEST_CHILD1">
+               <row action="r">
+                  <column name="ROWID">320</column>
+                  <column name="DESCRIPTION">rel1</column>
+                  <column name="CONTENTID">466</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">324</column>
+                  <column name="DESCRIPTION">rel1</column>
+                  <column name="CONTENTID">466</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">329</column>
+                  <column name="DESCRIPTION">rel1</column>
+                  <column name="CONTENTID">466</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">330</column>
+                  <column name="DESCRIPTION">rel1</column>
+                  <column name="CONTENTID">466</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">344</column>
+                  <column name="DESCRIPTION">rel1</column>
+                  <column name="CONTENTID">466</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">350</column>
+                  <column name="DESCRIPTION">rel1</column>
+                  <column name="CONTENTID">466</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">459</column>
+                  <column name="DESCRIPTION">rel1</column>
+                  <column name="CONTENTID">466</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">497</column>
+                  <column name="DESCRIPTION">rel1</column>
+                  <column name="CONTENTID">466</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">498</column>
+                  <column name="DESCRIPTION">rel1</column>
+                  <column name="CONTENTID">466</column>
+               </row>
+            </childtable>
+            <childtable name="TEST_CHILD2">
+               <row action="r">
+                  <column name="ROWID">320</column>
+                  <column name="CONTENTID">466</column>
+                  <column name="REGION">2</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">324</column>
+                  <column name="CONTENTID">466</column>
+                  <column name="REGION">4</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">329</column>
+                  <column name="CONTENTID">466</column>
+                  <column name="REGION">3</column>
+               </row>
+               <row action="r">
+                  <column name="ROWID">330</column>
+                  <column name="CONTENTID">466</column>
+                  <column name="REGION">2</column>
+               </row>
+            </childtable>
+         </row>
+      </table>
+   </tabledataset>
+</datapublisher>

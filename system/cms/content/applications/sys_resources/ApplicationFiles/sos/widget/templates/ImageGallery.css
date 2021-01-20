@@ -1,0 +1,158 @@
+.image-gallery-thumbs-wrapper {
+	white-space: nowrap;
+	width: 100%;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	text-align: center;
+}
+
+.image-gallery-hidden {
+	position:absolute;
+	display: none;
+	height: 1px;
+	width: 1px;
+}
+
+.image-gallery-wrapper {
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+.image-thumb-nav {
+	background-repeat: no-repeat;	
+	background-position:center;
+	height: 75px;
+	padding: 1px;
+}
+.image-thumb-nav img {
+	width: 30px;
+}
+
+.image-thumb-prev { 
+	background-image: url("images/arrowLeft.gif");
+}
+
+.image-thumb-next {
+	background-image: url("images/arrowRight.gif");
+}
+
+.image-gallery-image-wrapper {
+	width: 100%;
+}
+
+.image-gallery-image-wrapper img {
+	border: 0px;
+	max-width: 500px;
+	max-height: 375px;
+	width: expression(this.width > 500 ? 500: true);/*IE Hack*/
+	height: expression(this.height > 375 ? 375: true);/*IE Hack*/
+}
+
+.image-gallery-paging-container {
+	width: 100%;	
+}
+
+.image-gallery-paging-container .image-gallery-prev-img{
+	
+}
+
+.image-gallery-paging-container .image-gallery-next-img{
+	padding-left: 380px;
+}
+
+.image-gallery-thumb {
+	height: 75px;
+	max-width: 100px;
+	width: expression(this.width > 100 ? 100: true);/*IE Hack*/
+}
+
+.image-thumb-placeholder {
+	width: 100px;
+	height: 75px;
+	padding: 1px;
+}
+
+.image-gallery-title {
+	font-size: large;
+	
+}
+
+.image-gallery-notifier {
+	background-color: red;
+	width: 100%;
+	height: 5px;
+	font-size: 1%;/*IE hack to get around the Empty-Div bug*/
+}
+
+.image-gallery-slideshow {
+	padding: 0 5px;
+	border: 1px solid #9aafe5;
+	text-decoration: none; 
+	color: #2e6ab1;
+	float: right;
+}
+
+.image-gallery-pager{
+	padding: 2px;
+	float: left;
+	padding-left: 25px;
+}
+
+.image-gallery-pager ul{
+margin: 0;
+padding: 0;
+font-size: 16px;
+}
+
+.image-gallery-pager li{
+list-style-type: none;
+display: inline;
+padding-bottom: 1px;
+}
+
+.image-gallery-pager a, .image-gallery-pager a:visited{
+padding: 0 5px;
+border: 1px solid #9aafe5;
+text-decoration: none; 
+color: #2e6ab1;
+}
+
+.image-gallery-pager a:hover, .image-gallery-pager a:active{
+border: 1px solid #2b66a5;
+color: #000;
+background-color: lightyellow;
+}
+
+.image-gallery-pager li.currentpage{
+font-weight: bold;
+padding: 0 5px;
+border: 1px solid navy;
+background-color: #2e6ab1;
+color: #FFF;
+}
+
+.image-gallery-pager li.disablepage{
+padding: 0 5px;
+border: 1px solid #929292;
+color: #929292;
+}
+
+.image-gallery-pager li.nextpage{
+font-weight: bold;
+}
+
+* html .image-gallery-pager li.currentpage, * html .pagination li.disablepage{ /*IE 6 and below. Adjust non linked LIs slightly to account for bugs*/
+margin-right: 5px;
+padding-right: 0;
+}
+.image-gallery-pager {
+	
+}
+
+.image-gallery-loading {
+	background-color: #fad66a;
+}
+
+.image-gallery-loaded {
+	background-color: green;	
+}

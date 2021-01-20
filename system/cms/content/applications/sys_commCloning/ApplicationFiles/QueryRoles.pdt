@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Role (RoleName, RoleId )>
+<!ELEMENT RoleId (#PCDATA)>
+<!ELEMENT RoleName (#PCDATA)>
+<!ELEMENT QueryRoles (Role* )>

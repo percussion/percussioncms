@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>  <template-slot id="1">
+    <guid>0-5-516</guid>
+    <description>submenu slot for managed nav</description>
+    <finder-arguments/>
+    <finder-name>Java/global/percussion/slotcontentfinder/sys_RelationshipContentFinder</finder-name>
+    <label>Nav Submenu</label>
+    <name>perc.nav.subMenu</name>
+    <relationship-name>ActiveAssembly</relationship-name>
+    <slot-type-associations>
+      <slot-type-association id="2">
+        <slotid>516</slotid>
+        <templateid>544</templateid>
+        <contenttypeid>314</contenttypeid>
+      </slot-type-association>
+      <slot-type-association id="3">
+        <slotid>516</slotid>
+        <templateid>526</templateid>
+        <contenttypeid>308</contenttypeid>
+      </slot-type-association>
+      <slot-type-association id="4">
+        <slotid>516</slotid>
+        <templateid>544</templateid>
+        <contenttypeid>315</contenttypeid>
+      </slot-type-association>
+    </slot-type-associations>
+    <slottype>0</slottype>
+    <system-slot>false</system-slot>
+    <version>2</version>
+  </template-slot>

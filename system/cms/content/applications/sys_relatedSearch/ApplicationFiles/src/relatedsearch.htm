@@ -1,0 +1,400 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE xsl:stylesheet [
+	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
+		%HTMLlat1;
+	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
+		%HTMLsymbol;
+	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
+		%HTMLspecial;
+]>
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:variable name="this" select="/"/>
+  <xsl:variable name="contenttypelookup" select="/*/contenttypelookupurl"/>
+  <xsl:template match="/">
+    <html>
+      <head>
+        <meta name="generator" content="Percussion XSpLit Version 3.5"/>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <title>Rhythmyx - Content Editor - Related Content Search</title>
+        <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
+        <script type="text/javascript" src="../sys_resources/js/calPopup.js" language="javascript">
+          <![CDATA[
+;
+]]></script>
+        <script id="clientEventHandlersJS" language="javascript" type="text/javascript">
+          <![CDATA[
+
+function Search_onclick() 
+{
+ if (document.updatesearch.sys_slotid.value=="")
+   {
+     alert("SlotID cannot be empty")
+     return false
+   }
+ if (document.updatesearch.sys_contenttype[document.updatesearch.sys_contenttype.selectedIndex].value=="null")
+   {
+     document.updatesearch.sys_contenttype[document.updatesearch.sys_contenttype.selectedIndex].value=""
+   }
+
+ document.updatesearch.sys_searchcontenttitle.value="";
+ document.updatesearch.sys_searchauthor.value="";
+        if (document.updatesearch.sys_contenttitle.value.length > 0)
+          {
+          document.updatesearch.sys_searchcontenttitle.value = document.updatesearch.sys_contenttitle.value + '%';
+          }
+
+        if (document.updatesearch.sys_author.value.length > 0)
+          {
+          document.updatesearch.sys_searchauthor.value = document.updatesearch.sys_author.value + '%';
+          }
+document.updatesearch.action="resultpage.html"
+document.updatesearch.submit();
+}
+
+function Reset_onclick() {
+document.updatesearch.sys_contenttitle.value=""
+document.updatesearch.sys_author.value=""
+document.updatesearch.sys_contenttype.value="null"
+document.updatesearch.sys_enddate.value=""
+document.updatesearch.sys_startdate.value=""
+}
+]]></script>
+      </head>
+
+      <body bgcolor="0xffffff" onload="javascript:self.focus();">        <!--   psx-docalias="contenttypelookup" psx-docref="psx-contenttypelookupurl"   -->
+
+        <form name="updatesearch" method="post">
+          <xsl:apply-templates select="*/slotid" mode="mode0"/>
+          <xsl:apply-templates select="*/contentid" mode="mode1"/>
+          <xsl:apply-templates select="*/revision" mode="mode2"/>
+          <table align="center" width="75%" border="0" cellspacing="1" cellpadding="0" class="headercell">
+            <tr class="outerboxcell">
+              <td colspan="2" align="center" class="outerboxcellfont">Search Related Items for</td>
+            </tr>
+
+            <xsl:apply-templates select="*/slotname" mode="mode3"/>
+            <tr class="headercell">
+              <td colspan="2" align="left" class="outerboxcellfont">
+                <br id="XSpLit"/>Search Parameters
+              </td>
+            </tr>
+
+            <xsl:apply-templates select="document($contenttypelookup)" mode="mode6"/>
+            <xsl:apply-templates select="*/author" mode="mode9"/>
+            <xsl:apply-templates select="*/contenttitle" mode="mode12"/>
+            <xsl:apply-templates select="*/enddate" mode="mode14"/>
+            <xsl:apply-templates select="*/startdate" mode="mode16"/>
+            <tr class="datacell2">
+              <td colspan="2" align="center">
+                <br id="XSpLit"/>
+                <input type="button" name="Search" value="Search" language="javascript" onclick="return Search_onclick()"/>&nbsp;
+                <input type="button" name="Reset" value="Reset" language="javascript" onclick="return Reset_onclick()"/>&nbsp;
+                <input type="button" name="Close" value="Close" language="javascript" onclick="window.close()"/>
+                <br id="XSpLit"/>&nbsp;
+              </td>
+
+            </tr>
+
+          </table>
+
+        </form>
+
+      </body>
+
+    </html>
+
+  </xsl:template>
+
+  <xsl:template match="*">
+    <xsl:choose>
+      <xsl:when test="text()">
+        <xsl:choose>
+          <xsl:when test="@no-escaping">
+            <xsl:value-of select="." disable-output-escaping="yes"/>
+          </xsl:when>
+
+          <xsl:otherwise>
+            <xsl:value-of select="."/>
+          </xsl:otherwise>
+
+        </xsl:choose>
+
+      </xsl:when>
+
+      <xsl:otherwise>&nbsp;</xsl:otherwise>
+
+    </xsl:choose>
+
+    <xsl:if test="not(position()=last())">
+      <br id="XSpLit"/>
+    </xsl:if>
+
+  </xsl:template>
+
+  <xsl:template match="attribute::*">
+    <xsl:value-of select="."/>
+    <xsl:if test="not(position()=last())">
+      <br id="XSpLit"/>
+    </xsl:if>
+
+  </xsl:template>
+
+  <xsl:template match="*/slotid" mode="mode0">
+    <xsl:for-each select=".">
+      <input type="hidden" name="sys_slotid">
+        <xsl:attribute name="value">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+
+      </input>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*/contentid" mode="mode1">
+    <xsl:for-each select=".">
+      <input type="hidden" name="sys_contentid">
+        <xsl:attribute name="value">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+
+      </input>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*/revision" mode="mode2">
+    <xsl:for-each select=".">
+      <input type="hidden" name="sys_revision">
+        <xsl:attribute name="value">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+
+      </input>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*/slotname" mode="mode3">
+    <xsl:for-each select=".">
+      <tr class="outerboxcell">
+        <td colspan="2" align="center" class="outerboxcellfont">Slot (ID):&nbsp;
+          <xsl:apply-templates select="."/>
+        </td>
+      </tr>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*" mode="mode4">
+    <xsl:for-each select="item">
+      <option>
+        <xsl:variable name="value">
+          <xsl:value-of select="id"/>
+        </xsl:variable>
+
+        <xsl:if test="$this/relatedsearch/selcontenttype=$value">
+          <xsl:attribute name="selected"/>
+        </xsl:if>
+
+        <xsl:attribute name="value">
+          <xsl:value-of select="id"/>
+        </xsl:attribute>
+
+        <xsl:apply-templates select="display"/>
+      </option>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*" mode="mode5">
+    <xsl:for-each select=".">
+      <select name="sys_contenttype" class="datadisplay">
+        <option value="null">-- Choose --</option>
+        <xsl:apply-templates select="." mode="mode4"/>
+      </select>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*" mode="mode6">
+    <xsl:for-each select=".">
+      <tr class="datacell1" >
+        <td class="datacell1" align="left">
+          <span class="datacell1font">Content Type:</span>
+        </td>
+
+        <td class="datacell1font">
+          <xsl:apply-templates select="." mode="mode5"/>
+        </td>
+
+      </tr>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*" mode="mode7">
+    <xsl:for-each select=".">
+      <input size="20" type="text" name="sys_author" class="datadisplay">
+        <xsl:attribute name="value">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+
+      </input>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*" mode="mode8">
+    <xsl:for-each select=".">
+      <input type="hidden" name="sys_searchauthor">
+        <xsl:attribute name="value">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+
+      </input>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*/author" mode="mode9">
+    <xsl:for-each select=".">
+      <tr class="datacell2" >
+        <td align="left" class="datacell2">
+          <span class="datacell1font">Author:</span>
+        </td>
+
+        <td class="datacell1">
+          <xsl:apply-templates select="." mode="mode7"/>
+          <xsl:apply-templates select="." mode="mode8"/>
+        </td>
+
+      </tr>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*" mode="mode10">
+    <xsl:for-each select=".">
+      <input size="20" type="text" name="sys_contenttitle" class="datadisplay">
+        <xsl:attribute name="value">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+
+      </input>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*" mode="mode11">
+    <xsl:for-each select=".">
+      <input type="hidden" name="sys_searchcontenttitle" class="datadisplay">
+        <xsl:attribute name="value">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+
+      </input>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*/contenttitle" mode="mode12">
+    <xsl:for-each select=".">
+      <tr class="datacell1" >
+        <td align="left" class="datacell1">
+          <span class="datacell1font">Content Title:</span>
+        </td>
+
+        <td class="datacell1">
+          <xsl:apply-templates select="." mode="mode10"/>
+          <xsl:apply-templates select="." mode="mode11"/>
+        </td>
+
+      </tr>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*" mode="mode13">
+    <xsl:for-each select=".">
+      <input type="text" name="sys_enddate" size="10" class="datadisplay">
+        <xsl:attribute name="value">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+
+      </input>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*/enddate" mode="mode14">
+    <xsl:for-each select=".">
+      <tr class="datacell2" >
+        <td class="datacell2" align="left">
+          <span class="datacell1font">Created Before:</span>
+        </td>
+
+        <td class="datacell2">
+          <xsl:apply-templates select="." mode="mode13"/>&nbsp;
+          <a href="javascript:doNothing()" onclick="showCalendar(document.updatesearch.sys_enddate);">
+            <img height="20" alt="Calendar Pop-up" src="../sys_resources/images/cal.gif" width="20" border="0"/>
+          </a>
+
+        </td>
+
+      </tr>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*" mode="mode15">
+    <xsl:for-each select=".">
+      <input type="text" name="sys_startdate" size="10" class="datadisplay">
+        <xsl:attribute name="value">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+
+      </input>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="*/startdate" mode="mode16">
+    <xsl:for-each select=".">
+      <tr class="datacell1">
+        <td align="left" class="datacell1">
+          <span class="datacell1font">Created After:</span>
+        </td>
+
+        <td class="datacell1">
+          <xsl:apply-templates select="." mode="mode15"/>&nbsp;
+          <a href="javascript:doNothing()" onclick="showCalendar(document.updatesearch.sys_startdate);">
+            <img height="20" alt="Calendar Pop-up" src="../sys_resources/images/cal.gif" width="20" border="0"/>
+          </a>
+
+        </td>
+
+      </tr>
+
+    </xsl:for-each>
+
+  </xsl:template>
+
+</xsl:stylesheet>

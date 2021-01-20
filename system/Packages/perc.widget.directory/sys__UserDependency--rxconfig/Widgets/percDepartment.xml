@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percDepartment - Version 1.0.0]
+-->
+<Widget>
+    <WidgetPrefs title="Department"
+                 contenttype_name="percDepartment"
+                 description="This widget is used to store details for a department of an organization."
+                 author="Percussion Software Inc."
+                 thumbnail="/rx_resources/widgets/percDepartment/images/percDepartmentIcon.png"
+                 preferred_editor_width="800"
+                 preferred_editor_height="800"
+                 is_responsive="true"/>
+    <UserPref name="dptNameFormat"
+              display_name="Format of Depatment Name"
+              required="false"
+              datatype="enum" default_value="div">
+        <EnumValue value="div" display_value="Div" />
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="h1" display_value="Heading 1" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+    </UserPref>
+    <UserPref name="perc_hidefield_orgNameField"
+              display_name="Hide Organization Name"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_dptAddressField"
+              display_name="Hide Department Address"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_dptPhoneField"
+              display_name="Hide Department Phone"
+              default_value="true"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_dptFaxField"
+              display_name="Hide Department Fax"
+              default_value="true"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_dptEmailField"
+              display_name="Hide Department Email"
+              default_value="true"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_dptPageField"
+              display_name="Hide Department Page"
+              default_value="false"
+              datatype="bool" />
+    <UserPref name="perc_hidefield_dptOrganizationField"
+              display_name="Hide Organization"
+              default_value="false"
+              datatype="bool" />
+
+    <!-- User prefs define input needed when in layout config for a widget -->
+    <!-- Available data types are bool, number, enum, string -->
+
+    <Code type="jexl">
+        <!-- This section is used to set up data that will be used in the content section -->
+        <![CDATA[
+       $pageId = $perc.page.id;
+       $widgetId = $perc.widget.item.id;
+       $rootclass = 'percDepartment';
+
+       ## Get asset item(s)
+       $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+       $perc.setWidgetContents($assets);
+
+       if (! $assets.isEmpty())
+       {
+            $assetItem = $assets.get(0); ## Get first item (which may be only item)
+            $assetContentId = $assetItem.getNode().getProperty('sys_contentid').String;
+
+            ## Get site domain name
+            $pageName = $perc.page.name;
+            $folderName = $perc.page.folderPaths.get(0);
+            $temp = $folderName.replace("//Sites/","");
+            $pathArray = $temp.split("/");
+            $siteDomain = $pathArray.get(0);
+
+            ## Get Widget Layout Properties
+            ##
+            $dptNameFormat = $perc.widget.item.properties.get('dptNameFormat');
+            if (!empty($dptNameFormat))
+            {
+                $dptNameFormatStartTag = '<' + $dptNameFormat + '>';
+                $dptNameFormatEndTag = '</' + $dptNameFormat + '>';
+            }
+            $percHideFieldOrgName = $perc.widget.item.properties.get('perc_hidefield_orgNameField');
+            $percHideFieldDptAddress = $perc.widget.item.properties.get('perc_hidefield_dptAddressField');
+            $percHideFieldDptPhone = $perc.widget.item.properties.get('perc_hidefield_dptPhoneField');
+            $percHideFieldDptFax = $perc.widget.item.properties.get('perc_hidefield_dptFaxField');
+            $percHideFieldDptEmail = $perc.widget.item.properties.get('perc_hidefield_dptEmailField');
+            $percHideFieldDptPage = $perc.widget.item.properties.get('perc_hidefield_dptPageField');
+
+            ## Get Widget Content Properties
+            ##
+            $dptName = $assetItem.getNode().getProperty('dptName').String;
+
+            ##
+            ## Get Organization Name from contentId
+            ##
+            $orgContentId = $assetItem.getNode().getProperty('dptOrganization').String;
+            $orgPage_path = "";
+            $orgPage_title = "";
+            if ($orgContentId != "" && $orgContentId != "#")
+            {
+                $params = $rx.string.stringToMap(null);
+                $params.put('orgContentId', $orgContentId );
+                $query = 'select rx:sys_contentid, rx:sys_folderid from rx:percOrganization where rx:sys_contentid = :orgContentId';
+                $params.put('max_results', 1);
+                $params.put('query', $query);
+                $finderName = 'Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder';
+                $orgResult = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+                    if( $orgResult.size() > 0 )
+                    {
+                        $orgName = $orgResult.get(0).getNode().getProperty("orgName").String;
+                        $orgPage_linkId = $orgResult.get(0).getNode().getProperty("orgPage_linkId").String;
+                        $orgPage_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $orgPage_linkId);
+                        $orgPage_sys_contentId = $rx.pageutils.getManagedLinkDependentId($orgPage_linkId);
+                        if ($orgPage_sys_contentId != "")
+                        {
+                            $orgPage_pageMap = $rx.pageutils.findItemFieldValues('percPage', 'resource_link_title', $orgPage_sys_contentId);
+                            $orgPage_title = $orgPage_pageMap.get('resource_link_title');
+                        }
+                        $orgPageExt = $orgResult.get(0).getNode().getProperty("orgPageExt").String;
+                        if ($orgPageExt != ""){
+                            $orgPage_path = $orgPageExt;
+                            $orgPage_title = $orgPageExt;
+                        }
+                    }
+            }
+
+            $dptAddress1 = $assetItem.getNode().getProperty('dptAddress1').String;
+            $dptAddress2 = $assetItem.getNode().getProperty('dptAddress2').String;
+            $dptCity = $assetItem.getNode().getProperty('dptCity').String;
+            $dptState = $assetItem.getNode().getProperty('dptState').String;
+            $dptPostCode = $assetItem.getNode().getProperty('dptPostCode').String;
+            $dptCountry = $assetItem.getNode().getProperty('dptCountry').String;
+
+            $dptAddress3 = "";
+            if ($dptCity != "")
+            {
+                $dptAddress3 = $dptAddress3 + $dptCity;
+            }
+            if ($dptCity != "" && $dptState != "")
+            {
+                $dptAddress3 = $dptAddress3 + ", ";
+            }
+            if ($dptState != "")
+            {
+                $dptAddress3 = $dptAddress3 + $dptState;
+            }
+            if ($dptPostCode != "")
+            {
+                $dptAddress3 = $dptAddress3 + " " + $dptPostCode;
+            }
+
+            $dptEmail = $assetItem.getNode().getProperty('dptEmail').String;
+            $dptPhone = $assetItem.getNode().getProperty('dptPhone').String;
+            $dptFax = $assetItem.getNode().getProperty('dptFax').String;
+            $dptWebsite_linkId = $assetItem.getNode().getProperty('dptWebsite_linkId').String;
+            $dptWebsite_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, $dptWebsite_linkId);
+            $dptWebsite_title = "";
+            $dptWebsite_sys_contentId = $rx.pageutils.getManagedLinkDependentId($dptWebsite_linkId);
+            if ($dptWebsite_sys_contentId != "")
+            {
+                $dptWebsite_pageMap = $rx.pageutils.findItemFieldValues('percPage', 'resource_link_title', $dptWebsite_sys_contentId);
+                $dptWebsite_title = $dptWebsite_pageMap.get('resource_link_title');
+            }
+
+            $dptWebsiteExt = $assetItem.getNode().getProperty('dptWebsiteExt').String;
+            if ($dptWebsiteExt != "")
+            {
+                $dptWebsite_path = $dptWebsiteExt;
+                $dptWebsite_title = $dptWebsiteExt;
+            }
+            ##
+            ## Schema.org Markup
+            ##
+            $scriptSchemaId = "perc-department-schema-" + $assetContentId;
+            $dptSchema = $rx.string.getJSONObject();
+            $dptSchema.put("@context", "http://schema.org");
+            $dptSchema.put("@type", "Organization");
+            if (! empty($dptOrganization)) {
+                $dptSchema.put("name", $orgName);
+            }
+            if (! empty($orgPage_path) && $orgPage_path != "#") {
+                $orgWebsiteURL = "//" + $siteDomain;
+                $dptSchema.put("url", $orgWebsiteURL);
+            }
+            if (! empty($dptName)) {
+                $departmentSubSchema = $rx.string.getJSONObject();
+                $departmentSubSchema.put("@type", "Organization");
+                if (! empty($dptName)) {
+                    $departmentSubSchema.put("name", $dptName);
+                }
+                if (! empty($dptEmail) && !($percHideFieldDptEmail)) {
+                    $dptMailTo = "mailto:" + $dptEmail;
+                    $departmentSubSchema.put("email", $dptMailTo);
+                }
+                if (! empty($dptPhone) ) {
+                    $departmentSubSchema.put("telephone", $dptPhone);
+                }
+                if (! empty($dptFax)) {
+                    $departmentSubSchema.put("faxNumber", $dptFax);
+                }
+                if (! empty($dptWebsite_path)) {
+                    $dptWebsiteURL = "//" + $siteDomain + $dptWebsite_path;
+                    $departmentSubSchema.put("url", $dptWebsiteURL);
+                }
+                $dptAddressSchema = $rx.string.getJSONObject();
+                $dptStreetAddress = $dptAddress1 + '' + $dptAddress2;
+                if(! empty($dptStreetAddress)){
+                    $dptAddressSchema.put("streetAddress", $dptStreetAddress);
+                }
+                if(! empty($dptCity) ){
+                    $dptAddressSchema.put("addressLocality", $dptCity);
+                }
+                if(! empty($dptState) ){
+                    $dptAddressSchema.put("addressRegion", $dptState);
+                }
+                if(! empty($dptCountry)){
+                    $dptAddressSchema.put("addressCountry", $dptCountry);
+                }
+                if(! empty($dptPostCode) ){
+                    $dptAddressSchema.put("postalCode", $dptPostCode);
+                }
+                $departmentSubSchema.put("address", $dptAddressSchema);
+                $dptSchema.put("department", $departmentSubSchema);
+            }
+            ## End Schema.org Markup
+       }
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <!-- This section defines the rendered content -->
+        <![CDATA[
+       <div class="$!rootclass">
+#if( ! $perc.widgetContents.isEmpty() )
+            <div>
+#set($addlHead = $perc.page.getAdditionalHeadContent())##
+## Check for existing Schema if using multiple instances of widget on same page
+#if( !($addlHead.contains($scriptSchemaId)) )##
+                    $perc.page.setAdditionalHeadContent("$!{addlHead}<script async id='$!{scriptSchemaId}' type='application/ld+json'>$!{dptSchema}</script>")##
+#end##
+## Display Department Name with selected formatting HTML tags
+#if( !($percHideFieldOrgName) )##
+                    <div class="perc-org-name">$!{orgName}</div>
+#end##
+                <div class="perc-dpt-name">
+#if( "$!{dptWebsite_path}" != "" && "$!{dptWebsite_path}" != "#" )##
+                        <a href="$dptWebsite_path" title="$dptWebsite_title">
+                            $!{dptNameFormatStartTag}${dptName}$!{dptNameFormatEndTag}
+                        </a>
+#else##
+                        $!{dptNameFormatStartTag}${dptName}$!{dptNameFormatEndTag}
+#end##
+                </div>
+#if( !($percHideFieldDptAddress) )##
+                    <div class="perc-dpt-address">
+#if( "$!{dptAddress1}" != "" && "$!{dptAddress1}" != "#" )##
+                            <div class="perc-address-street-1"><p>$!{dptAddress1}</p></div>
+#end##
+#if( "$!{dptAddress2}" != "" && "$!{dptAddress2}" != "#" )##
+                            <div class="perc-address-street-2"><p>$!{dptAddress2}</p></div>
+#end##
+#if( "$!{dptAddress3}" != "" && "$!{dptAddress3}" != "#" )##
+                            <div class="perc-address-city-state-post"><p>$!{dptAddress3}</p></div>
+#end##
+#if( "$!{dptCountry}" != "" && "$!{dptCountry}" != "#" )##
+                            <div class="perc-address-country"><p>$!{dptCountry}</p></div>
+#end##
+                    </div>
+#end##
+#if( !($percHideFieldDptPhone) && "$!{dptPhone}" != "" && "$!{dptPhone}" != "#" )##
+                    <div class="perc-dpt-phone"><p>$!{dptPhone}</p></div>
+#end##
+#if( !($percHideFieldDptFax) && $!{dptFax} != "" && $!{dptFax} != "#" )##
+                    <div class="perc-dpt-fax"><p>$!{dptFax}</p></div>
+#end##
+#if( !($percHideFieldDptEmail) && $!{dptEmail} != "" && $!{dptEmail} != "#" )##
+                    <div class="perc-dpt-email"><p>$!{dptEmail}</p></div>
+#end##
+            </div>
+#elseif ($perc.isEditMode())
+#createEmptyWidgetContent("percDepartment-empty-style", "This widget is showing sample content")
+#end
+       </div>
+    ]]>
+    </Content>
+</Widget>

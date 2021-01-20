@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT ServerActionURL (#PCDATA)>
+<!ATTLIST  ServerActionURL xml:lang CDATA #IMPLIED>
+<!ATTLIST  ServerActionURL sys_serveractionurl CDATA #IMPLIED>

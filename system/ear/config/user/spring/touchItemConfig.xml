@@ -1,0 +1,137 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+	<bean id="my_touchItemServiceConfiguration"
+		class="com.percussion.services.touchitem.PSTouchItemConfiguration">
+		<!--  
+		* Properties used to configure behavior for descendant navigation items.
+		*
+		* enabed - (true | false) If true will touch all descendant navons when
+		*          a navon is workflowed.
+		*
+		* touchLandingPages - (true | false) If true all descendant landing pages
+		*                     will be touched instead of navons when 'enabled' is
+		*                     true and a navon is workflowed.
+		-->
+		<property name="touchDescendantNavProps">
+			<props>
+				<prop key="enabled">false</prop>
+				<prop key="touchLandingPages">false</prop>
+			</props>
+		</property>
+		
+		<!-- 
+		* touchItemConfig:
+		*
+		* Is a set of PSTouchItemConfigBean beans, each of which specifies a
+		* (source content types) (target content types) (level) (touch AA parents)
+		* configuration where the source and target content types are sets of
+		* content type names, level is a numeric value, and touchAAParents is a
+		* boolean flag.
+		-->
+		<property name="touchItemConfig">
+			<set>
+				<bean class="com.percussion.services.touchitem.PSTouchItemConfigBean">
+					<!--
+					* sourceTypes indicates the item content types that will kick
+					* of an extended touch when they are the source of the relationship
+					* change or workflow change.
+					-->
+					<property name="sourceTypes">
+						<set>
+							<!--
+							<value>rffFile</value>
+							-->
+						</set>
+					</property>
+					<!--
+					* targetTypes indicates the item content types that will be
+					* touched when an item of the associated source type is workflowed
+					* or moved to a different folder and they appear in a relative
+					* location which matches the level.
+					-->
+					<property name="targetTypes">
+						<set>
+						    <!--
+							<value>rffFile</value>
+							<value>rffContacts</value>
+							-->
+						</set>
+					</property>
+					<!--
+					* level indicates which relative folder to search.
+					*
+					* -2 - grandparent
+					* -1 - parent
+					*  0 - current
+					-->
+					<property name="level" value="0"/>
+					<!--
+					* touchAAParents indicates if items' AA parent items should also
+					* be touched.
+					-->
+					<property name="touchAAParents" value="false"/>
+				</bean>
+				<!--
+				<bean class="com.percussion.services.touchitem.PSTouchItemConfigBean">
+					<property name="sourceTypes">
+						<set>
+							<value>rffGeneric</value>
+						</set>
+					</property>
+					<property name="targetTypes">
+						<set>
+							<value>percNavon</value>
+							<value>percNavImage</value>
+						</set>
+					</property>
+					<property name="level" value="-1"/>
+					<property name="touchAAParents" value="false"/>
+				</bean>
+				<bean class="com.percussion.services.touchitem.PSTouchItemConfigBean">
+					<property name="sourceTypes">
+						<set>
+							<value>rffGeneric</value>
+						</set>
+					</property>
+					<property name="targetTypes">
+						<set>
+							<value>rffHome</value>
+							<value>percNavTree</value>
+						</set>
+					</property>
+					<property name="level" value="-2"/>
+					<property name="touchAAParents" value="false"/>
+				</bean>
+				-->
+			</set>
+		</property>
+	</bean>
+
+</beans>

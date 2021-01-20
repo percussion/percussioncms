@@ -1,0 +1,10 @@
+${0}_linkId = $assetItem.getNode().getProperty(''{0}_linkId'').String;
+${0}_path = $rx.pageutils.renderManagedItemPath($perc.linkContext, ${0}_linkId);
+${0}_title="";
+${0}_sys_contentId = $rx.pageutils.getManagedLinkDependentId(${0}_linkId);
+if (${0}_sys_contentId != "")
+'{'
+    ${0}_pageMap = $rx.pageutils.findItemFieldValues(''percPage'', ''resource_link_title'', ${0}_sys_contentId);
+    ${0}_title = ${0}_pageMap.get(''resource_link_title'');
+'}'
+

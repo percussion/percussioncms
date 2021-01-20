@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT component (url )>
+<!ATTLIST  component name CDATA #IMPLIED>
+<!ELEMENT slotcomponents (component* )>
+<!ATTLIST  slotcomponents slotname CDATA #IMPLIED>

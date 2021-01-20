@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="Image"
+                 contenttype_name="percImageAsset"
+                 category="content,rich media"
+                 description="Display an image on a page"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/image/images/widgetIconImage.png"
+                 preferred_editor_width="965"
+                 preferred_editor_height="680"
+                 is_responsive="true"
+    />
+    <Resource href="/rx_resources/widgets/image/css/style.css"
+              type="css"
+              placement="head" />
+    <Resource href="/cmlite/jslib/jquery-1.3.2.js"
+              type="javascript"
+              placement="head"/>
+    <UserPref name="rendering"
+              display_name="Rendering format"
+              required="true"
+              default_value="image"
+              datatype="enum">
+        <EnumValue value="image" display_value="Normal image" />
+        <EnumValue value="lightbox" display_value="Thumbnail and light box" />
+    </UserPref>
+    <UserPref name="altText"
+              display_name="Alt text override"
+              datatype="string"
+              required="false" />
+    <UserPref name="title"
+              display_name="Title override"
+              datatype="string"
+              required="false" />
+    <UserPref name="longdesc"
+              display_name="Long Description"
+              datatype="string"
+              required="false" />
+    <UserPref name="ariaLabel"
+              display_name="Aria Label"
+              datatype="string"
+              required="false" />
+
+    <UserPref name="referalPolicy"
+              display_name="Referrer-Policy"
+              datatype="enum">
+        <EnumValue value="no-referrer" display_value="no-referrer" />
+        <EnumValue value="no-referrer-when-downgrade" display_value="no-referrer-when-downgrade" />
+        <EnumValue value="origin" display_value="origin" />
+        <EnumValue value="origin-when-cross-origin" display_value="origin-when-cross-origin" />
+        <EnumValue value="same-origin" display_value="same-origin" />
+        <EnumValue value="strict-origin" display_value="strict-origin" />
+        <EnumValue value="strict-origin-when-cross-origin" display_value="strict-origin-when-cross-origin" />
+        <EnumValue value="unsafe-url" display_value="unsafe-url" />
+    </UserPref>
+
+    <CssPref name="rootclass"
+             display_name="CSS Root Class"
+             datatype="string" />
+
+    <Code type="jexl">
+        <![CDATA[
+      $linkContext = $perc.linkContext;
+      $props = $perc.widget.item.properties;
+      $referalPolicy = $props.get("referalPolicy");
+      $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+      $perc.setWidgetContents($assetItems);
+      $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+      if ( ! empty($rootclass))
+         $classAttribute = 'class="' + $rootclass + '"';
+      if ( ! $assetItems.isEmpty() ) {
+
+         $assetItem = $assetItems.get(0);
+
+         $link = $rx.pageutils.itemLink($linkContext, $assetItem, "percSystem.imageThumbBinary");
+         $biglink = $rx.pageutils.itemLink($linkContext, $assetItem, "percSystem.imageMainBinary");
+         if(empty($props.altText)){
+            $img_alt = $rx.pageutils.html($assetItem,'alttext');
+         } else {
+            $img_alt = $rx.pageutils.html($props, 'altText');
+         }
+         if( ! $perc.isEditMode()) {
+            if(empty($props.title)) {
+               $img_title = $rx.pageutils.html($assetItem,'displaytitle');
+            } else {
+               $img_title = $rx.pageutils.html($props, 'title');
+            }
+         } else {
+            $img_title="";
+         }
+
+         if( $perc.isEditMode() && $img_title == "") {
+            $img_title_attr = '';
+         } else {
+            $img_title_attr = 'title="' + $img_title + '"';
+         }
+
+		$ariaLabel = $props.get("ariaLabel");
+		$longdesc = $props.get("longdesc");
+
+         $rendering = $props.get('rendering');
+         if( $rendering == 'image') {
+            $img_height = $assetItem.Node.getProperty('img_height').String;
+            $img_width = $assetItem.Node.getProperty('img_width').String;
+         } else {
+            $img_height = $assetItem.Node.getProperty('img2_height').String;
+            $img_width = $assetItem.Node.getProperty('img2_width').String;
+         }
+
+         $link = $tools.esc.html($link);
+         $biglink = $tools.esc.html($biglink);
+         $biglink = $biglink.replace("(", "%28");
+         $biglink = $biglink.replace(")", "%29");
+
+      } else {
+        ;
+      }
+
+	  $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+      if ($dsUrl.indexOf("http://localhost") != -1 )
+	      $dsUrl = "";
+      $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
+
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[
+    #if( $assetItem)##
+        <div $!classAttribute data="$!{dynamicListData}">
+        #if( $rendering == 'image')##
+            #if( $img_height.length() > 0 && $img_width.length() > 0)##
+               <img src="$!{biglink}"  referrerpolicy="$!{referalPolicy}"  $!{img_title_attr} alt="$!{img_alt}" #if( "$!ariaLabel" != "")aria-label="$!ariaLabel"#end #if( "$!longdesc" != "")longdesc="$!longdesc"#end height="$!{img_height}" width="$!{img_width}"/>
+            #else##
+               <img src="$!{biglink}" referrerpolicy="$!{referalPolicy}"  $!{img_title_attr} alt="$!{img_alt}" #if( "$!ariaLabel" != "")aria-label="$!ariaLabel"#end #if( "$!longdesc" != "")longdesc="$!longdesc"#end/>
+            #end##
+        #end##
+        #if( $rendering == 'lightbox')##
+            <div class="ui-widget ui-widget-content" id="percImageTWLBBox-$!{assetItem.id}">
+            <a href="$!{biglink}" $!{img_title_attr} data-lightbox="$!{assetItem.id}" #if("$!ariaLabel" != "")aria-label="$!ariaLabel"#end>
+               <img src="$!{link}" referrerpolicy="$!{referalPolicy}"  alt="$!{img_alt}" #if("$!longdesc" != "")longdesc="$!longdesc"#end #if("$!ariaLabel" != "")aria-label="$!ariaLabel"#end height="$!{img_height}" width="$!{img_width}" />
+            </a>
+            </div>
+        #end##
+        </div>
+    #elseif ($perc.isEditMode())##
+        #createEmptyWidgetContent("image-sample-content", "This image widget is showing sample content.")
+    #end##
+    ]]>
+    </Content>
+</Widget>

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT StateRole (AdhocType, AssignmentType, IsNotifyOn, RoleId, ShowInInbox, StateId, WorkflowId )>
+<!ELEMENT WorkflowId (#PCDATA)>
+<!ELEMENT StateId (#PCDATA)>
+<!ELEMENT ShowInInbox (#PCDATA)>
+<!ELEMENT RoleId (#PCDATA)>
+<!ELEMENT IsNotifyOn (#PCDATA)>
+<!ELEMENT AssignmentType (#PCDATA)>
+<!ELEMENT AdhocType (#PCDATA)>
+<!ELEMENT CloneStateRoles (StateRole* )>

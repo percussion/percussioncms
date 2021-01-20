@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_edit-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\edit.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_edit-png\edit.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_radio--button--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\radio-button-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_radio--button--icon-png\radio-button-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_perc--recaptcha--field--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\perc-recaptcha-field-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_perc--recaptcha--field--icon--over-png\perc-recaptcha-field-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_db--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\db-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_db--over-png\db-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/form/js/PercFormView.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\PercFormView.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\form\js\PercFormView.js\PercFormView.js</ArchiveFile>
+         <OriginalFile>widgets\form\js\PercFormView.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_text--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\text-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_text--icon-png\text-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/form/js/TinymceConfig.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\TinymceConfig.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\form\js\TinymceConfig.js\TinymceConfig.js</ArchiveFile>
+         <OriginalFile>widgets\form\js\TinymceConfig.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_entry--field--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\entry-field-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_entry--field--icon--over-png\entry-field-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_text--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\text-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_text--icon--over-png\text-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_buttonBlueMinusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\buttonBlueMinusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_buttonBlueMinusOver-gif\buttonBlueMinusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_form_js_form-min-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\form\js\form.min.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_form_js_form-min-js\form.min.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_hidden--field--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\hidden-field-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_hidden--field--icon--over-png\hidden-field-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_text--box--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\text-box-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_text--box--icon-png\text-box-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Resources_percForm-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Resources\percForm.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Resources_percForm-xml\percForm.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_widgetIconForm-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\widgetIconForm.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_widgetIconForm-gif\widgetIconForm.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_text--box--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\text-box-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_text--box--icon--over-png\text-box-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_hidden--field--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\hidden-field-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_hidden--field--icon-png\hidden-field-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/form/css/perc-form-widget.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\perc-form-widget.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\form\css\perc-form-widget.css\perc-form-widget.css</ArchiveFile>
+         <OriginalFile>widgets\form\css\perc-form-widget.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ui--bg__glass__75__e6e6e6__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ui-bg_glass_75_e6e6e6_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ui--bg__glass__75__e6e6e6__1x400-png\ui-bg_glass_75_e6e6e6_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ui--bg__glass__55__fbf9ee__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ui-bg_glass_55_fbf9ee_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ui--bg__glass__55__fbf9ee__1x400-png\ui-bg_glass_55_fbf9ee_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_calendar-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\calendar.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_calendar-gif\calendar.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ButtonBrowseOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ButtonBrowseOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ButtonBrowseOver-png\ButtonBrowseOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_buttonSave-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\buttonSave.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_buttonSave-png\buttonSave.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ButtonClosePreference-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ButtonClosePreference.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ButtonClosePreference-png\ButtonClosePreference.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_perc--honeypot--field--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\perc-honeypot-field-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_perc--honeypot--field--icon--over-png\perc-honeypot-field-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_widgetformSampleBackground-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\widgetformSampleBackground.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_widgetformSampleBackground-png\widgetformSampleBackground.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_db-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\db.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_db-png\db.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_form_images_ui--bg__glass__55__fbf9ee__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\form\images\ui-bg_glass_55_fbf9ee_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_form_images_ui--bg__glass__55__fbf9ee__1x400-png\ui-bg_glass_55_fbf9ee_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_drop--down--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\drop-down-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_drop--down--icon-png\drop-down-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsForm.png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\images\ContentTypeIcons\filetypeIconsForm.png</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsForm.png\filetypeIconsForm.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ButtonApply-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ButtonApply.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ButtonApply-png\ButtonApply.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_form_images_ui--icons__222222__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\form\images\ui-icons_222222_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_form_images_ui--icons__222222__256x240-png\ui-icons_222222_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ButtonClosePreferenceOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ButtonClosePreferenceOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ButtonClosePreferenceOver-png\ButtonClosePreferenceOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_check--box--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\check-box-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_check--box--icon--over-png\check-box-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_button--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\button-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_button--icon-png\button-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ButtonBrowse-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ButtonBrowse.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ButtonBrowse-png\ButtonBrowse.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_date-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\date.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_date-png\date.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--6416883927104880578">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percFormAsset.contentType.aclDef</RxFile>
+         <ArchiveFile>AclDef--6416883927104880578\percFormAsset.contentType.aclDef</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_css_perc--form--widget-css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\css\perc-form-widget.css</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_css_perc--form--widget-css\perc-form-widget.css</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ButtonApplyOver-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ButtonApplyOver.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ButtonApplyOver-png\ButtonApplyOver.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_form_images_ui--bg__glass__75__dadada__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\form\images\ui-bg_glass_75_dadada_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_form_images_ui--bg__glass__75__dadada__1x400-png\ui-bg_glass_75_dadada_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_heading--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\heading-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_heading--icon--over-png\heading-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_check--box--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\check-box-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_check--box--icon-png\check-box-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/form/js/PercFormController.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\PercFormController.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\form\js\PercFormController.js\PercFormController.js</ArchiveFile>
+         <OriginalFile>widgets\form\js\PercFormController.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_date--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\date-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_date--over-png\date-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_configure-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\configure.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_configure-png\configure.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ui--bg__flat__75__ffffff__40x100-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ui-bg_flat_75_ffffff_40x100.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ui--bg__flat__75__ffffff__40x100-png\ui-bg_flat_75_ffffff_40x100.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_perc--honeypot--field--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\perc-honeypot-field-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_perc--honeypot--field--icon-png\perc-honeypot-field-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_control--top-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\control-top.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_control--top-png\control-top.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_delete-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\delete.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_delete-png\delete.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_buttonBluePlusOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\buttonBluePlusOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_buttonBluePlusOver-gif\buttonBluePlusOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_form_images_ui--bg__glass__75__e6e6e6__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\form\images\ui-bg_glass_75_e6e6e6_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_form_images_ui--bg__glass__75__e6e6e6__1x400-png\ui-bg_glass_75_e6e6e6_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_form_js_form-js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\form\js\form.js</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_form_js_form-js\form.js</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_Form__DropDown__Active-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\Form_DropDown_Active.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_Form__DropDown__Active-png\Form_DropDown_Active.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ui--bg__glass__75__dadada__1x400-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ui-bg_glass_75_dadada_1x400.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ui--bg__glass__75__dadada__1x400-png\ui-bg_glass_75_dadada_1x400.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_form--minus-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\form-minus.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_form--minus-png\form-minus.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_button--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\button-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_button--icon--over-png\button-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_form--plus-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\form-plus.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_form--plus-png\form-plus.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_form_images_calendar-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\form\images\calendar.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_form_images_calendar-gif\calendar.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rxconfig_Widgets_percForm-xml">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rxconfig\Widgets\percForm.xml</RxFile>
+         <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percForm-xml\percForm.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_radio--button--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\radio-button-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_radio--button--icon--over-png\radio-button-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-342">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percFormAsset.itemDef.contentType</RxFile>
+         <ArchiveFile>ContentType-342\percFormAsset.itemDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percFormAsset.nodeDef.contentType</RxFile>
+         <ArchiveFile>ContentType-342\percFormAsset.nodeDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\percFormAsset.schemaDef.contentType</RxFile>
+         <ArchiveFile>ContentType-342\percFormAsset.schemaDef.contentType</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_control-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\control.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_control-png\control.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_entry--field--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\entry-field-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_entry--field--icon-png\entry-field-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_form_images_ui--bg__flat__75__ffffff__40x100-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\web_resources\widgets\form\images\ui-bg_flat_75_ffffff_40x100.png</RxFile>
+         <ArchiveFile>sys__UserDependency--web__resources_widgets_form_images_ui--bg__flat__75__ffffff__40x100-png\ui-bg_flat_75_ffffff_40x100.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/formWidgetControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\NATE__~1\AppData\Local\Temp\formWidgetControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\formWidgetControl.xsl\formWidgetControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\formWidgetControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_perc--recaptcha--field--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\perc-recaptcha-field-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_perc--recaptcha--field--icon-png\perc-recaptcha-field-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_drop--down--icon--over-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\drop-down-icon-over.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_drop--down--icon--over-png\drop-down-icon-over.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_configure2-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\configure2.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_configure2-png\configure2.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_heading--icon-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\heading-icon.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_heading--icon-png\heading-icon.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_widgetIconFormOver-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\widgetIconFormOver.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_widgetIconFormOver-gif\widgetIconFormOver.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_ui--icons__222222__256x240-png">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\ui-icons_222222_256x240.png</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_ui--icons__222222__256x240-png\ui-icons_222222_256x240.png</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_form_images_buttonCancel-gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>e:\DevEnv\Installs\5315Patch\rx_resources\widgets\form\images\buttonCancel.gif</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_widgets_form_images_buttonCancel-gif\buttonCancel.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

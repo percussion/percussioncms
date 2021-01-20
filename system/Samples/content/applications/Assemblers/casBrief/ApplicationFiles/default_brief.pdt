@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT brief (displaytitle*, abstractcontent* )>
+<!ELEMENT abstractcontent (#PCDATA)>
+<!ELEMENT displaytitle (#PCDATA)>
+<!ELEMENT default_brief (brief* )>

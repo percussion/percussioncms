@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>core</artifactId>
+        <groupId>com.percussion</groupId>
+        <version>8.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>perc-rxapps</artifactId>
+
+    <properties>
+        <assembly-directory>${basedir}/target/distribution</assembly-directory>
+        <jetty-directory>${basedir}/target/jetty</jetty-directory>
+
+    </properties>
+
+    <build>
+
+    <plugins>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>populate perc distribution from jetty</id>
+                    <phase>process-resources</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                    <configuration>
+
+                        <target>
+                            <property name="APPS_DIR" location="${assembly-directory}/RxApp"/>
+                            <property name="FF_DIST_APPS_DIR" location="${assembly-directory}/RxFastForward"/>
+                            <property name="WITHFF" location="true"/>
+                            <ant dir="${basedir}/../../system"  antfile="rxAppsCopy.xml" inheritRefs="true"/>
+                        </target>
+                    </configuration>
+                </execution>
+                <!--
+                <execution>
+                  <id>set jetty.sh</id>
+                  <phase>process-resources</phase>
+                  <goals>
+                    <goal>run</goal>
+                  </goals>
+                  <configuration>
+                    <target>
+                      <chmod dir="${assembly-directory}/bin" perm="755" includes="**/*.sh" />
+                    </target>
+                  </configuration>
+                </execution>
+                <execution>
+                  <id>removeKeystore</id>
+                  <phase>process-resources</phase>
+                  <goals>
+                    <goal>run</goal>
+                  </goals>
+                  <configuration>
+                    <target>
+                      <delete file="${assembly-directory}/etc/keystore" />
+                    </target>
+                  </configuration>
+                </execution>
+              -->
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+
+            <configuration>
+                <descriptors>
+                    <descriptor>src/main/assembly/perc-assembly.xml</descriptor>
+                </descriptors>
+                <tarLongFileMode>posix</tarLongFileMode>
+                <appendAssemblyId>false</appendAssemblyId>
+            </configuration>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+
+
+    </build>
+</project>

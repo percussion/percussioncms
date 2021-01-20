@@ -1,0 +1,16 @@
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN"
+          "http://www.eclipse.org/jetty/configure_9_3.dtd">
+<!-- Tweak SsslContextFactory Includes / Excludes -->
+<Configure id="sslContextFactory" class="org.eclipse.jetty.util.ssl.SslContextFactory">
+	<!-- Mitigate SLOTH Attack -->
+	<Set name="IncludeCipherSuites">
+		<Call class="org.eclipse.jetty.util.StringUtil" name="arrayFromString">
+			<Arg type="String">[<Property name="perc.ssl.includeCiphers" default="TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"/>]</Arg>
+		</Call>
+	</Set>
+	<Set name="IncludeProtocols">
+		<Call class="org.eclipse.jetty.util.StringUtil" name="arrayFromString">
+			<Arg type="String">[<Property name="perc.ssl.protocols" default="TLSv1.2" />]</Arg>
+		</Call>
+	</Set>
+</Configure>

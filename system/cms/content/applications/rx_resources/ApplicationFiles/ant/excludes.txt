@@ -1,0 +1,5 @@
+.snapshot/
+.git/
+.snapshot/
+.svn/
+.gitignore

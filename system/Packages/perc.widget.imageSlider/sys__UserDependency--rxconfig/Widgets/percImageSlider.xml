@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percImageSlider
+-->
+<Widget>
+    <WidgetPrefs title="Image Slider"
+                 contenttype_name="percImageSlider"
+                 description=" "
+                 author="Percussion Software Inc"
+                 category="content,rich media"
+                 thumbnail="/rx_resources/widgets/percImageSlider/images/percImageSliderIcon.png"
+                 preferred_editor_width="1200"
+                 preferred_editor_height="600"
+                 is_responsive="true"/>
+    <UserPref name="perc_slide_autoplay"
+              display_name="Autoplay"
+              default_value="true"
+              datatype="bool">
+    </UserPref>
+    <UserPref name="perc_show_dots"
+              display_name="Show dots"
+              default_value="true"
+              datatype="bool">
+    </UserPref>
+    <UserPref name="perc_show_arrows"
+              display_name="Show arrows"
+              default_value="true"
+              datatype="bool">
+    </UserPref>
+    <UserPref name="perc_enable_custom_arrows"
+              display_name="Enable custom arrows"
+              default_value="false"
+              datatype="bool">
+    </UserPref>
+    <UserPref name="perc_prev_arrow_class"
+              display_name="External class for previous arrow (ex: fa fa-chevron-left)"
+              default_value=""
+              datatype="string">
+    </UserPref>
+    <UserPref name="perc_next_arrow_class"
+              display_name="External class for next arrow (ex: fa fa-chevron-right)"
+              default_value=""
+              datatype="string">
+    </UserPref>
+    <UserPref name="perc_slide_fade"
+              display_name="Fade effect (1 slide at a time must be selected)"
+              default_value="false"
+              datatype="bool">
+    </UserPref>
+    <UserPref name="perc_slide_theme"
+              display_name="Theme"
+              default_value="dark"
+              datatype="enum">
+        <EnumValue value="dark" display_value="Dark" />
+        <EnumValue value="light" display_value="Light" />
+    </UserPref>
+    <UserPref name="perc_slide_layout"
+              display_name="Slider Layout (will override &quot;slides to show&quot; values)"
+              default_value="standard"
+              datatype="enum">
+        <EnumValue value="standard" display_value="Standard" />
+        <EnumValue value="navigation" display_value="Navigation" />
+    </UserPref>
+    <UserPref name="perc_thumbnail_height"
+              display_name="Thumbnail height (Navigation layout only)"
+              default_value="8vw"
+              datatype="string">
+    </UserPref>
+    <UserPref name="perc_slide_caption_tag_type"
+              display_name="Format for slide text field 1"
+              default_value="p"
+              datatype="enum">
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+    </UserPref>
+    <UserPref name="perc_slide_caption_2_tag_type"
+              display_name="Format for slide text field 2"
+              default_value="p"
+              datatype="enum">
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
+    </UserPref>
+    <UserPref name="perc_slide_caption_location"
+              display_name="Slide text location"
+              default_value="above"
+              datatype="enum">
+        <EnumValue value="above" display_value="Above" />
+        <EnumValue value="over" display_value="Over" />
+        <EnumValue value="below" display_value="Below" />
+    </UserPref>
+    <UserPref name="perc_slide_caption_alignment"
+              display_name="Slide text horizontal alignment"
+              default_value="left"
+              datatype="enum">
+        <EnumValue value="left" display_value="Left" />
+        <EnumValue value="center" display_value="Center" />
+        <EnumValue value="right" display_value="Right" />
+    </UserPref>
+    <UserPref name="perc_slide_caption_vertical_alignment"
+              display_name="Slide text vertical alignment (overlay)"
+              default_value="top"
+              datatype="enum">
+        <EnumValue value="top" display_value="Top" />
+        <EnumValue value="middle" display_value="Middle" />
+        <EnumValue value="bottom" display_value="Bottom" />
+    </UserPref>
+    <UserPref name="perc_slide_image_height"
+              display_name="Slide Height"
+              default_value="250px"
+              datatype="string">
+    </UserPref>
+    <UserPref name="perc_slide_show_number_desktop"
+              display_name="Number of slides to show at a time on desktop"
+              default_value="1"
+              datatype="number">
+    </UserPref>
+    <UserPref name="perc_slide_show_number_tablet"
+              display_name="Number of slides to show at a time on tablet"
+              default_value="1"
+              datatype="number">
+    </UserPref>
+    <UserPref name="perc_slide_show_number_mobile"
+              display_name="Number of slides to show at a time on mobile"
+              default_value="1"
+              datatype="number">
+    </UserPref>
+    <UserPref name="perc_slide_scroll_number"
+              display_name="Number of slides to scroll at a time"
+              default_value="1"
+              datatype="number">
+    </UserPref>
+    <UserPref name="perc_autoplay_speed"
+              display_name="Autoplay speed (milliseconds)"
+              default_value="2000"
+              datatype="number">
+    </UserPref>
+    <UserPref name="perc_scroll_speed"
+              display_name="Scroll speed (milliseconds)"
+              default_value="500"
+              datatype="number">
+    </UserPref>
+    <UserPref name="perc_slider_tablet_breakpoint"
+              display_name="&lt;span style=&quot;font-size:125%;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Responsive Breakpoints&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;Tablet"
+              default_value="1024"
+              datatype="number">
+    </UserPref>
+    <UserPref name="perc_slider_mobile_breakpoint"
+              display_name="Mobile"
+              default_value="480"
+              datatype="number">
+    </UserPref>
+    <CssPref name="rootclass"
+             display_name="CSS root class"
+             datatype="string" />
+    <CssPref name="captionclass"
+             display_name="CSS image text class"
+             datatype="string" />
+
+    <!-- User prefs define input needed when in layout config for a widget -->
+    <!-- Available data types are bool, number, enum, string -->
+
+    <Code type="jexl">
+        <!-- This section is used to set up data that will be used in the content section -->
+        <![CDATA[
+
+    $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+    if (!empty($rootclass)) {
+       $rootclass = $rootclass;
+    }
+    else {
+      $rootclass = 'percImageSlider';
+    }
+    $captionclass = $perc.widget.item.cssProperties.get('captionclass');
+    if (!empty($captionclass)) {
+       $captionclass = $captionclass.trim();
+    }
+    else {
+       $captionclass= "";
+    }
+
+       $pageId = $perc.page.id;
+       $widgetId = $perc.widget.item.id;
+       $widgetProps = $perc.widget.item.properties;
+       $perc_slide_show_number_desktop = $widgetProps.get("perc_slide_show_number_desktop");
+       $perc_slide_show_number_tablet = $widgetProps.get("perc_slide_show_number_tablet");
+       $perc_slide_show_number_mobile = $widgetProps.get("perc_slide_show_number_mobile");
+       $perc_slides_to_scroll = $widgetProps.get("perc_slide_scroll_number");
+       $perc_autoplay_speed = $widgetProps.get("perc_autoplay_speed");
+       $perc_scroll_speed = $widgetProps.get("perc_scroll_speed");
+       $perc_slide_image_height = $widgetProps.get("perc_slide_image_height");
+       $perc_slide_caption_location = $widgetProps.get("perc_slide_caption_location");
+       $perc_slide_caption_alignment = $widgetProps.get("perc_slide_caption_alignment");
+       $perc_slide_caption_vertical_alignment = $widgetProps.get("perc_slide_caption_vertical_alignment");
+       $perc_slide_fade = $widgetProps.get("perc_slide_fade");
+       $perc_show_dots = $widgetProps.get("perc_show_dots");
+       $perc_show_arrows = $widgetProps.get("perc_show_arrows");
+       $perc_slider_tablet_breakpoint = $widgetProps.get("perc_slider_tablet_breakpoint");
+       $perc_slider_mobile_breakpoint = $widgetProps.get("perc_slider_mobile_breakpoint");
+       $perc_slide_layout = $widgetProps.get("perc_slide_layout");
+       $perc_slide_thumbnail_height = $widgetProps.get("perc_slide_thumbnail_height");
+       $perc_slide_theme = $widgetProps.get("perc_slide_theme");
+       $perc_enable_custom_arrows = $widgetProps.get("perc_enable_custom_arrows");
+       $perc_prev_arrow_class = $widgetProps.get("perc_prev_arrow_class");
+       $perc_next_arrow_class = $widgetProps.get("perc_next_arrow_class");
+       $perc_slide_autoplay = $widgetProps.get("perc_slide_autoplay");
+       $perc_thumbnail_height = $widgetProps.get("perc_thumbnail_height");
+       $perc_slide_caption_tag_type = $widgetProps.get("perc_slide_caption_tag_type");
+       $perc_slide_caption_2_tag_type = $widgetProps.get("perc_slide_caption_2_tag_type");
+
+       ## sets the required default values if the navigation layout is selected ##
+       if (  $perc_slide_layout == 'navigation') {
+        $perc_slide_fade = 'true';
+        $perc_slide_show_number_desktop = 1;
+        $perc_slide_show_number_tablet = 1;
+        $perc_slide_show_number_mobile = 1;
+       }
+
+       ## Get asset item(s)
+       $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+       $perc.setWidgetContents($assets);
+
+       if (! $assets.isEmpty())
+       {
+          $assetItem = $assets.get(0); ## Get first item (which may be only item)
+          ## Friendly slider name is error for displaying errors
+          $friendlySliderName = $assetItem.getNode().getProperty('sliderName').String;
+          $data = $assetItem.Node.getProperty('rx:sliderImageJSON').getString();
+          $json = $rx.pageutils.createJsonObject($data);
+          $sliderJsonData = $json.toString();
+          ##$isPresent=false;
+	      if($json.has('config')){
+            ##$isPresent=true;
+            $sliderJsonData = $json.toString().replace('config','percJSONConfig');
+	      }
+
+          $updatedData = $rx.pageutils.updateManagedLinksInJSON($perc.linkContext, $sliderJsonData);
+          $json = $rx.pageutils.createJsonObject($updatedData);
+          $sliderId = $assetItem.Node.getProperty('rx:sys_contentid').getString();
+          $sliderName = $json.sliderName;
+          ##$debug = $json.toString();
+          $imageSliderArray = $rx.pageutils.createJsonArray($json, "percJSONConfig");
+
+          ## this logic is needed to prevent a slider crash if slide show or scroll values are set to zero ##
+          if( $perc_slide_show_number_desktop != 0 && $perc_slide_show_number_tablet != 0 && $perc_slide_show_number_mobile !=0 && $perc_slides_to_scroll != 0) {
+            $validNumbers = 'true';
+          }
+          else {
+            $validNumbers = 'false';
+          }
+
+        }
+
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <!-- This section defines the rendered content -->
+        <![CDATA[
+       <div class="$!rootclass">
+        #if( ! $perc.widgetContents.isEmpty() )
+        ## only output slider content if valid slider values are selected ##
+        #if( $validNumbers == 'true' )##
+        <script>
+         window.addEventListener('DOMContentLoaded', function() {
+              $(document).ready(function(){
+                /* main slider settings */
+                $('.${sliderName}-${sliderId}').slick({
+                #if( $perc_slide_layout == 'navigation')##
+                asNavFor: ".${sliderName}-${sliderId}-navigation",
+                #end##
+                fade: $perc_slide_fade,
+                ## override dot and arrow settings for navigation layout ##
+                #if( $perc_slide_layout != 'navigation')##
+                arrows: $perc_show_arrows,
+                dots: $perc_show_dots,
+                #else
+                arrows: false,
+                dots: false,
+                #end##
+                infinite: true,
+                slidesToShow: $perc_slide_show_number_desktop,
+                slidesToScroll: $perc_slides_to_scroll,
+                autoplay: $perc_slide_autoplay,
+                autoplaySpeed: $perc_autoplay_speed,
+                speed: $perc_scroll_speed,#if ( $perc_enable_custom_arrows == true && $perc_prev_arrow_class != "" && $perc_next_arrow_class != "" )
+                prevArrow: '<a class="slick-prev $perc_prev_arrow_class"></a>',
+                nextArrow: '<a class="slick-next $perc_next_arrow_class"></a>',#end##
+                responsive: [
+                  {
+                    breakpoint: $perc_slider_tablet_breakpoint,
+                    settings: {
+                      slidesToShow: $perc_slide_show_number_tablet,
+                      slidesToScroll: 1
+                    }
+                  },
+                  {
+                    breakpoint: $perc_slider_mobile_breakpoint,
+                    settings: {
+                      slidesToShow: $perc_slide_show_number_mobile,
+                      slidesToScroll: 1
+                    }
+                  }
+              ]
+                });
+
+                #if( $perc_slide_layout == 'navigation')##
+                /* nav slider settings */
+                $('.${sliderName}-${sliderId}-navigation').slick({
+                  asNavFor: ".${sliderName}-${sliderId}",
+                  centerMode: true,
+                  focusOnSelect: true,
+                  arrows: true,
+                  dots: true,
+                  infinite: true,
+                  slidesToShow: 3,
+                  slidesToScroll: 1,
+                  autoplay: $perc_slide_autoplay,
+                  autoplaySpeed: $perc_autoplay_speed,
+                  speed: $perc_scroll_speed#if ( $perc_enable_custom_arrows == true && $perc_prev_arrow_class != "" && $perc_next_arrow_class != "" ),
+                  prevArrow: '<a class="slick-prev $perc_prev_arrow_class"></a>',
+                  nextArrow: '<a class="slick-next $perc_next_arrow_class"></a>'#end##
+                });
+                #end
+              });
+             });
+        </script>
+
+        <style>
+          ## enables fontawesome if both arrow classes are populated and the checkbox is selected
+          #if ( $perc_enable_custom_arrows == true && $perc_prev_arrow_class != "" && $perc_next_arrow_class != "" )
+          .slick-arrow:before {
+            font-family: fontawesome !important;
+          }
+          #end
+
+          #if( $perc_slide_theme == 'dark' )
+          .slick-prev:before {
+            color: #000000;
+          }
+          .perc-slide-caption-container p {
+            margin-bottom: 0px;
+          }
+          .slick-next:before
+          {
+              color: #000000;
+          }
+          .slick-dots li button:before {
+              color: #000000;
+          }
+          .slick-dots li.slick-active button:before
+          {
+              color: #000000;
+          }
+          #else
+          .slick-prev:before {
+            color: #ffffff;
+          }
+          .slick-next:before
+          {
+              color: #ffffff;
+          }
+          .slick-dots li button:before {
+              color: #ffffff;
+          }
+          .slick-dots li.slick-active button:before
+          {
+              color: #ffffff;
+          }
+          #end
+          .slick-dots button {
+            box-shadow: none !important;
+          }
+          .slick-next, .slick-prev {
+            box-shadow: none !important;
+            z-index: 9999;
+          }
+          .slick-prev {
+            left: 10px;
+          }
+          .slick-next {
+            right: 10px;
+          }
+          .perc-slide-image-container {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            height: ${perc_slide_image_height};
+            position: relative;
+          }
+          .perc-slide-image-container p {
+            width:100%;
+            position: absolute;
+          }
+          .perc-slide-image-container h2 {
+            width:100%;
+            position: absolute;
+          }
+          .perc-slide-image-container h3 {
+            width:100%;
+            position: absolute;
+          }
+          .perc-slide-image-container h4 {
+            width:100%;
+            position: absolute;
+          }
+          .perc-slide-image-container h5 {
+            width:100%;
+            position: absolute;
+          }
+          .perc-slide-image-container h6 {
+            width:100%;
+            position: absolute;
+          }
+          .perc-slide-thumbnail-container {
+            margin:5px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            height: $perc_thumbnail_height;
+            position: relative;
+          }
+          .perc-slide-caption-horizontal-left {
+            text-align: left;
+          }
+          .perc-slide-caption-horizontal-center {
+            text-align: center;
+          }
+          .perc-slide-caption-horizontal-right {
+            text-align: right;
+          }
+          .perc-slide-caption-overlay-container-vertical-middle {
+            top:50% !important;
+            transform: translateY(-50%) !important;
+            width: 100%;
+            position: absolute;
+          }
+          .perc-slide-caption-overlay-container-vertical-top {
+            top:0;
+          }
+          .perc-slide-caption-overlay-container-vertical-bottom {
+            bottom:10%;
+            position: absolute;
+            width: 100%;
+          }
+          .image-caption-overlay-divider {
+            display: inline-block;
+          }
+          .perc-slide-caption-container {
+            margin:5px;
+            padding: 0px 10px 0px 10px;
+          }
+        </style>
+
+          ##create empty array for qualified images
+          #set( $qualifiedImages = [] )##
+
+          #foreach($image in $imageSliderArray)##
+
+          ## First check if path is broken
+          ## If path is broken the image has been deleted and should not be included in the slider
+          #if( $image.percImagePath && $image.percImagePath != '#' )##
+          #set( $query = "" )##
+          #set( $query = "select * from rx:percImageAsset where rx:sys_contentid = ${image.percImageContentId}")##
+          #set( $maxResults = 1 )##
+          #set( $params= $rx.string.stringToMap(null) )##
+          #set( $dummy = $params.put('query', $query) )##
+          #set( $dummy = $params.put('max_results', $maxResults) )##
+          #set( $finderName = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder" )##
+          #set( $result = "" )##
+          #set( $result = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params) )##
+
+          ## Debug $result will show the database response to help troubleshoot
+          ## content status
+
+          ## Once the additional image data is retreived from the database, set those values as new properties
+          #set( $image.altText = $result.get(0).fields.alttext )##
+          #set( $image.imageContentStateId = $result.get(0).fields.sys_contentstateid )##
+
+          ## start setting caption flags
+
+          #if( $image.imageCaption != "" || $image.imageCaption2 != "")##
+            #set( $image.hasCaptions = "Y" )##
+          #else##
+            #set( $image.hasCaptions = "N")##
+          #end##
+
+          #if( $image.imageCaption != "" )##
+            #set( $image.hasCaption1 = "Y")##
+          #else##
+            #set( $image.hasCaption1 = "N")##
+          #end##
+
+          #if( $image.imageCaption2 != "" )##
+            #set( $image.hasCaption2 = "Y")##
+          #else##
+            #set( $image.hasCaption2 = "N")##
+          #end##
+
+          ## end of setting caption flags
+
+          ## set the clickable link
+          #if( $image.linkSetting == "internal")##
+
+          ## Only run queries if we have a valid internal page path
+          #if( $image.percPagePath && $image.percPagePath != "#" )
+          ## check the content status of the linked internal page
+          #set( $query = "" )##
+          #set( $query = "select * from rx:percPage where rx:sys_contentid = ${image.percPageContentId}")##
+          #set( $maxResults = 1 )##
+          #set( $params = $rx.string.stringToMap(null) )##
+          #set( $dummy = $params.put('query', $query) )##
+          #set( $dummy = $params.put('max_results', $maxResults) )##
+          #set( $finderName = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder" )##
+          #set( $pageResult = "" )##
+          #set( $pageResult = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params) )##
+
+          ## if the linked internal page is approved, or we are in preview or edit mode, assign the links
+            #if( $pageResult.get(0).fields.sys_contentstateid == '4' || $pageResult.get(0).fields.sys_contentstateid == '5' || $perc.isEditMode() || $perc.isPreviewMode() )##
+              #set( $image.clickableLink = $image.percPagePath)##
+            #else##
+              #set( $image.clickableLink = "")##
+            #end
+          ## If we do not have a valid internal page path do not set a clickable link
+          #else##
+          #set( $image.clickableLink = "")##
+          #end##
+
+          #elseif( $image.linkSetting == "external" )##
+          #set( $image.clickableLink = $image.externalLink)##
+
+          #else##
+          #set( $image.clickableLink = "")##
+          #end##
+
+          ## Image should only be shown if it is approved, live, or if we are in preview or edit mode
+          #if( ($image.imageContentStateId == '4' || $image.imageContentStateId == '5' || $perc.isEditMode() || $perc.isPreviewMode()) )##
+          #set( $dummy = $qualifiedImages.add($image) )##
+          #end##
+
+          #end## end if valid image
+          #end## end foreach original image
+
+          ## Debug $qualifiedImages will show the JSON object of slides that have
+          ## been verified to show in the slider
+
+          <div class="perc-image-slider ${sliderName}-${sliderId}" >
+            #foreach ($image in $qualifiedImages)##
+              <div class="perc-slide-outer-container">
+                #if( $perc_slide_caption_location == "above" && $image.hasCaptions == "Y" )##
+                <div class="perc-slide-caption-container">
+                  #if( $image.clickableLink != "" )##
+                  <a href="$image.clickableLink" target="_blank">
+                  #end##
+                  <$perc_slide_caption_tag_type class="perc-slide-image-caption perc-slide-caption-horizontal-${perc_slide_caption_alignment} $captionclass">${image.imageCaption}</$perc_slide_caption_tag_type>
+                  #if( $image.clickableLink != "" )##
+                  </a>
+                  #end
+                  <$perc_slide_caption_2_tag_type class="perc-slide-image-caption-2 perc-slide-caption-horizontal-${perc_slide_caption_alignment} $captionclass">${image.imageCaption2}</$perc_slide_caption_2_tag_type>
+                </div>
+                #end##
+                #if( $image.clickableLink != "" )##
+                <a href="$image.clickableLink" target="_blank">
+                #end##
+                  <div class="perc-slide-image-container" style="background-image: url('${image.percImagePath}')" role="img" aria-label="$image.altText">
+                  #if( $perc_slide_caption_location == "over" && $image.hasCaptions == "Y" )##
+                  <div class="perc-slide-caption-overlay-container perc-slide-caption-overlay-container-vertical-${perc_slide_caption_vertical_alignment}">
+                  <$perc_slide_caption_tag_type class="perc-slide-image-caption perc-slide-caption-horizontal-${perc_slide_caption_alignment} perc-slide-caption-vertical-${perc_slide_caption_vertical_alignment} $captionclass">${image.imageCaption}</$perc_slide_caption_tag_type>
+                  #if( $image.hasCaption1 == "Y" && $image.hasCaption2 == "Y")##
+                  <span class="image-caption-overlay-divider"></span>
+                  #end##
+                  <$perc_slide_caption_2_tag_type class="perc-slide-image-caption-2 perc-slide-caption-horizontal-${perc_slide_caption_alignment} perc-slide-caption-vertical-${perc_slide_caption_vertical_alignment} $captionclass">${image.imageCaption2}</$perc_slide_caption_2_tag_type>
+                  </div>
+                  #end##
+                </div>
+                #if( $image.clickableLink != "" )##
+                </a>
+                #end
+                #if( $perc_slide_caption_location == "below" && $image.hasCaptions == "Y" )##
+                <div class="perc-slide-caption-container">
+                  #if( $image.clickableLink != "" )##
+                  <a href="$image.clickableLink" target="_blank">
+                  #end##
+                  <$perc_slide_caption_tag_type class="perc-slide-image-caption perc-slide-caption-horizontal-${perc_slide_caption_alignment} $captionclass">${image.imageCaption}</$perc_slide_caption_tag_type>
+                  #if( $image.clickableLink != "" )##
+                  </a>
+                  #end
+                  <$perc_slide_caption_2_tag_type class="perc-slide-image-caption-2 perc-slide-caption-horizontal-${perc_slide_caption_alignment} $captionclass">${image.imageCaption2}</$perc_slide_caption_2_tag_type>
+                </div>
+                #end##
+              </div>
+            #end##
+          </div>
+
+        ## navigation slide area ##
+        #if( $perc_slide_layout == 'navigation')##
+        <div class="perc-image-slider ${sliderName}-${sliderId}-navigation" data-slick='{}'>
+          #foreach ($image in $qualifiedImages)##
+            <div class="perc-slide-outer-container">
+              <div class="perc-slide-thumbnail-container" style="background-image: url('${image.percImagePath}')" role="img" aria-label="$image.altText" >
+              </div>
+            </div>
+          #end##
+        </div>
+        #end##
+        #elseif( $validNumbers == 'false' )##
+        ## show this warning if 0 slides are entered for any of the slides to show numbers ##
+        <b>Slider warning ($friendlySliderName): Please choose at least 1 slide to show for each screen size and at least 1 slide to scroll</b>
+        #end##
+        #elseif ($perc.isEditMode())
+            #createEmptyWidgetContent("percImageSlider-empty-style", "This widget is showing sample content")
+        #end
+       </div>
+    ]]>
+    </Content>
+</Widget>

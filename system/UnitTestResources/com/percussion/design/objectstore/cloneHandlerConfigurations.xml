@@ -1,0 +1,46 @@
+<PSXCloneHandlerConfigSet>
+   <PSXCloneHandlerConfig name="standard">
+      <ProcessChecks>
+         <PSXProcessCheck name="rs_cloneshallow" context="relationship" sequence="1">
+            <Conditions>
+               <PSXRule boolean="and">
+                  <PSXConditional id="1">
+                     <variable>
+                        <PSXTextLiteral id="1">
+                           <text>1</text>
+                        </PSXTextLiteral>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXTextLiteral id="1">
+                           <text>2</text>
+                        </PSXTextLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXRule>
+            </Conditions>
+         </PSXProcessCheck>
+         <PSXProcessCheck name="rs_clonedeep" context="relationship" sequence="1">
+            <Conditions>
+               <PSXRule boolean="and">
+                  <PSXConditional id="1">
+                     <variable>
+                        <PSXTextLiteral id="1">
+                           <text>1</text>
+                        </PSXTextLiteral>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXTextLiteral id="1">
+                           <text>2</text>
+                        </PSXTextLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXRule>
+            </Conditions>
+         </PSXProcessCheck>
+      </ProcessChecks>
+   </PSXCloneHandlerConfig>
+</PSXCloneHandlerConfigSet>

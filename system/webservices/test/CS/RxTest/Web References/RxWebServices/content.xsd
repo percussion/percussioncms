@@ -1,0 +1,1138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<xsd:schema xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:con="urn:www.percussion.com/6.0.0/content" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/content" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="../common.xsd" namespace="urn:www.percussion.com/6.0.0/common" />
+  <xsd:include schemaLocation="contentServices.xsd" />
+  <xsd:complexType name="FolderRef">
+    <xsd:annotation>
+      <xsd:documentation>The folder reference, specifys either a folder id or a folder path, but not both</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Id" nillable="true" type="com:Id">
+        <xsd:annotation>
+          <xsd:documentation>The id of an existing folder. The id must be null if the  path is specified.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Path" nillable="true" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The fully qualified existing folder path. The path must be null or empty if the id is specified.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="LoadKeywordsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the keyword to load, may be null or empty, asterisk wildcards are accepted. All keywords will be loaded if the supplied name is null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadKeywordsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSKeyword">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded keywords in read-only mode, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadLocalesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Code" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The locale code for which to load the locale, may be null or empty. All locales will be loaded if null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the locale for which to load the locale, may be null or empty, asterisk wildcards are accepted. All locales will be loaded if null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadLocalesResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSLocale">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded locales in read-only mode, 
+                     never null, may be empty, ordered in alpha order by name.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadTranslationSettingsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSAutoTranslation">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded auto translations in read-only 
+                     mode, never null or empty.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadContentTypesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The content type name for which to load the content type summaries, may be null or empty, asterisk wildcards are accepted. All content type summaries will be loaded if null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadContentTypesResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSContentTypeSummary">
+          <xsd:annotation>
+            <xsd:documentation>
+                     An array with all loaded content type summaries in 
+                     read-only mode, never null, may be empty, ordered in 
+                     alpha order by name.
+                  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CreateItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ContentType" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the content type for which to create new items, not null or empty, must be an existing content type.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="1" name="Count" type="xsd:int">
+          <xsd:annotation>
+            <xsd:documentation>The number of items the user wants to create, one new item is created if this parameter is not supplied, must be greater than 0.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CreateItemsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItem" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="con:PSSearch" />
+      </xsd:sequence>
+      <xsd:attribute default="false" name="loadOperations" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>It indicates whether to set the allowed operations in the returned item summaries. It is <code>true</code> if sets the allowed operations; otherwise the allowed operations will be null or empty in the returned item summaries. Defaults to <code>false</code>.
+</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindItemsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSSearchResults" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array with item ids to load, not null or empty. It is an error if no item exists for any of the supplied ids.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="FieldName" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>An array of field names to be included with the returned items. All fields will be included if not provided. It is an error if a requested field does not exist.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="IncludeBinary" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether or not to include binary fields with the returned items. This flag is only used if no FieldName array was supplied and defaults to false.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="AttachBinaries" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify if binary fields are returned as attachments or as base64 encoded data. This flag is ignored if IncludeBinary is false and defaults to false. If true is supplied all returned binary fields will be returned as attachments, otherwise they will be returned as base64 encoded data.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="IncludeChildren" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether or not to include children, defaults to false if not provided.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="ChildName" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The fieldset names for all children to be loaded, may be null or empty in which case all children will be loaded. It is an error is no child exists for any specified fieldset name. This parameter is ignored if the IncludeChildren flag is false.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="IncludeRelated" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether to include related items or not, defaults to false if not provided.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="SlotName" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Defines all slot names for which to load the related content, may be null or empty in which case related content for all slots will be loaded. This parameter is ignored if the IncludeRelated flag is false.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="IncludeFolderPath" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether or not to include the folder path information for the returned item, defaults to false if not supplied.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadItemsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItem" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SaveItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItem" />
+        <xsd:element minOccurs="0" default="false" name="EnableRevisions" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to turn on revisions for new items immediately. Defaults to false if not supplied which means the item must go through a public state until revisions are turned on. This flag is ignored for updates.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="Checkin" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether or not to checkin all items after that save. Defaults to false if not supplied.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SaveItemsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Ids">
+          <xsd:annotation>
+            <xsd:documentation>An array with all inserted or updated item ids in the same order as supplied with the request, never null or empty.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DeleteItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array of ids for all items the user wants deleted, not null or empty. We ignore cases where an item of a supplied id does not exist.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ViewItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array with item ids to view, not null or empty. It is an error if no item exists for any of the supplied ids. All ids may include the revision to view a specific revision. If an id does not include the revision, the current revision will be viewed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="FieldName" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>An array of field names to be included with the returned items. All fields will be included if not provided. It is an error if a requested field does not exist.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="IncludeBinary" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether or not to include binary fields with the returned items. This flag is only used if no FieldName array was supplied and defaults to  false.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="AttachBinaries" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify if binary fields are returned as attachments or as base64 encoded data. This flag is ignored if IncludeBinary is false and defaults to false. If true is supplied all returned binary fields will be returned as attachments, otherwise they will be returned as base64 encoded data.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="IncludeChildren" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether or not to include children, defaults to false if not provided.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="ChildName" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The fieldset names for all children to be loaded, may be null or empty in which case all children will be loaded. It is an error is no child exists for any specified fieldset name. This parameter is ignored if the IncludeChildren flag is false.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="IncludeRelated" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether to include related items or not, defaults to false if not provided.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="SlotName" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Defines all slot names for which to load the related content, may be null or empty in which case related content for all slots will be loaded. This parameter is ignored if the IncludeRelated flag is false.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="IncludeFolderPath" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether or not to include the folder path information for the returned item, defaults to false if not supplied.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ViewItemsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItem" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PrepareForEditRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array of items to be prepared for edit, not null or empty. It is an error if no item exists for any supplied ids.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PrepareForEditResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItemStatus" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ReleaseFromEditRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItemStatus" />
+        <xsd:element default="false" name="CheckInOnly" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify that the release from edit service should only checkin the items and skip the functionality defined in PSItemStatus. Defaults to false if not supplied.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="NewCopiesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Ids" nillable="true">
+          <xsd:annotation>
+            <xsd:documentation>An array of ids for all items to be copied, not null or empty. It is an error if no item exists for any of the supplied ids. If the same id is supplied multiple times, multiple copies will be created.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Paths" nillable="true">
+          <xsd:annotation>
+            <xsd:documentation>An array of folder paths, one for each supplied item id in the same order specifying to which folder the new copied item will be added. It must not be  empty or null and must contain one path or the same size as the supplied ids. One path is the same as array of folder paths with the same value.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Path" nillable="true" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="New Copy" name="Type" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the relationship type to use, must be of category New Copy, defaults to the System/New Copy relationship type if not provided.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="EnableRevisions" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to turn on revisions for new copied items immediately. Defaults to false if not supplied which means the copied item must go through a public state until revisions are turned on.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="NewCopiesResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItem" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="NewPromotableVersionsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Ids" nillable="true">
+          <xsd:annotation>
+            <xsd:documentation>An array with all item ids for which to create a new promotable version, not null or empty. It is an error if no item exists for any of the supplied ids. If the same id is supplied multiple times, multiple promotable versions will be created.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Paths" nillable="true">
+          <xsd:annotation>
+            <xsd:documentation>An array of folder paths, one for each supplied item id in the same order specifying to which folder the new copied item will be added. It must not be  empty or null and must contain one path or the same size as the supplied ids. One path is the same as array of folder paths with the same value.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Path" nillable="true" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="Promotable Version" name="Type" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the relationship type to use, must be of category Promotable Version, defaults to the System/Promotable Version relationship type if not provided.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="EnableRevisions" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to turn on revisions for new promotable versions immediately. Defaults to false if not supplied which means the new promotable versions must go through a public state until revisions are turned on.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="NewPromotableVersionsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItem" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="NewTranslationsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Ids" nillable="true">
+          <xsd:annotation>
+            <xsd:documentation>An array of ids for all items to be translated, not null or empty. It is an error if no item exists for any of the supplied ids. If the same id is supplied multiple times, multiple translations are only created if also multiple auto translations are supplied with different languages.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="AutoTranslations" nillable="true">
+          <xsd:annotation>
+            <xsd:documentation>An array of Auto translations specify default parameters used for translations for a specified content type and locale.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" ref="con:PSAutoTranslation" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="Translation" name="Type" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name or the relationship type to use, must be of category Translation, defaults to the System/Translation relationship type if not provided.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="EnableRevisions" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to turn on revisions for new translated items immediately. Defaults to false if not supplied which means the new translations must go through a public state until revisions are turned on.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="NewTranslationsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItem" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindRevisionsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array of item ids for which to get the revisions, not null or empty. It is an error if no item exists for any of the supplied ids.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindRevisionsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSRevisions" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PromoteRevisionsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array of item ids for which to promote the item to the specified revision, not null or empty. It is an error if no item exists for any of the supplied ids. All items must be checkedin to promote a revision.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CheckinItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array with ids for all items to be checked in, not null or empty. It is an error if no item exists for any of the supplied ids.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Comment" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>An optional comment used for this checkin.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CheckoutItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array of ids for all items to be checked out, not null or empty. It is an error if no item exists for any of the supplied ids.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Comment" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>An optional comment used for this checkout.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="GetAssemblyUrlsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The ids of all items for which to get the assembly urls, not null or empty. All ids may include the revision to get the assembly urls for a specific revision. If an id does not include the revision, the revision of the assembly url will be selected according to the 'Context' of the request. If the 'Context' of the request is 0 (preview context), then uses edit revision if the item is checked out by the requester; otherwise uses current revision. If the 'Context' of the request is not 0, then uses public revision (if exists); otherwise uses current revision (if public revision does not exist).</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Template" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The template name for which to get the assembly urls, not null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Context" type="xsd:int">
+          <xsd:annotation>
+            <xsd:documentation>The (numeric) context for which to get the assembly urls</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="ItemFilter" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the item filter for which to get the assembly urls, not null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="Site" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The site name for which to get the assembly urls, may be null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="FolderPath" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The folder path for which to get the assembly urls, may be null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="GetAssemblyUrlsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Urls">
+          <xsd:annotation>
+            <xsd:documentation>An array of assembly urls for the specified ids and url parameters in the same order as requested, never null or empty.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Url" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CreateChildEntriesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The id of the item for which to create new child entries, not null or empty, must be a valid id of an existing item.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The fieldset name of the child for which to create the new child entries, not null or empty, must be an existing fieldset for the specified item.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="1" name="Count" type="xsd:int">
+          <xsd:annotation>
+            <xsd:documentation>The number of how many new child entries to create, must be greater then 0, defaults to 1 is not supplied.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CreateChildEntriesResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSChildEntry" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadChildEntriesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The id of the item from which to load the child entries, not null or empty, must be a valid id of an existing item.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The fieldset name of the child for which to load the child entries, not null or empty, must be a valid fieldset.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="IncludeBinaries" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether or not to include binary fields with the returned child entries. Defaults to false if not supplied.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="AttachBinaries" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify if binary fields are returned as attachments or as base64 encoded data. This flag is ignored if IncludeBinaries is false and defaults to false. If true is supplied all returned binary fields will be returned as attachments, otherwise they will be returned as base64 encoded data.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadChildEntriesResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSChildEntry" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SaveChildEntriesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The id of the item for which to save the child entries, not null or empty, must be a valid id of an existing item. The item must be in edit mode.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The field setname of the child for which to save the child entries, not null or empty, must be an existing fieldset.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element maxOccurs="unbounded" ref="con:PSChildEntry" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DeleteChildEntriesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The id of the item from which to delete the child entries, not null or empty, must be a valid id of an existing item. The item must be in edit mode.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The fieldset name of the child for which to delete the child entries, not null or empty.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element maxOccurs="unbounded" name="ChildId" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array with all child ids to be deleted, not null or empty. We ignore cases where a child of a supplied child id does not exist.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ReorderChildEntriesRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The id of the item for which to reorder the child entries, not null or empty, must be a valid id of an existing item. The item must be in edit mode.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The fieldset name of the child for which to reorder the child entries, not null or empty. It is an error if the specified child does not support sorting.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element maxOccurs="unbounded" name="ChildId" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array with all child entry ids for the specified item, not null or empty. This array specifies the new order of the child entries. The specified child entries sortrank will start with 0 for the first specified child id and be incremented by 1 for any additional child id. All child entries that exist but are not specified with the supplied ids will be appended to the end in the current order.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AddContentRelationsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The item for which to create the new content relations, not null, must be the id of an existing item.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element maxOccurs="unbounded" name="RelatedId" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The ids of all items to be related to the specified item and slot, not null or empty, must be ids of existing items.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Slot" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the slot to which to add new content relations for the specified related item ids, must be a valid slot for the specified item.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Template" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the template for which to create the new content relations, not null or empty. Must be a valid template id for the edited item and specified slot.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Index" nillable="true" type="xsd:int">
+          <xsd:annotation>
+            <xsd:documentation>The 0 based index at which position to insert the provided related items in the order as supplied. If it is null (not specified), -1 or greater than the existing relationship size, then the new content relations are appended to the existing ones in the order as the related items were supplied.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="RelationshipConfig" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name of the Active Assembly Relationship Configuration. The category of this relationship must be activeassembly.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AddContentRelationsResponse">
+    <xsd:annotation>
+      <xsd:documentation>A list of created active assembly relationships in the order of sort rank property. It is never null or empty. All content relations are persisted in the repository.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSAaRelationship" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadContentRelationsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="con:PSAaRelationshipFilter" />
+      </xsd:sequence>
+      <xsd:attribute default="false" name="loadReferenceInfo" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>It indicates whether the reference info is needed or not in the requested relationships. The reference info includes template name, slot name, site name, folder name and path. It is <code>true</code> if the reference info is needed; otherwise the reference info is not needed in the requested relationships.
+</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadContentRelationsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSAaRelationship" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SaveContentRelationsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSAaRelationship" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DeleteContentRelationsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array of ids for all relationships to be deleted, not null or empty. We ignore cases where no relationship exists for any of the supplied ids.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ReorderContentRelationsRequest">
+    <xsd:annotation>
+      <xsd:documentation>Reorders the related items specified via relationships and move to a specified location. All the items from the relationship list will be arranged together in the order they occur in the order as supplied and moved to the specified location. The first item (relationship) in the list will get the order specified by the new location. Specify 0 to move to top in the slot and -1 (or a value larger than the items in the slot) to move to bottom. All relationships in the list must be for the same slot and have the same owner</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>relationship ids in the order that you want to reorder them, not null or empty. All relationships must have the same relationship owner and slot</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="index" nillable="true" type="xsd:int">
+          <xsd:annotation>
+            <xsd:documentation>The 0 based index at which position to insert the provided relationships in the order as supplied. If it is null (not specified), -1 or greater than the existing relationship size, then the specified relationships will be moved to the bottom in the order as supplied.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindChildItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The item id for which to find the children for the specified filter, not null or empty. Must be the id of a valid item.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element ref="con:PSAaRelationshipFilter" />
+      </xsd:sequence>
+      <xsd:attribute default="false" name="loadOperations" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>It indicates whether the allowed operation info is needed or not in the requested item summaries. It is <code>true</code> if the allowed operation info is needed; otherwise the allowed operation info is not needed in the returned item summaries. Defaults to <code>false</code>.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindChildItemsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItemSummary" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindParentItemsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The item id for which to find the specified parents, not null or empty. Must be the id of a valid item.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element ref="con:PSAaRelationshipFilter" />
+      </xsd:sequence>
+      <xsd:attribute default="false" name="loadOperations" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>It indicates whether the allowed operation info is needed or not in the requested item summaries. It is <code>true</code> if the allowed operation info is needed; otherwise the allowed operation info is not needed in the returned item summaries. Defaults to <code>false</code>.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindParentItemsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSItemSummary" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadFoldersRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" nillable="true" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The ids of all folders to load, may be null or empty. Must be ids of existing folders. The ids must be null or empty if the paths are specified.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element maxOccurs="unbounded" name="Path" nillable="true" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The fully qualified folder paths for which to load all folders, may be null or empty. An error will be returned if any of the supplied path is invalid. Provide '/' to get the root folders such as 'Folders' and 'Sites'. The paths must be null or empty if the ids are specified.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="LoadFoldersResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSFolder" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SaveFoldersRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="con:PSFolder" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SaveFoldersResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Ids">
+          <xsd:annotation>
+            <xsd:documentation>An array of folders ids for all saved folders in the same order as requested.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DeleteFoldersRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array of ids for all folders to be deleted. This deletes all folders for the supplied ids including all child folders recursivly. Child items may be purged if so requested.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="PurgItems" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether or not to purge child items. Defaults to false if not supplied. The requesting user must have admin previledges to purge items.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AddFolderRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Name" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The name for the new folder, not null or empty. Must be a unique label within the folder to which the created folder will be added.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Path" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The fully qualified path of the parent folder to which the new folder will be added, not null or empty, must be the path of an existing folder. If the requestor is not in the user list of the parent this will add him automatically.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AddFolderResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="con:PSFolder" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AddFolderTreeRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Path" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The fully qualified path of the folder tree to create, not null or empty, for new root folders you must provide a '/' with some name. The name must be unique within the parent folder.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AddFolderTreeResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSFolder" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindFolderChildrenRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Folder" type="con:FolderRef">
+          <xsd:annotation>
+            <xsd:documentation>The folder for which to find all children, not null, must be an existing folder.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute default="false" name="loadOperations" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>It indicates whether the allowed operation info is needed or not in the requested item summaries. It is <code>true</code> if the allowed operation info is needed; otherwise the allowed operation info is not needed in the returned item summaries. Defaults to <code>false</code>.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindFolderChildrenResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="con:PSItemSummary" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AddFolderChildrenRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Parent" type="con:FolderRef">
+          <xsd:annotation>
+            <xsd:documentation>The folder to which we want the children added, must be an existing folder.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="ChildIds">
+          <xsd:annotation>
+            <xsd:documentation>An array of object ids which we want to add to the specified target folder, not null or empty, must be ids of existing objects such as items and folders. All child folder labels added must be unique withing the target folder.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="RemoveFolderChildrenRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Parent" type="con:FolderRef">
+          <xsd:annotation>
+            <xsd:documentation>The folder from which we want the children removed, must be an existing folder.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="ChildIds" nillable="true">
+          <xsd:annotation>
+            <xsd:documentation>An array of object ids which we want removed from the specified folder. All folders and items will be removed if not specified.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" default="false" name="PurgeItems" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>A boolean flag to specify whether we only want items removed from the folder or purged from the system entirely. Defaults to false if not supplied. The requesting user must have admin previledges to purge items.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="MoveFolderChildrenRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Source" type="con:FolderRef">
+          <xsd:annotation>
+            <xsd:documentation>The source folder from which to move the specified objects, not null. Must be an existing folder.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Target" type="con:FolderRef">
+          <xsd:annotation>
+            <xsd:documentation>The target folder to which to move the specified objects, not null. Must be an existing folder.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="ChildId" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>An array of object ids to be moved from the source to the target folder. All source objects will be moved if not specified. Must be ids of existing objects. All child folder names moved must be unique withing the target folder.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindFolderPathRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Id" type="com:Id">
+          <xsd:annotation>
+            <xsd:documentation>The id of the object for which to find the parents, not null. Must be the id of an existing object.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindFolderPathResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Paths">
+          <xsd:annotation>
+            <xsd:documentation>An array with complete parent folder paths such as //Sites/EnterpriseInvestments/Images for the specified object. It may be null or empty for a Content Item if it is not attached to any folder. There is only one parent folder path for a specified folder id. </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Path" nillable="true" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindPathIdsRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Path" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>An object path for which to find the ids of its parent and the object, not null or empty. The path must identify an existing object.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FindPathIdsResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Ids">
+          <xsd:annotation>
+            <xsd:documentation>An array with all object parent ids ordered top down, never null or empty.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="Id" type="com:Id" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

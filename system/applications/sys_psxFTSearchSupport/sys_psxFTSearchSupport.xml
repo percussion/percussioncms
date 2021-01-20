@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="1042" startPriority="0" version="2.0">
+	<name>sys_psxFTSearchSupport</name>
+	<description>Provides read/write funtionality to the search index queue table</description>
+	<requestRoot>sys_psxFTSearchSupport</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_Bender_1067524443953/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20031030T094058812</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="22">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20031031T134205390</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>admin1</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior/>
+	</PSXAcl>
+	<maxThreads>-1</maxThreads>
+	<maxRequestTime>-1</maxRequestTime>
+	<maxRequestsInQueue>-1</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>1</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXDataSet id="777">
+		<name>queryEvents</name>
+		<description>Queries all rows from the queue table</description>
+		<transactionType>none</transactionType>
+		<PSXQueryPipe id="709">
+			<name>QueryPipe</name>
+			<description/>
+			<PSXBackEndDataTank id="705">
+				<PSXBackEndTable id="704">
+					<alias>PSX_SEARCHINDEXQUEUE</alias>
+					<table>PSX_SEARCHINDEXQUEUE</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="707" returnEmptyXml="yes">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>Events/Event/QueueId</name>
+					</PSXXmlField>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+						<column>QUEUEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXXmlField id="0">
+						<name>Events/Event/ChangeEvent</name>
+					</PSXXmlField>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/generic/sys_TextToXml</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>ChangeEvent</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXBackEndColumn id="0">
+									<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+									<column>EVENT</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSelector id="706" method="whereClause" unique="no">
+				<WhereClauses/>
+				<Sorting/>
+				<nativeStatement/>
+				<Caching enabled="no" type="interval">
+					<ageInterval>15</ageInterval>
+				</Caching>
+			</PSXDataSelector>
+			<PSXResourceCacheSettings enabled="no" id="0">
+				<Keys/>
+				<Dependencies/>
+			</PSXResourceCacheSettings>
+		</PSXQueryPipe>
+		<PSXPageDataTank id="776">
+			<schemaSource>file:queryEvents.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>getEvents</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+		<PSXResultPageSet id="0">
+			<PSXResultPage id="778">
+				<extensionsSupported/>
+			</PSXResultPage>
+		</PSXResultPageSet>
+	</PSXDataSet>
+	<PSXDataSet id="780">
+		<name>insertEvent</name>
+		<description>Inserts an event into the queue table.  Inputs are the queue id and the xml form of the event.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="725">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="724">
+				<PSXBackEndTable id="723">
+					<alias>PSX_SEARCHINDEXQUEUE</alias>
+					<table>PSX_SEARCHINDEXQUEUE</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="721" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXHtmlParameter id="0">
+						<name>Event</name>
+					</PSXHtmlParameter>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+						<column>EVENT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXHtmlParameter id="0">
+						<name>queueId</name>
+					</PSXHtmlParameter>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+						<column>QUEUEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="no" allowInserts="yes" allowUpdates="no" id="722">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+						<column>QUEUEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+						<column>EVENT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="779">
+			<schemaSource>file:queryEvents.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>insertEvent</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXDataSet id="782">
+		<name>deleteEvents</name>
+		<description>Deletes multiple events from the queue.  Inputs are one or more queue ids.</description>
+		<transactionType>none</transactionType>
+		<PSXUpdatePipe id="772">
+			<name>UpdatePipe</name>
+			<description/>
+			<PSXBackEndDataTank id="771">
+				<PSXBackEndTable id="770">
+					<alias>PSX_SEARCHINDEXQUEUE</alias>
+					<table>PSX_SEARCHINDEXQUEUE</table>
+					<datasource/>
+				</PSXBackEndTable>
+			</PSXBackEndDataTank>
+			<PSXDataMapper id="768" returnEmptyXml="no">
+				<PSXDataMapping groupId="1" id="0">
+					<PSXHtmlParameter id="0">
+						<name>queueId</name>
+					</PSXHtmlParameter>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+						<column>QUEUEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+				<PSXDataMapping groupId="1" id="0">
+					<PSXHtmlParameter id="0">
+						<name>event</name>
+					</PSXHtmlParameter>
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+						<column>EVENT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+					<Conditionals/>
+				</PSXDataMapping>
+			</PSXDataMapper>
+			<PSXDataSynchronizer allowDeletes="yes" allowInserts="no" allowUpdates="no" id="769">
+				<PSXUpdateColumn id="0" isEditable="no" isKey="yes">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+						<column>QUEUEID</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+				<PSXUpdateColumn id="0" isEditable="yes" isKey="no">
+					<PSXBackEndColumn id="0">
+						<tableAlias>PSX_SEARCHINDEXQUEUE</tableAlias>
+						<column>EVENT</column>
+						<columnAlias/>
+					</PSXBackEndColumn>
+				</PSXUpdateColumn>
+			</PSXDataSynchronizer>
+		</PSXUpdatePipe>
+		<PSXPageDataTank id="781">
+			<schemaSource>file:rxmaster_PSX_SEARCHINDEXQUEUE.dtd</schemaSource>
+			<actionTypeXmlField/>
+		</PSXPageDataTank>
+		<PSXRequestor directDataStream="no" id="0">
+			<requestPage>deleteEvents</requestPage>
+			<SelectionParams/>
+			<ValidationRules/>
+			<characterEncoding>UTF-8</characterEncoding>
+			<MimeProperties>
+				<htm>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</htm>
+				<html>
+					<PSXTextLiteral id="0">
+						<text>text/html</text>
+					</PSXTextLiteral>
+				</html>
+			</MimeProperties>
+		</PSXRequestor>
+	</PSXDataSet>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="yes" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="774" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="775">
+		<providerType>SMTP</providerType>
+		<server>&lt;Unspecified&gt;</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="pageDatatankFilePath779">C:\LocalFiles\dev\temp\queryEvents.dtd</userProperty>
+	<userProperty name="pageDatatankFilePath776">C:\LocalFiles\dev\temp\queryEvents.dtd</userProperty>
+	<userProperty name="locationX779">0</userProperty>
+	<userProperty name="locationX778">213</userProperty>
+	<userProperty name="locationX777">104</userProperty>
+	<userProperty name="pageDatatankSrcType779">2</userProperty>
+	<userProperty name="locationX775">16</userProperty>
+	<userProperty name="locationX774">16</userProperty>
+	<userProperty name="schemaSourceReadOnly781">true</userProperty>
+	<userProperty name="locationX773">16</userProperty>
+	<userProperty name="locationY779">0</userProperty>
+	<userProperty name="pageDatatankSrcType776">2</userProperty>
+	<userProperty name="locationY778">113</userProperty>
+	<userProperty name="locationY777">112</userProperty>
+	<userProperty name="locationY775">100</userProperty>
+	<userProperty name="locationY774">55</userProperty>
+	<userProperty name="locationY773">10</userProperty>
+	<userProperty name="locationX782">158</userProperty>
+	<userProperty name="locationX781">0</userProperty>
+	<userProperty name="locationX780">432</userProperty>
+	<userProperty name="schemaSourceReadOnly779">true</userProperty>
+	<userProperty name="pageDatatankSrcType781">3</userProperty>
+	<userProperty name="locationY782">256</userProperty>
+	<userProperty name="schemaSourceReadOnly776">true</userProperty>
+	<userProperty name="locationY781">0</userProperty>
+	<userProperty name="locationY780">94</userProperty>
+</PSXApplication>

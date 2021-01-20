@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT activeitem (#PCDATA)>
+<!ATTLIST  activeitem sysid CDATA #IMPLIED>
+<!ATTLIST  activeitem title CDATA #IMPLIED>
+<!ATTLIST  activeitem contentid CDATA #IMPLIED>
+<!ATTLIST  activeitem parentcontentid CDATA #IMPLIED>
+<!ATTLIST  activeitem editauthorized CDATA #IMPLIED>
+<!ATTLIST  activeitem revision CDATA #IMPLIED>
+<!ATTLIST  activeitem parenteditauthorized CDATA #IMPLIED>
+

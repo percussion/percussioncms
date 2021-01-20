@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+    <ModulePrefs title="Redirect Management"
+            category="integration" 
+            description="This gadget allows redirects and root configuration."
+            thumbnail="images/gadgetIconWebsiteConfig.png"
+            height="320"
+            adminOnly="true">
+        <Require feature="perc_core"/>
+        <Require feature="settitle" />
+        <Require feature="perc_getDashboardColumn" />
+        <Require feature="minimessage" />
+        <Require feature="perc_jquery_ui"/>
+        <Require feature="setprefs" /> 
+    </ModulePrefs>
+    <Content type="html">
+    <![CDATA[
+    
+    <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
+    <link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/common/perc_common_gadget.css" />
+    <link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/perc_website_config_gadget/perc_website_config_gadget.css" />
+    <link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_gadget.css" />
+    
+    <script  src="/cm/plugins/perc_path_constants.js"></script>
+    <script  src="/cm/plugins/perc_utils.js"></script>
+    <script  src="/cm/services/PercServiceUtils.js"></script>
+    <script  src="/cm/services/PercLicenseService.js"></script>
+    <script  src="/cm/gadgets/repository/perc_website_config_gadget/perc_website_config_gadget.js"></script>
+    
+    <script >
+        var _moduleLicense;
+        
+        window.onload = function () {
+            $.PercLicenseService.getModuleLicense('REDIRECT', function(status, data) {
+                if (status) {
+                    _moduleLicense = data.moduleLicense;
+                    
+                    $(".perc-website-config-gadget-edit a").attr('href', _moduleLicense.uiProvider);
+                    $(".perc-website-config-gadget-edit a").text(_moduleLicense.uiProvider);
+                    $('.perc-website-config-gadget-edit').show();
+                }
+                else {
+                    $('.perc-website-config-gadget-error').show();
+                }
+            });
+        }
+        
+        function ConfigureButtonClick() {
+            $.perc_social_config_gadget.showConfigurationWindow(function (status) {
+                if (!status) {
+                    $('.perc-website-config-gadget-error').show();
+                }
+            });
+        }
+    </script>
+    
+    <div id="perc-website-config-gadget" class="perc-website-config-gadget">
+        <div class="perc-website-config-gadget-error" style="display: none;">
+            <p>Redirect Management subscription required</p>
+        </div>
+        <div class="perc-website-config-gadget-edit" style="display: none;">
+            <button class="button-configure" type="button" onclick="ConfigureButtonClick()" role="button" aria-pressed="false">Manage Redirects</button>
+        </div>
+    </div>
+     ]]>
+  </Content> 
+</Module>

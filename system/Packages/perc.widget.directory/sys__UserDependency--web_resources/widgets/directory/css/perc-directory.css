@@ -1,0 +1,269 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+/*
+    Percussion Directory Search widget CSS
+*/
+.perc-person:nth-child(odd) {
+    margin-bottom: 20px;
+    list-style-type: none;
+    background: #f6f6f6;
+    padding: 0;
+}
+.perc-person:nth-child(even) {
+    margin-bottom: 20px;
+    list-style-type: none;
+    background: #fefefe;
+}
+.perc-pagination li {
+    display:inline-block;
+    padding:5px;
+}
+
+.perc-directory-pagination {
+    display:table;
+    border-collapse:collapse;
+    border-right:1px solid table-border;
+    padding:6px;
+    margin: 10px 10px 10px 45px;
+}
+.btn-tablepage { 
+    display:table-cell;
+    width:33px;
+    padding:table-padding;
+ }
+ div#percDirectoryList ul.list.perc-directory-list .perc-person-image {
+    float: left;
+}
+
+div#percDirectoryList ul.list.perc-directory-list .perc-person {
+    float: left;
+    width: 46%;
+    background: #f6f6f6;
+    border: 1px solid hsl(0, 2%, 92%);
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+div#percDirectoryList ul.list.perc-directory-list .perc-person:nth-child(even) {
+    margin-left: 0;
+    float: right;
+}
+
+div#percDirectoryList ul.list.perc-directory-list .perc-person-image img {
+    height: 150px;
+    float: left;
+}
+.perc-pagination {
+    display:table-cell;
+    text-align:center;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.perc-pagination li {
+    display:inline-table;
+}
+.perc-pagination .disabled { 
+    display:none; 
+}
+.perc-pagination li {
+    float: left;
+}
+.page {
+  display:block;
+  padding:4px 0;
+  width: 40px;
+  text-align:center;
+  text-decoration:none;
+  line-height:12px;
+  font-size: 17px;
+  color: white;
+  background: #909090;
+  margin: 3px;
+}
+
+.active .page {
+    background:#aaa;
+    color: #fff !important;
+}
+
+.perc-directory-sort-buttons {
+    margin-bottom: 20px;
+}
+
+input.search {
+    margin-bottom: 0px;
+    padding: 5px;
+}
+select#perc-org-filter {
+    padding: 5px;
+}
+button#perc-clear-alpha-filter:hover, .perc-directory-sort-buttons .sort:hover, 
+button#perc-clear-alpha-filter:focus, .perc-directory-sort-buttons .sort:focus, 
+button#perc-clear-alpha-filter:active, .perc-directory-sort-buttons .sort:active {
+    background: #555;
+    color: #FFF;
+    border: 0;
+    padding: 7px 15px 7px 15px;
+    cursor: pointer;
+}
+button#perc-clear-alpha-filter, .perc-directory-sort-buttons .sort {
+    background: #848484;
+    color: #FFF;
+    border: 0;
+    padding: 7px 15px 7px 15px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+div#perc-directory-search {
+    margin: 20px 0px;
+}
+
+.perc-person-field {
+    padding: 7px;
+}
+
+ul.list.perc-directory-list {
+    padding: 0;
+}
+.sort.asc:after {
+    content: "\25b2";
+}
+.sort.desc:after {
+    content: "\25bc";
+}
+
+#percDirectoryList .perc-person-field.perc-person-image {
+    max-width: 100px;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+#percDirectoryList .perc-person-image img {
+    background-size: cover;
+    display: block;
+    margin: 0 auto;
+    height: 100px;
+    width: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.perc-directory-sort-buttons button {
+    display: inline-block !important; }
+
+.perc-directory-sort-buttons button:active {
+	position:relative;
+	top:1px;
+}
+
+
+#perc-directory-alphabet-sort a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+#perc-directory-alphabet-sort {
+    margin: 20px 0px;
+    font-size: 12px;
+}
+a.perc-alpha-sort {
+    padding: 3px;
+}
+.perc-filter-wrapper {
+    margin: 20px 0px;
+}
+#perc-directory-alphabet-sort, #perc-search-directory, .perc-alpha-sort-label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: bold;
+}
+a.perc-alpha-sort {
+    padding: 2px 4px;
+    margin: 5px 2px;
+    display: inline-block;
+    font-weight: bold;
+    border: #848484 2px solid;
+    color: #848484;
+    font-size: 14px;
+}
+a.perc-alpha-sort.disabled {
+    display: none;
+}
+#percDirectoryList table {
+    width: 100%;
+    text-align: left;
+}
+a.perc-alpha-sort.active, a.perc-alpha-sort:hover {
+    padding: 2px 4px;
+    margin: 5px 2px;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: bold;
+    background: #848484;
+    border: #848484 2px solid;
+    color: #FFF;
+}
+@media screen and (max-width: 1024px), (max-width: 1524px) {
+    div#percDirectoryList ul.list.perc-directory-list .perc-person {
+      float: left !important;
+      width: 100% !important;
+      background: #f6f6f6;
+      border: 1px solid hsl(0, 2%, 92%);
+      margin-bottom: 20px;
+      padding: 5px;
+  }
+
+  div#percDirectoryList ul.list.perc-directory-list .perc-person:nth-child(even) {
+      margin-left: 0;
+      float: left !important;
+  }
+    .vspan_2 {
+        height: auto !important;
+    }
+    .hspan_12 {
+        width: auto !important;
+    }
+    #percDirectoryList table {
+        table-layout: fixed;
+        width: 100%;
+    }
+    #percDirectoryList {
+        width: 100%;
+    }
+    .percDirectory {
+        width: 100%;
+    }
+    #percDirectoryList table td {
+        display: block;
+        width: 100% !important;
+    }
+    #percDirectoryList table th {
+        display: none;
+    }
+}

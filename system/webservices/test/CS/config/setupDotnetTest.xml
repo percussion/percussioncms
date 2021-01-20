@@ -1,0 +1,130 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<project default="dotnetData" name="dotnetTestDeploy" basedir="../../../..">
+	<!-- Portions cribbed from rxInstallUpdate -->
+	<property name="builddir" value="${basedir}/build" />
+	<property name="libdir" value="${builddir}/lib" />
+	<property name="classdir" value="${builddir}/classes" />
+	<property name="appdir" value="${builddir}/app" />
+	<property name="toolsdir" value="${basedir}/Tools" />
+	<property name="springdir" value="${toolsdir}/Spring-3.2.13" />
+	<property name="helpdir" value="${toolsdir}/JavaHelp" />
+	<property name="eardir" value="${basedir}/ear" />
+	<property name="testdir" value="${eardir}/test" />
+	<property name="buildtemp" value="${builddir}/temp" />
+	<property name="exts.store" value="${buildtemp}/ext" />
+	<property name="wardir" value="${builddir}/tomcat/InstallableApps" />
+	<property name="releasedir" value="${basedir}/release" />
+	<property name="releasedir.jboss" value="${releasedir}/jboss/config" />
+
+	<!-- 
+	   Filter values, override the properties as needed when invoking this.
+	-->
+	<property name="db.driver" value="net.sourceforge.jtds.jdbc.Driver" />
+	<property name="db.name" value="rxrhino" />
+	<property name="db.database" value="jtds:sqlserver" />
+	<property name="db.url" value="jdbc:${db.database}" />
+	<property name="db.host" value="//localhost" />
+	<property name="db.user" value="sa" />
+	<property name="db.password" value="demo" />
+	<property name="db.type" value="MS SQLSERVER2000" />
+	<property name="db.origin" value="dbo" />
+
+	<!-- 
+	   Repository properties for use with the table factory, you may need to 
+	   override some values here.
+	-->
+	<property name="DB_BACKEND" value="MSSQL" />
+	<condition property="DB_NAME" value="${db.name}">
+		<not>
+			<equals arg1="${db.name}" arg2="null" />
+		</not>
+	</condition>
+	<property name="DB_DRIVER_NAME" value="${db.database}" />
+	<property name="DB_SCHEMA" value="${db.origin}" />
+	<property name="DB_SERVER" value="${db.host}" />
+	<property name="DB_DRIVER_CLASS_NAME" value="${db.driver}" />
+	<property name="repository.properties" location="${rxdeploydir}/rxrepository.properties" />
+
+	<!-- 
+	   Convert classpath for 5.0.
+	-->
+	<path id="RX.CONVERT.CLASSPATH">
+		<pathelement path="${basedir}/build/classes" />
+		<fileset dir="${basedir}/Tools/Commons" includes="*.jar" />
+		<pathelement path="${basedir}/Tools/log4j/log4j.jar" />
+		<pathelement path="${basedir}/Tools/saxon/saxon.jar" />
+		<fileset dir="${basedir}/Tools/Spring-3.2.13" includes="*.jar" />
+		<pathelement path="${basedir}/Tools/xerces/xmlParserAPIs.jar" />
+		<pathelement path="${basedir}/Tools/xerces/xercesImpl.jar" />
+		<pathelement path="${basedir}/jdbc/oracle9/ojdbc6.jar" />
+		<pathelement path="${basedir}/jdbc/Sprinta/Sprinta2000.jar" />
+		<pathelement path="${basedir}/jdbc/jtds/jtds.jar" />
+		<fileset dir="${basedir}/Tools/Hibernate" includes="*.jar" />
+		<fileset dir="${basedir}/Tools/Asm" includes="*.jar" />
+		<fileset dir="${basedir}/Tools/JSR-170" includes="jcr-1.0.jar" />
+		<fileset dir="${basedir}/Tools/junit" includes="jboss-j2ee-3.2.3.jar" />
+		<fileset dir="${basedir}/Tools/servlet" includes="*.jar" />
+	</path>
+
+	<macrodef name="tablefactorydotnet">
+		<attribute name="def" />
+		<attribute name="data" />
+		<attribute name="flags" default="mld" />
+		<attribute name="log" default="./tablefactory.log" />
+		<sequential>
+			<echo>Run tablefactory for @{def} and @{data}.</echo>
+			<property name="rxprops" location="${repository.properties}" />
+			<java classname="com.percussion.tablefactory.PSJdbcTableFactory" classpathref="RX.CONVERT.CLASSPATH" dir="${rxdeploydir}" fork="true">
+				<arg value="-dbprops" />
+				<arg value="${rxprops}" />
+				<arg value="-def" />
+				<arg value="@{def}" />
+				<arg value="-data" />
+				<arg value="@{data}" />
+				<arg value="-options" />
+				<arg value="@{flags}" />
+				<arg value="-log" />
+				<arg value="@{log}" />
+			</java>
+		</sequential>
+	</macrodef>
+
+	<target name="dotnetData">
+		<!-- write out repository properties -->
+		<echoproperties destfile="${repository.properties}" prefix="DB_" />
+		<echo file="${repository.properties}" append="true">PWD=${db.password}${line.separator}</echo>
+		<echo file="${repository.properties}" append="true">UID=${db.user}${line.separator}</echo>
+		<echo file="${repository.properties}" append="true">PWD_ENCRYPTED=N${line.separator}</echo>
+
+		<!-- Build the database -->
+		<property name="release" value="${basedir}/release/config" />
+		<property name="dotnetdata" value="${basedir}/webservices/test/CS/config" />
+		<tablefactorydotnet data="${dotnetdata}/dotnetTestData.xml" def="${release}/cmstableDef.xml" />
+	</target>
+</project>

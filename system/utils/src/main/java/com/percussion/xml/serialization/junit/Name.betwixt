@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<info primitiveTypes="element">
+  <element name="Name">
+  	<element name="first" property="first"/>
+  	<element name="last" property="last"/>
+  </element>
+</info>

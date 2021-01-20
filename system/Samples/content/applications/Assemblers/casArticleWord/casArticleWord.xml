@@ -1,0 +1,608 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<PSXApplication active="no" enabled="yes" hidden="no" id="531"
+   startPriority="0" version="2.0">
+   <name>casArticleWord</name>
+   <description/>
+   <requestRoot>casArticleWord</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/_sscian_1023808014132/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20020611T112625109</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="9">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20030129T163603687</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes"
+            dataQuery="yes" dataUpdate="yes" designDelete="yes"
+            designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes"
+            dataQuery="yes" dataUpdate="yes" designDelete="yes"
+            designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>0</maxThreads>
+   <maxRequestTime>0</maxRequestTime>
+   <maxRequestsInQueue>0</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>0</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="1414">
+      <name>Dataset129</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="324">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="319">
+            <PSXBackEndTable id="317">
+               <alias>CONTENTSTATUS</alias>
+               <driver>inetdae7</driver>
+               <server>JB</server>
+               <database>rxcx0316</database>
+               <origin>dbo</origin>
+               <table>CONTENTSTATUS</table>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="318">
+               <alias>RXARTICLEWORD</alias>
+               <driver>inetdae7</driver>
+               <server>JB</server>
+               <database>rxcx0316</database>
+               <origin>dbo</origin>
+               <table>RXARTICLEWORD</table>
+            </PSXBackEndTable>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXARTICLEWORD</tableAlias>
+                     <column>CONTENTID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="322" returnEmptyXml="no">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>pubhtmlpage/displaytitle</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXARTICLEWORD</tableAlias>
+                  <column>DISPLAYTITLE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>pubhtmlpage/bodycontent</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXARTICLEWORD</tableAlias>
+                  <column>BODYCONTENT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>pubhtmlpage/authorname</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXARTICLEWORD</tableAlias>
+                  <column>AUTHORNAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="320" method="whereClause" unique="no">
+            <WhereClauses>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXARTICLEWORD</tableAlias>
+                           <column>CONTENTID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>sys_contentid</name>
+                        </PSXSingleHtmlParameter>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXARTICLEWORD</tableAlias>
+                           <column>REVISIONID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>sys_revision</name>
+                        </PSXSingleHtmlParameter>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </WhereClauses>
+            <Sorting>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXARTICLEWORD</tableAlias>
+                     <column>CONTENTID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+            </Sorting>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="1412">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/contentassembler/sys_casAddAssemblerInfo</name>
+               </PSXExtensionCall>
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/xmldom/sys_xdTextToTree</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>bodycontent</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="1413">
+         <schemaSource>file:pubhtmlpage.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>pubhtmlpage</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage id="1415">
+            <styleSheet>file:pubhtmlpage.xsl</styleSheet>
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+      <PSXResultPager id="321">
+         <maxRowsPerPage>-1</maxRowsPerPage>
+         <maxPages>-1</maxPages>
+         <maxPageLinks>10</maxPageLinks>
+      </PSXResultPager>
+   </PSXDataSet>
+   <PSXDataSet id="1418">
+      <name>Dataset148</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="386">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="381">
+            <PSXBackEndTable id="379">
+               <alias>RXARTICLEWORD</alias>
+               <driver>inetdae7</driver>
+               <server>JB</server>
+               <database>rxcx0316</database>
+               <origin>dbo</origin>
+               <table>RXARTICLEWORD</table>
+            </PSXBackEndTable>
+            <PSXBackEndTable id="380">
+               <alias>CONTENTSTATUS</alias>
+               <driver>inetdae7</driver>
+               <server>JB</server>
+               <database>rxcx0316</database>
+               <origin>dbo</origin>
+               <table>CONTENTSTATUS</table>
+            </PSXBackEndTable>
+            <PSXBackEndJoin id="0" joinType="inner">
+               <leftColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXARTICLEWORD</tableAlias>
+                     <column>CONTENTID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </leftColumn>
+               <rightColumn>
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>CONTENTSTATUS</tableAlias>
+                     <column>CONTENTID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </rightColumn>
+            </PSXBackEndJoin>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="384" returnEmptyXml="no">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>TitleAbs/displaytitle</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXARTICLEWORD</tableAlias>
+                  <column>DISPLAYTITLE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>TitleAbs/abstractcontent</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXARTICLEWORD</tableAlias>
+                  <column>ABSTRACTCONTENT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>TitleAbs/link</name>
+               </PSXXmlField>
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/contentassembler/sys_casGeneratePubLocation</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>25</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="382" method="whereClause" unique="no">
+            <WhereClauses>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXARTICLEWORD</tableAlias>
+                           <column>CONTENTID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>sys_contentid</name>
+                        </PSXSingleHtmlParameter>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXARTICLEWORD</tableAlias>
+                           <column>REVISIONID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>sys_revision</name>
+                        </PSXSingleHtmlParameter>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </WhereClauses>
+            <Sorting>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXARTICLEWORD</tableAlias>
+                     <column>CONTENTID</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+            </Sorting>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="1416">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/contentassembler/sys_casAddAssemblerInfo</name>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="1417">
+         <schemaSource>file:TitleAbs.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>casArticleWord_Snip</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage id="1419">
+            <styleSheet>file:TitleAbs.xsl</styleSheet>
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+      <PSXResultPager id="383">
+         <maxRowsPerPage>-1</maxRowsPerPage>
+         <maxPages>-1</maxPages>
+         <maxPageLinks>10</maxPageLinks>
+      </PSXResultPager>
+   </PSXDataSet>
+   <PSXDataSet id="1421">
+      <name>Dataset1402</name>
+      <description/>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="1411">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="1407">
+            <PSXBackEndTable id="1406">
+               <alias>RXDUAL</alias>
+               <driver>inetdae7</driver>
+               <server>JB</server>
+               <database>rxcx0316</database>
+               <origin>dbo</origin>
+               <table>RXDUAL</table>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="1409" returnEmptyXml="no">
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>InlineLink/inlinetext</name>
+               </PSXXmlField>
+               <PSXSingleHtmlParameter id="0">
+                  <name>inlinetext</name>
+               </PSXSingleHtmlParameter>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>InlineLink/link</name>
+               </PSXXmlField>
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/contentassembler/sys_casGeneratePubLocation</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>25</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text/>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="1408" method="whereClause" unique="no">
+            <WhereClauses/>
+            <Sorting/>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="1420">
+         <schemaSource>file:InlineLink.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>InlineLink</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage id="1422">
+            <styleSheet>file:InlineLink.xsl</styleSheet>
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXLogger id="0" logAppStartStop="no" logAppStatistics="no"
+      logBasicUserActivity="no" logDetailedUserActivity="no"
+      logErrors="no" logExecutionPlan="no" logFullUserActivity="no"
+      logMultipleHandlers="no" logServerStartStop="no"/>
+   <PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes"
+      traceBasicRequestInfo="yes" traceConditionalEval="no"
+      traceDbPool="no" traceEnabled="no" traceExitExec="no"
+      traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no"
+      traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no"
+      tracePostExitCgi="no" tracePostExitXml="no"
+      tracePostPreProcHttpVar="no" traceResourceHandler="yes"
+      traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+   <PSXErrorWebPages id="1404" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="1405">
+      <providerType>SMTP</providerType>
+      <server>JB</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="locationX1418">37</userProperty>
+   <userProperty name="locationX1416">67</userProperty>
+   <userProperty name="locationX1415">231</userProperty>
+   <userProperty name="resultPageFilePath1415">D:\Documents\Sample Source\casArticleWord\pubhtmlpage.html</userProperty>
+   <userProperty name="locationX1414">51</userProperty>
+   <userProperty name="locationY1409">24</userProperty>
+   <userProperty name="locationY1408">24</userProperty>
+   <userProperty name="locationX1412">56</userProperty>
+   <userProperty name="locationY1407">0</userProperty>
+   <userProperty name="locationX1411">11</userProperty>
+   <userProperty name="schemaSourceReadOnly1420">true</userProperty>
+   <userProperty name="locationY1405">100</userProperty>
+   <userProperty name="locationX1410">349</userProperty>
+   <userProperty name="pageDatatankSrcType1417">0</userProperty>
+   <userProperty name="1406sizeheight">200</userProperty>
+   <userProperty name="locationY1404">55</userProperty>
+   <userProperty name="locationY1403">10</userProperty>
+   <userProperty name="pageDatatankSrcType1413">0</userProperty>
+   <userProperty name="pageDatatankSrcType1410">0</userProperty>
+   <userProperty name="1406sizewidth">120</userProperty>
+   <userProperty name="pageDatatankFilePath1417">D:\Documents\Sample Source\casArticleWord\TitleAbs.html</userProperty>
+   <userProperty name="pageDatatankFilePath1413">D:\Documents\Sample Source\casArticleWord\pubhtmlpage.html</userProperty>
+   <userProperty name="1406readonly">true</userProperty>
+   <userProperty name="pageDatatankFilePath1410">C:\rxcx0128\casArticle\src\InlineLink.html</userProperty>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="locationX1409">211</userProperty>
+   <userProperty name="locationX1408">77</userProperty>
+   <userProperty name="locationX1407">0</userProperty>
+   <userProperty name="schemaSourceReadOnly1417">true</userProperty>
+   <userProperty name="locationX1405">16</userProperty>
+   <userProperty name="locationX1404">16</userProperty>
+   <userProperty name="locationX1403">16</userProperty>
+   <userProperty name="schemaSourceReadOnly1413">true</userProperty>
+   <userProperty name="schemaSourceReadOnly1410">true</userProperty>
+   <userProperty name="locationY1422">248</userProperty>
+   <userProperty name="locationY1421">248</userProperty>
+   <userProperty name="locationY1420">0</userProperty>
+   <userProperty name="resultPageDtd1422">InlineLink.rpg</userProperty>
+   <userProperty name="locationY1419">137</userProperty>
+   <userProperty name="locationY1418">131</userProperty>
+   <userProperty name="resultPageFilePath1422">C:\rxcx0128\casArticle\src\InlineLink.html</userProperty>
+   <userProperty name="locationX1422">255</userProperty>
+   <userProperty name="locationY1416">22</userProperty>
+   <userProperty name="locationX1421">69</userProperty>
+   <userProperty name="locationY1415">32</userProperty>
+   <userProperty name="locationX1420">349</userProperty>
+   <userProperty name="locationY1414">28</userProperty>
+   <userProperty name="locationY1412">22</userProperty>
+   <userProperty name="locationY1411">10</userProperty>
+   <userProperty name="locationY1410">0</userProperty>
+   <userProperty name="resultPageDtd1419">TitleAbs.rpg</userProperty>
+   <userProperty name="pageDatatankSrcType1420">0</userProperty>
+   <userProperty name="1406locationy">20</userProperty>
+   <userProperty name="resultPageDtd1415">pubhtmlpage.rpg</userProperty>
+   <userProperty name="1406locationx">20</userProperty>
+   <userProperty name="pageDatatankFilePath1420">C:\rxcx0128\casArticle\src\InlineLink.html</userProperty>
+   <userProperty name="resultPageFilePath1419">D:\Documents\Sample Source\casArticleWord\TitleAbs.html</userProperty>
+   <userProperty name="locationX1419">241</userProperty>
+</PSXApplication>

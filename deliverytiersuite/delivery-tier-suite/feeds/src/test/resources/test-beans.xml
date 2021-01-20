@@ -1,0 +1,153 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+   <bean id="propertyPlaceholderProps"
+         class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
+      <property name="ignoreResourceNotFound" value="true" />
+      <property name="autoSecure" value="true" />
+      <property name="securedProperties">
+         <list>
+            <value>db.password</value>
+         </list>
+      </property>
+      <property name="locations">
+         <!-- One or more locations of the property files. Properties with 
+            the same name override based on the order the file appears in the list last 
+            one defined wins -->
+         <list>
+            <value>perc-datasources.properties</value>
+            <value>feeds.properties</value>
+         </list>
+      </property>
+      <!-- Local properties to default to if no file exists or the properties 
+         do not exist in the file DO NOT USE THESE FOR PRODUCTION, put them in the 
+         properties file where the password will be encrypted -->
+      <property name="properties">
+         <props>
+            <!-- Global and database-agnostic Hibernate properties -->
+            <prop key="datasource">percDataSource</prop>
+            <prop key="hibernateProperties">percHibernateProperties</prop>
+            <prop key="hibernate.cache.use_second_level_cache">false</prop>
+            <prop key="hibernate.cache.use_query_cache">false</prop>
+
+            <!-- Apache Derby -->
+            <prop key="jdbcUrl">jdbc:derby:memory:perccomments;create=true</prop>
+            <prop key="jdbcDriver">org.apache.derby.jdbc.EmbeddedDriver</prop>
+            <prop key="db.username">test</prop>
+            <prop key="db.password">test</prop>
+            <prop key="db.schema">APP</prop>
+            <prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
+            <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
+			
+            <!-- MySQL -->
+<!-- 	        <prop key="jdbcUrl">jdbc:mysql://localhost:3306/deliverydb</prop> -->
+<!-- 	        <prop key="jdbcDriver">com.mysql.jdbc.Driver</prop> -->
+<!-- 	        <prop key="db.username">perc</prop> -->
+<!--             <prop key="db.password">perc</prop> -->
+<!-- 	        <prop key="db.schema"></prop> -->
+<!-- 	        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop> -->
+<!-- 	        <prop key="hibernate.query.substitutions"></prop> -->
+         
+            <!-- Oracle -->
+<!--             <prop key="jdbcUrl">jdbc:oracle:thin:@localhost:1521:XE</prop> -->
+<!--             <prop key="jdbcDriver">oracle.jdbc.driver.OracleDriver</prop> -->
+<!--             <prop key="db.username">PERC</prop> -->
+<!--             <prop key="db.password">perc</prop> -->
+<!--             <prop key="db.schema">PERC</prop> -->
+<!--             <prop key="hibernate.dialect">org.hibernate.dialect.Oracle9iDialect</prop> -->
+<!--             <prop key="hibernate.query.substitutions"></prop> -->
+         
+		    <!-- MS SQL Server -->
+<!-- 	        <prop key="jdbcUrl">jdbc:jtds:sqlserver://localhost/deliverydb</prop> -->
+<!-- 	        <prop key="jdbcDriver">net.sourceforge.jtds.jdbc.Driver</prop> -->
+<!-- 	        <prop key="db.username">sa</prop> -->
+<!-- 	        <prop key="db.password">demo</prop> -->
+<!-- 	        <prop key="db.schema">dbo</prop> -->
+<!-- 	        <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop> -->
+<!-- 	        <prop key="hibernate.query.substitutions"></prop> -->
+            <prop key="tenant.cache.ttl">1440</prop>
+            <prop key="tenant.cache.reauth">true</prop>
+         </props>
+      </property>
+   </bean>
+
+
+   <bean id="propertyConfigurer"
+         class="com.percussion.delivery.utils.spring.PSPropertyPlaceholderConfigurer">
+      <property name="properties" ref="propertyPlaceholderProps" />
+   </bean>
+
+   <import resource="perc-datasources.xml" />
+   <import resource="feeds.xml" />
+
+   <!-- Hibernate SessionFactory -->
+   <bean id="feedsSessionFactory"
+         class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+      <property name="dataSource">
+         <ref bean="${datasource}" />
+      </property>
+      <property name="hibernateProperties">
+         <ref bean="${hibernateProperties}" />
+      </property>
+      <property name="configLocation">
+         <value>hibernate.cfg.xml</value>
+      </property>
+   </bean>
+
+
+   <tx:annotation-driven transaction-manager="txManager"/>
+
+   <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+      <property name="sessionFactory" ref="feedsSessionFactory" />
+   </bean>
+
+   <bean id="feedsDao" class="com.percussion.delivery.feeds.services.rdbms.PSFeedDao">
+      <property name="sessionFactory">
+         <ref bean="feedsSessionFactory" />
+      </property>
+   </bean>
+   
+  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
+   	<constructor-arg index="0"><null/></constructor-arg>
+   	<constructor-arg index="1"><null/></constructor-arg>
+   </bean>
+
+   <bean id="httpClient"
+      class="com.percussion.delivery.utils.security.PSHttpClient"
+      autowire="constructor">
+   </bean>
+</beans>

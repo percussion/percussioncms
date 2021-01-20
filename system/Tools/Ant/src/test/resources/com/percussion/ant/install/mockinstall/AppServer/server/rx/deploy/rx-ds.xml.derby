@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datasources>
+   <local-tx-datasource>
+      <jndi-name>jdbc/RhythmyxData</jndi-name>
+      <connection-url>jdbc:derby://localhost:1527/CMDB</connection-url>
+      <driver-class>org.apache.derby.jdbc.ClientDriver</driver-class>
+      <security-domain>rx.datasource.jdbc_RhythmyxData</security-domain>
+      <min-pool-size>5</min-pool-size>
+      <max-pool-size>200</max-pool-size>
+      <idle-timeout-minutes>15</idle-timeout-minutes>
+      <new-connection-sql>SET CURRENT ISOLATION UR</new-connection-sql>
+      <background-validation>true</background-validation>
+      <background-validation-millis>60000</background-validation-millis>
+      <validate-on-match>false</validate-on-match>
+      <metadata>
+         <type-mapping>DERBY</type-mapping>
+      </metadata>
+   </local-tx-datasource>
+</datasources>

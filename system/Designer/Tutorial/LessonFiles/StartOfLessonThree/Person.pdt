@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Person (Name*, Title*, Telephone*, Email* )>
+<!ELEMENT Email (#PCDATA)>
+<!ELEMENT Telephone (#PCDATA)>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT Name (First*, Last* )>
+<!ELEMENT Last (#PCDATA)>
+<!ELEMENT First (#PCDATA)>

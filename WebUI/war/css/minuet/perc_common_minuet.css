@@ -1,0 +1,398 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+:root {
+    --perc-branded: #007ea8;
+    --perc-branded-dark: #133c55;
+    --perc-branded-inverse: #d22f12;
+    --perc-branded-hover: var(--perc-branded-dark);
+    --perc-light-background: #eeeeee;
+    --perc-text-light: #ffffff;
+    --perc-text-medium: #6c717c;
+    --perc-text-dark: #494949;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    color: #494949;
+    color: var(--perc-text-dark);
+    font-family: 'Open Sans';
+}
+
+html.wait, html.wait * {
+    cursor: wait !important;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+.form-control:focus {
+    border-color: #007ea8;
+    border-color: var(--perc-branded);
+    box-shadow: 0 0 0 0.2rem rgb(0,126,168, .65);
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 0.2rem rgb(0,126,168, .65);
+}
+
+.perc-confirmation-button-branded:focus {
+    box-shadow: 0 0 0 0.2rem rgb(255,255,255, .65);
+}
+
+.perc-confirmation-button-warning:focus {
+    box-shadow: 0 0 0 0.2rem rgb(255,255,255, .65);
+}
+
+.perc-divider-white {
+    border-top: 1px solid #ffffff;
+}
+
+.perc-navbar-dark {
+    background-color: #133c55;
+    background-color: var(--perc-branded-dark);
+    color: #ffffff;
+    color: var(--perc-text-light);
+}
+
+.perc-actions-menu-item:hover {
+    cursor: pointer;
+}
+
+.perc-nav-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.65);
+}
+
+.perc-nav-title {
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 32px;
+}
+
+.perc-btn-primary {
+    background-color: #133c55;
+    background-color: var(--perc-branded-dark);
+    color: #ffffff;
+    color: var(--perc-text-light);
+}
+
+.perc-btn-inverse {
+    background-color: #d22f12;
+    background-color: var(--perc-branded-inverse);
+    color: #ffffff;
+    color: var(--perc-text-light);
+}
+
+a.perc-btn-inverse:hover {
+    color: #ffffff;
+    color: var(--perc-text-light);
+}
+
+.perc-nav-menu-button {
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.perc-actions-menu-item:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0,126,168,0.5);
+}
+
+.perc-nav-menu-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0,126,168,0.5);
+}
+
+#percFooterAlertTarget {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+#percFooterAlertTarget .alert {
+    margin: 0;
+    width: 100%;
+    border-radius: 0px;
+    font-size: 18px;
+}
+
+#percFooterAlertTarget .alert-warning {
+    color: #ffffff;
+    color: var(--perc-text-light);
+    background-color: #d22f12;
+    border-color: transparent;
+}
+
+#percFooterAlertTarget .alert-success {
+    color: #ffffff;
+    color: var(--perc-text-light);
+    background-color: #007ea8;
+    background-color: var(--perc-branded);
+    border-color: transparent;
+}
+
+#percFooterAlertTarget .perc-alert-process-running {
+    color: #ffffff;
+    color: var(--perc-text-light);
+    background-color: #133c55;
+    background-color: var(--perc-branded-dark);
+    border-color: transparent;
+}
+
+#percFooterAlertTarget .perc-alert-message-strong {
+    font-weight: 900;
+}
+
+button#percDismissFooterAlert:hover {
+    color: #ffffff;
+    color: var(--perc-text-light);
+    font-weight: 800;
+}
+
+/* Fullscreen dialog classes */
+
+.perc-fullscreen-dialog {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1051 !important;
+    color: #ffffff;
+    color: var(--perc-text-light);
+}
+
+.perc-nav-dialog {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1029 !important;
+    color: #133c55;
+    color: var(--perc-branded-dark);
+    background-color: #ffffff;
+    padding-top: 75px;
+    overflow: scroll;
+}
+
+.perc-nav-description {
+    display: block;
+    font-weight: 900;
+    font-size: 14px;
+    padding-top: 10px;
+    text-transform: uppercase;
+}
+
+.perc-nav-item {
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.perc-background-inverse {
+    background-color: #d22f12;
+    background-color: var(--perc-branded-inverse);
+}
+
+.perc-background-branded {
+    background-color: #007ea8;
+    background-color: var(--perc-branded);
+}
+
+.perc-alert-container {
+    width: 100%;
+    padding: 0;
+    margin: 0px 0px 75px 0px;
+}
+
+.perc-dialog-icon {
+    padding-bottom: 20px;
+}
+
+.perc-dialog-message {
+    font-size: 18px;
+    font-weight: 400;
+    padding-bottom: 35px;
+}
+
+button.perc-confirmation-button.perc-confirmation-button-branded {
+    background-color: #007ea8;
+    background-color: var(--perc-branded);
+    color: var(--perc-text-light);
+    border: 2px solid var(--perc-text-light);
+    font-size: 18px;
+    font-weight: 900;
+}
+
+button.perc-confirmation-button.perc-confirmation-button-branded:hover {
+    background-color: #ffffff;
+    color: #007ea8;
+    color: var(--perc-branded);
+    border: 2px solid var(--perc-branded);
+}
+
+button.perc-confirmation-button.perc-confirmation-button-warning {
+    background-color: #d22f12;
+    background-color: var(--perc-branded-inverse);
+    color: var(--perc-text-light);
+    border: 2px solid var(--perc-text-light);
+    font-size: 18px;
+    font-weight: 900;
+}
+
+button.perc-confirmation-button.perc-confirmation-button-warning:hover {
+    background-color: #ffffff;
+    color: var(--perc-branded-inverse);
+    border: 2px solid var(--perc-branded-inverse);
+}
+
+button.perc-confirmation-button.perc-confirmation-button-dark {
+    background-color: #133c55;
+    background-color: var(--perc-branded-dark);
+    color: var(--perc-text-light);
+    border: 2px solid var(--perc-text-light);
+    font-size: 18px;
+    font-weight: 900;
+}
+
+button.perc-confirmation-button.perc-confirmation-button-dark:hover:not(.disabled) {
+    background-color: #ffffff;
+    color: #133c55;
+    color: var(--perc-branded-dark);
+    border: 2px solid #133c55;
+    border: 2px solid var(--perc-branded-dark);
+}
+
+
+.perc-active-sort::after {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: '\00a0\00a0\f0dc';
+    color: #494949;
+    color: var(--perc-text-dark);
+}
+
+.perc-inactive-sort::after {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: '\00a0\00a0\f0dc';
+    color: transparent;
+
+}
+
+#percNavMenuButtons {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#percAbout {
+    border-radius: 4px;
+    vertical-align: middle;
+    background-color: var(--perc-branded-dark);
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    font-weight: 400;
+    z-index: 1039;
+}
+
+#percAbout *:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.65);
+}
+
+.perc-close-about {
+    margin-top: 35px;
+}
+
+#percPasswordDialogTarget {
+    border-radius: 4px;
+    vertical-align: middle;
+    background-color: var(--perc-branded-dark);
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    font-weight: 400;
+    z-index: 1039;
+}
+
+#percPasswordDialogTarget *:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.65);
+}
+
+#percPasswordDialogTarget .row {
+    width: 100%;
+    margin: 0;
+}
+
+#percAbout p {
+    margin-bottom: .2rem;
+}
+
+#percAbout .row {
+    width: 100%;
+    margin: 0;
+}
+
+.perc-about-logo {
+    max-width: 250px;
+    padding-bottom: 10px;
+}
+
+a.perc-about-link, a.perc-about-link:hover {
+    text-decoration: none;
+    color: #ffffff;
+    color: var(--perc-text-light);
+}
+
+.perc-dialog-title {
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: 900;
+    display:block;
+    margin-bottom: 15px;
+
+}
+
+.perc-password-form-container {
+    margin-bottom:25px;
+}
+
+.perc-title-case {
+    text-transform: capitalize;
+}

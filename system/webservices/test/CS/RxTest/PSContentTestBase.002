@@ -1,0 +1,472 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using RxTest.RxWebServices;
+
+namespace RxTest
+{
+    public class PSContentTestBase
+    {
+        protected PSContentTestBase(PSTest test)
+        {
+            m_test = test;
+        }
+
+        protected void switchToIECommunity()
+        {
+            SwitchCommunityRequest req = new SwitchCommunityRequest();
+            req.Name = "Enterprise_Investments";
+            m_test.m_sysService.SwitchCommunity(req);
+        }
+
+        protected PSAaRelationship[] loadAaRelationshipsByOwner(int contentId)
+        {
+            PSAaRelationshipFilter filter = new PSAaRelationshipFilter();
+            long legacyGuid = PSGetGuidFromContentID(contentId);
+            filter.Owner = legacyGuid;
+            filter.limitToOwnerRevisions = true;
+            return loadAaRelationships(filter);
+        }
+
+        protected PSAaRelationship[] loadAaRelationships(PSAaRelationshipFilter filter)
+        {
+            LoadContentRelationsRequest lreq = new LoadContentRelationsRequest();
+            lreq.PSAaRelationshipFilter = filter;
+            lreq.loadReferenceInfo = true;
+
+            return m_test.m_contService.LoadContentRelations(lreq);
+        }
+
+        protected PSSearchResults[] PSSearchItemByContentID(long contentId)
+        {
+            FindItemsRequest    searchRequest   = new FindItemsRequest();
+            PSSearch            search          = new PSSearch();
+            PSSearchField[]     searchFields     = new PSSearchField[1];
+
+            searchFields[0] = new PSSearchField();
+            searchFields[0].name    = "sys_contentid";
+            searchFields[0].Value   = string.Format("{0}", contentId);
+
+            PSSearchParams Parms = new PSSearchParams();
+
+            Parms.Parameter = searchFields;
+
+            search.PSSearchParams = Parms;
+
+            searchRequest.PSSearch = search;
+
+            return(m_test.m_contService.FindItems(searchRequest));
+        }
+
+        // for compatability reasons with Java code
+        protected long getLegacyGuid(long contentID)
+        {
+            return( PSGetGuidFromContentID(contentID));
+        }
+
+        protected long PSGetGuidFromContentID(long contentId)
+        {
+            PSSearchResults[] results = PSSearchItemByContentID(contentId);
+
+            PSFileUtils.RxAssert(results.Length == 1, string.Format("Found {0} content items for content id {1}", results.Length, contentId));
+
+            return (results[0].id);
+        }
+
+        /**
+         * Calls the <code>loadContentTypes</code> webservice.
+         *
+         * @param name The name to search on, may be <code>null</code> or empty or
+         * contain the "*" wildcard.
+         * @param session The current session, may be <code>null</code> or empty to
+         * test authentication.
+         *
+         * @return The list of content type summaries, never <code>null</code>.
+         *
+         */
+        protected PSContentTypeSummary[] loadContentTypeSummaries(String name)
+        {
+           PSContentTypeSummary[] value = null;
+
+
+           LoadContentTypesRequest req = new LoadContentTypesRequest();
+
+           req.Name = name;
+
+           value = m_test.m_contService.LoadContentTypes(req);
+
+
+           return value;
+        }
+
+        /**
+         * Calls the <code>LoadCommunities</code> webservice.
+         *
+         * @param name The name to search on, may be <code>null</code> or empty or
+         * contain the "*" wildcard.
+         *
+         * @return The list of Communities.
+         *
+         */
+        protected PSCommunity[] LoadCommunitiesByName(String name)
+        {
+           PSCommunity[] value = null;
+
+
+           LoadCommunitiesRequest req = new LoadCommunitiesRequest();
+
+           req.Name = name;
+
+           value = m_test.m_secService.LoadCommunities(req);
+
+
+           return value;
+        }
+
+        /**
+         * Calls the <code>LoadWorkflows</code> webservice.
+         *
+         * @param name The name to search on, may be <code>null</code> or empty or
+         * contain the "*" wildcard.
+         *
+         * @return The list of Workflows.
+         *
+         */
+        protected PSWorkflow[] LoadWorkflowsByName(String name)
+        {
+           PSWorkflow[] value = null;
+
+
+           LoadWorkflowsRequest req = new LoadWorkflowsRequest();
+
+           req.Name = name;
+
+           value = m_test.m_sysService.LoadWorkflows(req);
+
+
+           return value;
+        }
+        protected PSItemStatus checkoutItemLegacy(long contentId)
+        {
+            long[] GuidArray = { PSGetGuidFromContentID(contentId) };
+            return m_test.m_contService.PrepareForEdit(GuidArray)[0];
+        }
+
+        protected PSItemStatus checkoutItemGuid(long Guid)
+        {
+            long[] GuidArray = { Guid };
+            return m_test.m_contService.PrepareForEdit(GuidArray)[0];
+        }
+        protected void checkinItem(PSItemStatus item)
+        {
+            ReleaseFromEditRequest req = new ReleaseFromEditRequest();
+            req.PSItemStatus = new PSItemStatus[] { item };
+            m_test.m_contService.ReleaseFromEdit(req);
+        }
+
+        protected PSAaRelationship loadAaRelationshipsByRid(long rid, bool isRequired)
+        {
+            PSAaRelationshipFilter filter = new PSAaRelationshipFilter();
+            filter.Id = rid;
+            PSAaRelationship[] rels = loadAaRelationships(filter);
+
+            if (isRequired)
+                PSFileUtils.RxAssert(rels.Length == 1, String.Format("Unable to load Content Relations for rid {0}, length = {1}", rid, rels.Length));
+
+            return rels.Length == 0 ? null : rels[0];
+        }
+
+       /**
+        * Calls the <code>loadAutoTranslations</code> webservice.
+        *
+        * @param session The current session, may be <code>null</code> or empty to
+        * test authentication.
+        *
+        * @return The list of auto translations, never <code>null</code>.
+        *
+        * @throws Exception If there are any errors.
+        */
+        protected List<PSAutoTranslation> loadAutoTranslations()
+        {
+            PSAutoTranslation[] values = null;
+
+            values = m_test.m_contService.LoadTranslationSettings();
+
+            List<PSAutoTranslation> result = new List<PSAutoTranslation>(values.Length);
+
+            foreach (PSAutoTranslation value in values)
+            {
+                result.Add(value);
+            }
+
+            return(result);
+        }
+
+
+       /**
+        * Use the audit trail to determine if the item was checked out, assumes item
+        * has been public.
+        *
+        * @param ctId The item content id.
+        * @param user The actor, assumed not <code>null</code> or empty.
+        * @param comment Optional comment, may be <code>null</code> or empty, used
+        * to check if the audit trail comment matches.
+        *
+        * @return <code>true</code> if the last audit trail entry indicates the item
+        * was checked out by the specified user with the specified comment,
+        * <code>false</code> if not.
+        *
+        * @throws Exception If there are any errors.
+        */
+        public Boolean didCheckOut(long ctId, String user, String comment)
+        {
+            PSAuditTrail[] trails = m_test.m_sysService.LoadAuditTrails(new long[] { ctId });
+            PSFileUtils.RxAssert(trails.Length == 1, String.Format("Wrong number {0} of records returned for Content ID", trails.Length, ctId));
+            PSAuditTrail trail = trails[0];
+            PSAudit[] audits = trail.Audits;
+            int len = audits.Length;
+            PSFileUtils.RxAssert(len > 0 , String.Format("No records returned for Content ID {0}", ctId));
+            int iAudit = len - 1;
+            PSAudit audit = audits[iAudit];
+
+            Boolean isCheckout = audit.actor == user && audit.transitionId == 0;
+            // ensure previous entry had same revision, otherwise this is a checkin
+            if (isCheckout && iAudit > 1)
+            {
+                if (audit.revision != audits[iAudit - 1].revision)
+                {
+                    isCheckout = false;
+                }
+                else
+                {
+                    if (comment == null)
+                    {
+                        comment = "";
+                    }
+                    String trComment = audit.transitionComment;
+                    if (trComment == null)
+                    {
+                        trComment = "";
+                    }
+                    if (comment != trComment)
+                    {
+                        isCheckout = false;
+                    }
+                }
+            }
+            else
+            {
+                isCheckout = false;
+            }
+
+            return isCheckout;
+        }
+
+       /**
+        * Use the audit trail to determine if the item was checked in, assumes item
+        * has been public.
+        *
+        * @param ctId The item content id.
+        * @param user The actor, assumed not <code>null</code> or empty.
+        * @param comment Optional comment, may be <code>null</code> or empty, used
+        * to check if the audit trail comment matches.
+        *
+        * @return <code>true</code> if the last audit trail entry indicates the item
+        * was checked in by the specified user with the specified comment,
+        * <code>false</code> if not.
+        *
+        * @throws Exception If there are any errors.
+        */
+        protected Boolean didCheckIn(long ctId, String user, String comment)
+        {
+            PSAuditTrail[] trails = m_test.m_sysService.LoadAuditTrails(new long[] { ctId });
+            PSFileUtils.RxAssert(trails.Length == 1, String.Format("Wrong number {0} of records returned for Content ID", trails.Length, ctId));
+            PSAuditTrail trail = trails[0];
+            PSAudit[] audits = trail.Audits;
+            int len = audits.Length;
+            PSFileUtils.RxAssert(len > 0, String.Format("No records returned for Content ID {0}", ctId));
+            int iAudit = len - 1;
+            PSAudit audit = audits[iAudit];
+
+            Boolean isCheckin = audit.actor == user && audit.transitionId == 0;
+            // ensure previous entry had lower revision, otherwise this is a checkout
+            if (isCheckin && iAudit > 1)
+            {
+                if (audit.revision != audits[iAudit - 1].revision + 1)
+                {
+                    isCheckin = false;
+                }
+                else
+                {
+                    if (comment == null)
+                    {
+                        comment = "";
+                    }
+                    String trComment = audit.transitionComment;
+                    if (trComment == null)
+                    {
+                        trComment = "";
+                    }
+                    if (comment != trComment)
+                    {
+                        isCheckin = false;
+                    }
+                }
+            }
+            else
+            {
+                isCheckin = false;
+            }
+            return (isCheckin);
+        }
+
+       /**
+        * Creates the specified number of content items for the specified content
+        * type, populates all required field values and saves the items as
+        * requested.
+        *
+        * @param contentType the content type of the new items to create,
+        *    not <code>null</code> or empty.
+        * @param count the number of items to create, must be > 0.
+        * @param populateRequiredFields <code>true</code> to populate all
+        *    required fields values, <code>false</code> otherwise.
+        * @param saveItems <code>true</code> to save the newly created items to the
+        *    repository, <code>false</code> to return them unsaved.
+        * @param enableRevisions <code>true</code> to enable revisions for all
+        *    saved items, <code>false</code> otherwise.
+        * @param path the folder path to which to attach the created items, may be
+        *    <code>null</code> or empty.
+        * @return a list with all new items created, never <code>null</code> or
+        *    empty. The returned items are not persisted yet.
+        * @throws Exception for any error.
+        */
+        public List<PSItem> createTestItems(String contentType, int count,
+                                            Boolean populateRequiredFields, Boolean save,
+                                            Boolean enableRevisions, String path)
+        {
+
+            PSFileUtils.RxAssert(!String.IsNullOrEmpty(contentType), "Content Type cannot be null or empty");
+            PSFileUtils.RxAssert(count <= 0, "Count cannot be 0");
+
+            CreateItemsRequest request = new CreateItemsRequest();
+            request.ContentType = contentType;
+            request.Count = count;
+
+            PSItem[] itemArray = m_test.m_contService.CreateItems(request);
+
+            if (populateRequiredFields)
+            {
+                PSCommunity[] communities = LoadCommunitiesByName(CommunityName);
+
+                PSFileUtils.RxAssert(communities.Length == 1, String.Format("Error loading Comunity {0} Count = {1}", CommunityName, communities.Length));
+
+                PSWorkflow[] workflows = LoadWorkflowsByName(WorkflowName);
+
+                PSFileUtils.RxAssert(workflows.Length == 1, String.Format("Error loading Workflow {0} Count = {1}", WorkflowName, workflows.Length));
+
+                populateRequiredFieldValues(itemArray, communities[0].id, workflows[0].id, Locale);
+            }
+
+            if (!String.IsNullOrEmpty(path))
+            {
+                PSItemFolders[] folders = new PSItemFolders[1];
+                folders[0].path = path;
+                foreach (PSItem item in itemArray)
+                {
+                    item.Folders = folders;
+                }
+            }
+
+            if (save)
+            {
+                SaveItemsRequest saveRequest = new SaveItemsRequest();
+                saveRequest.PSItem = itemArray;
+                saveRequest.EnableRevisions = enableRevisions;
+                long[] ids = saveItems(saveRequest);
+                PSFileUtils.RxAssert(ids != null && ids.Length == itemArray.Length, "Unable to save Items");
+            }
+
+            List<PSItem> items;
+
+            foreach (PSItem element in itemArray)
+            {
+                items.Add(element);
+            }
+
+      return items;
+   }
+
+
+     /**
+      * Convert the supplied items list into an array of item ids.
+      *
+      * @param items the items to convert, not <code>null</code>, may be empty.
+      * @return an array with all item ids, never <code>null</code>, may be empty.
+      */
+      public long[] toItemIds(List<PSItem> items)
+      {
+         PSFileUtils.RxAssert(items == null, "Items cannot be null");
+
+         long[] ids = new long[items.Count];
+         int index = 0;
+         foreach(PSItem item in items)
+            ids[index++] = item.id;
+
+         return ids;
+      }
+
+     /**
+      * Convert the supplied search results into an array of item ids.
+      *
+      * @param searchResults the search results to convert, assumed not
+      *    <code>null</code>, may be empty.
+      * @return an array with all items ids, never <code>null</code>, may be
+      *    empty.
+      */
+      private long[] toItemIds(PSSearchResults[] searchResults)
+      {
+         PSFileUtils.RxAssert(searchResults == null, "Search Results cannot be null");
+
+         long[] ids = new long[searchResults.Length];
+         int index = 0;
+         foreach(PSSearchResults searchResult in searchResults) {
+            ids[index++] = searchResult.id;
+         }
+
+         return ids;
+      }
+
+    /**
+     * Save the items supplied with the request and update the items ids after
+     * a successful save.
+     *
+     * @param request the save request with all items and options to save,
+     *    assumed not <code>null</code>.
+     * @param binding the binding to use for the save operation, assumed not
+     *    <code>null</code>.
+     * @return the new ids of the saved items, never <code>null</code> or empty.
+     * @throws Exception fof any error.
+     */
+     private long[] saveItems(SaveItemsRequest request)
+     {
+        long[] ids = m_test.m_contService.SaveItems(request).Ids;
+
+        // update the inserted items ids
+        int index = 0;
+
+        foreach (PSItem item in request.PSItem)
+        {
+            item.id = ids[index++];
+        }
+
+        return ids;
+    }
+
+
+      protected PSTest m_test;
+      protected String ContentTypeName    = "rffContacts";
+      protected String WorkflowName       = "Simple Workflow";
+      protected String CommunityName      = "Enterprise_Investments";
+      protected String Locale             = "en-us";
+    }
+}

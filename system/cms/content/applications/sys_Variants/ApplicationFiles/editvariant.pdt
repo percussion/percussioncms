@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editvariant (contenttypeurl*, sloturlbyname*, variantsloturl*, userstatusincludeurl*, category*, contentlookupurl* )>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT category (varianturl*, addsiteurl, addsloturl*, variantoutputform*, variantstylesheet*, locsuffix, locprefix, type, variantid*, publishwhen, description, variantdesc* )>
+<!ELEMENT variantdesc (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT publishwhen (#PCDATA)>
+<!ELEMENT variantid (#PCDATA)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT locsuffix (#PCDATA)>
+<!ELEMENT locprefix (#PCDATA)>
+<!ELEMENT variantstylesheet (#PCDATA)>
+<!ELEMENT variantoutputform (#PCDATA)>
+<!ELEMENT addsloturl (#PCDATA)>
+<!ELEMENT addsiteurl (#PCDATA)>
+<!ELEMENT varianturl (#PCDATA)>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT variantsloturl (#PCDATA)>
+<!ELEMENT sloturlbyname (#PCDATA)>
+<!ELEMENT contenttypeurl (#PCDATA)>

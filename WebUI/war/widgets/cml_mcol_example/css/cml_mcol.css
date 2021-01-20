@@ -1,0 +1,80 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.mcol {
+    width: 1000px;
+    overflow: auto;
+}
+
+.mcol table {
+    border-collapse: collapse;
+}
+
+.mcol-end-spacer div {
+    width: 100px;
+}
+
+.mcol-direc .mcol-direc-wrapper {
+    width: 230px;
+    border: thin solid #0099bf;
+    -moz-border-radius: 15%;
+    vertical-align: top;
+    height: 350px;
+    overflow: auto;
+    background-color: white;
+}
+
+.mcol-direc .mcol-direc-subdirec {
+    margin-left: 5px;
+}
+
+.mcol-listing {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.mcol-opened {
+    background-color: #54c;
+    color: #ff7;
+}
+
+.ui-draggable-dragging {
+    background-color: #ff0;
+}
+
+
+.mcol-clickable {
+    cursor: pointer;
+}
+
+.mcol-header {
+    width: 1000px;
+}
+
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

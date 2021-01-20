@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings>
+      <binding id="2">
+        <execution-order>0</execution-order>
+        <expression>$rx.pageutils.getPageTemplate($sys.item.getGuid()) </expression>
+        <id>-3461056995564443497</id>
+        <jexl-script id="3">
+          <compilable>false</compilable>
+          <parsed-text>$rx.pageutils.getPageTemplate($sys.item.getGuid()) </parsed-text>
+          <script-text>$rx.pageutils.getPageTemplate($sys.item.getGuid()) </script-text>
+          <source-text>$rx.pageutils.getPageTemplate($sys.item.getGuid()) </source-text>
+        </jexl-script>
+        <variable>$sys.template</variable>
+      </binding>
+    </bindings>
+    <template-slot-ids/>
+    <guid>0-4-606</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/dispatchAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description>The dispatch template for page assembly</description>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>Percussion Page Dispatch</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/html</mime-type>
+    <name>perc.pageDispatcher</name>
+    <output-format>Page</output-format>
+    <publish-when>Default</publish-when>
+    <style-sheet-path/>
+    <template/>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT TitleOnly (displaytitle*, link* )>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT displaytitle (#PCDATA)>

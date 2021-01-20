@@ -1,0 +1,94 @@
+<project name="sitemanage-install" default="install">
+	<property environment="my_env"/>
+	
+	<available file="${rhythmyx.home}" type="dir" property="rhythmyx.ok" />
+
+	<fail unless="rhythmyx.ok" message="rhythmyx.home property must be set"/>
+
+	<property name="rhythmyx.WEB-INF" value="${rhythmyx.home}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF"/>
+	<property name="thirdpartyjars.dir" value="../../../lib/thirdparty_jars"/>
+	<echo>IN ${basedir} </echo>
+
+	<target name="install">
+
+		<!-- make the directory in case its not there. -->
+
+		<mkdir dir="${basedir}/resources/Rhythmyx" />
+
+		<copy todir="${rhythmyx.home}" overwrite="true">
+			<fileset dir="${basedir}/resources/Rhythmyx">
+    			<include name="**/**"/>
+			</fileset>
+		</copy>
+		
+		<!-- make the directory in case its not there. -->
+
+		<mkdir dir="${basedir}/resources/lib" />
+
+		<copy todir="${rhythmyx.WEB-INF}/lib" overwrite="true">
+
+			<fileset dir="${basedir}/lib">
+
+    			<include name="**"/>
+
+			</fileset>		
+		
+		</copy>
+        
+       <condition property="isDev">
+           <and>
+              <isset property="my_env.THIRD_PARTY_TOOLS_BASE"/>
+              <available file="${thirdpartyjars.dir}"/>
+           </and>
+       </condition>
+       <condition property="isRel">
+           <not>
+              <isset property="my_env.THIRD_PARTY_TOOLS_BASE"/>
+           </not>
+       </condition>
+       
+	   <!-- jar conflicts breaks dev install with duplicate jars -->
+       <!--<antcall target="dev.copy.thirdparty.jars"/>-->
+		<antcall target="do-if-not-categoryxmlexist"/>
+		
+		<copy file="${rhythmyx.WEB-INF}/classes/hibernate.cfg.xml" tofile="${rhythmyx.WEB-INF}/classes/hibernate.cfg.bak" overwrite="true"/>
+
+		<replace file="${rhythmyx.WEB-INF}/classes/hibernate.cfg.xml" token='&lt;!-- PROJECTS HERE --&gt;' value='&lt;mapping class="com.percussion.user.data.PSUserLogin" /&gt; &lt;mapping class="com.percussion.metadata.data.PSMetadata" /&gt; &lt;mapping class="com.percussion.sitemanage.importer.data.PSImportLogEntry" /&gt; &lt;mapping class="com.percussion.recent.data.PSRecent" /&gt; &lt;mapping class="com.percussion.integritymanagement.data.PSIntegrityStatus" /&gt; &lt;mapping class="com.percussion.integritymanagement.data.PSIntegrityTask" /&gt; &lt;mapping class="com.percussion.integritymanagement.data.PSIntegrityTaskProperty" /&gt;' />
+	</target>
+	
+	<target name="check-categoryxmlfile">
+		<condition property="categoryxml.absent">
+		    <not>
+		      <available file="${rhythmyx.home}/rx_resources/category/category-xyz.xml"/>
+		    </not>
+		</condition>
+	</target>
+
+	<target name="do-if-not-categoryxmlexist" depends="check-categoryxmlfile" if="categoryxml.absent">
+		<mkdir dir="${rhythmyx.home}/rx_resources/category" />
+		<copy todir="${rhythmyx.home}/rx_resources/category" overwrite="false">
+			<fileset file="${basedir}/resources/category-xyz.xml">
+			</fileset>		
+   		</copy>
+	</target> 
+    
+	<target name="dev.copy.thirdparty.jars" if="isDev">
+		<copy todir="${rhythmyx.WEB-INF}/lib" flatten="true" overwrite="true">
+         <!-- Third party jars -->        
+            <fileset dir="${thirdpartyjars.dir}">
+               <include name="*.jar"/>
+            </fileset>      
+		</copy>
+	</target>
+  <!--  
+	<target name="rel.copy.thirdpary.jars" if="isRel">
+		<copy todir="${rhythmyx.WEB-INF}/lib" flatten="true">
+               
+            <fileset dir="system/build/dist/thirdpartytools">
+               <include name="**.jar"/>
+            </fileset>      
+		</copy>
+	</target>
+-->
+
+</project>

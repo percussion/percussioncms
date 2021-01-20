@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Widget>
+    <WidgetPrefs title="Categories"
+                 contenttype_name="percCategoryList"
+                 category="blog,search"
+                 description="Display a hierarchical list of categories"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/categoryList/images/widgetIconLinkCategoryList.png"
+                 preferred_editor_width="800"
+                 preferred_editor_height="685"
+                 is_responsive="true"/>
+    <Resource href="/perc-common-ui/js/perc_common_ui.js"
+              type="javascript"
+              placement="head" />
+    <UserPref name="perc_display_option"
+              display_name="Display"
+              default_value="expanded"
+              datatype="enum">
+        <EnumValue value="expanded" display_value="Expanded hierarchy" />
+        <EnumValue value="collapsible" display_value="Collapsible" />
+    </UserPref>
+    <UserPref name="perc_max_categories"
+              display_name="Maximum number of categories to show"
+              default_value="10"
+              datatype="number" />
+    <CssPref name="rootclass"
+             display_name="CSS root class"
+             datatype="string" />
+    <Code type="jexl">
+        <![CDATA[
+    $linkContext = $perc.linkContext;
+    $isEditMode = $perc.isEditMode() || $perc.isPreviewMode();
+    $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
+    $perc.setWidgetContents($assetItems);
+    $display = $perc.widget.item.properties.get('perc_display_option');
+    $maxCat = $perc.widget.item.properties.get('perc_max_categories').toString().trim();
+    if (empty($maxCat)) {
+        $maxCat = 0;
+    }else{
+        ##Use 0 + to force a integer result
+        $maxCat = 0 + $perc.widget.item.properties.get('perc_max_categories');
+        if( $maxCat < 0){
+            $maxCat = 0;
+        }
+    }
+
+    $rootclass = $perc.widget.item.cssProperties.get('rootclass');
+    if (!empty($rootclass)) {
+        $rootclass = $rootclass + " ";
+    }
+    if ( ! $assetItems.isEmpty() ) {
+        $assetItem = $assetItems.get(0);
+        $params = $rx.string.stringToMap(null);
+        if ( $assetItem.getNode().hasProperty('query') ){
+                $query = $assetItem.getNode().getProperty('query').String;
+        }else{
+                $query = 'select rx:sys_contentid, rx:sys_folderid from rx:percPage';
+        }
+        $params.put('query', $query);
+        $params.put('max_results', $maxCat);
+		$finderName = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
+        $relresults =  $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
+        $processedCategories = $rx.pageutils.getProcessedCategories($relresults);
+        $title = $rx.pageutils.html($assetItem, 'displaytitle');
+
+        ##Category list query starts
+        ##Gets the individual field values
+        $titleContains = $assetItem.getNode().getProperty('title_contains').String;
+        $starDate = $assetItem.getNode().getProperty('start_date').String;
+        $endDate = $assetItem.getNode().getProperty('end_date').String;
+        $sitePath = $assetItem.getNode().getProperty('site_path').String;
+        $templatesList = $assetItem.getNode().getProperty('page_templates_list').String;
+		$categoryPageResult = $assetItem.getNode().getProperty('category_page_result').String;
+        ##Builds the criteria
+        $criteria = "[";
+        $criteria = $criteria + "&quot;type = 'page'&quot;";
+        $criteriaSep = ", ";
+        if ($titleContains != null && $titleContains != "")
+        {
+             $criteria = $criteria + $criteriaSep + "&quot;dcterms:title LIKE '%" + $titleContains +"%'&quot;";
+        }
+        if ($starDate != null && $starDate != ""){
+             $sd = $tools.date.toDate("MM/dd/yyyy",$starDate);
+             $criteria = $criteria +  $criteriaSep + "&quot;dcterms:created >= '" + $tools.date.format("yyyy-MM-dd'T'HH:mm:ss", $sd) + "'&quot;";
+        }
+        if ($endDate != null && $endDate != ""){
+             $ed = $tools.date.toDate("MM/dd/yyyy",$endDate);
+             $criteria = $criteria +  $criteriaSep +  "&quot;dcterms:created < '" + $tools.date.format("yyyy-MM-dd'T'HH:mm:ss", $ed) + "'&quot;";
+        }
+        if ($sitePath != null && $sitePath != "" && $sitePath != "//Sites")
+        {
+            $temppath = $sitePath.replace("//Sites/", "");
+            if($temppath.indexOf("/") > 0)
+            {
+                $temppaths = $temppath.split("/");
+                $criteria = $criteria  +  $criteriaSep +  "&quot;site = '" + $temppaths[0] + "'&quot;";
+                $folderpath = "";
+                $counter = 1;
+                while($counter < $temppaths.size())
+                {
+                    $folderpath = $folderpath + "/" + $temppaths[$counter];
+                    $counter = $counter + 1;
+                }
+                $criteria = $criteria  +  $criteriaSep +  "&quot;folder LIKE '" + $folderpath + "/%'&quot;";
+            }
+            else
+            {
+                $criteria = $criteria  +  $criteriaSep +  "&quot;site = '" + $temppath + "'&quot;";
+            }
+        }
+        if($templatesList != null && $templatesList != "")
+        {
+            $templateNameList = $rx.pageutils.templateNames($templatesList);
+            if($templateNameList.size() == 1)
+            {
+                $criteria = $criteria  +  $criteriaSep +  "&quot;dcterms:source = '" + $templateNameList.get(0).toString() + "'&quot;";
+            }
+            else if($templateNameList.size() > 1)
+            {
+                $inCl = "(";
+                $counter = 0;
+                $templNameArray = $templateNameList.toArray();
+
+                while($counter < $templNameArray.size())
+                {
+                    $inCl = $inCl + "'" + $templNameArray[$counter] + "'";
+                    if($counter != $templNameArray.size()-1)
+                        $inCl = $inCl + ", ";
+                    $counter = $counter + 1;
+                }
+                $inCl = $inCl + ")";
+                $criteria = $criteria  +  $criteriaSep +  "&quot;dcterms:source IN " + $inCl + "&quot;";
+            }
+        }
+
+        $criteria = $criteria + "]";
+
+        ##Build the query string for the delivery side category list
+		##builds the order by clause
+
+        $dynamicListData = "{" + "&quot;criteria&quot;:" + $criteria;
+
+		$dynamicListData = $dynamicListData + ", &quot;category_page_result&quot;:&quot;" +$categoryPageResult + "&quot;";
+        $dynamicListData = $dynamicListData + ", &quot;display_option&quot;:&quot;" +$display + "&quot;";
+        $dynamicListData = $dynamicListData + ", &quot;max_categories&quot;:&quot;" +$maxCat + "&quot;";
+
+        $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
+
+        $dynamicListData = $dynamicListData + ", &quot;deliveryurl&quot;:&quot;" + $dsUrl + "&quot;";
+        $dynamicListData = $dynamicListData + ", &quot;isEditMode&quot;:&quot;" + $isEditMode + "&quot;";
+        $dynamicListData = $dynamicListData + "}";
+        ##Category list query ends
+    }
+    else {
+        ;
+    }
+    ]]>
+    </Code>
+    <Content type="velocity">
+        <![CDATA[
+<div class="$!{rootclass} perc-category-list" data-query="$!{dynamicListData}">
+##This is a hidden div that holds the structure of the list when the category list output structure changes this hidden div and delivery side view
+##should be modified to match the new structure.
+#if ($title && $title.length() > 0)##
+    <div class="perc-category-title">$title</div>
+#end##
+#if($display == "expanded")##
+<div class="perc-category-list-expanded">
+#else##
+<div class="perc-category-list-collapsible" maxCat="$!{maxCat}">
+#end##
+#if( ! $perc.widgetContents.isEmpty() )##
+#if($processedCategories)##
+#if($display == "expanded")##
+#perc_processCategoryNodeExpanded($processedCategories, $maxCat, 0, 0)##
+#else##
+#set($nRow = 0)##
+#perc_processCategoryNodeCollapsible($processedCategories, $maxCat, -1)##
+#end##
+#end##
+#elseif ($perc.isEditMode())##
+#createEmptyWidgetContent("categorylist-sample-content", "This category list widget is showing sample content.")##
+#end###
+</div>
+</div>]]>
+    </Content>
+</Widget>

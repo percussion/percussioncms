@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<info primitiveTypes="element">
+  <element name="community">
+    <hide property="roleAssociations" />
+    <hide property="siteAssociations" />
+    <addDefaults/>
+  </element>
+</info>

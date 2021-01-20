@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+  <ModulePrefs title="What's Working" category="analytics" description="This gadget plots traffic gain per page change for sites, sections, and folders." thumbnail="images/gadgetIconEffectiveness.png" height="420">
+       <Require feature="perc_core"/>
+	   <Require feature="perc_jquery_ui"/>
+	   <Require feature="minimessage" />
+       <Require feature="settitle" />
+       <Require feature="perc_getDashboardColumn" />
+       <Require feature="setprefs" />
+  </ModulePrefs>
+  <UserPref name="site" display_name="Site" required="false" datatype="enum" default_value="@all">
+        <EnumValue value="@all" display_value="All Sites"/>
+        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+  </UserPref> 
+  <UserPref name="duration_type" display_name="Duration" required="true" datatype="enum" default_value="days">
+        <EnumValue value="days" display_value="Days"/>
+        <EnumValue value="weeks" display_value="Weeks"/>
+        <EnumValue value="months" display_value="Months"/> 
+        <EnumValue value="years" display_value="Years"/>
+  </UserPref>
+  <UserPref name="duration_value" display_name="How many" required="true" datatype="string" default_value="5"/>
+  <UserPref name="usage_value" display_name="Usage" required="true" datatype="enum" default_value="pageviews">
+		<EnumValue value="pageviews" display_value="Page views"/>
+		<EnumValue value="unique_pageviews" display_value="Unique page views"/>
+  </UserPref>	 		
+ <UserPref name="value_threshold" display_name="Goal (Gains per page)" required="true" datatype="string" default_value="0"/>  
+ <UserPref name="drill_down_path" datatype="hidden"/>
+  <Content type="html">
+     <![CDATA[ 
+    <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+    <style>
+
+		#perc-chart-wrapper{
+			position:absolute;	
+			padding:0px 5px;
+			height:89%;
+			font-size:11px;
+			width:98%;
+			overflow:auto;
+		}
+        #perc-chart {
+			margin:auto;
+			display:block;
+			color:#777777;
+			width:100%;
+			font-size:11px;
+			font-weight:normal;
+			text-align:center;
+			vertical-align:middle;
+			height:100%;
+	}
+		.jqplot-yaxis{
+			font-weight:bold;	
+			font-size:10px;
+			margin-right:0px;
+		}
+		
+		.jqplot-xaxis{
+			margin-top:0px;
+		}
+		
+		.jqplot-y2axis{
+			display:none;
+		}
+		
+		#perc-chart-gain-validation, #perc-chart-duration-validation, .effectiveness-error-message{
+			padding:20px;	
+			margin:auto;
+			text-align:center;
+			background:none repeat scroll 0 0 #F0F0F0;
+			border-bottom:1px solid #E6E6E9;
+			color:#777777;
+			font-size:11px;
+			font-weight:normal;
+			vertical-align:middle;
+			font-family: 'Open Sans', sans-serif;
+		}
+		
+		#perc-chart-breadcrumb{
+			color:#777777;
+			padding:10px 0px 5px 0px;
+			font-size:11px;
+			font-weight:normal;
+			margin:auto;
+			text-align:left;	
+		}
+		#perc-chart-breadcrumb-list{
+			padding:0px;
+		}
+		#perc-chart-breadcrumb li{
+			display:inline;
+		}
+		#perc-chart-breadcrumb ul{
+			margin:0px;
+		}		
+		#perc-breadcrumb-items{
+		   font-size:11px;
+		   cursor:pointer;
+		   cursor:hand;	
+		}
+		#perc-yaxis-label, .jqplot-xaxis-label{
+			font-size:12px;
+			color:#777777;
+			font-weight:bold;
+		}
+		.jqplot-event-canvas{
+			cursor:pointer;
+		}
+		.jqplot-xaxis-label{
+			margin-top:0px;
+		}
+		body * {
+              font-family: 'Open Sans', sans-serif;
+         }
+    </style>
+	<link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/common/lib/jqplot/jquery.jqplot.css" />
+	<script >
+		var loadingMsg = null;
+		var miniMsg = null;
+		$(document).ready(function() {
+            miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
+            loadingMsg = miniMsg.createStaticMessage("Loading...");
+    });
+
+     function _expandNotify(){
+         var wrapper = $("#perc-chart-wrapper");
+         if(wrapper.length == 0)
+            self.location.reload();
+     }
+
+    </script>
+	<!--[if IE]>
+    <script  src="/cm/gadgets/repository/common/lib/jqplot/excanvas.js"></script>
+<![endif]-->
+	<script language="javascript"  src="/cm/gadgets/repository/common/lib/jqplot/jquery.jqplot.js"></script>
+	<script language="javascript"  src="/cm/gadgets/repository/common/lib/jqplot/jqplot.barRenderer.js"></script>
+	<script language="javascript"  src="/cm/gadgets/repository/common/lib/jqplot/jqplot.categoryAxisRenderer.js"></script>
+	<script language="javascript"  src="/cm/gadgets/repository/common/lib/jqplot/jqplot.canvasAxisLabelRenderer.js"></script>
+	<script language="javascript"  src="/cm/gadgets/repository/common/lib/jqplot/jqplot.canvasTextRenderer.js"></script>
+	<script language="javascript"  src="/cm/gadgets/repository/common/lib/jqplot/jqplot.highlighter.js"></script>
+	<script  src="/cm/jslib/jquery.bbq.js"></script>
+	<script  src="/cm/gadgets/repository/perc_effectiveness_gadget/perc_effectiveness_gadget.js"></script>
+
+    <script>
+		var PercMetadataService = percJQuery.PercMetadataService;
+	    var prefs;
+		var drillDownKey = $.deparam.querystring().mk + "drillDownPath";
+		var SITE_NAME = "site";
+		var messageFlag = false;
+        $(document).ready(function(){
+			$("#perc-chart-wrapper").show();
+			$("#perc-chart-breadcrumb").show();
+			$("#perc-chart-duration-validation").hide();
+			$("#perc-chart-gain-validation").hide();
+            var PercServiceUtils = percJQuery.PercServiceUtils;
+			var pathService		 = percJQuery.PercPathService;
+			var PercUtils = percJQuery.perc_utils;
+			prefs = new gadgets.Prefs(); 
+            var site = prefs.getString("site");
+			var durationValue = prefs.getString("duration_value");
+			var durationType = prefs.getString("duration_type");
+			var usage = prefs.getString("usage_value");
+			var threshold = prefs.getString("value_threshold");
+
+			// Check if Site is available. If not set configuration to All Sites
+			pathService.getLastExistingPath("/Sites/"+site, function(status, result){				
+                if((result == "")||(result == null)){
+					site = "";
+				}
+				else{
+					site = result;
+				}
+				var site_title = site == "" ? "All Sites" : site;
+				
+				var drillDownPath = "";
+				PercMetadataService.find(drillDownKey, function(status, result){
+					var path = site;
+					var checkDuration = durationValue;
+					var checkGain = threshold;
+				
+				if ((isNaN(checkDuration)) || checkDuration<=0){
+					miniMsg.dismissMessage(loadingMsg);
+					$("#perc-chart-duration-validation").show();
+					$("#perc-chart-breadcrumb").hide();
+					$("#perc-chart-wrapper").hide();
+					messageFlag = true;
+					durationValue = '<unspecified>';
+				}
+
+				if(isNaN(checkGain)){
+					miniMsg.dismissMessage(loadingMsg);
+					$("#perc-chart-gain-validation").show();
+					$("#perc-chart-breadcrumb").hide();
+					$("#perc-chart-wrapper").hide();
+					messageFlag = true;
+				}				
+				var title = "WHAT'S WORKING: During Last " + durationValue + " " + durationType + " (" + site_title + ")";   
+				gadgets.window.setTitle(title); 
+				if(messageFlag){
+					return;
+				}
+
+					if(status == PercServiceUtils.STATUS_SUCCESS && result)
+					{
+						drillDownPath = (result.metadata) ? result.metadata.data : "";
+						if (!PercUtils.isBlankString(drillDownPath))
+						{
+							pathService.getLastExistingPath("/Sites/" + drillDownPath, function(status, result){
+								if (!PercUtils.isBlankString(site) && result.split('/')[0] != site)
+								{
+									PercMetadataService.save(drillDownKey, "", function(){});
+								}
+								else
+								{
+									path = result;
+								}
+								$.PercEffectivenessGadget.renderGraph(path, durationType, durationValue, usage, threshold);
+							});
+						}
+						else
+						{
+						$.PercEffectivenessGadget.renderGraph(path, durationType, durationValue, usage, threshold);
+						}
+					}
+					else
+					{
+						$.PercEffectivenessGadget.renderGraph(path, durationType, durationValue, usage, threshold);
+					}
+				});
+			});
+		});	
+    </script>
+			<div id  = "perc-chart-breadcrumb"><ul id = "perc-chart-breadcrumb-list"></ul> </div>
+			<div id = "perc-yaxis-label"></div>
+			<div id = "perc-chart-error"></div>
+			<div id = "perc-chart-duration-validation">How many: You can only put a number greater than zero in this field.</div>
+			<div id = "perc-chart-gain-validation">Goal: You can only put numbers in this field.  Negative numbers are acceptable.</div>
+			<div id = "perc-chart-wrapper">
+				<div id="perc-chart">
+				</div>
+			</div>	  
+     ]]>
+  </Content> 
+</Module>

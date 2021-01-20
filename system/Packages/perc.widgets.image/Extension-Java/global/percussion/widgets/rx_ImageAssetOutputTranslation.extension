@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="" context="global/percussion/widgets/" deprecated="no" handler="Java" name="rx_ImageAssetOutputTranslation" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">output translation for processing image assets</initParam>
+      <initParam name="com.percussion.extension.version">23</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.widgets.image.extensions.ImageAssetOutputTranslation</initParam>
+      <interface name="com.percussion.extension.IPSItemOutputTransformer"/>
+      <PSXExtensionParamDef id="0">
+         <name>ImageName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of Image field.  Defaults to "img"</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>ThumbName</name>
+         <dataType>java.lang.String</dataType>
+         <description>Name of Thumbnail field. Defaults to "img2"</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

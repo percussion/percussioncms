@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) Percussion Software, Inc.  1999-2020
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~      Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+   <bean id="Action" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="Quick_Edit"/>
+      <property name="type" value="ACTION"/>
+      <property name="propertySetters">
+        <bean class="com.percussion.rx.config.impl.PSActionSetter">
+           <property name="properties">
+              <map>
+                 <entry key="label" value="${com.percussion.PSActionSetterTest.actionLabel}"/>
+                 <entry key="description" value="${com.percussion.PSActionSetterTest.actionDescription}"/>
+                 <entry key="URL" value="${com.percussion.PSActionSetterTest.actionUrl}"/>
+                  <entry key="urlParams">
+                  <!-- Like other collections, all params must be supplied, they replace current settings -->
+                     <map>
+                        <entry key="sys_contentid" value="$sys_contentid" />
+                        <entry key="sys_revision" value="$sys_revision" />
+                        <entry key="sys_view" value="sys_All" />
+                        <entry key="WFAction" value="${com.percussion.PSActionSetterTest.dynamicParam}" />
+                     </map>
+                  </entry>
+                  <entry key="visibility">
+                  <!-- each visibility context is optional, the value should be a List of
+                  strings appropropriate for the context -->
+                     <map>
+                        <entry key="Assignment Types" value="${com.percussion.PSActionSetterTest.hideForAssignmentTypes}" />
+                        <entry key="Checkout Status" value="${com.percussion.PSActionSetterTest.hideForCheckoutStatus}" />
+                        <entry key="Content Types" value="${com.percussion.PSActionSetterTest.hideForContentTypes}" />
+                        <entry key="Folder Security" value="${com.percussion.PSActionSetterTest.hideForFolderSecurity}" />
+                        <entry key="Locales" value="${com.percussion.PSActionSetterTest.hideForLocales}" />
+                        <entry key="Object Types" value="${com.percussion.PSActionSetterTest.hideForObjectTypes}" />
+                        <entry key="Publishable" value="${com.percussion.PSActionSetterTest.hideForPublishable}" />
+                        <entry key="Roles" value="${com.percussion.PSActionSetterTest.hideForRoles}" />
+                        <entry key="Workflow" value="${com.percussion.PSActionSetterTest.hideForWorkflow}" />
+                     </map>
+                  </entry>
+              </map>
+           </property>
+        </bean>
+      </property>
+   </bean>
+</beans>

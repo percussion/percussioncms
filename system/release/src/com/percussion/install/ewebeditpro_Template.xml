@@ -1,0 +1,217 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+     sys_eWebEditPro
+  -->
+	<psxctl:ControlMeta name="sys_eWebEditPro" dimension="single" choiceset="none">
+		<psxctl:Description>WYSIWYG HTML Editor</psxctl:Description>
+		<psxctl:ParamList>
+			<psxctl:Param name="width" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the width of the inline frame. This parameter may be either a pixel or a percentage of the available horizontal space. The default value is "700".</psxctl:Description>
+				<psxctl:DefaultValue>760</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="height" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the height of the inline frame. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 250.</psxctl:Description>
+				<psxctl:DefaultValue>250</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. The default value is "../rx_resources/ewebeditpro/config.xml".</psxctl:Description>
+				<psxctl:DefaultValue>../rx_resources/ewebeditpro/config.xml</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="InlineLinkSlot" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline link slot. The inline search dialog box shows the content types that have at least one variant added to the inline link slot. The default value is system inline link slotid 103.</psxctl:Description>
+				<psxctl:DefaultValue>103</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="InlineImageSlot" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline image slot. The inline search dialog box shows the content types that have at least one variant added to the inline image slot. The default value is system inline image slotid 104.</psxctl:Description>
+				<psxctl:DefaultValue>104</psxctl:DefaultValue>
+			</psxctl:Param>
+			<psxctl:Param name="InlineVariantSlot" datatype="String" paramtype="generic">
+				<psxctl:Description>This parameter specifies the id of inline variant slot. The inline search dialog box shows the content types that have at least one variant added to the inline variant slot. The default value is system inline variant slotid 105.</psxctl:Description>
+				<psxctl:DefaultValue>105</psxctl:DefaultValue>
+			</psxctl:Param>
+			
+		</psxctl:ParamList>
+		<psxctl:AssociatedFileList>
+			<psxctl:FileDescriptor name="ewebeditpro.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../rx_resources/ewebeditpro/ewebeditpro.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+			<psxctl:FileDescriptor name="rx_wep.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../sys_resources/js/ewebeditpro/rx_wep.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+		</psxctl:AssociatedFileList>
+		<psxctl:Dependencies>
+			<psxctl:Dependency status="setupOptional" occurrence="multiple">
+				<psxctl:Default>
+					<PSXExtensionCall id="0">
+						<name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>$(fieldName)</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>rxW2Ktidy.properties</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>rxW2KserverPageTags.xml</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text/>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+						<PSXExtensionParamValue id="0">
+							<value>
+								<PSXTextLiteral id="0">
+									<text>yes</text>
+								</PSXTextLiteral>
+							</value>
+						</PSXExtensionParamValue>
+					</PSXExtensionCall>
+				</psxctl:Default>
+			</psxctl:Dependency>
+		</psxctl:Dependencies>
+	</psxctl:ControlMeta>
+	<xsl:template match="Control[@name='sys_eWebEditPro']" priority="10" mode="psxcontrol">
+		<!-- Check for IE first -->
+		<!-- set up the variables that will be used in the javascript -->
+		<xsl:variable name="name">
+			<xsl:value-of select="@paramName"/>
+		</xsl:variable>
+		<xsl:variable name="width">
+			<xsl:choose>
+				<xsl:when test="ParamList/Param[@name='width']">
+					<xsl:value-of select="ParamList/Param[@name='width']"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="document('')/*/psxctl:ControlMeta[@name='sys_eWebEditPro']/psxctl:ParamList/psxctl:Param[@name='width']/psxctl:DefaultValue"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="height">
+			<xsl:choose>
+				<xsl:when test="ParamList/Param[@name='height']">
+					<xsl:value-of select="ParamList/Param[@name='height']"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="document('')/*/psxctl:ControlMeta[@name='sys_eWebEditPro']/psxctl:ParamList/psxctl:Param[@name='height']/psxctl:DefaultValue"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="config_src_url">
+			<xsl:choose>
+				<xsl:when test="ParamList/Param[@name='config_src_url']">
+					<xsl:value-of select="ParamList/Param[@name='config_src_url']"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="document('')/*/psxctl:ControlMeta[@name='sys_eWebEditPro']/psxctl:ParamList/psxctl:Param[@name='config_src_url']/psxctl:DefaultValue"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="JavaAutoDetect">
+			<xsl:choose>
+				<xsl:when test="ParamList/Param[@name='JavaAutoDetect']">
+					<xsl:value-of select="ParamList/Param[@name='JavaAutoDetect']"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="document('')/*/psxctl:ControlMeta[@name='sys_eWebEditPro']/psxctl:ParamList/psxctl:Param[@name='JavaAutoDetect']/psxctl:DefaultValue"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="InlineLinkSlot">
+			<xsl:choose>
+				<xsl:when test="ParamList/Param[@name='InlineLinkSlot']">
+					<xsl:value-of select="ParamList/Param[@name='InlineLinkSlot']"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="document('')/*/psxctl:ControlMeta[@name='sys_eWebEditPro']/psxctl:ParamList/psxctl:Param[@name='InlineLinkSlot']/psxctl:DefaultValue"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="InlineImageSlot">
+			<xsl:choose>
+				<xsl:when test="ParamList/Param[@name='InlineImageSlot']">
+					<xsl:value-of select="ParamList/Param[@name='InlineImageSlot']"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="document('')/*/psxctl:ControlMeta[@name='sys_eWebEditPro']/psxctl:ParamList/psxctl:Param[@name='InlineImageSlot']/psxctl:DefaultValue"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="InlineVariantSlot">
+			<xsl:choose>
+				<xsl:when test="ParamList/Param[@name='InlineVariantSlot']">
+					<xsl:value-of select="ParamList/Param[@name='InlineVariantSlot']"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="document('')/*/psxctl:ControlMeta[@name='sys_eWebEditPro']/psxctl:ParamList/psxctl:Param[@name='InlineVariantSlot']/psxctl:DefaultValue"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<input type="hidden" name="{@paramName}" value="{Value}"/>
+		<script language="JavaScript">
+			<xsl:if test="@isReadOnly='yes'">
+	eWebEditPro.parameters.readOnly = true;
+      		</xsl:if><![CDATA[eWebEditPro.parameters.config = "]]><xsl:value-of select="$config_src_url"/><![CDATA[";
+	var ]]><xsl:value-of select="@paramName"/><![CDATA[_InlineLinkSlot = ]]><xsl:value-of select="$InlineLinkSlot"/><![CDATA[;
+	var ]]><xsl:value-of select="@paramName"/><![CDATA[_InlineImageSlot = ]]><xsl:value-of select="$InlineImageSlot"/><![CDATA[;
+	var ]]><xsl:value-of select="@paramName"/><![CDATA[_InlineVariantSlot = ]]><xsl:value-of select="$InlineVariantSlot"/><![CDATA[;
+	var ]]><xsl:value-of select="@paramName"/><![CDATA[_ReadOnly = ']]><xsl:value-of select="@isReadOnly"/><![CDATA[';
+      // When Java becomes available use this command:
+      // eWebEditPro.isActiveXSupported="]]><xsl:value-of select="$JavaAutoDetect"/><![CDATA[";
+      eWebEditPro.parameters.locale = "../rx_resources/ewebeditpro/]]><xsl:call-template name="getEktronLangFile">
+				<xsl:with-param name="lang" select="$lang"/>
+			</xsl:call-template><![CDATA[";
+
+      eWebEditPro.create("]]><xsl:value-of select="$name"/><![CDATA[", "]]><xsl:value-of select="$width"/><![CDATA[", ]]><xsl:value-of select="$height"/><![CDATA[);
+
+      eWebEditPro.load();
+      eWebEditPro.onready="ps_hasEktron=true; window.focus()";
+   ]]></script>
+	</xsl:template>	
+ 
+

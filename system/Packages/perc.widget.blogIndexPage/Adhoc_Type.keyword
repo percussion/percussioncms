@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>  <null id="1">
+    <choices>
+      <choice id="2">
+        <description>Ad Hoc Assignment Anonymous Access</description>
+        <label>Anonymous</label>
+        <sequence>3</sequence>
+        <value>2</value>
+      </choice>
+      <choice id="3">
+        <description>Ad Hoc Assignment Enabled</description>
+        <label>Enabled</label>
+        <sequence>2</sequence>
+        <value>1</value>
+      </choice>
+      <choice id="4">
+        <description>Ad Hoc Assignment Disabled</description>
+        <label>Disabled</label>
+        <sequence>1</sequence>
+        <value>0</value>
+      </choice>
+    </choices>
+    <guid>0-14-125</guid>
+    <description>Ad Hoc Assignment Lookups</description>
+    <id>125</id>
+    <keyword-type>1</keyword-type>
+    <label>Adhoc_Type</label>
+    <name>Adhoc_Type</name>
+    <sequence>1</sequence>
+    <type>KEYWORD_DEF</type>
+    <value>125</value>
+  </null>

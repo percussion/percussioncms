@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Workflow (CommunityId, WorkflowId )>
+<!ELEMENT WorkflowId (#PCDATA)>
+<!ELEMENT CommunityId (#PCDATA)>
+<!ELEMENT CloneCommunityWorkflows (Workflow* )>

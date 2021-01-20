@@ -1,0 +1,129 @@
+ ############################################################################
+ #
+ # COPYRIGHT (c) 1999 - 2005 by Percussion Software, Inc., Woburn, MA USA.
+ # All rights reserved. This material contains unpublished, copyrighted
+ # work including confidential and proprietary information of Percussion.
+ #
+ ############################################################################
+ 
+PACKAGE=com.percussion.extension
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+   PSExtensionDefFactoryTest \
+   PSExtensionHandlerConfigurationTest \
+   PSExtensionHandlerHandlerTest \
+   PSExtensionManagerTest \
+   PSExtensionRefTest \
+   PSJavaScriptTest \
+   PSJexlAnnotationsTest \
+   PSTestingExtension \
+   PSExtensionParamsTest \
+   PSValidateCharactersTest
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared/server) jar file for this package.
+#
+DEFAULT_CLASSES = \
+   IPSWorkflowAction \
+   IPSWorkFlowContext \
+   PSDefaultExtension \
+   IPSExtensionManager \
+   PSExtensionClassLoader \
+   PSExtensionHandlerConfiguration \
+   PSExtensionHandlerHandler \
+   PSExtensionManager \
+   PSJavaExtensionHandler \
+   PSJavaScriptExtensionHandler \
+   PSJavaScriptFunction \
+   PSJavaScriptUdfExtension \
+   PSModifyXmlHierarchyExtension \
+   PSSetCookieExtension \
+   PSSetEmptyXmlStyleSheetExtension \
+   PSExtensionParams \
+   PSValidateUniqueName \
+   PSValidateCharacters
+
+
+#
+# These will go in the shared/client jar file.
+#
+SHARED_CLASSES = \
+   IPSAssemblyLocation \
+   IPSExtension \
+   IPSExtensionDef \
+   IPSExtensionDefFactory \
+   IPSExtensionErrors \
+   IPSExtensionHandler \
+   IPSExtensionListener \
+   IPSExtensionParamDef \
+   IPSFieldEditabilityRule \
+   IPSFieldInputTransformer \
+   IPSFieldOutputTransformer \
+   IPSFieldValidator \
+   IPSFieldVisibilityRule \
+   IPSItemInputTransformer \
+   IPSItemOutputTransformer \
+   IPSItemValidator \
+   IPSJexlExpression \
+   IPSJexlMethod \
+   IPSJexlParam \
+   IPSRequestPreProcessor \
+   IPSResultDocumentProcessor \
+   IPSUdfProcessor \
+   PSDatabaseFunction \
+   PSDatabaseFunctionDef \
+   PSDatabaseFunctionDefParam \
+   PSDatabaseFunctionsColl \
+   PSDatabaseFunctionManager \
+   PSExtensionDef \
+   PSExtensionDefFactory \
+   PSExtensionException \
+   PSExtensionHandler \
+   PSExtensionMethod \
+   PSExtensionMethodParam \
+   PSExtensionProcessingException \
+   PSExtensionRef \
+   PSJavaScriptCallException \
+   PSJavaScriptCompileException \
+   PSParameterMismatchException \
+   PSSimpleJavaUdfExtension \
+   PSJexlUtilBase
+
+#
+# Properties files
+#
+PROPERTIES =
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)
+

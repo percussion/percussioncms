@@ -1,0 +1,184 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+.search {
+    font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	padding-top: 25px;
+	padding-bottom: 5px;
+	font-size:16px;
+}
+
+.styled-input {
+    height: 38px;
+    border: 1px solid #BDC6D7;
+    border-radius: 2px;
+    padding-left: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    text-align: left;
+    vertical-align: middle;
+    color: #576071;
+}
+
+input[type=radio].css-checkbox {
+  display:none;
+}
+
+input[type=radio].css-checkbox + label.css-labelradio {
+  padding-left:50px;
+  height:20px; 
+  display:inline-block;
+  font-weight: 400;
+  line-height:20px;
+  background-repeat:no-repeat;
+  background-position: 0 0;
+  font-family: 'Open Sans', sans-serif;
+  vertical-align:middle;
+  cursor:pointer;
+  padding-right: 15px;
+  font-weight: 400;
+}
+
+input[type=radio].css-checkbox:checked + label.css-labelradio {
+  background-position: 0 -20px;
+}
+label.css-labelradio {
+  background-image:url('../../components/perc-css/img/percussionRadioButtons.png');
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.search-filter-error {
+    font-family: 'Open Sans', sans-serif; 
+    font-weight: 600; 
+    font-size:16px; 
+	color: #EE5336; 
+	padding-left:50px;
+	padding-bottom: 10px;
+}
+
+.search-filter-title {
+    font-family: 'Open Sans', sans-serif; 
+    font-weight: 600; 
+    font-size: 16px; 
+    float: left;
+    width: 150px;
+    text-align: right;
+    padding-right:10px;
+    padding-left:5px;
+}
+
+.type-filter {
+	float:left;
+}
+
+.search-input {
+	float:left;
+	width:600px;
+}
+
+.advanced-toggle {
+	font-family: 'Open Sans', sans-serif;  
+    font-size: 16px; 
+}
+
+.search-filter {
+	width: 790px;
+	float:left;
+	padding-bottom:10px;
+}
+
+.advanced-toggle{
+	float: left;
+	color: #133c55;
+    font-family: 'Open Sans', sans-serif; 
+    font-weight: 400; 
+    font-size: 16px; 
+    padding-left: 150px;
+}
+
+.advanced-search-filters {
+	float:left;
+	width:790px;
+}
+
+.type-labelradio {
+	font-family: 'Open Sans', sans-serif; 
+    font-weight: 400; 
+    font-size: 16px; 
+	padding-right: 30px;
+}
+
+.expanded-type-filters{
+	width:790px;
+}
+
+.styled-select {
+    width: 120%;
+    overflow: hidden;
+    padding-right: 30px;
+    background: url('../../components/perc-css/img/downwardTriangle.png') no-repeat right ;
+    padding-left: 5px;
+    color: #17accc;
+    text-overflow: ellipsis;
+    background-position: 82% 60%, 0 0;
+    border: none;    
+    outline : medium none;
+    display: inline-flex;
+    height: 38px;
+    -webkit-appearance: none;
+    -moz-appearance:none;
+}
+.styled-select select {
+    background: transparent;
+    width: 268px;
+    border: 0;
+    border-radius: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1;
+    height: 38px;
+    -webkit-appearance: none;
+    -moz-appearance:none;
+
+}
+
+.search-select{
+	border: 1px solid #BDC6D7;
+    border-radius: 2px; 
+	width: 240px;
+	overflow: hidden;
+}
+
+select::-ms-expand {
+    display: none;
+}

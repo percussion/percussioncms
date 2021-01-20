@@ -1,0 +1,141 @@
+<workflow id="1">
+   <guid>0-23-12</guid>
+   <administrator-role>admin</administrator-role>
+   <description>description</description>
+   <initial-state-id>1</initial-state-id>
+   <label>name</label>
+   <name>name</name>
+   <notification-defs>
+      <notification-def id="2">
+         <guid>0-24-36</guid>
+         <body>body_1</body>
+         <subject>subject_1</subject>
+         <workflow-id>0</workflow-id>
+      </notification-def>
+   </notification-defs>
+   <roles>
+      <role id="3">
+         <guid>0-25-24</guid>
+         <name>role_1</name>
+         <workflow-id>0</workflow-id>
+      </role>
+   </roles>
+   <states>
+      <state id="11">
+         <guid>0-26-0</guid>
+         <aging-transitions>
+            <aging-transition id="4">
+               <guid>0-27-60</guid>
+               <interval>1</interval>
+               <label>label_1</label>
+               <name>label_1</name>
+               <notifications/>
+               <state-id>0</state-id>
+               <to-state>0</to-state>
+               <type>ABSOLUTE</type>
+               <workflow-id>0</workflow-id>
+            </aging-transition>
+            <aging-transition id="5">
+               <guid>0-27-60</guid>
+               <interval>1</interval>
+               <label>label_1</label>
+               <name>label_1</name>
+               <notifications/>
+               <state-id>0</state-id>
+               <to-state>0</to-state>
+               <type>ABSOLUTE</type>
+               <workflow-id>0</workflow-id>
+            </aging-transition>
+         </aging-transitions>
+         <assigned-roles>
+            <assigned-role id="6">
+               <guid>0-25-0</guid>
+               <adhoc-type>DISABLED</adhoc-type>
+               <assignment-type>NONE</assignment-type>
+               <do-notify>true</do-notify>
+               <show-in-inbox>true</show-in-inbox>
+               <state-id>0</state-id>
+               <workflow-id>0</workflow-id>
+            </assigned-role>
+         </assigned-roles>
+         <content-valid-value>n</content-valid-value>
+         <label>Draft</label>
+         <name>Draft</name>
+         <publishable>false</publishable>
+         <sort-order>10</sort-order>
+         <state-id>1</state-id>
+         <transitions>
+            <transition id="16">
+               <guid>0-27-72</guid>
+               <allow-all-roles>true</allow-all-roles>
+               <approvals>1</approvals>
+               <default-transition>false</default-transition>
+               <label>label_1</label>
+               <name>label_1</name>
+               <notifications>
+                  <notification id="8">
+                     <ccrecipients>
+                        <string>recipient_1</string>
+                        <string>recipient_2</string>
+                     </ccrecipients>
+                     <guid>0-24-48</guid>
+                     <recipients>
+                        <string>recipient_1</string>
+                        <string>recipient_2</string>
+                     </recipients>
+                     <state-role-recipient-type>TO_STATE_RECIPIENTS</state-role-recipient-type>
+                     <transition-id>0</transition-id>
+                     <workflow-id>0</workflow-id>
+                  </notification>
+                  <notification id="8">
+                     <guid>0-24-48</guid>
+                     <ccrecipients/>
+                     <recipients/>
+                     <state-role-recipient-type>TO_STATE_RECIPIENTS</state-role-recipient-type>
+                     <transition-id>0</transition-id>
+                     <workflow-id>0</workflow-id>
+                  </notification>
+               </notifications>
+               <requires-comment>OPTIONAL</requires-comment>
+               <state-id>0</state-id>
+               <to-state>0</to-state>
+               <transition-roles>
+                  <transition-role id="17">
+                     <guid>0-25-24</guid>
+                     <role-id>24</role-id>
+                     <transition-id>72</transition-id>
+                     <workflow-id>0</workflow-id>
+                  </transition-role>
+               </transition-roles>
+               <workflow-id>0</workflow-id>
+            </transition>
+            <transition id="16">
+               <guid>0-27-72</guid>
+               <allow-all-roles>true</allow-all-roles>
+               <approvals>1</approvals>
+               <default-transition>false</default-transition>
+               <label>label_1</label>
+               <name>label_1</name>
+               <notifications/>
+               <requires-comment>OPTIONAL</requires-comment>
+               <state-id>0</state-id>
+               <to-state>0</to-state>
+               <transition-roles/>
+               <workflow-id>0</workflow-id>
+            </transition>
+         </transitions>
+         <workflow-id>5</workflow-id>
+      </state>
+      <state id="11">
+         <guid>0-26-0</guid>
+         <aging-transitions/>
+         <assigned-roles/>
+         <content-valid-value>n</content-valid-value>
+         <label>state_1</label>
+         <name>state_1</name>
+         <publishable>false</publishable>
+         <sort-order>0</sort-order>
+         <transitions/>
+      </state>
+   </states>
+</workflow>

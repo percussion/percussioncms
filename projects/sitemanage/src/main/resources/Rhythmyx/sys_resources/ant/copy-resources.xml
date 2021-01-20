@@ -1,0 +1,141 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="copy-resources" default="all" basedir=".">
+	<taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+	<!-- Copy web_resources to our new site. -->
+	<target name="default">
+		<fail unless="perc.site.root" message="perc.site.root" />
+		<fail unless="perc.sys.dir" message="perc.sys.dir" />
+		<property name="perc.sys.web_resources" location="${perc.sys.dir}/web_resources" />
+        <property name="perc.sys.rxconfig" location="${perc.sys.dir}/rxconfig" />
+		<property name="perc.sys.rx_resources" location="${perc.sys.dir}/rx_resources" />
+		<property name="perc.sys.sys_resources" location="${perc.sys.dir}/sys_resources" />
+		<property name="perc.sys.sys_resources.web-inf" location="${perc.sys.sys_resources}/webapps/WEB-INF" />
+		<property name="perc.sys.sys_resources.root" location="${perc.sys.sys_resources}/webapps/ROOT" />
+		<property name="perc.site.web_resources" location="${perc.site.root}/web_resources" />
+		<property name="perc.site.rx_resources" location="${perc.site.root}/rx_resources" />
+        <property name="perc.site.web-inf" location="${perc.site.root}/WEB-INF" />
+        <property name="perc.site.error.default" value="/error.html" />
+        <property name="perc.ftp.all_resources" location="${perc.site.root}" />  
+
+        <!-- Error page properties -->
+        <!-- Notice the value attribute should be used not the location attr. -->
+        <property name="perc.site.error.400" value="${perc.site.error.default}" />
+        <property name="perc.site.error.401" value="${perc.site.error.default}" />
+        <property name="perc.site.error.402" value="${perc.site.error.default}" />
+        <property name="perc.site.error.403" value="${perc.site.error.default}" />
+        <property name="perc.site.error.404" value="${perc.site.error.default}" />
+        <property name="perc.site.error.414" value="${perc.site.error.default}" />
+        <property name="perc.site.error.415" value="${perc.site.error.default}" />
+        <!--  Severe Error pages. -->
+        <property name="perc.site.error.500" value="${perc.site.error.default}" />
+        <property name="perc.site.error.501" value="${perc.site.error.default}" />
+        <property name="perc.site.error.502" value="${perc.site.error.default}" />
+                
+		<mkdir dir="${perc.site.web_resources}"/>
+		<mkdir dir="${perc.site.web-inf}"/>
+        
+		<touch>
+			<fileset dir="${perc.sys.web_resources}" excludesfile="../../rx_resources/ant/excludes.txt">
+				<include name="**"/>
+			</fileset>
+		</touch>
+        
+		<copy todir="${perc.site.web_resources}" overwrite="true" force="true" failonerror="true">
+			<fileset dir="${perc.sys.web_resources}" excludesfile="../../rx_resources/ant/excludes.txt">
+				<include name="**"/>
+			</fileset>
+		</copy>		
+
+		<!-- Copy site configuration (only if the path is set) -->
+		<if>
+			<isset property="perc.site.config"/>
+			<then>
+		       		
+				<copy todir="${perc.site.web-inf}" overwrite="true" failonerror="true">
+		            <fileset dir="${perc.site.config}">
+		           		<exclude name="web.xml"/>
+		            </fileset>
+		        </copy>
+				
+		        <copy todir="${perc.site.web-inf}" overwrite="true" failonerror="true">
+		            <fileset dir="${perc.site.config}">
+		           		<include name="web.xml"/>
+		            </fileset>
+		            <!-- Expand the properties in the skeleton web.xml -->     
+		            <filterchain>
+		                <expandproperties />
+		            </filterchain>
+		        </copy>
+
+			</then>
+		</if>
+
+	</target>
+
+	<target name="publishingFTP" if="perc.publishingFtp.set" >
+		<property name="install.dir" location="${perc.sys.dir}" />
+		<taskdef name="ftp" classname="org.apache.tools.ant.taskdefs.optional.net.FTP">
+			<classpath>
+				<pathelement location="${install.dir}/sys_resources/ant/lib/ant-commons-net.jar"/>
+			</classpath>
+		</taskdef>
+		 <ftp server="${perc.ftp.serverAddress}"
+			 port="${perc.ftp.port}"
+           	   remotedir="${perc.ftp.remoteDir}" 
+               userid="${perc.ftp.username}"
+               password="${perc.ftp.password}"
+			   passive="yes"
+               skipFailedTransfers="true"
+               verbose="yes"
+               ignoreNoncriticalErrors="yes"
+               >
+               <fileset dir="${perc.ftp.all_resources}"  />
+           </ftp>
+    </target>
+	<!-- Publish web_resources to the secure FTP server. -->
+    <target name="publishingSecureFTP" if="perc.publishSecureFtp.set" >
+    	<if>
+    	 <isset property="perc.publishSecureFtp.private_key"/>
+    	 <then>
+        	<scp trust="true" sftp="true" todir="${perc.ftp.username}:@${perc.ftp.serverAddress}:${perc.ftp.remoteDir}" port="${perc.ftp.port}" keyfile="${perc.publishSecureFtp.private_key}" >
+                   <fileset dir="${perc.ftp.all_resources}">
+                      <include name="**"/>
+                   </fileset>
+            </scp>
+    	 </then>
+    	 <else>
+        	<scp trust="true" sftp="true" todir="${perc.ftp.username}:${perc.ftp.password}@${perc.ftp.serverAddress}:${perc.ftp.remoteDir}" port="${perc.ftp.port}" >
+                   <fileset dir="${perc.ftp.all_resources}">
+                      <include name="**"/>
+                   </fileset>
+            </scp>
+    	 </else>
+    	</if>
+    </target>
+	
+	<target name="all" depends="default, publishingFTP, publishingSecureFTP" />
+</project>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT leftframe (sys_contentid1, sys_contentid2, sys_revision1, sys_revision2, sys_variantid1, sys_variantid2, itemurl, contentstatusurl, loginuser, selectrevurl, dependenturl )>
+<!ELEMENT dependenturl (#PCDATA)>
+<!ELEMENT selectrevurl (#PCDATA)>
+<!ELEMENT loginuser (#PCDATA)>
+<!ELEMENT contentstatusurl (#PCDATA)>
+<!ELEMENT itemurl (#PCDATA)>
+<!ELEMENT sys_variantid2 (#PCDATA)>
+<!ELEMENT sys_variantid1 (#PCDATA)>
+<!ELEMENT sys_revision2 (#PCDATA)>
+<!ELEMENT sys_revision1 (#PCDATA)>
+<!ELEMENT sys_contentid2 (#PCDATA)>
+<!ELEMENT sys_contentid1 (#PCDATA)>
+<!ATTLIST  leftframe xml:lang CDATA #IMPLIED>

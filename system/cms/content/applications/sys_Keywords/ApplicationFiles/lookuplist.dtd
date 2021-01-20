@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT entry (#PCDATA)>
+<!ATTLIST  entry lookupdisplay CDATA #IMPLIED>
+<!ATTLIST  entry lookuptype CDATA #IMPLIED>
+<!ATTLIST  entry lookupid CDATA #IMPLIED>
+<!ATTLIST  entry lookupsequence CDATA #IMPLIED>
+<!ATTLIST  entry lookupvalue CDATA #IMPLIED>
+<!ELEMENT lookuplist (entry* )>
+<!ATTLIST  lookuplist categoryid CDATA #IMPLIED>

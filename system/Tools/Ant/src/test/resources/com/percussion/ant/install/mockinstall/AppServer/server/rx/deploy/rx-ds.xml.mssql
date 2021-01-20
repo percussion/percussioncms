@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datasources>
+   <local-tx-datasource>
+      <jndi-name>jdbc/RhythmyxData</jndi-name>
+      <connection-url>jdbc:jtds:sqlserver://</connection-url>
+      <driver-class>net.sourceforge.jtds.jdbc.Driver</driver-class>
+      <user-name></user-name>
+      <password></password>
+      <min-pool-size>5</min-pool-size>
+      <max-pool-size>100</max-pool-size>
+      <idle-timeout-minutes>15</idle-timeout-minutes>
+      <new-connection-sql>SELECT 1</new-connection-sql>
+      <check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+      <background-validation>true</background-validation>
+      <background-validation-millis>60000</background-validation-millis>
+      <validate-on-match>false</validate-on-match>
+      <maxReconnects>3</maxReconnects>
+      <initialTimeout>15</initialTimeout>
+      <autoReconnect>true</autoReconnect>
+      <failOverReadOnly>false</failOverReadOnly>
+      <metadata>
+         <type-mapping>MS SQLSERVER2000</type-mapping>
+      </metadata>
+   </local-tx-datasource>
+</datasources>

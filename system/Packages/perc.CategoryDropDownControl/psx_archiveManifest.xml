@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/perc.CategoryDropDownControl.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\SHWETA~1\AppData\Local\Temp\perc.CategoryDropDownControl.xsl</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\perc.CategoryDropDownControl.xsl\perc.CategoryDropDownControl.xsl</ArchiveFile>
+         <OriginalFile>stylesheets\controls\perc.CategoryDropDownControl.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/categoryDropDown/js/categoryDropdown.js">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\SHWETA~1\AppData\Local\Temp\categoryDropdown.js</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\categoryDropDown\js\categoryDropdown.js\categoryDropdown.js</ArchiveFile>
+         <OriginalFile>widgets\categoryDropDown\js\categoryDropdown.js</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Application-percCategoryDropDown">
+      <DBMSInfoList/>
+      <PSXDependencyFile fileType="APPLICATION_XML">
+         <RxFile>C:\Users\SHWETA~1\AppData\Local\Temp\percCategoryDropDown.application</RxFile>
+         <ArchiveFile>Application-percCategoryDropDown\percCategoryDropDown.application</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\SHWETA~1\AppData\Local\Temp\percCategoryDropDown(1).application</RxFile>
+         <ArchiveFile>Application-percCategoryDropDown\percCategoryDropDown(1).application</ArchiveFile>
+         <OriginalFile>category.pdt</OriginalFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="APPLICATION_FILE">
+         <RxFile>C:\Users\SHWETA~1\AppData\Local\Temp\percCategoryDropDown(2).application</RxFile>
+         <ArchiveFile>Application-percCategoryDropDown\percCategoryDropDown(2).application</ArchiveFile>
+         <OriginalFile>category.xml</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/widgets/categoryDropDown/css/CategoryDropdown.css">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\Users\SHWETA~1\AppData\Local\Temp\CategoryDropdown.css</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\widgets\categoryDropDown\css\CategoryDropdown.css\CategoryDropdown.css</ArchiveFile>
+         <OriginalFile>widgets\categoryDropDown\css\CategoryDropdown.css</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

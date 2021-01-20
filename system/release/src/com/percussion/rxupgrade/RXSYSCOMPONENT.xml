@@ -1,0 +1,422 @@
+   <!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<table name="RXSYSCOMPONENT">
+      <row>
+         <column name="COMPONENTID">61</column>
+         <column name="NAME">rcsearch</column>
+         <column name="DISPLAYNAME">Related Content Search</column>
+         <column name="DESCRIPTION">Related Content Search component</column>
+         <column name="URL">../sys_relatedSearch/relatedsearch.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">62</column>
+         <column name="NAME">cmp_pub_context</column>
+         <column name="DISPLAYNAME">Contexts</column>
+         <column name="DESCRIPTION">Publishing Contexts  Menu Category</column>
+         <column name="URL">../sys_cmpMenuViews/menuitem.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">63</column>
+         <column name="NAME">pub_contextbyname</column>
+         <column name="DISPLAYNAME">By Name</column>
+         <column name="DESCRIPTION">Contexts view sorted by name.</column>
+         <column name="URL">../sys_pubContexts/contextlist.html</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">64</column>
+         <column name="NAME">pub_contextbyid</column>
+         <column name="DISPLAYNAME">By ID</column>
+         <column name="DESCRIPTION">Contexts view sorted by id.</column>
+         <column name="URL">../sys_pubContexts/contextlist.html</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">65</column>
+         <column name="NAME">cmp_pub_variables</column>
+         <column name="DISPLAYNAME">Variables</column>
+         <column name="DESCRIPTION">Publishing Variables  Menu Category</column>
+         <column name="URL">../sys_cmpMenuViews/menuitem.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">66</column>
+         <column name="NAME">pub_variablesbyname</column>
+         <column name="DISPLAYNAME">By Name</column>
+         <column name="DESCRIPTION">Variables view sorted by name.</column>
+         <column name="URL">../sys_pubVariables/variableslist.html</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">67</column>
+         <column name="NAME">ca_savesearch</column>
+         <column name="DISPLAYNAME">Save Search</column>
+         <column name="DESCRIPTION">Save Search Button component.</column>
+         <column name="URL">../sys_cmpCaSaveSearch/casavesearch.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">68</column>
+         <column name="NAME">ca_savedsearches</column>
+         <column name="DISPLAYNAME">Saved Searches</column>
+         <column name="DESCRIPTION">Saved Seatches Button component.</column>
+         <column name="URL">../sys_cmpCaSavedSearches/savedsearches.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">69</column>
+         <column name="NAME">cmp_sys_components</column>
+         <column name="DISPLAYNAME">Components</column>
+         <column name="DESCRIPTION">System Components  Menu Category</column>
+         <column name="URL">../sys_cmpMenuViews/menuitem.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">70</column>
+         <column name="NAME">sys_compbyname</column>
+         <column name="DISPLAYNAME">By Name</column>
+         <column name="DESCRIPTION">Components view sorted by name.</column>
+         <column name="URL">../sys_cmpComponents/components.html</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">71</column>
+         <column name="NAME">sys_compbyid</column>
+         <column name="DISPLAYNAME">By ID</column>
+         <column name="DESCRIPTION">Components view sorted by id.</column>
+         <column name="URL">../sys_cmpComponents/components.html</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">72</column>
+         <column name="NAME">sys_cmpsearch</column>
+         <column name="DISPLAYNAME">Component Search Box</column>
+         <column name="DESCRIPTION">Component Search Box</column>
+         <column name="URL">../sys_cmpComponentSearchBox/searchcomponent.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">73</column>
+         <column name="NAME">ca_search</column>
+         <column name="DISPLAYNAME">Search View</column>
+         <column name="DESCRIPTION">Content Administrator Search View.</column>
+         <column name="URL">../sys_caContentSearch/search.html</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">74</column>
+         <column name="NAME">cmp_usercommunity</column>
+         <column name="DISPLAYNAME">User Community</column>
+         <column name="DESCRIPTION">User Community component.</column>
+         <column name="URL">../sys_cmpUserCommunity/usercommunity.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">75</column>
+         <column name="NAME">cmp_sys_communities</column>
+         <column name="DISPLAYNAME">Communities</column>
+         <column name="DESCRIPTION">System Communities  Menu Category</column>
+         <column name="URL">../sys_cmpMenuViews/menuitem.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">76</column>
+         <column name="NAME">sys_commbyname</column>
+         <column name="DISPLAYNAME">By Name</column>
+         <column name="DESCRIPTION">Communities view sorted by name.</column>
+         <column name="URL">../sys_cmpCommunities/communities.html</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">81</column>
+         <column name="NAME">ce_main</column>
+         <column name="DISPLAYNAME">Content Editor</column>
+         <column name="DESCRIPTION">A gneric dummy component for the Content Editor</column>
+         <column name="URL"/>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">82</column>
+         <column name="NAME">ce_userstatus</column>
+         <column name="DISPLAYNAME">User Status</column>
+         <column name="DESCRIPTION">User Status component for Content Editor</column>
+         <column name="URL"/>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">83</column>
+         <column name="NAME">ce_workflow</column>
+         <column name="DISPLAYNAME">Workflow</column>
+         <column name="DESCRIPTION">Workflow bar component in Content Editor</column>
+         <column name="URL"/>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">84</column>
+         <column name="NAME">ce_contentstatus</column>
+         <column name="DISPLAYNAME">Content Status</column>
+         <column name="DESCRIPTION">Status bar cimponent in Content Editor</column>
+         <column name="URL"/>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">85</column>
+         <column name="NAME">ce_history</column>
+         <column name="DISPLAYNAME">Workflow History</column>
+         <column name="DESCRIPTION">Workflow history bar component in Content Editor</column>
+         <column name="URL"/>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">86</column>
+         <column name="NAME">ce_banner</column>
+         <column name="DISPLAYNAME">Banner</column>
+         <column name="DESCRIPTION">Banner component in Content Editor</column>
+         <column name="URL"/>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">87</column>
+         <column name="NAME">ce_help</column>
+         <column name="DISPLAYNAME">Help Button</column>
+         <column name="DESCRIPTION">Help button component in Content Editor</column>
+         <column name="URL"/>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">88</column>
+         <column name="NAME">ce_relatedcontent</column>
+         <column name="DISPLAYNAME">Related Content</column>
+         <column name="DESCRIPTION">Related content component in Content Editor</column>
+         <column name="URL"/>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">89</column>
+         <column name="NAME">ce_variantlist</column>
+         <column name="DISPLAYNAME">Varinat Link List</column>
+         <column name="DESCRIPTION">Variant list barcomponent in Content Editor</column>
+         <column name="URL"/>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">90</column>
+         <column name="NAME">cmp_ca_sites</column>
+         <column name="DISPLAYNAME">Sites</column>
+         <column name="DESCRIPTION">Sites category</column>
+         <column name="URL">../sys_cmpMenuViews/menuitem.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">91</column>
+         <column name="NAME">ca_sites</column>
+         <column name="DISPLAYNAME">By Name</column>
+         <column name="DESCRIPTION">List of allowed sites. </column>
+         <column name="URL">../sys_caSites/casites.html</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">100</column>
+         <column name="NAME">cmp_ca_communitycontentmenu</column>
+         <column name="DISPLAYNAME">Community Content</column>
+         <column name="DESCRIPTION">Community Content Menu component for the Content Administrator.</column>
+         <column name="URL">../sys_cmpMenuViews/menuitem.html</column>
+         <column name="TYPE">1</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">101</column>
+         <column name="NAME">ca_communitycontentbytype</column>
+         <column name="DISPLAYNAME">By Type</column>
+         <column name="DESCRIPTION">Community Content page for the Content Administrator; content filtered by login community and sorted by type, then by title.</column>
+         <column name="URL">../sys_caCommunityViews/camain.html?sys_sortparam=title</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">102</column>
+         <column name="NAME">ca_communitycontentbystatus</column>
+         <column name="DISPLAYNAME">By Status</column>
+         <column name="DESCRIPTION">Community Content page for the Content Administrator; content filtered by login community and sorted by status, then by title.</column>
+         <column name="URL">../sys_caCommunityViews/camain.html?sys_sortparam=title</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">103</column>
+         <column name="NAME">ca_communitycontentbyauthor</column>
+         <column name="DISPLAYNAME">By Author</column>
+         <column name="DESCRIPTION">Community Content page for the Content Administrator; content filtered by login community and sorted by author, then by title.</column>
+         <column name="URL">../sys_caCommunityViews/camain.html?sys_sortparam=title</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">104</column>
+         <column name="NAME">ca_communitycontentbypublic</column>
+         <column name="DISPLAYNAME">By Public</column>
+         <column name="DESCRIPTION">Community Content page for the Content Administrator; public content filtered by login community and sorted by  title.</column>
+         <column name="URL">../sys_caCommunityViews/camain.html?sys_sortparam=title</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">111</column>
+         <column name="NAME">ca_communitycontentbytype_moddate</column>
+         <column name="DISPLAYNAME">By Type</column>
+         <column name="DESCRIPTION">Community Content page for the Content Administrator; content filtered by login community and sorted by type, then by modified date.</column>
+         <column name="URL">../sys_caCommunityViews/camain.html?sys_sortparam=moddate</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">112</column>
+         <column name="NAME">ca_communitycontentbystatus_moddate</column>
+         <column name="DISPLAYNAME">By Status</column>
+         <column name="DESCRIPTION">Community Content page for the Content Administrator; content filtered by login community and sorted by status, then by modified date.</column>
+         <column name="URL">../sys_caCommunityViews/camain.html?sys_sortparam=moddate</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">113</column>
+         <column name="NAME">ca_communitycontentbyauthor_moddate</column>
+         <column name="DISPLAYNAME">By Author</column>
+         <column name="DESCRIPTION">Community Content page for the Content Administrator; content filtered by login community and sorted by author, then by modified date.</column>
+         <column name="URL">../sys_caCommunityViews/camain.html?sys_sortparam=moddate</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+      <row>
+         <column name="COMPONENTID">114</column>
+         <column name="NAME">ca_communitycontentbypublic_moddate</column>
+         <column name="DISPLAYNAME">By Public</column>
+         <column name="DESCRIPTION">Community Content page for the Content Administrator; public content filtered by login community and sorted by  modified date.</column>
+         <column name="URL">../sys_caCommunityViews/camain.html?sys_sortparam=moddate</column>
+         <column name="TYPE">2</column>
+         <column name="STATE"/>
+      </row>
+  <row>
+    <column name="COMPONENTID">115</column>
+    <column name="NAME">ca_inbox_recent</column>
+    <column name="DISPLAYNAME">Recent</column>
+    <column name="DESCRIPTION">My Content recently modified content for the Content Administrator; sorted by modified date desecending order, only shows content modified within the last two days.</column>
+    <column name="URL">../sys_ca/camain.html?sys_sortparam=moddate</column>
+    <column name="TYPE">2</column>
+    <column name="STATE"/>
+  </row>
+  <row>
+    <column name="COMPONENTID">116</column>
+    <column name="NAME">ca_inbox_recent_title</column>
+    <column name="DISPLAYNAME">Recent</column>
+    <column name="DESCRIPTION">My Content recently modified content for the Content Administrator; sorted by title then by modified date desecending order, only shows content modified within the last two days.</column>
+    <column name="URL">../sys_ca/camain.html?sys_sortparam=title</column>
+    <column name="TYPE">2</column>
+    <column name="STATE"/>
+  </row>
+  <row>
+    <column name="COMPONENTID">117</column>
+    <column name="NAME">ca_all_recent</column>
+    <column name="DISPLAYNAME">Recent</column>
+    <column name="DESCRIPTION">All recently modified content for the Content Administrator; sorted by modified date desecending order, only shows content modified within the last two days.</column>
+    <column name="URL">../sys_ca/camain.html?sys_sortparam=moddate</column>
+    <column name="TYPE">2</column>
+    <column name="STATE"/>
+  </row>
+  <row>
+    <column name="COMPONENTID">118</column>
+    <column name="NAME">ca_all_recent_title</column>
+    <column name="DISPLAYNAME">Recent</column>
+    <column name="DESCRIPTION">All recently modified content for the Content Administrator; sorted by title then by modified date desecending order, only shows content modified within the last two days.</column>
+    <column name="URL">../sys_ca/camain.html?sys_sortparam=title</column>
+    <column name="TYPE">2</column>
+    <column name="STATE"/>
+  </row>
+  <row>
+    <column name="COMPONENTID">119</column>
+    <column name="NAME">ca_inbox_session</column>
+    <column name="DISPLAYNAME">Session</column>
+    <column name="DESCRIPTION">My Content session modified content for the Content Administrator; sorted by modified date desecending order, only shows content modified within the current session.</column>
+    <column name="URL">../sys_ca/camain.html?sys_sortparam=moddate</column>
+    <column name="TYPE">2</column>
+    <column name="STATE"/>
+  </row>
+  <row>
+    <column name="COMPONENTID">120</column>
+    <column name="NAME">ca_communitycontent_recent</column>
+    <column name="DISPLAYNAME">Recent</column>
+    <column name="DESCRIPTION">Community content recently modified content for the Content Administrator; sorted by modified date desecending order, only shows content modified within the last two days.</column>
+    <column name="URL">../sys_caCommunityViews/camain.html?sys_sortparam=moddate</column>
+    <column name="TYPE">2</column>
+    <column name="STATE"/>
+  </row>
+  <row>
+    <column name="COMPONENTID">121</column>
+    <column name="NAME">ca_communitycontent_recent_title</column>
+    <column name="DISPLAYNAME">Recent</column>
+    <column name="DESCRIPTION">Community content recently modified content for the Content Administrator; sorted by title then by modified date desecending order, only shows content modified within the last two days.</column>
+    <column name="URL">../sys_caCommunityViews/camain.html?sys_param=title</column>
+    <column name="TYPE">2</column>
+    <column name="STATE"/>
+  </row>
+  <row>
+    <column name="COMPONENTID">122</column>
+    <column name="NAME">ca_inbox_session_title</column>
+    <column name="DISPLAYNAME">Session</column>
+    <column name="DESCRIPTION">My Content session modified content for the Content Administrator; sorted by title then by modified date desecending order, only shows content modified within the current session.</column>
+    <column name="URL">../sys_ca/camain.html?sys_sortparam=title</column>
+    <column name="TYPE">2</column>
+    <column name="STATE"/>
+  </row>
+   </table>

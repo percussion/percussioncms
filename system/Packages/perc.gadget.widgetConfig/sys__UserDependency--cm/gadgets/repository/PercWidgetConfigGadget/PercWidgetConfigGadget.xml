@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<Module>
+    <ModulePrefs title="Widget Configuration" category="content,search" description="Widget configuration gadget" thumbnail="images/gadgetIconWidgetConfig.png" height="450"  adminOnly="true">
+        <Require feature="perc_core"/>
+        <Require feature="settitle" />
+        <Require feature="perc_getDashboardColumn" />
+        <Require feature="minimessage" />
+        <Require feature="perc_jquery_ui"/>
+    </ModulePrefs>
+    <Content type="html">
+        <![CDATA[
+
+    <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
+    <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+    <style>
+        body{
+            overflow-y:auto;
+        }
+        .perc-widget-config-table{
+            width:100%;
+        }
+        .perc-widget-config-table td span{
+            font-size: 11px;
+            font-weight: normal;
+            color: #6C717C;
+            padding-left: 0px;
+            padding-right: 20px;
+            padding-top: 10px;
+            padding-bottom: 6px;
+            vertical-align: top;
+            width:33%;
+        }
+        .perc-widget-config-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #6C717C;
+            padding-left: 0px;
+            padding-right: 20px;
+            padding-top: 10px;
+            padding-bottom: 6px;
+        }
+
+        .perc-widget-config-first {
+            font-weight: normal;
+        }
+        .perc-widget-entry {
+            margin-bottom:5px;
+        }
+        .perc-widget-chkbox {
+            vertical-align:sub;
+            margin-right:8px;
+        }
+        body * {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+    <script >
+        var loadingMsg = null;
+        var miniMsg = null;
+        $(document).ready(function() {
+            miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
+            loadingMsg = miniMsg.createStaticMessage("Loading...");
+            var widgetArray = [];
+            var disabledWidgets = [];
+            var serviceUtils = percJQuery.PercServiceUtils;
+            var percUtils = percJQuery.perc_utils;
+            var mdService         = percJQuery.PercMetadataService;
+            serviceUtils.makeJsonRequest(percJQuery.perc_paths.WIDGETS_ALL + "/type/all", "GET", false, function(status, results){
+                if(status != serviceUtils.STATUS_SUCCESS || !results.data){
+
+                    return;
+                }
+                widgetArray = results.data.WidgetSummary;
+                getDisabledWidgetInfo();
+            });
+            function getDisabledWidgetInfo(){
+                mdService.find("percwidgetconfiguration", function(status, data){
+                    if(status == serviceUtils.STATUS_ERROR){
+
+                        return;
+                    }
+                    disabledWidgets = data?data.metadata.data:[];
+                    disabledWidgets = $.parseJSON(disabledWidgets);
+                    renderWidgets();
+                });
+            }
+            function renderWidgets(){
+                var percWidgets = [];
+                var custWidgets = [];
+                for (i=0;i<widgetArray.length;i++ )
+                {
+                    var wdgSum = widgetArray[i];
+                    wdgSum.type == "Percussion"?percWidgets.push(wdgSum):custWidgets.push(wdgSum);
+                }
+                renderRows(percWidgets, disabledWidgets, "perc-widget-config-table-perc");
+                renderRows(custWidgets, disabledWidgets, "perc-widget-config-table-cust");
+                miniMsg.dismissMessage(loadingMsg);
+                $("input.perc-widget-chkbox").click(function(){
+
+                });
+            }
+
+        });
+        function renderRows(widgetsList, disabledWidgets, tableId){
+            var wgtHtmlTpl = "<div class=\"perc-widget-entry\"><input class=\"perc-widget-chkbox\" type=\"checkbox\" name=\"@@ID@@\" @@CHECKED@@/><span title=\"@@TOOLTIP@@\">@@LABEL@@</span></div>" ;
+            var col1Html = "",col2Html = "",col3Html = "";
+            for (i=1;i<=widgetsList.length;i++ )
+            {
+                var wdgSum = widgetsList[i-1];
+                var checkedAttr = " checked=\"checked\" ";
+                if($.inArray(wdgSum.id, disabledWidgets) != -1)
+                    checkedAttr = "";
+                var toolTip = wdgSum.description;
+                if(wdgSum.name)
+                    toolTip += " (" + wdgSum.name + ")";
+                var wdgHtml = wgtHtmlTpl.replace(/@@ID@@/g, wdgSum.id).replace(/@@LABEL@@/g,wdgSum.label).replace(/@@CHECKED@@/g,checkedAttr).replace(/@@TOOLTIP@@/g,toolTip);
+                if(i%3 == 1)
+                    col1Html += wdgHtml;
+                else if(i%3 == 2)
+                    col2Html += wdgHtml;
+                else
+                    col3Html += wdgHtml;
+            }
+            $("#" + tableId + " .perc-widget-config-col1").append(col1Html);
+            $("#" + tableId + " .perc-widget-config-col2").append(col2Html);
+            $("#" + tableId + " .perc-widget-config-col3").append(col3Html);
+            $(".perc-widget-chkbox").unbind().click(function(){
+                percJQuery.PercBlockUI(percJQuery.PercBlockUIMode.CURSORONLY);
+                var values = $('input:checkbox:not(:checked).perc-widget-chkbox').map(function () {
+                  return this.name;
+                }).get();
+                percJQuery.PercMetadataService.save("percwidgetconfiguration", values, function(status, data){
+                    percJQuery.unblockUI();
+                    if(status == percJQuery.PercServiceUtils.STATUS_ERROR){
+                        return;
+                    }
+
+                });
+            });
+        }
+        function _expandNotify(){
+            self.location.reload();
+        }
+    </script>
+    <div id="perc-widget-config-container">
+        <div class="perc-widget-config-label perc-widget-config-first">Uncheck widgets in the list below to prevent them from being added to pages or templates. Existing pages or templates using these widgets will not be affected.:</div>
+        <div class="perc-widget-config-label">Percussion widgets:</div>
+        <table id="perc-widget-config-table-perc" class="perc-widget-config-table">
+            <tr>
+                <td class="perc-widget-config-col1"></td>
+                <td class="perc-widget-config-col2"></td>
+                <td class="perc-widget-config-col3"></td>
+            </tr>
+        </table>
+        <div class="perc-widget-config-label">Custom widgets:</div>
+        <table id="perc-widget-config-table-cust" class="perc-widget-config-table">
+            <tr>
+                <td class="perc-widget-config-col1"></td>
+                <td class="perc-widget-config-col2"></td>
+                <td class="perc-widget-config-col3"></td>
+            </tr>
+        </table>
+    </div>
+     ]]>
+    </Content>
+</Module>

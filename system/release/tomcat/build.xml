@@ -1,0 +1,69 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<project name="TomcatTestInstall" default="deploy">
+
+<property name="deploy.dir" value="c:/tomcat-4.1.27/" />
+<property name="port.server" value="9985"/>
+<property name="port.http" value="9980"/>
+<property name="port.ssl" value="9943"/>
+
+<target name="init">
+	<tstamp/>
+</target>
+
+<target name="jar">
+	<jar destfile="tomcat.jar">
+		<fileset dir=".">
+			<include name="conf/**/*.*" />
+			<include name="Tomcat*/**/*.*" />
+		</fileset>
+	</jar>
+</target>
+
+<target name="deploy" depends="init">
+	<!-- quietly remove current contents of deployment directory -->
+	<delete dir="${deploy.dir}" quiet="true" />
+	<!-- copy server.xml and filter values -->
+	<filter token="CATALINA_SERVER_PORT" value="${port.server}"/>
+	<filter token="CATALINA_HTTP_PORT" value="${port.http}"/>
+	<filter token="CATALINA_SSL_PORT" value="${port.ssl}"/>
+	<copy todir="${deploy.dir}/conf/" filtering="true">
+		<fileset dir="conf" includes="**/*.*"/>
+	</copy>	
+	<!-- copy pieces into place -->
+	<copy todir="${deploy.dir}">
+		<fileset dir="." includes="bin/**/*.*" />
+		<fileset dir="." includes="common/**/*.*" />
+		<fileset dir="." includes="logs/**/*.*" />
+		<fileset dir="." includes="server/**/*.*" />
+		<fileset dir="." includes="shared/**/*.*" />
+		<fileset dir="." includes="temp/**/*.*" />
+		<fileset dir="." includes="webapps/**/*.*" />
+		<fileset dir="." includes="*.txt"/>
+		<fileset dir="." includes="LICENSE"/>
+	</copy>
+</target>
+
+</project>

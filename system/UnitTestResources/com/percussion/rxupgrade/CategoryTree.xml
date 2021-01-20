@@ -1,0 +1,16 @@
+<Tree label="Categories">
+    <Node id="sampleheading1" label="Sample Heading1">
+        <Node id="samplecategorya" label="Sample Category A1" selectable="yes" /> 
+        <Node id="samplecategoryb" label="Sample Category B1" selectable="yes" /> 
+            
+    </Node>
+  
+ <Node id="sampleheading2" label="Sample Heading 2" selectable="no">
+      <Node id="samplecategoryc" label="Sample Category C" selectable="yes" /> 
+      <Node id="samplecategoryd" label="Sample Category D" selectable="yes"> 
+        <Node id="samplesubcategory1" label="Sample Sub Category 1" selectable="yes" /> 
+        <Node id="samplesubcategory2" label="Sample Sub Category 2" selectable="yes" /> 
+      </Node>
+  </Node>
+
+</Tree>

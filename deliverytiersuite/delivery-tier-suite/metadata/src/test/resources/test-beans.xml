@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+   
+   <context:annotation-config/>
+   
+   <bean id="propertyPlaceholderProps"
+         class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
+      <property name="ignoreResourceNotFound" value="true" />
+      <property name="autoSecure" value="true" />
+      <property name="securedProperties">
+         <list>
+            <value>cacheMgr.password</value>
+            <value>db.password</value>
+         </list>
+      </property>
+
+      <property name="locations">
+         <!--
+            One or more locations of the property files. Properties with
+            the same name override based on the order the file appears in the list last
+            one defined wins
+         -->
+         <list>
+            <value>file:perc-encryption.properties</value>
+            <value>file:perc-datasources.properties</value>
+            <value>file:cacheManage.properties</value>
+            <value>file:perc-metadata-services.properties</value>
+         </list>
+      </property>
+      <!--
+         Local properties to default to if no file exists or the properties 
+         do not exist in the file DO NOT USE THESE FOR PRODUCTION, put them in the 
+         properties file where the password will be encrypted
+      -->
+      <property name="properties">
+         <props>
+            <!-- Global and database-agnostic Hibernate properties -->
+            <prop key="datasource">percDataSource</prop>
+            <prop key="hibernateProperties">percHibernateProperties</prop>
+            <prop key="hibernate.cache.use_second_level_cache">false</prop>
+            <prop key="hibernate.cache.use_query_cache">true</prop>
+            <prop key="hibernate.connection.autocommit">true</prop>
+
+		    <!-- Apache Derby -->
+	        <prop key="jdbcUrl">jdbc:derby:memory:percmetadata;create=true</prop>
+	        <prop key="jdbcDriver">org.apache.derby.jdbc.EmbeddedDriver</prop>
+	        <prop key="db.username">test</prop>
+	        <prop key="db.password">test</prop>
+	        <prop key="db.schema">APP</prop>
+	        <prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
+	        <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
+			
+            <!-- MySQL -->
+<!-- 	        <prop key="jdbcUrl">jdbc:mysql://localhost:3306/deliverydb</prop> -->
+<!-- 	        <prop key="jdbcDriver">com.mysql.jdbc.Driver</prop> -->
+<!-- 	        <prop key="db.username">perc</prop> -->
+<!--             <prop key="db.password">perc</prop> -->
+<!-- 	        <prop key="db.schema"></prop> -->
+<!-- 	        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop> -->
+<!-- 	        <prop key="hibernate.query.substitutions"></prop> -->
+         
+            <!-- Oracle -->
+<!--             <prop key="jdbcUrl">jdbc:oracle:thin:@localhost:1521:XE</prop> -->
+<!--             <prop key="jdbcDriver">oracle.jdbc.driver.OracleDriver</prop> -->
+<!--             <prop key="db.username">PERC</prop> -->
+<!--             <prop key="db.password">perc</prop> -->
+<!--             <prop key="db.schema">PERC</prop> -->
+<!--             <prop key="hibernate.dialect">org.hibernate.dialect.Oracle9iDialect</prop> -->
+<!--             <prop key="hibernate.query.substitutions"></prop> -->
+         
+		    <!-- MS SQL Server -->
+<!-- 	        <prop key="jdbcUrl">jdbc:jtds:sqlserver://localhost/deliverydb</prop> -->
+<!-- 	        <prop key="jdbcDriver">net.sourceforge.jtds.jdbc.Driver</prop> -->
+<!-- 	        <prop key="db.username">sa</prop> -->
+<!-- 	        <prop key="db.password">demo</prop> -->
+<!-- 	        <prop key="db.schema">dbo</prop> -->
+<!-- 	        <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop> -->
+<!-- 	        <prop key="hibernate.query.substitutions"></prop> -->
+         
+		    <!-- default properties for caching manager -->
+            <prop key="cacheMgr.cacheManagerHost">https://localhost:8443</prop>
+            <prop key="cacheMgr.username">ps_manager</prop>
+            <prop key="cacheMgr.password">newpassword</prop>
+            <prop key="cacheMgr.cacheRegion">www.configure.me.com</prop>
+            <prop key="cacheMgr.interRequestWait">5</prop>
+            <prop key="cacheMgr.maxWait">360</prop>
+            <!--  Limit for metadata queries DDOS protection -->
+            <prop key="query.limit">1000</prop>
+
+             <!-- default properties for encryption -->
+             <prop key="encryption.type">ENC</prop>
+             <!-- default properties for Spring Security -->
+             <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
+
+            <!--  Blog post visit scheduler properties -->
+            <!--  setting to 1 second so it runs during test. PSMostReadServiceTest sets
+            a sleep of 2 seconds which is 1 second behind save interval. -->
+            <prop key="blogpost.scheduler.interval">1</prop>
+         
+         </props>
+      </property>
+   </bean>
+   
+   <bean id="propertyConfigurer"
+         class="com.percussion.delivery.utils.spring.PSPropertyPlaceholderConfigurer">
+      <property name="properties" ref="propertyPlaceholderProps" />
+   </bean>
+
+   <import resource="perc-datasources.xml" />
+   <import resource="perc-metadata-services.xml" />
+
+   <!-- <context:component-scan base-package="com.percussion.delivery.metadata.impl" /> -->
+
+   <!-- Hibernate SessionFactory -->
+   <bean id="metadataSessionFactory"
+         class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+      <property name="dataSource">
+         <ref bean="${datasource}" />
+      </property>
+      <property name="hibernateProperties">
+         <ref bean="${hibernateProperties}" />
+      </property>
+      <property name="configLocation">
+         <value>hibernate.cfg.xml</value>
+      </property>
+   </bean>
+
+   <tx:annotation-driven transaction-manager="txManager"/>
+
+   <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+      <property name="sessionFactory" ref="metadataSessionFactory" />
+      <property name="nestedTransactionAllowed" value="true" />
+   </bean>
+
+   <bean id="visitsDao" class="com.percussion.delivery.metadata.rdbms.impl.PSBlogPostVisitDao">
+      <property name="sessionFactory">
+         <ref bean="metadataSessionFactory" />
+      </property>
+   </bean>
+   
+   <bean id="consentDao" class="com.percussion.delivery.metadata.rdbms.impl.PSCookieConsentDao">
+      <property name="sessionFactory">
+         <ref bean="metadataSessionFactory" />
+      </property>
+   </bean> 
+
+   <bean id="visitService" class="com.percussion.delivery.metadata.impl.PSBlogPostVisitService"
+         autowire="constructor">
+         <constructor-arg type="Integer" value="${blogpost.scheduler.interval}" index="2" />
+   </bean>
+   
+   <bean id="cookieConsentService" class="com.percussion.delivery.metadata.impl.PSCookieConsentService"
+         autowire="constructor">
+   </bean>
+
+   <!-- Define Metadata Indexer Service bean -->
+   <bean id="MetadataIndexerService" class="com.percussion.delivery.metadata.impl.PSMetadataIndexerService" autowire="constructor">      
+   </bean>
+ 
+   <bean id="metadataDao" class="com.percussion.delivery.metadata.rdbms.impl.PSMetadataDao">
+      <property name="sessionFactory">
+         <ref bean="metadataSessionFactory" />
+      </property>
+   </bean> 
+   
+   <!-- Define MetadataQueryServicee Metadata Indexer Service bean -->
+   
+   <bean id="metadataQueryService" class="com.percussion.delivery.metadata.rdbms.impl.PSMetadataQueryService"
+         autowire="constructor">
+         <constructor-arg type="Integer" value="1000" index="1" />
+      <property name="sessionFactory">
+         <ref bean="metadataSessionFactory" />
+      </property>   
+   </bean>
+  
+ 
+   <bean id="metadataRestService" class="com.percussion.delivery.metadata.impl.PSMetadataRestService"
+      autowire="constructor">
+   </bean>
+
+  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
+   	<constructor-arg index="0"><null/></constructor-arg>
+   	<constructor-arg index="1"><null/></constructor-arg>
+   </bean>
+
+</beans>

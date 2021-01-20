@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Melissa Morin (Percussion Software) -->
+<xs:schema targetNamespace="urn:www.percussion.com/webservices/standarditem" xmlns="urn:www.percussion.com/webservices/standarditem" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>A content item in the Rhythmyx CMS system is composed of a 
+set of fields grouped in the main fieldset, including 0 or more 
+complex child fieldsets.The fields from the main and all complex 
+children make up the content of the item. Each field in the item 
+has a unique name. Each item in the system has a unique 
+identifier composed of the sys_contentid and sys_revision pair.
+The item also has references to other items in the system 
+called 'related content'.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="Item">
+		<xs:annotation>
+			<xs:documentation>This element contains some to all of the data associated with 
+an item including content and related items. On a query from the 
+server, different parts of the document may not be present depending 
+on what was requested. On an update request, fields that are not 
+included are skipped.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ContentKey"/>
+				<xs:element ref="Field" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Child" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>The set of fields associated with a particular complex child.
+The order of the fields is irrelevant.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ChildEntry" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>This element contains a group of fields that form an instance 
+type of the enclosing element. </xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Field" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+									<xs:attribute name="childRowId" type="xs:positiveInteger">
+										<xs:annotation>
+											<xs:documentation>This is a unique identifier for this complex child content.
+If not supplied, a new child entry will be created.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="action">
+										<xs:annotation>
+											<xs:documentation>What action do you want the server to take? If not specified, the 
+action is determined by the childRowId attribute. If the childRowId is 
+provided, the entry is updated, otherwise it is inserted. If the value is 
+delete, the child elements are ignored and the entry is removed from 
+the database. If the value is ambiguous (e.g. a childRowId is supplied but 
+this value is set to insert), an error will be generated for this entry. This 
+will be set by the server to 'ignore' when requesting an existing entry.</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="ignore"/>
+												<xs:enumeration value="insert"/>
+												<xs:enumeration value="update"/>
+												<xs:enumeration value="delete"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="displayName" type="xs:string"/>
+						<xs:attribute name="sequenced" type="xs:boolean">
+							<xs:annotation>
+								<xs:documentation>A hint to the client. If true, then the order of the child nodes is 
+relevant. Not used for submission (it will be ignored if provided).
+If the definition specifies sequenced, then the sequence of the
+nodes is assumed to be the desired sequence.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RelatedItems" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This is a container for other items that are referenced by this one. 
+Each supplied related item can either add a relationship, optionally 
+inserting a new item, remove a relationship or reorder the relationships. 
+If a related item is supplied with the content for a new item, the server 
+will perform a lookup using the related item's KeyFields. If it finds a 
+match, the contentid of that item will be used. If a match isn't found, a 
+new item will be created and it's content id will be assigned to this item. 
+If multiple matches are found, an error occurs.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RelatedItem" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>A related item is another piece of content in the CMS that is 
+used by this item in some way. A related item can be included 
+in 2 different ways. First, it could be included by providing the 
+content id of the related item. Second, it could be included by 
+providing a new item. Initially, the Item child will not support 
+RelatedItems, they will be ignored. For compatibility, nested 
+relationships should not be submitted. Also, the sys_revision 
+attribute of the related Item is not supported and will be ignored. 
+For future compatibility, it should not be included. The KeyFields 
+element is used to determine if a supplied  item has already been 
+inserted into the CMS system. The fields defined in this child should 
+form a unique key for the content being inserted. The sequencing 
+of relationships will match the order in which they are supplied. If 
+any existing relations are not supplied, they will be ordered in their 
+current order ahead of all new relationships. See the description
+for RelatedItems for more info.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Item"/>
+										<xs:element name="Property" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>This is the list of system/user properties associated with the related item. For tranlations this includes, markPublic and publicState. For related content, it would include slotId and variantId.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="name" type="xs:string"/>
+														<xs:attribute name="type">
+															<xs:simpleType>
+																<xs:annotation>
+																	<xs:documentation>These are the different types that can be set on the properties of the relationship values.</xs:documentation>
+																</xs:annotation>
+																<xs:restriction base="xs:string">
+																	<xs:enumeration value="string"/>
+																	<xs:enumeration value="date"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:attribute>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="KeyFields" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>The set of fields that form a unique key for the supplied item, 
+with corresponding values.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="SearchField" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:string">
+																	<xs:attribute name="name" type="xs:string" use="required"/>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="relatedType" type="xs:string" use="required">
+                                                                        <xs:annotation>
+                                                                           <xs:documentation>The relationship type used to relate the item. Must be a relationship type of category 'Active Assembly'.</xs:documentation>
+                                                                        </xs:annotation>
+                                                                        </xs:attribute>
+									<xs:attribute name="id" type="xs:string"/>
+									<xs:attribute name="action">
+										<xs:annotation>
+											<xs:documentation>What action do you want the server to take with this relationship? 
+
+Several possibilities exist: 
+  1. sys_contentid is provided with the child Item: 
+    a. action is 'delete' - The relationship is removed from this item 
+    b. action is 'ignore' - The relationship remains, but its order may be changed.      
+    c. action is not present - Same as ignore. 
+    d. action is anything else - An 'Invalid action' error will be 
+        indicated for this action. 
+
+  2. A new Item w/ no contentid is provided: 
+    a. action is not present - A lookup is performed using the supplied 
+        KeyFields. Either the item is inserted or the existing item id is used. 
+        It is an error if no KeyFields are supplied, or multiple items are found. 
+    b. action is 'insertOnly' - Same is not present. 
+    c. action is 'modify' - Same as not present 
+    d. action is 'ignore' - The entry is skipped. 
+    e. action is anything else - An 'Invalid action' error will be 
+        indicated for this action.
+</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:documentation>These are the actions that can be specified on a particular entry. 
+If no action is specified, the data is either inserted or updated 
+depending on whether the key for the entry has been provided or 
+not. If 'ignore' is specified, the server will skip the entry associated 
+with the element. If 'delete' is specified, the server will remove the 
+element from this item.</xs:documentation>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="ignore"/>
+												<xs:enumeration value="insert"/>
+												<xs:enumeration value="update"/>
+												<xs:enumeration value="delete"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="contentType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The unique identifier for the content type that describes this item.
+During a submission, either sys_contentid/sys_revision or this
+value must be supplied. If all are supplied, this attribute is ignored. This can either be the name of the content type or the internal id.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="requestedRevision" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>The revision id requested on an edit.  This is so if I request an old version for editing and I lock it, the sys_revision attribute will identify the new edit revision, so this attribute will identify what I asked for.  Ignored on update.
+</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="currentRevision" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>The current revision of the item supplied when editing.  Ignored on update.
+</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="editRevision" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>The edit (or tip) revision of the item supplied when editing.  Ignored on update.
+</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="revisionCount" type="xs:positiveInteger"/>
+			<xs:attribute name="revisionLock" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>If this item has been to a public state this flag will be true, meaning any update will automatically create a new revision.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="systemLocale" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This is the locale of the calling application.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="dataLocale" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The locale of this item.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="checkedOutBy" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ContentKey">
+		<xs:complexType>
+			<xs:attribute name="contentId" type="xs:integer"/>
+			<xs:attribute name="revision" type="xs:integer"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Field">
+		<xs:annotation>
+			<xs:documentation>A list of fields. The order of the fields is irrelevant.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="FieldMeta"/>
+				<xs:element ref="FieldValue" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FieldMeta">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ValueChoices" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>This is the name of a field defined in the item. This is 
+unique across all fields in the parent and all complex children.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="fieldValueType">
+				<xs:annotation>
+					<xs:documentation>This type string specifies whether the data is for Meta or Content.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>These are the 2 types to allow clients to define where each field is located, either Meta or Content.</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="meta"/>
+						<xs:enumeration value="content"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="mimeType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Is the content plain text (i.e. #PCDATA) or Xml content. If Xml, the
+server will take the first child element and store it and its children
+as an Xml fragment. This will be a mime type for example: image/gif, text/xml, text/html, text/plain </xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="sourceType">
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>These are the source locations of where the field came from, either local, system or shared.</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="local"/>
+						<xs:enumeration value="shared"/>
+						<xs:enumeration value="system"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="transferEncoding">
+				<xs:annotation>
+					<xs:documentation>Binary data may be transmitted in an Xml document by encoding it
+appropriately. If the value is encoded binary, this attribute should be 
+set to base64. Xml data can be transmitted as text if it contains
+processing instructions and the like if the Xml reserved characters are
+escaped. In this case, set this attribute to 'xmlEscaped'. In either case,
+the server will decode the value before saving it. If an href is supplied 
+and the HTTP protocol specifies a Content-Transfer-Encoding header, 
+it will be used instead of this one.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>These are the encoding styles to be specified on the Field Value item.</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="base64"/>
+						<xs:enumeration value="none"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="displayName" type="xs:string"/>
+			<xs:attribute name="showInPreview" type="xs:boolean"/>
+			<xs:attribute name="dataType">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="text"/>
+						<xs:enumeration value="date"/>
+						<xs:enumeration value="number"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FieldValue">
+		<xs:annotation>
+			<xs:documentation>This element is used to store the content of a field. The content may be
+character based or binary, and it may be supplied as the content of this
+element or via a URL.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:annotation>
+					<xs:documentation>Choice</xs:documentation>
+				</xs:annotation>
+				<xs:element name="XMLData" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>xs:any</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RawData" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The string or encoded data if the mimeType is not set to xml.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="href" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>If the data is not included in this element, this attribute can be specified 
+to indicate where to retrieve it. If specified, any supplied value is ignored. 
+If it is char data, a charEncoding may be specified. The referenced data 
+will be interpreted according to the transferEncoding specified. The server 
+will support multipart/related submissions, as specified in the 'SOAP 
+Messages with Attachments' note submitted to the w3c (the server 
+won't initially support nested multipart types).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ValueChoices">
+		<xs:annotation>
+			<xs:documentation>Contains the list of options for a field that have been 
+defined by the designer.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Option" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>This element is used to specify one of possibly many values that could 
+be used as the content for a field. When shown to the end user, the 
+value of the displayName attribute should be used if present. When 
+submitted to the server, the Option value should always be submitted, 
+not the displayName.
+</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="displayName" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>The text that should be used when showing this option to the user. 
+If not provided, the option value itself should be displayed to the user.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
