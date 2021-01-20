@@ -118,21 +118,7 @@ git pull
 
 ## Pre-Requisites for Building
 - Apache Maven > 3.6
-- Java 1.8 OpenJDK - Amazon Corretto is the current default https://aws.amazon.com/corretto/
-- [home directory]/.m2/toolchains.xml file configured to point at the Corretto JDK.
-
-````
-  <toolchain>
-    <type>jdk</type>
-    <provides>
-      <version>8</version>
-      <vendor>amazon</vendor>
-    </provides>
-    <configuration>
-      <jdkHome>/Library/Java/JavaVirtualMachines/amazon-corretto-8.jdk/Contents/Home</jdkHome>
-    </configuration>
-  </toolchain>
-````
+- Java 1.8 OpenJDK
 
 ## Building
 
