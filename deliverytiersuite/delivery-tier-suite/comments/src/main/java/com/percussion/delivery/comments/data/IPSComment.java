@@ -26,8 +26,7 @@ package com.percussion.delivery.comments.data;
 import java.util.Date;
 import java.util.Set;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.percussion.delivery.comments.service.rdbms.PSCommentTag;
 import com.percussion.delivery.services.PSCustomDateSerializer;
 

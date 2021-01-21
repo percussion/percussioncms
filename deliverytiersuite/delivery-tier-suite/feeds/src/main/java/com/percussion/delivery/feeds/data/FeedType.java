@@ -24,7 +24,7 @@
 
 package com.percussion.delivery.feeds.data;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum FeedType {
     @JsonProperty("ATOM")

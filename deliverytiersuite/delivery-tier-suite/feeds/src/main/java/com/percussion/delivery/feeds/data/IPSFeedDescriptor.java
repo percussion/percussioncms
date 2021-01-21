@@ -24,8 +24,8 @@
 package com.percussion.delivery.feeds.data;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.codehaus.jackson.annotate.JsonSubTypes;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * A feed descriptor contains meta data needed to create a feed.
