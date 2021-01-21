@@ -102,9 +102,8 @@
                             <goal>add-test-source</goal>
                         </goals>
                         <configuration>
-
                             <sources>
-                                <source>src</source>
+                                <source>test/java</source>
                             </sources>
                         </configuration>
                     </execution>
