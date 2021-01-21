@@ -13,10 +13,15 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ development, master, staging ]
+    branches: [ development ]
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
+      - '**/*.png'
+      - '**/*.jpg'
+      - '**/*.gif'
+      - '**/*.html'
+      - '**/*.css'
   schedule:
     - cron: '31 9 * * 3'
 
@@ -46,7 +51,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
-         languages: java
+         languages: ${{ matrix.language }}
     - run: |
        mvn clean install -DskipTests
 
