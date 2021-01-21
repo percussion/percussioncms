@@ -30,6 +30,12 @@
     <artifactId>core</artifactId>
     <version>8.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <url>https://www.github.com/percussion/percussioncms</url>
+    <scm>
+        <connection>scm:git:https://github.com/percussion/percussioncms</connection>
+        <developerConnection>scm:git:https://github.com/percussion/percussioncms</developerConnection>
+        <url>https://github.com/percussion/percussioncms</url>
+    </scm>
     <modules>
         <module>modules/jcadf-master</module>
         <module>modules/build-tools</module>
@@ -68,7 +74,6 @@
         <module>modules/CMLight-Main-cactus-tests</module>
         <module>modules/ant-install</module>
     </modules>
-
    <properties>
        <build.profile.id>dev</build.profile.id>
        <versionString>INTERNAL</versionString>
@@ -98,6 +103,8 @@
        <spotbugs.plugin.version>4.0.0</spotbugs.plugin.version>
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
+       <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
+       <maven.scm.plugin.version>1.11.2</maven.scm.plugin.version>
        <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
        <maven.failsafe.plugin.version>2.22.2</maven.failsafe.plugin.version>
        <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
@@ -106,6 +113,7 @@
        <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
        <maven.pmd.plugin.version>3.13.0</maven.pmd.plugin.version>
        <maven.jxr.plugin.version>3.0.0</maven.jxr.plugin.version>
+       <maven.war.plugin.version>3.3.1</maven.war.plugin.version>
        <plexus.component.metadata.version>2.1.0</plexus.component.metadata.version>
        <jetty.maven.plugin.version>9.4.26.v20200117</jetty.maven.plugin.version>
        <lifecycle.mapping.plugin>1.0.0</lifecycle.mapping.plugin>
@@ -136,7 +144,7 @@
         <owl.version>5.1.10</owl.version>
        <awssdk.version>1.11.804</awssdk.version>
         <bc.version>1.64</bc.version>
-        <jackson.version>2.10.1</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
         <jsoup.version>1.11.3</jsoup.version>
         <json.version>20180813</json.version>
         <junit.version>[4.13.1,)</junit.version>
@@ -176,6 +184,8 @@
        <quartz.version>2.3.2</quartz.version>
        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
     </properties>
+
+
     <profiles>
         <profile>
             <id>all-tests</id>
@@ -204,6 +214,22 @@
     <build>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>${maven.scm.plugin.version}</version>
+                <configuration>
+                    <connectionType>github</connectionType>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven.release.plugin.version}</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-toolchains-plugin</artifactId>
@@ -430,6 +456,11 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven.war.plugin.version}</version>
+                </plugin>
+                <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
                 <version>${gwt.maven.plugin.version}</version>
@@ -540,6 +571,9 @@
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-resources-plugin</artifactId>
                   <version>${maven.resources.plugin.version}</version>
+                    <configuration>
+                        <propertiesEncoding>ISO-8859-1</propertiesEncoding>
+                    </configuration>
                 </plugin>
                 <plugin>
                 <groupId>org.eclipse.jetty</groupId>

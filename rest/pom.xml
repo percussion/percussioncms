@@ -60,19 +60,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.eclipse.core/org.eclipse.core.runtime -->
-        <!-- https://mvnrepository.com/artifact/io.swagger/swagger-jersey-jaxrs -->
-
-        <!-- https://mvnrepository.com/artifact/io.swagger/swagger-jersey2-jaxrs -->
-
-        <!--  <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jersey2-jaxrs</artifactId>
-            <version>1.5.19</version>
-            <scope>test</scope>
-
-        </dependency>
-        -->
         <!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
         <dependency>
             <groupId>io.swagger</groupId>
@@ -117,142 +104,6 @@
             <artifactId>cxf-rt-transports-http-jetty</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!--  New oas swagger
-      <dependency>
-          <groupId>io.swagger.core.v3</groupId>
-          <artifactId>swagger-jaxrs2</artifactId>
-          <version>2.0.1</version>
-      </dependency>
-
-      <dependency>
-          <groupId>io.swagger.core.v3</groupId>
-          <artifactId>swagger-core</artifactId>
-          <version>2.0.1</version>
-      </dependency>
-
-      <dependency>
-          <groupId>io.swagger.core.v3</groupId>
-          <artifactId>swagger-annotations</artifactId>
-          <version>2.0.1</version>
-      </dependency>
-
-         -->
-
-        <!--  swagger -->
-        <!--
-                <dependency>
-                  <groupId>com.wordnik</groupId>
-                  <artifactId>swagger-jersey-jaxrs_2.10</artifactId>
-                  <version>1.3.10</version>
-                </dependency>
-                 <dependency>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                    <version>${logback-version}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-core</artifactId>
-                    <version>${logback-version}</version>
-                    <scope>compile</scope>
-                </dependency>
-                  -->
-        <!--  
-            <dependency>
-            <groupId>com.sun.jersey.jersey-test-framework</groupId>
-            <artifactId>jersey-test-framework-grizzly2</artifactId>
-            <version>${jersey-version}</version>
-            <scope>test</scope>
-        </dependency>
-        -->
-
-
-        <!-- Jersey -->
-        <!-- 
-<dependency>
-    <groupId>org.glassfish.jersey.core</groupId>
-    <artifactId>jersey-server</artifactId>
-    <version>${jersey-version}</version>
-     <scope>test</scope>
-</dependency>
-
-<dependency>
-    <groupId>org.glassfish.jersey.ext</groupId>
-    <artifactId>jersey-declarative-linking</artifactId>
-    <version>${jersey-version}</version>
-     <scope>test</scope>
-</dependency>
-
-
-<dependency>
-    <groupId>org.glassfish.jersey.test-framework.providers</groupId>
-    <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
-    <version>${jersey-version}</version>
-    <scope>test</scope>
-</dependency>
- <dependency>
-<groupId>org.glassfish.jersey.core</groupId>
-<artifactId>jersey-common</artifactId>
-<version>2.26</version>
- <scope>test</scope>
-</dependency>
-<dependency>
-<groupId>org.glassfish.jersey.inject</groupId>
-<artifactId>jersey-hk2</artifactId>
-<version>2.26</version>
- <scope>test</scope>
-</dependency>
-
-
-<dependency>
-    <groupId>org.glassfish.jersey.containers</groupId>
-    <artifactId>jersey-container-servlet-core</artifactId>
-      <version>${jersey-version}</version>
-       <scope>test</scope>
-</dependency>
-
-<dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
-              <version>${jersey-version}</version>
-               <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-processing</artifactId>
-              <version>${jersey-version}</version>
-               <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-multipart</artifactId>
-             <version>${jersey-version}</version>
-              <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-sse</artifactId>
-              <version>${jersey-version}</version>
-               <scope>test</scope>
-        </dependency>
-        
- 
-    
-<dependency>
-    <groupId>org.glassfish.jersey.core</groupId>
-    <artifactId>jersey-client</artifactId>
-    <version>${jersey-version}</version>
-    <scope>test</scope>
-</dependency>
-<dependency>
-    <groupId>org.glassfish.jersey.bundles.repackaged</groupId>
-    <artifactId>jersey-guava</artifactId>
-    <version>2.26-b03</version>
-</dependency>
- -->
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -267,68 +118,37 @@
                 <exclusion>
                     <groupId>org.hamcrest</groupId>
                     <artifactId>hamcrest-core</artifactId>
-                    <!-- use version 1.3 from junit not 1.1 -->
                 </exclusion>
             </exclusions>
             <scope>test</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-client -->
-
-
-        <!-- 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
-        </dependency>
-  -->
-        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.bundles.repackaged/jersey-guava -->
-
-        <!-- https://mvnrepository.com/artifact/org.glassfish.grizzly/grizzly-http-server -->
-
-        <!--  <dependency>
-            <groupId>org.glassfish.grizzly</groupId>
-            <artifactId>grizzly-http-server</artifactId>
-            <version>2.4.3</version>
-            <scope>test</scope>
-        </dependency>
-
-               -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
-
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-
         </dependency>
 
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
