@@ -31,6 +31,7 @@ import org.glassfish.jersey.test.DeploymentContext;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.ServletDeploymentContext;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -48,6 +49,7 @@ import javax.ws.rs.core.Response;
  * @author natechadwick
  *
  */
+
 public class PSBaseMetadataRestServiceTest extends JerseyTest {
 
     /***
@@ -74,6 +76,7 @@ public class PSBaseMetadataRestServiceTest extends JerseyTest {
                 .build();
     }
 
+    @Ignore
     @Test
  	public void testGetRestVersion(){
 

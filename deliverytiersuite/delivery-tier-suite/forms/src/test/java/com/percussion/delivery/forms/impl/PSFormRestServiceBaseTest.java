@@ -30,6 +30,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.DeploymentContext;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.ServletDeploymentContext;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -81,6 +82,7 @@ public class PSFormRestServiceBaseTest extends JerseyTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGetRestVersion(){
 		Client client = ClientBuilder.newClient();
 		WebTarget webTarget = client.target("/form/version");
