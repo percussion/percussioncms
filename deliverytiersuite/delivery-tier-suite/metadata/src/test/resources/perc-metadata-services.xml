@@ -68,22 +68,4 @@
          class="com.percussion.delivery.metadata.PSFakeCacheManagerConnector">
    </bean>
 
-   <bean id="CacheManagerConnector" class="com.percussion.delivery.caching.impl.PSCacheManagerConnector">
-      <property name="cacheManagerHost">
-         <value>${cacheMgr.cacheManagerHost}</value>
-      </property>
-      <property name="username">
-         <value>${cacheMgr.username}</value>
-      </property>
-      <property name="password">
-         <value>${cacheMgr.password}</value>
-      </property>
-      <property name="interRequestWait">
-         <value>${cacheMgr.interRequestWait}</value>
-      </property>
-      <property name="maxWait">
-         <value>${cacheMgr.maxWait}</value>
-      </property>
-   </bean>
-
 </beans>
