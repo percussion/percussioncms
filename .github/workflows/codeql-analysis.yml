@@ -51,7 +51,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
-         languages: ${{ matrix.language }}
+         languages: java
     - run: |
        mvn clean install -DskipTests
 
