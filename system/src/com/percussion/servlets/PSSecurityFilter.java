@@ -1711,6 +1711,7 @@ public class PSSecurityFilter implements Filter
             initRequest(request, response).getUserSessionId());
       //share across all web apps
       ssoCookie.setPath("/");
+      ssoCookie.setSecure(true);
       response.addCookie(ssoCookie);
 
 
