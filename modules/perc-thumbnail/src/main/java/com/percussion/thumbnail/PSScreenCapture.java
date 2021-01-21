@@ -244,6 +244,10 @@ public class PSScreenCapture {
                     continue;
                 }
                 File curfile = new File(targetDir, entry.getName());
+                if (!curfile.toPath().normalize().startsWith(targetDir.toPath())) {
+                    log.error("Invalid File Path: " + curfile.toPath());
+                    return;
+                }
                 if(curfile.getName().endsWith("phantomjs"))
                     curfile.setExecutable(true);
 

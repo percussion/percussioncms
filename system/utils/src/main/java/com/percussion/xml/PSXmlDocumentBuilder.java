@@ -273,6 +273,7 @@ public class PSXmlDocumentBuilder {
 
             if (db == null) {
                 DocumentBuilderFactory dbf = getDocumentBuilderFactory(validating);
+                dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
                 db = dbf.newDocumentBuilder();
                 db.setEntityResolver(PSEntityResolver.getInstance());
                 returnDocumentBuilderFactory(dbf);
