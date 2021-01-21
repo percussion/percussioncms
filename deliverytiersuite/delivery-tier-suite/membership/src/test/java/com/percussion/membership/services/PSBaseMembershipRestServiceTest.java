@@ -31,6 +31,7 @@ import com.percussion.membership.services.impl.PSMembershipService;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Client;
@@ -68,6 +69,7 @@ public  class PSBaseMembershipRestServiceTest extends JerseyTest
 
 
     @Test
+    @Ignore
 	public void testGetRestVersion(){
 
 
