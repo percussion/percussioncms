@@ -101,7 +101,7 @@ public class PSServerLogHandler {
     * arguments. Be sure to store the arguments in the correct order in
     * the array, where {0} in the string is array element 0, etc.
     *
-    * @param   conn            the requestor's connection
+    * @param   conn            the requestor connection
     *
     * @param   errorCode      the associated error code
     *

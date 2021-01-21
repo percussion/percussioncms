@@ -84,10 +84,8 @@ public class PSErrorManager {
    private static IPSErrorManager errorManagerInstance = new PSErrorManagerDefaultImpl();
 
    /**
-    * Initialize the error manager to use the specified locale.
-    * Called from server only.
+    * Initialize the error manager
     *
-    * @param      loc      the locale to use
     */
    public synchronized static void init()
       throws MissingResourceException, NumberFormatException
@@ -96,12 +94,8 @@ public class PSErrorManager {
          errorManagerInstance = Thread.currentThread().getContextClassLoader().loadClass(ERROR_MGR_CLASS)
                  .asSubclass(IPSErrorManager.class).newInstance();
 
-      } catch (InstantiationException e) {
-         e.printStackTrace();
-      } catch (IllegalAccessException e) {
-         e.printStackTrace();
-      } catch (ClassNotFoundException e) {
-         e.printStackTrace();
+      } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+         System.out.println(PSExceptionUtils.getMessageForLog(e));
       }
       errorManagerInstance.init();
 
