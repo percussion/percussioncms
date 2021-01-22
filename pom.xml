@@ -31,6 +31,13 @@
     <version>8.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>https://www.github.com/percussion/percussioncms</url>
+    <licenses>
+        <license>
+            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)</name>
+            <url>http://opensource.org/licenses/AGPL-3.0</url>
+            <distribution></distribution>
+        </license>
+    </licenses>
     <scm>
         <connection>scm:git:https://github.com/percussion/percussioncms</connection>
         <developerConnection>scm:git:https://github.com/percussion/percussioncms</developerConnection>
@@ -102,6 +109,7 @@
        <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
        <spotbugs.plugin.version>4.0.0</spotbugs.plugin.version>
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
+       <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
        <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
        <maven.scm.plugin.version>1.11.2</maven.scm.plugin.version>
@@ -455,6 +463,20 @@
         </plugins>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven.gpg.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
