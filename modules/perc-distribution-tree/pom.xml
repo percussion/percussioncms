@@ -33,7 +33,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-distribution-tree</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
 
     <properties>
         <assembly-directory>${project.build.outputDirectory}/distribution</assembly-directory>
@@ -295,7 +294,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>perc-distribution-tree-8.0.0-SNAPSHOT</finalName>
+                    <finalName>perc-distribution-tree-${project.parent.version}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                      <archive>
                         <manifest>
