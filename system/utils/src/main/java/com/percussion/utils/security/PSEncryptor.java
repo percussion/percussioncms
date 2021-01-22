@@ -25,11 +25,13 @@
 package com.percussion.utils.security;
 
 import com.percussion.utils.io.PathUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -331,9 +333,9 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
         //Try to get the key from resource - fail over to file system if not found
         try {
-            ret = Files.readAllBytes(Paths.get(this.getClass().getResource(
-                    "/com/percussion/security/encryption/.legacy-key").toURI()));
-        } catch (URISyntaxException | IOException | FileSystemNotFoundException e) {
+            ret = IOUtils.toByteArray(this.getClass().getResourceAsStream(
+                    "/com/percussion/security/encryption/.legacy-key"));
+        } catch (IOException | FileSystemNotFoundException e) {
            log.debug("Unable to load .legacy-key from classpath.",e);
         }
 
