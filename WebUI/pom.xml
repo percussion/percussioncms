@@ -27,7 +27,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>CMLite-WebUI</artifactId>
@@ -615,45 +615,45 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-default-template</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-main</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-workflow</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-linkback</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-sfp</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-nav</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-tinymce</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-jetty-jars</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
@@ -666,7 +666,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>
@@ -681,12 +681,12 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>CMLite-PCM-PkgMgtUI</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-jetty-logging</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
@@ -700,7 +700,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rest</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
             <exclusions>
 
                 <exclusion>
@@ -712,7 +712,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>sitemanage</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-beanutils</artifactId>
@@ -729,7 +729,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>shindig-uber</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>
@@ -1098,7 +1098,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>CMLite-Main</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>
@@ -1109,14 +1109,14 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>CMLight-Main-cactus-tests</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-shared-test-resources</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -1134,7 +1134,7 @@
                     <groupId>aspectjrt</groupId>
                 </exclusion>
             </exclusions>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>commons-httpclient</groupId>

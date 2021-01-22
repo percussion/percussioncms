@@ -28,7 +28,7 @@
     <parent>
         <artifactId>delivery-tier-suite</artifactId>
         <groupId>com.percussion.deliverytier</groupId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>perc-delivery-common</artifactId>
     <packaging>jar</packaging>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-shared-app</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
