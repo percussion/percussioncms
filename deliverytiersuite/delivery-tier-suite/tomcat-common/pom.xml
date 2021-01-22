@@ -31,16 +31,16 @@
     <parent>
         <artifactId>delivery-tier-suite</artifactId>
         <groupId>com.percussion.deliverytier</groupId>
-        <version>8.0.1-SNAPSHOT</version>
+        <version>8.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>perc-tomcat-common</artifactId>
-    <version>8.0.1-SNAPSHOT</version>
+    <version>8.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-shared-app</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
@@ -81,7 +81,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-beanutils</groupId>

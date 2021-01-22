@@ -27,11 +27,11 @@
     <parent>
         <artifactId>delivery-tier-suite</artifactId>
         <groupId>com.percussion.deliverytier</groupId>
-        <version>8.0.1-SNAPSHOT</version>
+        <version>8.0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>perc-shared-app</artifactId>
-    <version>8.0.1-SNAPSHOT</version>
+    <version>8.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <description>
         Jar depends project, gets all shared dependencies for all projects.
@@ -158,7 +158,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.commons</groupId>
@@ -197,7 +197,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
@@ -248,7 +248,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
             <exclusions>

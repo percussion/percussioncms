@@ -33,6 +33,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-rxapps</artifactId>
+  <version>8.0.2-SNAPSHOT</version>
 
     <properties>
         <assembly-directory>${basedir}/target/distribution</assembly-directory>
