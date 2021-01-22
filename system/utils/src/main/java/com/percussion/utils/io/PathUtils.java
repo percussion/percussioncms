@@ -29,7 +29,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PathUtils {
@@ -181,6 +186,31 @@ public class PathUtils {
             throw new IllegalArgumentException("file does not exist: " + item.getAbsolutePath());
         }
         return item.getAbsolutePath();
+    }
+
+    /**
+     * Find the ant jar by path pattern to avoid hard coding / forcing version.
+     *
+     * @param execPath Folder containing the jar
+     * @param fileNameWithPattern A File name with a glob pattern like perc-ant-*.jar
+     * @return Path to the ant jar
+     * @throws IOException
+     */
+    public static Path getVersionLessJarFilePath(Path execPath, String fileNameWithPattern) throws IOException {
+        try (DirectoryStream<Path> ds = Files.newDirectoryStream(execPath.toAbsolutePath(), fileNameWithPattern)) {
+            List<Path> paths = new ArrayList<>();
+            for (Path path : ds) {
+                paths.add(path);
+            }
+            if (paths.isEmpty()) {
+                throw new IOException(fileNameWithPattern + " not found.");
+            } else if (paths.size() == 1) {
+                return paths.get(0);
+            } else {
+                System.out.println("Warning: Multiple " + fileNameWithPattern + " jars found, selecting the first one: " + paths.get(0).toAbsolutePath().toString());
+                return paths.get(0);
+            }
+        }
     }
 
 }

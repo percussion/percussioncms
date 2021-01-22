@@ -91,6 +91,7 @@
     <file url="file://$PROJECT_DIR$/modules/servletutils/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/servletutils/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/shindig-uber" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/tlsutils/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/webservices" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/webservices/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/projects/sitemanage" charset="UTF-8" />
@@ -108,6 +109,7 @@
     <file url="file://$PROJECT_DIR$/system/Tools/ImageWidgetService/src" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/system/Tools/InstallerBot/src" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/system/Tools/RxFix/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/system/Tools/SSLTools/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/system/Tools/Simple" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/system/Tools/Simple/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/system/Tools/TableFactory" charset="UTF-8" />

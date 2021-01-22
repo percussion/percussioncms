@@ -71,7 +71,7 @@
                                         <echo>Refreshing dev install with updated JS...</echo>
                                         <echo>Installing to ${install.dir}</echo>
                                         <echo>Unzipping war....</echo>
-                                        <unzip src="${project.basedir}/target/CMLite-WebUI-8.0.0-SNAPSHOT.war" dest="${install.dir}/jetty/base/webapps/Rhythmyx" />
+                                        <unzip src="${project.basedir}/target/CMLite-WebUI-${project.parent.version}.war" dest="${install.dir}/jetty/base/webapps/Rhythmyx" />
                                         <echo>Copying common-ui files to web_resources...</echo>
                                         <copy todir="${install.dir}/web_resources/cm/common/js" overwrite="true" force="true">
                                             <fileset dir="${install.dir}/jetty/base/webapps/Rhythmyx/cm/common/js/" includes="**/*.js" />
@@ -844,8 +844,9 @@
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>org.apache.cxf.rs.swagger.ui</artifactId>
-            <version>3.4.0-PATCHED</version>
+            <artifactId>cxf-rt-rs-service-description-swagger-ui</artifactId>
+            <!-- <version>3.4.0-PATCHED</version> -->
+            <version>${cxf.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.javassist</groupId>
