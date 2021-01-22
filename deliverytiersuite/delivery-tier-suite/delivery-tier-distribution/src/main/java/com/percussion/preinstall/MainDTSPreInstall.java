@@ -24,6 +24,8 @@
 
 package com.percussion.preinstall;
 
+import com.percussion.utils.io.PathUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,7 +44,6 @@ public class MainDTSPreInstall {
     private static final String PERCUSSION_VERSION="perc.version";
     private static final String INSTALL_TEMPDIR="percDTSInstallTmp_";
     private static final String PERC_ANT_JAR="perc-ant";
-    private static final String DEFAULT_VERSION="8.0.0-SNAPSHOT";
     private static final String ANT_INSTALL="installDts.xml";
 
     private static File tmpFolder;
@@ -63,8 +64,8 @@ public class MainDTSPreInstall {
             }
 
             String percVersion= System.getProperty(PERCUSSION_VERSION);
-            if(percVersion== null || percVersion.trim().equals(""))
-                percVersion=DEFAULT_VERSION;
+            if(percVersion== null)
+                percVersion="";
 
             System.out.println("perc.java.home="+javaHome);
             System.out.println("java.executable="+javabin);
@@ -107,7 +108,7 @@ public class MainDTSPreInstall {
                                     .map(Path::toFile)
                                     .forEach(File::delete);
                         } catch (IOException ex) {
-                            ex.printStackTrace();
+                            System.out.println("An error occurred processing installation files. " +  ex.getMessage());
                         }
                     }
                 });
@@ -120,11 +121,14 @@ public class MainDTSPreInstall {
 
 
             Path execPath = installSrc.resolve(Paths.get("rxconfig","Installer"));
-            Path installAntJarPath = execPath.resolve(PERC_ANT_JAR + "-" + percVersion + ".jar");
+            Path installAntJarPath = execPath.resolve(
+                    PathUtils.getVersionLessJarFilePath(
+                    execPath,PERC_ANT_JAR + "-*.jar"));
+
             exitCode =  execJar(installAntJarPath,execPath,installPath,isProduction);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An unexpected error occurred processing installation files. " + e.getMessage());
             throw  new AntJobFailedException("Ant Job Got Failed.");
         }
         System.out.println("Done extracting exit code "+exitCode);

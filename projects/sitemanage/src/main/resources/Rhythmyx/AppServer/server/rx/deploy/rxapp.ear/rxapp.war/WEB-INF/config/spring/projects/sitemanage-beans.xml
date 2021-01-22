@@ -144,7 +144,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         <jaxrs:features>
              <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
                  <property name="title" value="Percussion CMS REST API"/>
-                 <property name="version" value="8.0.0"/>
+                 <property name="version" value="8.0.2"/>
                  <property name="description" value="Public REST API"/>
                  <property name="contact" value="support@percussion.com"/>
 

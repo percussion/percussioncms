@@ -754,19 +754,19 @@
             <then>
                 <echo>Setting property file Permissions...</echo>
                 <chmod perm="ugo+rw" maxparallel="300">
-                    <fileset dir="${install.dir/rx_resources}">
+                    <fileset dir="${install.dir}/rx_resources">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/web_resources}">
+                    <fileset dir="${install.dir}/web_resources">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/rxconfig}">
+                    <fileset dir="${install.dir}/rxconfig">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/ObjectStore}">
+                    <fileset dir="${install.dir}/ObjectStore">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/jetty/base}">
+                    <fileset dir="${install.dir}/jetty/base">
                         <include name="**/*" />
                     </fileset>
                 </chmod>
@@ -778,19 +778,19 @@
                 <chmod perm="ugo+x" failifexecutionfails="false" failonerror="false" includes="**/*.sh" dir="${install.dir}"/>
                 <echo>Setting property file Permissions...</echo>
                 <chmod perm="ugo+rw">
-                    <fileset dir="${install.dir/rx_resources}">
+                    <fileset dir="${install.dir}/rx_resources">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/web_resources}">
+                    <fileset dir="${install.dir}/web_resources">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/rxconfig}">
+                    <fileset dir="${install.dir}/rxconfig">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/ObjectStore}">
+                    <fileset dir="${install.dir}/ObjectStore">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/jetty/base}">
+                    <fileset dir="${install.dir}/jetty/base">
                         <include name="**/*" />
                     </fileset>
                 </chmod>
@@ -847,12 +847,12 @@
 
     <target name="updateExtensions">
 
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-main-8.0.0-SNAPSHOT.jar" destDir="Exits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-workflow-8.0.0-SNAPSHOT.jar" destDir="WorkflowExits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-sfp-8.0.0-SNAPSHOT.jar" destDir="SiteFolderPublishinExits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-nav-8.0.0-SNAPSHOT.jar" destDir="ManagedNavExits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-default-template-8.0.0-SNAPSHOT.jar" destDir="DefaultTemplateExits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-linkback-8.0.0-SNAPSHOT.jar" destDir="LinkbackExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-main-${project.parent.version}.jar" destDir="Exits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-workflow-${project.parent.version}.jar" destDir="WorkflowExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-sfp-${project.parent.version}.jar" destDir="SiteFolderPublishinExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-nav-${project.parent.version}.jar" destDir="ManagedNavExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-default-template-${project.parent.version}.jar" destDir="DefaultTemplateExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-linkback-${project.parent.version}.jar" destDir="LinkbackExits"/>
 
     </target>
 

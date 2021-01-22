@@ -573,15 +573,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-
         </dependency>
-        <!-- CXF - cxf-rt-core cxf-rt-frontend-simple cxf-rt-frontend-jaxws 
-            cxf-rt-databinding-aegis cxf-rt-transports-local cxf-rt-transports-http cxf-rt-transports-http-jetty 
-            cxf-rt-transports-jms cxf-rt-management cxf-common-utilities -->
-
-
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
-
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -1105,6 +1097,12 @@
         <dependency>
             <groupId>commons-betwixt</groupId>
             <artifactId>commons-betwixt</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -1459,6 +1457,12 @@
             <groupId>com.google.javascript</groupId>
             <artifactId>closure-compiler</artifactId>
             <version>r1043</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.yahoo.platform.yui</groupId>

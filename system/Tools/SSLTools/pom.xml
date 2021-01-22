@@ -29,7 +29,7 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2-SNAPSHOT</version>
         <relativePath>../../../pom.xml</relativePath>
 
     </parent>
@@ -37,9 +37,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.percussion</groupId>
-    <artifactId>per-ssl-tool</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
-
+    <artifactId>perc-ssl-tool</artifactId>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
