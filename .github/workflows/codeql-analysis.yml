@@ -12,7 +12,9 @@
 name: "CodeQL"
 
 on:
-  push:
+  schedule:
+    # Midnight on every Sunday
+    - cron: '0 0 * * 0'
     branches: [ development ]
     paths-ignore:
       - '**/*.md'
@@ -22,8 +24,6 @@ on:
       - '**/*.gif'
       - '**/*.html'
       - '**/*.css'
-  schedule:
-    - cron: '31 9 * * 3'
 
 jobs:
   analyze:
