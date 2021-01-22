@@ -26,7 +26,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.0.1-SNAPSHOT</version>
+    <version>8.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>https://www.github.com/percussion/percussioncms</url>
     <licenses>
@@ -234,6 +234,8 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${maven.release.plugin.version}</version>
                 <configuration>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
@@ -798,7 +800,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>1.0</version>
+                            <version>8.0.2-SNAPSHOT</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -819,7 +821,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>1.0</version>
+                            <version>8.0.2-SNAPSHOT</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -831,7 +833,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>1.0</version>
+                            <version>8.0.2-SNAPSHOT</version>
                         </dependency>
                         <dependency>
                             <groupId>com.h3xstream.findsecbugs</groupId>
