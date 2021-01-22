@@ -35,6 +35,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>servlet-utils</artifactId>
+  <version>8.0.2-SNAPSHOT</version>
     <build>
     <plugins>
         <plugin>

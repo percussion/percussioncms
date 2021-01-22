@@ -36,6 +36,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>extensions-workflow</artifactId>
+  <version>8.0.2-SNAPSHOT</version>
 
    <dependencies>
        <dependency>
@@ -88,7 +89,7 @@
        <dependency>
            <groupId>com.percussion</groupId>
            <artifactId>rxutils</artifactId>
-           <version>8.0.1-SNAPSHOT</version>
+           <version>8.0.2-SNAPSHOT</version>
            <type>test-jar</type>
            <scope>test</scope>
        </dependency>

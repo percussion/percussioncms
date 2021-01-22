@@ -33,6 +33,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-distribution-tree</artifactId>
+  <version>8.0.2-SNAPSHOT</version>
 
     <properties>
         <assembly-directory>${project.build.outputDirectory}/distribution</assembly-directory>

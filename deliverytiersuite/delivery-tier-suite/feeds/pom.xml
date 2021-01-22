@@ -29,18 +29,18 @@
     <parent>
         <groupId>com.percussion.deliverytier</groupId>
         <artifactId>delivery-tier-suite</artifactId>
-        <version>8.0.1-SNAPSHOT</version>
+        <version>8.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>feeds</artifactId>
-    <version>8.0.1-SNAPSHOT</version>
+    <version>8.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <dependencies>
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-shared-app</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -51,12 +51,12 @@
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-delivery-common</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-delivery-common</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

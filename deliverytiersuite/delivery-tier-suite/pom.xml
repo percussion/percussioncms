@@ -28,7 +28,7 @@
 
     <groupId>com.percussion.deliverytier</groupId>
     <artifactId>delivery-tier-suite</artifactId>
-    <version>8.0.1-SNAPSHOT</version>
+    <version>8.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
         <timestamp>${maven.build.timestamp}</timestamp>
