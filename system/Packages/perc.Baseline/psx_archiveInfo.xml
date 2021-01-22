@@ -39,8 +39,8 @@
          <PSXDescriptor id="-4074041922119784678" name="perc.Baseline">
             <Description/>
             <Publisher name="Percussion Software Inc" url="www.percussion.com"/>
-            <CmsVersion max="5.4.0" min="1.0.0"/>
-            <Version>1.1.5</Version>
+            <CmsVersion max="9.0.0" min="1.0.0"/>
+            <Version>1.1.6</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies>

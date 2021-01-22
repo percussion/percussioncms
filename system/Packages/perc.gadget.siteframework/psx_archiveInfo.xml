@@ -39,7 +39,7 @@
          <PSXDescriptor id="3023233067406862097" name="perc.gadget.siteframework">
             <Description>Site wide JavaScript / CSS configuration.</Description>
             <Publisher name="Percussion Software, Inc." url="https://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="5.4.0"/>
+            <CmsVersion max="9.0.0" min="5.4.0"/>
             <Version>1.0.5</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
