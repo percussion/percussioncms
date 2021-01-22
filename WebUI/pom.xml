@@ -263,7 +263,7 @@
                         <resource>
                             <directory>../system/ear/jsps</directory>
                             <!-- override the destination directory for this resource -->
-                            <targetPath></targetPath>
+                            <targetPath />
                             <!-- enable filtering -->
                             <filtering>false</filtering>
                             <excludes>
@@ -313,10 +313,10 @@
                                 <trycatch>
                                     <try>
                                         <!-- On nix based systems run chmod - will do nothing on Windows -->
-                                        <chmod dir="${project.build.directory}" includes="**/*" perm="ugo+rw"></chmod>
+                                        <chmod dir="${project.build.directory}" includes="**/*" perm="ugo+rw" />
                                         <!-- On Windows based systems run attrib - will do nothing on unix -->
                                         <attrib readonly="false" verbose="true">
-                                            <fileset dir="${project.build.directory}" includes="**/*"/>
+                                            <fileset dir="${project.build.directory}" includes="**/*" />
                                         </attrib>
                                     </try>
 
@@ -600,7 +600,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
