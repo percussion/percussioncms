@@ -1,0 +1,5 @@
+## Uncomment and replace the body to customize.  The text in this macro will be injected as the first child
+## of the <head> element on all Page style templates.
+###macro(first_head_element)##
+##<script src='myscript.js' />
+###end##
