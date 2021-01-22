@@ -33,6 +33,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-thumbnail</artifactId>
+  <version>8.0.2-SNAPSHOT</version>
 
     <properties>
         <version.arquillian>1.1.11.Final</version.arquillian>
@@ -198,7 +199,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -318,7 +319,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.1-SNAPSHOT</version>
+            <version>8.0.2-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

@@ -31,6 +31,7 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>perc-jetty-jars</artifactId>
+  <version>8.0.2-SNAPSHOT</version>
   <name>Percussion Jetty :: jetty app jars</name>
    <packaging>pom</packaging>
 
@@ -412,14 +413,14 @@
       <dependency>
           <groupId>com.percussion</groupId>
           <artifactId>perc-jetty-logging</artifactId>
-          <version>8.0.1-SNAPSHOT</version>
+          <version>8.0.2-SNAPSHOT</version>
           <scope>provided</scope>
       </dependency>
 
   <dependency>
         <groupId>com.percussion</groupId>
         <artifactId>rxutils</artifactId>
-        <version>8.0.1-SNAPSHOT</version>
+        <version>8.0.2-SNAPSHOT</version>
       <exclusions>
     <exclusion>
               <groupId>com.google.guava</groupId>
@@ -431,7 +432,7 @@
       <dependency>
           <groupId>com.percussion</groupId>
           <artifactId>servlet-utils</artifactId>
-          <version>8.0.1-SNAPSHOT</version>
+          <version>8.0.2-SNAPSHOT</version>
       </dependency>
 
       <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
