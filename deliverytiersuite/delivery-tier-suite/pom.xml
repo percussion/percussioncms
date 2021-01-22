@@ -527,7 +527,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>1.0</version>
+                        <version>8.0.2-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -547,7 +547,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>1.0</version>
+                        <version>8.0.2-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -559,7 +559,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>1.0</version>
+                        <version>8.0.2-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
