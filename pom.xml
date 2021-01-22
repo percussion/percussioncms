@@ -40,7 +40,7 @@
         <connection>scm:git:https://github.com/percussion/percussioncms</connection>
         <developerConnection>scm:git:https://github.com/percussion/percussioncms</developerConnection>
         <url>https://github.com/percussion/percussioncms</url>
-      <tag>HEAD</tag>
+      <tag>staging-test-8.0.0</tag>
   </scm>
     <modules>
         <module>modules/jcadf-master</module>
