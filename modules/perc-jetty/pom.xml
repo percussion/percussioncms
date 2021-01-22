@@ -221,7 +221,7 @@
                   </copy>
                  <copy todir="${assembly-directory}">
                   <fileset dir="${basedir}/../../system/Tools/jetty">
-                      <exclude name="jetty-distribution-*"/>
+                      <exclude name="jetty-distribution-*" />
                   </fileset>
                 </copy>
               </target>
