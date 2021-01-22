@@ -22,9 +22,7 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
@@ -35,14 +33,15 @@
         <license>
             <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)</name>
             <url>http://opensource.org/licenses/AGPL-3.0</url>
-            <distribution></distribution>
+            <distribution />
         </license>
     </licenses>
     <scm>
         <connection>scm:git:https://github.com/percussion/percussioncms</connection>
         <developerConnection>scm:git:https://github.com/percussion/percussioncms</developerConnection>
         <url>https://github.com/percussion/percussioncms</url>
-    </scm>
+      <tag>staging-8.0.0</tag>
+  </scm>
     <modules>
         <module>modules/jcadf-master</module>
         <module>modules/build-tools</module>
@@ -271,7 +270,7 @@
             <plugin>
             <artifactId>maven-clean-plugin</artifactId>
             <version>${maven.clean.plugin.version}</version>
-            <executions/>
+            <executions />
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -529,10 +528,10 @@
                                         <version>${maven.version}</version>
                                     </requireMavenVersion>
                                     <requireUpperBoundDeps>
-                                        <excludes/>
+                                        <excludes />
                                     </requireUpperBoundDeps>
-                                    <dependencyConvergence/>
-                                    <banDuplicatePomDependencyVersions/>
+                                    <dependencyConvergence />
+                                    <banDuplicatePomDependencyVersions />
                                 </rules>
                                 <fail>false</fail>
                             </configuration>
@@ -2200,9 +2199,7 @@
                 <groupId>com.twelvemonkeys.imageio</groupId>
                 <artifactId>imageio-metadata</artifactId>
                 <version>${twelvemonkeys.version}</version>
-            </dependency
-
-            ><dependency>
+            </dependency><dependency>
             <groupId>com.twelvemonkeys.imageio</groupId>
             <artifactId>imageio-psd</artifactId>
             <version>${twelvemonkeys.version}</version>
