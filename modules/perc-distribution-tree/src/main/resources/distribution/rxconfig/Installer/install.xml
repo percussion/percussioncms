@@ -648,6 +648,7 @@
 
         <echo>Updating rxrepository.properties</echo>
         <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
+        <chmod perm="ugo+rw" file="${install.dir}/jetty/base/etc/perc-ds.properties" />
         <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.properties"/>
 
         <echo>loading properties ${rxrepository.properties}</echo>
