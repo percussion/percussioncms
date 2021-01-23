@@ -294,7 +294,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>perc-distribution-tree-${project.parent.version}</finalName>
+                    <finalName>perc-distribution-tree</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                      <archive>
                         <manifest>
@@ -305,20 +305,6 @@
             </execution>
         </executions>
        </plugin>
-     <!--   <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>
-                            com.percussion.preinstall.Main
-                        </mainClass>
-                    </manifest>
-                </archive>
-            </configuration>
-        </plugin>
-        -->
         <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>

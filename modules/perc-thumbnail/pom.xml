@@ -52,16 +52,25 @@
     <repositories>
         <repository>
             <id>perc-java-repo</id>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public/</url>
+            <url>https://mvn.percussion.com/releases/</url>
             <snapshots>
                 <enabled>false</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
         <repository>
-            <id>a-thirdparty</id>
+            <id>perc-snapshots-repo</id>
+            <url>https://mvn.percussion.com/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>perc-thirdparty</id>
             <name>thirdparty</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
         </repository>
         <repository>
             <id>maven-central</id>
@@ -110,7 +119,7 @@
                        <configuration>
                            <repositoryId>repo-man</repositoryId>
                            <file>${download-folder}/phantomjs-${phantomjs.version}-windows.zip</file>
-                           <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty</url>
+                           <url>https://mvn.percussion.com/repositories/thirdparty/</url>
                            <groupId>phantomjs</groupId>
                            <artifactId>phantomjs-win</artifactId>
                            <version>2.1.1</version>
@@ -127,7 +136,7 @@
                        <configuration>
                            <repositoryId>repo-man</repositoryId>
                            <file>${download-folder}/phantomjs-${phantomjs.version}-linux-x86_64.tar.bz2</file>
-                           <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty</url>
+                           <url>https://mvn.percussion.com/repositories/thirdparty/</url>
                            <groupId>phantomjs</groupId>
                            <artifactId>phantomjs-linux</artifactId>
                            <version>2.1.1</version>
@@ -135,7 +144,23 @@
                            <generatePom>true</generatePom>
                        </configuration>
                    </execution>
-
+                   <execution>
+                       <id>phantomjs-nexus-deploy-macosx</id>
+                       <phase>deploy</phase>
+                       <goals>
+                           <goal>deploy-file</goal>
+                       </goals>
+                       <configuration>
+                           <repositoryId>repo-man</repositoryId>
+                           <file>${download-folder}/phantomjs-${phantomjs.version}-macosx.zip</file>
+                           <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+                           <groupId>phantomjs</groupId>
+                           <artifactId>phantomjs-macosx</artifactId>
+                           <version>2.1.1</version>
+                           <packaging>zip</packaging>
+                           <generatePom>true</generatePom>
+                       </configuration>
+                   </execution>
                </executions>
             </plugin>
         </plugins>
@@ -323,7 +348,6 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jboss.shrinkwrap/shrinkwrap-impl-base -->
         <dependency>
             <groupId>org.jboss.shrinkwrap</groupId>
             <artifactId>shrinkwrap-impl-base</artifactId>
@@ -333,17 +357,25 @@
     </dependencies>
     <repositories>
         <repository>
-            <id>perc-java-repo</id>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public/</url>
+            <id>perc-releases-repo</id>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
             <snapshots>
                 <enabled>false</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
         <repository>
-            <id>a-thirdparty</id>
+            <id>perc-snapshots-repo</id>
+            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>perc-thirdparty</id>
             <name>thirdparty</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
         </repository>
         <repository>
             <id>maven-central</id>

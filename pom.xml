@@ -871,15 +871,16 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <extensions>
+        <extension>
+            <groupId>com.github.platform-team</groupId>
+            <artifactId>aws-maven</artifactId>
+            <version>6.0.0</version>
+        </extension>
+        </extensions>
     </build>
     <reporting>
         <plugins>
-         <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin>
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -946,7 +947,7 @@
     <repositories>
         <repository>
             <id>perc-java-repo</id>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public/</url>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
             <snapshots>
                 <enabled>false</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -955,17 +956,17 @@
         <repository>
             <id>thirdparty</id>
             <name>thirdparty</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
         </repository>
- <!--       <repository>
+        <repository>
             <id>snapshots</id>
-            <name>Internal Snapshots</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/snapshots/</url>
+            <name>Snapshots</name>
+            <url>https://mvn.percussion.com/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
-        </repository> -->
+        </repository>
         <repository>
                 <id>maven-central</id>
                 <url>https://repo1.maven.org/maven2</url>
@@ -975,21 +976,33 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>perc-java-repo</id>
-            <name>Perc Plugin Repository</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public</url>
+            <id>perc-releases-repo</id>
+            <name>Perc releases Repository</name>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
             <releases>
-                <updatePolicy>never</updatePolicy>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>perc-snapshot-repo</id>
+            <name>Perc Snapshots Repository</name>
+            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>always</updatePolicy>
             </releases>
         </pluginRepository>
         <pluginRepository>
             <id>thirdparty</id>
             <name>thirdparty</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
         </pluginRepository>
         <pluginRepository>
             <id>maven-central</id>
@@ -2875,7 +2888,6 @@
                 <artifactId>bcprov-ext-jdk15to18</artifactId>
                 <version>${bc.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.bouncycastle/bctls-jdk15to18 -->
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bctls-jdk15to18</artifactId>
@@ -2884,15 +2896,13 @@
         </dependencies>
     </dependencyManagement>
     <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Percussion Apache Maven Release Packages</name>
-            <url>https://maven.pkg.github.com/percussion/percussioncms</url>
-        </repository>
         <snapshotRepository>
-            <id>snapshots</id>
-            <name>GitHub Percussion Apache Maven Snapshot Packages </name>
-            <url>https://maven.pkg.github.com/percussion/percussioncms</url>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots/</url>
         </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
     </distributionManagement>
 </project>
