@@ -31,7 +31,6 @@
         <relativePath>../..</relativePath>
     </parent>
     <artifactId>webservices</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <axis.version>1.4.1</axis.version>
