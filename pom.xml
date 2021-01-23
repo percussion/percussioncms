@@ -872,11 +872,11 @@
             </plugins>
         </pluginManagement>
         <extensions>
-        <extension>
-            <groupId>com.github.platform-team</groupId>
-            <artifactId>aws-maven</artifactId>
-            <version>6.0.0</version>
-        </extension>
+            <extension>
+                <groupId>fi.yle.tools</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>1.4.1</version>
+            </extension>
         </extensions>
     </build>
     <reporting>
@@ -974,6 +974,12 @@
 
     <pluginRepositories>
         <pluginRepository>
+            <id>yle-public</id>
+            <name>Yle public repository</name>
+            <url>https://maven.yle.fi/release</url>
+            <layout>default</layout>
+        </pluginRepository>
+        <pluginRepository>
             <id>perc-releases-repo</id>
             <name>Perc releases Repository</name>
             <url>https://mvn.percussion.com/repositories/releases/</url>
@@ -982,7 +988,6 @@
                 <enabled>false</enabled>
             </snapshots>
             <releases>
-                <updatePolicy>always</updatePolicy>
             </releases>
         </pluginRepository>
         <pluginRepository>
@@ -994,7 +999,6 @@
                 <enabled>true</enabled>
             </snapshots>
             <releases>
-                <updatePolicy>always</updatePolicy>
             </releases>
         </pluginRepository>
         <pluginRepository>
@@ -2896,7 +2900,7 @@
     <distributionManagement>
         <snapshotRepository>
             <id>percussion.s3.repo</id>
-            <url>s3://percussion-maven-repo/repositories/snapshots/</url>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>percussion.s3.repo</id>
