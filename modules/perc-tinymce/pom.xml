@@ -116,7 +116,7 @@
                             <configuration>
                                 <repositoryId>repo-man</repositoryId>
                                 <file>${download-folder}/download-file</file>
-                                <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty</url>
+                                <url>https://mvn.percussion.com/repositories/thirdparty/</url>
                                 <groupId>com.tiny</groupId>
                                 <artifactId>tinymce</artifactId>
                                 <packaging>zip</packaging>

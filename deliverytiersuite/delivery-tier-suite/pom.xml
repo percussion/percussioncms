@@ -197,10 +197,27 @@
 
     <repositories>
         <repository>
-            <id>perc-java-repo</id>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public</url>
+            <id>perc-release-repo</id>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>perc-snapshot-repo</id>
+            <url>https://mvn.percussion.com/repositories/snaphots/</url>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>perc-thirdparty-repo</id>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+            <snapshots>
+                <enabled>false</enabled>
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
@@ -626,12 +643,24 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>perc-java-repo</id>
+            <id>perc-releases-repo</id>
             <name>Perc Plugin Repository</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public</url>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>perc-snapshots-repo</id>
+            <name>Perc Plugin Repository</name>
+            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
             </snapshots>
             <releases>
                 <updatePolicy>never</updatePolicy>
