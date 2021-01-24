@@ -107,8 +107,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>jcadf</groupId>
-            <artifactId>jcadf</artifactId>
+            <groupId>com.ibm.cadf</groupId>
+            <artifactId>auditlogger</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
