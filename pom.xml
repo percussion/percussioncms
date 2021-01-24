@@ -111,6 +111,7 @@
        <spotbugs.plugin.version>4.0.0</spotbugs.plugin.version>
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+       <commons.file.upload.version>1.4</commons.file.upload.version>
        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
        <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
        <maven.scm.plugin.version>1.11.2</maven.scm.plugin.version>
@@ -156,7 +157,7 @@
         <jackson.version>2.12.1</jackson.version>
         <jsoup.version>1.11.3</jsoup.version>
         <json.version>20180813</json.version>
-        <junit.version>[4.13.1,)</junit.version>
+        <junit.version>4.13.1</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
         <cactus.contextURL>http://localhost:9992/Rhythmyx</cactus.contextURL>
@@ -171,6 +172,7 @@
        <httpcomponents.version>4.5.8</httpcomponents.version>
        <tika.version>1.24.1</tika.version>
        <commons-cli.version>1.4</commons-cli.version>
+       <opencsv.version>4.6</opencsv.version>
        <xmpbox.version>2.0.17</xmpbox.version>
        <jbig2.version>3.0.2</jbig2.version>
        <pdfbox.version>2.0.17</pdfbox.version>
@@ -948,6 +950,10 @@
         <repository>
             <id>perc-release-repo</id>
             <url>https://mvn.percussion.com/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -956,6 +962,24 @@
             <id>thirdparty</id>
             <name>thirdparty</name>
             <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases>
+                    <enabled>true</enabled>
+                    <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>perc-snapshot-repo</id>
@@ -963,12 +987,10 @@
             <url>https://mvn.percussion.com/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
             </snapshots>
         </repository>
-        <repository>
-                <id>maven-central</id>
-                <url>https://repo1.maven.org/maven2</url>
-        </repository>
+
     </repositories>
 
 
@@ -1015,15 +1037,18 @@
 
     <dependencyManagement>
         <dependencies>
-
-            <!-- https://mvnrepository.com/artifact/junit/junit -->
+            <dependency>
+                <groupId>com.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
+                <scope>test</scope>
+            </dependency>
             <dependency>
                 <groupId>org.jmock</groupId>
                 <artifactId>jmock</artifactId>
                 <version>2.8.4</version>
                 <scope>test</scope>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.jmock/jmock-junit4 -->
             <dependency>
                 <groupId>org.jmock</groupId>
                 <artifactId>jmock-junit4</artifactId>
@@ -1031,13 +1056,11 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-    <groupId>junit</groupId>
-    <artifactId>junit</artifactId>
-         <version>${junit.version}</version>
-                <scope>test</scope>
-</dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
 
-            <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
@@ -2476,22 +2499,17 @@
                 <version>1.0.1</version>
                 <scope>compile</scope>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/jsp-api -->
             <dependency>
                 <groupId>javax.servlet.jsp</groupId>
                 <artifactId>javax.servlet.jsp-api</artifactId>
                 <version>2.3.3</version>
                 <scope>provided</scope>
             </dependency>
-
             <dependency>
                 <groupId>javax.servlet.jsp.jstl</groupId>
                 <artifactId>javax.servlet.jsp.jstl-api</artifactId>
                 <version>1.2.2</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
@@ -2558,18 +2576,11 @@
                 <version>2.4.8</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all -->
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-all</artifactId>
-                <version>1.3</version>
-                <scope>test</scope>
-            </dependency>
 
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
-                <version>1.4</version>
+                <version>${commons.file.upload.version}</version>
             </dependency>
 
 

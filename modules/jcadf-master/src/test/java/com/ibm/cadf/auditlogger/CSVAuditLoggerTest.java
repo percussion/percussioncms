@@ -23,12 +23,11 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import com.opencsv.CSVReader;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 import com.ibm.cadf.EventFactory;
 import com.ibm.cadf.auditlogger.AuditLogger;

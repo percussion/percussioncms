@@ -487,7 +487,7 @@
 
     </dependencies>
     <build>
-
+        <finalName>delivery-tier-distribution</finalName>
         <plugins>
 
             <plugin>
@@ -1242,6 +1242,30 @@
                             </packager>
                         </configuration>
 
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>create-my-bundle</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptorRefs>
+                                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                                    </descriptorRefs>
+                                    <finalName>delivery-tier-distribution</finalName>
+                                    <appendAssemblyId>false</appendAssemblyId>
+                                    <archive>
+                                        <manifest>
+                                            <mainClass>com.percussion.preinstall.MainDTSPreInstall</mainClass>
+                                        </manifest>
+                                    </archive>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
