@@ -27,6 +27,7 @@ import com.percussion.util.PSCharSetsConstants;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.ByteArrayInputStream;
@@ -138,7 +139,7 @@ class PSInternalResponse
       if (cType == null || cType.trim().length() == 0)
          throw new IllegalArgumentException("cType may not be null or empty");
       m_contentType = cType;
-      if (m_contentType.indexOf("charset") > -1)
+      if (m_contentType.contains("charset"))
       {
          boolean charsetnext = false;
          StringTokenizer st = new StringTokenizer(cType, " ;=");
@@ -239,8 +240,6 @@ class PSInternalResponse
     *
     * @return the buffered output as a byte stream.
     *
-    * @throws UnsupportedEncodingException if the caller has set
-    *     an unsupported encoding.
     */
    public InputStream getInputStream()
    {
@@ -425,7 +424,7 @@ class PSInternalResponse
       /**
        * Constructs an instance from a byte array stream.
        *
-       * @param bos The byyte array stream, may not be <code>null</code>.
+       * @param bos The byte array stream, may not be <code>null</code>.
        */
       private InternalOutputStream(ByteArrayOutputStream bos)
       {
@@ -447,6 +446,36 @@ class PSInternalResponse
        */
       private ByteArrayOutputStream m_bos;
 
+       /**
+        * This method can be used to determine if data can be written without blocking.
+        *
+        * @return <code>true</code> if a write to this <code>ServletOutputStream</code>
+        * will succeed, otherwise returns <code>false</code>.
+        * @since Servlet 3.1
+        */
+       @Override
+       public boolean isReady() {
+           return false;
+       }
+
+       /**
+        * Instructs the <code>ServletOutputStream</code> to invoke the provided
+        * {@link WriteListener} when it is possible to write
+        *
+        * @param writeListener the {@link WriteListener} that should be notified
+        *                      when it's possible to write
+        * @throws IllegalStateException if one of the following conditions is true
+        *                               <ul>
+        *                               <li>the associated request is neither upgraded nor the async started
+        *                               <li>setWriteListener is called more than once within the scope of the same request.
+        *                               </ul>
+        * @throws NullPointerException  if writeListener is null
+        * @since Servlet 3.1
+        */
+       @Override
+       public void setWriteListener(WriteListener writeListener) {
+           throw new RuntimeException("Not yet implemented");
+       }
    }
 
    /**

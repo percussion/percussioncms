@@ -258,15 +258,19 @@ public class PSAutotuneCache
          PSConnectionDetail detail = PSConnectionHelper.getConnectionDetail();
          for (Entry<String, String> entry : cacheRelationships.entrySet())
          {
-            String table = PSSqlHelper.qualifyTableName(entry.getKey(), detail.getDatabase(), detail.getOrigin(),
-                  detail.getDriver());
-            String stmt = "SELECT COUNT(*) FROM " + table;
-            
-            stmt1 = PSPreparedStatement.getPreparedStatement(conn, stmt);
-            resultSet = stmt1.executeQuery();
+            if(PSSqlHelper.isExistingCMSTableName(entry.getKey(),false)){
+               String table = PSSqlHelper.qualifyTableName(entry.getKey(), detail.getDatabase(), detail.getOrigin(),
+                       detail.getDriver());
+               String stmt = "SELECT COUNT(*) FROM " + table;
 
-            resultSet.next();
-            ehcacheDbRowCountValues.put(entry.getValue(), resultSet.getInt(1));
+               stmt1 = PSPreparedStatement.getPreparedStatement(conn, stmt);
+               resultSet = stmt1.executeQuery();
+
+               resultSet.next();
+               ehcacheDbRowCountValues.put(entry.getValue(), resultSet.getInt(1));
+         }else{
+               log.error("Skipping table " + entry.getKey() + " as it appears to be invalid.");
+         }
          }
       }
       finally
