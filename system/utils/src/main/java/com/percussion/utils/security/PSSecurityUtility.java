@@ -409,7 +409,8 @@ public class PSSecurityUtility {
      * @return The sanitized string
      */
     public static String sanitizeStringForFileUnderPath(String containingPath, String str){
-        return str;
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
     }
 
     /**
@@ -419,8 +420,8 @@ public class PSSecurityUtility {
      * @return The sanitized string
      */
     public static String sanitizeStringForFileSystem(String str){
-
-        return str;
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
     }
 
     /**
@@ -429,7 +430,8 @@ public class PSSecurityUtility {
      * @return The sanitized string
      */
     public static String sanitizeStringForSQLStatement(String str){
-        return str;
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
     }
 
     /**
@@ -438,7 +440,8 @@ public class PSSecurityUtility {
      * @return The sanitized string
      */
     public static String sanitizeStringForHTML(String str){
-        return str;
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
     }
 
 }

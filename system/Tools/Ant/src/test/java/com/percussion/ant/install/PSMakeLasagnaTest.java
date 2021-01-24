@@ -25,13 +25,19 @@ package com.percussion.ant.install;
 
 import com.percussion.server.PSServer;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.PSEncryptionException;
 import com.percussion.utils.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.testing.UnitTest;
-import junit.framework.TestCase;
+
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,17 +47,40 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 @Category(UnitTest.class)
-public class PSMakeLasagnaTest extends TestCase
+public class PSMakeLasagnaTest
 {
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    private String rxdeploydir;
+
    /**
     * Constant for the test rxrepository.properties file.
     */
    public static final String TEST_RXREPOSITORY_PROPS_FILE = 
       "/com/percussion/ant/install/test_rxrepository.properties";
-   
+
+    @Before
+    public void setUp()
+    {
+        rxdeploydir = System.getProperty("rxdeploydir");
+        System.setProperty("rxdeploydir",temporaryFolder.getRoot().getAbsolutePath());
+    }
+
+    @After
+    public void teardown(){
+        //Reset the deploy dir property if it was set prior to test
+        if(rxdeploydir != null)
+            System.setProperty("rxdeploydir",rxdeploydir);
+    }
+
+   @Test
    public void testExecute() throws IOException, PSEncryptionException {
-       Path rxDir = Files.createTempDirectory("test");
+       Path rxDir = PathUtils.getRxPath();
        File ret = rxDir.toFile();
        ret.deleteOnExit();
 

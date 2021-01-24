@@ -30,10 +30,10 @@
         <groupId>com.percussion.deliverytier</groupId>
         <artifactId>delivery-tier-suite</artifactId>
         <version>8.0.2-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>perc-integrations</artifactId>
-    <version>8.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <dependencies>
@@ -50,7 +50,7 @@
 		<dependency>
 		    <groupId>axis</groupId>
 		    <artifactId>axis</artifactId>
-		    <version>1.4.1</version>
+		    <version>${axis.version}</version>
 		</dependency>
         <!-- https://mvnrepository.com/artifact/javax.xml/jaxrpc-api -->
         <dependency>
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-shared-app</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -95,12 +95,12 @@
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-delivery-common</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-delivery-common</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
