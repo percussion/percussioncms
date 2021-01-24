@@ -140,7 +140,7 @@
        <servlet.spec>3.1.0</servlet.spec>
        <hibernate.version>5.1.14.Final</hibernate.version>
        <commons-logging.version>1.2</commons-logging.version>
-       <lucene.version>2.2.0</lucene.version>
+       <lucene.version>8.7.0</lucene.version>
        <myfaces.version>1.1.5</myfaces.version>
        <ehcache.version>2.10.5</ehcache.version>
        <stax.version>1.0.1</stax.version>
@@ -1980,86 +1980,55 @@
                 <artifactId>jericho-html</artifactId>
                 <version>1.5-dev1</version>
             </dependency>
-            <!--
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-analyzers</artifactId>
-                <version>${lucene.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-core</artifactId>
                 <version>${lucene.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-snowball</artifactId>
-                <version>${lucene.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-wordnet</artifactId>
-                <version>${lucene.version}</version>
-            </dependency>
--->
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-core</artifactId>
-                <version>8.7.0</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analyzers-common</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queryparser</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-highlighter</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queries</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-test-framework -->
-            <dependency>
+              <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-test-framework</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
                 <scope>test</scope>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-misc -->
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-misc</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-suggest -->
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-suggest</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
-
-
-
-
-            <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>pdfbox</artifactId>
@@ -2897,6 +2866,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <distributionManagement>
         <snapshotRepository>
             <id>percussion.s3.repo</id>
