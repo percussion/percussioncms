@@ -39,6 +39,8 @@ import java.util.concurrent.TimeUnit;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * This class is the primary class for a pluggable-search-engine architecture.
@@ -86,6 +88,8 @@ import org.w3c.dom.Element;
  */
 public abstract class PSSearchEngine
 {
+   private static final Logger logger = LogManager.getLogger(PSSearchEngine.class);
+
    private static final CountDownLatch latch = new CountDownLatch(1);
   
    /**
@@ -585,9 +589,8 @@ public abstract class PSSearchEngine
       {
          if (!m_searchQueryObjs.remove(sq))
          {
-            throw new IllegalStateException(
-               "The supplied indexer object was not obtained from this engine, "
-               + "or an attempt was made to free the same object more than once.");
+            logger.debug("The supplied indexer object was not obtained from this engine, "
+                    + "or an attempt was made to free the same object more than once.");
          }
          doReleaseSearchQuery(sq);
          m_searchQueryObjs.notifyAll();
@@ -1227,7 +1230,7 @@ public abstract class PSSearchEngine
     * empty. We store these so that we can clean up properly.
     * <p>Note, access to this object must be synchronized.
     */
-   private Set<PSSearchQuery> m_searchQueryObjs = new HashSet<PSSearchQuery>();
+   private final Set<PSSearchQuery> m_searchQueryObjs = new HashSet<PSSearchQuery>();
    
    /**
     * Stores PSSearchIndexer objects between the time they are allocated with 

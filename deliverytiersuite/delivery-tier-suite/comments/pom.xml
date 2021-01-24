@@ -29,6 +29,7 @@
         <artifactId>delivery-tier-suite</artifactId>
         <groupId>com.percussion.deliverytier</groupId>
         <version>8.0.2-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-comments-services</artifactId>
     <packaging>war</packaging>
@@ -36,7 +37,7 @@
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-shared-app</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -47,12 +48,12 @@
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-delivery-common</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-delivery-common</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -318,7 +319,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.2</version>
                 <configuration>
                     <webXml>src\main\java\webapp\WEB-INF\web.xml</webXml>
                     <webResources>
@@ -332,7 +332,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.16</version>
                 <configuration>
                     <systemProperties>
                         <property>
@@ -344,7 +343,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
