@@ -15,15 +15,15 @@ on:
   schedule:
     # Midnight on every Sunday
     - cron: '0 0 * * 0'
-    branches: [ development ]
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.txt'
-      - '**/*.png'
-      - '**/*.jpg'
-      - '**/*.gif'
-      - '**/*.html'
-      - '**/*.css'
+        branches: [ development ]
+        paths-ignore:
+        - '**/*.md'
+        - '**/*.txt'
+        - '**/*.png'
+        - '**/*.jpg'
+        - '**/*.gif'
+        - '**/*.html'
+        - '**/*.css'
 
 jobs:
   analyze:
