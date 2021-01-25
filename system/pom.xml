@@ -117,8 +117,6 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
-            <!-- <resource> <directory>loader/src</directory> <excludes> 
-                <exclude>**/*.java</exclude> </excludes> </resource> -->
             <resource>
                 <directory>release/src</directory>
                 <excludes>
@@ -143,21 +141,12 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
-            <!--  
-            <resource>
-                <directory>utils/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            -->
             <resource>
                 <directory>servlet/src</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
-
             <resource>
                 <directory>src</directory>
                 <excludes>
@@ -165,15 +154,6 @@
                 </excludes>
                 <filtering>false</filtering>
             </resource>
-
-            <!--
-            <resource>
-                <directory>Tools/Ant/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>-->
-
             <resource>
                 <directory>Tools/Converters/src</directory>
                 <excludes>
@@ -205,40 +185,8 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
-            <!--
-            <resource>
-                <directory>workflow/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            -->
-            <!--  
-            <resource>
-                <directory>Testing/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            -->
-            <!--
-            <resource>
-                <directory>release/Install/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            -->
         </resources>
         <testResources>
-            <!--
-                <testResource>
-                    <directory>utils/test</directory>
-                    <excludes>
-                        <exclude>**/*.java</exclude>
-                    </excludes>
-                </testResource>
-                -->
             <testResource>
                 <directory>Tools/ImageWidgetService/test</directory>
                 <excludes>
@@ -266,12 +214,9 @@
             </testResource>
         </testResources>
         <plugins>
-
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
@@ -329,10 +274,20 @@
                             </sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>add-test-resource</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>UnitTestResources</resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
