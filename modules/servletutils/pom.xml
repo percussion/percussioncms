@@ -35,8 +35,21 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>servlet-utils</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
     <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <directory>../../system/utils/src/test/resources</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
     <plugins>
         <plugin>
             <inherited>true</inherited>
