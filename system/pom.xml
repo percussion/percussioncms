@@ -282,7 +282,13 @@
                         </goals>
                         <configuration>
                             <resources>
-                                <resource>UnitTestResources</resource>
+                                <resource>
+                                    <directory>UnitTestResources</directory>
+                                    <excludes>
+                                        <exclude>**/*.java</exclude>
+                                        <exclude>ant</exclude>
+                                    </excludes>
+                                </resource>
                             </resources>
                         </configuration>
                     </execution>
