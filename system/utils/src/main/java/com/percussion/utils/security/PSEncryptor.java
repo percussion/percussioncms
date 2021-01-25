@@ -72,6 +72,7 @@ public class PSEncryptor extends PSAbstractEncryptor {
      */
     public PSEncryptor(String algorithm, String keyLocation) {
         super();
+        init(algorithm,keyLocation);
     }
 
 
