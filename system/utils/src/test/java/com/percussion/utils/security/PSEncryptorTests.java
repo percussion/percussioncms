@@ -108,7 +108,9 @@ public class PSEncryptorTests {
     @Test
     public void testClientStyleOfGetInstance() throws PSEncryptionException {
 
-        PSEncryptor enc = PSEncryptor.getInstance("AES",System.getProperty("user.home") + "/.perc-secure");
+        teardown();
+
+        PSEncryptor enc = PSEncryptor.getInstance("AES",System.getProperty("user.home") + "/.perc-secure/");
 
         String pw = enc.encrypt("Cocaine is a hell of a drug.");
         assertNotEquals(pw,"Cocaine is a hell of a drug.");

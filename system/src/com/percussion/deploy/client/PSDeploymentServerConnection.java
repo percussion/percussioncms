@@ -78,7 +78,7 @@ import org.w3c.dom.Element;
 public class PSDeploymentServerConnection
 {
    private static final String ENC_ALGO = "AES";
-   private static final String SECURE_DIR = System.getProperty("user.home") + "/.perc_secure";
+   private static final String SECURE_DIR = System.getProperty("user.home") + "/.perc_secure/";
    /**
     * Constructs a connection using the http protocol. Calls
     * {@link #PSDeploymentServerConnection(String, String, int, String, String,
