@@ -948,6 +948,13 @@
     </reporting>
     <repositories>
         <repository>
+            <id>github</id>
+            <releases>  <enabled>true</enabled>  </releases>
+            <snapshots> <enabled>true</enabled> </snapshots>
+            <name>GitHub Percussion Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/percussion/percussioncms</url>
+        </repository>
+        <repository>
             <id>perc-release-repo</id>
             <url>https://mvn.percussion.com/repositories/releases/</url>
             <releases>
