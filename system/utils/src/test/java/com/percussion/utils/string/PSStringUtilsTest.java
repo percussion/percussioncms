@@ -299,7 +299,6 @@ public class PSStringUtilsTest
    {
       Font x = new Font("Arial", Font.PLAIN, 12);
       Dimension dim = new Dimension(30, 12);
-
       String result = PSStringUtils.abbreviatePath(
             "//aaa/bbb/ccc.xyz", dim, x);
       assertEquals(".../ccc.xyz", result);
@@ -308,10 +307,6 @@ public class PSStringUtilsTest
       result = PSStringUtils.abbreviatePath(
             "//aaa/bbb/ccc.xyz", dim, x);
       assertEquals("//aaa/bbb/ccc.xyz", result);
-      
-      result = PSStringUtils.abbreviatePath(
-            "//aaaaa/bbbbb/ccccc.xyz", dim, x);
-      assertEquals("//aaaaa/.../ccccc.xyz", result);      
       
       dim = new Dimension(150, 12);
       result = PSStringUtils.abbreviatePath(
