@@ -167,7 +167,7 @@ public class PSAutotuneCache
 
    private long updateCacheItem(String cacheName, Element elem, long percentageOfHeapForCache)
    {
-      int regionRowCount = ehcacheDbRowCountValues.get(cacheName);
+      double regionRowCount = ehcacheDbRowCountValues.get(cacheName);
       Node cache = (Node) elem;
       double bytesToSubtract = 0.0;
       String maxElemValue = cache.attr(MAX_ELEMS_IN_MEMORY);
@@ -184,7 +184,7 @@ public class PSAutotuneCache
       {
          log.debug(MAX_ELEMS_IN_MEMORY + " is being updated as it contains a higher value: "
                + cacheName);
-         String count = Integer.toString(regionRowCount);
+         String count = String.valueOf(Math.round(regionRowCount));
          cache.attr(MAX_ELEMS_IN_MEMORY, count);
       }
       
