@@ -24,13 +24,13 @@
 
 package com.percussion.preinstall;
 
-import com.percussion.utils.io.PathUtils;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +45,31 @@ public class MainDTSPreInstall {
     private static final String INSTALL_TEMPDIR="percDTSInstallTmp_";
     private static final String PERC_ANT_JAR="perc-ant";
     private static final String ANT_INSTALL="installDts.xml";
+
+    /**
+     * Find a jar by path pattern to avoid hard coding / forcing version.
+     *
+     * @param execPath Folder containing the jar
+     * @param fileNameWithPattern A File name with a glob pattern like perc-ant-*.jar
+     * @return Path to the ant jar
+     * @throws IOException
+     */
+    private static Path getVersionLessJarFilePath(Path execPath, String fileNameWithPattern) throws IOException {
+        try (DirectoryStream<Path> ds = Files.newDirectoryStream(execPath.toAbsolutePath(), fileNameWithPattern)) {
+            List<Path> paths = new ArrayList<>();
+            for (Path path : ds) {
+                paths.add(path);
+            }
+            if (paths.isEmpty()) {
+                throw new IOException(fileNameWithPattern + " not found.");
+            } else if (paths.size() == 1) {
+                return paths.get(0);
+            } else {
+                System.out.println("Warning: Multiple " + fileNameWithPattern + " jars found, selecting the first one: " + paths.get(0).toAbsolutePath().toString());
+                return paths.get(0);
+            }
+        }
+    }
 
     private static File tmpFolder;
     public static void main(String[] args) {
@@ -122,7 +147,7 @@ public class MainDTSPreInstall {
 
             Path execPath = installSrc.resolve(Paths.get("rxconfig","Installer"));
             Path installAntJarPath = execPath.resolve(
-                    PathUtils.getVersionLessJarFilePath(
+                    getVersionLessJarFilePath(
                     execPath,PERC_ANT_JAR + "-*.jar"));
 
             exitCode =  execJar(installAntJarPath,execPath,installPath,isProduction);
