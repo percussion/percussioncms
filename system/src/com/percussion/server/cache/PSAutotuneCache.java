@@ -184,7 +184,7 @@ public class PSAutotuneCache
       {
          log.debug(MAX_ELEMS_IN_MEMORY + " is being updated as it contains a higher value: "
                + cacheName);
-         String count = Double.toString(regionRowCount);
+         String count = String.valueOf(Math.round(regionRowCount));
          cache.attr(MAX_ELEMS_IN_MEMORY, count);
       }
       
