@@ -128,7 +128,30 @@ public class PSRegionParserTest
         List<? extends PSRegionNode> children =  regTree.getRootNode().getChildren();
         PSRegionCode code = getCode(children.get(0));
         assertNotNull(code);
-        assertEquals("#perc_header()", code.getTemplateCode().trim());
+        assertEquals("#perc_header()\r\n" +
+                "<!--\r\n" +
+                "  ~     Percussion CMS\r\n" +
+                "  ~     Copyright (C) 1999-2020 Percussion Software, Inc.\r\n" +
+                "  ~\r\n" +
+                "  ~     This program is free software: you can redistribute it and/or modify\r\n" +
+                "  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\r\n" +
+                "  ~\r\n" +
+                "  ~     This program is distributed in the hope that it will be useful,\r\n" +
+                "  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of\r\n" +
+                "  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\r\n" +
+                "  ~     GNU Affero General Public License for more details.\r\n" +
+                "  ~\r\n" +
+                "  ~     Mailing Address:\r\n" +
+                "  ~\r\n" +
+                "  ~      Percussion Software, Inc.\r\n" +
+                "  ~      PO Box 767\r\n" +
+                "  ~      Burlington, MA 01803, USA\r\n" +
+                "  ~      +01-781-438-9900\r\n" +
+                "  ~      support@percussion.com\r\n" +
+                "  ~      https://www.percusssion.com\r\n" +
+                "  ~\r\n" +
+                "  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>\r\n" +
+                "  -->", code.getTemplateCode().trim());
         PSRegionCode end = getCode(children.get(children.size() - 1));
         assertEquals("#perc_footer()", end.getTemplateCode().trim());
     }
