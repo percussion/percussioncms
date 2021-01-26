@@ -27,21 +27,47 @@ package com.percussion.delivery.feeds.services;
 import com.percussion.delivery.feeds.data.PSFeedDTO;
 import com.percussion.delivery.feeds.services.rdbms.PSFeedDao;
 import com.percussion.delivery.utils.security.PSHttpClient;
-import junit.framework.TestCase;
+
+import com.percussion.utils.security.PSEncryptionException;
+import com.percussion.utils.security.PSEncryptor;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.Assert;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations =
 {"classpath:test-beans.xml"})
-public class PSFeedsServiceTests extends TestCase{
+public class PSFeedsServiceTests{
+
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    private String rxdeploydir;
+
+    @Before
+    public void setup() throws IOException {
+
+        rxdeploydir = System.getProperty("rxdeploydir");
+        System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
+    }
+
+    @After
+    public void teardown(){
+        if(rxdeploydir != null)
+            System.setProperty("rxdeploydir",rxdeploydir);
+    }
+
+
 
     @Autowired
     private PSFeedDao feedsDao;
@@ -54,25 +80,19 @@ public class PSFeedsServiceTests extends TestCase{
     }
     
     @Test
-    public void testExternalRSSFeed() throws UnsupportedEncodingException{
+    public void testExternalRSSFeed() throws UnsupportedEncodingException, PSEncryptionException {
     	
     	PSFeedService svc = new PSFeedService(feedsDao,httpClient);
 
         PSFeedDTO feedDTO = new PSFeedDTO();
-        feedDTO.setFeedsUrl("https://oakland.joinhandshake.com/external_feeds/1681/public.rss?token=RQNKyKoIGu6o4PcV2i5v9PS_WalEKDDfATa3Nj-CUFnK-bBCH3zmKQ");
+
+        String url = PSEncryptor.getInstance().encrypt("https://www.nasa.gov/rss/dyn/breaking_news.rss");
+
+        feedDTO.setFeedsUrl(url);
         String xml = svc.readExternalFeed(feedDTO,"percId");
-    	
-    	Assert.hasText(xml);
-
-        String url = "http://oakland.imodules.com/controls/cms_v2/components/rss/rss.aspx?sid=1001&gid=1001&calcid=2571&page_id=1209";
-        PSFeedDTO feedDTO1 = new PSFeedDTO();
-        feedDTO1.setFeedsUrl(URLEncoder.encode(url,"UTF8"));
-
-        xml = svc.readExternalFeed(feedDTO1,"percId");
-    	
-    	Assert.hasText(xml);
-    	
-    	
+    	System.out.println(xml);
+    	assertTrue(xml != null);
+    	assertTrue(xml.toLowerCase().contains("nasa"));
     	
     }
     

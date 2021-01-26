@@ -30,9 +30,9 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
-      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
    <bean id="propertyPlaceholderProps"
@@ -65,40 +65,13 @@
             <prop key="hibernate.cache.use_query_cache">false</prop>
 
             <!-- Apache Derby -->
-            <prop key="jdbcUrl">jdbc:derby:memory:perccomments;create=true</prop>
+            <prop key="jdbcUrl">jdbc:derby:memory:percfeeds;create=true</prop>
             <prop key="jdbcDriver">org.apache.derby.jdbc.EmbeddedDriver</prop>
             <prop key="db.username">test</prop>
             <prop key="db.password">test</prop>
             <prop key="db.schema">APP</prop>
             <prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
             <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
-			
-            <!-- MySQL -->
-<!-- 	        <prop key="jdbcUrl">jdbc:mysql://localhost:3306/deliverydb</prop> -->
-<!-- 	        <prop key="jdbcDriver">com.mysql.jdbc.Driver</prop> -->
-<!-- 	        <prop key="db.username">perc</prop> -->
-<!--             <prop key="db.password">perc</prop> -->
-<!-- 	        <prop key="db.schema"></prop> -->
-<!-- 	        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop> -->
-<!-- 	        <prop key="hibernate.query.substitutions"></prop> -->
-         
-            <!-- Oracle -->
-<!--             <prop key="jdbcUrl">jdbc:oracle:thin:@localhost:1521:XE</prop> -->
-<!--             <prop key="jdbcDriver">oracle.jdbc.driver.OracleDriver</prop> -->
-<!--             <prop key="db.username">PERC</prop> -->
-<!--             <prop key="db.password">perc</prop> -->
-<!--             <prop key="db.schema">PERC</prop> -->
-<!--             <prop key="hibernate.dialect">org.hibernate.dialect.Oracle9iDialect</prop> -->
-<!--             <prop key="hibernate.query.substitutions"></prop> -->
-         
-		    <!-- MS SQL Server -->
-<!-- 	        <prop key="jdbcUrl">jdbc:jtds:sqlserver://localhost/deliverydb</prop> -->
-<!-- 	        <prop key="jdbcDriver">net.sourceforge.jtds.jdbc.Driver</prop> -->
-<!-- 	        <prop key="db.username">sa</prop> -->
-<!-- 	        <prop key="db.password">demo</prop> -->
-<!-- 	        <prop key="db.schema">dbo</prop> -->
-<!-- 	        <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop> -->
-<!-- 	        <prop key="hibernate.query.substitutions"></prop> -->
             <prop key="tenant.cache.ttl">1440</prop>
             <prop key="tenant.cache.reauth">true</prop>
          </props>
