@@ -57,7 +57,7 @@ public class PSFeedDaoTest extends TestCase
         IPSConnectionInfo info = dao.getConnectionInfo();
         assertNull(info);
         
-        //Test intial save and get
+        //Test initial save and get
         dao.saveConnectionInfo("http://localhost:9980", "testuser", "demo", false);
 
         info = dao.getConnectionInfo();
