@@ -31,7 +31,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-web-ui</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
@@ -616,45 +615,45 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-default-template</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-main</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-workflow</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-linkback</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-sfp</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-nav</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-tinymce</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-jetty-jars</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
@@ -667,7 +666,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>
@@ -682,12 +681,12 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-package-manager</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-jetty-logging</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
@@ -701,7 +700,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rest</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
 
                 <exclusion>
@@ -713,7 +712,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>sitemanage</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-beanutils</artifactId>
@@ -730,7 +729,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>shindig-uber</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>
@@ -1100,7 +1099,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>
@@ -1110,15 +1109,15 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLight-Main-cactus-tests</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <artifactId>perc-system-cactus-tests</artifactId>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-shared-test-resources</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -1136,7 +1135,7 @@
                     <groupId>aspectjrt</groupId>
                 </exclusion>
             </exclusions>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-httpclient</groupId>

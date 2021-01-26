@@ -35,6 +35,5 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>build-tools</artifactId>
-    <version>8.0.2-SNAPSHOT</version>
-    <name>Build Tools</name>
+    <name>build-tools</name>
 </project>
