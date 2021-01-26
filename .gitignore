@@ -1,6 +1,9 @@
 # random output file
 **/test-output.jar
 
+modules/jcadf-master/audit_events.csv
+modules/jcadf-master/audit_events.json
+
 # os
 **/.DS_Store
 **/dependency-reduced-pom.xml
