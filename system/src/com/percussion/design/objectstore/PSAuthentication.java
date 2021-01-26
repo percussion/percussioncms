@@ -574,20 +574,18 @@ public class PSAuthentication extends PSComponent
    public boolean equals(Object o) {
       if (this == o) return true;
       if (!(o instanceof PSAuthentication)) return false;
-      if (!super.equals(o)) return false;
       PSAuthentication that = (PSAuthentication) o;
       return m_appendBaseDn == that.m_appendBaseDn &&
               Objects.equals(m_name, that.m_name) &&
               Objects.equals(m_scheme, that.m_scheme) &&
               Objects.equals(m_user, that.m_user) &&
               Objects.equals(m_userAttr, that.m_userAttr) &&
-              Objects.equals(m_pw, that.m_pw) &&
               Objects.equals(m_filterExtension, that.m_filterExtension);
    }
 
    @Override
    public int hashCode() {
-      return Objects.hash(super.hashCode(), m_name, m_scheme, m_user, m_appendBaseDn, m_userAttr, m_pw, m_filterExtension);
+      return Objects.hash(super.hashCode(), m_name, m_scheme, m_user, m_appendBaseDn, m_userAttr, m_filterExtension);
    }
 
    /**
