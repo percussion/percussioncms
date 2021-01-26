@@ -30,6 +30,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,11 +44,11 @@ import java.util.List;
  * @author erikserating
  *
  */
-
-@Transactional
 public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 
 	final static Logger log = LogManager.getLogger(PSFeedDao.class);
+
+	public PSFeedDao(){}
 
 	/*
 	 * (non-Javadoc)
@@ -73,7 +74,7 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 				return null;
 			return results.get(0);
 		}finally {
-			//session.close();
+			session.close();
 		}
 	}
 
@@ -101,7 +102,7 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			List<IPSFeedDescriptor> results = session.createQuery(criteriaQuery).getResultList();
 			return results;
 		}finally {
-			//session.close();
+			session.close();
 		}
 	}
 
@@ -125,7 +126,7 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 				return null;
 			return results.get(0);
 		}finally {
-			//session.close();
+			session.close();
 		}
 	}
 
@@ -144,6 +145,8 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			session.saveOrUpdate(info);
 		} catch (Exception ex) {
 			log.error("Error Saving Connection Info:" + ex.getLocalizedMessage());
+		}finally {
+			session.close();
 		}
 	}
 
@@ -162,6 +165,8 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			}
 		} catch (Exception ex) {
 			log.error("Error Saving Descriptors:" + ex.getLocalizedMessage());
+		}finally{
+			session.close();
 		}
 	}
 
@@ -176,8 +181,12 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 	public void deleteDescriptors(List<IPSFeedDescriptor> descriptors) {
 		List<IPSFeedDescriptor> prepared = prepareDescriptors(descriptors);
 		Session session = getSession();
-		for (IPSFeedDescriptor p : prepared) {
-			session.delete(p);
+		try {
+			for (IPSFeedDescriptor p : prepared) {
+				session.delete(p);
+			}
+		}finally{
+			session.close();
 		}
 	}
 
@@ -200,7 +209,7 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 
 			return results;
 		}finally {
-			//session.close();
+			session.close();
 		}
 	}
 
