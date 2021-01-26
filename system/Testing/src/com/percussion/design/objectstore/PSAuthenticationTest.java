@@ -105,7 +105,7 @@ public class PSAuthenticationTest
       assertTrue(!PSComponent.compare(auth2, auth2_1));
       assertTrue(!PSComponent.compare(auth2, auth2_2));
       assertTrue(!PSComponent.compare(auth2, auth2_3));
-      assertTrue(!PSComponent.compare(auth2, auth2_4));
+      assertTrue(PSComponent.compare(auth2, auth2_4));
       assertTrue(!PSComponent.compare(auth2, auth2_5));
 
       // testing clone/copyFrom

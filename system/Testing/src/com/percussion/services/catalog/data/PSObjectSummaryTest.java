@@ -88,9 +88,11 @@ public class PSObjectSummaryTest
       nsum.setPermissions(new PSUserAccessLevel(permissions));
       
       String ser = PSXmlSerializationHelper.writeToXml(nsum);
-      
+      System.out.println(ser);
+      System.out.println();
       PSObjectSummary restore = 
          (PSObjectSummary) PSXmlSerializationHelper.readFromXML(ser);
+      System.out.println(restore);
 
       assertEquals("Expected to be equal", nsum, restore);
    }

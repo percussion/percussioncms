@@ -141,6 +141,7 @@
        <servlet.spec>3.1.0</servlet.spec>
        <hibernate.version>5.1.14.Final</hibernate.version>
        <commons-logging.version>1.2</commons-logging.version>
+       <commons.io.version>2.8.0</commons.io.version>
        <lucene.version>8.7.0</lucene.version>
        <myfaces.version>1.1.5</myfaces.version>
        <ehcache.version>2.10.5</ehcache.version>
@@ -1363,7 +1364,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.7</version>
+                <version>${commons.io.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
