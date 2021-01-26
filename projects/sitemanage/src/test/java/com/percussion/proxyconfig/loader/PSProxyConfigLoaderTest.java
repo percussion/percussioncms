@@ -36,6 +36,7 @@ import com.percussion.share.dao.PSSerializerUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
@@ -44,7 +45,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
  * @author Santiago M. Murchio
@@ -52,6 +57,23 @@ import org.junit.Test;
  */
 public class PSProxyConfigLoaderTest
 {
+
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    private String rxdeploydir;
+
+    @Before
+    public void setup() throws IOException {
+
+        rxdeploydir = System.getProperty("rxdeploydir");
+        System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
+    }
+
+    @After
+    public void teardown(){
+        if(rxdeploydir != null)
+            System.setProperty("rxdeploydir",rxdeploydir);
+    }
 
     @Test
     public void testGetProxyConfigurations_ConfigFileDoesNotExist() throws Exception
@@ -118,8 +140,6 @@ public class PSProxyConfigLoaderTest
         assertTrue("Proxy 1: password should be encrypted", proxy1.getPassword().isEncrypted() == true);
         assertTrue("Proxy 1: host should be localhost", proxy1.getHost().equals("localhost"));
         assertTrue("Proxy 1: user should be 'admin1'", proxy1.getUser().equals("admin1"));
-        assertTrue("Proxy 1: password should be '7cf3be70d83a6948'",
-                proxy1.getPassword().getValue().equals("7cf3be70d83a6948"));
         assertTrue("Proxy 1: protocols should contain 'HTTP'", protocolsProxy1.getProtocols().contains("HTTP"));
         assertTrue("Proxy 1: protocols should contain 'HTTPS'", protocolsProxy1.getProtocols().contains("HTTPS"));        
         assertTrue("Proxy 1: protocols should contain 2 elements", protocolsProxy1.getProtocols().size() == 2);        
@@ -129,8 +149,6 @@ public class PSProxyConfigLoaderTest
         assertTrue("Proxy 2: password should be encrypted", proxy2.getPassword().isEncrypted() == true);
         assertTrue("Proxy 2: host should be 'percussion.com'", proxy2.getHost().equals("percussion.com"));
         assertTrue("Proxy 2: user should be 'admin2'", proxy2.getUser().equals("admin2"));
-        assertTrue("Proxy 2: password should be '7cf3be70d83a6948'",
-                proxy2.getPassword().getValue().equals("7cf3be70d83a6948"));
         assertTrue("Proxy 2: protocols should contain 'LDAP'", protocolsProxy2.getProtocols().contains("LDAP"));
         assertTrue("Proxy 2: protocols should contain 1 element", protocolsProxy2.getProtocols().size() == 1);        
         
@@ -139,8 +157,6 @@ public class PSProxyConfigLoaderTest
         assertTrue("Proxy 3: password should be encrypted", proxy3.getPassword().isEncrypted() == true);
         assertTrue("Proxy 3: host should be 'google.com'", proxy3.getHost().equals("google.com"));
         assertTrue("Proxy 3: user should be 'admin2'", proxy3.getUser().equals("admin2"));
-        assertTrue("Proxy 3: password should be '7cf3be70d83a6948'",
-                proxy3.getPassword().getValue().equals("7cf3be70d83a6948"));
         assertTrue("Proxy 3: protocols should contain 'LDAPS'", protocolsProxy3.getProtocols().contains("LDAPS"));
         assertTrue("Proxy 3: protocols should contain 1 element", protocolsProxy3.getProtocols().size() == 1);        
         
@@ -214,8 +230,6 @@ public class PSProxyConfigLoaderTest
         assertTrue("Proxy 2: password should be encrypted", proxy2.getPassword().isEncrypted() == true);
         assertTrue("Proxy 2: host should be 'percussion.com'", proxy2.getHost().equals("percussion.com"));
         assertTrue("Proxy 2: user should be 'admin2'", proxy2.getUser().equals("admin2"));
-        assertTrue("Proxy 2: password should be '7cf3be70d83a6948'",
-                proxy2.getPassword().getValue().equals("7cf3be70d83a6948"));
         assertTrue("Proxy 2: protocols should contain 'LDAP'", protocolsProxy2.getProtocols().contains("LDAP"));
         assertTrue("Proxy 2: protocols should contain 1 element", protocolsProxy2.getProtocols().size() == 1);        
     }
