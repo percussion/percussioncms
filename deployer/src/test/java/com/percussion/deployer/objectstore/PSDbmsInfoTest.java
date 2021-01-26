@@ -119,7 +119,6 @@ public class PSDbmsInfoTest
       info2.copyFrom(info1);
       assertEquals(info1, info2);
 
-      info1.setUserNamePwd(info1.getUserId(),info1.getPassword(true),true);
       info2 = new PSDbmsInfo(info1.getDatasource(), info1.getDriver(), info1
             .getServer(), info1.getDatabase(), info1.getOrigin(), info1
             .getUserId(), info1.getPassword(true), true);
