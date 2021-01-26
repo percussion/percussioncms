@@ -406,4 +406,14 @@
         <scope>provided</scope>
     </dependency>
   </dependencies>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>
