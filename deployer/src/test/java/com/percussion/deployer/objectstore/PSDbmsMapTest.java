@@ -26,25 +26,48 @@
 package com.percussion.deployer.objectstore;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test class for the <code>PSDbmsMapTest</code> class.
  */
-public class PSDbmsMapTest extends TestCase
+public class PSDbmsMapTest
 {
+   @Rule
+   public TemporaryFolder temporaryFolder = new TemporaryFolder();
+   private String rxdeploydir;
+
+   @Before
+   public void setup() throws IOException {
+
+      rxdeploydir = System.getProperty("rxdeploydir");
+      System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
+   }
+
+   @After
+   public void teardown(){
+      if(rxdeploydir != null)
+         System.setProperty("rxdeploydir",rxdeploydir);
+   }
+
    /**
     * Construct this unit test
     *
-    * @param name The name of this test.
     */
-    public PSDbmsMapTest(String name)
+    public PSDbmsMapTest()
    {
-      super(name);
+      super();
    }
 
    /**
@@ -52,6 +75,7 @@ public class PSDbmsMapTest extends TestCase
     *
     * @throws Exception If there are any errors.
     */
+   @Test
    public void testConstructor() throws Exception
    {
       PSDbmsInfo dbms1 = new PSDbmsInfo("rx-ds", "driver", "server", "db",
@@ -84,6 +108,7 @@ public class PSDbmsMapTest extends TestCase
     *
     * @throws Exception if there are any errors.
     */
+   @Test
    public void testEquals() throws Exception
    {
       PSDbmsInfo dbms1 = new PSDbmsInfo("rx-ds", "driver", "server", "db",
@@ -141,6 +166,7 @@ public class PSDbmsMapTest extends TestCase
     *
     * @throws Exception if there are any errors.
     */
+   @Test
    public void testXml() throws Exception
    {
       PSDbmsInfo dbms1 = new PSDbmsInfo("rx-ds", "driver", "server", "db",
@@ -192,17 +218,6 @@ public class PSDbmsMapTest extends TestCase
       }
 
       return true;
-   }
-
-   // collect all tests into a TestSuite and return it
-   public static Test suite()
-   {
-      TestSuite suite = new TestSuite();
-      suite.addTest(new PSDbmsMapTest("testConstructor"));
-      suite.addTest(new PSDbmsMapTest("testEquals"));
-      suite.addTest(new PSDbmsMapTest("testXml"));
-
-      return suite;
    }
 
 }
