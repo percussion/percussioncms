@@ -33,18 +33,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>extensions-linkback</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
 
    <dependencies>
        <dependency>
            <groupId>com.percussion</groupId>
-           <artifactId>CMLite-Main</artifactId>
-           <version>8.0.2-SNAPSHOT</version>
+           <artifactId>perc-system</artifactId>
+           <version>${project.parent.version}</version>
        </dependency>
        <dependency>
            <groupId>com.percussion</groupId>
            <artifactId>rxutils</artifactId>
-           <version>8.0.2-SNAPSHOT</version>
+           <version>${project.parent.version}</version>
        </dependency>
        <dependency>
            <groupId>junit</groupId>

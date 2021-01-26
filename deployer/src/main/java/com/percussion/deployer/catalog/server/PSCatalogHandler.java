@@ -61,7 +61,7 @@ import java.util.ResourceBundle;
 
 /**
  * The handler to handle all deploy catalog requests. Please see {@link 
- * com.percussion.deployer.catalog#PSCataloger PSCataloger} for description of 
+ * com.percussion.deployer.catalog.PSCataloger PSCataloger} for description of
  * supported request types and results.
  */
 public class PSCatalogHandler 

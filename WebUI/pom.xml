@@ -30,7 +30,7 @@
         <version>8.0.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>CMLite-WebUI</artifactId>
+    <artifactId>perc-web-ui</artifactId>
   <version>8.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -71,7 +71,7 @@
                                         <echo>Refreshing dev install with updated JS...</echo>
                                         <echo>Installing to ${install.dir}</echo>
                                         <echo>Unzipping war....</echo>
-                                        <unzip src="${project.basedir}/target/CMLite-WebUI-${project.parent.version}.war" dest="${install.dir}/jetty/base/webapps/Rhythmyx" />
+                                        <unzip src="${project.basedir}/target/perc-web-ui-${project.parent.version}.war" dest="${install.dir}/jetty/base/webapps/Rhythmyx" />
                                         <echo>Copying common-ui files to web_resources...</echo>
                                         <copy todir="${install.dir}/web_resources/cm/common/js" overwrite="true" force="true">
                                             <fileset dir="${install.dir}/jetty/base/webapps/Rhythmyx/cm/common/js/" includes="**/*.js" />
@@ -681,7 +681,7 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLite-PCM-PkgMgtUI</artifactId>
+            <artifactId>perc-package-manager</artifactId>
             <version>8.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -1099,7 +1099,7 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLite-Main</artifactId>
+            <artifactId>perc-system</artifactId>
             <version>8.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>

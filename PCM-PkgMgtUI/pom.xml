@@ -30,8 +30,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>CMLite-PCM-PkgMgtUI</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
+  <artifactId>perc-package-manager</artifactId>
   <packaging>jar</packaging>
   <build>
     <sourceDirectory>src</sourceDirectory>
