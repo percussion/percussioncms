@@ -159,7 +159,7 @@
   <dependencies>
   <dependency>
         <groupId>com.percussion</groupId>
-        <artifactId>CMLite-Main</artifactId>
+        <artifactId>perc-system</artifactId>
         <version>${project.parent.version}</version>
         <exclusions>
             <exclusion>
@@ -187,7 +187,7 @@
       </dependency>
           <dependency>
         <groupId>com.percussion</groupId>
-        <artifactId>CMLite-Main-Deployer</artifactId>
+        <artifactId>perc-deployer</artifactId>
         <version>${project.parent.version}</version>
     </dependency>
       <dependency>
@@ -207,7 +207,7 @@
       </dependency>
       <dependency>
         <groupId>com.percussion</groupId>
-        <artifactId>CMLite-Main</artifactId>
+        <artifactId>perc-system</artifactId>
         <version>${project.parent.version}</version>
         <classifier>tests</classifier>
       <type>test-jar</type>

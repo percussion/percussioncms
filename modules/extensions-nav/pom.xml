@@ -33,12 +33,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>extensions-nav</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
 
    <dependencies>
        <dependency>
            <groupId>com.percussion</groupId>
-           <artifactId>CMLite-Main</artifactId>
+           <artifactId>perc-system</artifactId>
            <version>${project.parent.version}</version>
        </dependency>
        <dependency>

@@ -128,7 +128,7 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>com.percussion</groupId>
-                  <artifactId>CMLite-WebUI</artifactId>
+                  <artifactId>perc-web-ui</artifactId>
                   <version>${project.version}</version>
                   <type>war</type>
                   <overWrite>true</overWrite>
@@ -258,7 +258,7 @@
           <dependencies>
               <dependency>
                   <groupId>com.percussion</groupId>
-                  <artifactId>CMLite-Main</artifactId>
+                  <artifactId>perc-system</artifactId>
                   <version>${project.version}</version>
               </dependency>
           </dependencies>
