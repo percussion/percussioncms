@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.string;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.Dimension;
@@ -38,7 +39,13 @@ import static org.junit.Assert.*;
  */
 public class PSStringUtilsTest
 {
-   
+
+   @Before
+   public void setup(){
+      //Set headless mode - this test covers code that relies on graphics engine
+      System.setProperty("java.awt.headless", "true");
+   }
+
    /**
     * @throws Exception
     */
