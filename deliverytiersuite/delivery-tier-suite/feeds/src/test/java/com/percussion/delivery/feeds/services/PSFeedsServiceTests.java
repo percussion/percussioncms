@@ -70,7 +70,7 @@ public class PSFeedsServiceTests{
 
 
     @Autowired
-    private PSFeedDao feedsDao;
+    private IPSFeedDao feedsDao;
     
     @Autowired
     private PSHttpClient httpClient;
