@@ -31,8 +31,7 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>perc-jetty</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
-  <name>Percussion Jetty :: Distribution Assemblies</name>
+  <name>perc-jetty</name>
    <packaging>pom</packaging>
 
   <properties>

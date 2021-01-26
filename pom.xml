@@ -378,7 +378,7 @@
 
                             <systemPropertyVariables>
                                 <javax.xml.parsers.SAXParserFactory>com.percussion.xml.PSSaxParserFactoryImpl</javax.xml.parsers.SAXParserFactory>
-                                <log4j.configurationFile>file://${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
+                                <log4j.configurationFile>${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
                             </systemPropertyVariables>
 
                             <systemProperties>
@@ -404,7 +404,7 @@
                      <systemPropertyVariables>
                          <cactus.contextURL>http://localhost:9992/Rhythmyx/</cactus.contextURL>
                          <javax.xml.parsers.SAXParserFactory>com.percussion.xml.PSSaxParserFactoryImpl</javax.xml.parsers.SAXParserFactory>
-                         <log4j.configurationFile>file://${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
+                         <log4j.configurationFile>${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
                      </systemPropertyVariables>
 
                      <excludedGroups>com.percussion.utils.testing.IntegrationTest,com.percussion.utils.testing.BackloggedTest</excludedGroups>
@@ -441,7 +441,7 @@
 
                             <systemPropertyVariables>
                                 <javax.xml.parsers.SAXParserFactory>com.percussion.xml.PSSaxParserFactoryImpl</javax.xml.parsers.SAXParserFactory>
-                                <log4j.configurationFile>file://${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
+                                <log4j.configurationFile>${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
                             </systemPropertyVariables>
 
                             <systemProperties>
