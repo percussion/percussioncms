@@ -83,13 +83,10 @@ public class PSExtensionCallSet extends PSCollectionComponent
     */
    public synchronized Object clone()
    {
-      PSExtensionCallSet copy = (PSExtensionCallSet) super.clone();
-      copy.removeAllElements();
-      for (int i = 0; i < size(); i++)
-      {
-         PSExtensionCall call = (PSExtensionCall) elementAt( i );
-         copy.add( i, call.clone() );
-      }
+      PSExtensionCallSet copy = new PSExtensionCallSet();
+
+      copy.copyFrom(this);
+
       return copy;
    }
 
