@@ -227,7 +227,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       String pwd = m_pw;
       if (!encrypted && passwordEncrypted) {
          pwd = decryptPwd(m_uid, pwd);
-      }else if(encrypted){
+      }else if(encrypted && !passwordEncrypted){
          try {
             pwd = PSEncryptor.getInstance().encrypt(m_pw);
          } catch (PSEncryptionException e) {
@@ -274,6 +274,8 @@ public class PSDbmsInfo implements IPSDeployComponent
     */
    public void setUserNamePwd(String usr, String pwd, boolean isPwdEncrypted)
    {
+      passwordEncrypted = isPwdEncrypted;
+
       if(StringUtils.isNotEmpty(usr))
          m_uid=usr;
       else
@@ -284,7 +286,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       else
          m_pw = "";
 
-      if(isPwdEncrypted) {
+      if(!isPwdEncrypted && !passwordEncrypted) {
          if(!passwordEncrypted || StringUtils.isEmpty(m_pw)) {
             m_pw = encryptPwd(m_uid, pwd);
             passwordEncrypted = true;
@@ -293,7 +295,7 @@ public class PSDbmsInfo implements IPSDeployComponent
             passwordEncrypted = false;
          }
       }else {
-         passwordEncrypted = false;
+         passwordEncrypted = isPwdEncrypted;
       }
    }
 
@@ -494,6 +496,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       m_origin = src.m_origin;
       m_uid = src.m_uid;
       m_pw = src.m_pw;
+      passwordEncrypted = src.passwordEncrypted;
    }
 
    @Override
