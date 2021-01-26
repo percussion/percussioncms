@@ -27,12 +27,17 @@ package com.percussion.deploy.objectstore;
 import com.percussion.utils.testing.UnitTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -44,10 +49,27 @@ import static org.junit.Assert.assertTrue;
 @Category(UnitTest.class)
 public class PSArchiveSummaryTest
 {
+   @Rule
+   public TemporaryFolder temporaryFolder = new TemporaryFolder();
+   private String rxdeploydir;
+
+   @Before
+   public void setup() throws IOException {
+
+      rxdeploydir = System.getProperty("rxdeploydir");
+      System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
+   }
+
+   @After
+   public void teardown(){
+      if(rxdeploydir != null)
+         System.setProperty("rxdeploydir",rxdeploydir);
+   }
+
+
    /**
     * Construct this unit test
     *
-    * @param name The name of this test.
     */
     public PSArchiveSummaryTest()
    {
