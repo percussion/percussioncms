@@ -91,7 +91,6 @@
         <esapi.version>2.2.0.0-RC2</esapi.version>
         <esapi.encoder.version>1.2.2</esapi.encoder.version>
         <ant.version>1.10.6</ant.version>
-        <!-- Fix issues with owl requring guice dependencies in 2.1 -->
         <shindig.version>1.1-BETA5-incubating</shindig.version>
         <any23.version>2.2</any23.version>
         <owl.version>5.1.3</owl.version>
