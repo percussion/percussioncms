@@ -113,9 +113,6 @@
     </bean>
 
     <bean id="FeedsService" class="com.percussion.delivery.feeds.services.PSFeedService" lazy-init="true">
-        <property name="connector">
-            <ref bean="CacheManagerConnector" />
-        </property>
     </bean>
 
     <bean id="feedsDao" class="com.percussion.delivery.feeds.services.rdbms.PSFeedDao"
