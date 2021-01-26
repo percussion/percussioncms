@@ -177,12 +177,12 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLite-Main</artifactId>
+            <artifactId>perc-system</artifactId>
             <version>8.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLite-Main</artifactId>
+            <artifactId>perc-system</artifactId>
             <version>8.0.2-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>

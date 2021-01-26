@@ -36,12 +36,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>extensions-workflow</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
 
    <dependencies>
        <dependency>
            <groupId>com.percussion</groupId>
-           <artifactId>CMLite-Main</artifactId>
+           <artifactId>perc-system</artifactId>
            <version>${project.parent.version}</version>
        </dependency>
        <dependency>
@@ -54,7 +53,6 @@
            <artifactId>jmock</artifactId>
            <scope>test</scope>
        </dependency>
-       <!-- https://mvnrepository.com/artifact/org.jmock/jmock-junit4 -->
        <dependency>
            <groupId>org.jmock</groupId>
            <artifactId>jmock-junit4</artifactId>
@@ -93,26 +91,21 @@
            <type>test-jar</type>
            <scope>test</scope>
        </dependency>
-
        <dependency>
            <groupId>org.apache.commons</groupId>
            <artifactId>commons-email</artifactId>
            <scope>provided</scope>
        </dependency>
-
-
        <dependency>
            <groupId>commons-lang</groupId>
            <artifactId>commons-lang</artifactId>
            <scope>provided</scope>
        </dependency>
-
        <dependency>
            <groupId>com.sun.mail</groupId>
            <artifactId>javax.mail</artifactId>
            <scope>provided</scope>
        </dependency>
-
        <dependency>
            <groupId>javax.jcr</groupId>
            <artifactId>jcr</artifactId>
