@@ -501,6 +501,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       m_origin = src.m_origin;
       m_uid = src.m_uid;
       m_pw = src.m_pw;
+      passwordEncrypted = src.passwordEncrypted;
    }
 
    @Override
