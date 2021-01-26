@@ -26,9 +26,15 @@
 package com.percussion.deployer.objectstore;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -38,6 +44,24 @@ import static org.junit.Assert.assertTrue;
  */
 public class PSDbmsInfoTest
 {
+
+   @Rule
+   public TemporaryFolder temporaryFolder = new TemporaryFolder();
+   private String rxdeploydir;
+
+   @Before
+   public void setup() throws IOException {
+
+      rxdeploydir = System.getProperty("rxdeploydir");
+      System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
+   }
+
+   @After
+   public void teardown(){
+      if(rxdeploydir != null)
+         System.setProperty("rxdeploydir",rxdeploydir);
+   }
+
    /**
     * Construct this unit test
     *
@@ -95,6 +119,7 @@ public class PSDbmsInfoTest
       info2.copyFrom(info1);
       assertEquals(info1, info2);
 
+      info1.setUserNamePwd(info1.getUserId(),info1.getPassword(true),true);
       info2 = new PSDbmsInfo(info1.getDatasource(), info1.getDriver(), info1
             .getServer(), info1.getDatabase(), info1.getOrigin(), info1
             .getUserId(), info1.getPassword(true), true);
