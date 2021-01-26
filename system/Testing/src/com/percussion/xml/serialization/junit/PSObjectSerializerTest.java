@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -68,7 +69,7 @@ public class PSObjectSerializerTest
       @Override
       public boolean equals(Object obj)
       {
-         return EqualsBuilder.reflectionEquals(this, obj);
+         return super.equals(obj);
       }
 
       @Override
@@ -204,10 +205,11 @@ public class PSObjectSerializerTest
       plist.addPerson(c);
       
       String ser = serializer.toXmlString(plist);
-      
-      Object deser = serializer.fromXmlString(ser);
-      
-      assertEquals(plist, deser);
+
+      PersonList deser = (PersonList) serializer.fromXmlString(ser);
+
+      assertTrue(Arrays.equals(plist.getPersons().toArray(), deser.getPersons().toArray()));
+
    }
 
 }
