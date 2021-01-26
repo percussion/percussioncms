@@ -24,17 +24,21 @@
 
 package com.percussion.design.objectstore;
 
-import static com.percussion.security.PSSecurityProvider.SP_TYPE_DIRCONN;
-import static com.percussion.security.PSSecurityProvider.SP_TYPE_BETABLE;
-import junit.framework.TestCase;
-
+import com.percussion.xml.PSXmlDocumentBuilder;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.percussion.xml.PSXmlDocumentBuilder;
+import static com.percussion.security.PSSecurityProvider.SP_TYPE_BETABLE;
+import static com.percussion.security.PSSecurityProvider.SP_TYPE_DIRCONN;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
-public class PSJndiGroupProviderInstanceTest extends TestCase
+public class PSJndiGroupProviderInstanceTest
 {
+   @Test
    public void testAll() throws PSUnknownNodeTypeException
    {
       PSJndiGroupProviderInstance gp1 = new PSJndiGroupProviderInstance("gp1",
@@ -47,7 +51,7 @@ public class PSJndiGroupProviderInstanceTest extends TestCase
       gp1.addGroupNode("o=com,o=Percussion,ou=MailGroups");
       gp1.addGroupNode("o=com,o=Percussion,ou=DevGroups");
 
-      assertTrue("same instance not equal", gp1.equals(gp1));
+      assertEquals("same instance not equal", gp1, gp1);
 
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
       Element el1 = gp1.toXml(doc);
@@ -58,12 +62,12 @@ public class PSJndiGroupProviderInstanceTest extends TestCase
          igp2 instanceof PSJndiGroupProviderInstance);
 
       PSJndiGroupProviderInstance gp2 = (PSJndiGroupProviderInstance)igp2;
-      assertTrue("to/fromXml object not equals", gp1.equals(gp2));
+      assertEquals("to/fromXml object not equals", gp1, gp2);
 
       PSJndiGroupProviderInstance clone =
          (PSJndiGroupProviderInstance)gp1.clone();
-      assertTrue("cloned objects are not different instances", gp1 != clone);
-      assertTrue("cloned objects are not equal", gp1.equals(clone));
+      assertNotSame("cloned objects are not different instances", gp1, clone);
+      assertEquals("cloned objects are not equal", gp1, clone);
 
       gp1.clearGroupNodes();
       gp1.addGroupNode("o=com,o=Percussion,ou=DevGroups");
@@ -71,25 +75,24 @@ public class PSJndiGroupProviderInstanceTest extends TestCase
       gp1.addObjectClass("group", "member",
          PSJndiObjectClass.MEMBER_ATTR_STATIC);
 
-      assertTrue("different objects appear equal", !gp1.equals(gp2));
+      assertNotEquals("different objects appear equal", gp1, gp2);
    }
    
    /**
     * Tests behavior of equals() and hashCode() methods.
     */
+   @Test
    public void testEqualsHashCode()
    {
-      final PSJndiGroupProviderInstance provider =
+       PSJndiGroupProviderInstance provider =
          new PSJndiGroupProviderInstance(NAME, SP_TYPE_DIRCONN);
 
-      assertFalse(provider.equals(new Object()));
+      assertNotEquals(provider, new Object());
       assertEqualObj(provider,
             new PSJndiGroupProviderInstance(NAME, SP_TYPE_DIRCONN));
-      
-      assertFalse(provider.equals(
-            new PSJndiGroupProviderInstance(OTHER_STR, SP_TYPE_DIRCONN)));
-      assertFalse(provider.equals(
-            new PSJndiGroupProviderInstance(NAME, SP_TYPE_BETABLE)));
+
+      assertNotEquals(provider, new PSJndiGroupProviderInstance(OTHER_STR, SP_TYPE_DIRCONN));
+      assertNotEquals(provider, new PSJndiGroupProviderInstance(NAME, SP_TYPE_BETABLE));
       
    }
 
