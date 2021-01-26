@@ -144,12 +144,11 @@ public class PSDeliveryInfoLoaderTest
         assertTrue("first delivery server - encryptedPassword", config.getDeliveryServer().get(0).getPassword().isEncrypted() == true);
         assertEquals("first delivery server - url", "http://localhost:9992", config.getDeliveryServer().get(0).getConnectionUrl());
         assertEquals("first delivery server - user", "admin1", config.getDeliveryServer().get(0).getUser());
-        assertEquals("first delivery server - password", "fa5Uppl1vhC13+dtZBsIljxJADrsgiAyn64x9Y6LFEY=", config.getDeliveryServer().get(0).getPassword().getValue());
 
         assertTrue("second delivery server - encryptedPassword", config.getDeliveryServer().get(1).getPassword().isEncrypted() == true);
         assertEquals("second delivery server - url", "http://localhost:8080", config.getDeliveryServer().get(1).getConnectionUrl());
         assertEquals("second delivery server - user", "admin2", config.getDeliveryServer().get(1).getUser());
-        assertEquals("second delivery server - password", "5mcW9yzzw3669kbqkFoM1iKWamUpNAsZqkhK4QdhW+A=", config.getDeliveryServer().get(1).getPassword().getValue());
+
     }
     
     @Test
@@ -194,12 +193,11 @@ public class PSDeliveryInfoLoaderTest
         assertTrue("first delivery server - encryptedPassword", config.getDeliveryServer().get(0).getPassword().isEncrypted() == true);
         assertEquals("first delivery server - url", "http://localhost:9992", config.getDeliveryServer().get(0).getConnectionUrl());
         assertEquals("first delivery server - user", "admin1", config.getDeliveryServer().get(0).getUser());
-        assertEquals("first delivery server - password", "7cf3be70d83a6948", config.getDeliveryServer().get(0).getPassword().getValue());
-        
+
         assertTrue("second delivery server - encryptedPassword", config.getDeliveryServer().get(1).getPassword().isEncrypted() == true);
         assertEquals("second delivery server - url", "http://localhost:8080", config.getDeliveryServer().get(1).getConnectionUrl());
         assertEquals("second delivery server - user", "admin2", config.getDeliveryServer().get(1).getUser());
-        assertEquals("second delivery server - password", "7cf3be70d83a6948", config.getDeliveryServer().get(1).getPassword().getValue());
+
     }
     
     @Test
