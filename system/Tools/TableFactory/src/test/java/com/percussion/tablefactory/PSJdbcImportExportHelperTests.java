@@ -24,26 +24,61 @@
 
 package com.percussion.tablefactory;
 
+import org.apache.commons.io.IOUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 
 public class PSJdbcImportExportHelperTests {
 
-    @Test
-    public void testGetOptions(){
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    private String rxdeploydir;
 
-        String args[] = {"-dbexport","-dbprops","F:\\eliassen\\cm1\\Percussion\\rxconfig\\Installer\\rxrepository.properties", "-storagepath","F:\\eliassen\\cm1\\Percussion\\exporteddata","-tablestoskip","PSX_PUBLICATION_DOC,PSX_PUBLICATIONSTATUS,PSX_PUBLICATION_SITE_ITEM,CONTENTSTATUSHISTORY_BAK,PSX_CONTENTCHANGEEVENT_BAK,PSX_SEARCHINDEXQUEUE"};
+    @Before
+    public void setup() throws IOException {
+
+        rxdeploydir = System.getProperty("rxdeploydir");
+        System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
+    }
+
+    @After
+    public void teardown(){
+        if(rxdeploydir != null)
+            System.setProperty("rxdeploydir",rxdeploydir);
+    }
+
+    @Test
+    public void testGetOptions() throws IOException {
+
+        File props = temporaryFolder.newFile("db.properties");
+        props.deleteOnExit();
+        FileOutputStream out = new FileOutputStream(props);
+
+        IOUtils.copy(this.getClass().getResourceAsStream("/com/percussion/tablefactory/db.properties"),out);
+
+        String args[] = {"-dbexport","-dbprops",props.getAbsolutePath(), "-storagepath",temporaryFolder.getRoot().getAbsolutePath(),"-tablestoskip","PSX_PUBLICATION_DOC,PSX_PUBLICATIONSTATUS,PSX_PUBLICATION_SITE_ITEM,CONTENTSTATUSHISTORY_BAK,PSX_CONTENTCHANGEEVENT_BAK,PSX_SEARCHINDEXQUEUE"};
         Map<String,String> options = PSJdbcImportExportHelper.getOptions(args);
 
         assertNotNull(options);
 
-        assertTrue(options.get("dbexport").equals(""));
+        assertEquals("-dbexport",options.get("dboption"));
+        assertEquals(props.getAbsolutePath(),options.get("-dbprops"));
+        assertEquals(temporaryFolder.getRoot().getAbsolutePath(),options.get("-storagepath"));
+        assertEquals("PSX_PUBLICATION_DOC,PSX_PUBLICATIONSTATUS,PSX_PUBLICATION_SITE_ITEM,CONTENTSTATUSHISTORY_BAK,PSX_CONTENTCHANGEEVENT_BAK,PSX_SEARCHINDEXQUEUE",options.get("-tablestoskip"));
 
 }
 }
