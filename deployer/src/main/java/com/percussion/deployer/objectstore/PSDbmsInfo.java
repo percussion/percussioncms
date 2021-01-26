@@ -422,6 +422,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       PSXmlDocumentBuilder.addElement(doc, root, ORIGIN_XML_ELEMENT, m_origin);
       PSXmlDocumentBuilder.addElement(doc, root, UID_XML_ELEMENT, m_uid);
       PSXmlDocumentBuilder.addElement(doc, root, PASSWORD_XML_ELEMENT, m_pw);
+      PSXmlDocumentBuilder.addElement(doc, root, PASSWORD_ENCRYPTED_XML_ELEMENT,Boolean.toString(passwordEncrypted));
 
       return root;
    }
@@ -467,6 +468,14 @@ public class PSDbmsInfo implements IPSDeployComponent
             UID_XML_ELEMENT, false);
       m_pw = PSDeployComponentUtils.getRequiredElement(tree, XML_NODE_NAME,
             PASSWORD_XML_ELEMENT, false);
+
+      String temp = PSDeployComponentUtils.getRequiredElement(tree, XML_NODE_NAME,
+                 PASSWORD_ENCRYPTED_XML_ELEMENT, false);
+      if(temp == null || temp.equalsIgnoreCase("null") || temp.equalsIgnoreCase("")){
+         passwordEncrypted = true; //If we persisted the xml we can assume it was encrypted on generation.
+      }else{
+         passwordEncrypted = Boolean.parseBoolean(temp);
+      }
    }
 
    /**
@@ -688,4 +697,7 @@ public class PSDbmsInfo implements IPSDeployComponent
    private static final String UID_XML_ELEMENT = "userid";
 
    private static final String PASSWORD_XML_ELEMENT = "password";
+
+   private static final String PASSWORD_ENCRYPTED_XML_ELEMENT = "encrypted";
+
 }
