@@ -468,9 +468,13 @@ public class PSDbmsInfo implements IPSDeployComponent
             UID_XML_ELEMENT, false);
       m_pw = PSDeployComponentUtils.getRequiredElement(tree, XML_NODE_NAME,
             PASSWORD_XML_ELEMENT, false);
-
-      String temp = PSDeployComponentUtils.getRequiredElement(tree, XML_NODE_NAME,
+      String temp = null;
+      try {
+            temp = PSDeployComponentUtils.getRequiredElement(tree, XML_NODE_NAME,
                  PASSWORD_ENCRYPTED_XML_ELEMENT, false);
+      }catch(PSUnknownNodeTypeException e){
+         //If this element is not found in tree, then we have to treat it as pwd is encrypted.
+      }
       if(temp == null || temp.equalsIgnoreCase("null") || temp.equalsIgnoreCase("")){
          passwordEncrypted = true; //If we persisted the xml we can assume it was encrypted on generation.
       }else{
