@@ -26,9 +26,7 @@ package com.percussion.server;
 
 import com.percussion.util.IOTools;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.util.IOUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -52,34 +50,10 @@ import static org.junit.Assert.assertTrue;
 public class PSCustomControlManagerTest
 {
    @Rule
-   public TemporaryFolder temporaryFolder = new TemporaryFolder();
-   private String rxdeploydir;
-
-   @Before
-   public void setup() throws IOException {
-
-      rxdeploydir = System.getProperty("rxdeploydir");
-      System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
-   }
-
-   @After
-   public void teardown(){
-      if(rxdeploydir != null)
-         System.setProperty("rxdeploydir",rxdeploydir);
-   }
+   public TemporaryFolder tempFolder = new TemporaryFolder();
 
    public PSCustomControlManagerTest(){}
 
-   private boolean matchString(Set<String> set, String compareTo){
-      boolean matched = false;
-      for(String s : set){
-         if(s.equalsIgnoreCase(compareTo)){
-            matched = true;
-            break;
-         }
-      }
-      return matched;
-   }
    /**
     * Tests all control mgr functionality
     * 
@@ -94,38 +68,13 @@ public class PSCustomControlManagerTest
       try
       {
          // create temporary directories
-         File sysStylesheetsDir = new File(temporaryFolder.getRoot().getAbsolutePath() + '/' +
+         File sysStylesheetsDir = new File(tempFolder.getRoot() + RESOURCE_PATH + '/' +
                PSCustomControlManager.SYS_STYLESHEETS_DIR);
          sysStylesheetsDir.deleteOnExit();
          assertTrue(sysStylesheetsDir.mkdirs());
-
-         File rxResourcesDir = new File(temporaryFolder.getRoot().getAbsolutePath() + "/" + PSCustomControlManager.CUSTOM_CONTROLS_DIR);
-         rxResourcesDir.deleteOnExit();
-         assertTrue(rxResourcesDir.mkdirs());
-
-         File control1 = new File(temporaryFolder.getRoot().getAbsolutePath() + "/" + PSCustomControlManager.CUSTOM_CONTROLS_DIR,"control1.xsl");
-         control1.deleteOnExit();
-         IOUtils.copy(this.getClass().getResourceAsStream("/com/percussion/server/rx_resources/stylesheets/controls/control1.xsl"),control1);
-
-         File control2 = new File(temporaryFolder.getRoot().getAbsolutePath() + "/" + PSCustomControlManager.CUSTOM_CONTROLS_DIR,"control2.xsl");
-         control2.deleteOnExit();
-         IOUtils.copy(this.getClass().getResourceAsStream("/com/percussion/server/rx_resources/stylesheets/controls/control2.xsl"),control2);
-
-         File control4 = new File(temporaryFolder.getRoot().getAbsolutePath() + "/" + PSCustomControlManager.CUSTOM_CONTROLS_DIR,"control4.xsl");
-         control4.deleteOnExit();
-         IOUtils.copy(this.getClass().getResourceAsStream("/com/percussion/server/rx_resources/stylesheets/controls/control4.xsl"),control4);
-
-         File control5 = new File(temporaryFolder.getRoot().getAbsolutePath() + "/" + PSCustomControlManager.CUSTOM_CONTROLS_DIR,"control5.xsl");
-         control5.deleteOnExit();
-         IOUtils.copy(this.getClass().getResourceAsStream("/com/percussion/server/rx_resources/stylesheets/controls/control5.xsl"),control5);
-
-         File control6 = new File(temporaryFolder.getRoot().getAbsolutePath() + "/" + PSCustomControlManager.CUSTOM_CONTROLS_DIR,"control6.xsl");
-         control6.deleteOnExit();
-         IOUtils.copy(this.getClass().getResourceAsStream("/com/percussion/server/rx_resources/stylesheets/controls/control6.xsl"),control6);
-
-
+         
          // create temporary imports file
-         File importsFile = new File(sysStylesheetsDir.getAbsolutePath(),"customControlImports.xsl");
+         File importsFile = tempFolder.newFile();
          importsFile.deleteOnExit();
          fw = new FileWriter(importsFile);
          fw.write(CONTROL_IMPORTS_CONTENT);
@@ -135,39 +84,96 @@ public class PSCustomControlManagerTest
          File activeEdit = new File(sysStylesheetsDir.getAbsolutePath(),"/activeEdit.xsl");
          assertTrue(activeEdit.createNewFile());
          activeEdit.deleteOnExit();
-         IOUtils.copy(this.getClass().getResourceAsStream("/com/percussion/server/sys_resources/stylesheets/activeEdit.xsl"),activeEdit);
+
+         long activeEditMod = activeEdit.lastModified();
 
          File singleFieldEdit = new File(sysStylesheetsDir.getAbsolutePath(), "/singleFieldEdit.xsl");
          assertTrue(singleFieldEdit.createNewFile());
          singleFieldEdit.deleteOnExit();
-         IOUtils.copy(this.getClass().getResourceAsStream("/com/percussion/server/sys_resources/stylesheets/singleFieldEdit.xsl"),singleFieldEdit);
 
+         long singleFieldEditMod = singleFieldEdit.lastModified();
+         
          // get custom control manager, initialize
          ctrlMgr = PSCustomControlManager.getInstance();
-         ctrlMgr.init(temporaryFolder.getRoot());
-
+         ctrlMgr.init(tempFolder.getRoot());
+         
+         // touch files should have been modified
+         assertTrue(activeEdit.lastModified() > activeEditMod);
+         assertTrue(singleFieldEdit.lastModified() > singleFieldEditMod);
+         
          // initially two imports
          Set<String> imports = ctrlMgr.getImports();
          assertEquals(2, imports.size());
-         String ctrlFile1Path = control1.getAbsolutePath();
-         String ctrlFile2Path = control2.getAbsolutePath();
-
-
-         assertTrue(matchString(imports,ctrlMgr.createImport(ctrlFile1Path)));
-         assertTrue(matchString(imports,ctrlMgr.createImport(ctrlFile2Path)));
+         String ctrlFile1Path = PSCustomControlManager.CUSTOM_CONTROLS_DIR
+               + "/control1.xsl";
+         String ctrlFile2Path = PSCustomControlManager.CUSTOM_CONTROLS_DIR
+               + "/control2.xsl";
+         assertTrue(imports.contains(ctrlMgr.createImport(ctrlFile1Path)));
+         assertTrue(imports.contains(ctrlMgr.createImport(ctrlFile2Path)));
          
          // check multiple calls to init
          boolean didThrow = false;
          try
          {
-            ctrlMgr.init(temporaryFolder.getRoot());
+            ctrlMgr.init(tempFolder.getRoot());
          }
          catch (IllegalStateException e)
          {
             didThrow = true;
          }
          assertTrue(didThrow);
-
+         
+         // create temporary control file
+         File ctrlFile1 = tempFolder.newFile(ctrlFile1Path);
+         File ctrlFile2 = tempFolder.newFile(ctrlFile2Path);
+         String ctrlFile1Content = IOTools.getFileContent(ctrlFile1);
+         String ctrlFile3Content = ctrlFile1Content.replaceAll("control1",
+               CTRL3_NAME);
+         fw = new FileWriter(CTRL_FILE3);
+         fw.write(ctrlFile3Content);
+         fw.close();
+                       
+         // create temporary non-control file
+         String filePath = PSCustomControlManager.CUSTOM_CONTROLS_DIR
+              + "/file.xml";
+         File file = new File(RESOURCE_PATH + '/' + filePath);
+         file.createNewFile();
+         
+         // should be three control files
+         List<File> ctrlFiles = ctrlMgr.getControlFiles();
+         assertEquals(3, ctrlFiles.size());
+         assertTrue(ctrlFiles.contains(ctrlFile1));
+         assertTrue(ctrlFiles.contains(ctrlFile2));
+         assertTrue(ctrlFiles.contains(CTRL_FILE3));
+         
+         ctrlMgr.writeImports();
+         
+         // should be three imports
+         imports = ctrlMgr.getImports();
+         assertEquals(3, imports.size());
+         assertTrue(imports.contains(ctrlMgr.createImport(CTRL_FILE3_PATH)));
+         assertFalse(imports.contains(ctrlMgr.createImport(filePath)));
+         
+         // remove third control file, non-control file
+         IOTools.deleteFile(CTRL_FILE3);
+         IOTools.deleteFile(file);
+                           
+         ctrlMgr.writeImports();
+         
+         // third control import should not be there
+         imports = ctrlMgr.getImports();
+         assertEquals(2, imports.size());
+         assertFalse(imports.contains(ctrlMgr.createImport(CTRL_FILE3_PATH)));
+         
+         // test get control from file with one control
+         assertNotNull(ctrlMgr.getControl("control1"));
+         
+         // test non-existent control
+         assertNull(ctrlMgr.getControl("foo"));
+         
+         // test get control file
+         assertNotNull(ctrlMgr.getControlFile("control1"));
+         assertNull(ctrlMgr.getControlFile("foo"));
       }
       finally
       {

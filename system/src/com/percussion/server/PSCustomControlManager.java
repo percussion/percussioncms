@@ -206,7 +206,7 @@ public class PSCustomControlManager extends PSBaseControlManager
                href = href.substring(HREF_FILE_PREFIX.length());
                if (href.startsWith(CUSTOM_CONTROLS_DIR))
                {
-                  imports.add(createImport(m_rxRoot + href));
+                  imports.add(createImport(href));                              
                }
             }
          }
@@ -392,13 +392,13 @@ public class PSCustomControlManager extends PSBaseControlManager
     * The rx_resources stylesheets directory relative to the Rhythmyx root.
     */   
    public static final String RX_STYLESHEETS_DIR =
-      "/rx_resources/stylesheets";
+      "rx_resources/stylesheets";
    
    /**
     * The sys_resources stylesheets directory relative to the Rhythmyx root.
     */   
    public static final String SYS_STYLESHEETS_DIR =
-      "/sys_resources/stylesheets";
+      "sys_resources/stylesheets";
    
    /**
     * The custom controls directory relative to the Rhythmyx root.
@@ -415,7 +415,7 @@ public class PSCustomControlManager extends PSBaseControlManager
    /**
     * The href file prefix in an import declaration.
     */
-   private static final String HREF_FILE_PREFIX = "file://";
+   private static final String HREF_FILE_PREFIX = "file:";
    
    /**
     * The import tag name.
