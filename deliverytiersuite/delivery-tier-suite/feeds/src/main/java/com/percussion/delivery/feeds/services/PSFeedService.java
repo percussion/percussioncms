@@ -48,6 +48,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -127,7 +128,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     @Autowired
-    public PSFeedService(IPSFeedDao dao, PSHttpClient httpClient )
+    public PSFeedService(@Qualifier("feedsDao") IPSFeedDao dao, PSHttpClient httpClient )
     {
         feedDao = dao;
         this.httpClient = httpClient;
