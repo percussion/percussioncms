@@ -39,8 +39,8 @@
          <PSXDescriptor id="-7311778210478282982" name="perc.defaultLanguage">
             <Description>A widget that sets the default-href lang attribute for international SEO purposes.</Description>
             <Publisher name="Percussion Software" url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="5.3.0"/>
-            <Version>2.4.4</Version>
+            <CmsVersion max="9.0.0" min="5.3.0"/>
+            <Version>2.4.5</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
