@@ -276,7 +276,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             {
                 try {
                     emailNotifTo = PSEncryptor.getInstance().decrypt(emailNotifToVals[0]);
-                }catch(PSEncryptionException e){
+                }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                     emailNotifTo = PSLegacyEncrypter.getInstance().decrypt(emailNotifToVals[0],
                             PSLegacyEncrypter.DEFAULT_KEY());
                 }
@@ -296,7 +296,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             {
                 try {
                     emailNotifSubject = PSEncryptor.getInstance().decrypt(emailNotifSubjectVals[0]);
-                }catch(PSEncryptionException e){
+                }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                     emailNotifSubject = PSLegacyEncrypter.getInstance().decrypt(emailNotifSubjectVals[0],
                             PSLegacyEncrypter.DEFAULT_KEY());
                 }
