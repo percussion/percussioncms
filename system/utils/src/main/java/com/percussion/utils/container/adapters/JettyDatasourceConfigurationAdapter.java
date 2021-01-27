@@ -197,7 +197,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 if (encrypted != null && encrypted.equalsIgnoreCase("Y")) {
                     try {
                         pwd = PSEncryptor.getInstance().decrypt(pwd);
-                    }catch(PSEncryptionException e){
+                    }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                         pwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSLegacyEncrypter.getPartOneKey());
                     }
                 } else {
