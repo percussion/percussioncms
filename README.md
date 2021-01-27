@@ -28,7 +28,7 @@ Yes it is.
 * [Percussion](https://www.percussion.com) offers Percussion CMS under a dual license, AGPL3 or commercial for paid Support & Maintenance subscriptions. Percussion also offers cloud hosting and management of Percussion CMS.
 
 ## I am a Percussion customer, is this where I download updates?
-Commercial customers should access the release distribution on the Percussion Support portal.
+Commercial customers should access the release distribution on the [Percussion Support portal](https://support.percussion.com).
 
 
 ## Wait so do I need a license or not?
