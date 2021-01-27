@@ -130,7 +130,7 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
          String pw = props.getProperty("PWD");
          try{
             pw = PSEncryptor.getInstance().decrypt(pw);
-         }catch(PSEncryptionException e){
+         }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
             pw =     PSLegacyEncrypter.getInstance().decrypt(pw,
                     PSJdbcDbmsDef.getPartOneKey());
          }
