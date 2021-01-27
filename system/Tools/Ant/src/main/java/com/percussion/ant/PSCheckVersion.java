@@ -326,7 +326,7 @@ public class PSCheckVersion extends Task
     * The jar file to read the version properties from, relative to the Rhythmyx
     * root of a server installation.
     */
-   private static final String SERVER_JAR_FILE = "jetty/base/webapps/Rhythmyx/WEB-INF/lib/CMLite-Main-*.jar";
+   private static final String SERVER_JAR_FILE = "jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-*.jar";
 
    /**
     * Directly read the version.properties if you fail to find it in the root of

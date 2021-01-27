@@ -39,8 +39,8 @@
          <PSXDescriptor id="-4510159910742251740" name="perc.gadget.iframe">
             <Description>The gadget displays the content for given URL in the iframe.</Description>
             <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="2.10.0"/>
-            <Version>1.1.1</Version>
+            <CmsVersion max="9.0.0" min="2.10.0"/>
+            <Version>1.1.2</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

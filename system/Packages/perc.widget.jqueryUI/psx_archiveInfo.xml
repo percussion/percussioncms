@@ -39,8 +39,8 @@
          <PSXDescriptor id="7094909343014856466" name="perc.widget.jqueryUI">
             <Description>A widget that allows for choosing the implementation of jQuery.</Description>
             <Publisher name="Percussion Software, Inc." url="https://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="5.3.15"/>
-            <Version>1.1.1</Version>
+            <CmsVersion max="9.0.0" min="5.3.15"/>
+            <Version>1.1.2</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
