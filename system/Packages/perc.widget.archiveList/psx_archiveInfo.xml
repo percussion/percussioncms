@@ -39,8 +39,8 @@
          <PSXDescriptor id="-4314269819626051824" name="perc.widget.archiveList">
             <Description>Displays the list of archive items</Description>
             <Publisher name="Percussion Softwares" url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="1.9.0"/>
-            <Version>1.1.9</Version>
+            <CmsVersion max="9.0.0" min="1.9.0"/>
+            <Version>1.2.0</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies>

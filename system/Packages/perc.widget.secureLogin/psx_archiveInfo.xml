@@ -39,8 +39,8 @@
          <PSXDescriptor id="-5356727789036755184" name="perc.widget.secureLogin">
             <Description>Secure login widget</Description>
             <Publisher name="Percussion Software" url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="2.6.0"/>
-            <Version>1.1.4</Version>
+            <CmsVersion max="9.0.0" min="2.6.0"/>
+            <Version>1.1.5</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
