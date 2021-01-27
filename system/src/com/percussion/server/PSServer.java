@@ -1854,7 +1854,7 @@ public class PSServer {
                String password = "";
                try {
                   password = PSEncryptor.getInstance().decrypt(ms_serverProps.getProperty("loginPw"));
-               }catch(PSEncryptionException e) {
+               }catch(PSEncryptionException | java.lang.IllegalArgumentException e) {
                   password = eatLasagna(ms_serverProps.getProperty("loginId"),
                           ms_serverProps.getProperty("loginPw"));
                }
