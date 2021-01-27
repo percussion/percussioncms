@@ -39,8 +39,8 @@
          <PSXDescriptor id="-1012098851344996592" name="perc.widget.login">
             <Description>Widget for user login and access restriction to protected sections.</Description>
             <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="2.5.0"/>
-            <Version>1.1.3</Version>
+            <CmsVersion max="9.0.0" min="2.5.0"/>
+            <Version>1.1.4</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

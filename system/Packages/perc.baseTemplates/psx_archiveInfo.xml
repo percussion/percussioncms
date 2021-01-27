@@ -39,8 +39,8 @@
          <PSXDescriptor id="1914317316678493968" name="perc.baseTemplates">
             <Description>Percussion base layout templates.</Description>
             <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="1.0.0"/>
-            <Version>1.1.1</Version>
+            <CmsVersion max="9.0.0" min="1.0.0"/>
+            <Version>1.1.2</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

@@ -39,8 +39,8 @@
          <PSXDescriptor id="-6788329311796451568" name="perc.widgets.blog">
             <Description>Widget for Blogs</Description>
             <Publisher name="Percussion Software Inc." url="https://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="1.6.0"/>
-            <Version>1.1.4</Version>
+            <CmsVersion max="9.0.0" min="1.6.0"/>
+            <Version>1.1.5</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies>

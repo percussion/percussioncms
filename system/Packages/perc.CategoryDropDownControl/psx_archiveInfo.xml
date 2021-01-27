@@ -39,8 +39,8 @@
          <PSXDescriptor id="-8431148117763545318" name="perc.CategoryDropDownControl">
             <Description/>
             <Publisher name="Percussion Software" url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="5.2.5"/>
-            <Version>1.2.1</Version>
+            <CmsVersion max="9.0.0" min="5.2.5"/>
+            <Version>1.2.2</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

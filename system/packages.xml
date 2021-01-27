@@ -13,7 +13,7 @@
 	
 	  <!-- Define the ant extension classpath -->
 	   <path id="antExt.class.path">
-		  <pathelement location="${ant.lib.dir}/../target/perc-ant-8.0.0-SNAPSHOT.jar" />
+		  <pathelement location="${ant.lib.dir}/../target/perc-ant-8.0.2-SNAPSHOT.jar" />
 		  <pathelement location="${ant.lib.dir}/p4.jar" />
 	      <pathelement location="${ant.lib.dir}/ant-contrib-0.6.jar" />
 	      <fileset dir="${toolsdir}/../../thirdpartytools/axis" includes="*.jar" />
