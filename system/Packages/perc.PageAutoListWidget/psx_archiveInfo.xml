@@ -39,8 +39,8 @@
          <PSXDescriptor id="-2005495512412707056" name="perc.PageAutoListWidget">
             <Description>PageAutoListWidget</Description>
             <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="1.0.0"/>
-            <Version>1.6.2</Version>
+            <CmsVersion max="9.0.0" min="1.0.0"/>
+            <Version>1.6.3</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

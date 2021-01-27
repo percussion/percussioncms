@@ -1,1 +1,1 @@
-java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8050 -Dinstall.dir=C:\CM5315 -Dinstall.stage.dts=false -Dinstall.dts=false -jar perc-ant-8.0.0-SNAPSHOT.jar -f install.xml
+java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8050 -Dinstall.dir=C:\CM5315 -Dinstall.stage.dts=false -Dinstall.dts=false -jar perc-ant-8.0.2-SNAPSHOT.jar -f install.xml

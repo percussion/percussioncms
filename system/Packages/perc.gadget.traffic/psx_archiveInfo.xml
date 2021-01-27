@@ -39,8 +39,8 @@
          <PSXDescriptor id="-2939547132882835696" name="perc.gadget.traffic">
             <Description>Graphs traffic statistics for a given site</Description>
             <Publisher name="Percussion Software Inc" url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="1.5.0"/>
-            <Version>1.1.1</Version>
+            <CmsVersion max="9.0.0" min="1.5.0"/>
+            <Version>1.1.2</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
