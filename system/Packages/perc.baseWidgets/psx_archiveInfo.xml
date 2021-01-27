@@ -39,8 +39,8 @@
          <PSXDescriptor id="-6465700714369767663" name="perc.baseWidgets">
             <Description>The base widgets plugin for Percussion CM.</Description>
             <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="1.0.0"/>
-            <Version>1.1.5</Version>
+            <CmsVersion max="9.0.0" min="1.0.0"/>
+            <Version>1.1.6</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
