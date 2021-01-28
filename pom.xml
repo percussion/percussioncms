@@ -951,7 +951,9 @@
         <repository>
             <id>github</id>
             <releases>  <enabled>true</enabled>  </releases>
-            <snapshots> <enabled>true</enabled> </snapshots>
+            <snapshots> <enabled>true</enabled>
+            <updatePolicy>daily</updatePolicy>
+            </snapshots>
             <name>GitHub Percussion Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/percussion/percussioncms</url>
         </repository>

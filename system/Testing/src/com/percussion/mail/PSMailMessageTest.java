@@ -24,31 +24,29 @@
 package com.percussion.mail;
 
 import com.percussion.util.PSCharSets;
+import org.junit.Test;
 
 import java.util.StringTokenizer;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the PSMailMessage class.
  */
-public class PSMailMessageTest extends TestCase
+public class PSMailMessageTest
 {
-   public PSMailMessageTest(String name)
-   {
-      super(name);
-   }
+   public PSMailMessageTest() {}
 
+   @Test
    public void testConstructor() throws Exception
    {
       PSMailMessage msg = new PSMailMessage();
       assertEquals("", msg.getBodyText());
-      assertEquals("E2", msg.getFrom());
       assertEquals(PSCharSets.rxJavaEnc(), msg.getCharEncoding());
    }
 
+   @Test
    public void testBodyTextRandom() throws Exception
    {
       // append a really long line and make sure it gets broken properly
@@ -96,6 +94,7 @@ public class PSMailMessageTest extends TestCase
 
    }
 
+   @Test
    public void testBodyText() throws java.io.IOException
    {
       // append a really long line and make sure it gets broken properly
@@ -121,6 +120,7 @@ public class PSMailMessageTest extends TestCase
       }
    }
 
+   @Test
    public void testBodyTextWithLines() throws java.io.IOException
    {
       StringBuffer line = new StringBuffer(100);
@@ -144,6 +144,7 @@ public class PSMailMessageTest extends TestCase
       assertEquals(i, 100);
    }
 
+   @Test
    public void testBodyTextWithLinesSeparate() throws java.io.IOException
    {
       String content = "This is some text right here, baby!";
@@ -166,6 +167,7 @@ public class PSMailMessageTest extends TestCase
    }
 
 
+   @Test
    public void testBodyTextWithLinesTogether() throws java.io.IOException
    {
       String content = "This is some text right here, baby!";
@@ -186,6 +188,7 @@ public class PSMailMessageTest extends TestCase
       assertEquals(100, i);
    }
 
+   @Test
    public void testBodyTextWithMaxLengthLinesTogether() throws java.io.IOException
    {
       System.err.println("\n\n\n");
@@ -217,17 +220,4 @@ public class PSMailMessageTest extends TestCase
       assertEquals(10, i);
    }
 
-
-   public static Test suite()
-   {
-      TestSuite suite = new TestSuite();
-      suite.addTest(new PSMailMessageTest("testConstructor"));
-      suite.addTest(new PSMailMessageTest("testBodyText"));
-      suite.addTest(new PSMailMessageTest("testBodyTextRandom"));
-      suite.addTest(new PSMailMessageTest("testBodyTextWithLines"));
-      suite.addTest(new PSMailMessageTest("testBodyTextWithLinesSeparate"));
-      suite.addTest(new PSMailMessageTest("testBodyTextWithLinesTogether"));
-      suite.addTest(new PSMailMessageTest("testBodyTextWithMaxLengthLinesTogether"));
-      return suite;
-   }
 }

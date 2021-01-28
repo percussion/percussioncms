@@ -259,7 +259,7 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
             String pw = "";
             try{
                 pw = PSEncryptor.getInstance().decrypt(creds.getPassword());
-            }catch(PSEncryptionException e){
+            }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                 pw = PSLegacyEncrypter.getInstance().decrypt(creds.getPassword(),
                         secretKey);
             }
