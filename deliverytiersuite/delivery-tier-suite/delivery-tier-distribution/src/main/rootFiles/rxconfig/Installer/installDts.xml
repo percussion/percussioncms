@@ -324,7 +324,7 @@
 
                     <echo>Backing up existing DTS to ${new.backup.dir} ...</echo>
 
-                    <copy todir="${new.backup.dir}" preservelastmodified="true" overwrite="true" force="true" verbose="true">
+                    <copy todir="${new.backup.dir}${staging.dir}" preservelastmodified="true" overwrite="true" force="true" verbose="true">
                         <fileset dir="${install.dir}${staging.dir}/Deployment" />
                     </copy>
 
@@ -400,14 +400,14 @@
                     <echo>Restore mysql-connector if present............................................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                               verbose="true" failonerror="false">
-                            <fileset dir="${new.backup.dir}${staging.dir}/Server/common/lib">
+                            <fileset dir="${new.backup.dir}${staging.dir}/Server/lib">
                                 <include name="mysql-connector*.jar"/>
                             </fileset>
                         </copy>
-
-                    <copy todir="${install.dir}/Deployment/Server/common/lib"
+                    <echo>Restore mysql-connector if present again on re-upgrading upgraded environment............................................</echo>
+                    <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                                      verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}/Server/common/lib">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Server/common/lib">
                         <include name="mysql-connector*.jar"/>
                     </fileset>
                     </copy>
