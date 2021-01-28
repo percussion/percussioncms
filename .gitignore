@@ -1,6 +1,8 @@
 # random output file
 **/test-output.jar
 
+**/rxBuild.log
+
 modules/jcadf-master/audit_events.csv
 modules/jcadf-master/audit_events.json
 

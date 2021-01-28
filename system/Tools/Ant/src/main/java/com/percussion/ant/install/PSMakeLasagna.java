@@ -108,7 +108,7 @@ public class PSMakeLasagna extends Task
             String decryptPwd = "";
              try{
                 decryptPwd = PSEncryptor.getInstance().decrypt(pwd);
-             }catch(PSEncryptionException e){
+             }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                 decryptPwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSServer.getPartOneKey());
              }
 

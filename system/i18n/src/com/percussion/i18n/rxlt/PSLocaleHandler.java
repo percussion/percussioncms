@@ -32,6 +32,7 @@ import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
+import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSQLStatement;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -39,6 +40,7 @@ import com.percussion.utils.container.PSMissingApplicationPolicyException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -244,23 +246,7 @@ public class PSLocaleHandler
    public void process(Element cfgData)
       throws PSActionProcessingException
    {
-      String temp = cfgData.getAttribute("actionid");
-      @SuppressWarnings("unused")
-      int actionid = Integer.parseInt(temp);
-
-      //TODO: FIXME This code did something at some point.  Not sue if it was commented out for CM1.
-      /*switch(actionid)
-      {
-         case IPSActionHandler.ACTIONID_ADD_LANGUAGE:
-            processAddLanguage(cfgData);
-            break;
-         case IPSActionHandler.ACTIONID_ENABLE_DISABLE_LANGUAGE:
-            processEnableDisableLanguage(cfgData);
-            break;
-         case IPSActionHandler.ACTIONID_EDIT_LANGUAGE:
-            processEditLanguage(cfgData);
-            break;
-      }*/
+      throw new PSActionProcessingException("Not Implemented");
    }
 
    /**
@@ -278,7 +264,6 @@ public class PSLocaleHandler
          getAttribute(PSRxltConfigUtils.ATTR_RXROOT);
       String languageString = cfgData.getAttribute("languagestring");
       String newStatus = "1";
-      Statement stmt = null;
       ResultSet rs = null;
       try
       {
@@ -287,18 +272,20 @@ public class PSLocaleHandler
          String currentStatus = "0";
          try
          {
-            stmt = PSSQLStatement.getStatement(conn);
+
             String query = "SELECT STATUS FROM RXLOCALE " +
-               " WHERE LANGUAGESTRING='" + languageString +"'";
-            rs = stmt.executeQuery(query);
-            if(rs == null || !rs.next())
-            {
-               throw new PSActionProcessingException(
-                  "Language chosen does not exist");
+               " WHERE LANGUAGESTRING=?";
+            try(PreparedStatement stmt = PSPreparedStatement.getPreparedStatement(conn, query)) {
+               stmt.setString(1, languageString);
+               rs = stmt.executeQuery(query);
+               if (rs == null || !rs.next()) {
+                  throw new PSActionProcessingException(
+                          "Language chosen does not exist");
+               }
+               currentStatus = rs.getString(1);
+               if (currentStatus == null)
+                  currentStatus = "";
             }
-            currentStatus = rs.getString(1);
-            if(currentStatus == null)
-               currentStatus = "";
          }
          catch(SQLException e)
          {
@@ -308,33 +295,22 @@ public class PSLocaleHandler
          if(currentStatus.equals("1"))
             newStatus = "0";
 
-         stmt.executeUpdate("UPDATE RXLOCALE SET STATUS=" + newStatus +
-            " WHERE LANGUAGESTRING='" + languageString + "'");
+
+         try(PreparedStatement stmt = PSPreparedStatement.getPreparedStatement(conn,
+                 "UPDATE RXLOCALE SET STATUS=? " +
+                 " WHERE LANGUAGESTRING=?")){
+            stmt.setInt(1, Integer.parseInt(newStatus));
+            stmt.setString(2, languageString);
+            stmt.executeUpdate();
+         }
+
       }
       catch(Exception e)
       {
          PSCommandLineProcessor.logMessage("processFailedError", e.getMessage());
          throw new PSActionProcessingException(e.getMessage());
       }
-      finally
-      {
-         try
-         {
-            if(rs!=null)
-            {
-               rs.close();
-               rs = null;
-            }
-            if(stmt!=null)
-            {
-               stmt.close();
-               stmt = null;
-            }
-         }
-         catch(SQLException e)
-         {
-         }
-      }
+
       String[] args={languageString, "enabled"};
       if(!newStatus.equals("1"))
          args[1] = "disabled";
@@ -411,22 +387,38 @@ public class PSLocaleHandler
       String languageString = cfgData.getAttribute("languagestring");
       String newDisplayName = cfgData.getAttribute("displayname");
       String newDescription = cfgData.getAttribute("description");
-      Statement stmt = null;
+
       try
       {
          PSJdbcDbmsDef dbmsDef = getDbmsDef(rxroot);
          Connection conn = PSJdbcTableFactory.getConnection(dbmsDef);
 
-         stmt = PSSQLStatement.getStatement(conn);
+
          if (newDisplayName.length() > 0)
          {
-            stmt.executeUpdate("UPDATE RXLOCALE SET DISPLAYNAME = '" + newDisplayName +
-                  "' WHERE LANGUAGESTRING='" + languageString +"'");
+            try(PreparedStatement stmt = PSPreparedStatement.getPreparedStatement(conn,
+                    "UPDATE RXLOCALE SET DISPLAYNAME = ?" +
+                 " WHERE LANGUAGESTRING=?")) {
+               stmt.setString(1, newDisplayName);
+               stmt.setString(2, languageString);
+               stmt.executeUpdate();
+            } catch (SQLException throwables) {
+               PSCommandLineProcessor.logMessage("processFailedError", throwables.getMessage());
+            }
          }
          if (newDescription.length() > 0)
          {
-            stmt.executeUpdate("UPDATE RXLOCALE SET DESCRIPTION = '" + newDescription +
-                  "' WHERE LANGUAGESTRING='" + languageString +"'");
+            try(PreparedStatement stmt = PSPreparedStatement.getPreparedStatement(conn,
+                    "UPDATE RXLOCALE SET DESCRIPTION = ?" +
+                            " WHERE LANGUAGESTRING=?")) {
+
+               stmt.setString(1,newDescription);
+               stmt.setString(2,languageString);
+               stmt.executeUpdate();
+
+            } catch (SQLException throwables) {
+               PSCommandLineProcessor.logMessage("processFailedError", throwables.getMessage());
+            }
          }
 
       }
@@ -435,20 +427,7 @@ public class PSLocaleHandler
          PSCommandLineProcessor.logMessage("processFailedError", e.getMessage());
          throw new PSActionProcessingException(e.getMessage());
       }
-      finally
-      {
-         try
-         {
-            if(stmt!=null)
-            {
-               stmt.close();
-               stmt = null;
-            }
-         }
-         catch(SQLException e)
-         {
-         }
-      }
+
    }
 
    /**
@@ -838,7 +817,7 @@ public class PSLocaleHandler
 
    /**
     * The repository properties, <code>null</code> until loaded by a call to
-    * {@link #getRepositoryProperties()}.
+    * {@link #getRepositoryProperties}.
     */
    private static Properties m_repositoryProperties = null;
 
@@ -900,9 +879,8 @@ public class PSLocaleHandler
       try
       {
          PSLocaleHandler localeHandler = new PSLocaleHandler();
-         //TODO: FIXME Remove the hardcoded path - NC
          System.out.println(PSXmlDocumentBuilder.toString(
-            PSLocaleHandler.getLocaleDocument("e:/Rhythmyx")));
+            PSLocaleHandler.getLocaleDocument(System.getProperty("rxdeploydir"))));
       }
       catch(Exception e)
       {
