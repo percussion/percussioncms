@@ -41,7 +41,7 @@ public class DerbyTenOneFourDialect extends DerbyTenSevenDialect {
     }
 
     /**
-     * Does this dialect supports Nationalized Types
+     * Does this dialect support Nationalized Types
      *
      * @return boolean
      */

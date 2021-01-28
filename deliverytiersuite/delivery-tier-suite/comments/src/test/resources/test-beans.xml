@@ -67,7 +67,7 @@
 	        <prop key="db.username">test</prop>
 	        <prop key="db.password">test</prop>
 	        <prop key="db.schema">APP</prop>
-	        <prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
+	        <prop key="hibernate.dialect">com.percussion.delivery.rdbms.DerbyTenOneFourDialect</prop>
 	        <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
 			
             <!-- MySQL -->
