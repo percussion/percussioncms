@@ -41,6 +41,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
@@ -133,6 +135,7 @@ public class PSDesignerConnection
     */
    public static final String PROPERTY_PORT        = "port";
 
+   private static final Logger logger = LogManager.getLogger(PSDesignerConnection.class);
 
    /**
     * The E2 server's protocol property name.
@@ -1291,9 +1294,17 @@ public class PSDesignerConnection
          return "";
 
       try {
-         return PSEncryptor.getInstance().encrypt(str);
-      } catch (PSEncryptionException e) {
-         return "";
+         //If running on server - we will get a key if not an exception
+         return  PSEncryptor.getInstance().encrypt(str);
+      } catch (PSEncryptionException | IllegalArgumentException e) {
+
+         try {
+            return PSEncryptor.getInstance("AES",System.getProperty("user.home") + "/.perc-secure").encrypt(str);
+         } catch (PSEncryptionException psEncryptionException) {
+            logger.error("Error encrypting text: " +  e.getMessage());
+            logger.debug(e);
+            return "";
+         }
       }
    }
 
