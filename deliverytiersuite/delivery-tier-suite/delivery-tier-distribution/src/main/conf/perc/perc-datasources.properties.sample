@@ -54,8 +54,8 @@ hibernateProperties=percHibernateProperties
 # "MySQL" / "MariaDB"  - org.hibernate.dialect.MySQL5InnoDBDialect
 # "MS SQL" - com.percussion.delivery.rdbms.PSUnicodeSQLServerDialect
 # "MS SQL" - org.hibernate.dialect.SQLServerDialect
-# "Derby"  - org.hibernate.dialect.DerbyTenSevenDialect
-hibernate.dialect=org.hibernate.dialect.DerbyTenSevenDialect
+# "Derby"  - com.percussion.delivery.rdbms.DerbyTenOneFourDialect
+hibernate.dialect=com.percussion.delivery.rdbms.DerbyTenOneFourDialect
 
 # hibernate query substitutions should be EMPTY for other databases, except for derby
 hibernate.query.substitutions=true 'T', false 'F'

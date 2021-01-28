@@ -179,8 +179,6 @@ public class PSMetadataDao implements IPSMetadataDao
             deleteQuery2.from(PSDbMetadataEntry.class);
             session.createQuery(deleteQuery2).executeUpdate();
             tx.commit();
-            session.flush();
-            session.clear();
 
         }catch(Exception e){
             if(tx !=null && tx.isActive()){
