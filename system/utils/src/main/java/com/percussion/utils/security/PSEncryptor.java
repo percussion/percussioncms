@@ -67,7 +67,6 @@ public class PSEncryptor extends PSAbstractEncryptor {
      * @param keyLocation
      */
     public PSEncryptor(String algorithm, String keyLocation) {
-        super();
         init(algorithm,keyLocation);
     }
 
