@@ -1,6 +1,10 @@
 # os
 **/.DS_Store
 
+**/rxBuild.log
+
+**/build.log
+
 # maven
 **/target
 
