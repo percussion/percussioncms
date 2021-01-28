@@ -60,30 +60,38 @@ public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
 
     @Id
     @Column(length = 40)
+    @Nationalized
     private String pagepathHash;
 
     // This column may be marked as unique, but keep in mind that unique
     // keys greater than 767 characters are not supported on MySQL.
     @Column(length = 2000)
+    @Nationalized
     private String pagepath;
 
     @Basic
+    @Nationalized
     private String name;
 
     @Column(length = 2000)
+    @Nationalized
     private String folder;
 
     @Basic
+    @Nationalized
     private String linktext;
     
     @Basic
+    @Nationalized
     private String linktext_lower;
 
     @Basic
     @Index(name = "typeIndex")
+    @Nationalized
     private String type;
 
     @Basic
+    @Nationalized
     private String site;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
