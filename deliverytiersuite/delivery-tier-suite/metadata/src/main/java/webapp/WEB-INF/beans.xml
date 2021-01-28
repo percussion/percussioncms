@@ -73,7 +73,7 @@
             <prop key="db.schema">APP</prop>
             <prop key="datasource">percDataSource</prop>
             <prop key="hibernateProperties">percHibernateProperties</prop>
-			<prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
+			<prop key="hibernate.dialect">com.percussion.delivery.rdbms.DerbyTenOneFourDialect</prop>
 			<prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
             <prop key="hibernate.cache.use_second_level_cache">true</prop>
             <prop key="hibernate.cache.use_query_cache">true</prop>

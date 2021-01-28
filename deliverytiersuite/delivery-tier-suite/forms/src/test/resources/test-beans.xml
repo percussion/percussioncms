@@ -74,7 +74,7 @@
 	        <prop key="db.username">APP</prop>
 	        <prop key="db.password">test</prop>
 	        <prop key="db.schema">APP</prop>
-	        <prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
+	        <prop key="hibernate.dialect">com.percussion.delivery.rdbms.DerbyTenOneFourDialect</prop>
 	        <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
 			            <prop key="cacheMgr.cacheManagerHost">https://localhost:8443</prop>
             <prop key="cacheMgr.username">ps_manager</prop>
