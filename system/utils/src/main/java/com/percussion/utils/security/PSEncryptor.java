@@ -31,20 +31,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.Observable;
 
 /**
  * Main encryption class to be used for Encryption within the code base.
@@ -131,8 +127,9 @@ public class PSEncryptor extends PSAbstractEncryptor {
         if(algorithm == null)
             algorithm = PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM;
 
-        if(keyLocation == null)
+        if(keyLocation == null) {
             keyLocation = PathUtils.getRxDir().getAbsolutePath() + SECURE_DIR;
+        }
 
         IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(algorithm);
         File installDir = PathUtils.getRxDir();
