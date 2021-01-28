@@ -1296,7 +1296,7 @@ public class PSDesignerConnection
       try {
          //If running on server - we will get a key if not an exception
          return  PSEncryptor.getInstance().encrypt(str);
-      } catch (PSEncryptionException | IllegalArgumentException e) {
+      } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
 
          try {
             return PSEncryptor.getInstance("AES",System.getProperty("user.home") + "/.perc-secure").encrypt(str);
