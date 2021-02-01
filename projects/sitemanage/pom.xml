@@ -31,7 +31,6 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>sitemanage</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -604,7 +603,6 @@
           <artifactId>javax.servlet-api</artifactId>
           <scope>provided</scope>
       </dependency>
-      <!--Removed jdom 2.0.0 dependency only jdom2 dependency present-->
       <dependency>
           <groupId>org.jdom</groupId>
           <artifactId>jdom2</artifactId>
