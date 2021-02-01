@@ -24,18 +24,17 @@
 
 package com.percussion.utils.service.impl;
 
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.ToDoVulnerability;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.service.IPSUtilityService;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class PSUtilityService implements IPSUtilityService
 {
@@ -43,7 +42,7 @@ public class PSUtilityService implements IPSUtilityService
     @ToDoVulnerability
 
 
-    private static final Log log = LogFactory.getLog(PSUtilityService.class);
+    private static final Logger log = LogManager.getLogger(PSUtilityService.class);
     private IPSSystemProperties systemProps = null;
     public PSUtilityService()
     {
@@ -58,9 +57,12 @@ public class PSUtilityService implements IPSUtilityService
             throw new IllegalArgumentException("str may not be null");
 
         try {
-            return PSEncryptor.getInstance().encrypt(str);
+            return PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).encrypt(str);
         } catch (PSEncryptionException e) {
-            log.error("Error encrypting text: " + e.getMessage(),e);
+            log.error("Error encrypting text: {}", e.getMessage());
+            log.debug(e);
             return "";
         }
 
@@ -76,13 +78,19 @@ public class PSUtilityService implements IPSUtilityService
 
         if (key == null || key.length() == 0)
         {
-            key = PSLegacyEncrypter.DEFAULT_KEY();
+            key = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).DEFAULT_KEY();
         }
         try{
-            ret = PSEncryptor.getInstance().decrypt(str);
+            ret = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(str);
 
         }catch(PSEncryptionException ex){
-            ret =  PSLegacyEncrypter.getInstance().decrypt(str, key);
+            ret =  PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(str, key,null);
         }
 
         return ret;

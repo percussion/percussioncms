@@ -23,20 +23,17 @@
  */
 package com.percussion.design.objectstore;
 
-import static com.percussion.testing.PSTestCompare.assertEqualsWithHash;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
-
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import static com.percussion.testing.PSTestCompare.assertEqualsWithHash;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for the {@link PSRelationshipConfig} class.

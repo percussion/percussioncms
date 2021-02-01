@@ -23,9 +23,9 @@
  */
 package com.percussion.services.security;
 
+import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.security.acl.Acl;
 
@@ -96,7 +96,7 @@ public interface IPSAcl extends Acl
     * @param name name of the entry or principal, must not be <code>null</code>
     * or empty.
     * @param type principal type, one of the enumerations
-    * {@link com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes},
+    * {@link IPSTypedPrincipal.PrincipalTypes},
     * must ot be <code>null</code>.
     * @return new ACL entry, never <code>null</code>.
     */
@@ -104,7 +104,7 @@ public interface IPSAcl extends Acl
 
    /**
     * Same as {@link #createEntry(String, 
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes)} and 
+    * IPSTypedPrincipal.PrincipalTypes)} and
     * additionally the specified permissions are set for the new entry.
     */
    public IPSAclEntry createEntry(String name, PrincipalTypes type,
@@ -112,8 +112,8 @@ public interface IPSAcl extends Acl
 
    /**
     * Same as {@link #createEntry(String, 
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes)} except it
-    * takes a {@link com.percussion.utils.security.IPSTypedPrincipal} as input.
+    * IPSTypedPrincipal.PrincipalTypes)} except it
+    * takes a {@link IPSTypedPrincipal} as input.
     * 
     * @param principal must not be <code>null</code>.
     * @return new ACL entry, never <code>null</code>.

@@ -28,11 +28,11 @@ import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSPrincipalAttribute;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.utils.tools.PSPatternMatcher;
-import com.percussion.utils.security.IPSPrincipalAttribute;
-import com.percussion.utils.security.IPSPrincipalAttribute.PrincipalAttributes;
-import com.percussion.utils.security.IPSSubjectCataloger;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
+import com.percussion.security.IPSSubjectCataloger;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.PSSecurityCatalogException;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
    
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#getName()
+    * @see com.percussion.security.IPSSubjectCataloger#getName()
     */
    public String getName()
    {
@@ -102,7 +102,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#setName(String)
+    * @see com.percussion.security.IPSSubjectCataloger#setName(String)
     */
    public void setName(String name)
    {
@@ -113,7 +113,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#getDescription()
+    * @see com.percussion.security.IPSSubjectCataloger#getDescription()
     */
    public String getDescription()
    {
@@ -198,7 +198,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }   
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#supportsGroups()
+    * @see com.percussion.security.IPSSubjectCataloger#supportsGroups()
     */
    public boolean supportsGroups()
    {
@@ -231,7 +231,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#findGroups(java.lang.String)
+    * @see com.percussion.security.IPSSubjectCataloger#findGroups(java.lang.String)
     */
    @SuppressWarnings("unused")
    public List<Principal> findGroups(String pattern)
@@ -269,7 +269,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#getGroupMembers(java.util.List)
+    * @see com.percussion.security.IPSSubjectCataloger#getGroupMembers(java.util.List)
     */
    public List<IPSTypedPrincipal> getGroupMembers(
       Collection<? extends Principal> groups)
@@ -304,7 +304,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#getUserGroups(java.security.Principal)
+    * @see com.percussion.security.IPSSubjectCataloger#getUserGroups(java.security.Principal)
     */
    public List<Principal> getUserGroups(Principal user)
    {

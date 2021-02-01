@@ -98,13 +98,12 @@ import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityProviderPool;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.ToDoVulnerability;
-import com.percussion.utils.security.IPSDecryptor;
-import com.percussion.utils.security.IPSKey;
-import com.percussion.utils.security.IPSSecretKey;
-import com.percussion.utils.security.PSEncryptionKeyFactory;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.security.IPSDecryptor;
+import com.percussion.security.IPSKey;
+import com.percussion.security.IPSSecretKey;
+import com.percussion.security.PSEncryptionKeyFactory;
 import com.percussion.server.cache.PSCacheException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.content.PSFormContentParser;
@@ -1853,7 +1852,10 @@ public class PSServer {
                // decrypt the password
                String password = "";
                try {
-                  password = PSEncryptor.getInstance().decrypt(ms_serverProps.getProperty("loginPw"));
+                  password = PSEncryptor.getInstance(
+                          "AES",
+                          PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                  ).decrypt(ms_serverProps.getProperty("loginPw"));
                }catch(PSEncryptionException | java.lang.IllegalArgumentException e) {
                   password = eatLasagna(ms_serverProps.getProperty("loginId"),
                           ms_serverProps.getProperty("loginPw"));
@@ -3623,7 +3625,7 @@ public class PSServer {
    public static String getPartOneKey()
    {
       // get the encrypted constant and decrypt.
-      return PSLegacyEncrypter.getPartOneKey();
+      return PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).getPartOneKey();
    }
 
    /**
@@ -3636,7 +3638,7 @@ public class PSServer {
    public static String getPartTwoKey()
    {
       // get the encrypted constant and decrypt.
-      return PSLegacyEncrypter.getPartTwoKey();
+      return PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).getPartTwoKey();
    }
 
 
@@ -4790,10 +4792,11 @@ public class PSServer {
       if ((str == null) || (str.equals("")))
          return "";
 
-      int partone = PSLegacyEncrypter.OLD_SECURITY_KEY().hashCode();
+      int partone = PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).OLD_SECURITY_KEY().hashCode();
       int parttwo;
       if (uid == null || uid.equals(""))
-         parttwo = PSLegacyEncrypter.OLD_SECURITY_KEY2().hashCode();
+         parttwo = PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).OLD_SECURITY_KEY2().hashCode();
       else
          parttwo = uid.hashCode();
 

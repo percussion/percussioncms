@@ -32,8 +32,8 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -58,7 +58,7 @@ public class PSXmlObjectStoreLockManagerTest
    {
       int numThreads = 10;
       int numTimes = 10;
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
 
       File lockDir = temporaryFolder.newFolder("Temp","Testing","TestLocks");
 
@@ -147,7 +147,7 @@ public class PSXmlObjectStoreLockManagerTest
       {
          try
          {
-            Random rand = new Random();
+            SecureRandom rand = new SecureRandom();
             PSApplication testApp = PSObjectFactory.createApplication();
             testApp.setName(m_appName);
             while (m_numTimes-- > 0)

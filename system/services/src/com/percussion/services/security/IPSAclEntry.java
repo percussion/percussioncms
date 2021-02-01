@@ -23,8 +23,8 @@
  */
 package com.percussion.services.security;
 
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.security.acl.AclEntry;
 import java.security.acl.Permission;
@@ -53,43 +53,43 @@ public interface IPSAclEntry extends AclEntry
 
    /**
     * @deprecated
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isType(PrincipalTypes)
+    * @see IPSTypedPrincipal#isType(PrincipalTypes)
     */
    public boolean isType(PrincipalTypes entryType);
 
    /**
     * @deprecated
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isUser()
+    * @see IPSTypedPrincipal#isUser()
     */
    public boolean isUser();
 
    /**
     * @deprecated
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isGroup()
+    * @see IPSTypedPrincipal#isGroup()
     */
    public boolean isGroup();
 
    /**
     * @deprecated
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isCommunity()
+    * @see IPSTypedPrincipal#isCommunity()
     */
    public boolean isCommunity();
 
    /**
     * @deprecated
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isRole()
+    * @see IPSTypedPrincipal#isRole()
     */
    public boolean isRole();
 
    /**
     * @deprecated
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isSystemEntry()
+    * @see IPSTypedPrincipal#isSystemEntry()
     */
    public boolean isSystemEntry();
 
    /**
     * @deprecated
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isSystemCommunity()
+    * @see IPSTypedPrincipal#isSystemCommunity()
     */
    public boolean isSystemCommunity();
 
@@ -104,7 +104,7 @@ public interface IPSAclEntry extends AclEntry
 
    /**
     * @deprecated
-    * @see com.percussion.utils.security.IPSTypedPrincipal#getPrincipalType()
+    * @see IPSTypedPrincipal#getPrincipalType()
     */
    public PrincipalTypes getType();
 

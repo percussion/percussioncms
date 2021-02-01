@@ -29,8 +29,9 @@ import com.percussion.install.PSLogger;
 import com.percussion.install.RxInstallerProperties;
 import com.percussion.tablefactory.*;
 import com.percussion.util.PSProperties;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.tools.ant.BuildException;
@@ -122,10 +123,14 @@ public class PSTableAction extends PSAction
 
          String pw = props.getProperty("PWD");
          try{
-            pw = PSEncryptor.getInstance().decrypt(pw);
+            pw = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(pw);
          }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-            pw = PSLegacyEncrypter.getInstance().decrypt(pw,
-                    PSJdbcDbmsDef.getPartOneKey());
+            pw = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(pw,
+                    PSJdbcDbmsDef.getPartOneKey(),null);
          }
          conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
                  props.getProperty("DB_SERVER"),

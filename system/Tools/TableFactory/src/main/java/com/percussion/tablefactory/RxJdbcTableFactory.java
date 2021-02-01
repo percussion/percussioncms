@@ -23,21 +23,16 @@
  */
 package com.percussion.tablefactory;
 
-import com.percussion.utils.security.IPSDecryptor;
-import com.percussion.utils.security.IPSKey;
-import com.percussion.utils.security.IPSSecretKey;
-import com.percussion.utils.security.PSEncryptionKeyFactory;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSProperties;
 import com.percussion.util.PSSQLStatement;
 import com.percussion.util.PSSqlHelper;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -560,10 +555,14 @@ public class RxJdbcTableFactory
          m_version = m_Props.getProperty("DB_DRIVER_VERSION");
          m_uid = m_Props.getProperty("UID");
          try {
-             m_pw = PSEncryptor.getInstance().decrypt(m_Props.getProperty("PWD"));
+             m_pw = PSEncryptor.getInstance("AES",
+                     PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+             ).decrypt(m_Props.getProperty("PWD"));
          }catch(Exception e){
-             m_pw = PSLegacyEncrypter.getInstance().decrypt(m_Props.getProperty("PWD"),
-                     PSJdbcDbmsDef.getPartOneKey());
+             m_pw = PSLegacyEncrypter.getInstance(
+                     PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+             ).decrypt(m_Props.getProperty("PWD"),
+                     PSJdbcDbmsDef.getPartOneKey(),null);
          }
          String sSchema = m_Props.getProperty("DB_SCHEMA");
          cDB.setServer(m_Props.getProperty("DB_SERVER"));

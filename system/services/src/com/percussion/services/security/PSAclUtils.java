@@ -24,7 +24,7 @@
 package com.percussion.services.security;
 
 import com.percussion.services.catalog.PSTypeEnum;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.security.acl.NotOwnerException;
 import java.security.acl.Permission;

@@ -42,13 +42,16 @@
         <url>https://github.com/percussion/percussioncms</url>
       <tag>HEAD</tag>
   </scm>
+
     <modules>
+        <module>modules/perc-security-utils</module>
         <module>modules/jcadf-master</module>
         <module>modules/build-tools</module>
         <module>modules/perc-auditlog</module>
         <module>modules/shindig-uber</module>
         <module>modules/perc-tinymce</module>
         <module>system/utils</module>
+        <module>modules/perc-legacy</module>
         <module>modules/perc-shared-test-resources</module>
         <module>modules/webservices</module>
         <module>system/Tools/Simple</module>
@@ -108,7 +111,7 @@
        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
        <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
        <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
-       <spotbugs.plugin.version>4.0.0</spotbugs.plugin.version>
+       <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
        <commons.file.upload.version>1.4</commons.file.upload.version>
@@ -194,6 +197,7 @@
        <guava.version>24.1.1-jre</guava.version>
        <xerces.version>2.12.0</xerces.version>
        <quartz.version>2.3.2</quartz.version>
+       <maven.source.jar.plugin.version>3.2.0</maven.source.jar.plugin.version>
        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
     </properties>
 
@@ -469,6 +473,11 @@
         </plugins>
         <pluginManagement>
             <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jxr-plugin</artifactId>
+                        <version>${maven.jxr.plugin.version}</version>
+                    </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
@@ -808,6 +817,15 @@
                             <version>8.0.2-SNAPSHOT</version>
                         </dependency>
                     </dependencies>
+                    <executions>
+                        <execution>
+                            <id>pmd-scan</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <!--  Enable at build time once rules are stable -->
                 <plugin>
@@ -838,12 +856,17 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>8.0.2-SNAPSHOT</version>
+                            <version>${project.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.percussion</groupId>
+                            <artifactId>perc-security-utils</artifactId>
+                            <version>${project.version}</version>
                         </dependency>
                         <dependency>
                             <groupId>com.h3xstream.findsecbugs</groupId>
                             <artifactId>findsecbugs-plugin</artifactId>
-                            <version>1.9.0</version>
+                            <version>LATEST</version>
                         </dependency>
                         <dependency>
                             <groupId>com.mebigfatguy.fb-contrib</groupId>
@@ -851,6 +874,34 @@
                             <version>7.4.7</version>
                         </dependency>
                     </dependencies>
+                    <configuration>
+                        <fork>false</fork>
+                        <spotbugsXmlOutputDirectory>target/site</spotbugsXmlOutputDirectory>
+                        <skipEmptyReport>false</skipEmptyReport>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <includeTests>true</includeTests>
+                        <classFilesDirectory>${project.build.outputDirectory}</classFilesDirectory>
+                        <xmlOutput>true</xmlOutput>
+                        <effort>Max</effort>
+                        <threshold>Low</threshold>
+                        <failOnError>false</failOnError>
+                        <plugins>
+                            <plugin>
+                                <groupId>com.h3xstream.findsecbugs</groupId>
+                                <artifactId>findsecbugs-plugin</artifactId>
+                                <version>1.11.0</version>
+                            </plugin>
+                        </plugins>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>scan</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.owasp</groupId>
@@ -872,6 +923,20 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven.source.jar.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
         <extensions>
@@ -886,10 +951,28 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>${maven.jxr.plugin.version}</version>
+                <configuration>
+                    <outputDirectory>${project.reporting.outputDirectory}/xref</outputDirectory>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <reports>
+                            <report>aggregate</report>
+                            <report>test-aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
                 </configuration>
+
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -900,33 +983,13 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs.plugin.version}</version>
-                <configuration>
-                  <!--  <effort>Default</effort>
-                    <threshold>Low</threshold>
-                    <debug>true</debug>
-                    <failOnError>false</failOnError>
-                    <xmlOutput>true</xmlOutput>
-                    <fork>true</fork>
-                    <jvmArgs>-Dspotbugs.timeout=3600000</jvmArgs>
-                    <maxHeap>4096</maxHeap>
-                    <nested>false</nested>
-                    <relaxed>true</relaxed>
-                    <xmlOutputDirectory>target/site</xmlOutputDirectory>
-                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.h3xstream.findsecbugs</groupId>
-                            <artifactId>findsecbugs-plugin</artifactId>
-                            <version>1.9.0</version>
-                        </plugin>
-                        <plugin>
-                            <groupId>com.mebigfatguy.fb-contrib</groupId>
-                            <artifactId>fb-contrib</artifactId>
-                            <version>7.4.7</version>
-                        </plugin>
-                    </plugins>
-                    -->
-                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>spotbugs</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -952,7 +1015,7 @@
             <id>github</id>
             <releases>  <enabled>true</enabled>  </releases>
             <snapshots> <enabled>true</enabled>
-            <updatePolicy>daily</updatePolicy>
+            <updatePolicy>never</updatePolicy>
             </snapshots>
             <name>GitHub Percussion Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/percussion/percussioncms</url>
@@ -997,7 +1060,7 @@
             <url>https://mvn.percussion.com/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
+                <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
 
@@ -1006,10 +1069,13 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>yle-public</id>
-            <name>Yle public repository</name>
-            <url>https://maven.yle.fi/release</url>
-            <layout>default</layout>
+            <id>github</id>
+            <releases>  <enabled>true</enabled>  </releases>
+            <snapshots> <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+            <name>GitHub Percussion Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/percussion/percussioncms</url>
         </pluginRepository>
         <pluginRepository>
             <id>perc-releases-repo</id>
@@ -1029,6 +1095,7 @@
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
             </snapshots>
             <releases>
             </releases>
@@ -1042,11 +1109,23 @@
             <id>maven-central</id>
             <url>https://repo1.maven.org/maven2</url>
         </pluginRepository>
+        <pluginRepository>
+            <id>yle-public</id>
+            <name>Yle public repository</name>
+            <url>https://maven.yle.fi/release</url>
+            <layout>default</layout>
+        </pluginRepository>
     </pluginRepositories>
 
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>4.2.0</version>
+                <scope>compile</scope>
+            </dependency>
             <dependency>
                 <groupId>com.opencsv</groupId>
                 <artifactId>opencsv</artifactId>
@@ -2684,15 +2763,6 @@
                 <version>1.9.20</version>
             </dependency>
 
-
-<!--  Third party conflict resolution -->
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>jsr305</artifactId>
-                <version>1.3.9</version>
-                <scope>provided</scope>
-            </dependency>
-
             <dependency>
                 <groupId>com.healthmarketscience.jackcess</groupId>
                 <artifactId>jackcess</artifactId>
@@ -2831,12 +2901,6 @@
                 <groupId>org.dom4j</groupId>
                 <artifactId>dom4j</artifactId>
                 <version>2.1.3</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>annotations</artifactId>
-                <version>2.0.3</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>

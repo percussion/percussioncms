@@ -27,12 +27,19 @@ package com.percussion.utils.security;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import com.percussion.utils.io.PathUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 
@@ -85,7 +92,7 @@ public class PSSecurityUtility {
     
     private Boolean isHTTPSRequired = null;
     private Boolean isStrictTransportSecurityRequired = null;
-    private Boolean isContentSecurityPolicyRequired   = null;;
+    private Boolean isContentSecurityPolicyRequired   = null;
     private Boolean isxFrameOptionsRequired = null;
     private Boolean isXXSSProtectionRequired = null;
     private Boolean isXContentTypeOptionsRequired = null;
@@ -109,7 +116,7 @@ public class PSSecurityUtility {
         public boolean httpsRequired()
        {
           if(isHTTPSRequired != null){
-             return isHTTPSRequired.booleanValue();
+             return isHTTPSRequired;
           }
           boolean result = false;
           Properties serverProps = getServerProperties();
@@ -129,7 +136,7 @@ public class PSSecurityUtility {
          public boolean isCacheControlRequired()
            {
                if(cacheControlRequired != null) {
-                   return cacheControlRequired.booleanValue();
+                   return cacheControlRequired;
                }
 
                Properties serverProps = getServerProperties();
@@ -161,7 +168,7 @@ public class PSSecurityUtility {
        public boolean contentSecurityPolicyRequired()
        {
            if(isContentSecurityPolicyRequired != null) {
-               return isContentSecurityPolicyRequired.booleanValue();
+               return isContentSecurityPolicyRequired;
            }
            boolean result = false;
            Properties serverProps = getServerProperties();
@@ -334,17 +341,6 @@ public class PSSecurityUtility {
           return result;
        }
 
-    /**
-     * Will return an instance of secure random.  Will attempt to return a StrongSecureRandom first
-     * but will return a standard SecureRandom if Strong is unavailable.  May return null if
-     * secure random cannot be initialized.
-     *
-     * @return
-     */
-    public static SecureRandom getSecureRandom(){
-        SecureRandom ret = new SecureRandom();
-        return ret;
-    }
        
        private PSProperties getServerProperties() {
            File propFile = PSProperties.getConfig(ENTRY_NAME, PROPS_SERVER,
@@ -393,55 +389,6 @@ public class PSSecurityUtility {
        
        private static PSProperties ms_serverProps = new PSProperties();
 
-    /**
-     * Utility to remove parameters from header.
-     * @param str
-     * @return
-     */
-    public static String removeSpecialCharactersFromHeader(String str) {
-           return str.replaceAll("[^a-zA-Z ]", "");
-    }
 
-    /**
-     * Utility to sanitize a string for use in a file system path under a specified path.
-     *
-     * @param str
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForFileUnderPath(String containingPath, String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
-
-    /**
-     * Utility to sanitize a string for use in a file system path
-     *
-     * @param str
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForFileSystem(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
-
-    /**
-     * Utility to sanitize a string for use in a SQL statement
-     * @param str User provided string
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForSQLStatement(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
-
-    /**
-     * Sanitizes a user provided string for use in HTML
-     * @param str a user provided string
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForHTML(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
 
 }

@@ -68,6 +68,7 @@
     <file url="file://$PROJECT_DIR$/modules/extensions-workflow" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/extensions-workflow/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/extensions-workflow/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/jcadf-master/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-auditlog" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-auditlog/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-distribution-tree" charset="UTF-8" />
@@ -76,8 +77,10 @@
     <file url="file://$PROJECT_DIR$/modules/perc-jetty" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-jetty-jars" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-jetty-logging" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/perc-legacy/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-packages" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-rxapps" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/perc-security-utils/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-service-wrapper" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-service-wrapper/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/perc-service-wrapper/src/main/resources" charset="UTF-8" />

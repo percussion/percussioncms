@@ -71,7 +71,7 @@ import com.percussion.util.PSStringTemplate.PSStringTemplateException;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.PSJexlEvaluator;
-import com.percussion.utils.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.workflow.mail.IPSMailMessageContext;
 import com.percussion.workflow.mail.PSMailException;
 import com.percussion.workflow.mail.PSMailMessageContext;

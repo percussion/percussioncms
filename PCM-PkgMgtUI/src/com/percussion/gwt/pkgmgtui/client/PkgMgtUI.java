@@ -268,7 +268,7 @@ public class PkgMgtUI implements EntryPoint
     * The messages interface. Initialized in {@link #onModuleLoad()}. Never
     * <code>null</code> after that.
     */
-   private static IPSMessages m_messages = null;
+   private static volatile IPSMessages m_messages = null;
 
    /**
     * Packages tab initialized in the {@link #onModuleLoad()} never

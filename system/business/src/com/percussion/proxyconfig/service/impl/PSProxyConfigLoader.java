@@ -30,8 +30,9 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import com.percussion.proxyconfig.data.PSProxyConfig;
 import com.percussion.proxyconfig.service.impl.ProxyConfig.Password;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 
 import java.io.BufferedWriter;
@@ -40,7 +41,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +92,7 @@ public class PSProxyConfigLoader
    {
       ProxyConfigurations config = getProxyConfig(configFile);
        PSProxyConfig proxyConfig;
-       String encrypterKey = PSLegacyEncrypter.getPartOneKey();
+       String encrypterKey = PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).getPartOneKey();
        boolean configChanged = false;
        
        for (ProxyConfig s : config.getConfigs())
@@ -127,9 +127,11 @@ public class PSProxyConfigLoader
        if (pwd.isEncrypted())
       {
           try {
-            decryptedPassword = PSEncryptor.getInstance().decrypt(pwdVal);
+            decryptedPassword = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pwdVal);
           }catch (PSEncryptionException e){
-              decryptedPassword = PSLegacyEncrypter.getInstance().decrypt(pwdVal, encrypterKey);
+              decryptedPassword = PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              ).decrypt(pwdVal, encrypterKey,null);
               proxyConfig.setPassword(decryptedPassword);
           }
           return false;
@@ -137,7 +139,7 @@ public class PSProxyConfigLoader
 
        String enc = null;
        try {
-           enc = PSEncryptor.getInstance().encrypt(pwdVal);
+           enc = PSEncryptor.getInstance("AES", PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).encrypt(pwdVal);
        } catch (PSEncryptionException e) {
            log.error("Error encrypting password: " + e.getMessage(), e);
            enc = "";

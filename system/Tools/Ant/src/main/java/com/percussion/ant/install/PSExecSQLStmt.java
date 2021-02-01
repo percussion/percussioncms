@@ -27,9 +27,10 @@ package com.percussion.ant.install;
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSJdbcUtils;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.util.PSSqlHelper;
 import org.apache.tools.ant.BuildException;
@@ -122,10 +123,14 @@ public class PSExecSQLStmt extends PSAction
          }
          String pw = props.getProperty("PWD");
          try{
-            pw = PSEncryptor.getInstance().decrypt(pw);
+            pw = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(pw);
          }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-            pw = PSLegacyEncrypter.getInstance().decrypt(pw,
-                    PSJdbcDbmsDef.getPartOneKey());
+            pw = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(pw,
+                    PSJdbcDbmsDef.getPartOneKey(),null);
          }
          conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
                  props.getProperty("DB_SERVER"),

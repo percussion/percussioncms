@@ -27,13 +27,12 @@ import com.percussion.services.security.IPSAclEntry;
 import com.percussion.services.security.PSPermissions;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.xml.IPSXmlSerialization;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.*;
 
 import javax.persistence.Entity;

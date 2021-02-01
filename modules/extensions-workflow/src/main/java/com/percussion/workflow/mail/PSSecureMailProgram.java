@@ -23,6 +23,8 @@
  */
 package com.percussion.workflow.mail;
 
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
@@ -30,7 +32,7 @@ import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 
 import com.percussion.extension.IPSExtensionErrors;
-import com.percussion.utils.security.PSEncryptProperties;
+import com.percussion.security.PSEncryptProperties;
 
 /**
  * Can be used to send secure mail via workflow transitions. Follows the Mail
@@ -147,7 +149,12 @@ public class PSSecureMailProgram implements IPSMailProgram {
                 && !StringUtils.isEmpty(messageContext.getPassword())) {
             // decrypt password
             String pwd = PSEncryptProperties.decryptProperty(messageContext.getPassword(),
-                    PSLegacyEncrypter.getPartOneKey());
+                    PSLegacyEncrypter.getInstance(
+                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    ).getPartOneKey(),
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),
+                    null
+            );
             commonsMultiPartEmail.setAuthentication(
                     messageContext.getUserName(), pwd);
         }

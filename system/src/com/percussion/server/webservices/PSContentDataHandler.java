@@ -34,16 +34,18 @@ import com.percussion.cms.objectstore.server.PSServerItem;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSException;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.services.purge.IPSSqlPurgeHelper;
 import com.percussion.services.purge.PSSqlPurgeHelperLocator;
+import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSXMLDomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -58,7 +60,7 @@ public class PSContentDataHandler extends PSSearchHandler
 {
    /**
     * This operation is used to retrieve a content item in standard item format.
-    * @see sys_StandardItem.xsd for more info.
+    * see sys_StandardItem.xsd for more info.
     *
     * @param request The request object. It may not be <code>null</code>.
     * @param parent The parent document to add the response element to,
@@ -247,10 +249,19 @@ public class PSContentDataHandler extends PSSearchHandler
       PSItemDefinition itemDef =
          mgr.getItemDef(contentTypeId, request.getSecurityToken());
 
+
+      String id = SecureStringUtils.srp(
+              request.getParameter(IPSHtmlParameters.SYS_CONTENTID));
+
+      String revision = SecureStringUtils.srp(
+              request.getParameter(IPSHtmlParameters.SYS_REVISION));
+
+      if(!NumberUtils.isCreatable(id) || !NumberUtils.isCreatable(revision)){
+         throw new PSException("Not a valid id.");
+      }
+
       PSLocator loc =
-         new PSLocator(
-            request.getParameter(IPSHtmlParameters.SYS_CONTENTID),
-            request.getParameter(IPSHtmlParameters.SYS_REVISION));
+         new PSLocator(id,revision);
 
       // get the content item
       PSServerItem theItem = new PSServerItem(itemDef);

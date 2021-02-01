@@ -36,8 +36,9 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.error.PSException;
 import com.percussion.util.PSCollection;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
@@ -401,7 +402,9 @@ public class PSLegacyBackEndCredential extends PSComponent
    private String makeLasagna(String pwd)
    {
       try {
-         return PSEncryptor.getInstance().encrypt(pwd);
+         return PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).encrypt(pwd);
       } catch (PSEncryptionException e) {
          return "";
       }

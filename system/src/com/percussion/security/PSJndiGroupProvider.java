@@ -26,7 +26,6 @@ package com.percussion.security;
 import com.percussion.design.objectstore.PSJndiGroupProviderInstance;
 import com.percussion.design.objectstore.PSJndiObjectClass;
 import com.percussion.services.security.PSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;

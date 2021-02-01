@@ -2148,11 +2148,11 @@ public class PSSqlHelper
     * @param refresh When true, the list of valid tables is refreshed from the database.
     * @return true if the table is valid and exists, false if not.
     */
-   public static boolean isExistingCMSTableName(String t, boolean refresh) {
+   public static boolean isExistingCMSTableName(Connection conn, String t, boolean refresh) {
       boolean ret = false;
 
       if (existingCMStables.size() == 0 || refresh) {
-         try (Connection conn = PSConnectionHelper.getDbConnection()) {
+         try{
             existingCMStables.clear();
             String types[] = {"TABLE", "VIEW"};
             try(ResultSet rs = conn.getMetaData().getTables(conn.getCatalog(), conn.getSchema(), "%", types)) {
@@ -2160,7 +2160,7 @@ public class PSSqlHelper
                   existingCMStables.add(rs.getString("TABLE_NAME").toLowerCase());
                }
             }
-         } catch (SQLException | NamingException e) {
+         } catch (SQLException e) {
             ms_log.warn("Error listing database tables: " + e.getMessage());
          }
       }
