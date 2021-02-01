@@ -606,11 +606,6 @@
       </dependency>
       <dependency>
           <groupId>org.jdom</groupId>
-          <artifactId>jdom</artifactId>
-          <scope>provided</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.jdom</groupId>
           <artifactId>jdom2</artifactId>
           <scope>provided</scope>
       </dependency>
