@@ -550,14 +550,14 @@ aria-labelledby="$!{headerId}"##
 $!{listAriaLabel}##
 #end##
 #end##
-#if($relresults.size() > 0)##
+#if( "" != "$!{relresults}" && 0 < $relresults.size() )##
 #if($feedname)##
 <div style="display:none" hidden data-name="feedQuery_$feedname" data-query="$!{feedDynamicListData}"></div>
 #end##
 <div id="$!{autoListDivId}" $!{ariaLabelString} class="#cleanClass("$!{rootclass} perc-blog-list-container")" #if($perc_hide_when_empty && $relresults.size() <= 0)hidden #end aria-live="polite" $!{listAriaRole} aria-busy="true" aria-relevant="additions" aria-atomic="true" data-query="$!{dynamicListData}" data-title="$!{titleResults}">
 ## The large number of #*  *# and ## notations prevent extra spacing from being output by velocity.  This makes the html line up correctly.
 #if("$navLoc" != "")##
-#if($relresults.size() > 0)##
+#if(0 < $relresults.size())##
 #if($enableRssIcon && $enableRssField == "Enable Rss feed" && $rssIconPosition == "perc-list-top")##Keep link class name perc-rss-icon in sync with delivery tier.
 <span class='perc-rss-icon-top'><a class='perc-rss-icon' href="$!{sUrl}" aria-label="$!{rssLinkText}" title="$!{rssLinkText}" >$!{rssLinkText}</a></span>
 #end##
