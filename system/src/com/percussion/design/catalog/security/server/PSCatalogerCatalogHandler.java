@@ -32,7 +32,7 @@ import com.percussion.security.IPSDirectoryCataloger;
 import com.percussion.server.PSRequest;
 import com.percussion.services.security.IPSRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;
-import com.percussion.utils.security.IPSSubjectCataloger;
+import com.percussion.security.IPSSubjectCataloger;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import org.w3c.dom.Document;

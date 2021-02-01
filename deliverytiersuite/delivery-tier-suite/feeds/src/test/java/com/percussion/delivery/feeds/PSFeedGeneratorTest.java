@@ -250,13 +250,16 @@ public class PSFeedGeneratorTest extends TestCase
 
         Properties props1 = new Properties();
         String path = System.getProperty("user.dir");
-        InputStream in = new FileInputStream(path + PERC_FEEDS_PROPERTIES);
-        props1.load(in);
+
+        try(InputStream in = new FileInputStream(path + PERC_FEEDS_PROPERTIES)) {
+            props1.load(in);
+        }
+
         String feedsIp = props1.getProperty("rss.feeds.ip");
         if(feedsIp==null || feedsIp.isEmpty()){
             feedsIp=FEEDS_IP_DEFAULT;
         }else{
-            feedsIp.trim();
+            feedsIp = feedsIp.trim();
         }
 
         InetAddressValidator ipValidator = new InetAddressValidator();

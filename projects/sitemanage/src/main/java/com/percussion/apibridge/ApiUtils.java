@@ -54,7 +54,7 @@ import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.*;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal;
 
 import java.security.Principal;
 import java.util.*;

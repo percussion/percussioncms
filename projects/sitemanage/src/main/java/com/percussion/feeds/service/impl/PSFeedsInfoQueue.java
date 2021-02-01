@@ -28,10 +28,10 @@ import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
-import com.percussion.delivery.service.impl.PSDeliveryInfoService;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,8 +47,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Set;
 
 /**
@@ -130,7 +128,8 @@ public class PSFeedsInfoQueue implements InitializingBean
             super();
 
             //Register to get notified if encryption key changes
-            PSEncryptor.getInstance().addPropertyChangeListener(this);
+            PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).addPropertyChangeListener(this);
         }
 
         /*
@@ -184,7 +183,9 @@ public class PSFeedsInfoQueue implements InitializingBean
             }
             finally
             {
-                PSEncryptor.getInstance().removePropertyChangeListener(this);
+                PSEncryptor.getInstance("AES",
+                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                ).removePropertyChangeListener(this);
                 log.info("Feed queue shutdown. interrupted="+Thread.currentThread().isInterrupted());
             }
 

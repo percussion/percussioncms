@@ -28,7 +28,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.services.security.data.PSCommunityVisibility;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.aop.security.IPSWsParameter;

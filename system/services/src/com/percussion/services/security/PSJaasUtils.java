@@ -33,11 +33,11 @@ import com.percussion.security.PSUserAttributes;
 import com.percussion.security.PSUserEntry;
 import com.percussion.services.security.loginmods.data.PSGroup;
 import com.percussion.services.security.loginmods.data.PSPrincipal;
-import com.percussion.utils.security.IPSPrincipalAttribute;
-import com.percussion.utils.security.IPSPrincipalAttribute.PrincipalAttributes;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 
 import java.security.Principal;
 import java.security.acl.Group;

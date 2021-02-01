@@ -24,8 +24,8 @@
 package com.percussion.services.security;
 
 
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.security.Principal;
 import java.security.acl.Group;

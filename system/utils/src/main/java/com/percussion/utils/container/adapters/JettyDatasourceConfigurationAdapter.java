@@ -33,10 +33,11 @@ import com.percussion.utils.container.PSJndiDatasourceImpl;
 import com.percussion.utils.container.PSStaticContainerUtils;
 import com.percussion.utils.container.config.ContainerConfig;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.io.FileUtils;
@@ -196,9 +197,17 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
                 if (encrypted != null && encrypted.equalsIgnoreCase("Y")) {
                     try {
-                        pwd = PSEncryptor.getInstance().decrypt(pwd);
+                        pwd = PSEncryptor.getInstance("AES",
+                                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                PSEncryptor.SECURE_DIR)
+                        ).decrypt(pwd);
                     }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                        pwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSLegacyEncrypter.getPartOneKey());
+                        pwd = PSLegacyEncrypter.getInstance(
+                                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                PSEncryptor.SECURE_DIR)
+                        ).decrypt(pwd, PSLegacyEncrypter.getInstance(
+                                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                        PSEncryptor.SECURE_DIR)).getPartOneKey(),null);
                     }
                 } else {
                     needsEncryption = true;
@@ -329,7 +338,10 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_SERVER_SUFFIX, datasource.getServer());
                 try {
                     props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
-                            PSEncryptor.getInstance().encrypt(datasource.getPassword()));
+                            PSEncryptor.getInstance("AES",
+                                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                            PSEncryptor.SECURE_DIR
+                                    )).encrypt(datasource.getPassword()));
                     props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_ENCRYPTED_SUFFIX, "Y");
                 } catch (PSEncryptionException e) {
                     props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,

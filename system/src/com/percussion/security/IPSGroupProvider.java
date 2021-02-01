@@ -24,11 +24,8 @@
 
 package com.percussion.security;
 
-import com.percussion.utils.security.IPSTypedPrincipal;
-
 import java.security.Principal;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Provides support for cataloging groups for a {@link PSSecurityProvider}.

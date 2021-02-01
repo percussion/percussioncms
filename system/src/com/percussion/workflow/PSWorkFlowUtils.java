@@ -31,6 +31,7 @@ import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
@@ -54,7 +55,7 @@ import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.utils.security.PSEncryptProperties;
+import com.percussion.security.PSEncryptProperties;
 import com.percussion.utils.string.PSStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -65,7 +66,6 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -2318,7 +2318,7 @@ public class PSWorkFlowUtils
       }
       File workflowProps = new File(PathUtils.getRxDir(),
               WORKFLOW_PROPS_PATH + "/" + WORKFLOW_PROPS_FILE_NAME);
-      PSEncryptProperties.encryptFile(workflowProps, props);
+      PSEncryptProperties.encryptFile(workflowProps, props,PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
    }
 
    /**

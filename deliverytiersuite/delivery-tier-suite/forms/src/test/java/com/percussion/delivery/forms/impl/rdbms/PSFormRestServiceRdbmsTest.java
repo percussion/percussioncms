@@ -30,13 +30,18 @@ import com.percussion.delivery.forms.data.PSFormSummary;
 import com.percussion.delivery.forms.impl.PSBaseFormServiceTest;
 import com.percussion.delivery.forms.impl.PSFormRestServiceBaseTest;
 import com.percussion.delivery.forms.impl.PSMockEmailHelper;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.ToDoVulnerability;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.glassfish.jersey.internal.PropertiesDelegate;
 import org.glassfish.jersey.server.ContainerRequest;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -86,6 +91,24 @@ public class PSFormRestServiceRdbmsTest extends PSBaseFormServiceTest
 {
     @Autowired
     private IPSFormRestService formRestService;
+
+
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    private String rxdeploydir;
+
+    @Before
+    public void setup() throws IOException {
+
+        rxdeploydir = System.getProperty("rxdeploydir");
+        System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
+    }
+
+    @After
+    public void teardown(){
+        if(rxdeploydir != null)
+            System.setProperty("rxdeploydir",rxdeploydir);
+    }
 
     @Test
     @Ignore("TODO: FixMe!")
@@ -228,8 +251,17 @@ public class PSFormRestServiceRdbmsTest extends PSBaseFormServiceTest
         params.put("perc_formName", Arrays.asList(formName));
         if (subject != null && toList != null)
         {
-            params.put("perc_emnt", Arrays.asList(PSLegacyEncrypter.getInstance().encrypt(toList, PSLegacyEncrypter.DEFAULT_KEY())));
-            params.put("perc_emns", Arrays.asList(PSLegacyEncrypter.getInstance().encrypt(subject, PSLegacyEncrypter.DEFAULT_KEY())));
+            params.put("perc_emnt", Arrays.asList(PSLegacyEncrypter.getInstance(
+                    temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).encrypt(toList, PSLegacyEncrypter.getInstance(
+                    temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).DEFAULT_KEY())));
+            params.put("perc_emns", Arrays.asList(PSLegacyEncrypter.getInstance(
+                    temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            )
+                    .encrypt(subject, PSLegacyEncrypter.getInstance(
+                            temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    ).DEFAULT_KEY())));
         }
 
         params.put(fieldValue1[0], Arrays.asList(fieldValue1[1]));

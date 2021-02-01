@@ -40,8 +40,8 @@ import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.system.PSAssignmentTypeHelper;
 import com.percussion.util.PSCms;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

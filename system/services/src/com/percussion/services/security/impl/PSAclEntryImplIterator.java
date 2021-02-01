@@ -29,7 +29,7 @@ import com.percussion.security.PSRoleEntry;
 import com.percussion.security.PSUserEntry;
 import com.percussion.services.security.IPSAclEntry;
 import com.percussion.services.security.data.PSAclImpl;
-import com.percussion.utils.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

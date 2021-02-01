@@ -32,8 +32,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Properties;
 
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.tools.SortedProperties;
 import org.apache.commons.io.FileUtils;
@@ -73,9 +74,17 @@ public class PSStaticContainerUtils
       if (StringUtils.equalsIgnoreCase(encrypted, "Y"))
       {
          try{
-            str = PSEncryptor.getInstance().decrypt(str);
+            str = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                            PSEncryptor.SECURE_DIR)
+            ).decrypt(str);
          } catch (PSEncryptionException e) {
-            str = PSLegacyEncrypter.getInstance().decrypt(str, PSLegacyEncrypter.getPartOneKey());
+            str = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                    PSEncryptor.SECURE_DIR)
+            ).decrypt(str, PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                    PSEncryptor.SECURE_DIR)).getPartOneKey(),null);
          }
 
       }

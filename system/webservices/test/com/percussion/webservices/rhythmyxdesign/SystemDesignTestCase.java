@@ -32,7 +32,7 @@ import com.percussion.services.security.PSPermissions;
 import com.percussion.services.system.data.PSConfigurationTypes;
 import com.percussion.util.PSBase64Decoder;
 import com.percussion.util.PSBase64Encoder;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSAssemblyTestBase;
