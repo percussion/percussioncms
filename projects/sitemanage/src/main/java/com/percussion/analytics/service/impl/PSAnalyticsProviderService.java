@@ -142,24 +142,15 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
                userID=config.getUid();
            }
 
-           String pwd;
-           if(!encrypted) {
-               pwd = rawPwd;
-           }else {
-               try {
-                   //Try to decrypt with the new method
-                   pwd = PSEncryptor.getInstance("AES",
-                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                   ).decrypt(rawPwd);
-               } catch (Exception e) {
-                   //Fail over to old method
-                   pwd = PSLegacyEncrypter.getInstance(
-                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                   ).decrypt(rawPwd, PSLegacyEncrypter.getInstance(
-                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                   ).CRYPT_KEY(),
-                           null);
-               }
+           String pwd = null;
+           try {
+               pwd = encrypted ? rawPwd : PSEncryptor.getInstance("AES",
+                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(rawPwd);
+           } catch (PSEncryptionException | IllegalArgumentException  e) {
+               pwd = PSLegacyEncrypter.getInstance(
+               PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(
+               rawPwd, PSLegacyEncrypter.getInstance(
+                  PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR).CRYPT_KEY(),null);
            }
 
            config.setPassword(pwd);
