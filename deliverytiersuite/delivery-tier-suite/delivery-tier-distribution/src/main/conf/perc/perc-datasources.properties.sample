@@ -27,8 +27,8 @@ jdbcDriver=org.apache.derby.jdbc.ClientDriver
 # the connection URL
 # "Oracle" -  jdbc:oracle:thin:@<host>:<port>/<service>
 #         Eg: jdbc:oracle:thin:@10.10.10.61:1521/ORCL
-# "MySQL"  --  jdbc:mysql://<host>:<port>/percforms?useUnicode=true&characterEncoding=UTF8
-#         Eg: jdbc:mysql://localhost:3306/percforms?useUnicode=true&characterEncoding=UTF8
+# "MySQL"  --  jdbc:mysql://<host>:<port>/dtsdb?useUnicode=true&characterEncoding=UTF-8&useSSL=true&requireSSL=false&verifyServerCertificate=false
+#         Eg: jdbc\:mysql\://localhost\:3306/dtsdb?useUnicode\=true&characterEncoding\=UTF-8&useSSL\=true&requireSSL\=false&verifyServerCertificate\=false
 # "MS SQL" -  jdbc:sqlserver://<host>:<port>/<database>
 #         Eg: jdbc:sqlserver://localhost/delivery_database
 # "Derby"  -  jdbc:derby://<host>:<port>/<database>
