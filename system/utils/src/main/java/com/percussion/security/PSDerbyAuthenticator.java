@@ -45,7 +45,7 @@ import java.util.Properties;
  * <p>
  * For more info see the Derby Developers Guide under "Derby and Security".
  *
- * TODO: Is this class actually used / necessary
+ * Used in Repository/derby.properties in versions < 5.4
  */
 
 public class PSDerbyAuthenticator implements UserAuthenticator
