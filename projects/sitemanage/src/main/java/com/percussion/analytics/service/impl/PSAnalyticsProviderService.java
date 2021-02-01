@@ -23,9 +23,7 @@
  */
 package com.percussion.analytics.service.impl;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.percussion.analytics.data.PSAnalyticsProviderConfig;
 import com.percussion.analytics.error.IPSAnalyticsErrorMessageHandler;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
@@ -35,16 +33,15 @@ import com.percussion.analytics.service.impl.google.PSGoogleAnalyticsProviderHan
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.util.PSSiteManageBean;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -91,7 +88,9 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
       else
       {
           try {
-              ePwd = config.isEncrypted() ? pwd : PSEncryptor.getInstance().encrypt(pwd);
+              ePwd = config.isEncrypted() ? pwd : PSEncryptor.getInstance("AES",
+                      PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              ).encrypt(pwd);
           } catch (PSEncryptionException e) {
               ePwd = pwd;
               config.setEncrypted(false);
@@ -149,10 +148,17 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
            }else {
                try {
                    //Try to decrypt with the new method
-                   pwd = PSEncryptor.getInstance().decrypt(rawPwd);
+                   pwd = PSEncryptor.getInstance("AES",
+                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                   ).decrypt(rawPwd);
                } catch (Exception e) {
                    //Fail over to old method
-                   pwd = PSLegacyEncrypter.getInstance().decrypt(rawPwd, PSLegacyEncrypter.CRYPT_KEY());
+                   pwd = PSLegacyEncrypter.getInstance(
+                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                   ).decrypt(rawPwd, PSLegacyEncrypter.getInstance(
+                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                   ).CRYPT_KEY(),
+                           null);
                }
            }
 

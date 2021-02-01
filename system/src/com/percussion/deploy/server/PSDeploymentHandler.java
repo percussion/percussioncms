@@ -57,6 +57,7 @@ import com.percussion.error.PSException;
 import com.percussion.security.IPSSecurityErrors;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.IPSLoadableRequestHandler;
 import com.percussion.server.IPSServerErrors;
@@ -68,6 +69,7 @@ import com.percussion.server.PSServerBrand;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
@@ -2690,10 +2692,14 @@ public class PSDeploymentHandler  implements IPSLoadableRequestHandler
       if (pwd == null || pwd.trim().length() == 0)
          return "";
 
-      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.INVALID_DRIVER() :
+      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_DRIVER() :
          uid;
 
-      return decryptPwd(pwd, PSLegacyEncrypter.INVALID_CRED(), key);
+      return decryptPwd(pwd, PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_CRED(), key);
    }
 
    /**

@@ -57,10 +57,10 @@ import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.pubserver.IPSPubServerService;
-//import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.recycle.service.IPSRecycleService;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.ToDoVulnerability;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyErrors;
@@ -117,8 +117,8 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -137,7 +137,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -217,7 +216,8 @@ public class PSPageUtils extends PSJexlUtilBase
         net.sf.ehcache.Element cachedLink =null;
 
         try{
-            log.debug("Checking link: " + link + " in context: " + context +" dontCache=" + Boolean.toString(dontCache));
+            log.debug("Checking link: {} in context: {} dontCache= {}",
+                    link,context,dontCache);
 
             if(!dontCache){
                 cachedLink = linkCache.get(link);
@@ -972,7 +972,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * returned items are relate to the page's template if there is any.
      *
      * @param item the page or template item, never <code>null</code>.
-     * @param widget the ID of the widget, never blank.
+     * @param widgetParam the ID of the widget, never blank.
      * @param finderName the name of the widget content finder. It defaults to
      *            {@link #DEFAULT_WIDGET_CONTENT_FINDER}. if the finder name is
      *            not specified.
@@ -1079,7 +1079,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * Gets the tool-tip for the specified widget in edit mode.
      *
      * @param context the assembly page/template context, not <code>null</code>.
-     * @param widget the widget instance, not <code>null</code>.
+     * @param widgetInstance the widget instance, not <code>null</code>.
      * @param defaultTooltip the default tool-tip, this is used if not in edit
      *            mode or there is no widget name and/or description.
      *
@@ -1236,7 +1236,6 @@ public class PSPageUtils extends PSJexlUtilBase
      * @param map assumed not <code>null</code>, the map gets updated in
      *            recursive calls.
      * @param node assumed not <code>null</code>.
-     * @param path assumed not <code>null</code>.
      * @param label assumed not <code>null</code>.
      */
     private void createCategoryMap(Map<String, String> map, Element node, String label)
@@ -1921,7 +1920,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * page if we find it we return the object that individual widgets can add
      * to. If we do not find it we add it.
      *
-     * @param asmItem
+     * @param param
      * @return The Metadata Map. The key is a string and the value must be a
      *         String or List of Strings.
      */
@@ -2242,9 +2241,12 @@ public class PSPageUtils extends PSJexlUtilBase
 
     public String encryptString(String str){
         try {
-            return PSEncryptor.getInstance().encrypt(str);
+            return PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).encrypt(str);
         } catch (PSEncryptionException e) {
-            log.error("Error encrypting string: " + e.getMessage());
+            log.error("Error encrypting string: {}",e.getMessage());
+            log.debug(e);
             return "";
         }
     }
@@ -2313,9 +2315,11 @@ public class PSPageUtils extends PSJexlUtilBase
 
                     String encryptEmail = "";
                     try {
-                        encryptEmail = PSEncryptor.getInstance().encrypt(email);
+                        encryptEmail = PSEncryptor.getInstance("AES",
+                                PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                        ).encrypt(email);
                     } catch (PSEncryptionException e) {
-                       log.error("Error encrypting email address:" + e.getMessage());
+                       log.error("Error encrypting email address: {}", e.getMessage());
                     }
 
                     dddString += "<option data-personName=\"" + first +  "-" + last + "\" value=\"" + encryptEmail +  "\">" + first +  " " + last +  "</option>";
@@ -2328,7 +2332,7 @@ public class PSPageUtils extends PSJexlUtilBase
                     log.error("Error finding path  to retrieve name property as string",e);
                 }
                 catch (RepositoryException e) {
-                    log.error("Error quierying form repository",e);
+                    log.error("Error querying form repository",e);
                 }
             }
         } else dddString += "<option value=\"empty\">Select an Option</option>";
@@ -2928,7 +2932,7 @@ public class PSPageUtils extends PSJexlUtilBase
     /**
      * Logger for this class
      */
-    private static Log log = LogFactory.getLog(PSPageUtils.class);
+    private static Logger log = LogManager.getLogger(PSPageUtils.class);
 
     private static Object metalock = new Object();
 

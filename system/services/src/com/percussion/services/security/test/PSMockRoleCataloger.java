@@ -24,10 +24,10 @@
 package com.percussion.services.security.test;
 
 import com.percussion.services.security.PSTypedPrincipal;
-import com.percussion.utils.security.IPSRoleCataloger;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.IPSRoleCataloger;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 
 import java.util.HashSet;
 import java.util.Set;

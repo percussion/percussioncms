@@ -25,13 +25,13 @@
 package com.percussion.services.security;
 
 import com.percussion.security.IPSDirectoryCataloger;
+import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.services.security.data.PSCatalogerConfig;
-import com.percussion.utils.security.IPSPrincipalAttribute;
-import com.percussion.utils.security.IPSRoleCataloger;
-import com.percussion.utils.security.IPSSubjectCataloger;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.PSSecurityCatalogException;
-import com.percussion.utils.security.IPSPrincipalAttribute.PrincipalAttributes;
+import com.percussion.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSRoleCataloger;
+import com.percussion.security.IPSSubjectCataloger;
+import com.percussion.security.PSSecurityCatalogException;
+import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
 import com.percussion.utils.xml.PSInvalidXmlException;
 
 import java.io.IOException;
@@ -136,7 +136,7 @@ public interface IPSRoleMgr
     * @return A set of members, never <code>null</code>, may be empty if no
     * matching role is found or if the role has no members. Principles returned
     * with {@link 
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes#UNDEFINED} 
+    * IPSTypedPrincipal.PrincipalTypes#UNDEFINED}
     * are ignored.
     * 
     * @throws PSSecurityCatalogException if there are any errors.
@@ -151,12 +151,12 @@ public interface IPSRoleMgr
     * empty.
     * @param type The type of principal to return, may not be <code>null</code>
     * and may not be {@link 
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes#UNDEFINED}.
+    * IPSTypedPrincipal.PrincipalTypes#UNDEFINED}.
     * 
     * @return A set of members, never <code>null</code>, may be empty if no
     * matching role is found or if the role has no members. Principles returned
     * with {@link 
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes#UNDEFINED} 
+    * IPSTypedPrincipal.PrincipalTypes#UNDEFINED}
     * are ignored.
     * 
     * @throws PSSecurityCatalogException if there are any errors.

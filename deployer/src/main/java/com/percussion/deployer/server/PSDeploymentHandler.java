@@ -88,8 +88,10 @@ import com.percussion.services.pkginfo.utils.PSIdNameHelper;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
+import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
 import com.percussion.util.PSPurgableTempFile;
@@ -3623,10 +3625,14 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          return "";
 
       String key = uid == null || uid.trim().length() == 0
-            ? PSLegacyEncrypter.INVALID_DRIVER()
+            ? PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_DRIVER()
             : uid;
 
-      return decryptPwd(pwd, PSLegacyEncrypter.INVALID_CRED(), key);
+      return decryptPwd(pwd, PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_CRED(), key);
    }
 
    /**
@@ -3650,7 +3656,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          return "";
 
       try{
-         ret = PSEncryptor.getInstance().decrypt(pwd);
+         ret = PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).decrypt(pwd);
       } catch (PSEncryptionException e) {
         ret = PSCryptographer.decrypt(key1, key2, pwd);
       }

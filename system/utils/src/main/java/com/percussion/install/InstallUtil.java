@@ -1752,10 +1752,10 @@ public class InstallUtil
 
    /**
      * This one is used if table not exist and we are performing operation on it So that this will bypass the operation.
-     *  
+     *
      */
     public static boolean tableNotExists() {
-       return tableNotExists();
+       return false;
     }
 
    /**

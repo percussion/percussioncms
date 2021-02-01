@@ -25,14 +25,14 @@
 package com.percussion.ant.install;
 
 import com.percussion.install.PSLogger;
-import com.percussion.server.PSServer;
 import com.percussion.utils.container.IPSContainerUtils;
 import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.container.PSContainerUtilsFactory;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSJdbcUtils;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 
 import java.io.File;
@@ -103,7 +103,9 @@ public class PSUpdateRepoProps extends PSAction
                    String pwd = datasource.getPassword();
                    if (!datasource.isEncrypted())
                    {
-                       pwd = PSEncryptor.getInstance().encrypt(pwd);
+                       pwd = PSEncryptor.getInstance("AES",
+                               PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                       ).encrypt(pwd);
                    }
                    props.put("PWD", pwd);
                    props.put("PWD_ENCRYPTED","Y");

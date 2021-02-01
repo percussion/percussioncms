@@ -25,25 +25,16 @@ package com.percussion.services.security;
 
 
 import com.percussion.services.catalog.PSTypeEnum;
-import com.percussion.services.guidmgr.IPSGuidManager;
-import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.data.PSAccessLevelImpl;
 import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.junit.Ignore;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 import static org.junit.Assert.*;
 

@@ -28,8 +28,9 @@ import com.percussion.deploy.error.PSDeployException;
 import com.percussion.deploy.server.PSDbmsHelper;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
@@ -232,9 +233,11 @@ public class PSDbmsInfo implements IPSDeployComponent
          pwd = decryptPwd(m_uid, pwd);
       }else if(encrypted){
          try {
-            pwd = PSEncryptor.getInstance().encrypt(m_pw);
+            pwd = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).encrypt(m_pw);
          } catch (PSEncryptionException e) {
-            logger.warn("Error encrypting datasource password:" + e.getMessage());
+            logger.warn("Error encrypting datasource password: {}", e.getMessage());
             logger.debug(e.getMessage(),e);
          }
       }
@@ -568,9 +571,12 @@ public class PSDbmsInfo implements IPSDeployComponent
          return "";
 
       try {
-         return PSEncryptor.getInstance().encrypt(pwd);
+         return PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).encrypt(pwd);
       } catch (PSEncryptionException e) {
-         logger.error("Error encrypting password: " + e.getMessage(),e);
+         logger.error("Error encrypting password: {}", e.getMessage());
+         logger.debug(e);
          return "";
       }
    }
@@ -592,13 +598,18 @@ public class PSDbmsInfo implements IPSDeployComponent
          return "";
 
       String key = uid == null || uid.trim().length() == 0
-            ? PSLegacyEncrypter.INVALID_DRIVER()
+            ? PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_DRIVER()
             : uid;
 
       try {
-         return PSEncryptor.getInstance().decrypt(pwd);
+         return PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).decrypt(pwd);
       } catch (PSEncryptionException e) {
-         return PSCryptographer.decrypt(PSLegacyEncrypter.INVALID_CRED(), key, pwd);
+         return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).INVALID_CRED(), key, pwd);
       }
 
    }

@@ -27,6 +27,7 @@ import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.*;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSRoleMgrLocator;
@@ -866,11 +867,17 @@ public class PSSecurityFilter implements Filter
     */
    private String getSessionIdFromRequest(HttpServletRequest request)
    {
-      String sessionId = request.getParameter(IPSHtmlParameters.SYS_SESSIONID);
+      String sessionId =
+              SecureStringUtils.srp(
+                      request.getParameter(IPSHtmlParameters.SYS_SESSIONID));
+
       if (StringUtils.isEmpty(sessionId))
       {
-         sessionId = (String) request.getAttribute(IPSHtmlParameters.SYS_SESSIONID);
+         sessionId =
+                 SecureStringUtils.srp(
+                         (String) request.getAttribute(IPSHtmlParameters.SYS_SESSIONID));
       }
+
       return sessionId;
    }
 
@@ -902,14 +909,17 @@ public class PSSecurityFilter implements Filter
       
       boolean statusSupportFiles = ms_matcher.doesMatchPattern("/cm/themes/*", checkString);
      
-      if (statusRequest || statusSupportFiles)
-      {
+      if (statusRequest || statusSupportFiles) {
          // Force session not to be updated during request.
          PSRequest psrequest = initRequest(request, response);
-         String extendSession = request.getParameter("extendSession");
-         long lastActivity = NumberUtils.toLong(request.getParameter("lastActivity"),-1);
+         String extendSession = SecureStringUtils.stripAllLineBreaks(
+                 request.getParameter("extendSession"));
 
-         PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_NOSESSIONTOUCH, Boolean.TRUE);
+         long lastActivity = NumberUtils.toLong(
+                 SecureStringUtils.stripAllLineBreaks(
+                         request.getParameter("lastActivity")), -1);
+
+            PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_NOSESSIONTOUCH, Boolean.TRUE);
 
          if (statusRequest)
          {

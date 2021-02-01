@@ -82,6 +82,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -107,6 +108,7 @@ public class PSUpgradePluginRelationship implements IPSUpgradePlugin
    public void setDbProperties(Properties dbProps)
    {
       m_dbProps = dbProps;
+
       m_dbProps.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
    }
 

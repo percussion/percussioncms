@@ -23,8 +23,9 @@
  */
 package com.percussion.design.objectstore;
 
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -473,12 +474,18 @@ public class PSAuthentication extends PSComponent
       if (encrypted)
       {
          String userStr = getUser();
-         String key = userStr.trim().length() == 0 ? PSLegacyEncrypter.INVALID_DRIVER() : userStr;
+         String key = userStr.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).INVALID_DRIVER() : userStr;
 
          try{
-            PSEncryptor.getInstance().decrypt(data);
+            PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(data);
          } catch (PSEncryptionException e) {
-            data = PSCryptographer.decrypt(PSLegacyEncrypter.INVALID_CRED(), key, data);
+            data = PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).INVALID_CRED(), key, data);
          }
 
       }
@@ -534,7 +541,9 @@ public class PSAuthentication extends PSComponent
 
       String pw = null;
       try {
-         pw = PSEncryptor.getInstance().encrypt(getPassword());
+         pw = PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).encrypt(getPassword());
       } catch (PSEncryptionException e) {
          logger.error("Error encrypting password: " + e.getMessage(),e);
          pw = "";

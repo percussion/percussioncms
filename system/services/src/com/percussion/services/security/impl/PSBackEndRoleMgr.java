@@ -52,7 +52,7 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

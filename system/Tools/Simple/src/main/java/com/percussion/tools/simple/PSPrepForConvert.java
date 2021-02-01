@@ -24,7 +24,7 @@
 
 package com.percussion.tools.simple;
 
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.w3c.dom.Document;
@@ -209,10 +209,13 @@ public class PSPrepForConvert
        String ret;
 
        try {
-          ret = PSEncryptor.getInstance().decrypt(pwd);
+          ret = PSEncryptor.getInstance("AES",
+                  m_serverBase.getPath().concat(PSEncryptor.SECURE_DIR)).decrypt(pwd);
        }catch(Exception ex){
           ret = PSCryptographer.decrypt(
-                  PSLegacyEncrypter.OLD_SECURITY_KEY(),
+                  PSLegacyEncrypter.getInstance(
+                          m_serverBase.getPath().concat(PSEncryptor.SECURE_DIR)
+                  ).OLD_SECURITY_KEY(),
                   uid,
                   pwd);
        }

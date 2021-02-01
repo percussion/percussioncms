@@ -35,13 +35,25 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>rxutils</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <skipTests>false</skipTests>
     </properties>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
@@ -131,7 +143,18 @@
     </build>
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/org.jmock/jmock-junit4 -->
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-security-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-legacy</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -152,7 +175,6 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-
         </dependency>
 
         <dependency>
@@ -163,7 +185,6 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
         </dependency>
 
         <dependency>
@@ -372,6 +393,12 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <version>${spotbugs.plugin.version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <reporting>

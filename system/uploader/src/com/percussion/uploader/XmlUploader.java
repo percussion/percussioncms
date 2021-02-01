@@ -34,8 +34,9 @@ import com.percussion.HTTPClient.ProtocolNotSuppException;
 import com.percussion.tools.Logger;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.util.IOTools;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -233,10 +234,12 @@ public class XmlUploader
                      try
                      {
                         try {
-                           PSEncryptor.getInstance().decrypt(m_loginPwd);
+                           PSEncryptor.getInstance("AES",
+                                   PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                           ).decrypt(m_loginPwd);
                         }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                            m_loginPwd = PSCryptographer.decrypt(
-                                   PSLegacyEncrypter.OLD_SECURITY_KEY(),
+                                   PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).OLD_SECURITY_KEY(),
                                    m_loginId, m_loginPwd);
                         }
                      }

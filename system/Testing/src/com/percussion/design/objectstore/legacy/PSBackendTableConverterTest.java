@@ -26,7 +26,9 @@ package com.percussion.design.objectstore.legacy;
 import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.design.objectstore.PSComponent;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.IPSJndiDatasource;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -61,7 +63,10 @@ public class PSBackendTableConverterTest extends PSBaseConverterTest
       IPSConfigFileLocator locator = initFileLocator();
       
       // create the ctx
-      PSConfigurationCtx ctx = (PSConfigurationCtx) new PSConfigurationCtxMock(locator, PSLegacyEncrypter.OLD_SECURITY_KEY());
+      PSConfigurationCtx ctx = (PSConfigurationCtx) new PSConfigurationCtxMock(locator,
+              PSLegacyEncrypter.getInstance(
+                      PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              ).OLD_SECURITY_KEY());
       PSBackEndTable convTable;
       boolean didThrow;
       
@@ -122,7 +127,10 @@ public class PSBackendTableConverterTest extends PSBaseConverterTest
       IPSConfigFileLocator locator = initFileLocator();
       
       // create the ctx
-      PSConfigurationCtx ctx = (PSConfigurationCtx) new PSConfigurationCtxMock(locator, PSLegacyEncrypter.OLD_SECURITY_KEY());
+      PSConfigurationCtx ctx = (PSConfigurationCtx) new PSConfigurationCtxMock(locator,
+              PSLegacyEncrypter.getInstance(
+                      PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              ).OLD_SECURITY_KEY());
       PSBackEndTable convTable;
       boolean didThrow;
       
@@ -157,7 +165,9 @@ public class PSBackendTableConverterTest extends PSBaseConverterTest
       
       // test existing driver config only
       // reset the ctx
-      ctx = new PSConfigurationCtx(locator, PSLegacyEncrypter.OLD_SECURITY_KEY());
+      ctx = new PSConfigurationCtx(locator, PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).OLD_SECURITY_KEY());
       List<IPSJndiDatasource> datasources = ctx.getJndiDatasources();
       assertTrue(datasources.size() == 1);
       srcTable = new PSLegacyBackEndTable(getTableXml("driver-match"), 
@@ -200,7 +210,9 @@ public class PSBackendTableConverterTest extends PSBaseConverterTest
       IPSConfigFileLocator locator = initFileLocator();
       
       // create the ctx
-      PSConfigurationCtx ctx =  new PSConfigurationCtxMock(locator, PSLegacyEncrypter.OLD_SECURITY_KEY());
+      PSConfigurationCtx ctx =  new PSConfigurationCtxMock(locator, PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).OLD_SECURITY_KEY());
       PSBackEndTable convTable;
       boolean didThrow;
       

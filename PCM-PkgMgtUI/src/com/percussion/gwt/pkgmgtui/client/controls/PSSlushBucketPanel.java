@@ -23,7 +23,7 @@
  */
 package com.percussion.gwt.pkgmgtui.client.controls;
 
-import com.percussion.gwt.pkgmgtui.client.IPSConstants;
+import com.percussion.gwt.pkgmgtui.client.PSConstants;
 import com.percussion.gwt.pkgmgtui.client.PkgMgtUI;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
@@ -57,10 +57,7 @@ public class PSSlushBucketPanel extends HLayout
 
    /**
     * Ctor of slush bucket panel.
-    * 
-    * @param leftData String array of data that needs to be showed in the left
-    * grid. May be <code>null</code> or empty.
-    * @param rightData String array of data that needs to be showed in the right
+    *
     * grid. May be <code>null</code> or empty.
     * @param leftGridTitle Column title of the left grid, if <code>null</code>
     * or empty, Available is shown as the title column.
@@ -149,10 +146,9 @@ public class PSSlushBucketPanel extends HLayout
     * Creates the list grid record objects and sets them as data on the supplied
     * grid.
     * 
-    * @param grid assumed not <code>null</code>.
-    * @param data may be <code>null</code>, if <code>null</code> no data is
+    * @param leftData assumed not <code>null</code>.
+    * @param rightData may be <code>null</code>, if <code>null</code> no data is
     * set.
-    * @param title The title to be set on the column, assumed not
     * <code>null</code>.
     */
    public void setGridData(String[] leftData, String[] rightData)
@@ -210,7 +206,7 @@ public class PSSlushBucketPanel extends HLayout
       VStack vs = new VStack();
       vs.setWidth(50);
       vs.setHeight(74);
-      vs.setMembersMargin(IPSConstants.MEMBERS_MARGIN);
+      vs.setMembersMargin(PSConstants.getMembersMargin());
       vs.setLayoutAlign(Alignment.CENTER);
       vs.addMember(rightArrow);
       vs.addMember(leftArrow);

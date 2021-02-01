@@ -42,6 +42,7 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionParams;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -69,6 +70,7 @@ import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
+import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.utils.timing.PSStopwatchStack;
 
 import java.io.File;
@@ -824,6 +826,12 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       // get the unqualified table name
       int sep = table.lastIndexOf('.');
       String unqualTable = sep == -1 ? table : table.substring(sep + 1);
+
+      if(!SecureStringUtils.isValidTableOrColumnName(column))
+         throw new IllegalArgumentException("Invalid column name.");
+
+      if(!SecureStringUtils.isValidTableOrColumnName(unqualTable))
+         throw new IllegalArgumentException("Invalid table name.");
 
       boolean useRevision = !unqualTable.equalsIgnoreCase("CONTENTSTATUS");
       String query = "SELECT " + column + " FROM " + table

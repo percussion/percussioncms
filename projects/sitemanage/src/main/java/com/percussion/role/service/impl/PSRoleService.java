@@ -52,8 +52,8 @@ import com.percussion.user.data.PSUserList;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.user.service.impl.PSUserService;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.utils.service.impl.PSBackEndRoleManagerFacade;
 import com.percussion.utils.string.PSStringUtils;
 

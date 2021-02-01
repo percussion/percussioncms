@@ -40,6 +40,7 @@ import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.tablefactory.PSJdbcColumnData;
@@ -61,6 +62,7 @@ import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSDatasourceConfig;
+import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 
@@ -1028,13 +1030,13 @@ public class PSDbmsHelper
       String filterCol, int filterColValue)
       throws PSDeployException
    {
-      if (table == null || table.trim().length() == 0)
-         throw new IllegalArgumentException("table may not be null or empty");
-      if (idCol != null && idCol.trim().length() == 0)
-         throw new IllegalArgumentException("idCol may not be null or empty");
-      if (filterCol != null && filterCol.trim().length() == 0)
+      if (table == null || table.trim().length() == 0 || !SecureStringUtils.isValidTableOrColumnName(table))
+         throw new IllegalArgumentException("table may not be null, empty, or invalid");
+      if (idCol != null || idCol.trim().length() == 0 ||!SecureStringUtils.isValidTableOrColumnName(idCol) )
+         throw new IllegalArgumentException("idCol may not be null, empty, or invalid");
+      if (filterCol != null || filterCol.trim().length() == 0 ||!SecureStringUtils.isValidTableOrColumnName( filterCol))
          throw new IllegalArgumentException(
-            "filterCol may not be empty");
+            "filterCol may not be null, empty, or invalid");
 
       Connection conn = null;
 
@@ -1046,7 +1048,8 @@ public class PSDbmsHelper
       {
          conn = getRepositoryConnection();
 
-         String query = "SELECT MAX(" + idCol + ") FROM " + table;
+         String query = "SELECT MAX(" + idCol
+                 + ") FROM " + table;
 
          if ((filterCol != null) && (filterCol.trim().length() != 0) &&
              (!idCol.equalsIgnoreCase(filterCol)) )

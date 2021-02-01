@@ -394,34 +394,40 @@
 
         <dependency>
             <groupId>com.percussion</groupId>
+            <artifactId>perc-security-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-simple</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -430,13 +436,13 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>tablefactory</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>webservices</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -605,8 +611,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.6.2</version>
         </dependency>
 
 
@@ -615,15 +622,11 @@
             <artifactId>httpclient-cache</artifactId>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/org.apache.geronimo.specs/geronimo-jms_1.1_spec -->
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-jms_1.1_spec</artifactId>
 
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>

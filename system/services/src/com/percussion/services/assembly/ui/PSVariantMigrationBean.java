@@ -52,7 +52,7 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal;
 
 import java.io.File;
 import java.io.FileInputStream;

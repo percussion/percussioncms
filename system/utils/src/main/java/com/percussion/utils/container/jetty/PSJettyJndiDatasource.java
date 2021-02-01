@@ -25,8 +25,9 @@
 package com.percussion.utils.container.jetty;
 
 import com.percussion.utils.container.jboss.PSJBossJndiDatasource;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.xml.PSInvalidXmlException;
 
@@ -74,9 +75,18 @@ public class PSJettyJndiDatasource extends PSJBossJndiDatasource
       {
          this.encrypted = true;
          try{
-            pwd = PSEncryptor.getInstance().decrypt(pwd);
+            pwd = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                            PSEncryptor.SECURE_DIR)
+            ).decrypt(pwd);
          } catch (PSEncryptionException e) {
-            pwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSLegacyEncrypter.getPartOneKey());
+            pwd = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                    PSEncryptor.SECURE_DIR)
+            ).decrypt(pwd, PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                            PSEncryptor.SECURE_DIR)
+            ).getPartOneKey(),null);
          }
 
       }

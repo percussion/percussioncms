@@ -30,8 +30,9 @@ import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.tablefactory.PSJdbcTableSchema;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 
 import java.io.File;
@@ -129,10 +130,13 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
 
          String pw = props.getProperty("PWD");
          try{
-            pw = PSEncryptor.getInstance().decrypt(pw);
+            pw = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pw);
          }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-            pw =     PSLegacyEncrypter.getInstance().decrypt(pw,
-                    PSJdbcDbmsDef.getPartOneKey());
+            pw =     PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(pw,
+                    PSJdbcDbmsDef.getPartOneKey(),null);
          }
          conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
                  props.getProperty("DB_SERVER"),

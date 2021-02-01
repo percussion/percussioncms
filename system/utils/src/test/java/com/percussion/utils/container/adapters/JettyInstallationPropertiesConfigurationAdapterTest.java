@@ -24,9 +24,11 @@
 
 package com.percussion.utils.container.adapters;
 
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.PSJettyConnectorsTest;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.junit.After;
 import org.junit.Before;
@@ -80,8 +82,12 @@ public class JettyInstallationPropertiesConfigurationAdapterTest {
 
         JettyInstallationPropertiesConfigurationAdapter adapter = new JettyInstallationPropertiesConfigurationAdapter();
 
-        DefaultConfigurationContextImpl fromCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getPartTwoKey());
-        DefaultConfigurationContextImpl toCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getPartTwoKey());
+        PSLegacyEncrypter legacy = PSLegacyEncrypter.getInstance(
+                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                        PSEncryptor.SECURE_DIR)
+        );
+        DefaultConfigurationContextImpl fromCtx = new DefaultConfigurationContextImpl(root, legacy.getPartTwoKey());
+        DefaultConfigurationContextImpl toCtx = new DefaultConfigurationContextImpl(root, legacy.getPartTwoKey());
         adapter.load(fromCtx);
 
         BaseContainerUtils fromConfig = fromCtx.getConfig();

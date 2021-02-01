@@ -65,7 +65,7 @@ public class PSUninstallPackageDialog extends
       setWidth(DIALOG_WIDTH);
       setIsModal(true);
       setCanDragResize(true);
-      setResizeFrom(IPSConstants.DIALOG_RESIZE_OPTIONS);
+      setResizeFrom(PSConstants.getDialogResizeOptions());
       setCanDragReposition(true);
       setAutoCenter(true);
       setShowToolbar(true);
@@ -141,7 +141,7 @@ public class PSUninstallPackageDialog extends
          }
       });
       m_finishBtn.hide();
-      btnStack.setMembersMargin(IPSConstants.MEMBERS_MARGIN);
+      btnStack.setMembersMargin(PSConstants.getMembersMargin());
       btnStack.setAlign(Alignment.RIGHT);
       btnStack.setHeight(m_oKBtn.getHeight());
       return btnStack;
@@ -388,14 +388,14 @@ public class PSUninstallPackageDialog extends
 
    private boolean m_depsChecked = false;
 
-   private final String m_checkDepsUrl = PkgMgtUI.ms_serviceRoot
+   private static final  String  m_checkDepsUrl = PkgMgtUI.ms_serviceRoot
          + "checkPackageDependencies.xml?packageName=";
 
-   private final String m_updateUrl = PkgMgtUI.ms_serviceRoot
+   private static final  String m_updateUrl = PkgMgtUI.ms_serviceRoot
          + "uninstallPackage.xml?packageName=";
 
-   private int DIALOG_HEIGHT = 300;
+   private static final int DIALOG_HEIGHT = 300;
 
-   private int DIALOG_WIDTH = 500;
+   private static final int DIALOG_WIDTH = 500;
 
 }
