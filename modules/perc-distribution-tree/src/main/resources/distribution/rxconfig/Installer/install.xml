@@ -423,6 +423,8 @@
     </patternset>
 
     <patternset id="upgrade.preserve">
+        <exclude name="web_resources/**"/>
+        <exclude name="rx_resources/**" />
         <include name="**/**"/>
     </patternset>
 
@@ -556,6 +558,12 @@
                 <patternset refid="upgrade.excludes"/>
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
+            </fileset>
+            <fileset dir="${install.src}/web_resources/" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/web_resources/"/>
+            </fileset>
+            <fileset dir="${install.src}/rx_resources/" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/rx_resources/"/>
             </fileset>
         </copy>
 
