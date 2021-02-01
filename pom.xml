@@ -194,6 +194,7 @@
        <guava.version>24.1.1-jre</guava.version>
        <xerces.version>2.12.0</xerces.version>
        <quartz.version>2.3.2</quartz.version>
+       <rome.version>1.15.0</rome.version>
        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
     </properties>
 
@@ -2329,10 +2330,6 @@
                         <groupId>ant</groupId>
                         <artifactId>ant</artifactId>
                     </exclusion>
-                    <exclusion>
-                        <groupId>jdom</groupId>
-                        <artifactId>jdom</artifactId>
-                    </exclusion>
                 </exclusions>
             </dependency>
 
@@ -2738,22 +2735,12 @@
             <dependency>
                 <groupId>com.rometools</groupId>
                 <artifactId>rome-modules</artifactId>
-                <version>1.5.0</version>
+                <version>${rome.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.rometools</groupId>
                 <artifactId>rome</artifactId>
-                <version>1.5.0</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.rometools</groupId>
-                        <artifactId>rome-utils</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jdom</groupId>
-                        <artifactId>jdom</artifactId>
-                    </exclusion>
-                </exclusions>
+                <version>${rome.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
