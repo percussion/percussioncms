@@ -22,9 +22,11 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.utils.security;
+package com.percussion.security;
 
 import com.percussion.utils.io.PathUtils;
+import com.percussion.utils.security.PSEncryptionException;
+import com.percussion.utils.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.derby.authentication.UserAuthenticator;
