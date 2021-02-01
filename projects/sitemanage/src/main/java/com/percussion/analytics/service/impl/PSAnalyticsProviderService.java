@@ -143,17 +143,11 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
                userID=config.getUid();
            }
 
-           String pwd;
-           if(!encrypted) {
-               pwd = rawPwd;
-           }else {
-               try {
-                   //Try to decrypt with the new method
-                   pwd = PSEncryptor.getInstance().decrypt(rawPwd);
-               } catch (Exception e) {
-                   //Fail over to old method
-                   pwd = PSLegacyEncrypter.getInstance().decrypt(rawPwd, PSLegacyEncrypter.CRYPT_KEY());
-               }
+           String pwd = null;
+           try {
+               pwd = encrypted ? rawPwd : PSEncryptor.getInstance().decrypt(rawPwd);
+           } catch (PSEncryptionException e) {
+               pwd = PSLegacyEncrypter.getInstance().decrypt(rawPwd, PSLegacyEncrypter.CRYPT_KEY());
            }
 
            config.setPassword(pwd);
