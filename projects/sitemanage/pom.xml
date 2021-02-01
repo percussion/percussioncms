@@ -604,6 +604,7 @@
           <artifactId>javax.servlet-api</artifactId>
           <scope>provided</scope>
       </dependency>
+      <!--Removed jdom 2.0.0 dependency only jdom2 dependency present-->
       <dependency>
           <groupId>org.jdom</groupId>
           <artifactId>jdom2</artifactId>
