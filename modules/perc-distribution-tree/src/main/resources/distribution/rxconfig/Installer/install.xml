@@ -338,6 +338,7 @@
 
 
     <patternset id="upgrade.delete">
+        <include name="Repository/derby.properties" />
         <include name="cm/**"/>
         <include name="jdbc/**"/>
         <include name="dbg_*.xml"/>
