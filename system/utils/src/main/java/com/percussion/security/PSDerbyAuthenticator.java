@@ -75,8 +75,6 @@ public class PSDerbyAuthenticator implements UserAuthenticator
    public boolean authenticateUser(String userName,String userPassword,
       String databaseName, Properties info) throws SQLException
    {
-      FileInputStream cfgIn = null;
-
       if (StringUtils.isBlank(userName))
          return false;
       
@@ -119,8 +117,9 @@ public class PSDerbyAuthenticator implements UserAuthenticator
       {
         // read "derby.properties" file into a property set
         Properties derbyProperties = new Properties();        
-        cfgIn = new FileInputStream(derbyPropertiesFile);
-        derbyProperties.load(cfgIn);
+        try(FileInputStream cfgIn = new FileInputStream(derbyPropertiesFile)) {
+           derbyProperties.load(cfgIn);
+        }
          
         // look for user in properties
         // - if its not there, return
@@ -136,12 +135,15 @@ public class PSDerbyAuthenticator implements UserAuthenticator
          try {
             tmp = PSEncryptor.getInstance().encrypt(userPassword);
          } catch (PSEncryptionException e) {
-            logger.error("Error encrypting password: " + e.getMessage(),e);
+            logger.error("Error encrypting password: {}", e.getMessage());
+            logger.debug(e);
             tmp = encPw;
          }
          if (!tmp.equals(encPw))
         {
-           return false;
+           tmp = PSLegacyEncrypter.getInstance().decrypt(encPw,userName);
+           if(!tmp.equals(encPw))
+              return false;
         }  
       }
       catch (IOException e)
@@ -149,19 +151,7 @@ public class PSDerbyAuthenticator implements UserAuthenticator
          String embExpStr = "IOException: " + e.getLocalizedMessage();
          throw new SQLException( embExpStr );
       }
-      finally
-      {
-         if (cfgIn != null)
-         {
-            try
-            {
-               cfgIn.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
-       }      
+
        return true;
    }
 
