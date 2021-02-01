@@ -25,26 +25,30 @@
    <!-- Database Property -->
    <bean id="percHibernateProperties"
          class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-      <property name="properties">
+   <property name="properties">
          <props>
             <prop key="hibernate.hbm2ddl.auto">update</prop>
             <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-            <prop key="hibernate.default_schema#{'${db.schema}'.length() == 0 ? '.null' : ''}">${db.schema}</prop>  
+            <prop key="hibernate.default_schema#{'${db.schema}'.length() == 0 ? '.null' : ''}">${db.schema}</prop>
             <prop key="hibernate.query.substitutions">${hibernate.query.substitutions}</prop>
             <prop key="hibernate.show_sql">false</prop>
             <prop key="hibernate.jdbc.batch_size">50</prop>
             <prop key="hibernate.cache.use_query_cache">true</prop>
             <prop key="hibernate.cache.use_second_level_cache">true</prop>
-			<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>   
-			<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
-			<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.EhcacheRegionFactory</prop>
-			<prop key="hibernate.id.new_generator_mappings">${hibernate.id.new_generator_mappings}</prop>
+            <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+            <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+            <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.EhcacheRegionFactory</prop>
+            <prop key="hibernate.id.new_generator_mappings">${hibernate.id.new_generator_mappings}</prop>
             <prop key="hibernate.connection.useUnicode">true</prop>
-            <prop key="hibernate.connection.characterEncoding">utf8</prop>
-            <prop key="hibernate.connection.characterSetResults">utf8</prop>
+            <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
+            <prop key="hibernate.connection.characterSetResults">UTF-8</prop>
             <prop key="hibernate.connection.connectionCollation">utf8_general_ci</prop>
+            <prop key="hibernate.connection.useSSL">true</prop>
+            <prop key="hibernate.connection.requireSSL">false</prop>
+            <prop key="hibernate.connection.verifyServerCertificate">false</prop>
             <prop key="hibernate.use_sql_comments">true</prop>
             <prop key="hibernate.dialect.storage_engine">innodb</prop>
+	         <prop key="hibernate.use_nationalized_character_data">true</prop>
          </props>
       </property>
    </bean>
