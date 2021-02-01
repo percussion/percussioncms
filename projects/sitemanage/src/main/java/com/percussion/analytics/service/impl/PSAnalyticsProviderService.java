@@ -146,7 +146,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
            String pwd = null;
            try {
                pwd = encrypted ? rawPwd : PSEncryptor.getInstance().decrypt(rawPwd);
-           } catch (PSEncryptionException e) {
+           } catch (PSEncryptionException | IllegalArgumentException  e) {
                pwd = PSLegacyEncrypter.getInstance().decrypt(rawPwd, PSLegacyEncrypter.CRYPT_KEY());
            }
 
