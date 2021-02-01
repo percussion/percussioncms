@@ -29,10 +29,6 @@
          <props>
             <prop key="hibernate.hbm2ddl.auto">update</prop>
             <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-            <!--
-            	There is some EL embedded in the key. This is needed to avoid
-            	Hibernate to set the default_schema when it's empty.
-           	 -->
             <prop key="hibernate.default_schema#{'${db.schema}'.length() == 0 ? '.null' : ''}">${db.schema}</prop>  
             <prop key="hibernate.query.substitutions">${hibernate.query.substitutions}</prop>
             <prop key="hibernate.show_sql">false</prop>
@@ -43,6 +39,12 @@
 			<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
 			<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.EhcacheRegionFactory</prop>
 			<prop key="hibernate.id.new_generator_mappings">${hibernate.id.new_generator_mappings}</prop>
+            <prop key="hibernate.connection.useUnicode">true</prop>
+            <prop key="hibernate.connection.characterEncoding">utf8</prop>
+            <prop key="hibernate.connection.characterSetResults">utf8</prop>
+            <prop key="hibernate.connection.connectionCollation">utf8_general_ci</prop>
+            <prop key="hibernate.use_sql_comments">true</prop>
+            <prop key="hibernate.dialect.storage_engine">innodb</prop>
          </props>
       </property>
    </bean>
