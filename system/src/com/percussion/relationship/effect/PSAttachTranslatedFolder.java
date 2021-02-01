@@ -52,8 +52,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This effect typically is attached to {@link com.percussion.design.
- * objectstore.PSRelationshipConfig#CATEGORY_TRANSLATION translation} 
+ * This effect typically is attached to {@link com.percussion.design.objectstore.PSRelationshipConfig#CATEGORY_TRANSLATION translation}
  * category of relationships.
  * <p>
  * The newly translated object (item or folder) is attached to all parent 
@@ -89,8 +88,7 @@ import java.util.List;
  * This effect will be active for he following situations only:
  * <ol>
  *    <li>
- *    The execution context must be {@link com.percussion.relationship.
- *    IPSExecutionContext#RS_PRE_CONSTRUCTION}
+ *    The execution context must be {@link com.percussion.relationship.IPSExecutionContext#RS_PRE_CONSTRUCTION}
  *    </li>
  *    <li>
  *    The originating relationship and the current relationship both must be 
