@@ -231,9 +231,9 @@ public class PSFormService implements IPSFormService
         	emailRequest.setBCCList(temp.get("email-bcc"));
         }
         if(temp.containsKey("email-from") && temp.containsKey("email-body") && isEmailForm){
-        	emailRequest.setBody("From: " + temp.get("email-from") + "\r\nEmail Body: " + temp.get("email-body"));
+        	emailRequest.setBody("From: " + temp.get("email-from") + "\r\n " + temp.get("email-body"));
         } else if(temp.containsKey("email-body") && isEmailForm){
-        	emailRequest.setBody("Email Body: " + temp.get("email-body"));
+        	emailRequest.setBody(temp.get("email-body"));
         } else {
         	emailRequest.setBody(body);
         }
