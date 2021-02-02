@@ -17,7 +17,8 @@ db.schema=APP
 
 # the JDBC driver class name
 # "Oracle" - oracle.jdbc.driver.OracleDriver
-# "MySQL"/"MariaDB"  - org.mariadb.jdbc.Driver
+#  MariaDB"  - org.mariadb.jdbc.Driver
+#  MySQL - com.mysql.jdbc.Driver
 # "MS SQL" - com.microsoft.sqlserver.jdbc.SQLServerDriver
 # "Derby"  - org.apache.derby.jdbc.ClientDriver
 # "Microsoft SQL Server - Native JDBC" -  com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -26,8 +27,8 @@ jdbcDriver=org.apache.derby.jdbc.ClientDriver
 # the connection URL
 # "Oracle" -  jdbc:oracle:thin:@<host>:<port>/<service>
 #         Eg: jdbc:oracle:thin:@10.10.10.61:1521/ORCL
-# "MySQL" / "MariaDB"  -  jdbc:mysql://<host>:<port>/percforms?useUnicode=true&characterEncoding=UTF8
-#         Eg: jdbc:mysql://localhost:3306/percforms?useUnicode=true&characterEncoding=UTF8
+# "MySQL"  --  jdbc:mysql://<host>:<port>/dtsdb?useUnicode=true&characterEncoding=UTF-8&useSSL=true&requireSSL=false&verifyServerCertificate=false
+#         Eg: jdbc\:mysql\://localhost\:3306/dtsdb?useUnicode\=true&characterEncoding\=UTF-8&useSSL\=true&requireSSL\=false&verifyServerCertificate\=false
 # "MS SQL" -  jdbc:sqlserver://<host>:<port>/<database>
 #         Eg: jdbc:sqlserver://localhost/delivery_database
 # "Derby"  -  jdbc:derby://<host>:<port>/<database>
@@ -50,10 +51,10 @@ hibernateProperties=percHibernateProperties
 
 # Dialect for current database type. 
 # The following is a list of dialects that may be used for different databases / drivers 
-# "Oracle" - org.hibernate.dialect.Oracle10gDialect
-# "MySQL" / "MariaDB"  - org.hibernate.dialect.MySQL5InnoDBDialect
+# "Oracle" - org.hibernate.dialect.Oracle10gDialect, Oracle12cDialect
+# "MySQL" / "MariaDB"  - org.hibernate.dialect.MySQL5InnoDBDialect, MySQL57InnoDBDialect, or MySQL8Dialect
 # "MS SQL" - com.percussion.delivery.rdbms.PSUnicodeSQLServerDialect
-# "MS SQL" - org.hibernate.dialect.SQLServerDialect
+# "MS SQL" -  SQLServer2012Dialect, SQLServer2008Dialect, SQLServer2005Dialect
 # "Derby"  - com.percussion.delivery.rdbms.DerbyTenOneFourDialect
 hibernate.dialect=com.percussion.delivery.rdbms.DerbyTenOneFourDialect
 

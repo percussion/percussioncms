@@ -197,6 +197,7 @@
        <guava.version>24.1.1-jre</guava.version>
        <xerces.version>2.12.0</xerces.version>
        <quartz.version>2.3.2</quartz.version>
+       <rome.version>1.15.0</rome.version>
        <maven.source.jar.plugin.version>3.2.0</maven.source.jar.plugin.version>
        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
     </properties>
@@ -972,7 +973,6 @@
                 <version>3.0.0</version>
                 <configuration>
                 </configuration>
-
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -1810,12 +1810,6 @@
                 <groupId>org.apache.any23</groupId>
                 <artifactId>apache-any23-api</artifactId>
                 <version>${any23.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.jdom</groupId>
-                <artifactId>jdom</artifactId>
-                <version>2.0.2</version>
             </dependency>
 
             <dependency>
@@ -2810,12 +2804,12 @@
             <dependency>
                 <groupId>com.rometools</groupId>
                 <artifactId>rome-modules</artifactId>
-                <version>1.5.0</version>
+                <version>${rome.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.rometools</groupId>
                 <artifactId>rome</artifactId>
-                <version>1.5.0</version>
+                <version>${rome.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
