@@ -594,7 +594,7 @@
             </fileset>
         </copy>
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
-        <copy file="${install.src}/rx_resources/vm/custom_head.vm" tofile="${install.dir}/rx_resources/vm/custom_head.vm" overwrite="false" failonerror="false" force="true"/>
+        <copy file="${install.src}/rx_resources/vm/custom_head.vm" tofile="${install.dir}/rx_resources/vm/custom_head.vm" overwrite="false" failonerror="false"/>
 
         <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" overwrite="false" failonerror="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/" followsymlinks="false" includes="**">
