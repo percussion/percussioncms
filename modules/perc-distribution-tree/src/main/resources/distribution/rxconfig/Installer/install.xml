@@ -408,6 +408,7 @@
         <exclude name="jetty/base/etc/installation.properties"/>
         <exclude name="jetty/base/resources/log4j*.xml"/>
         <exclude name="rxconfig/Installer/rxrepository.properties"/>
+        <exclude name="rx_resources/vm/custom_head.vm"/>
         <exclude name="Repository/**"/>
         <exclude name="Extensions/**"/>
         <exclude name="rxconfig/**"/>
@@ -425,7 +426,6 @@
 
     <patternset id="upgrade.preserve">
         <exclude name="web_resources/**"/>
-        <exclude name="rx_resources/**" />
         <include name="**/**"/>
     </patternset>
 
@@ -594,6 +594,7 @@
             </fileset>
         </copy>
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
+        <copy file="${install.src}/rx_resources/vm/custom_head.vm" tofile="${install.dir}/rx_resources/vm/custom_head.vm" overwrite="false" failonerror="false" force="true"/>
 
         <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" overwrite="false" failonerror="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/" followsymlinks="false" includes="**">
