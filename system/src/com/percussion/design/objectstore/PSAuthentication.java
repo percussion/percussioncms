@@ -476,7 +476,7 @@ public class PSAuthentication extends PSComponent
          String key = userStr.trim().length() == 0 ? PSLegacyEncrypter.INVALID_DRIVER() : userStr;
 
          try{
-            PSEncryptor.getInstance().decrypt(data);
+            data = PSEncryptor.getInstance().decrypt(data);
          } catch (PSEncryptionException | IllegalArgumentException e) {
             data = PSCryptographer.decrypt(PSLegacyEncrypter.INVALID_CRED(), key, data);
          }
