@@ -880,7 +880,7 @@
                         <spotbugsXmlOutputDirectory>target/site</spotbugsXmlOutputDirectory>
                         <skipEmptyReport>false</skipEmptyReport>
                         <encoding>${project.build.sourceEncoding}</encoding>
-                        <includeTests>true</includeTests>
+                        <includeTests>false</includeTests>
                         <classFilesDirectory>${project.build.outputDirectory}</classFilesDirectory>
                         <xmlOutput>true</xmlOutput>
                         <effort>Max</effort>

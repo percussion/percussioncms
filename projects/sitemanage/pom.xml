@@ -51,13 +51,7 @@
             </excludes>
             <filtering>false</filtering>
         </resource>
-         <resource>
-            <directory>src/api/java</directory>
-            <excludes>
-                <exclude>**/*.java</exclude>
-            </excludes>
-            <filtering>false</filtering>
-        </resource>
+
         <resource>
           <directory>src/main/java</directory>
           <excludes>
@@ -76,13 +70,7 @@
             </excludes>
             <filtering>false</filtering>
         </testResource>
-         <testResource>
-            <directory>src/api/java</directory>
-            <excludes>
-                <exclude>**/*.java</exclude>
-            </excludes>
-            <filtering>false</filtering>
-        </testResource>
+
         <testResource>
             <directory>src/test/java</directory>
             <excludes>
@@ -91,7 +79,6 @@
             <filtering>false</filtering>
         </testResource>
     </testResources>
-    
     
     <plugins>    
          <plugin>
@@ -110,18 +97,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
-                    <execution>
-                    <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/api/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>add-test-source</id>
                         <phase>generate-test-sources</phase>
@@ -156,6 +131,16 @@
     </plugins>
   </build>
   <dependencies>
+      <dependency>
+          <groupId>com.percussion</groupId>
+          <artifactId>perc-security-utils</artifactId>
+          <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>com.percussion</groupId>
+          <artifactId>perc-legacy</artifactId>
+          <version>${project.parent.version}</version>
+      </dependency>
   <dependency>
         <groupId>com.percussion</groupId>
         <artifactId>perc-system</artifactId>
@@ -165,7 +150,6 @@
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjrt</artifactId>
             </exclusion>
-            
             <exclusion>
                 <groupId>org.codehaus.woodstox</groupId>
                 <artifactId>woodstox-core-asl</artifactId>
