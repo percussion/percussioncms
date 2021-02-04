@@ -38,8 +38,8 @@ import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
@@ -52,7 +52,8 @@ import java.util.Map;
 @PSSiteManageBean("analyticsProviderService")
 public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
 {
-    private static final Log log = LogFactory.getLog(PSAnalyticsProviderService.class);
+    private static final Logger log = LogManager.getLogger(PSAnalyticsProviderService.class);
+
    @Autowired
    public PSAnalyticsProviderService(IPSMetadataService metadataService)
    {
@@ -104,7 +105,8 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
        try {
            objectToJson = objectMapper.writeValueAsString(config);
        } catch (JsonProcessingException e) {
-           log.error("Exception occurred while parsing - >" + e);
+           log.error("Exception occurred while parsing - > {}" + e.getMessage());
+           log.debug(e);
        }
 
       PSMetadata metadata = new PSMetadata(METADATA_KEY, objectToJson);
@@ -150,14 +152,15 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
                pwd = PSLegacyEncrypter.getInstance(
                PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(
                rawPwd, PSLegacyEncrypter.getInstance(
-                  PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR).CRYPT_KEY(),null);
+                  PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).CRYPT_KEY(),null);
            }
 
            config.setPassword(pwd);
            config.setUserid(userID);
 
        } catch (JsonProcessingException e) {
-           log.error("Error parsing Analytics configuration: " + e.getMessage(),e);
+           log.error("Error parsing Analytics configuration: {}" ,e.getMessage());
+           log.debug(e);
        }
 
        return config;
@@ -213,8 +216,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
       {
           PSAnalyticsProviderConfig config = loadConfig(false);
           if(config == null || !StringUtils.equalsIgnoreCase(config.getUserid(), uid) || 
-                  (StringUtils.isNotEmpty(password) ) || 
-                  !StringUtils.equalsIgnoreCase(config.getUserid(), uid) )
+                  (StringUtils.isNotEmpty(password) ))
           {
               config = new PSAnalyticsProviderConfig(uid,password,false, null);
               
@@ -335,7 +337,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * The metadata service. Initialized via the constructor. Never <code>null</code>
     * after that.
     */
-   private IPSMetadataService metadataService;
+   private final IPSMetadataService metadataService;
    
    /**
     * The metadata key to store the config.

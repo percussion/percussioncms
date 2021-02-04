@@ -57,7 +57,7 @@ public class PSSecurityUtility {
     public static final String REQUIRE_CONTENT_SECURITY_POLICY="requireContentSecurityPolicy";
     public static final String REQUIRE_CONTENT_SECURITY_POLICY_DEFAULT = "false";
     public static final String CONTENT_SECURITY_POLICY = "contentSecurityPolicy";
-    public static final String CONTENT_SECURITY_POLICY_DEFAULT="default-src 'self' *.percussion.com *.percussion.marketing *.percussion.services 'unsafe-inline' 'unsafe-eval'; script-src 'self' *.siteimprove.net  'unsafe-inline' 'unsafe-eval'";
+    public static final String CONTENT_SECURITY_POLICY_DEFAULT="default-src * data: https: *.percussion.com *.percussion.marketing *.percussion.services ; img-src * 'self' data: https: 'unsafe-inline' 'unsafe-eval'; font-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval' *.siteimprove.net ; style-src * 'unsafe-inline' 'unsafe-eval'; frame-src * 'self' data: https: http: *.percussion.com *.percussion.marketing *.percussion.services 'unsafe-inline' 'unsafe-eval'; frame-ancestors * 'self' ;";
     public static final String REQUIRE_XFRAME_OPTIONS = "requireXFrameOptions";
     public static final String REQUIRE_XFRAME_OPTIONS_DEFAULT = "true";
     public static final String XFRAME_OPTIONS="xFrameOptions";
