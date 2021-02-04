@@ -36,7 +36,4 @@
 	<file id="calendar_js"  path="/web_resources/widgets/calendar/js/fullcalendar.min.js"  type="javascript" >
 	    <dependency refid="percSystem.jquery"/>
 	</file>
-    	<file id="bbq_js"  path="/web_resources/cm/jslib/jquery.bbq.min.js"  type="javascript" >
-	    <dependency refid="percSystem.jquery"/>
-	</file>
 </Resources>
