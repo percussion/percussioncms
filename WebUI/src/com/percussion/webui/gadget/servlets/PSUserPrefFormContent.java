@@ -404,7 +404,7 @@ public class PSUserPrefFormContent {
          {
             String sep = rawurl.indexOf('?') == -1 ? "?" : "&";
             URL lUrl = new URL(m_serverscheme, m_servername,
-               m_serverport, rawurl + sep + "pssessionid=" + m_pssessionid);
+               m_serverport, rawurl);
             url = lUrl.toString();
          }
        
