@@ -477,7 +477,7 @@ public class PSAuthentication extends PSComponent
 
          try{
             PSEncryptor.getInstance().decrypt(data);
-         } catch (PSEncryptionException e) {
+         } catch (PSEncryptionException | IllegalArgumentException e) {
             data = PSCryptographer.decrypt(PSLegacyEncrypter.INVALID_CRED(), key, data);
          }
 
