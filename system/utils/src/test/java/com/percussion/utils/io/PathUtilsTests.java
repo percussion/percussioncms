@@ -26,6 +26,7 @@ package com.percussion.utils.io;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -58,7 +59,9 @@ public class PathUtilsTests {
 
     public PathUtilsTests(){}
 
+    //TODO: Finish adding various test cases.
     @Test
+    @Ignore
     public void testDTS() throws IOException {
         System.setProperty("rxdeploydir","");
         File dtsBase = temporaryFolder.newFolder("Deployment","Server");
