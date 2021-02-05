@@ -126,7 +126,9 @@ public class PSServerConfigUpdaterTest extends TestCase
         
         // create config
         serverConfigUpdater.addLdapConfig(ldapServer, serverConfig, null);
-        
+
+        assertNotNull(ldapServer.getPassword());
+
         assertTrue(doesLdapConfigExist(serverConfig));
         
         // make sure it was added correctly
