@@ -38,7 +38,7 @@ public class PSFeedDescriptor implements IPSFeedDescriptor
     private String query;
 
 
-    private FeedType type;
+    private String type;
 
     /* (non-Javadoc)
      * @see com.percussion.feeds.data.IPSFeedDescriptor#getDescription()
@@ -91,7 +91,7 @@ public class PSFeedDescriptor implements IPSFeedDescriptor
     /**
      * @return the type
      */
-    public FeedType getType()
+    public String getType()
     {
         return type;
     }
@@ -100,7 +100,7 @@ public class PSFeedDescriptor implements IPSFeedDescriptor
      * @param type the type to set
      */
 
-    public void setType(FeedType type)
+    public void setType(String type)
     {
         this.type = type;
     }
