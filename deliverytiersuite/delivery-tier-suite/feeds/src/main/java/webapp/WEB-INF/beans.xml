@@ -90,7 +90,7 @@
     <import resource="security.xml" />
 
 
-    <context:component-scan base-package="com.percussion.delivery.feeds.services" />
+    <context:component-scan base-package="com.percussion.delivery.feeds" />
 
     <tx:annotation-driven transaction-manager="txManager"/>
 

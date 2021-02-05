@@ -152,9 +152,9 @@ public class PSFeedDescriptor implements IPSFeedDescriptor, Serializable
     /**
      * @return the type
      */
-    public FeedType getType()
+    public String getType()
     {
-        return FeedType.valueOf(type);
+        return type;
     }
 
     /**
