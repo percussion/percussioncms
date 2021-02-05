@@ -284,7 +284,7 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaDelete<PSMembership> deleteQuery = builder.createCriteriaDelete(PSMembership.class);
             Root<PSMembership> root = deleteQuery.from(PSMembership.class);
-            root.get("id").in(Long.valueOf(member.getId()));
+            deleteQuery.where(root.get("id").in(Long.valueOf(member.getId())));
             session.createQuery(deleteQuery).executeUpdate();
 
         }
