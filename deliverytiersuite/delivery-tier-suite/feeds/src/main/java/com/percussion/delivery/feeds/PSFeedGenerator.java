@@ -130,9 +130,9 @@ public class PSFeedGenerator
    {
        switch(desc.getType())
        {
-           case ATOM:
+           case "ATOM":
                return "atom_1.0";
-           case RSS1:
+           case "RSS1":
                return "rss_1.0";
            default:
                return "rss_2.0";
