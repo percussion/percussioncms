@@ -37,6 +37,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Objects;
 
@@ -46,6 +48,7 @@ import java.util.Objects;
  */
 public class PSDbmsInfo implements IPSDeployComponent
 {
+   private static final Logger logger = LogManager.getLogger(PSDbmsInfo.class);
 
    /**
     * Construct this class with all required parameters.
@@ -214,7 +217,7 @@ public class PSDbmsInfo implements IPSDeployComponent
     * Get the password.
     * 
     * @param encrypted If <code>true</code>, the password is returned
-    *           encyrpted. Otherwise it is returned as clear text.
+    *           encrypted. Otherwise it is returned as clear text.
     * 
     * @return The password, possibly encrypted. Never <code>null</code>, may
     *         be empty. If encrypted, can only be decrypted by this class.
@@ -222,8 +225,16 @@ public class PSDbmsInfo implements IPSDeployComponent
    public String getPassword(boolean encrypted)
    {
       String pwd = m_pw;
-      if (!encrypted)
+      if (!encrypted && passwordEncrypted) {
          pwd = decryptPwd(m_uid, pwd);
+      }else if(encrypted && !passwordEncrypted){
+         try {
+            pwd = PSEncryptor.getInstance().encrypt(m_pw);
+         } catch (PSEncryptionException e) {
+            logger.warn("Error encrypting datasource password:" + e.getMessage());
+            logger.debug(e.getMessage(),e);
+         }
+      }
 
       return pwd;
    }
@@ -263,16 +274,29 @@ public class PSDbmsInfo implements IPSDeployComponent
     */
    public void setUserNamePwd(String usr, String pwd, boolean isPwdEncrypted)
    {
+      passwordEncrypted = isPwdEncrypted;
+
       if(StringUtils.isNotEmpty(usr))
          m_uid=usr;
       else
          m_uid = "";
 
-      if(isPwdEncrypted)
-         m_pw = encryptPwd(m_uid, pwd);
+      if(StringUtils.isNotEmpty(pwd))
+         m_pw=pwd;
       else
-         m_pw = pwd;
+         m_pw = "";
 
+      if(!isPwdEncrypted && !passwordEncrypted) {
+         if(!passwordEncrypted || StringUtils.isEmpty(m_pw)) {
+            m_pw = encryptPwd(m_uid, pwd);
+            passwordEncrypted = true;
+         }else{
+            m_pw = pwd;
+            passwordEncrypted = false;
+         }
+      }else {
+         passwordEncrypted = isPwdEncrypted;
+      }
    }
 
    /**
@@ -398,6 +422,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       PSXmlDocumentBuilder.addElement(doc, root, ORIGIN_XML_ELEMENT, m_origin);
       PSXmlDocumentBuilder.addElement(doc, root, UID_XML_ELEMENT, m_uid);
       PSXmlDocumentBuilder.addElement(doc, root, PASSWORD_XML_ELEMENT, m_pw);
+      PSXmlDocumentBuilder.addElement(doc, root, PASSWORD_ENCRYPTED_XML_ELEMENT,Boolean.toString(passwordEncrypted));
 
       return root;
    }
@@ -443,6 +468,18 @@ public class PSDbmsInfo implements IPSDeployComponent
             UID_XML_ELEMENT, false);
       m_pw = PSDeployComponentUtils.getRequiredElement(tree, XML_NODE_NAME,
             PASSWORD_XML_ELEMENT, false);
+      String temp = null;
+      try {
+            temp = PSDeployComponentUtils.getRequiredElement(tree, XML_NODE_NAME,
+                 PASSWORD_ENCRYPTED_XML_ELEMENT, false);
+      }catch(PSUnknownNodeTypeException e){
+         //If this element is not found in tree, then we have to treat it as pwd is encrypted.
+      }
+      if(temp == null || temp.equalsIgnoreCase("null") || temp.equalsIgnoreCase("")){
+         passwordEncrypted = true; //If we persisted the xml we can assume it was encrypted on generation.
+      }else{
+         passwordEncrypted = Boolean.parseBoolean(temp);
+      }
    }
 
    /**
@@ -472,6 +509,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       m_origin = src.m_origin;
       m_uid = src.m_uid;
       m_pw = src.m_pw;
+      passwordEncrypted = src.passwordEncrypted;
    }
 
    @Override
@@ -479,12 +517,24 @@ public class PSDbmsInfo implements IPSDeployComponent
       if (this == o) return true;
       if (!(o instanceof PSDbmsInfo)) return false;
       PSDbmsInfo that = (PSDbmsInfo) o;
+
+      String p1 = m_pw;
+      String p2 = that.m_pw;
+
+      if(passwordEncrypted){
+            p1 = decryptPwd(m_uid,m_pw);
+      }
+
+      if(that.passwordEncrypted){
+         p2 = decryptPwd(that.m_uid,that.m_pw);
+      }
+
       return Objects.equals(m_driver, that.m_driver) &&
               Objects.equals(m_server, that.m_server) &&
               Objects.equals(m_database, that.m_database) &&
               Objects.equals(m_origin, that.m_origin) &&
               Objects.equals(m_uid, that.m_uid) &&
-              Objects.equals(m_pw, that.m_pw) &&
+              Objects.equals(p1, p2) &&
               m_connInfo.getDataSource().equals(that.m_connInfo.getDataSource());
 
    }
@@ -558,6 +608,14 @@ public class PSDbmsInfo implements IPSDeployComponent
 
    }
 
+   public boolean isPasswordEncrypted() {
+      return passwordEncrypted;
+   }
+
+   public void setPasswordEncrypted(boolean passwordEncrypted) {
+      this.passwordEncrypted = passwordEncrypted;
+   }
+
    public class PSDbmsConnectionInfo implements IPSConnectionInfo
    {
       private String m_datasource = null;
@@ -619,6 +677,8 @@ public class PSDbmsInfo implements IPSDeployComponent
     */
    private String m_pw;
 
+   private boolean passwordEncrypted;
+
    /**
     * The connection info if supplied during construction, may be
     * <code>null</code> if not set or to use the default connection.
@@ -641,4 +701,7 @@ public class PSDbmsInfo implements IPSDeployComponent
    private static final String UID_XML_ELEMENT = "userid";
 
    private static final String PASSWORD_XML_ELEMENT = "password";
+
+   private static final String PASSWORD_ENCRYPTED_XML_ELEMENT = "encrypted";
+
 }

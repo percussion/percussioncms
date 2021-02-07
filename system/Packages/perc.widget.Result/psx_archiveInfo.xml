@@ -39,8 +39,8 @@
          <PSXDescriptor id="-7181340947051960550" name="perc.widget.Result">
             <Description>This widget show pages related a specified criteria</Description>
             <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="1.9.0"/>
-            <Version>1.1.5</Version>
+            <CmsVersion max="9.0.0" min="1.9.0"/>
+            <Version>1.1.6</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

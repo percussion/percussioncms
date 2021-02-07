@@ -45,6 +45,9 @@
 				<constraints nullable="false"/>
             </column>
         </createTable>
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+        </modifySql>
     </changeSet>
 	<changeSet  author="natechadwick (generated)"  id="1598324277811-5">
         <preConditions onFail="MARK_RAN" >
@@ -67,7 +70,6 @@
 	   </preConditions> 
        <renameTable  newTableName="PERC_PAGE_METADATA_PROPERTIES"
                       oldTableName="PERC_PAGE_METADATA_PROPERTIES_NEW" />
-
     </changeSet>
     
 </databaseChangeLog>

@@ -1,0 +1,37 @@
+#perc_header()
+<div id="1" class="perc-region">
+<div id="1.1" class="perc-region"> hello world </div>
+<div id="1.2" class="region"> hello world </div>
+<div id="1.3" class="region perc-region"></div>
+<div id="1.4" class="region">
+<div id="1.4.1" class="perc-region"></div>
+</div>
+</div><div id="breadcrumbs">
+#slot("rffNav" "" "" "" "" "template=rffSnEiNavBreadcrumbs");
+</div>
+
+<div id="ContentBox">
+<div id="Related">
+#slot("rffSidebar" '<div class="RelatedContent">' '' '<br/>' '</div>' '')
+</div>
+<div id="MainContent">
+<div class="ArticleAbstractChar">
+<h1>
+#field("displaytitle")
+</h1>
+#field("body")
+</div>
+</div>
+</div>
+
+#set( $start_slot = '<div class="list"><span class="relatedHeader">Related...</span> <br /></div>')
+#set( $start_snippet = '' )
+#set( $end_snippet = '<br/>' )
+#set( $end_slot = '</div>' )
+
+#slot("rffList" $start_slot $start_snippet $end_snippet $end_slot '')
+<div id="2" class="perc-region"> hello world </div>
+<div id="3" class="perc-region">
+<table id="foo"></table>
+</div>
+#perc_footer()

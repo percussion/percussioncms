@@ -31,8 +31,8 @@
     <property name="install.src" location="..\.."/>
     <property name="install.dts" value="true"/> <!-- This is set from PSDeliveryTierInstall installanywhere action -->
     <property name="dts.servertype" value="Production"/> <!-- This is set from PSDeliveryTierInstall install anywhere action -->
-    <property name="dts.zip.location" location="${install.dir}/rxconfig/Installer/optional/delivery-tier-distribution-8.0.0-SNAPSHOT.zip"/>
-    <property name="perc.version" value="8.0.0-SNAPSHOT"/>
+    <property name="dts.zip.location" location="${install.dir}/rxconfig/Installer/optional/delivery-tier-distribution.jar"/>
+    <property name="perc.version" value="${project.parent.version}"/>
     <property name="perc.java.home" value="${install.dir}/JRE" />
     <property name="perc.dts.backup" value="${install.dir}/PreInstall/Backups" />
     <property name="install.prod.dts" value="true"/>
@@ -262,11 +262,19 @@
                             </fileset>
                         </copy>
 
+                    <filter token="JAVA_OPTS" value="-Drxdeploydir=${install.dir}"/>
+                    <copy todir="${install.dir}${staging.dir}/" verbose="true" filtering="true">
+                        <fileset dir="${install.src}">
+                        <include name="*.bat"/>
+                        <include name="*.sh" />
+                        </fileset>
+                    </copy>
+
                         <copy todir="${install.dir}${staging.dir}/" verbose="true">
                             <fileset dir="${install.src}">
                                 <include name="*" />
-                                <exclude name="*.bat" if="${isLinux}"/>
-                                <exclude name="*.sh" if="${isWindows}"/>
+                                <exclude name="*.bat" />
+                                <exclude name="*.sh" />
                                 <exclude name="JRE/"/>
                                 <exclude name="linux-x64-jre/" />
                                 <exclude name="windows-x64-jre/"/>
@@ -324,7 +332,7 @@
 
                     <echo>Backing up existing DTS to ${new.backup.dir} ...</echo>
 
-                    <copy todir="${new.backup.dir}" preservelastmodified="true" overwrite="true" force="true" verbose="true">
+                    <copy todir="${new.backup.dir}${staging.dir}" preservelastmodified="true" overwrite="true" force="true" verbose="true">
                         <fileset dir="${install.dir}${staging.dir}/Deployment" />
                     </copy>
 
@@ -400,25 +408,32 @@
                     <echo>Restore mysql-connector if present............................................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                               verbose="true" failonerror="false">
-                            <fileset dir="${new.backup.dir}${staging.dir}/Server/common/lib">
+                            <fileset dir="${new.backup.dir}${staging.dir}/Server/lib">
                                 <include name="mysql-connector*.jar"/>
                             </fileset>
                         </copy>
-
-                    <copy todir="${install.dir}/Deployment/Server/common/lib"
+                    <echo>Restore mysql-connector if present again on re-upgrading upgraded environment............................................</echo>
+                    <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                                      verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}/Server/common/lib">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Server/common/lib">
                         <include name="mysql-connector*.jar"/>
                     </fileset>
                     </copy>
 
+                    <filter token="JAVA_OPTS" value="-Drxdeploydir=${install.dir}"/>
 
+                    <copy todir="${install.dir}${staging.dir}" overwrite="true" force="true" verbose="true" filtering="true">
+                        <fileset dir="${install.src}">
+                            <include name="*.bat" />
+                            <include name="*.sh" />
+                        </fileset>
+                    </copy>
 
                     <copy todir="${install.dir}${staging.dir}" overwrite="true" force="true" verbose="true">
                         <fileset dir="${install.src}">
                             <include name="*" />
-                            <exclude name="*.bat" if="${isLinux}"/>
-                            <exclude name="*.sh" if="${isWindows}"/>
+                            <exclude name="*.bat"/>
+                            <exclude name="*.sh"/>
                             <exclude name="JRE/"/>
                             <exclude name="linux-x64-jre/" />
                             <exclude name="windows-x64-jre/"/>
@@ -557,7 +572,6 @@
                         <replacevalue><![CDATA[]]></replacevalue>
                     </replace>
 
-
                     <if>
                         <and>
                             <equals arg1="@{type}" arg2="Staging"/>
@@ -573,6 +587,13 @@
                 </else>
             </if>
 
+            <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.sh" summary="yes"
+                     token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
+            </replace>
+
+            <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.bat" summary="yes"
+                     token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
+            </replace>
 
         </sequential>
     </macrodef>

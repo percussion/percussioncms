@@ -23,18 +23,17 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-thumbnail</artifactId>
+  <version>8.0.2</version>
 
     <properties>
         <version.arquillian>1.1.11.Final</version.arquillian>
@@ -53,16 +52,23 @@
     <repositories>
         <repository>
             <id>perc-java-repo</id>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public/</url>
+            <url>https://mvn.percussion.com/releases/</url>
             <snapshots>
                 <enabled>false</enabled>
-                <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
         <repository>
-            <id>a-thirdparty</id>
+            <id>perc-snapshots-repo</id>
+            <url>https://mvn.percussion.com/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>perc-thirdparty</id>
             <name>thirdparty</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
         </repository>
         <repository>
             <id>maven-central</id>
@@ -84,11 +90,11 @@
                         </goals>
                         <configuration>
                             <target>
-                                <mkdir dir="${download-folder}"/>
-                                <echo message="download windows archive"/>
-                                <get src="${windows.url}" dest="${download-folder}"/>
-                                <echo message="download linux archive"/>
-                                <get src="${linux.url}" dest="${download-folder}"/>
+                                <mkdir dir="${download-folder}" />
+                                <echo message="download windows archive" />
+                                <get src="${windows.url}" dest="${download-folder}" />
+                                <echo message="download linux archive" />
+                                <get src="${linux.url}" dest="${download-folder}" />
                             </target>
                         </configuration>
                     </execution>
@@ -111,7 +117,7 @@
                        <configuration>
                            <repositoryId>repo-man</repositoryId>
                            <file>${download-folder}/phantomjs-${phantomjs.version}-windows.zip</file>
-                           <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty</url>
+                           <url>https://mvn.percussion.com/repositories/thirdparty/</url>
                            <groupId>phantomjs</groupId>
                            <artifactId>phantomjs-win</artifactId>
                            <version>2.1.1</version>
@@ -128,7 +134,7 @@
                        <configuration>
                            <repositoryId>repo-man</repositoryId>
                            <file>${download-folder}/phantomjs-${phantomjs.version}-linux-x86_64.tar.bz2</file>
-                           <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty</url>
+                           <url>https://mvn.percussion.com/repositories/thirdparty/</url>
                            <groupId>phantomjs</groupId>
                            <artifactId>phantomjs-linux</artifactId>
                            <version>2.1.1</version>
@@ -136,7 +142,23 @@
                            <generatePom>true</generatePom>
                        </configuration>
                    </execution>
-
+                   <execution>
+                       <id>phantomjs-nexus-deploy-macosx</id>
+                       <phase>deploy</phase>
+                       <goals>
+                           <goal>deploy-file</goal>
+                       </goals>
+                       <configuration>
+                           <repositoryId>repo-man</repositoryId>
+                           <file>${download-folder}/phantomjs-${phantomjs.version}-macosx.zip</file>
+                           <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+                           <groupId>phantomjs</groupId>
+                           <artifactId>phantomjs-macosx</artifactId>
+                           <version>2.1.1</version>
+                           <packaging>zip</packaging>
+                           <generatePom>true</generatePom>
+                       </configuration>
+                   </execution>
                </executions>
             </plugin>
         </plugins>
@@ -200,7 +222,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -320,11 +342,10 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jboss.shrinkwrap/shrinkwrap-impl-base -->
         <dependency>
             <groupId>org.jboss.shrinkwrap</groupId>
             <artifactId>shrinkwrap-impl-base</artifactId>
@@ -334,17 +355,23 @@
     </dependencies>
     <repositories>
         <repository>
-            <id>perc-java-repo</id>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public/</url>
+            <id>perc-releases-repo</id>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
             <snapshots>
                 <enabled>false</enabled>
-                <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
         <repository>
-            <id>a-thirdparty</id>
+            <id>perc-snapshots-repo</id>
+            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>perc-thirdparty</id>
             <name>thirdparty</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
         </repository>
         <repository>
             <id>maven-central</id>

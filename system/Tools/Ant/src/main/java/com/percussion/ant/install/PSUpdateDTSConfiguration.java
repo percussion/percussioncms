@@ -154,15 +154,21 @@ public class PSUpdateDTSConfiguration extends PSAction {
                                     System.out.println("Captured property:" + "https." + key + ":=" + oldProps.get(key));
                                 }else if(key.equals("keystoreFile")){
                                     properties.put("https.certificateKeystoreFile", oldProps.get(key));
+                                    properties.put("https.keystoreFile", oldProps.get(key));
                                     System.out.println("Captured property:" + "https.certificateKeystoreFile" + ":=" + oldProps.get(key));
+                                    System.out.println("Captured property:" + "https.keystoreFile" + ":=" + oldProps.get(key));
 
                                 }else if(key.equals("keystorePass") ){
                                     properties.put("https.certificateKeystorePassword" , oldProps.get(key));
+                                    properties.put("https.keystorePass" , oldProps.get(key));
                                     System.out.println("Captured property:" + "https.certificateKeystorePassword" + ":=" + oldProps.get(key));
+                                    System.out.println("Captured property:" + "https.keystorePass" + ":=" + oldProps.get(key));
 
                                 } else if(key.equals("keyAlias")){
                                     properties.put("https.certificateKeyAlias", oldProps.get(key));
+                                    properties.put("https.keyAlias", oldProps.get(key));
                                     System.out.println("Captured property:" + "https.certificateKeyAlias" + ":=" + oldProps.get(key));
+                                    System.out.println("Captured property:" + "https.keyAlias" + ":=" + oldProps.get(key));
 
                                 }
 

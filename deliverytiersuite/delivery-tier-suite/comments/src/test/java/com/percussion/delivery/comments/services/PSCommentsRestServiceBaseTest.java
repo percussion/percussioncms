@@ -237,6 +237,7 @@ public abstract class PSCommentsRestServiceBaseTest extends JerseyTest {
     }
 
     @Test
+    @Ignore
 	public void testGetRestVersion(){
 
         Client client = ClientBuilder.newClient();

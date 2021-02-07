@@ -23,46 +23,46 @@
  */
 package com.percussion.design.objectstore;
 
-import static com.percussion.security.PSSecurityProvider.SP_TYPE_DIRCONN;
-import static com.percussion.security.PSSecurityProvider.SP_TYPE_BETABLE;
-import static com.percussion.testing.PSTestCompare.assertEqualsWithHash;
-
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import junit.framework.TestCase;
+import static com.percussion.security.PSSecurityProvider.SP_TYPE_BETABLE;
+import static com.percussion.security.PSSecurityProvider.SP_TYPE_DIRCONN;
+import static com.percussion.testing.PSTestCompare.assertEqualsWithHash;
+import static org.junit.Assert.assertNotEquals;
 
-public class PSGroupProviderInstanceTest extends TestCase
+
+public class PSGroupProviderInstanceTest
 {
    /**
     * Tests behavior of equals() and hashCode() methods.
     */
+   @Test
    public void testEqualsHashCode()
    {
       final PSGroupProviderInstance providerInstance =
             createInstance(NAME, SP_TYPE_DIRCONN, CLASSNAME, ID);
-      
-      assertFalse(providerInstance.equals(new Object()));
+
+       assertNotEquals(providerInstance, new Object());
       assertEqualsWithHash(providerInstance,
             createInstance(NAME, SP_TYPE_DIRCONN, CLASSNAME, ID));
 
-      assertFalse(providerInstance.equals(
-            createInstance(OTHER_STR, SP_TYPE_DIRCONN, CLASSNAME, ID)));
-      assertFalse(providerInstance.equals(
-            createInstance(NAME, SP_TYPE_BETABLE, CLASSNAME, ID)));
-      assertFalse(providerInstance.equals(
-            createInstance(NAME, SP_TYPE_DIRCONN, OTHER_STR, ID)));
-      assertFalse(providerInstance.equals(
-            createInstance(NAME, SP_TYPE_DIRCONN, CLASSNAME, ID + 1)));
+      PSGroupProviderInstance t2 = createInstance(OTHER_STR, SP_TYPE_DIRCONN, CLASSNAME, ID);
+       assertNotEquals(providerInstance, t2);
+
+       assertNotEquals(providerInstance, createInstance(NAME, SP_TYPE_BETABLE, CLASSNAME, ID));
+       assertNotEquals(providerInstance, createInstance(NAME, SP_TYPE_DIRCONN, OTHER_STR, ID));
+       assertNotEquals(providerInstance, createInstance(NAME, SP_TYPE_DIRCONN, CLASSNAME, ID + 1));
 }
 
    /**
     * Creates new provider instance initialized with provided parameters.
     */
-   private PSGroupProviderInstance createInstance(final String name,
-         final int type, final String className, final int id)
+   private PSGroupProviderInstance createInstance( String name,
+          int type,  String className,  int id)
    {
-      final PSGroupProviderInstance providerInstance =
+       PSGroupProviderInstance providerInstance =
          new PSGroupProviderInstance(name, type, className) {
 
          @Override

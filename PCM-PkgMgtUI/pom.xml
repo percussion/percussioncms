@@ -26,12 +26,11 @@
   <parent>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
+    <version>8.0.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>CMLite-PCM-PkgMgtUI</artifactId>
-  <version>8.0.0-SNAPSHOT</version>
+  <artifactId>perc-package-manager</artifactId>
   <packaging>jar</packaging>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -47,8 +46,8 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source/>
-          <target/>
+          <source />
+          <target />
         </configuration>
       </plugin>
        <plugin>

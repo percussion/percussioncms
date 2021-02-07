@@ -24,19 +24,10 @@
 package com.percussion.delivery.feeds.data;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.codehaus.jackson.annotate.JsonSubTypes;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 /**
  * A feed descriptor contains meta data needed to create a feed.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = PSFeedDescriptor.class),
-        @JsonSubTypes.Type(value=FeedType.class)})
 @JsonDeserialize(as = PSFeedDescriptor.class)
 public interface IPSFeedDescriptor
 {
@@ -80,7 +71,7 @@ public interface IPSFeedDescriptor
      * 
      * @return the feed output type. Never <code>null</code>.
      */
-    public FeedType getType();
+    public String getType();
 
 
 

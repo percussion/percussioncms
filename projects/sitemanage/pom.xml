@@ -27,7 +27,7 @@
   <parent>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
+    <version>8.0.2</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>sitemanage</artifactId>
@@ -158,7 +158,7 @@
   <dependencies>
   <dependency>
         <groupId>com.percussion</groupId>
-        <artifactId>CMLite-Main</artifactId>
+        <artifactId>perc-system</artifactId>
         <version>${project.parent.version}</version>
         <exclusions>
             <exclusion>
@@ -186,7 +186,7 @@
       </dependency>
           <dependency>
         <groupId>com.percussion</groupId>
-        <artifactId>CMLite-Main-Deployer</artifactId>
+        <artifactId>perc-deployer</artifactId>
         <version>${project.parent.version}</version>
     </dependency>
       <dependency>
@@ -206,7 +206,7 @@
       </dependency>
       <dependency>
         <groupId>com.percussion</groupId>
-        <artifactId>CMLite-Main</artifactId>
+        <artifactId>perc-system</artifactId>
         <version>${project.parent.version}</version>
         <classifier>tests</classifier>
       <type>test-jar</type>
@@ -301,31 +301,20 @@
    <artifactId>super-csv</artifactId>
    <version>2.4.0</version>
 </dependency>
-
-<!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all -->
-<dependency>
-    <groupId>org.hamcrest</groupId>
-    <artifactId>hamcrest-all</artifactId>
-
-    <scope>test</scope>
-</dependency>
- <dependency>
+        <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-     <exclusions>
-         <exclusion>
-             <groupId>org.javassist</groupId>
-             <artifactId>javassist</artifactId>
-         </exclusion>
-     </exclusions>
-            </dependency>
-             <dependency>
-                <groupId>se.fishtank</groupId>
-                <artifactId>css-selectors</artifactId>
-          
-            </dependency>
-            
-            
+                 <exclusions>
+                     <exclusion>
+                         <groupId>org.javassist</groupId>
+                         <artifactId>javassist</artifactId>
+                     </exclusion>
+                 </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>se.fishtank</groupId>
+            <artifactId>css-selectors</artifactId>
+        </dependency>
               <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-jaxrs</artifactId>
@@ -498,11 +487,6 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
-          <groupId>javax.servlet</groupId>
-          <artifactId>javax.servlet-api</artifactId>
-          <scope>provided</scope>
-      </dependency>
-      <dependency>
           <groupId>com.amazonaws</groupId>
           <artifactId>aws-java-sdk-s3</artifactId>
       </dependency>
@@ -510,11 +494,6 @@
           <groupId>org.apache.logging.log4j</groupId>
           <artifactId>log4j-core</artifactId>
           <scope>provided</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.hamcrest</groupId>
-          <artifactId>hamcrest-library</artifactId>
-          <scope>test</scope>
       </dependency>
       <dependency>
           <groupId>javax.ws.rs</groupId>
@@ -578,11 +557,6 @@
           <scope>compile</scope>
       </dependency>
       <dependency>
-          <groupId>org.hamcrest</groupId>
-          <artifactId>hamcrest-core</artifactId>
-          <scope>test</scope>
-      </dependency>
-      <dependency>
           <groupId>commons-logging</groupId>
           <artifactId>commons-logging</artifactId>
           <scope>provided</scope>
@@ -627,11 +601,6 @@
       <dependency>
           <groupId>javax.servlet</groupId>
           <artifactId>javax.servlet-api</artifactId>
-          <scope>provided</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.jdom</groupId>
-          <artifactId>jdom</artifactId>
           <scope>provided</scope>
       </dependency>
       <dependency>

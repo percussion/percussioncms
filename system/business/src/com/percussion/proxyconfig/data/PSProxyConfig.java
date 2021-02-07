@@ -190,7 +190,6 @@ public class PSProxyConfig extends PSAbstractDataObject
       final int prime = 31;
       int result = super.hashCode();
       result = prime * result + ((host == null) ? 0 : host.hashCode());
-      result = prime * result + ((password == null) ? 0 : password.hashCode());
       result = prime * result + ((port == null) ? 0 : port.hashCode());
       result = prime * result + ((protocols == null) ? 0 : protocols.hashCode());
       result = prime * result + ((user == null) ? 0 : user.hashCode());
@@ -202,8 +201,6 @@ public class PSProxyConfig extends PSAbstractDataObject
    {
       if (this == obj)
          return true;
-      if (!super.equals(obj))
-         return false;
       if (getClass() != obj.getClass())
          return false;
       PSProxyConfig other = (PSProxyConfig) obj;
@@ -219,8 +216,7 @@ public class PSProxyConfig extends PSAbstractDataObject
          if (other.password != null)
             return false;
       }
-      else if (!password.equals(other.password))
-         return false;
+
       if (port == null)
       {
          if (other.port != null)

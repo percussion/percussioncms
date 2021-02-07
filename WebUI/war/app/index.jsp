@@ -326,7 +326,7 @@
         catch(Exception e)
         {
             //TODO: I18N below
-            urlParams.put("warningMessage", "The page you are attempting to reach, does not exist in CM1.");
+            urlParams.put("warningMessage", "The page you are attempting to reach, does not exist in the CMS.");
         }
         return urlParams;
     }

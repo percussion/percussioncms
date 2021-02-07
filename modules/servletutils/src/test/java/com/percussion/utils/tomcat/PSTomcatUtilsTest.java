@@ -78,7 +78,7 @@ public void testLoadHttpConnectors() throws Exception
    }
 
    @Test
-   @Ignore("TODO: Fix Me. This test fails.")
+   @Ignore("SKIPPED: TODO: testSaveHttpConnectors - Fix Me. This test fails.")
    public void testSaveHttpConnectors() throws Exception {
       // make copy of the configs
       File srcServerDoc = getTempXmlFile();

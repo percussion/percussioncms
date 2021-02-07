@@ -192,8 +192,8 @@ ANT_CALL_SILENT="Tools/Ant/bin/ant -quiet -lib Tools/Ant/lib/target"
 # Set installanywhere source path variables
 IA_PATH_RX_DIR=.
 CLASSPATH=.
-CLASSPATH="$CLASSPATH:Tools/Ant/perc-ant-8.0.0-SNAPSHOT.jar"
-CLASSPATH="$CLASSPATH:../modules/ant-install/target/ant-install-8.0.0-SNAPSHOT.jar"
+CLASSPATH="$CLASSPATH:Tools/Ant/perc-ant-8.0.2-SNAPSHOT.jar"
+CLASSPATH="$CLASSPATH:../modules/ant-install/target/ant-install-8.0.2-SNAPSHOT.jar"
 
 # Package specific actions
 if [ "$1" == "PKGHELP" ]; then

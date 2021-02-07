@@ -27,11 +27,11 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
   <artifactId>perc-jetty-logging</artifactId>
-  <name>Percussion Jetty :: jetty app logging jars</name>
+  <name>perc-jetty-logging</name>
    <packaging>pom</packaging>
   <properties>
     <assembly-directory>${basedir}/target/distribution</assembly-directory>

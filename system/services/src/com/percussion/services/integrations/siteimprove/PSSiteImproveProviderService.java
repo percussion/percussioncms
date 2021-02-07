@@ -60,8 +60,8 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
 
    // The api endpoints for Siteimprove's api.
    private static final String NEW_SITEIMPROVE_BASE_URL = "https://api-gateway.siteimprove.com/cms-recheck";
-   // on a 5.4.4 build, this looks like - 'PercussionCM15.4.4'
-   private static final String PERCUSSION_CM1_VERSION = "PercussionCM1" + PSServer.getVersion();
+
+   private static final String PERCUSSION_CM1_VERSION = "Percussion CMS " + PSServer.getVersion();
    private static final String SITEIMPROVE_TOKEN_URL = "https://my2.siteimprove.com/auth/token?cms="
          + PERCUSSION_CM1_VERSION;
    private static final String SITEIMPROVE_RECRAWL_SITE = "recrawl";

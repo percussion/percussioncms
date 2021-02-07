@@ -8,6 +8,9 @@ on:
     branches: [ development ]
   pull_request:
     branches: [ development ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
 
 jobs:
   build:

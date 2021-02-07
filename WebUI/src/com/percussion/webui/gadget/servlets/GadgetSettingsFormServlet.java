@@ -287,7 +287,7 @@ public class GadgetSettingsFormServlet extends HttpServlet
 
 
    private static final String METADATA_SERVICE_URL = "/cm/gadgets/metadata";
-   private static final String PSSESSIONID = "pssessionid";
+   private static final String PSSESSIONID = "JSESSIONID";
 
 
 

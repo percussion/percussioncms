@@ -70,6 +70,7 @@ import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
+import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 
@@ -2689,10 +2690,10 @@ public class PSDeploymentHandler  implements IPSLoadableRequestHandler
       if (pwd == null || pwd.trim().length() == 0)
          return "";
 
-      String key = uid == null || uid.trim().length() == 0 ? INVALID_DRIVER :
+      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.INVALID_DRIVER() :
          uid;
 
-      return decryptPwd(pwd, INVALID_CRED, key);
+      return decryptPwd(pwd, PSLegacyEncrypter.INVALID_CRED(), key);
    }
 
    /**
@@ -2880,19 +2881,6 @@ public class PSDeploymentHandler  implements IPSLoadableRequestHandler
       String pkg = "com.percussion.util";
       return new PSFormatVersion(pkg);
    }
-
-   /**
-    * Constant to use for part one key when encrypting/decrypting the password.
-    */
-   private static final String INVALID_CRED
-      = "Invalid user id or password!!!!!";
-
-   /**
-    * Constant to use for part two key if userid is empty when
-    * encrypting/decrypting the password.
-    */
-   private static final String  INVALID_DRIVER =
-      "The driver name you have entered is invalid.";
 
    /**
     * Constant for deployment subsystem to use for console and logging messages.

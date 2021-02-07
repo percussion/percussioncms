@@ -39,8 +39,8 @@
          <PSXDescriptor id="-4003475265849121008" name="perc.gadget.comments">
             <Description>Comments Moderation Gadget</Description>
             <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="1.7.0"/>
-            <Version>1.1.1</Version>
+            <CmsVersion max="9.0.0" min="1.7.0"/>
+            <Version>1.1.2</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

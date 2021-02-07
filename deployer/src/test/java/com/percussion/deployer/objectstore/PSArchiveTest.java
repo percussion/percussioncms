@@ -24,27 +24,51 @@
  
 package com.percussion.deployer.objectstore;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for the <code>PSArchive</code> object.
  */
-public class PSArchiveTest extends TestCase
+public class PSArchiveTest
 {
+   @Rule
+   public TemporaryFolder temporaryFolder = new TemporaryFolder();
+   private String rxdeploydir;
+
+   @Before
+   public void setup() throws IOException {
+
+      rxdeploydir = System.getProperty("rxdeploydir");
+      System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
+   }
+
+   @After
+   public void teardown(){
+      if(rxdeploydir != null)
+         System.setProperty("rxdeploydir",rxdeploydir);
+   }
+
    /**
     * Construct this unit test
-    * 
-    * @param name The name of this test.
+    *
     */
-   public PSArchiveTest(String name)
+   public PSArchiveTest()
    {
-      super(name);
+      super();
    }
    
    /**
@@ -52,6 +76,7 @@ public class PSArchiveTest extends TestCase
     * 
     * @throws Exception if there are any errors.
     */
+   @Test
    public void testArchive() throws Exception
    {
       File archiveFile = File.createTempFile("ArchiveTest", ".pda");
@@ -159,13 +184,6 @@ public class PSArchiveTest extends TestCase
       assertTrue(caught);
       
    }
- 
-   // collect all tests into a TestSuite and return it
-   public static Test suite()
-   {
-      TestSuite suite = new TestSuite();
-      suite.addTest(new PSArchiveTest("testArchive"));
-      return suite;
-   }
+
    
 }

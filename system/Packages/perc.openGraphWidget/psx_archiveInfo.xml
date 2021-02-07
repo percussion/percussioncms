@@ -39,8 +39,8 @@
          <PSXDescriptor id="8941335712213509904" name="perc.openGraphWidget">
             <Description>Provides a Widget for adding  Open Graph metadata to the Template or Page.  This metadata is used by social networks when content is shared.</Description>
             <Publisher name="Percussion Software, Inc." url="http://www.percussion.com"/>
-            <CmsVersion max="5.4.0" min="5.2.5"/>
-            <Version>1.1.3</Version>
+            <CmsVersion max="9.0.0" min="5.2.5"/>
+            <Version>1.1.4</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

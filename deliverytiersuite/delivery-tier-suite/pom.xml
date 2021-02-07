@@ -23,14 +23,16 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <parent>
+        <groupId>com.percussion</groupId>
+        <artifactId>core</artifactId>
+        <version>8.0.2</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
     <groupId>com.percussion.deliverytier</groupId>
     <artifactId>delivery-tier-suite</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
         <timestamp>${maven.build.timestamp}</timestamp>
@@ -83,22 +85,20 @@
         <cxf.version>3.3.5</cxf.version>
         <servlet.spec>3.1.0</servlet.spec>
         <hibernate.version>5.4.20.Final</hibernate.version>
-        <lucene.version>2.2.0</lucene.version>
         <!-- <myfaces.version>2.2.12</myfaces.version> -->
         <myfaces.version>1.1.5</myfaces.version>
         <poi.version>3.17</poi.version>
         <esapi.version>2.2.0.0-RC2</esapi.version>
         <esapi.encoder.version>1.2.2</esapi.encoder.version>
         <ant.version>1.10.6</ant.version>
-        <!-- Fix issues with owl requring guice dependencies in 2.1 -->
         <shindig.version>1.1-BETA5-incubating</shindig.version>
         <any23.version>2.2</any23.version>
         <owl.version>5.1.3</owl.version>
         <awssdk.version>1.11.731</awssdk.version>
         <bc.version>1.64</bc.version>
-        <jackson.version>2.10.1</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
         <jsoup.version>1.11.3</jsoup.version>
-        <json.version>1.1.4</json.version>
+        <json.version>20201115</json.version>
         <junit.version>4.12</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
@@ -126,21 +126,20 @@
         <tinymce.version>4.9.10</tinymce.version>
         <jfx.version>11.0.2</jfx.version>
         <eclipse-manifest-location>META-INF</eclipse-manifest-location>
-        <tomcat.version>9.0.37</tomcat.version>
+        <tomcat.version>9.0.40</tomcat.version>
         <install.jre.version>8.222.10.1</install.jre.version>
         <derby.version>10.14.2.0</derby.version>
         <jtds.version>1.3.1</jtds.version>
         <mariadb.version>2.6.0</mariadb.version>
         <oracle.version>12.1.0.1</oracle.version>
         <sqlserver.version>8.2.1.jre8</sqlserver.version>
-        <slf4j.version>1.7.28</slf4j.version>
-		 <hikari.version>3.4.5</hikari.version>
-        <hikaricp.version>3.4.5</hikaricp.version>
-        <jersey.version>2.31</jersey.version>
+        <slf4j.version>1.7.29</slf4j.version>
+        <hikaricp.version>4.0.1</hikaricp.version>
+        <jersey.version>2.33</jersey.version>
         <jaxrs.version>2.1.1</jaxrs.version>
        <junit.version>4.12</junit.version>
         <jsoup.version>1.11.3</jsoup.version>
-        <rome.version>1.5.0</rome.version>
+        <rome.version>1.15.0</rome.version>
         <javax.annotation.version>1.3.2</javax.annotation.version>
         <commons.logging.version>1.2</commons.logging.version>
         <commons.io.version>2.7</commons.io.version>
@@ -199,10 +198,27 @@
 
     <repositories>
         <repository>
-            <id>perc-java-repo</id>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public</url>
+            <id>perc-release-repo</id>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>perc-snapshot-repo</id>
+            <url>https://mvn.percussion.com/repositories/snaphots/</url>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>perc-thirdparty-repo</id>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+            <snapshots>
+                <enabled>false</enabled>
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
@@ -230,10 +246,10 @@
                                 <version>${maven.version}</version>
                             </requireMavenVersion>
                             <requireUpperBoundDeps>
-                                <excludes/>
+                                <excludes />
                             </requireUpperBoundDeps>
-                            <dependencyConvergence/>
-                            <banDuplicatePomDependencyVersions/>
+                            <dependencyConvergence />
+                            <banDuplicatePomDependencyVersions />
                         </rules>
                         <fail>false</fail>
                     </configuration>
@@ -392,6 +408,35 @@
     </plugins>
     <pluginManagement>
         <plugins>
+        <plugin>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <configuration>
+                <propertyFile>src/main/resources/diff-liquibase-changelog.properties</propertyFile>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>org.liquibase.ext</groupId>
+                    <artifactId>liquibase-hibernate5</artifactId>
+                    <version>4.0.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                    <version>${spring.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-jpa</artifactId>
+                    <version>2.3.2.RELEASE</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.6.11</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -529,7 +574,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>1.0</version>
+                        <version>8.0.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -549,7 +594,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>1.0</version>
+                        <version>8.0.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -561,7 +606,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>1.0</version>
+                        <version>8.0.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -628,12 +673,24 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>perc-java-repo</id>
+            <id>perc-releases-repo</id>
             <name>Perc Plugin Repository</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public</url>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>perc-snapshots-repo</id>
+            <name>Perc Plugin Repository</name>
+            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
             </snapshots>
             <releases>
                 <updatePolicy>never</updatePolicy>
@@ -646,11 +703,9 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -665,7 +720,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.0.0</version>
             </plugin>
         </plugins>
     </reporting>

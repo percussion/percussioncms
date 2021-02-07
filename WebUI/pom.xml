@@ -27,10 +27,10 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>CMLite-WebUI</artifactId>
+    <artifactId>perc-web-ui</artifactId>
     <packaging>war</packaging>
 
     <properties>
@@ -70,7 +70,7 @@
                                         <echo>Refreshing dev install with updated JS...</echo>
                                         <echo>Installing to ${install.dir}</echo>
                                         <echo>Unzipping war....</echo>
-                                        <unzip src="${project.basedir}/target/CMLite-WebUI-8.0.0-SNAPSHOT.war" dest="${install.dir}/jetty/base/webapps/Rhythmyx" />
+                                        <unzip src="${project.basedir}/target/perc-web-ui-${project.parent.version}.war" dest="${install.dir}/jetty/base/webapps/Rhythmyx" />
                                         <echo>Copying common-ui files to web_resources...</echo>
                                         <copy todir="${install.dir}/web_resources/cm/common/js" overwrite="true" force="true">
                                             <fileset dir="${install.dir}/jetty/base/webapps/Rhythmyx/cm/common/js/" includes="**/*.js" />
@@ -263,7 +263,7 @@
                         <resource>
                             <directory>../system/ear/jsps</directory>
                             <!-- override the destination directory for this resource -->
-                            <targetPath></targetPath>
+                            <targetPath />
                             <!-- enable filtering -->
                             <filtering>false</filtering>
                             <excludes>
@@ -313,10 +313,10 @@
                                 <trycatch>
                                     <try>
                                         <!-- On nix based systems run chmod - will do nothing on Windows -->
-                                        <chmod dir="${project.build.directory}" includes="**/*" perm="ugo+rw"></chmod>
+                                        <chmod dir="${project.build.directory}" includes="**/*" perm="ugo+rw" />
                                         <!-- On Windows based systems run attrib - will do nothing on unix -->
                                         <attrib readonly="false" verbose="true">
-                                            <fileset dir="${project.build.directory}" includes="**/*"/>
+                                            <fileset dir="${project.build.directory}" includes="**/*" />
                                         </attrib>
                                     </try>
 
@@ -600,7 +600,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -615,45 +615,45 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-default-template</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-main</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-workflow</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-linkback</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-sfp</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-nav</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-tinymce</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-jetty-jars</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
@@ -666,7 +666,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>
@@ -680,13 +680,13 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLite-PCM-PkgMgtUI</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <artifactId>perc-package-manager</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-jetty-logging</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
@@ -700,7 +700,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rest</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
 
                 <exclusion>
@@ -712,7 +712,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>sitemanage</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-beanutils</artifactId>
@@ -729,7 +729,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>shindig-uber</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>
@@ -843,8 +843,9 @@
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>org.apache.cxf.rs.swagger.ui</artifactId>
-            <version>3.4.0-PATCHED</version>
+            <artifactId>cxf-rt-rs-service-description-swagger-ui</artifactId>
+            <!-- <version>3.4.0-PATCHED</version> -->
+            <version>${cxf.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.javassist</groupId>
@@ -1097,8 +1098,8 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLite-Main</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <artifactId>perc-system</artifactId>
+            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>
@@ -1108,15 +1109,15 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLight-Main-cactus-tests</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <artifactId>perc-system-cactus-tests</artifactId>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-shared-test-resources</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -1134,7 +1135,7 @@
                     <groupId>aspectjrt</groupId>
                 </exclusion>
             </exclusions>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-httpclient</groupId>

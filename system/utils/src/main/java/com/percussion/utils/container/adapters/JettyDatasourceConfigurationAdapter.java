@@ -197,7 +197,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 if (encrypted != null && encrypted.equalsIgnoreCase("Y")) {
                     try {
                         pwd = PSEncryptor.getInstance().decrypt(pwd);
-                    }catch(PSEncryptionException e){
+                    }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                         pwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSLegacyEncrypter.getPartOneKey());
                     }
                 } else {
@@ -354,6 +354,9 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
         }
 
         if (success) {
+            //Make sure file is writeable.
+            if(!Files.exists(propertyFile))
+                propertyFile = Files.createFile(propertyFile);
             //Make sure file is writeable.
             propertyFile.toFile().setWritable(true);
 
@@ -556,22 +559,14 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
     private Properties loadProperties(Path filePath) {
         PSProperties props = new PSProperties();
-        if (!Files.exists(filePath)) {
-            try {
-                Files.createFile(filePath);
-            } catch (IOException e)
-            {
-                throw new RuntimeException("Cannot create property file ",e);
+        if (Files.exists(filePath)) {
+            try (InputStream is = Files.newInputStream(filePath)) {
+                props.load(is);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
-        try(InputStream is = Files.newInputStream(filePath))
-        {
-            props.load(is);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return props;
-
     }
 
     private synchronized void saveProperties(Properties  props, File dbPropertiesFile)
