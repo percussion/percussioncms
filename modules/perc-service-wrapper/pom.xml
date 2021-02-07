@@ -30,13 +30,13 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.2-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-service-wrapper</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
+  <version>8.0.2</version>
 
     <packaging>jar</packaging>
     <build>

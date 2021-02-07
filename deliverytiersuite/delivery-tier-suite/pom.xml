@@ -28,7 +28,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.2-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.percussion.deliverytier</groupId>
@@ -574,7 +574,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.0.2-SNAPSHOT</version>
+                        <version>8.0.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -594,7 +594,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.0.2-SNAPSHOT</version>
+                        <version>8.0.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -606,7 +606,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.0.2-SNAPSHOT</version>
+                        <version>8.0.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
