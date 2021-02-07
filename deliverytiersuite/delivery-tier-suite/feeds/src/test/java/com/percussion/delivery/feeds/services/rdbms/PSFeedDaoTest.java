@@ -23,7 +23,6 @@
  */
 package com.percussion.delivery.feeds.services.rdbms;
 
-import com.percussion.delivery.feeds.data.FeedType;
 import com.percussion.delivery.feeds.data.IPSFeedDescriptor;
 import com.percussion.delivery.feeds.services.IPSConnectionInfo;
 import com.percussion.delivery.feeds.services.IPSFeedDao;
@@ -57,7 +56,7 @@ public class PSFeedDaoTest extends TestCase
         IPSConnectionInfo info = dao.getConnectionInfo();
         assertNull(info);
         
-        //Test intial save and get
+        //Test initial save and get
         dao.saveConnectionInfo("http://localhost:9980", "testuser", "demo", false);
 
         info = dao.getConnectionInfo();
@@ -79,9 +78,9 @@ public class PSFeedDaoTest extends TestCase
     @Test
     public void testSaveLoadDescriptors() throws Exception
     {
-        IPSFeedDescriptor desc1 = new TestDescriptor("test1", "site1", "test description", "http://www.testme.com", "Test 1", "{}", FeedType.RSS2);
-        IPSFeedDescriptor desc2 = new TestDescriptor("test2", "site1", "test description2", "http://www.testme2.com", "Test 2", "{}", FeedType.RSS1);
-        IPSFeedDescriptor desc3 = new TestDescriptor("test3", "site2", "test description3", "http://www.testme3.com", "Test 3", "{}", FeedType.ATOM);
+        IPSFeedDescriptor desc1 = new TestDescriptor("test1", "site1", "test description", "http://www.testme.com", "Test 1", "{}", "RSS2");
+        IPSFeedDescriptor desc2 = new TestDescriptor("test2", "site1", "test description2", "http://www.testme2.com", "Test 2", "{}", "RSS1");
+        IPSFeedDescriptor desc3 = new TestDescriptor("test3", "site2", "test description3", "http://www.testme3.com", "Test 3", "{}", "ATOM");
         
         List<IPSFeedDescriptor> descs = new ArrayList<IPSFeedDescriptor>();
         descs.add(desc1);
@@ -123,8 +122,8 @@ public class PSFeedDaoTest extends TestCase
         
         //Test updates and add
         List<IPSFeedDescriptor> updates = new ArrayList<IPSFeedDescriptor>();
-        IPSFeedDescriptor desc1_a = new TestDescriptor("test4", "site1", "test description4", "http://www.testme4.com", "Test 4", "{}", FeedType.RSS2);
-        IPSFeedDescriptor desc2_a = new TestDescriptor("test2", "site1", "test description5", "http://www.testme5.com", "Test 5", "{}", FeedType.RSS1);
+        IPSFeedDescriptor desc1_a = new TestDescriptor("test4", "site1", "test description4", "http://www.testme4.com", "Test 4", "{}", "RSS2");
+        IPSFeedDescriptor desc2_a = new TestDescriptor("test2", "site1", "test description5", "http://www.testme5.com", "Test 5", "{}", "RSS1");
         updates.add(desc1_a);
         updates.add(desc2_a);
         dao.saveDescriptors(updates);
@@ -149,7 +148,7 @@ public class PSFeedDaoTest extends TestCase
         private String link;
         private String title;
         private String query;
-        private FeedType type;
+        private String type;
         
         
         
@@ -165,7 +164,7 @@ public class PSFeedDaoTest extends TestCase
          * @param type
          */
         public TestDescriptor(String name, String site, String description, String link, String title, String query,
-                        FeedType type)
+                              String type)
         {
             this.name = name;
             this.site = site;
@@ -187,7 +186,7 @@ public class PSFeedDaoTest extends TestCase
         /* (non-Javadoc)
          * @see com.percussion.feeds.data.IPSFeedDescriptor#getFeedType()
          */
-        public FeedType getType()
+        public String getType()
         {
             return type;
         }

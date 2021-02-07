@@ -111,17 +111,10 @@ public class PSJobHandlerConfigurationTest
     */
    private PSJobHandlerConfiguration getConfig() throws Exception
    {
-      InputStream in = null;
-      try 
+      try( InputStream in = this.getClass().getResourceAsStream(RESOURCE_D0C))
       {
-         in = this.getClass().getResourceAsStream(RESOURCE_D0C);
          Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
          return new PSJobHandlerConfiguration(doc);
-      }
-      finally 
-      {
-         if (in != null)
-            try {in.close();} catch(IOException e){}
       }
    }
 
@@ -131,6 +124,6 @@ public class PSJobHandlerConfigurationTest
     * E2 root.
     */ 
    private static final String RESOURCE_D0C = 
-      "/com/percussion/server/job/sys_jobHandlerConfiguration.xml";
+      "/com/percussion/server/job/sys_JobHandlerConfiguration.xml";
    
 }

@@ -482,7 +482,11 @@ public class PSArchiveFiles
             if(!extractDir.endsWith(File.separator))
                extractDir += File.separator;
 
-            out = new FileOutputStream(extractDir + entry.getName());
+            File file = new File(extractDir, entry.getName());
+            if (!file.toPath().normalize().startsWith(extractDir))
+               throw new IllegalArgumentException(
+                       "Archive file to extract from is not having correct path.");
+            out = new FileOutputStream(file);
 
             byte[] buf = new byte[1024];
             int len;

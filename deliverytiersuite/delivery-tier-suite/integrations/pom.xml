@@ -23,19 +23,17 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.percussion.deliverytier</groupId>
         <artifactId>delivery-tier-suite</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>perc-integrations</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <dependencies>
@@ -52,12 +50,7 @@
 		<dependency>
 		    <groupId>axis</groupId>
 		    <artifactId>axis</artifactId>
-		    <version>1.4.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>axis</groupId>
-		    <artifactId>axis-jaxrpc</artifactId>
-		    <version>1.4.1</version>
+		    <version>${axis.version}</version>
 		</dependency>
         <!-- https://mvnrepository.com/artifact/javax.xml/jaxrpc-api -->
         <dependency>
@@ -90,7 +83,7 @@
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-shared-app</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -102,12 +95,12 @@
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-delivery-common</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-delivery-common</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -273,12 +266,6 @@
             <groupId>axis</groupId>
             <artifactId>axis-jaxrpc</artifactId>
             <version>1.4.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.xml</groupId>
-            <artifactId>jaxrpc-api</artifactId>
-            <version>1.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

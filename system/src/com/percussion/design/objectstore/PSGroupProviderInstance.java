@@ -57,7 +57,7 @@ public abstract class PSGroupProviderInstance extends PSComponent
     * or empty.
     * @param type The security provider type this instance uses.  Must be one of
     * the PSSecurityprovider.SP_TYPE_xxx types.
-    * @param classname The name of the derived class that should be instantiated
+    * @param className The name of the derived class that should be instantiated
     * to handle serialization of the content of this element.  May not be
     * <code>null</code> or empty.
     */
@@ -217,7 +217,8 @@ public abstract class PSGroupProviderInstance extends PSComponent
 
    }
 
-   
+
+
    @Override
    public Object clone()
    {
@@ -315,11 +316,39 @@ public abstract class PSGroupProviderInstance extends PSComponent
    /**
     * @return the name of this group provider, never <code>null</code> or empty.
     */
+   @Override
    public String toString()
    {
       return getName();
    }
 
+   @Override
+   public boolean equals(Object obj) {
+      boolean isMatch = true;
+      if (!(obj instanceof PSGroupProviderInstance))
+         isMatch = false;
+      else
+      {
+         PSGroupProviderInstance other = (PSGroupProviderInstance)obj;
+         if (!super.equals(other))
+            isMatch = false;
+         else if (!this.m_className.equals(other.m_className))
+            isMatch = false;
+         else if (!this.m_name.equals(other.m_name))
+            isMatch = false;
+         else if (this.m_type != other.m_type)
+            isMatch = false;
+      }
+
+      return isMatch;
+
+   }
+
+   @Override
+   public int hashCode() {
+      return super.hashCode() +
+              m_name.hashCode() + m_className.hashCode() + m_type;
+   }
 
    /**
     * Name of this group provider.  Never <code>null</code>, empty, or modified

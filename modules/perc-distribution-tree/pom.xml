@@ -23,13 +23,11 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -47,7 +45,7 @@
         <db.user>CMDB</db.user>
         <db.pass.enc>7cf3be70d83a6948</db.pass.enc>
         <db.schema>CMDB</db.schema>
-        <db.name></db.name>
+        <db.name />
         <db.driver>derby</db.driver>
         <db.class>org.apache.derby.jdbc.EmbeddedDriver</db.class>
         <db.backend>DERBY</db.backend>
@@ -206,7 +204,6 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version>
             <executions>
                 <execution>
                     <id>default-cli</id>
@@ -217,17 +214,17 @@
                     <configuration>
 
                         <target>
-                            <property name="sfp.exits.source" location="${rxapps.source}/RxFastForward/SiteFolderPublishing/Exits"/>
-                            <property name="nav.exits.source" location="${rxapps.source}/RxFastForward/ManagedNav/Exits"/>
-                            <property name="default_template.exits.source" location="${rxapps.source}/RxFastForward/DefaultTemplate/Exits"/>
+                            <property name="sfp.exits.source" location="${rxapps.source}/RxFastForward/SiteFolderPublishing/Exits" />
+                            <property name="nav.exits.source" location="${rxapps.source}/RxFastForward/ManagedNav/Exits" />
+                            <property name="default_template.exits.source" location="${rxapps.source}/RxFastForward/DefaultTemplate/Exits" />
 
-                            <property name="install.src" location="${assembly-directory}"/>
-                            <property name="install.dir" value="${basedir}/target/classes/distribution"/>
-                            <property name="install.type" value="new"/>
-                            <property name="clean.install" value="true"/>
-                            <property name="do.install" value="true"/>
+                            <property name="install.src" location="${assembly-directory}" />
+                            <property name="install.dir" value="${basedir}/target/classes/distribution" />
+                            <property name="install.type" value="new" />
+                            <property name="clean.install" value="true" />
+                            <property name="do.install" value="true" />
 
-                            <ant antfile="${basedir}/src/main/resources/installDistributionFiles.xml" inheritAll="true" inheritRefs="true"/>
+                            <ant antfile="${basedir}/src/main/resources/installDistributionFiles.xml" inheritAll="true" inheritRefs="true" />
 
                      <!--       <ant antfile="${basedir}/src/main/resources/distribution/rxconfig/Installer/install.xml" target="install" inheritAll="true" inheritRefs="true">
                                 <property name="basedir" location="${basedir}/src/main/resources/distribution/rxconfig/Installer"/>
@@ -296,7 +293,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>perc-distribution-tree-8.0.0-SNAPSHOT</finalName>
+                    <finalName>perc-distribution-tree</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                      <archive>
                         <manifest>
@@ -307,20 +304,6 @@
             </execution>
         </executions>
        </plugin>
-     <!--   <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>
-                            com.percussion.preinstall.Main
-                        </mainClass>
-                    </manifest>
-                </archive>
-            </configuration>
-        </plugin>
-        -->
         <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -431,7 +414,7 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLite-Main</artifactId>
+            <artifactId>perc-system</artifactId>
             <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
@@ -467,4 +450,14 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

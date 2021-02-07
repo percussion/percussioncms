@@ -28,8 +28,12 @@ package com.percussion.deploy.objectstore;
 import com.percussion.utils.testing.UnitTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -42,6 +46,23 @@ import static org.junit.Assert.assertTrue;
 @Category(UnitTest.class)
 public class PSDbmsMapTest
 {
+   @Rule
+   public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+   private String rxdeploydir;
+
+   @Before
+   public void setup(){
+      rxdeploydir = System.getProperty("rxdeploydir");
+      System.setProperty("rxdeploydir",temporaryFolder.getRoot().getAbsolutePath());
+   }
+
+   @After
+   public void teardown(){
+      //Reset the deploy dir property if it was set prior to test
+      if(rxdeploydir != null)
+         System.setProperty("rxdeploydir",rxdeploydir);
+   }
 
     public PSDbmsMapTest()
    {

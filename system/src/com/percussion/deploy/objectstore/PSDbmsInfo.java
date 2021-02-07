@@ -35,6 +35,7 @@ import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.apache.logging.log4j.Logger;
@@ -114,6 +115,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       setServer(server);
       setOrigin(origin);
       setDatabase(database);
+      passwordEncrypted = isPwdEncrypted;
       setUserNamePwd(uid, pwd, isPwdEncrypted);
    }
 
@@ -226,8 +228,16 @@ public class PSDbmsInfo implements IPSDeployComponent
    public String getPassword(boolean encrypted)
    {
       String pwd = m_pw;
-      if (!encrypted)
+      if (!encrypted && passwordEncrypted) {
          pwd = decryptPwd(m_uid, pwd);
+      }else if(encrypted){
+         try {
+            pwd = PSEncryptor.getInstance().encrypt(m_pw);
+         } catch (PSEncryptionException e) {
+            logger.warn("Error encrypting datasource password:" + e.getMessage());
+            logger.debug(e.getMessage(),e);
+         }
+      }
 
       return pwd;
    }
@@ -267,8 +277,27 @@ public class PSDbmsInfo implements IPSDeployComponent
     */
    public void setUserNamePwd(String usr, String pwd, boolean isPwdEncrypted)
    {
-      m_uid = usr == null ? "" : usr;
-      m_pw = isPwdEncrypted ? pwd : encryptPwd(m_uid, pwd);
+      if(StringUtils.isNotEmpty(usr))
+         m_uid=usr;
+      else
+         m_uid = "";
+
+      if(StringUtils.isNotEmpty(pwd))
+         m_pw=pwd;
+      else
+         m_pw = "";
+
+      if(isPwdEncrypted) {
+         if(!passwordEncrypted || StringUtils.isEmpty(m_pw)) {
+            m_pw = encryptPwd(m_uid, pwd);
+            passwordEncrypted = true;
+         }else{
+            m_pw = pwd;
+            passwordEncrypted = true;
+         }
+      }else {
+         passwordEncrypted = false;
+      }
    }
 
    /**
@@ -472,6 +501,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       m_origin = src.m_origin;
       m_uid = src.m_uid;
       m_pw = src.m_pw;
+      passwordEncrypted = src.passwordEncrypted;
    }
 
    @Override
@@ -479,12 +509,24 @@ public class PSDbmsInfo implements IPSDeployComponent
       if (this == o) return true;
       if (!(o instanceof PSDbmsInfo)) return false;
       PSDbmsInfo that = (PSDbmsInfo) o;
+
+      String p1 = m_pw;
+      String p2 = that.m_pw;
+
+      if(passwordEncrypted){
+            p1 = decryptPwd(m_uid,m_pw);
+      }
+
+      if(that.passwordEncrypted){
+         p2 = decryptPwd(that.m_uid,that.m_pw);
+      }
+
       return Objects.equals(m_driver, that.m_driver) &&
               Objects.equals(m_server, that.m_server) &&
               Objects.equals(m_database, that.m_database) &&
               Objects.equals(m_origin, that.m_origin) &&
               Objects.equals(m_uid, that.m_uid) &&
-              Objects.equals(m_pw, that.m_pw) &&
+              Objects.equals(p1, p2) &&
               Objects.equals(m_connInfo, that.m_connInfo);
    }
 
@@ -559,6 +601,13 @@ public class PSDbmsInfo implements IPSDeployComponent
          return PSCryptographer.decrypt(PSLegacyEncrypter.INVALID_CRED(), key, pwd);
       }
 
+   }
+   public boolean isPasswordEncrypted() {
+      return passwordEncrypted;
+   }
+
+   public void setPasswordEncrypted(boolean passwordEncrypted) {
+      this.passwordEncrypted = passwordEncrypted;
    }
 
     @Override
@@ -639,6 +688,8 @@ public class PSDbmsInfo implements IPSDeployComponent
     * by call to <code>setUserNamePwd(String, String, boolean)</code>
     */
    private String m_pw;
+
+   private boolean passwordEncrypted;
 
    /**
     * The connection info if supplied during construction, may be

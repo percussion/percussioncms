@@ -27,6 +27,7 @@ import com.percussion.share.dao.PSFileDataRepository;
 import com.percussion.share.dao.PSXmlFileDataRepository;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.user.data.PSLdapConfig;
 import com.percussion.user.data.PSLdapConfig.PSLdapServer;
 import org.apache.commons.io.IOUtils;
@@ -97,26 +98,14 @@ public class PSDirectoryServiceConfig
         }
         
     }
-    
-    
 
-    /**
-     * {@inheritDoc}
-     * This contains the directory service configuration.
-     * @throws PSXmlFileDataRepositoryException if the config file is bad.
-     */
-    @Override
-    public LdapConfigData getData() throws PSXmlFileDataRepositoryException
-    {
-        return super.getData();
-    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected LdapConfigData update(Set<PSFileDataRepository.PSFileEntry> files)
-            throws IOException, PSBeanValidationException
+            throws IOException, PSValidationException
     {
         LdapConfigData data = new LdapConfigData();
         if ( ! files.isEmpty() ) {
@@ -148,8 +137,7 @@ public class PSDirectoryServiceConfig
     private File getLdapConfigFile()
     {
         
-        File f = new File(getRepositoryDirectory(), configFileName);
-        return f;
+        return  new File(getRepositoryDirectory(), configFileName);
     }
 
     public void setConfigFileName(String configFileName)
@@ -170,17 +158,13 @@ public class PSDirectoryServiceConfig
         {
             throw new PSXmlFileDataRepositoryException("Error reading file: ", e);
         }
-        catch (XMLStreamException e)
+        catch (XMLStreamException | DocumentException e)
         {
             throw new PSXmlFileDataRepositoryException("XML error clearing password:", e);
         }
         catch (IOException e)
         {
-            throw new PSXmlFileDataRepositoryException("Error writting to XML to clear password: ", e);
-        }
-        catch (DocumentException e)
-        {
-            throw new PSXmlFileDataRepositoryException("XML error clearing password:", e);
+            throw new PSXmlFileDataRepositoryException("Error writing to XML to clear password: ", e);
         }
     }
     
@@ -237,22 +221,18 @@ public class PSDirectoryServiceConfig
             IOUtils.closeQuietly(sr);
         }
         notNull(doc, "Programming Error");
-        FileOutputStream stream = null;
-        try
+
+        try(FileOutputStream stream =new FileOutputStream(file) )
         {
-            stream = new FileOutputStream(file);
             XMLWriter writer = new XMLWriter(stream);
             writer.write(doc);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(stream);
         }
         
         return true;
     }
     
     @Value("${rxdeploydir}/rxconfig/LDAP")
+    @Override
     public void setRepositoryDirectory(String widgetsRepositoryDirectory)
     {
         super.setRepositoryDirectory(widgetsRepositoryDirectory);

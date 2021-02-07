@@ -234,7 +234,7 @@ public class XmlUploader
                      {
                         try {
                            PSEncryptor.getInstance().decrypt(m_loginPwd);
-                        }catch(PSEncryptionException e){
+                        }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                            m_loginPwd = PSCryptographer.decrypt(
                                    PSLegacyEncrypter.OLD_SECURITY_KEY(),
                                    m_loginId, m_loginPwd);

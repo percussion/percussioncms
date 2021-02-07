@@ -338,6 +338,7 @@
 
 
     <patternset id="upgrade.delete">
+        <include name="Repository/derby.properties" />
         <include name="cm/**"/>
         <include name="jdbc/**"/>
         <include name="dbg_*.xml"/>
@@ -407,6 +408,7 @@
         <exclude name="jetty/base/etc/installation.properties"/>
         <exclude name="jetty/base/resources/log4j*.xml"/>
         <exclude name="rxconfig/Installer/rxrepository.properties"/>
+        <exclude name="rx_resources/vm/custom_head.vm"/>
         <exclude name="Repository/**"/>
         <exclude name="Extensions/**"/>
         <exclude name="rxconfig/**"/>
@@ -423,6 +425,7 @@
     </patternset>
 
     <patternset id="upgrade.preserve">
+        <exclude name="web_resources/**"/>
         <include name="**/**"/>
     </patternset>
 
@@ -557,6 +560,12 @@
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
             </fileset>
+            <fileset dir="${install.src}/web_resources/" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/web_resources/"/>
+            </fileset>
+            <fileset dir="${install.src}/rx_resources/" followsymlinks="false" includes="**">
+                <present present="srconly" targetdir="${install.dir}/rx_resources/"/>
+            </fileset>
         </copy>
 
         <echo>Overwrite files</echo>
@@ -585,6 +594,15 @@
             </fileset>
         </copy>
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
+
+        <!-- Copy custom_head.vm in upgrade -->
+        <copy todir="${install.dir}/rx_resources/vm" overwrite="false" failonerror="false">
+            <fileset dir="${install.src}/rx_resources/vm" defaultexcludes="no">
+                <present present="srconly" targetdir="${install.dir}/rx_resources/vm"/>
+                <include name="custom_head.vm"/>
+            </fileset>
+         </copy>
+
 
         <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" overwrite="false" failonerror="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/" followsymlinks="false" includes="**">
@@ -648,6 +666,7 @@
 
         <echo>Updating rxrepository.properties</echo>
         <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
+        <chmod perm="ugo+rw" file="${install.dir}/jetty/base/etc/perc-ds.properties" />
         <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.properties"/>
 
         <echo>loading properties ${rxrepository.properties}</echo>
@@ -754,19 +773,19 @@
             <then>
                 <echo>Setting property file Permissions...</echo>
                 <chmod perm="ugo+rw" maxparallel="300">
-                    <fileset dir="${install.dir/rx_resources}">
+                    <fileset dir="${install.dir}/rx_resources">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/web_resources}">
+                    <fileset dir="${install.dir}/web_resources">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/rxconfig}">
+                    <fileset dir="${install.dir}/rxconfig">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/ObjectStore}">
+                    <fileset dir="${install.dir}/ObjectStore">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/jetty/base}">
+                    <fileset dir="${install.dir}/jetty/base">
                         <include name="**/*" />
                     </fileset>
                 </chmod>
@@ -778,19 +797,19 @@
                 <chmod perm="ugo+x" failifexecutionfails="false" failonerror="false" includes="**/*.sh" dir="${install.dir}"/>
                 <echo>Setting property file Permissions...</echo>
                 <chmod perm="ugo+rw">
-                    <fileset dir="${install.dir/rx_resources}">
+                    <fileset dir="${install.dir}/rx_resources">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/web_resources}">
+                    <fileset dir="${install.dir}/web_resources">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/rxconfig}">
+                    <fileset dir="${install.dir}/rxconfig">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/ObjectStore}">
+                    <fileset dir="${install.dir}/ObjectStore">
                         <include name="**/*" />
                     </fileset>
-                    <fileset dir="${install.dir/jetty/base}">
+                    <fileset dir="${install.dir}/jetty/base">
                         <include name="**/*" />
                     </fileset>
                 </chmod>
@@ -847,12 +866,12 @@
 
     <target name="updateExtensions">
 
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-main-8.0.0-SNAPSHOT.jar" destDir="Exits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-workflow-8.0.0-SNAPSHOT.jar" destDir="WorkflowExits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-sfp-8.0.0-SNAPSHOT.jar" destDir="SiteFolderPublishinExits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-nav-8.0.0-SNAPSHOT.jar" destDir="ManagedNavExits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-default-template-8.0.0-SNAPSHOT.jar" destDir="DefaultTemplateExits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-linkback-8.0.0-SNAPSHOT.jar" destDir="LinkbackExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-main-${project.parent.version}.jar" destDir="Exits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-workflow-${project.parent.version}.jar" destDir="WorkflowExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-sfp-${project.parent.version}.jar" destDir="SiteFolderPublishinExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-nav-${project.parent.version}.jar" destDir="ManagedNavExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-default-template-${project.parent.version}.jar" destDir="DefaultTemplateExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-linkback-${project.parent.version}.jar" destDir="LinkbackExits"/>
 
     </target>
 

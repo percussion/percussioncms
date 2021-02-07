@@ -439,6 +439,9 @@ $perc.setWidgetContents($rx.pageutils.widgetContents($sys.assemblyItem, $perc.wi
 #end##
 #end##
 <head>
+##Add a macro call to a first head element macro
+##This is to allow customers to override the first head element
+#first_head_element()
 ##See IE10 Required for drag drop CMS-79 and CMS-3403
 #if($perc.isEditMode())
 <meta http-equiv="X-UA-Compatible" content="IE=10"/>
@@ -650,8 +653,11 @@ display:none;
 #perc_displayText("$!perc.page.afterBodyStartContent")##
 #end##
 
-## Common footer for all base templates
+## Override this macro in a rx_resources/vm to customize
+#macro(first_head_element)##
+#end##
 
+## Common footer for all base templates
 #macro(perc_templateFooter)##
 #print_jquery("beforeBodyClose")##
 #print_jqueryUI("beforeBodyClose")##

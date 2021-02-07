@@ -834,14 +834,16 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
            if (proxyConfig.getHost() != null && proxyConfig.getPort() != null)
            {
               HostConfiguration config = this.getHostConfiguration();
-              config.setProxy(proxyConfig.getHost(), new Integer(proxyConfig.getPort()).intValue());
+              config.setProxy(proxyConfig.getHost(),
+                      Integer.parseInt(proxyConfig.getPort()));
               
               if (proxyConfig.getUser() != null && proxyConfig.getPassword() != null)
               {
                  String proxyUser = proxyConfig.getUser();
                  String proxyPassword = proxyConfig.getPassword();
                  Credentials credentials = new UsernamePasswordCredentials(proxyUser, proxyPassword);
-                 AuthScope authScope = new AuthScope(proxyConfig.getHost(), new Integer(proxyConfig.getPort()).intValue());
+                 AuthScope authScope = new AuthScope(proxyConfig.getHost(),
+                         Integer.parseInt(proxyConfig.getPort()));
                  
                  this.getState().setProxyCredentials(authScope, credentials);              
               }

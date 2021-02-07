@@ -27,11 +27,11 @@
   <parent>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
+    <version>8.0.2</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>perc-jetty</artifactId>
-  <name>Percussion Jetty :: Distribution Assemblies</name>
+  <name>perc-jetty</name>
    <packaging>pom</packaging>
 
   <properties>
@@ -127,7 +127,7 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>com.percussion</groupId>
-                  <artifactId>CMLite-WebUI</artifactId>
+                  <artifactId>perc-web-ui</artifactId>
                   <version>${project.version}</version>
                   <type>war</type>
                   <overWrite>true</overWrite>
@@ -221,7 +221,7 @@
                   </copy>
                  <copy todir="${assembly-directory}">
                   <fileset dir="${basedir}/../../system/Tools/jetty">
-                      <exclude name="jetty-distribution-*"/>
+                      <exclude name="jetty-distribution-*" />
                   </fileset>
                 </copy>
               </target>
@@ -257,7 +257,7 @@
           <dependencies>
               <dependency>
                   <groupId>com.percussion</groupId>
-                  <artifactId>CMLite-Main</artifactId>
+                  <artifactId>perc-system</artifactId>
                   <version>${project.version}</version>
               </dependency>
           </dependencies>
@@ -405,4 +405,14 @@
         <scope>provided</scope>
     </dependency>
   </dependencies>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

@@ -22,14 +22,26 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
+    <version>8.0.2</version>
     <packaging>pom</packaging>
+    <url>https://www.github.com/percussion/percussioncms</url>
+    <licenses>
+        <license>
+            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)</name>
+            <url>http://opensource.org/licenses/AGPL-3.0</url>
+            <distribution />
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:https://github.com/percussion/percussioncms</connection>
+        <developerConnection>scm:git:https://github.com/percussion/percussioncms</developerConnection>
+        <url>https://github.com/percussion/percussioncms</url>
+      <tag>HEAD</tag>
+  </scm>
     <modules>
         <module>modules/jcadf-master</module>
         <module>modules/build-tools</module>
@@ -67,8 +79,9 @@
         <module>modules/perc-distribution-tree</module>
         <module>modules/CMLight-Main-cactus-tests</module>
         <module>modules/ant-install</module>
+        <module>system/Tools/SSLTools</module>
+        <module>modules/tlsutils</module>
     </modules>
-
    <properties>
        <build.profile.id>dev</build.profile.id>
        <versionString>INTERNAL</versionString>
@@ -84,7 +97,7 @@
        <maven.toolchains.plugin.version>3.0.0</maven.toolchains.plugin.version>
        <versions.maven.plugin.version>2.7</versions.maven.plugin.version>
        <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
-       <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+       <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
        <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
        <maven.bundle.plugin.version>4.2.1</maven.bundle.plugin.version>
        <duplicate.finder.maven.plugin.version>1.4.0</duplicate.finder.maven.plugin.version>
@@ -97,15 +110,20 @@
        <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
        <spotbugs.plugin.version>4.0.0</spotbugs.plugin.version>
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
+       <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+       <commons.file.upload.version>1.4</commons.file.upload.version>
        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
+       <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
+       <maven.scm.plugin.version>1.11.2</maven.scm.plugin.version>
        <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
        <maven.failsafe.plugin.version>2.22.2</maven.failsafe.plugin.version>
-       <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
+       <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
        <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
        <maven.execmaven.plugin.version>1.6.0</maven.execmaven.plugin.version>
        <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
        <maven.pmd.plugin.version>3.13.0</maven.pmd.plugin.version>
        <maven.jxr.plugin.version>3.0.0</maven.jxr.plugin.version>
+       <maven.war.plugin.version>3.3.1</maven.war.plugin.version>
        <plexus.component.metadata.version>2.1.0</plexus.component.metadata.version>
        <jetty.maven.plugin.version>9.4.26.v20200117</jetty.maven.plugin.version>
        <lifecycle.mapping.plugin>1.0.0</lifecycle.mapping.plugin>
@@ -119,11 +137,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
        <spring.version>4.3.23.RELEASE</spring.version>
        <gson.version>2.8.5</gson.version>
-       <cxf.version>3.3.5</cxf.version>
+       <cxf.version>3.4.2</cxf.version>
        <servlet.spec>3.1.0</servlet.spec>
        <hibernate.version>5.1.14.Final</hibernate.version>
        <commons-logging.version>1.2</commons-logging.version>
-       <lucene.version>2.2.0</lucene.version>
+       <commons.io.version>2.8.0</commons.io.version>
+       <lucene.version>8.7.0</lucene.version>
        <myfaces.version>1.1.5</myfaces.version>
        <ehcache.version>2.10.5</ehcache.version>
        <stax.version>1.0.1</stax.version>
@@ -136,10 +155,10 @@
         <owl.version>5.1.10</owl.version>
        <awssdk.version>1.11.804</awssdk.version>
         <bc.version>1.64</bc.version>
-        <jackson.version>2.10.1</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
         <jsoup.version>1.11.3</jsoup.version>
-        <json.version>20180813</json.version>
-        <junit.version>[4.13.1,)</junit.version>
+        <json.version>20201115</json.version>
+        <junit.version>4.13.1</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
         <cactus.contextURL>http://localhost:9992/Rhythmyx</cactus.contextURL>
@@ -154,11 +173,12 @@
        <httpcomponents.version>4.5.8</httpcomponents.version>
        <tika.version>1.24.1</tika.version>
        <commons-cli.version>1.4</commons-cli.version>
+       <opencsv.version>4.6</opencsv.version>
        <xmpbox.version>2.0.17</xmpbox.version>
        <jbig2.version>3.0.2</jbig2.version>
        <pdfbox.version>2.0.17</pdfbox.version>
        <sqlite.version>3.28.0</sqlite.version>
-       <swagger.version>1.5.23</swagger.version>
+       <swagger.version>1.6.2</swagger.version>
        <commons.compress.version>1.20</commons.compress.version>
        <solr.version>8.5.0</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
@@ -174,8 +194,11 @@
        <guava.version>24.1.1-jre</guava.version>
        <xerces.version>2.12.0</xerces.version>
        <quartz.version>2.3.2</quartz.version>
+       <rome.version>1.15.0</rome.version>
        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
     </properties>
+
+
     <profiles>
         <profile>
             <id>all-tests</id>
@@ -204,6 +227,24 @@
     <build>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>${maven.scm.plugin.version}</version>
+                <configuration>
+                    <connectionType>github</connectionType>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven.release.plugin.version}</version>
+                <configuration>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-toolchains-plugin</artifactId>
@@ -237,7 +278,7 @@
             <plugin>
             <artifactId>maven-clean-plugin</artifactId>
             <version>${maven.clean.plugin.version}</version>
-            <executions/>
+            <executions />
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -339,7 +380,7 @@
 
                             <systemPropertyVariables>
                                 <javax.xml.parsers.SAXParserFactory>com.percussion.xml.PSSaxParserFactoryImpl</javax.xml.parsers.SAXParserFactory>
-                                <log4j.configurationFile>file://${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
+                                <log4j.configurationFile>${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
                             </systemPropertyVariables>
 
                             <systemProperties>
@@ -365,7 +406,7 @@
                      <systemPropertyVariables>
                          <cactus.contextURL>http://localhost:9992/Rhythmyx/</cactus.contextURL>
                          <javax.xml.parsers.SAXParserFactory>com.percussion.xml.PSSaxParserFactoryImpl</javax.xml.parsers.SAXParserFactory>
-                         <log4j.configurationFile>file://${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
+                         <log4j.configurationFile>${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
                      </systemPropertyVariables>
 
                      <excludedGroups>com.percussion.utils.testing.IntegrationTest,com.percussion.utils.testing.BackloggedTest</excludedGroups>
@@ -402,7 +443,7 @@
 
                             <systemPropertyVariables>
                                 <javax.xml.parsers.SAXParserFactory>com.percussion.xml.PSSaxParserFactoryImpl</javax.xml.parsers.SAXParserFactory>
-                                <log4j.configurationFile>file://${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
+                                <log4j.configurationFile>${project.build.testOutputDirectory}/log4j2-tester.xml</log4j.configurationFile>
                             </systemPropertyVariables>
 
                             <systemProperties>
@@ -429,6 +470,25 @@
         </plugins>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven.gpg.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven.war.plugin.version}</version>
+                </plugin>
                 <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
@@ -476,10 +536,10 @@
                                         <version>${maven.version}</version>
                                     </requireMavenVersion>
                                     <requireUpperBoundDeps>
-                                        <excludes/>
+                                        <excludes />
                                     </requireUpperBoundDeps>
-                                    <dependencyConvergence/>
-                                    <banDuplicatePomDependencyVersions/>
+                                    <dependencyConvergence />
+                                    <banDuplicatePomDependencyVersions />
                                 </rules>
                                 <fail>false</fail>
                             </configuration>
@@ -540,6 +600,9 @@
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-resources-plugin</artifactId>
                   <version>${maven.resources.plugin.version}</version>
+                    <configuration>
+                        <propertiesEncoding>ISO-8859-1</propertiesEncoding>
+                    </configuration>
                 </plugin>
                 <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -641,7 +704,7 @@
 						<dependency>
 							<groupId>com.percussion</groupId>
 							<artifactId>rxutils</artifactId>
-							<version>${project.version}</version>
+							<version>8.0.2</version>
 						</dependency>
 						<dependency>
 							<groupId>xerces</groupId>
@@ -743,7 +806,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>1.0</version>
+                            <version>8.0.2</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -764,7 +827,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>1.0</version>
+                            <version>8.0.2</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -776,7 +839,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>1.0</version>
+                            <version>8.0.2</version>
                         </dependency>
                         <dependency>
                             <groupId>com.h3xstream.findsecbugs</groupId>
@@ -812,15 +875,16 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <extensions>
+            <extension>
+                <groupId>fi.yle.tools</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>1.4.1</version>
+            </extension>
+        </extensions>
     </build>
     <reporting>
         <plugins>
-         <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin>
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -886,51 +950,94 @@
     </reporting>
     <repositories>
         <repository>
-            <id>perc-java-repo</id>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public/</url>
+            <id>github</id>
+            <releases>  <enabled>true</enabled>  </releases>
+            <snapshots> <enabled>true</enabled>
+            <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <name>GitHub Percussion Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/percussion/percussioncms</url>
+        </repository>
+        <repository>
+            <id>perc-release-repo</id>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
             <snapshots>
                 <enabled>false</enabled>
-                <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
         <repository>
             <id>thirdparty</id>
             <name>thirdparty</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
- <!--       <repository>
-            <id>snapshots</id>
-            <name>Internal Snapshots</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/snapshots/</url>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases>
+                    <enabled>true</enabled>
+                    <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>perc-snapshot-repo</id>
+            <name>Snapshots</name>
+            <url>https://mvn.percussion.com/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
+                <updatePolicy>daily</updatePolicy>
             </snapshots>
-        </repository> -->
-        <repository>
-                <id>maven-central</id>
-                <url>https://repo1.maven.org/maven2</url>
         </repository>
+
     </repositories>
 
 
     <pluginRepositories>
         <pluginRepository>
-            <id>perc-java-repo</id>
-            <name>Perc Plugin Repository</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/groups/public</url>
+            <id>yle-public</id>
+            <name>Yle public repository</name>
+            <url>https://maven.yle.fi/release</url>
+            <layout>default</layout>
+        </pluginRepository>
+        <pluginRepository>
+            <id>perc-releases-repo</id>
+            <name>Perc releases Repository</name>
+            <url>https://mvn.percussion.com/repositories/releases/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
             <releases>
-                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>perc-snapshot-repo</id>
+            <name>Perc Snapshots Repository</name>
+            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
             </releases>
         </pluginRepository>
         <pluginRepository>
             <id>thirdparty</id>
             <name>thirdparty</name>
-            <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
         </pluginRepository>
         <pluginRepository>
             <id>maven-central</id>
@@ -941,15 +1048,18 @@
 
     <dependencyManagement>
         <dependencies>
-
-            <!-- https://mvnrepository.com/artifact/junit/junit -->
+            <dependency>
+                <groupId>com.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
+                <scope>test</scope>
+            </dependency>
             <dependency>
                 <groupId>org.jmock</groupId>
                 <artifactId>jmock</artifactId>
                 <version>2.8.4</version>
                 <scope>test</scope>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.jmock/jmock-junit4 -->
             <dependency>
                 <groupId>org.jmock</groupId>
                 <artifactId>jmock-junit4</artifactId>
@@ -957,13 +1067,11 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-    <groupId>junit</groupId>
-    <artifactId>junit</artifactId>
-         <version>${junit.version}</version>
-                <scope>test</scope>
-</dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
 
-            <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
@@ -1066,7 +1174,6 @@
                 <version>${spring.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-frontend-jaxrs -->
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-jaxrs</artifactId>
@@ -1260,7 +1367,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.7</version>
+                <version>${commons.io.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -1629,12 +1736,6 @@
 
             <dependency>
                 <groupId>org.jdom</groupId>
-                <artifactId>jdom</artifactId>
-                <version>2.0.2</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.jdom</groupId>
                 <artifactId>jdom2</artifactId>
                 <version>2.0.6</version>
             </dependency>
@@ -1907,86 +2008,55 @@
                 <artifactId>jericho-html</artifactId>
                 <version>1.5-dev1</version>
             </dependency>
-            <!--
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-analyzers</artifactId>
-                <version>${lucene.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-core</artifactId>
                 <version>${lucene.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-snowball</artifactId>
-                <version>${lucene.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-wordnet</artifactId>
-                <version>${lucene.version}</version>
-            </dependency>
--->
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-core</artifactId>
-                <version>8.7.0</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analyzers-common</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queryparser</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-highlighter</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queries</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-test-framework -->
-            <dependency>
+              <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-test-framework</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
                 <scope>test</scope>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-misc -->
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-misc</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-suggest -->
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-suggest</artifactId>
-                <version>8.7.0</version>
+                <version>${lucene.version}</version>
             </dependency>
 
-
-
-
-
-            <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>pdfbox</artifactId>
@@ -2144,9 +2214,7 @@
                 <groupId>com.twelvemonkeys.imageio</groupId>
                 <artifactId>imageio-metadata</artifactId>
                 <version>${twelvemonkeys.version}</version>
-            </dependency
-
-            ><dependency>
+            </dependency><dependency>
             <groupId>com.twelvemonkeys.imageio</groupId>
             <artifactId>imageio-psd</artifactId>
             <version>${twelvemonkeys.version}</version>
@@ -2436,22 +2504,17 @@
                 <version>1.0.1</version>
                 <scope>compile</scope>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/jsp-api -->
             <dependency>
                 <groupId>javax.servlet.jsp</groupId>
                 <artifactId>javax.servlet.jsp-api</artifactId>
                 <version>2.3.3</version>
                 <scope>provided</scope>
             </dependency>
-
             <dependency>
                 <groupId>javax.servlet.jsp.jstl</groupId>
                 <artifactId>javax.servlet.jsp.jstl-api</artifactId>
                 <version>1.2.2</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
@@ -2518,18 +2581,11 @@
                 <version>2.4.8</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all -->
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-all</artifactId>
-                <version>1.3</version>
-                <scope>test</scope>
-            </dependency>
 
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
-                <version>1.4</version>
+                <version>${commons.file.upload.version}</version>
             </dependency>
 
 
@@ -2545,7 +2601,6 @@
                 <version>${jackson.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
@@ -2680,12 +2735,12 @@
             <dependency>
                 <groupId>com.rometools</groupId>
                 <artifactId>rome-modules</artifactId>
-                <version>1.5.0</version>
+                <version>${rome.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.rometools</groupId>
                 <artifactId>rome</artifactId>
-                <version>1.5.0</version>
+                <version>${rome.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -2820,7 +2875,6 @@
                 <artifactId>bcprov-ext-jdk15to18</artifactId>
                 <version>${bc.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.bouncycastle/bctls-jdk15to18 -->
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bctls-jdk15to18</artifactId>
@@ -2828,6 +2882,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <distributionManagement>
         <repository>
             <id>github</id>
@@ -2835,9 +2890,9 @@
             <url>https://maven.pkg.github.com/percussion/percussioncms</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots</id>
+            <id>github</id>
             <name>GitHub Percussion Apache Maven Snapshot Packages </name>
-            <url>https://maven.pkg.github.com/percussion/percussioncms</url>
+            <url>https://maven.pkg.github.com/percussion/percussioncms/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

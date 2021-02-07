@@ -26,7 +26,7 @@ package com.percussion.delivery.jaxrs;
 
 import javax.ws.rs.ext.Provider;
 
-import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 @Provider  
 public class PSJacksonJaxbJsonProvider extends JacksonJaxbJsonProvider

@@ -26,7 +26,7 @@ package com.percussion.delivery.rdbms;
 
 import java.sql.Types;
 
-import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SQLServer2012Dialect;
 
 /**
  * Custom Dialect Class used to redefine native types for hibernate using MSSql Server 2008
@@ -34,10 +34,10 @@ import org.hibernate.dialect.SQLServerDialect;
  * @author federicoromanelli
  *
  */
-public class PSUnicodeSQLServerDialect extends SQLServerDialect
+public class PSUnicodeSQLServerDialect extends SQLServer2012Dialect
 {
         /**
-         * Initializes a new instance of the {@link SQLServerDialect} class.
+         * Initializes a new instance of the {@link SQLServer2012Dialect} class.
          * 
          * Note: the mapping for the values used in registerColumnType method are the same
          * as the ones described in the following file:

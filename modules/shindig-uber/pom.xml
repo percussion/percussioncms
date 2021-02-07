@@ -21,19 +21,17 @@
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 <packaging>jar</packaging>
     <artifactId>shindig-uber</artifactId>
-    <name>Apache Shindig Uber Jar</name>
+    <name>Shindig Uber Jar</name>
     <build>
         <plugins>
             <plugin>
@@ -278,12 +276,6 @@
             <version>20090531</version>
             <scope>compile</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>net.oauth.core</groupId>
-            <artifactId>oauth</artifactId>
-            <version>20100527</version>
-        </dependency>-->
-
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-jmx</artifactId>
@@ -294,8 +286,6 @@
         <dependency>
             <groupId>org.apache.shindig</groupId>
             <artifactId>shindig-gadgets</artifactId>
-            <!--  <version>1.1-BETA5-incubating</version>-->
-
             <version>${shindig.version}</version>
             <exclusions>
                 <exclusion>
@@ -310,7 +300,6 @@
                     <groupId>rome</groupId>
                     <artifactId>rome</artifactId>
                 </exclusion>
-
                 <exclusion>
                     <groupId>net.oauth.core</groupId>
                     <artifactId>oauth</artifactId>
@@ -353,29 +342,24 @@
             <version>r3828</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.shindig</groupId>
             <artifactId>shindig-features</artifactId>
             <version>${shindig.version}</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
             <version>1.0.0-incubating</version>
             <scope>compile</scope>
         </dependency>
-
-
         <dependency>
-            <groupId>com.google.inject</groupId>
+            <groupId>com.google.code.guice</groupId>
             <artifactId>guice</artifactId>
             <version>2.0</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-multibindings</artifactId>
@@ -402,5 +386,15 @@
         </dependency>
 
     </dependencies>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>
 

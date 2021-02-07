@@ -22,16 +22,16 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>CMLite-Main</artifactId>
+    <artifactId>perc-system</artifactId>
+  <version>8.0.2</version>
     <packaging>jar</packaging>
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -117,8 +117,6 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
-            <!-- <resource> <directory>loader/src</directory> <excludes> 
-                <exclude>**/*.java</exclude> </excludes> </resource> -->
             <resource>
                 <directory>release/src</directory>
                 <excludes>
@@ -143,37 +141,19 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
-            <!--  
-            <resource>
-                <directory>utils/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            -->
             <resource>
                 <directory>servlet/src</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
-
             <resource>
                 <directory>src</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
             </resource>
-
-            <!--
-            <resource>
-                <directory>Tools/Ant/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>-->
-
             <resource>
                 <directory>Tools/Converters/src</directory>
                 <excludes>
@@ -205,40 +185,8 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
-            <!--
-            <resource>
-                <directory>workflow/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            -->
-            <!--  
-            <resource>
-                <directory>Testing/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            -->
-            <!--
-            <resource>
-                <directory>release/Install/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            -->
         </resources>
         <testResources>
-            <!--
-                <testResource>
-                    <directory>utils/test</directory>
-                    <excludes>
-                        <exclude>**/*.java</exclude>
-                    </excludes>
-                </testResource>
-                -->
             <testResource>
                 <directory>Tools/ImageWidgetService/test</directory>
                 <excludes>
@@ -266,12 +214,9 @@
             </testResource>
         </testResources>
         <plugins>
-
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
@@ -329,10 +274,26 @@
                             </sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>add-test-resource</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>UnitTestResources</directory>
+                                    <excludes>
+                                        <exclude>**/*.java</exclude>
+                                        <exclude>ant</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -434,39 +395,33 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
             <scope>provided</scope>
         </dependency>
 
-       <!-- <dependency>
-            <groupId>com.percussion</groupId>
-            <artifactId>servlet-utils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-simple</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -475,13 +430,13 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>tablefactory</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>webservices</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -573,15 +528,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-
         </dependency>
-        <!-- CXF - cxf-rt-core cxf-rt-frontend-simple cxf-rt-frontend-jaxws 
-            cxf-rt-databinding-aegis cxf-rt-transports-local cxf-rt-transports-http cxf-rt-transports-http-jetty 
-            cxf-rt-transports-jms cxf-rt-management cxf-common-utilities -->
-
-
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
-
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -903,9 +850,7 @@
         <dependency>
             <groupId>com.twelvemonkeys.imageio</groupId>
             <artifactId>imageio-metadata</artifactId>
-        </dependency
-
-        ><dependency>
+        </dependency><dependency>
         <groupId>com.twelvemonkeys.imageio</groupId>
         <artifactId>imageio-psd</artifactId>
     </dependency>
@@ -1107,6 +1052,12 @@
         <dependency>
             <groupId>commons-betwixt</groupId>
             <artifactId>commons-betwixt</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -1366,7 +1317,8 @@
         </dependency>
         <dependency>
             <groupId>org.jdom</groupId>
-            <artifactId>jdom</artifactId>
+            <artifactId>jdom2</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>xerces</groupId>
@@ -1412,7 +1364,7 @@
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
-            <version>1.5.0</version>
+            <version>${rome.version}</version>
         </dependency>
 
         <dependency>
@@ -1461,6 +1413,12 @@
             <groupId>com.google.javascript</groupId>
             <artifactId>closure-compiler</artifactId>
             <version>r1043</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.yahoo.platform.yui</groupId>
@@ -1469,5 +1427,14 @@
         </dependency>
 
     </dependencies>
-
+    <distributionManagement>
+        <snapshotRepository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

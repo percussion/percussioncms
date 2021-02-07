@@ -27,9 +27,9 @@ import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.percussion.delivery.comments.data.IPSComment.APPROVAL_STATE;
 
@@ -277,14 +277,10 @@ public class PSCommentCriteria
 	   
 	   try{
 	   ret = mapper.writeValueAsString(this);
-	   } catch (JsonGenerationException e) {
+	   } catch (IOException e) {
 		log.warn("Error deserializing to JSON.", e);
-	} catch (JsonMappingException e) {
-		log.warn("Error deserializing to JSON.", e);
-	} catch (IOException e) {
-		log.warn("Error deserializing to JSON.", e);
-	}finally{}
-	   return ret;
+	}
+       return ret;
    }
 
     /**

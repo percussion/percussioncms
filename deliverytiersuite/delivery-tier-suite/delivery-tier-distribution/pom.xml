@@ -23,13 +23,12 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>delivery-tier-suite</artifactId>
         <groupId>com.percussion.deliverytier</groupId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -489,7 +488,7 @@
 
     </dependencies>
     <build>
-
+        <finalName>delivery-tier-distribution</finalName>
         <plugins>
 
             <plugin>
@@ -526,7 +525,6 @@
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.6.10</version>
                 <configuration>
                     <container>
                         <containerId>tomcat9x</containerId>
@@ -628,20 +626,20 @@
                                 <artifactId>super-csv</artifactId>
                             </dependency>
                             <dependency>
-                                <groupId>org.codehaus.jackson</groupId>
-                                <artifactId>jackson-mapper-asl</artifactId>
+                                <groupId>com.fasterxml.jackson.core</groupId>
+                                <artifactId>jackson-core</artifactId>
                             </dependency>
                             <dependency>
-                                <groupId>org.codehaus.jackson</groupId>
-                                <artifactId>jackson-core-asl</artifactId>
+                                <groupId>com.fasterxml.jackson.core</groupId>
+                                <artifactId>jackson-databind</artifactId>
                             </dependency>
                             <dependency>
-                                <groupId>org.codehaus.jackson</groupId>
-                                <artifactId>jackson-jaxrs</artifactId>
+                                <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                                <artifactId>jackson-jaxrs-json-provider</artifactId>
                             </dependency>
                             <dependency>
-                                <groupId>org.codehaus.jackson</groupId>
-                                <artifactId>jackson-xc</artifactId>
+                                <groupId>com.fasterxml.jackson.core</groupId>
+                                <artifactId>jackson-annotations</artifactId>
                             </dependency>
                             <dependency>
                                 <groupId>org.jasypt</groupId>
@@ -966,7 +964,6 @@
             <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.1.2</version>
             <configuration>
                 <archive>
                     <manifest>
@@ -992,12 +989,12 @@
                             <target>
                                 <!-- TODO Add additional deployment files here -->
                                 <copy todir="${assembly-directory}">
-                                    <fileset dir="${basedir}/src/main/rootFiles"/>
+                                    <fileset dir="${basedir}/src/main/rootFiles" />
                                 </copy>
                                 <!-- Version.properties -->
                                 <copy todir="${assembly-directory}">
                                     <fileset dir="{basedir}/../../../../system/target/classes/com/percussion/util/">
-                                        <include name="Version.properties"/>
+                                        <include name="Version.properties" />
                                     </fileset>
                                 </copy>
                                 <delete dir="${assembly-directory}/Deployment/Server/webapps/manager" />
@@ -1245,9 +1242,43 @@
                         </configuration>
 
                     </plugin>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>create-my-bundle</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptorRefs>
+                                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                                    </descriptorRefs>
+                                    <finalName>delivery-tier-distribution</finalName>
+                                    <appendAssemblyId>false</appendAssemblyId>
+                                    <archive>
+                                        <manifest>
+                                            <mainClass>com.percussion.preinstall.MainDTSPreInstall</mainClass>
+                                        </manifest>
+                                    </archive>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
 
     </profiles>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

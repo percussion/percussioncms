@@ -26,13 +26,11 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -42,7 +40,7 @@
    <dependencies>
        <dependency>
            <groupId>com.percussion</groupId>
-           <artifactId>CMLite-Main</artifactId>
+           <artifactId>perc-system</artifactId>
            <version>${project.parent.version}</version>
        </dependency>
        <dependency>
@@ -55,7 +53,6 @@
            <artifactId>jmock</artifactId>
            <scope>test</scope>
        </dependency>
-       <!-- https://mvnrepository.com/artifact/org.jmock/jmock-junit4 -->
        <dependency>
            <groupId>org.jmock</groupId>
            <artifactId>jmock-junit4</artifactId>
@@ -90,30 +87,25 @@
        <dependency>
            <groupId>com.percussion</groupId>
            <artifactId>rxutils</artifactId>
-           <version>8.0.0-SNAPSHOT</version>
+           <version>8.0.2</version>
            <type>test-jar</type>
            <scope>test</scope>
        </dependency>
-
        <dependency>
            <groupId>org.apache.commons</groupId>
            <artifactId>commons-email</artifactId>
            <scope>provided</scope>
        </dependency>
-
-
        <dependency>
            <groupId>commons-lang</groupId>
            <artifactId>commons-lang</artifactId>
            <scope>provided</scope>
        </dependency>
-
        <dependency>
            <groupId>com.sun.mail</groupId>
            <artifactId>javax.mail</artifactId>
            <scope>provided</scope>
        </dependency>
-
        <dependency>
            <groupId>javax.jcr</groupId>
            <artifactId>jcr</artifactId>

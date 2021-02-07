@@ -23,18 +23,17 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-packages</artifactId>
+  <version>8.0.2</version>
 
     <properties>
         <assembly-directory>${basedir}/target/distribution</assembly-directory>
@@ -44,7 +43,7 @@
         <db.user>CMDB</db.user>
         <db.pass.enc>7cf3be70d83a6948</db.pass.enc>
         <db.schema>CMDB</db.schema>
-        <db.name></db.name>
+        <db.name />
         <db.driver>derby</db.driver>
         <db.class>org.apache.derby.jdbc.EmbeddedDriver</db.class>
         <db.backend>DERBY</db.backend>
@@ -107,7 +106,7 @@
                     <configuration>
 
                         <target>
-                            <property name="plugin_classpath" refid="maven.plugin.classpath"/>
+                            <property name="plugin_classpath" refid="maven.plugin.classpath" />
                             <!--
                                      Import the ant-contrib utility tasks
                                 -->
@@ -118,9 +117,9 @@
                                 </classpath>
                             </taskdef>
 -->
-                            <taskdef resource="com/percussion/ant/antlib.xml" loaderref="perc.loader"/>
+                            <taskdef resource="com/percussion/ant/antlib.xml" loaderref="perc.loader" />
 
-                            <taskdef resource="net/sf/antcontrib/antlib.xml" loaderref="perc.loader"/>
+                            <taskdef resource="net/sf/antcontrib/antlib.xml" loaderref="perc.loader" />
 
 <!--
 
@@ -142,7 +141,7 @@
                             -->
 
                             <ant antfile="${basedir}/packages-ant.xml" inheritRefs="true">
-                                <property name="plugin_classpath" refid="maven.plugin.classpath"/>
+                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
                             </ant>
 
 

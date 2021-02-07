@@ -24,6 +24,7 @@
 
 package com.percussion.preinstall;
 
+import com.percussion.utils.io.PathUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.taskdefs.Replace;
 import org.w3c.dom.Document;
@@ -35,9 +36,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,21 +50,20 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class Main {
-    public static final String INSTALL_DIR = "$INSTALL_DIR$";
+
     public static String DISTRIBUTION_DIR = "distribution";
     public static final String PERC_JAVA_HOME = "perc.java.home";
     public static final String JAVA_HOME = "java.home";
     public static final String PERCUSSION_VERSION = "percversion";
     public static final String INSTALL_TEMPDIR = "percInstallTmp_";
     public static final String PERC_ANT_JAR = "perc-ant";
-    public static final String DEFAULT_VERSION = "8.0.0-SNAPSHOT";
     public static final String DEVELOPMENT = "DEVELOPMENT";
     public static final String ANT_INSTALL = "install.xml";
     public static final String JAVA_TEMP = "java.io.tmpdir";
     public static File tmpFolder;
 
     public static String developmentFlag = "false";
-    public static String percVersion = DEFAULT_VERSION;
+    public static String percVersion;
     public static volatile int currentLineNo;
     public static volatile int currentErrLineNo;
     public static volatile String debug="false";
@@ -79,7 +81,7 @@ public class Main {
             Path installPath = Paths.get(args[0]);
 
             debug = System.getProperty("DEBUG");
-            if(debug == null || debug==""){
+            if(debug == null || debug.equalsIgnoreCase("")){
                 debug = "false";
             }
 
@@ -96,8 +98,8 @@ public class Main {
             }
 
             percVersion = System.getProperty(PERCUSSION_VERSION);
-            if (percVersion == null || percVersion.trim().equals(""))
-                percVersion = DEFAULT_VERSION;
+            if (percVersion == null)
+                percVersion = "";
 
             developmentFlag = System.getProperty(DEVELOPMENT);
             if (developmentFlag == null || DEVELOPMENT.trim().equalsIgnoreCase(""))
@@ -129,7 +131,7 @@ public class Main {
                                         .map(Path::toFile)
                                         .forEach(File::delete);
                             } catch (IOException ex) {
-                                ex.printStackTrace();
+                                System.out.println("An error occurred while executing the installation, installation has likely failed. " + ex.getMessage());
                             }
                         }
                     }
@@ -147,17 +149,17 @@ public class Main {
 
 
             Path execPath = installSrc.resolve(Paths.get("rxconfig", "Installer"));
-            Path installAntJarPath = execPath.resolve(PERC_ANT_JAR + "-" + percVersion + ".jar");
+            Path installAntJarPath = execPath.resolve(PathUtils.getVersionLessJarFilePath(execPath,PERC_ANT_JAR + "-*.jar"));
             execJar(installAntJarPath, execPath, installPath);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while executing the installation, installation has likely failed. " + e.getMessage());
         }
         System.out.println("Done extracting");
     }
 
 
-    public static void extractArchive(Path archiveFile, Path destPath, String folderPrefix) throws IOException {
+        public static void extractArchive(Path archiveFile, Path destPath, String folderPrefix) throws IOException {
 
         Files.createDirectories(destPath); // create dest path folder(s)
 

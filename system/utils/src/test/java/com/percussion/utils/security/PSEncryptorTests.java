@@ -30,6 +30,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
+import java.nio.file.Files;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -99,6 +102,19 @@ public class PSEncryptorTests {
         System.out.println("--------------------------");
 
 
+
+    }
+
+    @Test
+    public void testClientStyleOfGetInstance() throws PSEncryptionException {
+
+        teardown();
+
+        PSEncryptor enc = PSEncryptor.getInstance("AES",System.getProperty("user.home") + "/.perc-secure/");
+
+        String pw = enc.encrypt("Cocaine is a hell of a drug.");
+        assertNotEquals(pw,"Cocaine is a hell of a drug.");
+        assertEquals("Cocaine is a hell of a drug.", enc.decrypt(pw));
 
     }
 
