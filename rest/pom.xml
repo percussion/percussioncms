@@ -27,11 +27,11 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.2-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>rest</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
+  <version>8.0.2</version>
     <packaging>jar</packaging>
     <properties>
         <logback-version>1.0.1</logback-version>
@@ -56,7 +56,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>8.0.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>
@@ -173,14 +173,14 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>8.0.2</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>8.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
