@@ -118,21 +118,7 @@ git pull
 
 ## Pre-Requisites for Building
 - Apache Maven > 3.6
-- Java 1.8 OpenJDK - Amazon Corretto is the current default https://aws.amazon.com/corretto/
-- [home directory]/.m2/toolchains.xml file configured to point at the Corretto JDK.
-
-````
-  <toolchain>
-    <type>jdk</type>
-    <provides>
-      <version>8</version>
-      <vendor>amazon</vendor>
-    </provides>
-    <configuration>
-      <jdkHome>/Library/Java/JavaVirtualMachines/amazon-corretto-8.jdk/Contents/Home</jdkHome>
-    </configuration>
-  </toolchain>
-````
+- Java 1.8 OpenJDK
 
 ## Building
 
@@ -194,15 +180,15 @@ From the project directory, a local development install can be performed using t
 
 ### Percussion CMS
 ```
- java -jar modules/perc-distribution-tree/target/perc-distribution-tree-8.0.0-SNAPSHOT.jar <Install Directory>
+ java -jar modules/perc-distribution-tree/target/perc-distribution-tree-${project.parent.version}.jar <Install Directory>
 ```
 ### Percussion DTS
 ```
-java -jar deliverytiersuite/delivery-tier-suite/delivery-tier-distribution/target/delivery-tier-distribution-8.0.0-SNAPSHOT.jar <Install Directory>
+java -jar deliverytiersuite/delivery-tier-suite/delivery-tier-distribution/target/delivery-tier-distribution-${project.parent.version}.jar <Install Directory>
 ```
 ### Starting Percussion CMS
 
-After running the installation, either a symbolic link, or a copy of a 1.8 JRE needs placed in the ```<Install Directory>/JRE``` folder.
+After running the installation, either a symbolic link, or a copy of a 1.8 JRE needs placed in the ```<Install Directory>/JRE``` location.
 
 For example, on OSX:
 

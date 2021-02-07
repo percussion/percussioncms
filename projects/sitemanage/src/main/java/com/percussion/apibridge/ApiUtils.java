@@ -514,7 +514,6 @@ public class ApiUtils {
          TypedPrincipal ret = new TypedPrincipal();
 
          ret.setName(typedPrincipal.getName());
-         ret.setType(typedPrincipal.getPrincipalType());
 
          return ret;
 

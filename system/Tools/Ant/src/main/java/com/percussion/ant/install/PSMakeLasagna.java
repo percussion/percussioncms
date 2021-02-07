@@ -101,14 +101,14 @@ public class PSMakeLasagna extends Task
          PSProperties props = new PSProperties(m_root + File.separator +
          "rxconfig/Installer/rxrepository.properties");
          String encryptedPWDProp = props.getProperty(
-               PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY,"Y");
+               PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY,"N");
          String pwd = props.getProperty(PSJdbcDbmsDef.PWD_PROPERTY);
-         if (!StringUtils.isEmpty(pwd) && encryptedPWDProp.equals("Y"))
+         if (!StringUtils.isEmpty(pwd) && encryptedPWDProp.equalsIgnoreCase("Y"))
          {
             String decryptPwd = "";
              try{
                 decryptPwd = PSEncryptor.getInstance().decrypt(pwd);
-             }catch(PSEncryptionException e){
+             }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                 decryptPwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSServer.getPartOneKey());
              }
 

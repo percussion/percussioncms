@@ -39,8 +39,8 @@
          <PSXDescriptor id="7932051108124436240" name="perc.gadget.activity">
             <Description>This gadget provides the activity details of the content.</Description>
             <Publisher name="Percussion" url="Percussion Software Inc."/>
-            <CmsVersion max="8.0.0" min="1.5.0"/>
-            <Version>1.1.1</Version>
+            <CmsVersion max="9.0.0" min="1.5.0"/>
+            <Version>1.1.2</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

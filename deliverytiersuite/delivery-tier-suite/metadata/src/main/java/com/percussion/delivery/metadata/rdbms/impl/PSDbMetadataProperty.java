@@ -51,20 +51,24 @@ public class PSDbMetadataProperty implements IPSMetadataProperty, Serializable
     private int id;
 
     @Basic
+    @Nationalized
     private VALUETYPE valuetype;
 
     @Column(length = 4000)
+    @Nationalized
     private String stringvalue;
 
     /**
      * Property name. For example: dcterms:creator
      */
     @Column(nullable = false, length = PSDbMetadataProperty.MAX_PROPERTY_NAME_LENGTH)
+    @Nationalized
     private String name;
 
 
     @Column(length = Integer.MAX_VALUE)
     @Lob
+    @Nationalized
     private String textvalue;
 
     @Basic
@@ -79,6 +83,7 @@ public class PSDbMetadataProperty implements IPSMetadataProperty, Serializable
      * called.
      */
     @Column(name = "VALUE_HASH", nullable = false, length = 40)
+    @Nationalized
     private String valueHash;
 
     /**

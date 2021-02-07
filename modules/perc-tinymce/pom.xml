@@ -23,18 +23,17 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-tinymce</artifactId>
+  <version>8.0.2</version>
 
     <licenses>
         <license>
@@ -70,9 +69,9 @@
                             </goals>
                             <configuration>
                                 <target>
-                                    <mkdir dir="${download-folder}"/>
-                                    <echo message="download archive"/>
-                                    <get src="${tinymce.url}" dest="${download-folder}"/>
+                                    <mkdir dir="${download-folder}" />
+                                    <echo message="download archive" />
+                                    <get src="${tinymce.url}" dest="${download-folder}" />
                                 </target>
                             </configuration>
                         </execution>
@@ -117,7 +116,7 @@
                             <configuration>
                                 <repositoryId>repo-man</repositoryId>
                                 <file>${download-folder}/download-file</file>
-                                <url>http://repo-man.cloud.percussion.com:8081/nexus/content/repositories/thirdparty</url>
+                                <url>https://mvn.percussion.com/repositories/thirdparty/</url>
                                 <groupId>com.tiny</groupId>
                                 <artifactId>tinymce</artifactId>
                                 <packaging>zip</packaging>
@@ -230,7 +229,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
+            <version>8.0.2</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

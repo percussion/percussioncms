@@ -30,8 +30,8 @@ set IA_PATH_RX_DIR=%SANDBOX_ROOT%
 if exist %MVS_BAT% call %MVS_BAT% 
 REM TODO: Fix classpath to use new ant Uber jar
 set classpath=.
-set classpath=%classpath%;%SANDBOX_ROOT%\Tools\Ant\perc-ant-8.0.0-SNAPSHOT.jar
-set classpath=%classpath%;%SANDBOX_ROOT%\..\modules\ant-install\target\ant-install-8.0.0-SNAPSHOT.jar
+set classpath=%classpath%;%SANDBOX_ROOT%\Tools\Ant\perc-ant-8.0.2-SNAPSHOT.jar
+set classpath=%classpath%;%SANDBOX_ROOT%\..\modules\ant-install\target\ant-install-8.0.2-SNAPSHOT.jar
 
 REM Package specific actions
 if "%1" == "PKGHELP" goto packageHelp

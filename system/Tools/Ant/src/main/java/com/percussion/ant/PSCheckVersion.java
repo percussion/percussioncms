@@ -31,6 +31,7 @@ import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import com.percussion.utils.io.PathUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -61,6 +62,7 @@ import org.apache.tools.ant.Task;
  *        operation="install"/&gt;
  *  </code>
  */
+@Deprecated
 public class PSCheckVersion extends Task
 {
    @Override
@@ -69,7 +71,7 @@ public class PSCheckVersion extends Task
       Properties rxVersionProps = loadVersionProperties();
       InputStream in = null;
       JarFile jar = null;
-      
+
       try
       {
          File jarFile = new File(m_jarFile);
@@ -91,7 +93,7 @@ public class PSCheckVersion extends Task
                if (!jarVersion.equals(rxVersion) && !rxVersion.equals("5.3.14[20160622]"))
                {
                   throw new Exception("The current patch version (" + jarVersion + ") is not compatible with the "
-                        + "version of CM1 (" + rxVersion + ") found at " + m_root);
+                        + "version of CMS (" + rxVersion + ") found at " + m_root);
                }
 
                String rxOptId = getOptionalId(rxVersionProps);
@@ -143,6 +145,7 @@ public class PSCheckVersion extends Task
             }
             catch (IOException e)
             {
+               System.out.println("An unexpected error occurred: " + e.getMessage());
             }
          }
       }
@@ -323,7 +326,7 @@ public class PSCheckVersion extends Task
     * The jar file to read the version properties from, relative to the Rhythmyx
     * root of a server installation.
     */
-   private static final String SERVER_JAR_FILE = "jetty/base/webapps/Rhythmyx/WEB-INF/lib/CMLite-Main-8.0.0-SNAPSHOT.jar";
+   private static final String SERVER_JAR_FILE = "jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-*.jar";
 
    /**
     * Directly read the version.properties if you fail to find it in the root of

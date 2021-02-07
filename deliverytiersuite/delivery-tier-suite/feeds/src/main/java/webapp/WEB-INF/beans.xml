@@ -66,7 +66,7 @@
                 <prop key="db.schema">APP</prop>
                 <prop key="datasource">percDataSource</prop>
                 <prop key="hibernateProperties">percHibernateProperties</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
+                <prop key="hibernate.dialect">com.percussion.delivery.rdbms.DerbyTenOneFourDialect</prop>
                 <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
                 <prop key="hibernate.cache.use_query_cache">false</prop>
@@ -90,7 +90,7 @@
     <import resource="security.xml" />
 
 
-    <context:component-scan base-package="com.percussion.delivery.feeds.services" />
+    <context:component-scan base-package="com.percussion.delivery.feeds" />
 
     <tx:annotation-driven transaction-manager="txManager"/>
 
@@ -113,9 +113,6 @@
     </bean>
 
     <bean id="FeedsService" class="com.percussion.delivery.feeds.services.PSFeedService" lazy-init="true">
-        <property name="connector">
-            <ref bean="CacheManagerConnector" />
-        </property>
     </bean>
 
     <bean id="feedsDao" class="com.percussion.delivery.feeds.services.rdbms.PSFeedDao"

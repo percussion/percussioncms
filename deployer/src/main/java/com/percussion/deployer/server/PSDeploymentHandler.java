@@ -88,6 +88,8 @@ import com.percussion.services.pkginfo.utils.PSIdNameHelper;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
+import com.percussion.utils.security.PSEncryptionException;
+import com.percussion.utils.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
 import com.percussion.util.PSPurgableTempFile;
@@ -95,6 +97,7 @@ import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.codec.PSXmlDecoder;
 import com.percussion.utils.collections.PSMultiValueHashMap;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import com.percussion.xml.PSXmlValidator;
@@ -136,7 +139,7 @@ import java.util.Set;
 public class PSDeploymentHandler implements IPSLoadableRequestHandler
 {
 
-   private static Logger ms_log = Logger.getLogger(PSDeploymentHandler.class);
+   private final static Logger ms_log = Logger.getLogger(PSDeploymentHandler.class);
    
    /**
     * Parameterless ctor used by server to construct this loadable handler.
@@ -1879,7 +1882,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    /**
     * Stores the supplied export descriptor on the server.
     * 
-    * @param export descriptor to save
+    * @param desc descriptor to save
     * 
     * @throws PSDeployException if any error saving.
     */
@@ -3620,10 +3623,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          return "";
 
       String key = uid == null || uid.trim().length() == 0
-            ? INVALID_DRIVER
+            ? PSLegacyEncrypter.INVALID_DRIVER()
             : uid;
 
-      return decryptPwd(pwd, INVALID_CRED, key);
+      return decryptPwd(pwd, PSLegacyEncrypter.INVALID_CRED(), key);
    }
 
    /**
@@ -3641,10 +3644,17 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     */
    private String decryptPwd(String pwd, String key1, String key2)
    {
+      String ret = pwd;
+
       if (pwd == null || pwd.trim().length() == 0)
          return "";
 
-      return PSCryptographer.decrypt(key1, key2, pwd);
+      try{
+         ret = PSEncryptor.getInstance().decrypt(pwd);
+      } catch (PSEncryptionException e) {
+        ret = PSCryptographer.decrypt(key1, key2, pwd);
+      }
+      return ret;
    }
 
    /**
@@ -4063,17 +4073,6 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             getIncludedDependencies(dep.getDependencies(), results);
       }
    }
-
-   /**
-    * Constant to use for part one key when encrypting/decrypting the password.
-    */
-   private static final String INVALID_CRED = "Invalid user id or password!!!!!";
-
-   /**
-    * Constant to use for part two key if userid is empty when
-    * encrypting/decrypting the password.
-    */
-   private static final String INVALID_DRIVER = "The driver name you have entered is invalid.";
 
    /**
     * Constant for deployment subsystem to use for console and logging messages.

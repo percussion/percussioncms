@@ -23,33 +23,43 @@
  */
 package com.percussion.design.objectstore;
 
+import com.percussion.utils.testing.UnitTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Test case for the {@link PSControlDependencyMap} class.
  */
-public class PSControlDependencyMapTest extends TestCase
+@Category(UnitTest.class)
+public class PSControlDependencyMapTest
 {
    /**
     * Test all functionality of the map
     * 
     * @throws Exception if the test fails.
     */
+   @Test
    public void testMap() throws Exception
    {
       Map<String, String> userProps = loadUserProps();
@@ -348,17 +358,9 @@ public class PSControlDependencyMapTest extends TestCase
     */
    private Document getDocument(String fileName) throws Exception
    {
-      FileInputStream in = null;
-      try
+      try(InputStream is = this.getClass().getResourceAsStream(RESOURCE_BASE + "/" + fileName))
       {
-         File file = new File(RESOURCE_BASE, fileName);
-         in = new FileInputStream(file);
-         
-         return PSXmlDocumentBuilder.createXmlDocument(in, false);
-      }
-      finally
-      {
-         IOUtils.closeQuietly(in);
+         return PSXmlDocumentBuilder.createXmlDocument(is, false);
       }
    }
    
@@ -366,6 +368,6 @@ public class PSControlDependencyMapTest extends TestCase
     * The directory containing test resource files.
     */
    private static final String RESOURCE_BASE = 
-      "UnitTestResources/com/percussion/design/objectstore";
+      "/com/percussion/design/objectstore";
 }
 

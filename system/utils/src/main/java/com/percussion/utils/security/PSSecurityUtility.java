@@ -392,4 +392,56 @@ public class PSSecurityUtility {
        public static final String SERVER_DIR = BASE_CONFIG_DIR + "/Server";
        
        private static PSProperties ms_serverProps = new PSProperties();
+
+    /**
+     * Utility to remove parameters from header.
+     * @param str
+     * @return
+     */
+    public static String removeSpecialCharactersFromHeader(String str) {
+           return str.replaceAll("[^a-zA-Z ]", "");
+    }
+
+    /**
+     * Utility to sanitize a string for use in a file system path under a specified path.
+     *
+     * @param str
+     * @return The sanitized string
+     */
+    public static String sanitizeStringForFileUnderPath(String containingPath, String str){
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
+    }
+
+    /**
+     * Utility to sanitize a string for use in a file system path
+     *
+     * @param str
+     * @return The sanitized string
+     */
+    public static String sanitizeStringForFileSystem(String str){
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
+    }
+
+    /**
+     * Utility to sanitize a string for use in a SQL statement
+     * @param str User provided string
+     * @return The sanitized string
+     */
+    public static String sanitizeStringForSQLStatement(String str){
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
+    }
+
+    /**
+     * Sanitizes a user provided string for use in HTML
+     * @param str a user provided string
+     * @return The sanitized string
+     */
+    public static String sanitizeStringForHTML(String str){
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
+    }
+
 }

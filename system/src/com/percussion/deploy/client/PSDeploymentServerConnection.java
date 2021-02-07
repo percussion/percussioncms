@@ -72,11 +72,13 @@ import org.w3c.dom.Element;
 
 
 /**
- * Represents a connection to the Rx server and a session theirin.  Is used
+ * Represents a connection to the Rx server and a session the user is in.  Is used
  * to execute requests to the deployment and job handlers on the server.
  */
 public class PSDeploymentServerConnection
 {
+   private static final String ENC_ALGO = "AES";
+   private static final String SECURE_DIR = System.getProperty("user.home") + "/.perc_secure/";
    /**
     * Constructs a connection using the http protocol. Calls
     * {@link #PSDeploymentServerConnection(String, String, int, String, String,
@@ -1057,7 +1059,8 @@ public class PSDeploymentServerConnection
         return "";
 
       try {
-         return PSEncryptor.getInstance().encrypt(pwd);
+         //This code is executed client side so the key will be unique per client.
+         return PSEncryptor.getInstance(ENC_ALGO,SECURE_DIR).encrypt(pwd);
       } catch (PSEncryptionException e) {
          ms_log.error("Error encrypting password: " + e.getMessage(),e);
          return "";
@@ -1083,7 +1086,8 @@ public class PSDeploymentServerConnection
          uid;
 
       try {
-         return PSEncryptor.getInstance().decrypt(pwd);
+         //This code is executed client side so the key will be unique per client.
+         return PSEncryptor.getInstance(ENC_ALGO,SECURE_DIR).decrypt(pwd);
       } catch (PSEncryptionException e) {
          return PSCryptographer.decrypt(PSLegacyEncrypter.INVALID_CRED(), key, pwd);
       }

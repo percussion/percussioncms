@@ -39,8 +39,8 @@
          <PSXDescriptor id="2665818121100601104" name="perc.widgets.Redirect">
             <Description>A client side redirect widget.</Description>
             <Publisher name="Percussion Software, Inc." url="https://www.percussion.com"/>
-            <CmsVersion max="8.0.0" min="5.3.15"/>
-            <Version>1.1.2</Version>
+            <CmsVersion max="9.0.0" min="5.3.15"/>
+            <Version>1.1.3</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies>

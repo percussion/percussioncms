@@ -72,23 +72,6 @@ public class PSItemSummaryServiceTest
         testIconService = new TestIconPSItemSummaryService();
     }
 
-    @Test
-    public void shouldFixPathForPathToId() throws Exception
-    {
-
-
-        context.checking(new Expectations() {{ 
-            one(collaborator).getIdByPath(with(equal("//Sites/Test")));
-            will(returnValue(guid));
-            one(idMapper).getString(guid);
-            will(returnValue("YES"));
-        }});
-
-        assertNotNull(sut.pathToId("//Sites/Test/"));
-        
-    }
-
-
     @Test(expected=IllegalArgumentException.class)
     public void shouldFailForNullPath() throws Exception
     {

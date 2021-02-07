@@ -30,7 +30,7 @@ import com.percussion.membership.data.IPSMembership.PSMemberStatus;
 import java.util.Date;
 
 import org.apache.commons.lang.Validate;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Object to hold summary data about a registered user.

@@ -22,16 +22,15 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>CMLite-Main-Deployer</artifactId>
+    <artifactId>perc-deployer</artifactId>
     <packaging>jar</packaging>
     <build>
         <plugins>
@@ -44,12 +43,12 @@
     <dependencies>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLite-Main</artifactId>
+            <artifactId>perc-system</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>CMLite-Main</artifactId>
+            <artifactId>perc-system</artifactId>
             <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
@@ -67,7 +66,6 @@
                     <groupId>org.aspectj</groupId>
                     <artifactId>aspectjrt</artifactId>
                 </exclusion>
-
             </exclusions>
         </dependency>
         <dependency>
@@ -180,11 +178,6 @@
             <artifactId>stax-api</artifactId>
             <scope>compile</scope>
             <version>${stax.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>axis</groupId>

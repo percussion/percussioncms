@@ -25,6 +25,7 @@
 package com.percussion.utils.security;
 
 import com.percussion.utils.io.PathUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,16 +34,13 @@ import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.Observable;
 
 /**
  * Main encryption class to be used for Encryption within the code base.
@@ -61,6 +59,16 @@ public class PSEncryptor extends PSAbstractEncryptor {
     private IPSKey secretKey;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     public static final String SECRETKEY_PROPNAME="secretKey";
+
+    /**
+     * Initializes a new instance with the specified algorithm and keyLocation
+     *
+     * @param algorithm
+     * @param keyLocation
+     */
+    public PSEncryptor(String algorithm, String keyLocation) {
+        init(algorithm,keyLocation);
+    }
 
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
@@ -113,12 +121,20 @@ public class PSEncryptor extends PSAbstractEncryptor {
      *
      * @return Returns an IPSKey instance with the secureKey assigned.  May return null if Key loading or generation fails.
      */
-    private IPSKey loadKey(){
-        IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM);
+    private IPSKey loadKey(String algorithm, String keyLocation){
+
+        if(algorithm == null)
+            algorithm = PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM;
+
+        if(keyLocation == null) {
+            keyLocation = PathUtils.getRxDir().getAbsolutePath() + SECURE_DIR;
+        }
+
+        IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(algorithm);
         File installDir = PathUtils.getRxDir();
-        Path secureKeyFile = Paths.get(installDir.getAbsolutePath() + SECURE_DIR + SECURE_KEY_FILE);
+        Path secureKeyFile = Paths.get(keyLocation + SECURE_KEY_FILE);
         byte[] secureKey=null;
-        Path rotateFlag = Paths.get(installDir.getAbsolutePath() + SECURE_DIR + ROTATE_FLAG_FILE);
+        Path rotateFlag = Paths.get(keyLocation + ROTATE_FLAG_FILE);
 
         if(Files.exists(secureKeyFile) && ! Files.exists(rotateFlag)){
             //load key
@@ -158,15 +174,27 @@ public class PSEncryptor extends PSAbstractEncryptor {
     private void init() {
 
         //Check if there is an existing key - if not create it
-        this.secretKey = loadKey();
+        this.secretKey = loadKey(null,null);
 
     }
 
+    private void init(String algorithm, String keystoreLocation){
+        this.secretKey = loadKey(algorithm,keystoreLocation);
+    }
 
     public static PSEncryptor getInstance(){
         synchronized (PSEncryptor.class) {
             if (instance == null) {
                 instance = new PSEncryptor();
+            }
+            return instance;
+        }
+    }
+
+    public static PSEncryptor getInstance(String algorithm, String keyLocation){
+        synchronized (PSEncryptor.class) {
+            if (instance == null) {
+                instance = new PSEncryptor(algorithm,keyLocation);
             }
             return instance;
         }
@@ -331,9 +359,9 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
         //Try to get the key from resource - fail over to file system if not found
         try {
-            ret = Files.readAllBytes(Paths.get(this.getClass().getResource(
-                    "/com/percussion/security/encryption/.legacy-key").toURI()));
-        } catch (URISyntaxException | IOException | FileSystemNotFoundException e) {
+            ret = IOUtils.toByteArray(this.getClass().getResourceAsStream(
+                    "/com/percussion/security/encryption/.legacy-key"));
+        } catch (IOException | FileSystemNotFoundException e) {
            log.debug("Unable to load .legacy-key from classpath.",e);
         }
 

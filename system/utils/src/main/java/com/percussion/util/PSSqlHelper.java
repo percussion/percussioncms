@@ -41,6 +41,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.*;
 
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -51,6 +52,7 @@ public class PSSqlHelper
 {
 
    private static final String JBOSS_WRAPPED_CLASS="org.jboss.ejb.plugins.cmp.jdbc.WrappedStatement";
+
    /**
     * Convenience method that looks up the Rx server's database info and calls
     * {@link #qualifyTableName(String, String, String, String)}.
@@ -2113,19 +2115,19 @@ public class PSSqlHelper
    public static boolean isOracle()
    {
       if (ms_isOracle != null)
-         return ms_isOracle.booleanValue();
+         return ms_isOracle;
       
       try
       {
          PSConnectionDetail connDetail = PSConnectionHelper.getConnectionDetail();
          ms_isOracle = PSSqlHelper.isOracle(connDetail.getDriver());
          
-         if (ms_isOracle.booleanValue())
+         if (ms_isOracle)
             ms_log.debug("The repository is an Oracle database, driver is " + connDetail.getDriver());
          else
             ms_log.debug("The repository is not an Oracle database, driver is " + connDetail.getDriver());
          
-         return ms_isOracle.booleanValue();
+         return ms_isOracle;
       }
       catch (Exception e)
       {
@@ -2133,7 +2135,45 @@ public class PSSqlHelper
          throw new RuntimeException("Failed to determine database type", e);
       }
    }
-   
+
+   private static ArrayList<String> existingCMStables = new ArrayList<String>();
+
+   /**
+    * Utility method that can be used go validate if a table name exists on the database.  Intended
+    * to be used when using dynamic table names to prevent against SQL Injection attacks.
+    *
+    * Table names are cached on first call, to refresh the cache pass true for the refresh parameter.
+    *
+    * @param t A candidate table name.
+    * @param refresh When true, the list of valid tables is refreshed from the database.
+    * @return true if the table is valid and exists, false if not.
+    */
+   public static boolean isExistingCMSTableName(String t, boolean refresh) {
+      boolean ret = false;
+
+      if (existingCMStables.size() == 0 || refresh) {
+         try (Connection conn = PSConnectionHelper.getDbConnection()) {
+            existingCMStables.clear();
+            String types[] = {"TABLE", "VIEW"};
+            try(ResultSet rs = conn.getMetaData().getTables(conn.getCatalog(), conn.getSchema(), "%", types)) {
+               while (rs.next()) {
+                  existingCMStables.add(rs.getString("TABLE_NAME").toLowerCase());
+               }
+            }
+         } catch (SQLException | NamingException e) {
+            ms_log.warn("Error listing database tables: " + e.getMessage());
+         }
+      }
+
+      if(existingCMStables.contains(t.toLowerCase())){
+         return true;
+      }else{
+         return false;
+      }
+
+   }
+
+
    /**
     * Determines if the current repository is an Oracle database. 
     * @see #isOracle() for detail.
