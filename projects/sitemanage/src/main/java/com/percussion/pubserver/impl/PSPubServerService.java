@@ -49,6 +49,7 @@ import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.pubserver.data.PSPubServerProperty;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
+import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
@@ -2125,9 +2126,22 @@ public class PSPubServerService implements IPSPubServerService
     public String getDefaultAdminURL(String siteName) throws PSPubServerServiceException {
 
         IPSSite site = siteMgr.findSite(siteName);
-        PSPubServer currentDefaultServer = getDefaultPubServer(site.getGUID());
-        String adminUrl= currentDefaultServer.getPropertyValue("publishServer");
-        return adminUrl;
+        if(site == null){
+            PSEnumVals sites = siteDataService.getChoices();
+            List siteNames = sites.getEntries();
+            if(siteNames != null && siteNames.size() > 0){
+                siteName = ((PSEnumVals.EnumVal)siteNames.get(0)).getValue();
+                site = siteMgr.findSite(siteName);
+            }
+        }
+        if(site == null){
+            log.info("No Site found in the system");
+            return null;
+        }else {
+            PSPubServer currentDefaultServer = getDefaultPubServer(site.getGUID());
+            String adminUrl = currentDefaultServer.getPropertyValue("publishServer");
+            return adminUrl;
+        }
     }
 
 }
