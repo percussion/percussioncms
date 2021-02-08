@@ -262,13 +262,6 @@
                             </fileset>
                         </copy>
 
-                    <filter token="JAVA_OPTS" value="-Drxdeploydir=${install.dir}"/>
-                    <copy todir="${install.dir}${staging.dir}/" verbose="true" filtering="true">
-                        <fileset dir="${install.src}">
-                        <include name="*.bat"/>
-                        <include name="*.sh" />
-                        </fileset>
-                    </copy>
 
                         <copy todir="${install.dir}${staging.dir}/" verbose="true">
                             <fileset dir="${install.src}">
@@ -418,15 +411,6 @@
                         <fileset dir="${new.backup.dir}${staging.dir}/Server/common/lib">
                         <include name="mysql-connector*.jar"/>
                     </fileset>
-                    </copy>
-
-                    <filter token="JAVA_OPTS" value="-Drxdeploydir=${install.dir}"/>
-
-                    <copy todir="${install.dir}${staging.dir}" overwrite="true" force="true" verbose="true" filtering="true">
-                        <fileset dir="${install.src}">
-                            <include name="*.bat" />
-                            <include name="*.sh" />
-                        </fileset>
                     </copy>
 
                     <copy todir="${install.dir}${staging.dir}" overwrite="true" force="true" verbose="true">
