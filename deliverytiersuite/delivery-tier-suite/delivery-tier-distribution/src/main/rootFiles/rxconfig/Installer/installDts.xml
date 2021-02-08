@@ -266,8 +266,8 @@
                         <copy todir="${install.dir}${staging.dir}/" verbose="true">
                             <fileset dir="${install.src}">
                                 <include name="*" />
-                                <exclude name="*.bat" />
-                                <exclude name="*.sh" />
+                                <exclude name="*.bat" if="${isLinux}"/>
+                                <exclude name="*.sh" if="${isWindows}"/>
                                 <exclude name="JRE/"/>
                                 <exclude name="linux-x64-jre/" />
                                 <exclude name="windows-x64-jre/"/>
@@ -416,8 +416,8 @@
                     <copy todir="${install.dir}${staging.dir}" overwrite="true" force="true" verbose="true">
                         <fileset dir="${install.src}">
                             <include name="*" />
-                            <exclude name="*.bat"/>
-                            <exclude name="*.sh"/>
+                            <exclude name="*.bat" if="${isLinux}"/>
+                            <exclude name="*.sh" if="${isWindows}"/>
                             <exclude name="JRE/"/>
                             <exclude name="linux-x64-jre/" />
                             <exclude name="windows-x64-jre/"/>
