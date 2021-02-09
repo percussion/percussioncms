@@ -147,7 +147,14 @@ public class PSUpdateDTSConfiguration extends PSAction {
 
                         } else if (scheme.equals("https")) {
                             Map<String, String> oldProps = connector.getProperties();
-
+                            //We don't want to keep default values, thus clearing them first and restoring them from old.
+                            properties.put("https.port","");
+                            properties.put("https.certificateKeystoreFile","");
+                            properties.put("https.keystoreFile","");
+                            properties.put("https.certificateKeystorePassword" , "");
+                            properties.put("https.keystorePass" , "");
+                            properties.put("https.certificateKeyAlias", "");
+                            properties.put("https.keyAlias", "");
                             for (String key : oldProps.keySet()) {
                                 if(key.equals("port") ) {
                                     properties.put("https." + key, oldProps.get(key));
