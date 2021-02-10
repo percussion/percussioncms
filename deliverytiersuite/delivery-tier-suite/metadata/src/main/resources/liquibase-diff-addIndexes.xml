@@ -25,13 +25,6 @@
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <changeSet author="natechadwick" id="dropOrphans-PSMetadataProperties">
-        <sql>
-            DELETE FROM PERC_PAGE_METADATA_PROPERTIES WHERE ENTRY_ID NOT IN (SELECT PAGEPATHHASH FROM PERC_PAGE_METADATA)
-        </sql>
-        <comment>Remove orphaned entries before applying foreign key.</comment>
-    </changeSet>
-
     <changeSet  author="Santosh (generated)"  id="updateDataTypes-PSMetadataProperties">
         <modifyDataType     columnName="NAME"
                             newDataType="NVARCHAR(100)"
@@ -45,6 +38,15 @@
         <modifyDataType     columnName="ENTRY_ID"
                             newDataType="NVARCHAR(40)"
                             tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+        <modifyDataType     columnName="TEXTVALUE"
+                            newDataType="NCLOB"
+                            tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+    </changeSet>
+    <changeSet author="natechadwick" id="dropOrphans-PSMetadataProperties">
+        <sql>
+            DELETE FROM PERC_PAGE_METADATA_PROPERTIES WHERE ENTRY_ID NOT IN (SELECT PAGEPATHHASH FROM PERC_PAGE_METADATA)
+        </sql>
+        <comment>Remove orphaned entries before applying foreign key.</comment>
     </changeSet>
     <changeSet  author="Santosh (generated)"  id="addForeignKeyConstraint-PSMetadataProperties">
         <preConditions onFail="MARK_RAN" >
