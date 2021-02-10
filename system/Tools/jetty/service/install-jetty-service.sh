@@ -172,10 +172,10 @@ echo in uninstall
 
     echo "setting up pid folder /var/run/${SERVICE_NAME} setting ownership to  user=${RX_USER} group=${RX_GROUP}"
 
-    mkdir -p ${JETTY_RUN}
-    chown -R "${RX_USER}:${RX_GROUP}" "/var/run/rxjetty"
-    chown -R "${RX_USER}:${RX_GROUP}" "${JETTY_RUN}"
-    chmod -R ugo+rw /var/run/rxjetty
+    mkdir -p ${JETTY_RUN}/${SERVICE_NAME}
+    chown -R "${RX_USER}:${RX_GROUP}" "/var/run/rxjetty/${SERVICE_NAME}"
+    chown -R "${RX_USER}:${RX_GROUP}" "${JETTY_RUN}/${SERVICE_NAME}"
+    chmod -R ugo+rw /var/run/rxjetty/${SERVICE_NAME}
 
     echo "copying startup script ${JETTY_DEFAULTS}/bin/jetty.sh /etc/init.d/${SERVICE_NAME}"
 

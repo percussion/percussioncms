@@ -154,11 +154,11 @@ public class MainDTSPreInstall {
 
         } catch (Exception e) {
             System.out.println("An unexpected error occurred processing installation files. " + e.getMessage());
-            throw  new AntJobFailedException("Ant Job Got Failed.");
+            throw  new AntJobFailedException(String.format("Installation failed. %s", e.getMessage()));
         }
-        System.out.println("Done extracting exit code "+exitCode);
+        System.out.println(String.format("Done extracting exit code %d", exitCode));
         if(exitCode != 0){
-            throw  new AntJobFailedException("Ant Job Got Failed.");
+            throw  new AntJobFailedException(String.format("Installation failed. Exit code: %d ",exitCode));
         }
     }
 

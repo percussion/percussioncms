@@ -28,7 +28,6 @@ import com.ibm.cadf.middleware.AuditContext;
 import com.ibm.cadf.middleware.AuditMiddleware;
 import com.ibm.cadf.model.Event;
 import com.ibm.cadf.util.Constants;
-import com.percussion.auditlog.exception.AuditException;
 import com.percussion.auditlog.util.AuditPropertyLoader;
 import com.percussion.auditlog.util.FileCreator;
 import com.percussion.utils.io.PathUtils;
@@ -132,7 +131,7 @@ public class PSAuditLogService  implements IPSAuditLogService {
         try {
             middleware = new AuditMiddleware(Constants.AUDIT_FORMAT_TYPE_JSON);
 
-            properties = AuditPropertyLoader.loadProperties(PathUtils.getRxDir()+ File.separator+CONFIG_FILE_BASE);
+            properties = AuditPropertyLoader.loadProperties(PathUtils.getRxDir(null)+ File.separator+CONFIG_FILE_BASE);
             middleware.setProperties(properties);
         }catch (Exception e){
             e.printStackTrace();

@@ -91,7 +91,7 @@ public class PSDerbyAuthenticator implements UserAuthenticator
       //  "derby.properties" file there.
       String derbyHome = null;
       String derbyPropertiesFile = null;
-      String rxRootDir = PathUtils.getRxDir().getAbsolutePath();
+      String rxRootDir = PathUtils.getRxDir(null).getAbsolutePath();
       String slash = System.getProperty("file.separator");
       
       if (!StringUtils.isBlank(rxRootDir) && !rxRootDir.equals("."))

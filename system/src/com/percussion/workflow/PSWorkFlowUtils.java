@@ -65,7 +65,6 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -2316,7 +2315,7 @@ public class PSWorkFlowUtils
       for (String prop : encryptProps) {
          props.add(prop);
       }
-      File workflowProps = new File(PathUtils.getRxDir(),
+      File workflowProps = new File(PathUtils.getRxDir(null),
               WORKFLOW_PROPS_PATH + "/" + WORKFLOW_PROPS_FILE_NAME);
       PSEncryptProperties.encryptFile(workflowProps, props);
    }
