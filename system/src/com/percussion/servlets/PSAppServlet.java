@@ -235,9 +235,9 @@ public class PSAppServlet extends HttpServlet
          super.init(conf);
 
          
-         PSServer.setRxDir(PathUtils.getRxDir());
+         PSServer.setRxDir(PathUtils.getRxDir(null));
          
-         PSEntityResolver.setResolutionHome(PathUtils.getRxDir());
+         PSEntityResolver.setResolutionHome(PathUtils.getRxDir(null));
          
          // initialize jndi prefix
          String jndiLookupPrefix = conf.getInitParameter("jndiPrefix");

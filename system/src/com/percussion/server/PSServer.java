@@ -100,7 +100,6 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSThreadRequestUtils;
 import com.percussion.utils.security.PSEncryptionException;
 import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.ToDoVulnerability;
 import com.percussion.utils.security.IPSDecryptor;
 import com.percussion.utils.security.IPSKey;
 import com.percussion.utils.security.IPSSecretKey;
@@ -280,7 +279,7 @@ public class PSServer {
     */
    public static File getRxDir()
    {
-      return PathUtils.getRxDir();
+      return PathUtils.getRxDir(null);
       }
 
    /**
@@ -536,7 +535,7 @@ public class PSServer {
             com.percussion.log.PSLogServerStart(ms_serverName);
          ms_serverLogHandler.write(msg);
 
-         /* initialize the error mananger/handler */
+         /* initialize the error manager / handler */
          if (0 != (toInit & INITED_ERROR))
             initErrorHandling();
 
