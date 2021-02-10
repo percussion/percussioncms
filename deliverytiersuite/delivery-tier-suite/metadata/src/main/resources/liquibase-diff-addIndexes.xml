@@ -45,6 +45,9 @@
         <modifyDataType     columnName="ENTRY_ID"
                             newDataType="NVARCHAR(40)"
                             tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+        <modifyDataType     columnName="TEXTVALUE"
+                            newDataType="NVARCHAR(MAX)"
+                            tableName="PERC_PAGE_METADATA_PROPERTIES"/>
     </changeSet>
     <changeSet  author="Santosh (generated)"  id="addForeignKeyConstraint-PSMetadataProperties">
         <preConditions onFail="MARK_RAN" >
