@@ -68,7 +68,7 @@ public class PSContainerUtilsFactory {
     }
 
     public static DefaultConfigurationContextImpl getConfigurationContextInstance() {
-        return getConfigurationContextInstance(PathUtils.getRxDir().toPath());
+        return getConfigurationContextInstance(PathUtils.getRxDir(null).toPath());
     }
 
     public static BaseContainerUtils getInstance() {

@@ -76,8 +76,8 @@ public class PSContextLoader extends ContextLoader
    {
       log.info("Initializing Root Web Application Context");
 
-      PSServer.setRxDir(PathUtils.getRxDir());
-      PSEntityResolver.setResolutionHome(PathUtils.getRxDir());
+      PSServer.setRxDir(PathUtils.getRxDir(null));
+      PSEntityResolver.setResolutionHome(PathUtils.getRxDir(null));
 
       // initialize jndi prefix
       String jndiLookupPrefix = servletContext.getInitParameter("jndiPrefix");
