@@ -39,7 +39,7 @@
                             newDataType="NVARCHAR(40)"
                             tableName="PERC_PAGE_METADATA_PROPERTIES"/>
         <modifyDataType     columnName="TEXTVALUE"
-                            newDataType="CLOB"
+                            newDataType="NCLOB"
                             tableName="PERC_PAGE_METADATA_PROPERTIES"/>
     </changeSet>
     <changeSet author="natechadwick" id="dropOrphans-PSMetadataProperties">
