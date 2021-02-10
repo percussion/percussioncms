@@ -273,8 +273,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     public Set<ItemWrapper> loadAssets()
     {
-        File logFile = new File(PathUtils.getRxDir(),assetsLogFilePath);
-        File readFile = new File(PathUtils.getRxDir(),assetsReadFilePath);
+        File logFile = new File(PathUtils.getRxDir(null),assetsLogFilePath);
+        File readFile = new File(PathUtils.getRxDir(null),assetsReadFilePath);
         if(readFile.exists())
             loadFailedAssetsFromFile(readFile);
         else if(!logFile.exists())
@@ -732,26 +732,26 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     public void logAssets() throws JsonGenerationException, JsonMappingException, IOException
     {
-        File file = new File(PathUtils.getRxDir(),processLinksBase);
+        File file = new File(PathUtils.getRxDir(null),processLinksBase);
         if(!file.exists())
         {
             file.mkdirs();
         }
         log.info("Logging Assets to " + assetsLogFilePath);
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(new File(PathUtils.getRxDir(),assetsLogFilePath), assetListSet);
+        objectMapper.writeValue(new File(PathUtils.getRxDir(null),assetsLogFilePath), assetListSet);
     }
     
     private void logPages() throws JsonGenerationException, JsonMappingException, IOException
     {
-        File file = new File(PathUtils.getRxDir(),processLinksBase);
+        File file = new File(PathUtils.getRxDir(null),processLinksBase);
         if(!file.exists())
         {
             file.mkdirs();
         }
         log.info("Logging Pages to " + pagesLogFilePath);
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(new File(PathUtils.getRxDir(),pagesLogFilePath), qualifiedPages);
+        objectMapper.writeValue(new File(PathUtils.getRxDir(null),pagesLogFilePath), qualifiedPages);
     }
     
     /**
