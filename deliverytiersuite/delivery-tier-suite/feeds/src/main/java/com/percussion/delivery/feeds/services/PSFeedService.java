@@ -29,8 +29,6 @@ import com.percussion.delivery.feeds.data.PSFeedDTO;
 import com.percussion.delivery.feeds.data.PSFeedDescriptors;
 import com.percussion.delivery.feeds.data.PSFeedItem;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
-import com.percussion.delivery.multitenant.PSTenantSecurityFilter;
-import com.percussion.delivery.multitenant.PSThreadLocalTenantContext;
 import com.percussion.delivery.services.PSAbstractRestService;
 import com.percussion.delivery.utils.security.PSHttpClient;
 import com.percussion.utils.security.PSEncryptor;
@@ -233,7 +231,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     @Path("/readExternalFeed")
     @Produces(MediaType.APPLICATION_XML)
     @ToDoVulnerability
-    public String readExternalFeed(PSFeedDTO psFeedDTO, @HeaderParam("perc-tid") String percId)
+    public String readExternalFeed(PSFeedDTO psFeedDTO)
     {
 
         URL url;
@@ -427,8 +425,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             client = ClientBuilder.newClient();
             log.error("Exception occurred in creating the SSL Client : " + e.getLocalizedMessage());
         }
-        
-        PSThreadLocalTenantContext locContext = new PSThreadLocalTenantContext();
+
         WebTarget webTarget = client.target(url + "/perc-metadata-services/metadata/get");
         
         if(log.isDebugEnabled()){
@@ -438,10 +435,8 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         try
         {
             List<PSFeedItem> items = new ArrayList<PSFeedItem>();
-            String tenantId = StringUtils.defaultString(locContext.getTenantId());
 
             Invocation.Builder invocationBuilder =  ((WebTarget) webTarget).request(MediaType.APPLICATION_JSON_TYPE);
-            invocationBuilder.header(PSTenantSecurityFilter.TENANTID_PARAM_NAME, tenantId);
             Response  response = invocationBuilder.post(Entity.entity(desc.getQuery(), MediaType.APPLICATION_JSON));
 
             String jsonString =  response.readEntity(String.class);

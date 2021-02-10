@@ -175,11 +175,6 @@
       autowire="constructor">
    </bean>
 
-  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-   	<constructor-arg index="0"><null/></constructor-arg>
-   	<constructor-arg index="1"><null/></constructor-arg>
-   </bean>
-
    <bean id="metadataLiquibase"
          class="liquibase.integration.spring.SpringLiquibase">
       <property name="dataSource" ref="percDataSource" />

@@ -49,7 +49,7 @@
 
                 var m = url.toLowerCase().match(reURI);
                 var proto = m[2], domain = m[3], port = m[4] || "";
-                if ((proto == "http:" && port == ":80") || (proto == "https:" && port == ":443")) {
+                if ((proto === "http:" && port === ":80") || (proto === "https:" && port === ":443")) {
                     port = "";
                 }
                 return proto + "//" + domain + port;
@@ -86,13 +86,12 @@
 				}
 				
                 var formAction = $(this).attr("action");
-                if(formAction && formAction.indexOf("/perc-form-processor") == 0){
-                    var tenantId = $.isFunction($.getCm1License)?$.getCm1License():"";
-                    var version = $.isFunction($.getCm1Version)?$.getCm1Version():"";
+                if(formAction && formAction.indexOf("/perc-form-processor") === 0){
+                    var version = $.isFunction($.getCMSVersion)?$.getCMSVersion():"";
 					var servicebase = $.isFunction($.getDeliveryServiceBase)?$.getDeliveryServiceBase():"";
 
 
-                    formAction = $.PercServiceUtils.joinURL( servicebase, formAction + ((formAction.indexOf('?')!=-1)?"&":"?") + "perc-tid=" + tenantId + "&perc-version=" + version);
+                    formAction = $.PercServiceUtils.joinURL( servicebase, formAction + ((formAction.indexOf('?')!==-1)?"&":"?") + "perc-version=" + version);
 
                     $(this).attr("action", formAction);
                     $(this).append(
@@ -100,7 +99,7 @@
                         attr("type", "hidden").
                         attr("name", "perc_hostUrl").
                         attr("value", getLocation(location.href))
-                    )
+                    );
                 }
                 
                 var myRules = {};
@@ -110,14 +109,14 @@
                         if(typeof(myRules[$(this).attr('name')]) === "undefined")
                             myRules[$(this).attr('name')] = {};
                         
-                        myRules[$(this).attr('name')]['maxlength'] = $(this).attr('fieldmaxlength');
+                        myRules[$(this).attr('name')].maxlength = $(this).attr('fieldmaxlength');
                     }
                 });
                 
                 $(this).validate({
                     errorClass:"form-error-msg"  ,
                     errorPlacement: function(error, element) {
-                                       if(element.attr('type') == 'checkbox'){
+                                       if(element.attr('type') === 'checkbox'){
                                            error.appendTo( element.parent().parent());    
                                         }
                                         else{									

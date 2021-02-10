@@ -89,7 +89,7 @@ public class PSFeedsServiceTests{
         String url = PSEncryptor.getInstance().encrypt("https://www.nasa.gov/rss/dyn/breaking_news.rss");
 
         feedDTO.setFeedsUrl(url);
-        String xml = svc.readExternalFeed(feedDTO,"percId");
+        String xml = svc.readExternalFeed(feedDTO);
     	System.out.println(xml);
     	assertTrue(xml != null);
     	assertTrue(xml.toLowerCase().contains("nasa"));
