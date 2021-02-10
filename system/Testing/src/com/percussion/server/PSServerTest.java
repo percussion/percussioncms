@@ -25,8 +25,6 @@
 
 package com.percussion.server;
 
-import com.percussion.utils.container.PSContainerUtilsFactory;
-
 import java.io.File;
 import java.nio.channels.FileLock;
 
@@ -39,7 +37,6 @@ import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.experimental.categories.Category;
 
-import static com.percussion.server.PSServer.*;
 import static org.junit.Assert.*;
 
 /**
@@ -72,23 +69,23 @@ public class PSServerTest
    {
       //not defined
       System.getProperties().remove(DEPLOY_DIR_PROP);
-      assertEquals(CURRENT_DIR, PathUtils.getRxDir());
+      assertEquals(CURRENT_DIR, PathUtils.getRxDir(null));
 
       //empty value
       System.getProperties().setProperty(DEPLOY_DIR_PROP, "");
-      assertEquals(CURRENT_DIR, PathUtils.getRxDir());
+      assertEquals(CURRENT_DIR, PathUtils.getRxDir(null));
 
       //non-existing value
       System.getProperties().setProperty(DEPLOY_DIR_PROP, "Non-Existing Dir");
       Logger.getRootLogger().setLevel(Level.OFF);
-      assertEquals(CURRENT_DIR, PathUtils.getRxDir());
+      assertEquals(CURRENT_DIR, PathUtils.getRxDir(null));
       Logger.getRootLogger().setLevel(CURRENT_LOGGING_LEVEL);
 
       //existing dir
       System.getProperties().setProperty(DEPLOY_DIR_PROP,
               CURRENT_DIR.getAbsoluteFile().getParent());
-      assertEquals(CURRENT_DIR.getAbsoluteFile().getParentFile(), PathUtils.getRxDir());
-      assertFalse(CURRENT_DIR.equals(PathUtils.getRxDir()));
+      assertEquals(CURRENT_DIR.getAbsoluteFile().getParentFile(), PathUtils.getRxDir(null));
+      assertFalse(CURRENT_DIR.equals(PathUtils.getRxDir(null)));
 
       //
    }
@@ -100,7 +97,7 @@ public class PSServerTest
    {
       //create file lock
       System.getProperties().remove(DEPLOY_DIR_PROP);
-      String rxdir = PathUtils.getRxDir().getAbsolutePath();
+      String rxdir = PathUtils.getRxDir(null).getAbsolutePath();
       System.out.println("rxdir is: " + rxdir);
       FileLock fl = PSServer.createServerStartupFileLock("running");
       assertNotNull(fl);

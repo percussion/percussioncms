@@ -44,7 +44,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
@@ -872,7 +871,7 @@ public class RxUpgrade
    static public String getRxRoot()
    {
       if(m_RxRootDir.isEmpty()){
-         m_RxRootDir = PathUtils.getRxDir().getAbsolutePath();
+         m_RxRootDir = PathUtils.getRxDir(null).getAbsolutePath();
       }
       return m_RxRootDir + File.separator;
    }

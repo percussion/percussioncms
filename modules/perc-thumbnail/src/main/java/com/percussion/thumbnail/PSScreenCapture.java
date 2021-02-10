@@ -62,12 +62,12 @@ public class PSScreenCapture {
 
     private static volatile Boolean install = true;
 
-    private static final File PHANTOM_JS_INST_DIR = new File(PathUtils.getRxDir(), "bin");
+    private static final File PHANTOM_JS_INST_DIR = new File(PathUtils.getRxDir(null), "bin");
 
 
     private static File PHANTOM_JS = null;
 
-    private static final File WEB_CAP_PATH = new File(PathUtils.getRxDir(), "sys_resources/js/webcap.js");
+    private static final File WEB_CAP_PATH = new File(PathUtils.getRxDir(null), "sys_resources/js/webcap.js");
 
 
     public static void generateEmptyThumb(String imagePathForGeneration)
@@ -175,9 +175,9 @@ public class PSScreenCapture {
                                 sourceFile = Paths.get(srcDir.resolve("phantomjs-2.1.1-linux-x86_64" + File.separatorChar + "bin" + File.separatorChar + phantomBinary).toString());
                             }
                         }
-                        Path targetFile = Paths.get(PathUtils.getRxDir().getPath() + File.separatorChar + "bin" + File.separatorChar + phantomBinary);
+                        Path targetFile = Paths.get(PathUtils.getRxDir(null).getPath() + File.separatorChar + "bin" + File.separatorChar + phantomBinary);
 
-                        Path bin = Paths.get(PathUtils.getRxDir().getPath() + File.separatorChar + "bin");
+                        Path bin = Paths.get(PathUtils.getRxDir(null).getPath() + File.separatorChar + "bin");
                         //Create bin folder if it is missing
                         if(Files.notExists(bin)){
                             Files.createDirectory(bin);
