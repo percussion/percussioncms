@@ -27,7 +27,6 @@ package com.percussion.utils.security;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Properties;
 
@@ -39,7 +38,6 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
-import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.util.PSProperties;
 
 public class PSSecurityUtility {
@@ -363,7 +361,7 @@ public class PSSecurityUtility {
        
        public static String getRxConfigDir(String path) {
        
-           File item = new File(PathUtils.getRxDir(), path);
+           File item = new File(PathUtils.getRxDir(null), path);
               if (item.exists() == false)
               {
                  throw new IllegalArgumentException("file does not exist: " + item.getAbsolutePath());
