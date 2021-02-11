@@ -95,18 +95,14 @@
         <dropTable tableName="PERC_PAGE_METADATA_PROPERTIES" />
     </changeSet>
     <changeSet author="natechadwick (generated)" id="1598324277811-8-21021">
-		<preConditions onFail="MARK_RAN" > 
+		<preConditions onFail="MARK_RAN" >
 			<tableExists tableName="PERC_PAGE_METADATA_PROPERTIES_NEW" />
             <and>
-                <not>
-                    <primaryKeyExists
-                            tableName="PERC_PAGE_METADATA_PROPERTIES"
-                            primaryKeyName="PK_PERC_PAGE_METADATA_PROPERTIES_NEW"/>
-                </not>
+                <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
             </and>
-	   </preConditions> 
+	   </preConditions>
        <renameTable  newTableName="PERC_PAGE_METADATA_PROPERTIES"
                       oldTableName="PERC_PAGE_METADATA_PROPERTIES_NEW" />
     </changeSet>
-    
+
 </databaseChangeLog>
