@@ -44,7 +44,6 @@
 			<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
 			<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.EhcacheRegionFactory</prop>
 			<prop key="hibernate.id.new_generator_mappings">${hibernate.id.new_generator_mappings}</prop>
-			<prop key="hibernate.id.new_generator_mappings">${hibernate.id.new_generator_mappings}</prop>
          </props>
       </property>
    </bean>
