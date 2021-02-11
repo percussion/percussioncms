@@ -74,6 +74,9 @@
             	var x, i, totalChild = 0;
                 txt = "";
                 x = xml.childNodes;
+				if(x[1].nodeName && x[1].nodeName == "topLevelNodes") {
+					x = x[1].childNodes;
+				}
                 if(x.length >= 3) 
                 	container.append('<option value="">Select Category</option></br>');
                 for (i = 0; i < x.length; i++) { 
@@ -235,6 +238,10 @@
             			parentId = $("#subCategory-"+paramName+"-"+j).val();
             		}
             	}
+
+				if(x[1].nodeName && x[1].nodeName == "topLevelNodes") {
+					x = x[1].childNodes;
+				}
             	
     			for (i = 0; i < x.length; i++) { 
                     if (x[i].nodeType == 1) {
