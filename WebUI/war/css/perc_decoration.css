@@ -631,5 +631,5 @@ img.perc-notpubliclink {
     background-image: url(/cm/images/images/iconAlert.gif);
 }
 body * {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif !important;
 }
