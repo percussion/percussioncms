@@ -25,7 +25,11 @@
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <changeSet  author="Santosh (generated)"  id="updateDataTypes-PSMetadataProperties">
+    <changeSet  author="Santosh (generated)"  id="updateDataTypes-PSMetadataProperties-21021">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+        </preConditions>
+        <dropAllForeignKeyConstraints baseTableName="PERC_PAGE_METADATA_PROPERTIES" />
         <modifyDataType     columnName="NAME"
                             newDataType="NVARCHAR(100)"
                             tableName="PERC_PAGE_METADATA_PROPERTIES"/>
@@ -42,43 +46,112 @@
                             newDataType="NCLOB"
                             tableName="PERC_PAGE_METADATA_PROPERTIES"/>
     </changeSet>
-    <changeSet author="natechadwick" id="dropOrphans-PSMetadataProperties">
+    <changeSet author="natechadwick" id="dropOrphans-PSMetadataProperties-21021">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+            <and>
+                <tableExists tableName="PERC_PAGE_METADATA"/>
+            </and>
+        </preConditions>
         <sql>
             DELETE FROM PERC_PAGE_METADATA_PROPERTIES WHERE ENTRY_ID NOT IN (SELECT PAGEPATHHASH FROM PERC_PAGE_METADATA)
         </sql>
         <comment>Remove orphaned entries before applying foreign key.</comment>
     </changeSet>
-    <changeSet  author="Santosh (generated)"  id="addForeignKeyConstraint-PSMetadataProperties">
+    <changeSet  author="Santosh (generated)"  id="addForeignKeyConstraint-PSMetadataProperties-21021">
         <preConditions onFail="MARK_RAN" >
             <tableExists tableName="PERC_PAGE_METADATA" />
+            <and>
+                <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+            </and>
+            <and>
+                <not>
+                    <foreignKeyConstraintExists
+                            foreignKeyName="FK_PERC_PAGE_METADATA_PROPERTIES_PAGEPATHHASH"/>
+                </not>
+            </and>
         </preConditions>
         <addForeignKeyConstraint  baseColumnNames="ENTRY_ID"
                                   baseTableName="PERC_PAGE_METADATA_PROPERTIES"
-                                  constraintName="fk_Metadata_property"
+                                  constraintName="FK_PERC_PAGE_METADATA_PROPERTIES_PAGEPATHHASH"
                                   onDelete="CASCADE"
                                   onUpdate="RESTRICT"
                                   referencedColumnNames="PAGEPATHHASH"
                                   referencedTableName="PERC_PAGE_METADATA"
                                   validate="true"/>
     </changeSet>
-    <changeSet  author="Santosh (generated)"  id="createIndex-PSMetadataProperties">
+    <changeSet  author="Santosh"  id="createIndex-PSMetadataProperties-EntryId">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists
+                        tableName="PERC_PAGE_METADATA_PROPERTIES"
+                        indexName="PERC_PAGE_METADATA_PROPERTIES_IX_ENTRYID"/>
+            </not>
+        </preConditions>
         <createIndex  clustered="false"
-                      indexName="idx_entryid"
+                      indexName="PERC_PAGE_METADATA_PROPERTIES_IX_ENTRYID"
                       tableName="PERC_PAGE_METADATA_PROPERTIES"
                       unique="false">
             <column  name="ENTRY_ID"/>
         </createIndex>
     </changeSet>
-    <changeSet  author="Santosh (generated)"  id="createCompositeIndex-PSMetadataProperties">
-        <sql>
-            CREATE INDEX idx_name_Date ON
-            PERC_PAGE_METADATA_PROPERTIES(NAME, DATEVALUE);
-
-            CREATE INDEX idx_name_Valuehash ON
-            PERC_PAGE_METADATA_PROPERTIES(NAME, VALUE_HASH);
-        </sql>
+    <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-NAMEDATEVALUE">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists
+                        tableName="PERC_PAGE_METADATA_PROPERTIES"
+                        indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAMEDATEVALUE" />
+            </not>
+        </preConditions>
+        <createIndex tableName="PERC_PAGE_METADATA_PROPERTIES"
+                     indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAMEDATEVALUE"
+                     unique="false">
+            <column name="NAME"/>
+            <column name="DATEVALUE" />
+        </createIndex>
     </changeSet>
-
+    <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-IX_NAME">
+    <preConditions onFail="MARK_RAN">
+        <not>
+            <indexExists
+                    tableName="PERC_PAGE_METADATA_PROPERTIES"
+                    indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAME" />
+        </not>
+    </preConditions>
+    <createIndex tableName="PERC_PAGE_METADATA_PROPERTIES"
+                 indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAME" unique="false">
+        <column name="NAME" />
+    </createIndex>
+    </changeSet>
+    <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-IX_NAMENUMBER">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists
+                    tableName="PERC_PAGE_METADATA_PROPERTIES"
+                    indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAMENUMBER" />
+            </not>
+        </preConditions>
+        <createIndex tableName="PERC_PAGE_METADATA_PROPERTIES"
+                     indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAMENUMBER"
+                     unique="false">
+            <column name="NAME" />
+            <column name="NUMBERVALUE" />
+        </createIndex>
+    </changeSet>
+    <changeSet id="createCompositeIndex-PSMetadataProperties-IX_VALUEHASH" author="nate">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists
+                        tableName="PERC_PAGE_METADATA_PROPERTIES"
+                        indexName="PERC_PAGE_METADATA_PROPERTIES_IX_VALUEHASH" />
+            </not>
+        </preConditions>
+        <createIndex tableName="PERC_PAGE_METADATA_PROPERTIES"
+                     indexName="PERC_PAGE_METADATA_PROPERTIES_IX_VALUE_HASH"
+                     unique="false">
+            <column name="VALUE_HASH" />
+        </createIndex>
+    </changeSet>
 
 </databaseChangeLog>
 
