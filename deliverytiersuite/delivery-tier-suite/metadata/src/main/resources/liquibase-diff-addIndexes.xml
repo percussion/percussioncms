@@ -25,6 +25,54 @@
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
+    <changeSet  author="Santosh"  id="updateDataTypes-PSMetadata-21021">
+        <dropAllForeignKeyConstraints baseTableName="PERC_PAGE_METADATA" />
+
+        <dropPrimaryKey tableName="PERC_PAGE_METADATA"/>
+
+        <dropIndex indexName="typeIndex"
+                   tableName="PERC_PAGE_METADATA"/>
+
+
+        <modifyDataType     columnName="pagepathHash"
+                            newDataType="NVARCHAR(40)"
+                            tableName="PERC_PAGE_METADATA"/>
+        <modifyDataType     columnName="folder"
+                            newDataType="NVARCHAR(2000)"
+                            tableName="PERC_PAGE_METADATA"/>
+        <modifyDataType     columnName="linktext"
+                            newDataType="NVARCHAR(255)"
+                            tableName="PERC_PAGE_METADATA"/>
+        <modifyDataType     columnName="linktext_lower"
+                            newDataType="NVARCHAR(255)"
+                            tableName="PERC_PAGE_METADATA"/>
+        <modifyDataType     columnName="name"
+                            newDataType="NVARCHAR(255)"
+                            tableName="PERC_PAGE_METADATA"/>
+        <modifyDataType     columnName="pagepath"
+                            newDataType="NVARCHAR(2000)"
+                            tableName="PERC_PAGE_METADATA"/>
+        <modifyDataType     columnName="site"
+                            newDataType="NVARCHAR(255)"
+                            tableName="PERC_PAGE_METADATA"/>
+        <modifyDataType     columnName="type"
+                            newDataType="NVARCHAR(255)"
+                            tableName="PERC_PAGE_METADATA"/>
+        <addNotNullConstraint  columnDataType="NVARCHAR(40)"
+                               columnName="pagepathHash"
+                               constraintName="pagepathHash_notnull"
+                               tableName="PERC_PAGE_METADATA"
+                               validate="true"/>
+        <addPrimaryKey      columnNames="pagepathHash"
+                            tableName="PERC_PAGE_METADATA"
+                            validate="true"/>
+        <createIndex  clustered="false"
+                      indexName="typeIndex"
+                      tableName="PERC_PAGE_METADATA"
+                      unique="false">
+            <column  name="type"/>
+        </createIndex>
+    </changeSet>
     <changeSet  author="Santosh (generated)"  id="updateDataTypes-PSMetadataProperties-21021">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES"/>
@@ -82,11 +130,16 @@
     </changeSet>
     <changeSet  author="Santosh"  id="createIndex-PSMetadataProperties-EntryId">
         <preConditions onFail="MARK_RAN">
+            <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+            <and>
+
+
             <not>
                 <indexExists
                         tableName="PERC_PAGE_METADATA_PROPERTIES"
                         indexName="PERC_PAGE_METADATA_PROPERTIES_IX_ENTRYID"/>
             </not>
+            </and>
         </preConditions>
         <createIndex  clustered="false"
                       indexName="PERC_PAGE_METADATA_PROPERTIES_IX_ENTRYID"
@@ -97,11 +150,15 @@
     </changeSet>
     <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-NAMEDATEVALUE">
         <preConditions onFail="MARK_RAN">
+            <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+            <and>
+
             <not>
                 <indexExists
                         tableName="PERC_PAGE_METADATA_PROPERTIES"
                         indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAMEDATEVALUE" />
             </not>
+            </and>
         </preConditions>
         <createIndex tableName="PERC_PAGE_METADATA_PROPERTIES"
                      indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAMEDATEVALUE"
@@ -111,25 +168,31 @@
         </createIndex>
     </changeSet>
     <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-IX_NAME">
-    <preConditions onFail="MARK_RAN">
-        <not>
-            <indexExists
-                    tableName="PERC_PAGE_METADATA_PROPERTIES"
-                    indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAME" />
-        </not>
-    </preConditions>
-    <createIndex tableName="PERC_PAGE_METADATA_PROPERTIES"
-                 indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAME" unique="false">
-        <column name="NAME" />
-    </createIndex>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+            <and>
+            <not>
+                <indexExists
+                        tableName="PERC_PAGE_METADATA_PROPERTIES"
+                        indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAME" />
+            </not>
+            </and>
+        </preConditions>
+        <createIndex tableName="PERC_PAGE_METADATA_PROPERTIES"
+                     indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAME" unique="false">
+            <column name="NAME" />
+        </createIndex>
     </changeSet>
     <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-IX_NAMENUMBER">
         <preConditions onFail="MARK_RAN">
+            <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+            <and>
             <not>
                 <indexExists
-                    tableName="PERC_PAGE_METADATA_PROPERTIES"
-                    indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAMENUMBER" />
+                        tableName="PERC_PAGE_METADATA_PROPERTIES"
+                        indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAMENUMBER" />
             </not>
+            </and>
         </preConditions>
         <createIndex tableName="PERC_PAGE_METADATA_PROPERTIES"
                      indexName="PERC_PAGE_METADATA_PROPERTIES_IX_NAMENUMBER"
@@ -140,11 +203,14 @@
     </changeSet>
     <changeSet id="createCompositeIndex-PSMetadataProperties-IX_VALUEHASH" author="nate">
         <preConditions onFail="MARK_RAN">
+            <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+            <and>
             <not>
                 <indexExists
                         tableName="PERC_PAGE_METADATA_PROPERTIES"
                         indexName="PERC_PAGE_METADATA_PROPERTIES_IX_VALUEHASH" />
             </not>
+            </and>
         </preConditions>
         <createIndex tableName="PERC_PAGE_METADATA_PROPERTIES"
                      indexName="PERC_PAGE_METADATA_PROPERTIES_IX_VALUE_HASH"
