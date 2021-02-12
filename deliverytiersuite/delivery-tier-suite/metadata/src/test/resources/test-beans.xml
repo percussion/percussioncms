@@ -215,4 +215,10 @@
    	<constructor-arg index="1"><null/></constructor-arg>
    </bean>
 
+   <bean id="metadataLiquibase"
+         class="liquibase.integration.spring.SpringLiquibase">
+      <property name="dataSource" ref="percDataSource" />
+      <property name="changeLog" value="classpath:liquibase-diff-latest.xml" />
+   </bean>
+
 </beans>
