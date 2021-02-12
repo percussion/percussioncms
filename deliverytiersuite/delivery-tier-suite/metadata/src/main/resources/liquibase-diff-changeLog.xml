@@ -24,52 +24,87 @@
   -->
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    
-	<changeSet author="natechadwick (generated)" id="1439225004329-1">
+
+    <changeSet id="dropoldconstraintsifexists-21021" author="nate">
+        <dropAllForeignKeyConstraints baseTableName="PERC_PAGE_METADATA_PROPERTIES"/>
+    </changeSet>
+
+	<changeSet author="natechadwick (generated)" id="1439225004329-21021">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES_NEW"/>
+            </not>
+            <and>
+                <not>
+                    <primaryKeyExists
+                            tableName="PERC_PAGE_METADATA_PROPERTIES"
+                            primaryKeyName="PK_PERC_PAGE_METADATA_PROPERTIES_NEW"/>
+                </not>
+            </and>
+        </preConditions>
         <createTable tableName="PERC_PAGE_METADATA_PROPERTIES_NEW">
             <column autoIncrement="true" generationType="IDENTITY" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="NAME" type="VARCHAR(100)">
+            <column name="NAME" type="NVARCHAR(100)">
 				<constraints nullable="false"/>
             </column>
-            <column name="VALUE_HASH" type="VARCHAR(40)">
+            <column name="VALUE_HASH" type="NVARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
             <column name="DATEVALUE" type="datetime"/>
             <column name="NUMBERVALUE" type="DOUBLE"/>
-            <column name="STRINGVALUE" type="VARCHAR(4000)"/>
-            <column name="TEXTVALUE" type="CLOB"/>
+            <column name="STRINGVALUE" type="NVARCHAR(4000)"/>
+            <column name="TEXTVALUE" type="NCLOB"/>
             <column name="VALUETYPE" type="INT"/>
-            <column name="ENTRY_ID" type="VARCHAR(40)">
+            <column name="ENTRY_ID" type="NVARCHAR(40)">
 				<constraints nullable="false"/>
             </column>
         </createTable>
         <modifySql dbms="mysql">
-            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+            <append value="ENGINE=INNODB CHARSET=utf8 COLLATE utf8_general_ci "/>
         </modifySql>
     </changeSet>
-	<changeSet  author="natechadwick (generated)"  id="1598324277811-5">
+	<changeSet  author="natechadwick (generated)"  id="1598324277811-5-21021">
         <preConditions onFail="MARK_RAN" >
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+            <and>
+                <not>
+                    <primaryKeyExists
+                            tableName="PERC_PAGE_METADATA_PROPERTIES"
+                            primaryKeyName="PK_PERC_PAGE_METADATA_PROPERTIES_NEW"/>
+                </not>
+            </and>
         </preConditions>
 		 <sql>
             insert into PERC_PAGE_METADATA_PROPERTIES_NEW (NAME, VALUE_HASH, DATEVALUE , NUMBERVALUE , STRINGVALUE,TEXTVALUE,VALUETYPE,ENTRY_ID ) 
 					SELECT NAME, VALUE_HASH, DATEVALUE , NUMBERVALUE , STRINGVALUE,TEXTVALUE,VALUETYPE,ENTRY_ID from PERC_PAGE_METADATA_PROPERTIES
         </sql>
 	</changeSet>
-    <changeSet author="natechadwick (generated)" id="1598324277811-7">
+    <changeSet author="natechadwick (generated)" id="1598324277811-7-21021">
         <preConditions onFail="MARK_RAN" >
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+            <and>
+                <not>
+                    <primaryKeyExists
+                            tableName="PERC_PAGE_METADATA_PROPERTIES"
+                            primaryKeyName="PK_PERC_PAGE_METADATA_PROPERTIES_NEW"/>
+                </not>
+            </and>
         </preConditions>
         <dropTable tableName="PERC_PAGE_METADATA_PROPERTIES" />
     </changeSet>
-    <changeSet author="natechadwick (generated)" id="1598324277811-8">
-		<preConditions onFail="MARK_RAN" > 
+    <changeSet author="natechadwick (generated)" id="1598324277811-8-21021">
+		<preConditions onFail="MARK_RAN" >
 			<tableExists tableName="PERC_PAGE_METADATA_PROPERTIES_NEW" />
-	   </preConditions> 
+            <and>
+                <not>
+                    <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+                </not>
+            </and>
+	   </preConditions>
        <renameTable  newTableName="PERC_PAGE_METADATA_PROPERTIES"
                       oldTableName="PERC_PAGE_METADATA_PROPERTIES_NEW" />
     </changeSet>
-    
+
 </databaseChangeLog>
