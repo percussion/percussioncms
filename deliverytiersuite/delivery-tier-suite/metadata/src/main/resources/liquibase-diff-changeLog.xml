@@ -62,7 +62,7 @@
             </column>
         </createTable>
         <modifySql dbms="mysql">
-            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci"/>
+            <append value="ENGINE=INNODB CHARSET=utf8 COLLATE utf8_unicode_ci "/>
         </modifySql>
     </changeSet>
 	<changeSet  author="natechadwick (generated)"  id="1598324277811-5-21021">
@@ -98,7 +98,9 @@
 		<preConditions onFail="MARK_RAN" >
 			<tableExists tableName="PERC_PAGE_METADATA_PROPERTIES_NEW" />
             <and>
-                <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+                <not>
+                    <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
+                </not>
             </and>
 	   </preConditions>
        <renameTable  newTableName="PERC_PAGE_METADATA_PROPERTIES"
