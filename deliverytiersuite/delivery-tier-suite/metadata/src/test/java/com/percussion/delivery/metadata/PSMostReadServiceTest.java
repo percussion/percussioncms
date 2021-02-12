@@ -89,11 +89,17 @@ public class PSMostReadServiceTest extends TestCase {
     private static final String PAGE_FULL = "/" + SITE_NAME + PAGE_NAME;
     
     @Before
-    public void before() throws Exception
-    {
-        super.setUp();
-        indexer.deleteAllMetadataEntries();
-        addEntries();
+    public void before() {
+
+		try {
+			super.setUp();
+
+		indexer.deleteAllMetadataEntries();
+		addEntries();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
     }
     
     /**
