@@ -282,6 +282,10 @@
             color: #$outputColor.text;
           }
 
+          .perc-social-button i {
+            font-family: FontAwesome !important;
+          }
+
           #if( $hideDesktop == "true" )##
           @media (min-width: ${mobileBreakpoint}) {
             .perc-social-button-container {
