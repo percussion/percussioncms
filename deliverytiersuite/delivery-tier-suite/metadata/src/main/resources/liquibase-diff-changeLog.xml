@@ -62,7 +62,7 @@
             </column>
         </createTable>
         <modifySql dbms="mysql">
-            <append value="ENGINE=INNODB CHARSET=utf8 COLLATE utf8_unicode_ci "/>
+            <append value="ENGINE=INNODB CHARSET=utf8 COLLATE utf8_general_ci "/>
         </modifySql>
     </changeSet>
 	<changeSet  author="natechadwick (generated)"  id="1598324277811-5-21021">

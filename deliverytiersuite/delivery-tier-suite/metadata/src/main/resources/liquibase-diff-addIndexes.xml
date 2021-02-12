@@ -73,7 +73,7 @@
             <column  name="type"/>
         </createIndex>
         <sql dbms="mysql">
-          ALTER TABLE PERC_PAGE_METADATA CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+          ALTER TABLE PERC_PAGE_METADATA CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
         </sql>
     </changeSet>
     <changeSet  author="Santosh (generated)"  id="updateDataTypes-PSMetadataProperties-21021">
@@ -97,7 +97,7 @@
                             newDataType="NCLOB"
                             tableName="PERC_PAGE_METADATA_PROPERTIES"/>
         <sql dbms="mysql">
-            ALTER TABLE PERC_PAGE_METADATA_PROPERTIES CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+            ALTER TABLE PERC_PAGE_METADATA_PROPERTIES CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
         </sql>
     </changeSet>
     <changeSet author="natechadwick" id="dropOrphans-PSMetadataProperties-21021">
