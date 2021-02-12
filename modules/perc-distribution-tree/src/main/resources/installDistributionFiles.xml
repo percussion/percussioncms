@@ -183,6 +183,8 @@
             <fileset dir="${assembly-directory}/rx_resources/default_theme" />
         </copy>
 
+
+
         <if>
             <available file="${install.rx_resources}/default_theme" />
             <then>
@@ -212,6 +214,11 @@
 
         <!-- jQuery Validate -->
         <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.validate.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.validate.js"/>
+
+        <!-- Copy Font Awesome -->
+        <copy todir="${assembly-directory}/web_resources/cm/css/fontawesome">
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/1x/libraries/fontawesome" includes="**/*" />
+        </copy>
 
         <!-- Global Variables -->
 
