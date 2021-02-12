@@ -27,7 +27,6 @@
 
 
  <include file="liquibase-diff-changeLog.xml" relativeToChangelogFile="true"/>    
- <include file="liquibase-diff-renametable.xml" relativeToChangelogFile="true"/>
  <include file="liquibase-diff-addIndexes.xml" relativeToChangelogFile="true"/>
     
 </databaseChangeLog>
