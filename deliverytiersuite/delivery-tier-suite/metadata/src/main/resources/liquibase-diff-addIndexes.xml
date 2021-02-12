@@ -58,8 +58,8 @@
         <modifyDataType     columnName="type"
                             newDataType="NVARCHAR(255)"
                             tableName="PERC_PAGE_METADATA"/>
-        <addNotNullConstraint  columnDataType="NVARCHAR(40)"
-                               columnName="pagepathHash"
+        <addNotNullConstraint columnName="pagepathHash"
+                              columnDataType="NVARCHAR(40)"
                                constraintName="pagepathHash_notnull"
                                tableName="PERC_PAGE_METADATA"
                                validate="true"/>
@@ -72,6 +72,9 @@
                       unique="false">
             <column  name="type"/>
         </createIndex>
+        <sql dbms="mysql">
+          ALTER TABLE PERC_PAGE_METADATA CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+        </sql>
     </changeSet>
     <changeSet  author="Santosh (generated)"  id="updateDataTypes-PSMetadataProperties-21021">
         <preConditions onFail="MARK_RAN">
@@ -93,6 +96,9 @@
         <modifyDataType     columnName="TEXTVALUE"
                             newDataType="NCLOB"
                             tableName="PERC_PAGE_METADATA_PROPERTIES"/>
+        <sql dbms="mysql">
+            ALTER TABLE PERC_PAGE_METADATA_PROPERTIES CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+        </sql>
     </changeSet>
     <changeSet author="natechadwick" id="dropOrphans-PSMetadataProperties-21021">
         <preConditions onFail="MARK_RAN">
