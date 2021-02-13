@@ -25,6 +25,8 @@ package com.percussion.delivery.metadata.impl;
 
 import java.util.Comparator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,32 +36,22 @@ import org.json.JSONObject;
  */
 public class CountOrderTagComparator implements Comparator<JSONObject>
 {
+    private static final Logger log = LogManager.getLogger(CountOrderTagComparator.class);
+
     public int compare(JSONObject o1, JSONObject o2)
     {
-        JSONObject ob1 = o1;
-        JSONObject ob2 = o2;
 
         int returnCompare = 0;
         try
         {
-            int countOb1 = ((Integer) ob1.get(PSMetadataTagsHelper.TAG_COUNT)).intValue();
-            int countOb2 = ((Integer) ob2.get(PSMetadataTagsHelper.TAG_COUNT)).intValue();
-            if (countOb1 > countOb2)
-            {
-                returnCompare = -1;
-            }
-            else if (countOb1 < countOb2)
-            {
-                returnCompare = 1;
-            }
-            else
-            {
-                returnCompare = 0;
-            }
+            int countOb1 = ((Integer) o1.get(PSMetadataTagsHelper.TAG_COUNT));
+            int countOb2 = ((Integer) o2.get(PSMetadataTagsHelper.TAG_COUNT));
+            returnCompare = Integer.compare(countOb2, countOb1);
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e);
         }
         return returnCompare;
     }

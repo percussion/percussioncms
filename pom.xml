@@ -890,7 +890,7 @@
                             <plugin>
                                 <groupId>com.h3xstream.findsecbugs</groupId>
                                 <artifactId>findsecbugs-plugin</artifactId>
-                                <version>1.11.0</version>
+                                <version>LATEST</version>
                             </plugin>
                         </plugins>
                     </configuration>

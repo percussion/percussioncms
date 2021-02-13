@@ -276,15 +276,15 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             {
                 try {
                     emailNotifTo = PSEncryptor.getInstance("AES",
-                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                     ).decrypt(emailNotifToVals[0]);
                 }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                     emailNotifTo = PSLegacyEncrypter.getInstance(
-                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
 
                     ).decrypt(emailNotifToVals[0],
                             PSLegacyEncrypter.getInstance(
-                                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                             ).DEFAULT_KEY(),null);
                 }
             }
@@ -304,14 +304,14 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 try {
                     emailNotifSubject = PSEncryptor.getInstance(
                             "AES",
-                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                     ).decrypt(emailNotifSubjectVals[0]);
                 }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                     emailNotifSubject = PSLegacyEncrypter.getInstance(
-                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                     ).decrypt(emailNotifSubjectVals[0],
                             PSLegacyEncrypter.getInstance(
-                                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                             ).DEFAULT_KEY(),null);
                 }
             } else if(isFormEmail) {
@@ -481,14 +481,14 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                     try {
                         successRedirect = PSEncryptor.getInstance(
                                 "AES",
-                                PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                                PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                         ).decrypt(successRedirect);
                     } catch (PSEncryptionException e) {
                         successRedirect = PSLegacyEncrypter.getInstance(
-                                PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                                PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                         ).decrypt(
                                 successRedirect, PSLegacyEncrypter.getInstance(
-                                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                                        PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                                 ).DEFAULT_KEY(),null);
                     }
                 }
@@ -664,13 +664,13 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             if(isEncrypted) {
                 try {
                     urlErrorPage = PSEncryptor.getInstance("AES",
-                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                     ).decrypt(redirect);
                 } catch (PSEncryptionException e) {
                     urlErrorPage = PSLegacyEncrypter.getInstance(
-                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                     ).decrypt(redirect, PSLegacyEncrypter.getInstance(
-                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                     ).DEFAULT_KEY(),null);
                 }
             }

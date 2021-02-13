@@ -30,6 +30,10 @@ package service.web.api.ems.dea;
  * This class is not complete
  */
 
+import com.percussion.delivery.test.PSFakeDataGenerator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,6 +54,8 @@ import javax.xml.ws.ResponseWrapper;
  */
 public final class ServiceSoap_ServiceSoap12_Client {
 
+    private static final Logger log = LogManager.getLogger(ServiceSoap_ServiceSoap12_Client.class);
+
     private static final QName SERVICE_NAME = new QName("http://DEA.EMS.API.Web.Service/", "Service");
 
     private ServiceSoap_ServiceSoap12_Client() {
@@ -66,7 +72,8 @@ public final class ServiceSoap_ServiceSoap12_Client {
                     wsdlURL = new URL(args[0]);
                 }
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e);
             }
         }
 

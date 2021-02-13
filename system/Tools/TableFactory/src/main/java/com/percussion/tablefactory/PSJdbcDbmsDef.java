@@ -164,13 +164,13 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
          try{
 
             m_pw = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).decrypt(m_pw);
          } catch (PSEncryptionException e) {
             m_pw = PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).decrypt(m_pw, PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).getPartOneKey(),null);
          }
 
@@ -314,7 +314,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
          {
             try {
                strPw = PSEncryptor.getInstance("AES",
-                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                       PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                ).encrypt(
                        repositoryJndiDataSource.getPassword());
                encrypted = true;
@@ -329,7 +329,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
       {
          try {
             strPw = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).encrypt(
                     repositoryJndiDataSource.getPassword());
             encrypted = true;
@@ -967,7 +967,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
     * constant is encrytped by the {@link #rot13(char)} method.
     */
    @Deprecated
-   private static final String PART_ONE = PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).PART_ONE();
+   private static final String PART_ONE = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).PART_ONE();
 
    /**
     * The alias for the backend database type.  Initialized in the ctor, may be

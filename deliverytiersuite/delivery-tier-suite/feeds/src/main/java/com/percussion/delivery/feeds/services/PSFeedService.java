@@ -264,7 +264,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         	
             String decryptedUrl = PSEncryptor.getInstance(
                     "AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).decrypt(feedUrl);
             log.debug("Decrypted URL is: {}" , decryptedUrl);
             decodedUrl = URLDecoder.decode(decryptedUrl, "UTF8");
@@ -594,7 +594,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     @Override
     public void rotateKey(byte[] key) {
         PSEncryptor.getInstance("AES",
-                PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
         ).forceReplaceKeyFile(key,false);
     }
     
