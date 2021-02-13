@@ -2316,7 +2316,7 @@ public class PSWorkFlowUtils
       for (String prop : encryptProps) {
          props.add(prop);
       }
-      File workflowProps = new File(PathUtils.getRxDir(),
+      File workflowProps = new File(PathUtils.getRxDir(null),
               WORKFLOW_PROPS_PATH + "/" + WORKFLOW_PROPS_FILE_NAME);
       PSEncryptProperties.encryptFile(workflowProps, props,PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
    }

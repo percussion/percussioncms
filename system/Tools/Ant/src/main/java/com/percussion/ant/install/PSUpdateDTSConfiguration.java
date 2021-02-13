@@ -147,7 +147,6 @@ public class PSUpdateDTSConfiguration extends PSAction {
 
                         } else if (scheme.equals("https")) {
                             Map<String, String> oldProps = connector.getProperties();
-
                             for (String key : oldProps.keySet()) {
                                 if(key.equals("port") ) {
                                     properties.put("https." + key, oldProps.get(key));

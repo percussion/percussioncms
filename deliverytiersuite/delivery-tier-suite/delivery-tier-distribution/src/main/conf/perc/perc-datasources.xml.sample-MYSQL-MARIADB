@@ -33,6 +33,9 @@
             <prop key="hibernate.query.substitutions">${hibernate.query.substitutions}</prop>
             <prop key="hibernate.show_sql">false</prop>
             <prop key="hibernate.jdbc.batch_size">50</prop>
+            <prop key="hibernate.jdbc.batch_versioned_data">true</prop>
+            <prop key="hibernate.order_inserts">true</prop>
+            <prop key="hibernate.order_updates">true</prop>
             <prop key="hibernate.cache.use_query_cache">true</prop>
             <prop key="hibernate.cache.use_second_level_cache">true</prop>
             <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
@@ -48,7 +51,8 @@
             <prop key="hibernate.connection.verifyServerCertificate">false</prop>
             <prop key="hibernate.use_sql_comments">true</prop>
             <prop key="hibernate.dialect.storage_engine">innodb</prop>
-	         <prop key="hibernate.use_nationalized_character_data">true</prop>
+            <prop key="hibernate.query.in_clause_parameter_padding">true</prop>
+            <prop key="hibernate.criteria.literal_handling_mode">bind</prop>
          </props>
       </property>
    </bean>
