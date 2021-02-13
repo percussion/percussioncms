@@ -63,9 +63,16 @@
 				<include name="**"/>
 			</fileset>
 		</touch>
-        
-		<copy todir="${perc.site.web_resources}" overwrite="true" force="true" failonerror="true">
-			<fileset dir="${perc.sys.web_resources}" excludesfile="../../rx_resources/ant/excludes.txt">
+
+		<if>
+			<available file="${perc.site.web_resources}/cm/css/FontAwesome/" type="dir" />
+			<then>
+				<delete dir="${perc.site.web_resources}/cm/css/FontAwesome/"/>
+			</then>
+		</if>
+
+		<copy todir="${perc.site.web_resources}" overwrite="true" force="true" failonerror="true" >
+			<fileset dir="${perc.sys.web_resources}" excludesfile="../../rx_resources/ant/excludes.txt" casesensitive="true">
 				<include name="**"/>
 			</fileset>
 		</copy>		
