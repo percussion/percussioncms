@@ -25,6 +25,10 @@
 package com.percussion.delivery.utils.security;
 
 
+import com.percussion.delivery.utils.spring.PSPropertiesFactoryBean;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,6 +42,8 @@ import java.util.stream.Stream;
  * of the JRE after upgrade.
  */
 public class PSDecryptPropertiesPostUpgrade {
+
+    private static final Logger log = LogManager.getLogger(PSDecryptPropertiesPostUpgrade.class);
 
     public static String[] CONF_DIRS={"Deployment/Server/conf/perc", "Staging/Deployment/Server/conf/perc"};
 
@@ -55,7 +61,8 @@ public class PSDecryptPropertiesPostUpgrade {
                files.forEach(p -> decryptProperties(p));
 
            } catch (IOException e) {
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e);
            }
         }
 

@@ -35,6 +35,16 @@
     <packaging>war</packaging>
     <dependencies>
         <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-security-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-legacy</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-shared-app</artifactId>
             <version>${project.parent.version}</version>

@@ -274,7 +274,8 @@ public class RxJdbcTableFactory
     * Breaks down a workflow DTD document and stores it
     * in glabal DBStruct class.
     *
-    * @param  WorkFlow well formed DTD document
+    * @param  docTableDef well formed DTD document
+    * @param dbmsDef well formed database definition
     *
     * @return String : If empty then no errors, otherwise Error
     *
@@ -556,11 +557,11 @@ public class RxJdbcTableFactory
          m_uid = m_Props.getProperty("UID");
          try {
              m_pw = PSEncryptor.getInstance("AES",
-                     PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                     PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
              ).decrypt(m_Props.getProperty("PWD"));
          }catch(Exception e){
              m_pw = PSLegacyEncrypter.getInstance(
-                     PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                     PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
              ).decrypt(m_Props.getProperty("PWD"),
                      PSJdbcDbmsDef.getPartOneKey(),null);
          }
