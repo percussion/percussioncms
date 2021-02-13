@@ -292,12 +292,9 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
         // Unique entites
         queryCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
     }
-
     private Session getSession(){
 
         return getSessionFactory().getCurrentSession();
 
     }
-
-
 }

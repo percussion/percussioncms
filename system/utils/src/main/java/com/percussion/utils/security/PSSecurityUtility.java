@@ -369,7 +369,7 @@ public class PSSecurityUtility {
        
        public static String getRxConfigDir(String path) {
        
-           File item = new File(PathUtils.getRxDir(), path);
+           File item = new File(PathUtils.getRxDir(null), path);
               if (item.exists() == false)
               {
                  throw new IllegalArgumentException("file does not exist: " + item.getAbsolutePath());

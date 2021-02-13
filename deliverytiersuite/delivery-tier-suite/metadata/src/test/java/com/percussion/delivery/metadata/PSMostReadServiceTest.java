@@ -27,7 +27,10 @@ package com.percussion.delivery.metadata;
 import com.percussion.delivery.metadata.data.PSVisitQuery;
 import com.percussion.delivery.metadata.rdbms.impl.PSDbBlogPostVisit;
 import com.percussion.delivery.metadata.rdbms.impl.PSDbMetadataEntry;
+import com.percussion.delivery.test.TestMultiConcurrentCallsToServer;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -52,8 +55,8 @@ import java.util.List;
 {"classpath:test-beans.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PSMostReadServiceTest extends TestCase {
-	
-    //public IPSBlogPostVisitDao visitDao;
+
+	private static final Logger log = LogManager.getLogger(PSMostReadServiceTest.class);
     
     @Autowired
     private IPSBlogPostVisitService blogPostService;
@@ -97,7 +100,8 @@ public class PSMostReadServiceTest extends TestCase {
 		indexer.deleteAllMetadataEntries();
 		addEntries();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug(e);
 		}
 
     }

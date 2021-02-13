@@ -26,6 +26,8 @@ package com.percussion.delivery.test;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -45,6 +47,7 @@ import java.util.concurrent.*;
 @Ignore
 public class TestMultiConcurrentCallsToServer {
 
+    private static final Logger log = LogManager.getLogger(TestMultiConcurrentCallsToServer.class);
     private static String deliveryServerUrl = "http://localhost:9980/perc-metadata-services/metadata/indexedDirectories";
 
         public void makeConcurrentClientRequests(){
@@ -62,7 +65,8 @@ public class TestMultiConcurrentCallsToServer {
                 try {
                     System.out.println(new Date()+ "::"+fut.get());
                 } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage());
+                    log.debug(e);
                     Assert.assertFalse(true);
                 }
             }
@@ -95,7 +99,8 @@ public class TestMultiConcurrentCallsToServer {
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e);
                 Assert.assertFalse(true);
             }
             return "ERROR";

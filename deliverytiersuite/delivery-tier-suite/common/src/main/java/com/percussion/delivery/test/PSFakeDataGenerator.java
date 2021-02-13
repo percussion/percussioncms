@@ -23,6 +23,9 @@
  */
 package com.percussion.delivery.test;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,6 +42,7 @@ import java.util.StringTokenizer;
  */
 public class PSFakeDataGenerator {
 
+    private static final Logger log = LogManager.getLogger(PSFakeDataGenerator.class);
     public static final int Number = 0;
     public static final int Gender = 1;
     public static final int GivenName = 2;
@@ -227,9 +231,8 @@ public class PSFakeDataGenerator {
             }
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
+            log.error(e.getMessage());
+            log.debug(e);
         }
 
         return ret;

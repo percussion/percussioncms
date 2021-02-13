@@ -78,7 +78,7 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
     private final String PERC_CACHING_MANAGER_CONFIG = "/perc-caching/manager/config";
     Set<String> cacheRegions;
     
-    public static Log log = LogFactory.getLog(PSCacheManagerConnector.class);
+    public static final Log log = LogFactory.getLog(PSCacheManagerConnector.class);
     
     public PSCacheManagerConnector()
     {
@@ -323,7 +323,8 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
         try {
             cacheConfig = PSJaxbUtils.unmarshall(in.toString(), PSCacheConfig.class, false);
         } catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e);
             return null;
         }
 
@@ -415,13 +416,15 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
                     try {
                         doFlushRequest();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        log.error(e.getMessage());
+                        log.debug(e);
                     }
                     active = false;
                 }
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException ignore) {
+
                 }
             }
         }

@@ -508,20 +508,20 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     public String updateCategoryInDTS(String category, @PathParam("sitename") String sitename, @PathParam("deliveryserver") String deliveryserver) {
 
         JSONObject categoryJson = null;
-        JSONObject returnJson = null;
+        JSONObject returnJson = new JSONObject();
         JSONArray categoryArray = null;
 
         try {
 
             categoryArray = new JSONArray(category);
 
-            if(categoryArray != null && categoryArray.length() != 0) {
+            if( categoryArray.length() != 0) {
                 returnJson = categoryArray.getJSONObject(0);
 
                 for(int i = 0; i < categoryArray.length(); i++) {
                     categoryJson = categoryArray.getJSONObject(i);
 
-                    int updatedRows = dao.updateByCategoryProperty(categoryJson.get("previousCategoryName").toString(), categoryJson.get("title").toString());
+                   dao.updateByCategoryProperty(categoryJson.get("previousCategoryName").toString(), categoryJson.get("title").toString());
                 }
             } else {
                 returnJson = new JSONObject();
@@ -532,9 +532,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             }
         } catch (JSONException e) {
 
-            log.error("JSON Exception during updating the categories : " + e.getLocalizedMessage());
-
-            e.printStackTrace();
+            log.error("JSON Exception during updating the categories : {}" ,e.getMessage());
+            log.debug(e);
         }
 
         return  returnJson.toString();
