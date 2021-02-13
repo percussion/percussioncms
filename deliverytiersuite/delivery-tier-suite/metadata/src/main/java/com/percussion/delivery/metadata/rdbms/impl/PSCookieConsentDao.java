@@ -35,6 +35,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.jpa.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
@@ -70,14 +71,14 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    private static final Logger MS_LOG = Logger.getLogger(PSCookieConsent.class.getName());
+    private static final Logger MS_LOG = Logger.getLogger(PSCookieConsent.class);
 
 
     @Override
     public void save(Collection<PSDbCookieConsent> consents) {
         Validate.notNull(consents, "Cookie consent object cannot be null");
         
-        if (consents.size() == 0)
+        if (consents.isEmpty())
             return;
 
         try {
@@ -112,7 +113,8 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             Session session = getSession();
             
             Criteria crit = session.createCriteria(PSDbCookieConsent.class);
-            
+            crit.addQueryHint(QueryHints.HINT_READONLY).addQueryHint(QueryHints.HINT_CACHEABLE);
+
             @SuppressWarnings("unchecked")
             List<IPSCookieConsent> result = crit.list();
             
@@ -135,7 +137,8 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             Session session = getSession();
             
             Criteria crit = session.createCriteria(PSDbCookieConsent.class);
-            
+            crit.addQueryHint(QueryHints.HINT_READONLY).addQueryHint(QueryHints.HINT_CACHEABLE);
+
             crit.add(Restrictions.eq("siteName", siteName));
             
             @SuppressWarnings("unchecked")
@@ -192,7 +195,7 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
     @Override
     public Map<String, Integer> getTotalsForAllSites() throws Exception {
         try {
-            Map<String, Integer> results = new HashMap<String, Integer>();
+            Map<String, Integer> results = new HashMap<>();
             Session session = getSession();
 
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -200,7 +203,10 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             Root<PSDbCookieConsent> root = criteriaQuery.from(PSDbCookieConsent.class);
             criteriaQuery.select(root);
 
-            List<PSDbCookieConsent> cookieConsents = session.createQuery(criteriaQuery).getResultList();
+            List<PSDbCookieConsent> cookieConsents = session.createQuery(criteriaQuery).
+                    addQueryHint(QueryHints.HINT_READONLY).
+                    addQueryHint(QueryHints.HINT_CACHEABLE).
+                    getResultList();
 
             for (PSDbCookieConsent cookieConsent : cookieConsents) {
                 String s = cookieConsent.getSiteName();
@@ -231,7 +237,8 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             Criteria crit = session.createCriteria(PSDbCookieConsent.class);
             crit.add(Restrictions.eq("siteName", siteName));
             crit.setProjection(Projections.projectionList().add(Projections.property("serviceName")));
-            
+            crit.addQueryHint(QueryHints.HINT_READONLY).addQueryHint(QueryHints.HINT_CACHEABLE);
+
             @SuppressWarnings("unchecked")
             List<String> serviceNames = crit.list();
             
@@ -250,7 +257,7 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             return results;
         }
         catch (Exception e) {
-            throw new Exception("Error getting cookie consent entires for site: " + siteName, e);
+            throw new Exception("Error getting cookie consent entries for site: " + siteName, e);
         }
     }
 
@@ -270,7 +277,6 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
     }
 
     private Session getSession(){
-
         return sessionFactory.getCurrentSession();
 
     }
