@@ -35,7 +35,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -77,12 +77,12 @@ public class PSMetadataDao implements IPSMetadataDao
     /**
      * Logger for this class.
      */
-    private static Log log = LogFactory.getLog(PSMetadataDao.class);
+    private static final Log log = LogFactory.getLog(PSMetadataDao.class);
 
 
     private static PSHashCalculator hashCalculator = new PSHashCalculator();
 
-    private Pattern patternToGetDirectoryFromPagepath = Pattern.compile("(.+)/[^/]+");
+    private final Pattern patternToGetDirectoryFromPagepath = Pattern.compile("(.+)/[^/]+");
 
 
    // @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
@@ -101,7 +101,7 @@ public class PSMetadataDao implements IPSMetadataDao
             Query q = session.createQuery(hql);
             q.setParameterList("paths",pagepathHashes);
             q.executeUpdate();
-            tx.commit();;
+            tx.commit();
         }catch(Exception e){
             if(tx != null && tx.isActive()) {
                 tx.rollback();

@@ -262,6 +262,7 @@
                             </fileset>
                         </copy>
 
+
                         <copy todir="${install.dir}${staging.dir}/" verbose="true">
                             <fileset dir="${install.src}">
                                 <include name="*" />
@@ -412,8 +413,6 @@
                     </fileset>
                     </copy>
 
-
-
                     <copy todir="${install.dir}${staging.dir}" overwrite="true" force="true" verbose="true">
                         <fileset dir="${install.src}">
                             <include name="*" />
@@ -557,7 +556,6 @@
                         <replacevalue><![CDATA[]]></replacevalue>
                     </replace>
 
-
                     <if>
                         <and>
                             <equals arg1="@{type}" arg2="Staging"/>
@@ -573,6 +571,13 @@
                 </else>
             </if>
 
+            <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.sh" summary="yes"
+                     token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
+            </replace>
+
+            <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.bat" summary="yes"
+                     token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
+            </replace>
 
         </sequential>
     </macrodef>

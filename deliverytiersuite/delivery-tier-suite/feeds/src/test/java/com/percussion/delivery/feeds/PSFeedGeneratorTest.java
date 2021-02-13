@@ -24,7 +24,6 @@
 package com.percussion.delivery.feeds;
 
 import com.percussion.delivery.feeds.data.IPSFeedDescriptor;
-import com.percussion.delivery.feeds.data.FeedType;
 import com.percussion.delivery.feeds.data.PSFeedItem;
 import junit.framework.TestCase;
 import org.apache.commons.validator.routines.InetAddressValidator;
@@ -55,7 +54,7 @@ public class PSFeedGeneratorTest extends TestCase
         desc.setTitle("Test Feed");
         desc.setSite("TestSite");
         desc.setLink("http://www.testme.com");
-        desc.setFeedType(FeedType.RSS2);
+        desc.setFeedType("RSS2");
         desc.setDescription("This is a test feed description.");
         
         PSFeedItem item1 = new PSFeedItem();
@@ -94,7 +93,7 @@ public class PSFeedGeneratorTest extends TestCase
         
         private String title;
         private String description;
-        private FeedType feedType;
+        private String feedType;
         private String link;
         private String name;
         private String site;
@@ -110,7 +109,7 @@ public class PSFeedGeneratorTest extends TestCase
         /* (non-Javadoc)
          * @see com.percussion.feeds.data.IPSFeedDescriptor#getFeedType()
          */
-        public FeedType getType()
+        public String getType()
         {
             return feedType;
         }
@@ -174,7 +173,7 @@ public class PSFeedGeneratorTest extends TestCase
         /**
          * @param feedType the feedType to set
          */
-        public void setFeedType(FeedType feedType)
+        public void setFeedType(String feedType)
         {
             this.feedType = feedType;
         }
@@ -213,7 +212,7 @@ public class PSFeedGeneratorTest extends TestCase
         desc.setTitle("Test Feed");
         desc.setSite("TestSite");
         desc.setLink("http://www.testme.com");
-        desc.setFeedType(FeedType.RSS2);
+        desc.setFeedType("RSS2");
         desc.setDescription("This is a test feed description.");
 
         List<PSFeedItem> items = new ArrayList<PSFeedItem>();
@@ -222,7 +221,7 @@ public class PSFeedGeneratorTest extends TestCase
         desc.setTitle("Test Feed");
         desc.setSite("TestSite");
         desc.setLink("http://www.testme.com");
-        desc.setFeedType(FeedType.RSS2);
+        desc.setFeedType("RSS2");
         desc.setDescription("This is a test feed description.");
 
         PSFeedItem item1 = new PSFeedItem();

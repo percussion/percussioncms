@@ -31,7 +31,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -341,6 +340,17 @@ public class PSSecurityUtility {
           return result;
        }
 
+    /**
+     * Will return an instance of secure random.  Will attempt to return a StrongSecureRandom first
+     * but will return a standard SecureRandom if Strong is unavailable.  May return null if
+     * secure random cannot be initialized.
+     *
+     * @return
+     */
+    public static SecureRandom getSecureRandom(){
+        SecureRandom ret = new SecureRandom();
+        return ret;
+    }
        
        private PSProperties getServerProperties() {
            File propFile = PSProperties.getConfig(ENTRY_NAME, PROPS_SERVER,
@@ -389,6 +399,55 @@ public class PSSecurityUtility {
        
        private static PSProperties ms_serverProps = new PSProperties();
 
+    /**
+     * Utility to remove parameters from header.
+     * @param str
+     * @return
+     */
+    public static String removeSpecialCharactersFromHeader(String str) {
+           return str.replaceAll("[^a-zA-Z ]", "");
+    }
 
+    /**
+     * Utility to sanitize a string for use in a file system path under a specified path.
+     *
+     * @param str
+     * @return The sanitized string
+     */
+    public static String sanitizeStringForFileUnderPath(String containingPath, String str){
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
+    }
+
+    /**
+     * Utility to sanitize a string for use in a file system path
+     *
+     * @param str
+     * @return The sanitized string
+     */
+    public static String sanitizeStringForFileSystem(String str){
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
+    }
+
+    /**
+     * Utility to sanitize a string for use in a SQL statement
+     * @param str User provided string
+     * @return The sanitized string
+     */
+    public static String sanitizeStringForSQLStatement(String str){
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
+    }
+
+    /**
+     * Sanitizes a user provided string for use in HTML
+     * @param str a user provided string
+     * @return The sanitized string
+     */
+    public static String sanitizeStringForHTML(String str){
+        //TODO: Implement me!
+        throw new RuntimeException("Not Implemented!");
+    }
 
 }

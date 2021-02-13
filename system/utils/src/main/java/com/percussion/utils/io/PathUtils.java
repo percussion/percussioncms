@@ -40,6 +40,8 @@ import java.util.List;
 public class PathUtils {
 
     public static final String ROOT_FOLDER_CHECK_ITEM = "rxconfig";
+    public static final String USER_FOLDER_CHECK_ITEM = ".perc_config";
+
 
     private static ThreadLocal<File> threadRxRoot = new ThreadLocal<>();
 
@@ -54,7 +56,7 @@ public class PathUtils {
     /**
      * Name of system property storing Rhythmyx root directory name.
      * Used for testing.
-     * @see #getRxDir()
+     * @see #getRxDir(String)
      */
     public static final String DEPLOY_DIR_PROP = "rxdeploydir";
 
@@ -65,9 +67,16 @@ public class PathUtils {
      *
      * Auto detection may be overridden by calling the setRxDir method.
      *
+     * If the directory is not detected then the user.home system folder is returned.
+     *
+     * @param startDirectory Defaults to current working directory.  may be null
      */
-    public static File getRxDir()
+    public static File getRxDir(String startDirectory)
     {
+        String baseDir=startDirectory;
+        if(StringUtils.isEmpty(startDirectory)) {
+            baseDir = ".";
+        }
         File threadFile = threadRxRoot.get();
         if (RX_DIR==null && threadFile==null)
         {
@@ -86,9 +95,17 @@ public class PathUtils {
                         return file;
                     }
                     else{
-                        RX_DIR =  autoDetectRxInstallDir("."); //sta
-                        if(RX_DIR.isDirectory() && RX_DIR.getName().equals(ROOT_FOLDER_CHECK_ITEM)) {
-                            RX_DIR= RX_DIR.getParentFile();
+                        RX_DIR =  autoDetectRxInstallDir(new File(baseDir).getAbsolutePath());
+                        if(RX_DIR.isDirectory() && (RX_DIR.getName().equals(ROOT_FOLDER_CHECK_ITEM)
+                        ||
+                                RX_DIR.getName().equals(USER_FOLDER_CHECK_ITEM))) {
+
+                            if( RX_DIR.getName().equals(ROOT_FOLDER_CHECK_ITEM)){
+                                RX_DIR = RX_DIR.getParentFile();
+                            }else{
+                                RX_DIR = new File(String.format("%s%s%s", System.getProperty("user.home"),
+                                        File.separator, USER_FOLDER_CHECK_ITEM));
+                            }
                         }
                         log.info("RxDir set through detection of current path to "+RX_DIR.getAbsolutePath());
                     }
@@ -100,7 +117,12 @@ public class PathUtils {
 
     public static Path getRxPath()
     {
-        return getRxDir().toPath();
+        return getRxDir(null).toPath();
+    }
+
+    public static void clearRxDir(){
+        RX_DIR = null;
+        threadRxRoot.remove();
     }
 
     public static void setRxDir(File rxDir) {
@@ -147,20 +169,26 @@ public class PathUtils {
 
         if (path==null)
             throw new IllegalArgumentException("Cannot find ObjectStore directory or " + DEPLOY_DIR_PROP + " system property not set");
+
         File candidate = new File(path).getAbsoluteFile();
 
         File[] children = candidate.listFiles();
         for(int i = 0; i < children.length;i++){
-            if(children[i].isDirectory() && children[i].getName().equals(ROOT_FOLDER_CHECK_ITEM)){
-                return children[i];
+            if(children[i].isDirectory() && (children[i].getName().equals(ROOT_FOLDER_CHECK_ITEM)
+                    ||
+                    children[i].getName().equals(USER_FOLDER_CHECK_ITEM))){
+                    return children[i];
             }
         }
 
-        File newCandidate =  autoDetectRxInstallDir(candidate.getAbsoluteFile().getParent());
+        File newCandidate=null;
+        if(!StringUtils.isEmpty(candidate.getAbsoluteFile().getParent())) {
+             newCandidate = autoDetectRxInstallDir(candidate.getAbsoluteFile().getParent());
+        }
 
-        if(!newCandidate.exists() || !newCandidate.isDirectory() || newCandidate.getPath().equals(File.separator)){
-            log.warn("Unable to auto-detect the installation directory, defaulting to current directory.");
-            return new File(".");
+        if(newCandidate == null || !newCandidate.exists() || !newCandidate.isDirectory() || newCandidate.getPath().equals(File.separator)){
+            log.warn("Unable to auto-detect the installation directory, defaulting to user.home");
+            return new File(String.format("%s%s%s",System.getProperty("user.home"),File.separator,".perc_config"));
         }
 
         return newCandidate;
@@ -180,7 +208,7 @@ public class PathUtils {
         {
             throw new IllegalArgumentException("path may not be null");
         }
-        File item = new File(getRxDir(), path);
+        File item = new File(getRxDir(null), path);
         if (item.exists() == false)
         {
             throw new IllegalArgumentException("file does not exist: " + item.getAbsolutePath());

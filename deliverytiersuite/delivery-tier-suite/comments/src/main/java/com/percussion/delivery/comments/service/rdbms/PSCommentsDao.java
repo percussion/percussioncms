@@ -33,16 +33,14 @@ import com.percussion.delivery.comments.services.IPSCommentsDao;
 import com.percussion.delivery.comments.services.PSCommentsService;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.jpa.QueryHints;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -55,7 +53,6 @@ import java.util.Set;
  * @author erikserating
  *
  */
-@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
 {
 
@@ -71,27 +68,22 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
     {
         Session session = getSession();
 
-        try
-        {
             Criteria queryCriteria = session.createCriteria(PSComment.class);
             prepareCriteria(criteria, queryCriteria);
+            queryCriteria.addQueryHint(QueryHints.HINT_CACHEABLE).addQueryHint(QueryHints.HINT_READONLY);
             return queryCriteria.list();
-        }
-        finally
-        {
-           // session.close();
-        }
     }
 
 
-    public Set<String> findSitesForCommentIds(Collection<String> ids) throws Exception
+    @Transactional
+    public Set<String> findSitesForCommentIds(Collection<String> ids)
     {
         Collection<Long> longIds = new ArrayList<Long>(ids.size());
         for(String s : ids)
             longIds.add(Long.valueOf(s));
         String selectComments = "select site from PSComment where id in (:idList)";
         List<String> siteNames = (List<String>) this.getHibernateTemplate().findByNamedParam(selectComments, "idList", longIds);
-        return new HashSet<String>(siteNames);
+        return new HashSet<>(siteNames);
     }
 
     /*
@@ -101,7 +93,7 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
      * com.percussion.delivery.comments.service.rdbms.IPSCommentDao#save(com
      * .percussion.delivery.comments.data.IPSComment)
      */
-
+    @Transactional
     public void save(IPSComment comment) throws Exception
     {
         PSComment hComment = new PSComment(comment);
@@ -117,21 +109,17 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
      * com.percussion.delivery.comments.service.rdbms.IPSCommentDao#delete(java
      * .util.Collection)
      */
-    public void delete(Collection<String> commentIds) throws Exception
+    @Transactional
+    public void delete(Collection<String> commentIds)
     {
         Collection<Long> longIds = new ArrayList<Long>(commentIds.size());
         for(String s : commentIds)
             longIds.add(Long.valueOf(s));
         Session session = getSession();
-        try
-        {
-            session.createQuery("delete from PSComment where id in (:commentIds)").setParameterList("commentIds",
-                    longIds).executeUpdate();
-        }
-        finally
-        {
-            //session.close();
-        }
+
+        session.createQuery("delete from PSComment where id in (:commentIds)").setParameterList("commentIds",
+                longIds).executeUpdate();
+
     }
 
     /*
@@ -142,6 +130,7 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
      * (java.util.Collection,
      * com.percussion.delivery.comments.data.IPSComment.APPROVAL_STATE)
      */
+    @Transactional
     public void moderate(Collection<String> commentIds, APPROVAL_STATE newApprovalState) throws Exception
     {
         Collection<Long> longIds = new ArrayList<Long>(commentIds.size());
@@ -161,7 +150,6 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
         finally
         {
             session.flush();
-           // session.close();
         }
     }
 
@@ -172,15 +160,11 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
 
         try
         {
-            // FIXME: this query could lead to performance issues. All comments
-            // (from the specified site, of course) are loaded
-            // when getPagesWithComments is executed, to get all pages and do
-            // pagination.
-            // Maybe another table, "Pages", should be created to solve this.
             String stringQuery = "select pagePath, approvalState, count(*), viewed " + "from PSComment "
                     + "where site = :site " + "group by pagePath, approvalState, viewed ";
 
             Query query = session.createQuery(stringQuery);
+            query.setHint(QueryHints.HINT_CACHEABLE,true).setHint(QueryHints.HINT_READONLY,true);
             query.setParameter("site", site);
 
             List<Object[]> result = query.list();
@@ -197,12 +181,12 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
 
     }
 
-    public APPROVAL_STATE findDefaultModerationState(String site)
-            throws Exception {
+    @Transactional
+    public APPROVAL_STATE findDefaultModerationState(String site){
         Session session = getSession();
-        try
-        {
+
             Query query = session.createQuery("from PSDefaultModerationState where site = :site");
+            query.setHint(QueryHints.HINT_READONLY,true).setHint(QueryHints.HINT_CACHEABLE,true);
             query.setParameter("site", site);
             List<Object> result = query.list();
             APPROVAL_STATE state = APPROVAL_STATE.APPROVED;
@@ -211,28 +195,15 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
                 state = APPROVAL_STATE.valueOf(((IPSDefaultModerationState) result.get(0)).getDefaultState());
             }
             return state;
-
-        }
-        finally
-        {
-           // session.close();
-        }
     }
 
-    public void saveDefaultModerationState(String sitename, APPROVAL_STATE state)
-            throws Exception {
+    @Transactional
+    public void saveDefaultModerationState(String sitename, APPROVAL_STATE state){
         Session session = getSession();
-        try
-        {
+
             IPSDefaultModerationState st = new PSDefaultModerationState(sitename, state.toString());
             session.saveOrUpdate(st);
             session.flush();
-        }
-        finally
-        {
-          //  session.close();
-        }
-
     }
 
     /**

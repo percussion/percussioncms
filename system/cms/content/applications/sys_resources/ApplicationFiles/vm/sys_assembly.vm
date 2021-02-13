@@ -796,7 +796,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #if(! $cm1Version )##
 #set($cm1Version = "")##
 #end
-<script>(function() { jQuery.getDeliveryServiceBase = function(){ return '$dServiceBase';};jQuery.getCm1License = function(){ return '';};jQuery.getCm1Version = function(){ return '$!{cm1Version}';};})();</script>
+<script>(function() { jQuery.getDeliveryServiceBase = function(){ return '$dServiceBase';};jQuery.getCm1License = function(){ return 'deprecated-opensource';};jQuery.getCm1Version = function(){ return '$!{cm1Version}';};})();</script>
 #end##
 
 

@@ -871,7 +871,7 @@ public class RxUpgrade
    static public String getRxRoot()
    {
       if(m_RxRootDir.isEmpty()){
-         m_RxRootDir = PathUtils.getRxDir().getAbsolutePath();
+         m_RxRootDir = PathUtils.getRxDir(null).getAbsolutePath();
       }
       return m_RxRootDir + File.separator;
    }

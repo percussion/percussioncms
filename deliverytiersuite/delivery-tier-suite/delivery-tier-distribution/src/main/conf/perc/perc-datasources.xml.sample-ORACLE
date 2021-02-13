@@ -37,12 +37,17 @@
             <prop key="hibernate.query.substitutions">${hibernate.query.substitutions}</prop>
             <prop key="hibernate.show_sql">false</prop>
             <prop key="hibernate.jdbc.batch_size">50</prop>
+            <prop key="hibernate.jdbc.batch_versioned_data">true</prop>
+            <prop key="hibernate.order_inserts">true</prop>
+            <prop key="hibernate.order_updates">true</prop>
             <prop key="hibernate.cache.use_query_cache">true</prop>
             <prop key="hibernate.cache.use_second_level_cache">true</prop>
 			<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>   
 			<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
 			<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.EhcacheRegionFactory</prop>
 			<prop key="hibernate.id.new_generator_mappings">${hibernate.id.new_generator_mappings}</prop>
+            <prop key="hibernate.query.in_clause_parameter_padding">true</prop>
+            <prop key="hibernate.criteria.literal_handling_mode">bind</prop>
          </props>
       </property>
    </bean>

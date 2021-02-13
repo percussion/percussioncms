@@ -37,6 +37,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
+import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -233,7 +234,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             }
         }
  
-        StringBuffer queryBuf = new StringBuffer();    
+        StringBuilder queryBuf = new StringBuilder();
         if(isCount)
         {
            queryBuf.append("select count(distinct me) from PSDbMetadataEntry as me");
@@ -291,13 +292,14 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         for (int i = 0; i < propsCrit.size(); i++)
              queryBuf.append(" join me.properties as p" + i);
         
-        if (entryCrit.size() > 0 || propsCrit.size() > 0)
+        if (!entryCrit.isEmpty() || ! propsCrit.isEmpty())
             queryBuf.append(" where");
         
         if((isSortingOnProperty))
         {
-            queryBuf.append(" prop.id.name = ");
-            queryBuf.append("'"+ PSMetadataQueryServiceHelper.getSortPropertyName(orderBy)+"'");
+            queryBuf.append(" prop.id.name = ").append("'")
+                    .append(PSMetadataQueryServiceHelper.getSortPropertyName(orderBy))
+                    .append("'");
         }
         String clauseTemplate = " me.{0} {1} :{2}";
         String inClauseTemplate = " me.{0} {1} (:{2})";
@@ -416,6 +418,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         
         q.setMaxResults(useLimit);
         q.setCacheable(true);
+        q.addQueryHint(QueryHints.HINT_READONLY);
         
         //If it is not for count then only pagination properties need to be set on the query
         if(!isCount && rawQuery.getMaxResults() >0 && rawQuery.getMaxResults() <= useLimit)

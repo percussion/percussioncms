@@ -86,6 +86,8 @@ public class PSEncryptor extends PSAbstractEncryptor {
      */
     public void forceReplaceKeyFile(byte[] newKey, boolean notifyListeners){
 
+        File installDir = PathUtils.getRxDir(null);
+
         generateNewKeyFile(this.secretKey,
                 Paths.get(this.secureDir.concat(SECURE_KEY_FILE)),
                 newKey,
@@ -124,8 +126,12 @@ public class PSEncryptor extends PSAbstractEncryptor {
         if(algorithm == null)
             algorithm = PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM;
 
+        if(keyLocation == null) {
+            keyLocation = PathUtils.getRxDir(null).getAbsolutePath() + SECURE_DIR;
+        }
 
         IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(algorithm);
+        File installDir = PathUtils.getRxDir(null);
         Path secureKeyFile = Paths.get(keyLocation + SECURE_KEY_FILE);
         byte[] secureKey=null;
         Path rotateFlag = Paths.get(keyLocation + ROTATE_FLAG_FILE);
@@ -378,7 +384,7 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
         try {
             if (ret == null) {
-                ret = Files.readAllBytes(Paths.get(String.format("%s.legacy-key",this.secureDir)));
+                ret = Files.readAllBytes(Paths.get(PathUtils.getRxDir(null) + SECURE_DIR + ".legacy-key"));
             }
         } catch (IOException e) {
             throw new PSEncryptionException("Unable to load .legacy-key from rxconfig/secure.",e);
