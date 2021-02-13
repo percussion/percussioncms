@@ -495,6 +495,27 @@
         <ant antfile="removeOldPatches.xml" target="removeOldPatches" inheritAll="true" inheritRefs="true" />
         <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
         <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
+        <antcall target="renameCamelCasedFontAwsomeFolder"  inheritall="true" inheritrefs="true"/>
+    </target>
+
+    <target name="renameCamelCasedFontAwsomeFolder">
+        <if>
+        <available file="${install.dir}/web_resources/cm/css/FontAwesome/" type="dir" />
+            <then>
+                <echo>Camel cased FonTAwesome folder found...</echo>
+                <echo>Renaming Font Awesome Folder....</echo>
+                <mkdir dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
+                <move todir="${install.dir}/web_resources/cm/css/tempFontAwesome/">
+                    <fileset dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
+                </move>
+                <delete dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
+                <mkdir dir="${install.dir}/web_resources/cm/css/fontawesome/"/>
+                <move todir="${install.dir}/web_resources/cm/css/fontawesome/">
+                    <fileset dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
+                </move>
+                <delete dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
+            </then>
+        </if>
     </target>
 
     <target name="backup">
