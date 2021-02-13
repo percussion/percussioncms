@@ -25,7 +25,7 @@
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <changeSet  author="Santosh"  id="updateDataTypes-PSMetadata-21021">
+    <changeSet  author="Santosh"  id="updateDataTypes-PSMetadata-21221">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="PERC_PAGE_METADATA"/>
         </preConditions>
@@ -79,7 +79,7 @@
           ALTER TABLE PERC_PAGE_METADATA CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
         </sql>
     </changeSet>
-    <changeSet  author="Santosh (generated)"  id="updateDataTypes-PSMetadataProperties-21021">
+    <changeSet  author="Santosh (generated)"  id="updateDataTypes-PSMetadataProperties-21221">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES"/>
         </preConditions>
@@ -103,7 +103,7 @@
             ALTER TABLE PERC_PAGE_METADATA_PROPERTIES CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
         </sql>
     </changeSet>
-    <changeSet author="natechadwick" id="dropOrphans-PSMetadataProperties-21021">
+    <changeSet author="natechadwick" id="dropOrphans-PSMetadataProperties-21221">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES"/>
             <and>
@@ -115,7 +115,7 @@
         </sql>
         <comment>Remove orphaned entries before applying foreign key.</comment>
     </changeSet>
-    <changeSet  author="Santosh (generated)"  id="addForeignKeyConstraint-PSMetadataProperties-21021">
+    <changeSet  author="Santosh (generated)"  id="addForeignKeyConstraint-PSMetadataProperties-21221">
         <preConditions onFail="MARK_RAN" >
             <tableExists tableName="PERC_PAGE_METADATA" />
             <and>
@@ -137,7 +137,7 @@
                                   referencedTableName="PERC_PAGE_METADATA"
                                   validate="true"/>
     </changeSet>
-    <changeSet  author="Santosh"  id="createIndex-PSMetadataProperties-EntryId">
+    <changeSet  author="Santosh"  id="createIndex-PSMetadataProperties-EntryId-21221">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
             <and>
@@ -157,7 +157,7 @@
             <column  name="ENTRY_ID"/>
         </createIndex>
     </changeSet>
-    <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-NAMEDATEVALUE">
+    <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-NAMEDATEVALUE-21221">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
             <and>
@@ -176,7 +176,7 @@
             <column name="DATEVALUE" />
         </createIndex>
     </changeSet>
-    <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-IX_NAME">
+    <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-IX_NAME-21221">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
             <and>
@@ -192,7 +192,7 @@
             <column name="NAME" />
         </createIndex>
     </changeSet>
-    <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-IX_NAMENUMBER">
+    <changeSet  author="Santosh"  id="createCompositeIndex-PSMetadataProperties-IX_NAMENUMBER-21221">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
             <and>
@@ -210,7 +210,7 @@
             <column name="NUMBERVALUE" />
         </createIndex>
     </changeSet>
-    <changeSet id="createCompositeIndex-PSMetadataProperties-IX_VALUEHASH" author="nate">
+    <changeSet id="createCompositeIndex-PSMetadataProperties-IX_VALUEHASH21221" author="nate">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="PERC_PAGE_METADATA_PROPERTIES" />
             <and>
