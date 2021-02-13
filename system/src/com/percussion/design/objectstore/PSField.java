@@ -3368,9 +3368,9 @@ public class PSField extends PSComponent
    /**
     * a boolean property that tells text cleanup that JSP and ASP tags 
     * may appear in the content. These are escaped by inclosing them in 
-    * processing instructions (PIs). These PIs have the name �psx-activetag�. 
+    * processing instructions (PIs). These PIs have the name "psx-activetag".
     * The assembly system will selectively remove PIs from around these 
-    * tags. It does this if the PIs name is �psx-activetag�. Note that 
+    * tags. It does this if the PIs name is "psx-activetag". Note that
     * PHP uses processing instructions already, and will therefore pass 
     * through the assembler untouched.
     */
