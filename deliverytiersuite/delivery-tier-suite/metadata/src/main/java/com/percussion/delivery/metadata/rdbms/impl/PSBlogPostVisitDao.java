@@ -28,18 +28,14 @@ import com.percussion.delivery.metadata.IPSBlogPostVisit;
 import com.percussion.delivery.metadata.IPSBlogPostVisitDao;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -55,7 +51,6 @@ import java.util.List;
 
 @Repository
 @Scope("singleton")
-@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
 
     private SessionFactory sessionFactory;
@@ -68,7 +63,7 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
     /**
      * Logger for this class.
      */
-    private static Log log = LogFactory.getLog(PSBlogPostVisitDao.class);
+    private static final Log log = LogFactory.getLog(PSBlogPostVisitDao.class);
 
     private static PSHashCalculator hashCalculator = new PSHashCalculator();
 
@@ -111,6 +106,7 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
         throw new UnsupportedOperationException();
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void save(Collection<IPSBlogPostVisit> visits) {
         Validate.notNull(visits, "visits cannot be null");
         if (visits.size() == 0)
@@ -142,14 +138,14 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
 
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void save(IPSBlogPostVisit visit) {
         Collection<IPSBlogPostVisit> visits = Collections.singletonList(visit);
         save(visits);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
     public List<String> getTopVisitedPages(String sectionPath, int days, int limit, String sortOrder) {
-        List<String> pagepaths = new ArrayList<String>();
         Session session = getSession();
         Calendar cal = Calendar.getInstance();
         /*
@@ -165,10 +161,12 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
         Root<PSDbBlogPostVisit> root = criteriaQuery.from(PSDbBlogPostVisit.class);
 
         Predicate dateCriteria = null;
-        if (days != -1)
+        if (days != -1) {
             dateCriteria = criteriaBuilder.greaterThanOrEqualTo(root.get("hitDate"), fromDate);
-        else
-        dateCriteria = criteriaBuilder.lessThanOrEqualTo(root.get("hitDate"), fromDate);
+        }else {
+            dateCriteria = criteriaBuilder.lessThanOrEqualTo(root.get("hitDate"), fromDate);
+        }
+
         sectionPath = sectionPath + "%";
 
 
@@ -180,13 +178,11 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
             criteriaQuery.orderBy(criteriaBuilder.asc(criteriaBuilder.sum(root.get("hitCount"))));
         }
 
-        List<String> results = session.createQuery(criteriaQuery).setMaxResults(limit).getResultList();
-        return results;
+        return session.createQuery(criteriaQuery).setMaxResults(limit).getResultList();
 
     }
 
-    @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
+    @Transactional(isolation=Isolation.READ_UNCOMMITTED, readOnly = true)
     public List<PSDbBlogPostVisit> findBlogPostVisit(String pagepath) {
         Validate.notEmpty(pagepath, "pagepath cannot be null nor empty");
 
@@ -196,12 +192,10 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
         Root<PSDbBlogPostVisit> root = criteriaQuery.from(PSDbBlogPostVisit.class);
         criteriaQuery.select(root).where(criteriaBuilder.like(root.get("pagepath"), pagepath));
 
-        List<PSDbBlogPostVisit> results = session.createQuery(criteriaQuery).getResultList();
-        return results;
+        return session.createQuery(criteriaQuery).getResultList();
     }
 
-    @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED,readOnly = true)
     public PSDbBlogPostVisit findBlogPostVisitByDate(String pagepath, Date date) {
         Validate.notEmpty(pagepath, "pagepath cannot be null nor empty");
 

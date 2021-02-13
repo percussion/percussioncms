@@ -74,7 +74,7 @@ public class PSEmailHelper implements IPSEmailHelper
         }
         if (StringUtils.isNotBlank(emailRequest.getCCList()))
         {
-            String[] emails = emailRequest.getToList().split(",");
+            String[] emails = emailRequest.getCCList().split(",");
             for (String email : emails)
             {
                 commonsMultiPartEmail.addCc(email);
@@ -82,7 +82,7 @@ public class PSEmailHelper implements IPSEmailHelper
         }
         if (StringUtils.isNotBlank(emailRequest.getBCCList()))
         {
-            String[] emails = emailRequest.getToList().split(",");
+            String[] emails = emailRequest.getBCCList().split(",");
             for (String email : emails)
             {
                 commonsMultiPartEmail.addBcc(email);

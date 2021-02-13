@@ -484,7 +484,7 @@ public class PSAuthentication extends PSComponent
             ).decrypt(data);
          } catch (PSEncryptionException e) {
             data = PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).INVALID_CRED(), key, data);
          }
 

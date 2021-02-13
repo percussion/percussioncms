@@ -275,7 +275,7 @@
                                 jQuery.PercServiceUtils.makeXdmJsonRequest(null,serviceUrl,jQuery.PercServiceUtils.TYPE_POST,function(status, results)
                                 {
                                     if(status == jQuery.PercServiceUtils.STATUS_SUCCESS){
-                                        tempDateArray = results.data.events;
+                                        tempDateArray = jQuery.PercServiceUtils.toJSON(results.data).events;
 
                                      // prepare a temp array of dates which has event associated with it                            
                                      for (var i = 0; i < tempDateArray.length; i++) {            
@@ -296,7 +296,9 @@
                                      });
                                     }
                                     else{
-                                      tempDateArray = callback([]);
+                                        if (typeof(callback) != "undefined"){
+                                                tempDateArray = callback([]);
+                                        }
                                     }
                                 }, dataObj);
                             #end

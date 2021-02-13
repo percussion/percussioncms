@@ -141,6 +141,7 @@ public class PSFeedsInfoQueue implements InitializingBean
         public void run()
         {
 
+            this.setName("PSFeedsInfoQueueRunner");
             PSDeliveryInfo prodService =  deliveryInfoService.findByService("perc-metadata-services","PRODUCTION");
             PSDeliveryInfo stagService =  deliveryInfoService.findByService("perc-metadata-services","STAGING");
 
@@ -175,7 +176,7 @@ public class PSFeedsInfoQueue implements InitializingBean
 
 
                     //Increased time - TODO: Re-architect this service
-                    Thread.sleep(60 * 5000);
+                    Thread.sleep(30000);
                 }
 
             } catch (InterruptedException ignore){
@@ -287,12 +288,13 @@ public class PSFeedsInfoQueue implements InitializingBean
         /**
          * In the event that the DTS was down or a network error
          * happened when posting the current key, reprocess the event
-         * so that we can be sure that the DTS servers have the curent
+         * so that we can be sure that the DTS servers have the current
          * key.
          */
-        private void checkKeyExchange(){
-            if(!keySuccessful)
+        private void checkKeyExchange() {
+            if (!keySuccessful && lastChangeEvent != null) {
                 propertyChange(lastChangeEvent);
+            }
         }
 
         /**
@@ -306,7 +308,7 @@ public class PSFeedsInfoQueue implements InitializingBean
 
 
             //Event fired when the secure key used for encryption is changed
-            if(evt.getPropertyName().equalsIgnoreCase(PSEncryptor.SECRETKEY_PROPNAME)){
+            if( evt != null && evt.getPropertyName().equalsIgnoreCase(PSEncryptor.SECRETKEY_PROPNAME)){
                     lastChangeEvent = evt;
                     List<PSDeliveryInfo> servers = deliveryInfoService.findAll();
                     List<String> processed = new ArrayList<String>();
