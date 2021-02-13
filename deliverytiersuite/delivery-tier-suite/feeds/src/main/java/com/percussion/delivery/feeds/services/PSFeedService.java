@@ -108,7 +108,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     }
 
     private PSHttpClient httpClient;
-    private final static Logger log = LogManager.getLogger(PSFeedService.class);
+    private static final Logger log = LogManager.getLogger(PSFeedService.class);
     private List<IPSServiceDataChangeListener> listeners = new ArrayList<IPSServiceDataChangeListener>();
 
     private final String[] PERC_FEEDS_SERVICE =
