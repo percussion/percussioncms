@@ -34,6 +34,7 @@ import com.percussion.utils.jdbc.PSJdbcUtils;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -74,7 +75,6 @@ public class PSTrimRxPubDocs extends PSAction
    public void execute()
    {
       String strRootDir = null;
-      Connection conn = null;
       PSProperties props = null;
       PSJdbcDbmsDef dbmsDef = null;
 
@@ -88,42 +88,28 @@ public class PSTrimRxPubDocs extends PSAction
          props = new PSProperties(strRootDir + IPSUpgradeModule.REPOSITORY_PROPFILEPATH);
          props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
          dbmsDef = new PSJdbcDbmsDef(props);
-         conn = RxLogTables.createConnection(props);
+         try(Connection conn = RxLogTables.createConnection(props)) {
 
-         if (conn == null)
-         {
-            PSLogger.logError(
-            "PSTrimRxPubDocs#execute : Could not establish connection with database");
-            PSLogger.logError(
-            "PSTrimRxPubDocs#execute : Table modifications aborted");
+            if (conn == null) {
+               PSLogger.logError(
+                       "PSTrimRxPubDocs#execute : Could not establish connection with database");
+               PSLogger.logError(
+                       "PSTrimRxPubDocs#execute : Table modifications aborted");
 
-            return;
-         }
+               return;
+            }
 
-         // Trim table if specified
-         if (m_bShouldTrim)
-         {
-            trimTable(conn, dbmsDef, m_strTrimDate);
+            // Trim table if specified
+            if (m_bShouldTrim) {
+               trimTable(conn, dbmsDef, m_strTrimDate);
+            }
          }
       }
       catch(Exception e)
       {
          PSLogger.logError("PSTrimRxPubDocs#execute : " + e.getMessage());
       }
-      finally
-      {
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-            }
-            conn = null;
-         }
-      }
+
    }
 
    /**
@@ -141,17 +127,18 @@ public class PSTrimRxPubDocs extends PSAction
 
       PSLogger.logInfo("Trimming " + RXPUBDOCS_TABLE + " prior to " + date);
 
-      String trimDate = date.replaceAll("/", "-");
+      String trimDate = date.replace("/", "-");
       String qualTableName = PSSqlHelper.qualifyTableName(RXPUBDOCS_TABLE,
             dbmsDef.getDataBase(), dbmsDef.getSchema(),
             dbmsDef.getDriver());
 
       String trimStmtSql = "DELETE FROM " + qualTableName + " WHERE " +
-      qualTableName + ".PUBDATE < '" + trimDate + "'";
+      qualTableName + ".PUBDATE < ?";
+
       String trimStmtOracle = "DELETE FROM " + qualTableName + " WHERE " +
-      qualTableName + ".PUBDATE < TO_DATE('" +
-      trimDate + "', 'MM-DD-YYYY')";
-      String trimStmt = "";
+      qualTableName + ".PUBDATE < TO_DATE(?, 'MM-DD-YYYY')";
+
+      String trimStmt;
       String driver = dbmsDef.getDriver();
       if (PSSqlHelper.isOracle(driver))
          trimStmt = trimStmtOracle;
@@ -166,9 +153,10 @@ public class PSTrimRxPubDocs extends PSAction
                driver.equals(PSJdbcUtils.DB2))
             conn.setAutoCommit(false);
 
-         Statement stmt = conn.createStatement();
-         rows = stmt.executeUpdate(trimStmt);
-
+         try(PreparedStatement stmt = conn.prepareStatement(trimStmt)) {
+            stmt.setString(1, trimDate);
+            rows = stmt.executeUpdate();
+         }
          if (PSSqlHelper.isOracle(driver) ||
                driver.equals(PSJdbcUtils.DB2))
          {
