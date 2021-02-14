@@ -57,7 +57,7 @@ public class PSProxyConfigLoader
    /**
     * Logger for this class
     */
-   public static Log log = LogFactory.getLog(PSProxyConfigLoader.class);
+   public static final Log log = LogFactory.getLog(PSProxyConfigLoader.class);
    
    /**
     * List of all proxy configurations loaded from the file
@@ -92,7 +92,7 @@ public class PSProxyConfigLoader
    {
       ProxyConfigurations config = getProxyConfig(configFile);
        PSProxyConfig proxyConfig;
-       String encrypterKey = PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).getPartOneKey();
+       String encrypterKey = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).getPartOneKey();
        boolean configChanged = false;
        
        for (ProxyConfig s : config.getConfigs())
@@ -128,18 +128,18 @@ public class PSProxyConfigLoader
       {
           try {
             decryptedPassword = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pwdVal);
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pwdVal);
           }catch (PSEncryptionException e){
-              decryptedPassword = PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              decryptedPassword = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
               ).decrypt(pwdVal, encrypterKey,null);
-              proxyConfig.setPassword(decryptedPassword);
           }
+          proxyConfig.setPassword(decryptedPassword);
           return false;
       }
 
        String enc = null;
        try {
-           enc = PSEncryptor.getInstance("AES", PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).encrypt(pwdVal);
+           enc = PSEncryptor.getInstance("AES", PathUtils.getRxDir("").getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).encrypt(pwdVal);
        } catch (PSEncryptionException e) {
            log.error("Error encrypting password: " + e.getMessage(), e);
            enc = "";
@@ -151,8 +151,8 @@ public class PSProxyConfigLoader
    }
 
    /**
-    * @param configFile
-    * @param config
+    * @param configFile configuration file
+    * @param config valid configuration
     */
    private void updateConfigFile(File configFile, ProxyConfigurations config)
    {
@@ -186,12 +186,9 @@ public class PSProxyConfigLoader
     */
    private ProxyConfigurations getProxyConfig(File configFile)
    {
-       InputStream in = null;
-       try
+       try(InputStream in = new FileInputStream(configFile))
        {
-           in = new FileInputStream(configFile);
-           ProxyConfigurations config = unmarshalWithValidation(in, ProxyConfigurations.class);
-           return config;
+           return unmarshalWithValidation(in, ProxyConfigurations.class);
        }
        catch (Exception e)
        {
@@ -207,10 +204,6 @@ public class PSProxyConfigLoader
           }
           log.error("Error getting proxy server configurations from file: " +  msg);
           return new ProxyConfigurations();
-       }
-       finally
-       {
-           IOUtils.closeQuietly(in);
        }
    }
 
