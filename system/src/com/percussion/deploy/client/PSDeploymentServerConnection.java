@@ -1084,7 +1084,7 @@ public class PSDeploymentServerConnection
          return "";
 
       String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
-              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
       ).INVALID_DRIVER() :
          uid;
 
@@ -1093,7 +1093,7 @@ public class PSDeploymentServerConnection
          return PSEncryptor.getInstance(ENC_ALGO,SECURE_DIR).decrypt(pwd);
       } catch (PSEncryptionException e) {
          return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).INVALID_CRED(), key, pwd);
       }
 

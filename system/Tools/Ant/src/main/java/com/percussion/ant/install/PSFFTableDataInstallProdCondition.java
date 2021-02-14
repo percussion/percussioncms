@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -115,18 +116,21 @@ implements Condition
                   
                   String queryStmt = "SELECT CONTENTID FROM " + qualTableName;
                   
-                  Statement stmt = conn.createStatement();
-                  rs = stmt.executeQuery(queryStmt);
-                  
-                  if ((rs != null) && (rs.next()))
-                     isFFTableDataInstall = true;
+                  try(PreparedStatement stmt = conn.prepareStatement(queryStmt)) {
+
+                     rs = stmt.executeQuery();
+
+                     if ((rs != null) && (rs.next()))
+                        isFFTableDataInstall = true;
+                  }
                }
             }  
             
          }
       }
-      catch (Throwable t)
+      catch (Exception e)
       {
+         log(e.getMessage());
       }
       finally
       {
@@ -138,6 +142,7 @@ implements Condition
             }
             catch (Exception e)
             {
+               log(e.getMessage());
             }
          }
          if (conn != null)
@@ -148,6 +153,7 @@ implements Condition
             }
             catch (SQLException e)
             {
+               log(e.getMessage());
             }
          }
       }

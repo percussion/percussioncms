@@ -60,6 +60,10 @@ public class PathUtils {
      */
     public static final String DEPLOY_DIR_PROP = "rxdeploydir";
 
+    public static File getRxDir(){
+        return getRxDir(null);
+    }
+
     /***
      * Provides a container neutral method for detecting the RX install directory.
      *

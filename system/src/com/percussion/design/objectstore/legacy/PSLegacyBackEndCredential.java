@@ -403,7 +403,7 @@ public class PSLegacyBackEndCredential extends PSComponent
    {
       try {
          return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).encrypt(pwd);
       } catch (PSEncryptionException e) {
          return "";
