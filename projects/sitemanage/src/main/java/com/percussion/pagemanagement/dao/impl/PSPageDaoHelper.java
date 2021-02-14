@@ -227,9 +227,9 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         }
         catch (SQLException e)
         {
-            String error = "Failed to get the fully qualified table name for 'CT_PAGE' or 'CONTENTSTATUS'";
-            log.error(error, e);
-            throw new PSRuntimeException(error, e);
+            log.error(ERROR_QUALIFY, PAGE_TABLE,CONTENT_TABLE);
+            log.debug(e);
+            throw new PSRuntimeException(e);
         }    
     }
 
@@ -326,9 +326,10 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         }
         catch (SQLException e)
         {
-            String error = "Failed to get the fully qualified table name for 'CT_PAGE' or 'CONTENTSTATUS'";
-            log.error(error, e);
-            throw new PSRuntimeException(error, e);
+
+            log.error(ERROR_QUALIFY, PAGE_TABLE,CONTENT_TABLE);
+            log.debug(e);
+            throw new PSRuntimeException(e);
         }
     }
     
@@ -414,7 +415,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         }
         catch (SQLException e)
         {
-            log.error("Failed to get the fully qualified table name for '{}' or '{}'", PAGE_TABLE,CONTENT_TABLE);
+            log.error(ERROR_QUALIFY, PAGE_TABLE,CONTENT_TABLE);
             throw new PSRuntimeException(e);
         }
     }
@@ -423,7 +424,8 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
     {
         return this.sessionFactory.getCurrentSession();
     }
-    
+
+    private static final String ERROR_QUALIFY = "Failed to get the fully qualified table name for '{}' or '{}'";
     private static final String PAGE_TABLE="CT_PAGE";
     private static final String CONTENT_TABLE = "CONTENTSTATUS";
     private static final String TEMPLATE_PARAM = "template";
