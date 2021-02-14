@@ -165,7 +165,7 @@ public class PSDesignerConnectionHandler implements IPSRequestHandler
       else if (isEncrypted) { // fix bug #Rx-99-12-0016
          try {
             loginPw = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).decrypt(loginPw);
          } catch (PSEncryptionException e) {
             loginPw = eatLasagna(loginId, sessId, loginPw);
@@ -247,11 +247,11 @@ public class PSDesignerConnectionHandler implements IPSRequestHandler
       if ((str == null) || (str.equals("")))
          return "";
 
-      int partone = PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      int partone = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
       ).OLD_SECURITY_KEY().hashCode();
       int parttwo;
       if (uid == null || uid.equals(""))
-         parttwo = PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         parttwo = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).OLD_SECURITY_KEY2().hashCode();
       else
          parttwo = uid.hashCode();

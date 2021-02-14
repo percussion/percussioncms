@@ -7,12 +7,15 @@ import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -38,6 +41,7 @@ public class SSLCertificateChecker {
     private  String slackUserName;
     private  boolean messagePostedFlag = false;
     private StringBuffer  messageBuffer = null;
+
     static Logger log = Logger.getLogger(SSLCertificateChecker.class.getName());
 
     public static void main(String[] args)  {
@@ -64,15 +68,13 @@ public class SSLCertificateChecker {
         if(url != null) {
             sslChecker.checkCertificate(urlStr,warningDays);
         }else{
-            BufferedReader reader;
-            try {
-                reader = new BufferedReader(new FileReader(urlStr));
+
+            try(BufferedReader reader = new BufferedReader(new FileReader(urlStr))) {
                 String line = reader.readLine();
                 while (line != null) {
                     sslChecker.checkCertificate(line,warningDays);
                     line = reader.readLine();
                 }
-                reader.close();
             } catch (IOException e) {
                 System.out.println("Invalid URL or File passed : " + urlStr);
             }
@@ -130,12 +132,11 @@ public class SSLCertificateChecker {
     private void initSlackProperties()  {
 
         try {
-
-           InputStream input = this.getClass().getResourceAsStream(SLACK_PROPERTY_FILE);
-           // InputStream input = new FileInputStream(new File(SLACK_PROPERTY_FILE));
-            Properties prop = new Properties();
-            // load a properties file
-            prop.load(input);
+           Properties prop = new Properties();
+           try(InputStream input = this.getClass().getResourceAsStream(SLACK_PROPERTY_FILE)) {
+               // load a properties file
+               prop.load(input);
+           }
             slackUrlStr = prop.getProperty("url");
             URI uri = URI.create(slackUrlStr);
             slackUrl = uri.toURL();

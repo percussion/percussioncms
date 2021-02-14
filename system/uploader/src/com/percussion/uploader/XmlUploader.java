@@ -235,11 +235,11 @@ public class XmlUploader
                      {
                         try {
                            PSEncryptor.getInstance("AES",
-                                   PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                                   PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                            ).decrypt(m_loginPwd);
                         }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                            m_loginPwd = PSCryptographer.decrypt(
-                                   PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).OLD_SECURITY_KEY(),
+                                   PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).OLD_SECURITY_KEY(),
                                    m_loginId, m_loginPwd);
                         }
                      }

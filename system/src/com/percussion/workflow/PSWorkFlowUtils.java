@@ -2217,7 +2217,7 @@ public class PSWorkFlowUtils
     * Set the property value of the specified key.
     * 
     * @param key the key of the property, never <code>null</code>.
-    * @param name the name of the property, never <code>null</code>.
+    * @param value the name of the property, never <code>null</code>.
     */
    public static void setProperty(String key, String value)
    {
