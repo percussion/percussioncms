@@ -396,7 +396,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
 
         if(tags != null && tags.size() > 0)
         {
-            comment.setTags(new HashSet<String>(params.get(FORM_PARAM_TAGS)));
+            comment.setTags(new HashSet<>(params.get(FORM_PARAM_TAGS)));
         }
         try
         {

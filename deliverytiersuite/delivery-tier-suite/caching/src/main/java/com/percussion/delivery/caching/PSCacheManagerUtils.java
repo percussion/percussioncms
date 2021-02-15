@@ -49,7 +49,7 @@ public class PSCacheManagerUtils
    {
        if(request == null)
            throw new IllegalArgumentException("request cannot be null.");
-       List<PSInvalidateRequest> results = new ArrayList<PSInvalidateRequest>();
+       List<PSInvalidateRequest> results = new ArrayList<>();
        int themax = Math.max(max, 1);
        List<String> paths = request.getPaths();
        if(!paths.isEmpty() && paths.size() > max)

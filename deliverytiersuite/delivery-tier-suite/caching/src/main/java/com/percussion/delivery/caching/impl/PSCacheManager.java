@@ -99,7 +99,7 @@ public class PSCacheManager implements IPSCacheManager
      * qualified).
      */
     private Map<String, IPSCacheProviderPlugin> providersMap =
-        new HashMap<String, IPSCacheProviderPlugin>();
+        new HashMap<>();
     
     /**
      * Array of all provider properties who's values should be encrypted within the

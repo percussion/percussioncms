@@ -67,7 +67,7 @@ public class PSCacheConfig
     {
         if (cacheRegion == null)
         {
-            cacheRegion = new ArrayList<PSCacheRegion>();
+            cacheRegion = new ArrayList<>();
         }
         return this.cacheRegion;
     }
