@@ -87,7 +87,7 @@ public class PSFormData implements IPSFormData
             referencedColumnName = "ID"))
     @MapKeyColumn(name = "FIELD_NAME")
     @Column(name = "VALUE", length = 2048)
-    private Map<String, String> properties = new HashMap<String, String>();
+    private Map<String, String> properties = new HashMap<>();
 
     /**
      * 

@@ -117,7 +117,7 @@ public class PSFormDao extends HibernateDaoSupport implements IPSFormDao
             // because of limitations in JDBC/hibernate, we have to keep IN
             // clauses less than 1k elements
             String query = "update PSFormData set isExported = 'y' where id in (:ids)";
-            Collection<Long> values = new ArrayList<Long>();
+            Collection<Long> values = new ArrayList<>();
             for (IPSFormData form : forms)
             {
                 values.add(Long.valueOf(form.getId()));
@@ -194,7 +194,7 @@ public class PSFormDao extends HibernateDaoSupport implements IPSFormDao
     @SuppressWarnings("unchecked")
     public List<String> findDistinctFormNames()
     {
-        List<String> lowerNames = new ArrayList<String>();
+        List<String> lowerNames = new ArrayList<>();
         List<String> distinctNames = (List<String>) getHibernateTemplate().find(
                 "select distinct name from PSFormData order by name asc");
         Iterator<String> iter = distinctNames.iterator();

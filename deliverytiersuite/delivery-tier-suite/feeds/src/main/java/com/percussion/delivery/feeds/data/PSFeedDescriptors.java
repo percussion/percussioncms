@@ -35,7 +35,7 @@ import java.util.List;
 public class PSFeedDescriptors
 {
     @JsonDeserialize(as = ArrayList.class, contentAs = PSFeedDescriptor.class)
-   private List<IPSFeedDescriptor> descriptors = new ArrayList<IPSFeedDescriptor>();
+   private List<IPSFeedDescriptor> descriptors = new ArrayList<>();
    
    private String serviceUrl;
    private String serviceUser;

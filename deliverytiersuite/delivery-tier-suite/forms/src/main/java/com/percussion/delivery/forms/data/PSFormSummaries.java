@@ -42,12 +42,12 @@ import javax.xml.bind.annotation.XmlType;
 {"formsInfo"})
 public class PSFormSummaries
 {
-    private List<PSFormSummary> formsInfo = new ArrayList<PSFormSummary>();
+    private List<PSFormSummary> formsInfo = new ArrayList<>();
 
     public List<PSFormSummary> getSummaries()
     {
         if (formsInfo == null)
-            formsInfo = new ArrayList<PSFormSummary>();
+            formsInfo = new ArrayList<>();
         return formsInfo;
     }
 
