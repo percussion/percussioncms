@@ -85,7 +85,7 @@ public class PSFakeDataGenerator {
      * @return A list of FakeRegistrants
      */
     public static List<FakeRegistrant> getFakeRegistrations(int count) {
-        ArrayList<FakeRegistrant> ret = new ArrayList<FakeRegistrant>();
+        ArrayList<FakeRegistrant> ret = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(PSFakeDataGenerator.class.getResourceAsStream("/FakeData.csv")));
         StringTokenizer st = null;

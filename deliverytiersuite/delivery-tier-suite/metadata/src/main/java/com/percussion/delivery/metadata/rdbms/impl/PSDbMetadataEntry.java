@@ -97,7 +97,7 @@ public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,
             orphanRemoval = true, mappedBy = "entry", targetEntity = PSDbMetadataProperty.class)
-    private Set<PSDbMetadataProperty> properties = new HashSet<PSDbMetadataProperty>();
+    private Set<PSDbMetadataProperty> properties = new HashSet<>();
 
     /**
      * HashCalculator instance used to get the hash of the metadata entry's
@@ -256,7 +256,7 @@ public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
     {
         if(properties == null)
             return null;
-        Set<IPSMetadataProperty> results = new HashSet<IPSMetadataProperty>(properties.size());
+        Set<IPSMetadataProperty> results = new HashSet<>(properties.size());
         for(IPSMetadataProperty p : properties)
             results.add(p);
         return results;
@@ -269,7 +269,7 @@ public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
     {
         if(properties == null)
             this.properties = null;
-        Set<PSDbMetadataProperty> dbprops = new HashSet<PSDbMetadataProperty>();
+        Set<PSDbMetadataProperty> dbprops = new HashSet<>();
         for(IPSMetadataProperty p : properties)
         {
             if(p instanceof PSDbMetadataProperty)
