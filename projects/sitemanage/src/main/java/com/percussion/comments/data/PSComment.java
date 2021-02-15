@@ -142,7 +142,7 @@ public class PSComment extends PSAbstractDataObject implements IPSEditableItem {
      *            The date/time the comment was received by the delivery tier
      *            server. Cannot be <code>null</code>.
      */
-    public void setCommentCreateDate(String commentCreateDate) {
+    public void setCommentCreateDate(String commentCreateDate) throws DataServiceLoadException {
         Date formattedDate;
         try {
             formattedDate = getDateFromString(commentCreateDate);

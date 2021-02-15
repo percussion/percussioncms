@@ -28,6 +28,7 @@ import java.util.List;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSCatalogService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
@@ -58,7 +59,7 @@ public interface IPSResourceDefinitionService extends IPSCatalogService<PSResour
      * 
      * @return List of populated objects
      */
-    List<PSResourceDefinitionGroup> findAll() throws DataServiceLoadException, DataServiceNotFoundException;
+    List<PSResourceDefinitionGroup> findAll() throws DataServiceLoadException, DataServiceNotFoundException, IPSGenericDao.LoadException;
     
     /**
      * Finds all resource definitions.
@@ -85,7 +86,7 @@ public interface IPSResourceDefinitionService extends IPSCatalogService<PSResour
      * @return never <code>null</code>.
      * @throws PSResourceDefinitionNotFoundException
      */
-    PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException;
+    PSResourceDefinition findResource(String uniqueId) throws DataServiceNotFoundException, DataServiceLoadException;
     
     
     /**

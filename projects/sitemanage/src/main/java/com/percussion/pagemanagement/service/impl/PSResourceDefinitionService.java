@@ -62,7 +62,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
     /**
      * {@inheritDoc}
      */
-    public String createUniqueId(String groupId, String id) throws PSResourceDefinitionInvalidIdException
+    public String createUniqueId(String groupId, String id)
     {
         PSResourceDefinitionUniqueId uid = new PSResourceDefinitionUniqueId(groupId, id);
         return uid.getUniqueId();
@@ -76,10 +76,16 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
     /**
      * {@inheritDoc}
      */
+    @Override
     public PSResourceDefinitionGroup find(String id) throws DataServiceLoadException,
             PSResourceDefinitionGroupNotFoundException
     {
-        PSResourceDefinitionGroup rdg =  dao.find(id);
+        PSResourceDefinitionGroup rdg;
+        try {
+           rdg = dao.find(id);
+        } catch (LoadException e) {
+            throw new DataServiceLoadException(e.getMessage(),e);
+        }
         if (rdg == null)
             throw new PSResourceDefinitionGroupNotFoundException("No resource group found for id: " + id);
         return rdg;
@@ -88,8 +94,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
     /**
      * {@inheritDoc}
      */
-    public List<PSResourceDefinitionGroup> findAll() throws LoadException
-    {
+    public List<PSResourceDefinitionGroup> findAll() throws LoadException {
         return dao.findAll();
     }
     
@@ -98,7 +103,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * {@inheritDoc}
      */
     @Override
-    public List<PSResourceDefinition> findAllResources() throws DataServiceLoadException, DataServiceNotFoundException
+    public List<PSResourceDefinition> findAllResources()
     {
         return dao.findAllResources();
     }
@@ -106,8 +111,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
     /**
      * {@inheritDoc}
      */
-    public PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException
-    {
+    public PSResourceDefinition findResource(String uniqueId) throws DataServiceNotFoundException, DataServiceLoadException {
         PSParameterValidationUtils.rejectIfBlank("findResource", "uniqueId", uniqueId);
         PSResourceDefinition rd = findThemeCSSResource(uniqueId);
         if (rd != null) return rd;
@@ -159,14 +163,14 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * @param uniqueId valid unique id, never <code>null</code> or empty.
      * @return maybe <code>null</code> if no theme is found for the given unique id..
      */
-    private PSResourceDefinition findThemeCSSResource(String uniqueId) {
+    private PSResourceDefinition findThemeCSSResource(String uniqueId) throws DataServiceLoadException, DataServiceNotFoundException {
         PSResourceDefinitionUniqueId uid = new PSResourceDefinitionUniqueId(uniqueId);
         if (THEME_GROUP_NAME.equals(uid.getGroupId())) {
             PSThemeSummary sum = themeService.find(uid.getLocalId());
             if (sum != null) {
                 PSThemeResource themeResource = new PSThemeResource();
                 themeResource.setThemeSummary(sum);
-                if (sum != null && sum.getName() != null) {
+                if (sum.getName() != null) {
                     themeResource.setId(sum.getName());
                     themeResource.setGroupId(THEME_GROUP_NAME);
                     themeResource.setUniqueId(uid.getUniqueId());

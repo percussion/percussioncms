@@ -1722,6 +1722,7 @@ public class PSSecurityFilter implements Filter
       //share across all web apps
       ssoCookie.setPath("/");
       ssoCookie.setSecure(true);
+      ssoCookie.setHttpOnly(true);
       response.addCookie(ssoCookie);
 
 

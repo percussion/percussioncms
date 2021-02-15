@@ -89,7 +89,7 @@ public class PSFeedDescriptor implements IPSFeedDescriptor, Serializable
         this.title = descriptor.getTitle();
         this.description = descriptor.getDescription();
         this.link = descriptor.getLink();
-        this.type = descriptor.getType().toString();
+        this.type = descriptor.getType();
         this.query = descriptor.getQuery();
     }
     
@@ -237,12 +237,11 @@ public class PSFeedDescriptor implements IPSFeedDescriptor, Serializable
 		} else if (!name.equals(other.name))
 			return false;
 		if (site == null) {
-			if (other.site != null)
-				return false;
-		} else if (!site.equals(other.site))
-			return false;
-		return true;
-	}
+            return other.site == null;
+		} else {
+            return site.equals(other.site);
+        }
+    }
 
 	@Override
 	public String toString() {

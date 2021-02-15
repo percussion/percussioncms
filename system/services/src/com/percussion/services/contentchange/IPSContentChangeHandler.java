@@ -25,6 +25,7 @@ package com.percussion.services.contentchange;
 
 import com.percussion.cms.PSEditorChangeEvent;
 import com.percussion.cms.PSRelationshipChangeEvent;
+import com.percussion.share.dao.IPSGenericDao;
 
 /**
  * Handle changes to items in the system
@@ -40,7 +41,7 @@ public interface IPSContentChangeHandler
     * 
     * @param e The event, not <code>null</code>.
     */
-   public void handleEvent(PSEditorChangeEvent e);
+   public void handleEvent(PSEditorChangeEvent e) throws IPSGenericDao.SaveException;
 
    /**
     * Handle the supplied change to a relationship

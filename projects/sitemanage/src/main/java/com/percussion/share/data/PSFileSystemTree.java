@@ -26,23 +26,31 @@ package com.percussion.share.data;
 
 import java.io.File;
 import java.io.IOException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.percussion.share.data.PSFileSystemItem.PSFileSystemItemType;
 
+/**
+ * @deprecated Seems unused as of 8.0.2
+ */
+@Deprecated
 public class PSFileSystemTree implements IPSTree {
+
+	private static final Logger log = LogManager.getLogger(PSFileSystemTree.class);
 
 	private IPSTreeNode<PSFileSystemItem> root;
 	
 	public PSFileSystemTree(File f)  {
-		PSFileSystemTreeNode<PSFileSystemItem> root = new PSFileSystemTreeNode<PSFileSystemItem>();
-		root.setParent(null);
+		PSFileSystemTreeNode<PSFileSystemItem> rt = new PSFileSystemTreeNode<>();
+		rt.setParent(null);
 		try {
-			root.setValue(new PSFileSystemItem(f.getCanonicalPath(), PSFileSystemItemType.DIRECTORY));
+			rt.setValue(new PSFileSystemItem(f.getCanonicalPath(), PSFileSystemItemType.DIRECTORY));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug(e);
 		}
-		this.root = root;
+		this.root = rt;
 		initTree();
 	}
 
@@ -57,16 +65,18 @@ public class PSFileSystemTree implements IPSTree {
 		if(f.exists()){
 			
 		File[] files = f.listFiles();
-		for(int i=0;i<files.length;i++){
-			try {
-				PSFileSystemItem fi=null;
-				if(files[i].isFile())
-					fi = new PSFileSystemItem(files[i].getCanonicalPath(), PSFileSystemItem.PSFileSystemItemType.FILE);
-				else
-					fi = new PSFileSystemItem(files[i].getCanonicalPath(), PSFileSystemItem.PSFileSystemItemType.FILE);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if(files != null) {
+			for (int i = 0; i < files.length; i++) {
+				try {
+					PSFileSystemItem fi = null;
+					if (files[i].isFile())
+						fi = new PSFileSystemItem(files[i].getCanonicalPath(), PSFileSystemItem.PSFileSystemItemType.FILE);
+					else
+						fi = new PSFileSystemItem(files[i].getCanonicalPath(), PSFileSystemItem.PSFileSystemItemType.FILE);
+				} catch (IOException e) {
+					log.error(e.getMessage());
+					log.debug(e);
+				}
 			}
 		}
 		

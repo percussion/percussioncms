@@ -42,6 +42,7 @@ import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.data.PSItemProperties;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 
@@ -171,8 +172,7 @@ public class PSCommentsService implements IPSCommentsService
      * (non-Javadoc)
      * @see com.percussion.comments.service.IPSCommentsService#getCommentsSummary(java.lang.String)
      */
-    public PSCommentsSummary getCommentsSummary(String id)
-    {
+    public PSCommentsSummary getCommentsSummary(String id) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException {
         isNotBlank(id);
 
         PSCommentsSummary summary = new PSCommentsSummary();

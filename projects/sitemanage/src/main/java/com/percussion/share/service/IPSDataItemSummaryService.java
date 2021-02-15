@@ -39,8 +39,8 @@ public interface IPSDataItemSummaryService extends IPSItemSummaryService<PSDataI
      * @return never <code>null</code>, maybe empty.
      * @throws DataServiceLoadException if the item is not valid to have children or does not exist.
      */
-    List<PSDataItemSummary> findChildFolders(String id);
+    List<PSDataItemSummary> findChildFolders(String id) throws DataServiceLoadException;
 
-    PSDataItemSummary find(String id, String relationshipTypeName);
+    PSDataItemSummary find(String id, String relationshipTypeName) throws DataServiceLoadException;
 
 }

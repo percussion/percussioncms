@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.percussion.share.service.IPSDataService;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.logging.Log;
@@ -631,7 +632,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
          * @param page never <code>null</code>.
          * @return never <code>null</code>.
          */
-        protected List<WorkflowItem> getSharedAssetWorkflowItems(WorkflowItem page) {
+        protected List<WorkflowItem> getSharedAssetWorkflowItems(WorkflowItem page) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException {
             IPSGuid guid = page.guid;
             String newId = getIdMapper().getString(guid);
             Set<String> ids =  getWidgetAssetRelationshipService().getSharedAssets(newId);

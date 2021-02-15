@@ -82,7 +82,7 @@ public abstract class PSValidationException extends PSDataServiceException imple
      * This exception will be thrown if its invalid.
      * @return never <code>null</code>.
      */
-    public PSValidationException throwIfInvalid() {
+    public PSValidationException throwIfInvalid() throws PSValidationException {
         if (validationErrors != null && validationErrors.hasErrors()) {
             throw this;
         }

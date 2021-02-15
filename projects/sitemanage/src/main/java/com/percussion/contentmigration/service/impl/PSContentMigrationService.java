@@ -29,6 +29,7 @@ import com.percussion.assetmanagement.data.PSAssetDropCriteria;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
 import com.percussion.assetmanagement.data.PSOrphanedAssetSummary;
 import com.percussion.assetmanagement.service.IPSAssetService;
+import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.assetmanagement.service.impl.PSPreviewPageUtils;
 import com.percussion.contentmigration.converters.IPSContentMigrationConverter;
 import com.percussion.contentmigration.rules.IPSContentMigrationRule;
@@ -40,30 +41,29 @@ import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSPageTemplateService;
-import com.percussion.pagemanagement.service.IPSRenderService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.queue.IPSPageImportQueue;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSNameGenerator;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.service.impl.PSJsoupUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 public class PSContentMigrationService implements IPSContentMigrationService
 {
@@ -79,7 +79,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
     //Memebers
     private List<IPSContentMigrationRule> migrationRules;
     private List<IPSContentMigrationConverter> migrationConverters;
-    private Map<String, IPSContentMigrationConverter> converterMap = new HashMap<String, IPSContentMigrationConverter>();
+    private Map<String, IPSContentMigrationConverter> converterMap = new HashMap<>();
     private IPSPageTemplateService pageTemplateService;
     
     
@@ -101,8 +101,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
     
     @Override
     public void migrateContent(String siteName, String templateId, String refPageId, List<String> pageIds)
-            throws PSContentMigrationException
-    {
+            throws PSContentMigrationException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSSpringValidationException, IPSDataService.DataServiceSaveException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
         Validate.notEmpty(templateId, "templateId must not be empty for content migration");
         Validate.notEmpty(pageIds, "newPageIds must not be empty for content migration");
         migrateContentOnTemplateChange(templateId,refPageId, pageIds);
@@ -118,9 +117,8 @@ public class PSContentMigrationService implements IPSContentMigrationService
 
     @Override
     public void migrateContentOnTemplateChange(String templateId, String referencePageId, List<String> newPageIds)
-            throws PSContentMigrationException
-    {
-        Map<String,String> failedItems = new HashMap<String, String>();
+            throws PSContentMigrationException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceSaveException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSSpringValidationException {
+        Map<String,String> failedItems = new HashMap<>();
         Document refDoc = getReferenceDocument(templateId, referencePageId);
         PSTemplate template = templateService.load(templateId);
         for (String pageId : newPageIds)
@@ -169,9 +167,8 @@ public class PSContentMigrationService implements IPSContentMigrationService
 
     @Override
     public void migrateSameTemplateChanges(String templateId, List<String> pageIds)
-            throws PSContentMigrationException
-    {
-        Map<String,String> failedItems = new HashMap<String, String>();
+            throws PSContentMigrationException, IPSDataService.DataServiceSaveException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSSpringValidationException, IPSPageService.PSPageException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, IPSAssetService.PSAssetServiceException {
+        Map<String,String> failedItems = new HashMap<>();
         Document refDoc = getReferenceDocument(templateId, null);
         if(pageIds == null)
         {
@@ -184,8 +181,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
             //FB: ES_COMPARING_STRINGS_WITH_EQ  NC 1-16-16
             if(template.getContentMigrationVersion().equals(page.getTemplateContentMigrationVersion()))
             {
-                Object[] args = {templateId, pageId};
-                log.info(MessageFormat.format("Both template {0} and page {0} have same version skipping content migration.", args));
+                log.info("Both template {} and page {} have same version skipping content migration.",templateId,pageId);
             }
             if(itemWorkflowService.isCheckedOutToSomeoneElse(pageId))
             {
@@ -209,7 +205,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
             }
             else
             {
-                log.debug("Could not find any applicable widgets skpping migration process for page" + pageId);
+                log.debug("Could not find any applicable widgets skipping migration process for page {}" ,pageId);
                 pageService.updateMigrationEmptyWidgetFlag(pageId, false);
             }
             pageService.updateTemplateMigrationVersion(pageId);
@@ -231,7 +227,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
     @Override
     public List<String> getTemplatePages(String templateId)
     {
-        List<String> pageIds = new ArrayList<String>();
+        List<String> pageIds = new ArrayList<>();
         List<Integer>pgIds = pageTemplateService.findPageIdsByTemplate(templateId);
         for (Integer pgId : pgIds)
         {
@@ -246,8 +242,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
      * @param unusedAsset assumed not <code>null</code>
      * @return String content from the unused asset, may be null or empty.
      */
-    private String getUnUsedContent(PSOrphanedAssetSummary unusedAsset)
-    {
+    private String getUnUsedContent(PSOrphanedAssetSummary unusedAsset) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException {
         PSAsset asset = assetService.load(unusedAsset.getId());
         String content = null;
         if(asset.getType().equalsIgnoreCase("percRawHtmlAsset"))
@@ -268,9 +263,8 @@ public class PSContentMigrationService implements IPSContentMigrationService
      * @param refDoc assumed not <code>null</code>
      * @param applicableWidgets assumed not <code>null</code>
      */
-    private void findMatchingContent(PSPage page, PSTemplate template, Document refDoc, List<ApplicableWidget> applicableWidgets)
-    {
-        List<Document> unusedDocuments = new ArrayList<Document>();
+    private void findMatchingContent(PSPage page, PSTemplate template, Document refDoc, List<ApplicableWidget> applicableWidgets) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException {
+        List<Document> unusedDocuments = new ArrayList<>();
         Set<PSOrphanedAssetSummary> unusedAssets = PSPreviewPageUtils.getOrphanedAssetsSummaries(page, template);
         for (PSOrphanedAssetSummary unusedAsset : unusedAssets)
         {
@@ -325,12 +319,11 @@ public class PSContentMigrationService implements IPSContentMigrationService
      * @param pageId assumed not <code>null</code>
      * @return List of empty widgets, may be empty but never <code>null</code>.
      */
-    private List<ApplicableWidget> findEmptyWidgets(String templateId, String pageId)
-    {
+    private List<ApplicableWidget> findEmptyWidgets(String templateId, String pageId) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException {
         List<PSAssetDropCriteria> tplAssetDropCriteria = assetService.getWidgetAssetCriteria(templateId, false);
-        List<ApplicableWidget> applicableWidgets = new ArrayList<ApplicableWidget>();
-        List<String> tplWidgetIds = new ArrayList<String>();
-        List<String> tplContentWidgetIds = new ArrayList<String>();
+        List<ApplicableWidget> applicableWidgets = new ArrayList<>();
+        List<String> tplWidgetIds = new ArrayList<>();
+        List<String> tplContentWidgetIds = new ArrayList<>();
         for (PSAssetDropCriteria adc : tplAssetDropCriteria)
         {
             tplWidgetIds.add(adc.getWidgetId());
@@ -344,7 +337,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
             //If the widget is from template and it has content skip it. 
             if(tplContentWidgetIds.contains(adc.getWidgetId()))
                 continue;
-            List<String> wc = new ArrayList<String>();
+            List<String> wc = new ArrayList<>();
             wc.addAll(converterMap.keySet());
             wc.retainAll(adc.getSupportedCtypes());
             if(!adc.getExistingAsset() && converterMap.size() == wc.size() + adc.getSupportedCtypes().size())
@@ -414,8 +407,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
      * @param templateId assumed not <code>null</code>.
      * @param applicableWidgets assumed not <code>null</code> and empty.
      */
-    private void updatePage(String pageId, String templateId, List<ApplicableWidget> applicableWidgets)
-    {
+    private void updatePage(String pageId, String templateId, List<ApplicableWidget> applicableWidgets) throws IPSDataService.DataServiceSaveException, PSSpringValidationException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceNotFoundException {
         boolean hasEmptyWidgets = false;
         //if the source of the widget is page, add widget to the template region
         for (ApplicableWidget widget : applicableWidgets)
@@ -439,8 +431,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
      * @param pageId assumed not <code>null</code>.
      * @param applicableWidget assumed not <code>null</code>.
      */
-    public void createAndAssociateAsset(String pageId, ApplicableWidget applicableWidget)
-    {
+    public void createAndAssociateAsset(String pageId, ApplicableWidget applicableWidget) throws PSSpringValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, IPSDataService.DataServiceSaveException {
         PSAsset asset = new PSAsset();
         asset.setType(converterMap.get(applicableWidget.widgetDefId).getWidgetContentType());
         String newName = nameGenerator.generateLocalContentName();
@@ -492,7 +483,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
         }
     }
     
-    private static Log log = LogFactory.getLog(PSContentMigrationService.class);
+    private static Logger log = LogManager.getLogger(PSContentMigrationService.class);
 
 
 }

@@ -29,18 +29,18 @@ import com.percussion.share.validation.PSValidationErrorsBuilder;
 public class PSParameterValidationUtils
 {
 
-    public static void rejectIfNull(String method, String field, Object value) {
+    public static void rejectIfNull(String method, String field, Object value) throws PSValidationException {
         throwIfErrors(new PSValidationErrorsBuilder(method).rejectIfNull(field, value).build());
     }
     
-    public static void rejectIfBlank(String method, String field, String value) {
+    public static void rejectIfBlank(String method, String field, String value) throws PSValidationException {
         throwIfErrors(new PSValidationErrorsBuilder(method).rejectIfBlank(field, value).build());
     }
     
     public static PSValidationErrorsBuilder validateParameters(String method) {
         return new PSValidationErrorsBuilder(method);
     }
-    public static void throwIfErrors(PSValidationErrors pve) {
+    public static void throwIfErrors(PSValidationErrors pve) throws PSValidationException {
         new PSParametersValidationException(pve).throwIfInvalid();
     }
 }

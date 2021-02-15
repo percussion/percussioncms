@@ -53,6 +53,7 @@ import com.percussion.rest.assets.Flash;
 import com.percussion.rest.assets.IAssetAdaptor;
 import com.percussion.rest.assets.ImageInfo;
 import com.percussion.rest.errors.AssetNotFoundException;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.FolderNotFoundException;
 import com.percussion.rest.errors.RestErrorCode;
 import com.percussion.rest.errors.RestExceptionBase;
@@ -61,10 +62,15 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.data.PSWorkflow;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSDateUtils;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary.Category;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.importer.theme.PSAssetCreator;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.user.service.IPSUserService;
@@ -78,8 +84,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -97,6 +103,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -119,7 +126,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(AssetAdaptor.class);
+    public static final Logger log = LogManager.getLogger(AssetAdaptor.class);
 
     @Autowired
     private final IPSAssetDao assetDao;
@@ -164,8 +171,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     }
 
 
-    public Asset getSharedAssetByPath(URI baseURI, String path)
-    {
+    public Asset getSharedAssetByPath(URI baseURI, String path) throws BackendException {
         String folder = StringUtils.substringBeforeLast(path, "/");
         String filename = StringUtils.substringAfterLast(path, "/");
        
@@ -184,12 +190,15 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         }
         
         // TODO - Checkout item.
-        return this.psAssetToAsset(baseURI, this.assetDao.find(item.getId()));
+        try {
+            return this.psAssetToAsset(baseURI, this.assetDao.find(item.getId()));
+        } catch (IPSGenericDao.LoadException e) {
+            throw new BackendException(e.getMessage(),e);
+        }
     }
     
     @Override
-    public Collection<Asset> getSharedAssets(URI baseURI, String path, String type)
-    {
+    public Collection<Asset> getSharedAssets(URI baseURI, String path, String type) throws BackendException {
         checkAPIPermission();
 
         // Type OR Path must be specified, error if both are blank.
@@ -199,13 +208,13 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         }
         try
         {
-            path = URLDecoder.decode(path, "UTF-8");
+            path = URLDecoder.decode(path, StandardCharsets.UTF_8.name());
         }
         catch (UnsupportedEncodingException e1)
         {
-            e1.printStackTrace();
+            throw new BackendException(e1.getMessage(),e1);
         }
-        Collection<Asset> filteredAssets = new ArrayList<Asset>();
+        Collection<Asset> filteredAssets = new ArrayList<>();
         // If the type is requested, collect those then filter by path if
         // requested
         if (StringUtils.isNotBlank(type))
@@ -242,19 +251,30 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                 throw new AssetNotFoundException();
             }
 
-            PSAsset asset = this.assetService.load(item.getId());
+            PSAsset asset = null;
+            try {
+                asset = this.assetService.load(item.getId());
+            } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+               throw new BackendException(e.getMessage(),e);
+            }
             filteredAssets.add(this.psAssetToAsset(baseURI, asset));
         }
         return filteredAssets;
     }
 
     @Override
-    public Asset getSharedAsset(URI baseURI, String id)
-    {
+    public Asset getSharedAsset(URI baseURI, String id) throws BackendException {
         checkAPIPermission();
 
         notEmpty(id);
-        PSAsset asset = this.assetDao.find(id);
+        PSAsset asset;
+        try {
+            asset = this.assetDao.find(id);
+        } catch (IPSGenericDao.LoadException e) {
+            throw new BackendException(e.getMessage(),e);
+        }
         if (asset == null)
         {
             throw new AssetNotFoundException();
@@ -264,23 +284,32 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     }
 
     @Override
-    public Status deleteSharedAsset(String id)
-    {
+    public Status deleteSharedAsset(String id) throws BackendException {
         checkAPIPermission();
 
         notEmpty(id);
-        PSAsset asset = this.assetDao.find(id);
+        PSAsset asset;
+        try {
+            asset = this.assetDao.find(id);
+        } catch (IPSGenericDao.LoadException e) {
+            throw new BackendException(e.getMessage(),e);
+        }
         if (asset == null)
         {
             throw new AssetNotFoundException();
         }
-        this.assetService.delete(id);
+        try {
+            this.assetService.delete(id);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new BackendException(e.getMessage(),e);
+        }
         return new Status(200,"Deleted");
     }
 
     @Override
-    public Status deleteSharedAssetByPath(String path)
-    {
+    public Status deleteSharedAssetByPath(String path) throws BackendException {
         checkAPIPermission();
 
         notEmpty(path);
@@ -294,13 +323,18 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             throw new AssetNotFoundException();
         }
 
-        this.assetService.delete(item.getId());
+        try {
+            this.assetService.delete(item.getId());
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new BackendException(e.getMessage(),e);
+        }
         return new Status("Deleted");
     }
 
     @Override
-    public Asset createOrUpdateSharedAsset(URI baseURI, String path, Asset asset)
-    {
+    public Asset createOrUpdateSharedAsset(URI baseURI, String path, Asset asset) throws BackendException {
        
     	
     	PSPathItem item = null;
@@ -316,13 +350,21 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         // It exists and is an asset. Pass it to the update method
         return this.updateSharedAsset(baseURI, item.getId(), asset);
+
     }
 
     @Override
-    public Asset updateSharedAsset(URI baseURI, String id, Asset asset)
-    {
-        // TODO Can update change the Asset's workflow?
-        PSAsset oldPSAsset = this.assetService.load(id);
+    // TODO Can update change the Asset's workflow?
+    public Asset updateSharedAsset(URI baseURI, String id, Asset asset) throws BackendException {
+
+        PSAsset oldPSAsset;
+        try {
+            oldPSAsset = this.assetService.load(id);
+        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new BackendException(e.getMessage(),e);
+        }
         WorkflowInfo workflowInfo = this.getWorkflowInfo(oldPSAsset);
 
         String endState;
@@ -402,8 +444,12 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             }
         }
 
-        // Save down the object! Woo!
-        this.assetDao.save(oldPSAsset);
+        try {
+            // Save down the object! Woo!
+            this.assetDao.save(oldPSAsset);
+        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+            throw new BackendException(e.getMessage(),e);
+        }
 
         // Finish up the workflow stuff
         workflowInfo.setState(this.setWorkflowState(id, endState, new ArrayList<String>()));
@@ -422,8 +468,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     }
 
     @Override
-    public Asset createSharedAsset(URI baseURI, String path, Asset asset)
-    {
+    public Asset createSharedAsset(URI baseURI, String path, Asset asset) throws BackendException {
         PSAsset newAsset = new PSAsset();
         newAsset.setCategory(Category.ASSET);
         notBlank(asset.getName());
@@ -433,7 +478,6 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         newAsset.getFields().put(titleFieldName, asset.getName());
 
         newAsset.setType(asset.getType());
-        // newAsset.getFields().put(contentTypeFieldName, this.assetService.);
 
         if (asset.getWorkflow() == null)
         {
@@ -465,13 +509,13 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
            
                 String fieldname = this.getFileFieldByType(asset.getType());
       
-               // PSPurgableTempFile tmpFile = new PSPurgableTempFile("api", null, null, asset.getName(), "image/gif", null);
                PSPurgableTempFile tmpFile = new PSPurgableTempFile("api", null, null, asset.getName(), "image/gif", null);
                 
-                FileOutputStream fos = new FileOutputStream(tmpFile);
-                fos.write(PIXEL_BYTES);
-                fos.flush();
-                fos.close();
+                try(FileOutputStream fos = new FileOutputStream(tmpFile)) {
+                   fos.write(PIXEL_BYTES);
+                   fos.flush();
+                }
+
                 newAsset.getFields().put(fieldname, tmpFile);
   
               
@@ -505,10 +549,20 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         // TODO This looks like the value should be path not asset.getFolderPath
         newAsset.setFolderPaths(Arrays.asList(PSPathUtils.getFolderPath("/"+asset.getFolderPath())));
 
-        this.assetService.validate(newAsset);
+        try {
+            this.assetService.validate(newAsset);
+        } catch (PSSpringValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException();
+        }
 
         // Save it once.
-        newAsset = this.assetDao.save(newAsset);
+        try {
+            newAsset = this.assetDao.save(newAsset);
+        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+           throw new BackendException(e.getMessage(),e);
+        }
 
         /*
          * if (newAsset.getFields().containsKey("filename")) { String fieldname
@@ -519,7 +573,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         // Images save automatically with a hardcoded 50px width, if anything
         // else was specified, we want to update and save again.
-        if (newAsset.getType().equals("percImageAsset"))
+        if (newAsset.getType().equals(ASSET_TYPE_IMAGE))
         {
             if (asset.getThumbnail() != null)
             {
@@ -528,7 +582,11 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                     newAsset.getFields().put("img2_width", asset.getThumbnail().getWidth());
                     newAsset.getFields().put("img2_height", asset.getThumbnail().getHeight());
 
-                    newAsset = this.assetDao.save(newAsset);
+                    try {
+                        newAsset = this.assetDao.save(newAsset);
+                    } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+                        throw new BackendException(e.getMessage(),e);
+                    }
                 }
             }
         }
@@ -544,8 +602,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
     @Override
     public Asset uploadBinary(URI baseURI, String path, String assetTypeStr, InputStream inputStream,
-            String uploadFilename, String fileMimeType, boolean forceCheckOut)
-    {
+            String uploadFilename, String fileMimeType, boolean forceCheckOut) throws BackendException {
         checkAPIPermission();
         
         PSPathItem item = null;
@@ -579,11 +636,22 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         PSAbstractAssetRequest ar = new PSBinaryAssetRequest("/" + folder, assetType, filename, fileMimeType,
                 inputStream);
         if(item != null) { 
-        	
-        	resource = assetService.updateAsset(item.getId(), ar, forceCheckOut);
+        	try {
+                resource = assetService.updateAsset(item.getId(), ar, forceCheckOut);
+            } catch (IPSAssetService.PSAssetServiceException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+                throw new WebApplicationException();
+            }
         }
         else {
-        	resource = assetService.createAsset(ar);
+            try {
+                resource = assetService.createAsset(ar);
+            } catch (IPSAssetService.PSAssetServiceException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+                throw new WebApplicationException();
+            }
         }
         
         //Checkin the item before we leave.
@@ -597,8 +665,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     }
 
     @Override
-    public StreamingOutput getBinary(String path)
-    {
+    public StreamingOutput getBinary(String path) throws BackendException {
         checkAPIPermission();
 
         notEmpty(path);
@@ -625,7 +692,12 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         }
         
         // TODO - Checkout item.
-        PSAsset asset = this.assetDao.find(item.getId());
+        PSAsset asset=null;
+        try {
+            asset = this.assetDao.find(item.getId());
+        } catch (IPSGenericDao.LoadException e) {
+            throw new BackendException(e.getMessage(),e);
+        }
         if (asset == null)
         {
             throw new AssetNotFoundException();
@@ -634,7 +706,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         StreamingOutput out = null;
 
         String fieldname = this.getFileFieldByType(asset.getType());
-        if (asset.getType().equals("percImageAsset") && thumbRequest)
+        if (asset.getType().equals(ASSET_TYPE_IMAGE) && thumbRequest)
         {
             fieldname = "img2";
         }
@@ -661,11 +733,11 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
      */
     private String getFileFieldByType(String assetType)
     {
-        if (assetType.equals("percFileAsset") || assetType.equals("percFlashAsset"))
+        if (assetType.equals(ASSET_TYPE_FILE) || assetType.equals(ASSET_TYPE_FLASH))
         {
             return "item_file_attachment";
         }
-        if (assetType.equals("percImageAsset"))
+        if (assetType.equals(ASSET_TYPE_IMAGE))
         {
             return "img";
         }
@@ -696,7 +768,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         to.setFolderPath(StringUtils.substring(PSPathUtils.getFinderPath(from.getFolderPaths().get(0)), 1));
 
-        if (from.getType().equals("percImageAsset"))
+        if (from.getType().equals(ASSET_TYPE_IMAGE))
         {
             // Main Image
             ImageInfo image = new ImageInfo();
@@ -721,7 +793,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             to.setThumbnail(thumb);
 
         }
-        else if (from.getType().equals("percFileAsset"))
+        else if (from.getType().equals(ASSET_TYPE_FILE))
         {
             BinaryFile file = new BinaryFile();
             if (from.getFields().get("item_file_attachment_filename") != null)
@@ -737,7 +809,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         
         }
-        else if (from.getType().equals("percFlashAsset"))
+        else if (from.getType().equals(ASSET_TYPE_FLASH))
         {
             Flash flash = new Flash();
             if (from.getFields().get("item_file_attachment_filename") != null)
@@ -864,7 +936,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     
     
 	@Override
-	public Asset renameSharedAsset(URI baseUri, String site, String folder, String name, String newName) {
+	public Asset renameSharedAsset(URI baseUri, String site, String folder, String name, String newName) throws BackendException {
 		
 		 checkAPIPermission();
 
@@ -882,10 +954,17 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	            throw new FolderNotFoundException();
 	        }
 		
-		
-	        Asset a = getSharedAssetByPath(baseUri,folder +"/" + name);
-	        PSAsset update = this.assetService.load(a.getId());
-	        //Check it out
+		    Asset a = getSharedAssetByPath(baseUri, folder + "/" + name);
+
+            PSAsset update;
+
+	        try {
+                update = this.assetService.load(a.getId());
+           } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+             throw new BackendException(e.getMessage(),e);
+           }
+
+        //Check it out
 	        if (!workflowHelper.isCheckedOutToCurrentUser(update.getId()))
 	        {
 	            itemWorkflowService.forceCheckOut(update.getId());
@@ -898,28 +977,31 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	        //Some content types auto-populate title with the filename value so make sure that those match.
 	        fields.put("filename", newName);
 	        update.setFields(fields);
-	        
-	        update = this.assetService.save(update); 
-	        
-	        
-	        //Check it in
+
+	        try {
+                update = this.assetService.save(update);
+            } catch (IPSDataService.DataServiceNotFoundException | PSSpringValidationException | IPSDataService.DataServiceSaveException | IPSDataService.DataServiceLoadException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+                throw new WebApplicationException();
+            }
+
+        //Check it in
 	        if (workflowHelper.isCheckedOutToCurrentUser(update.getId()))
 	        {
 	            itemWorkflowService.checkIn(update.getId());
 	        }
 	        
-	        Asset ret = this.psAssetToAsset(baseUri,update);
-
-	        return ret;
+	        return this.psAssetToAsset(baseUri,update);
 	        
 	}
 
 	@Override
-	public List<String> nonADACompliantImagesReport(URI baseUri) {
+	public List<String> nonADACompliantImagesReport(URI baseUri) throws BackendException {
 		
 	    checkAPIPermission();
 		 
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		List<PSImageAssetReportLine> images;
 		
 		try {
@@ -942,10 +1024,10 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	}
 
 	@Override
-	public List<String> nonADACompliantFilesReport(URI baseUri) {
+	public List<String> nonADACompliantFilesReport(URI baseUri) throws BackendException {
 		 checkAPIPermission();
 		 
-			List<String> ret = new ArrayList<String>();
+			List<String> ret = new ArrayList<>();
 			List<PSFileAssetReportLine> files;
 			
 			try {
@@ -966,10 +1048,10 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	}
 
 	@Override
-	public List<String> allImagesReport(URI baseUri) {
+	public List<String> allImagesReport(URI baseUri) throws BackendException {
 		 checkAPIPermission();
 		 
-			List<String> ret = new ArrayList<String>();
+			List<String> ret = new ArrayList<>();
 			List<PSImageAssetReportLine> images;
 			
 			try {
@@ -992,10 +1074,10 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	}
 
 	@Override
-	public List<String> allFilesReport(URI baseUri) {
+	public List<String> allFilesReport(URI baseUri) throws BackendException {
 		checkAPIPermission();
 		 
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		List<PSFileAssetReportLine> files;
 		
 		try {
@@ -1046,7 +1128,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 		int ctr = counter;
 		
 		PSPathItem pi = pathService.find(path);
-		Set<String> workflowList = new HashSet<String>();
+		Set<String> workflowList = new HashSet<>();
 		if(pi != null){
 		
 			List<PSPathItem> children = pathService.findChildren(path);
@@ -1090,11 +1172,11 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
 	@Override
 	public List<String> previewAssetImport(URI baseUri, String osFolder, String assetFolder, boolean replace,
-			boolean onlyIfDifferent, boolean autoApprove) {
+			boolean onlyIfDifferent, boolean autoApprove) throws BackendException {
 	
 		checkAPIPermission();
 		
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 	
 		//Verify that the os path exists and that it is a directory
 		File f = new File(osFolder);

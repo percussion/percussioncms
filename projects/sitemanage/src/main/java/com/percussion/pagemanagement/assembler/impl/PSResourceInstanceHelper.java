@@ -56,8 +56,10 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.IPSLinkableContentItem;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
@@ -71,8 +73,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -121,7 +123,7 @@ public class PSResourceInstanceHelper
      * @return never <code>null</code>, maybe empty.
      */
     @SuppressWarnings("unchecked")
-    private List<PSResourceLinkAndLocation> executeResourceLinkScript(PSResourceInstance resourceInstance, String script) {
+    private List<PSResourceLinkAndLocation> executeResourceLinkScript(PSResourceInstance resourceInstance, String script) throws IPSAssetService.PSAssetServiceException {
         notNull(resourceInstance, "resourceInstance");
         notEmpty(script, "script");
         if(log.isDebugEnabled()) {
@@ -134,13 +136,13 @@ public class PSResourceInstanceHelper
             jexlEvaluator.bind("$perc", perc);
             IPSScript jexlScript = PSJexlEvaluator.createScript(script);
             Object rvalue = jexlEvaluator.evaluate(jexlScript);
-            if (rvalue instanceof List && rvalue != null) {
+            if (rvalue instanceof List ) {
                 List<PSResourceLinkAndLocation> links = (List) rvalue;
                 Validate.allElementsOfType(links, PSResourceLinkAndLocation.class);
                 return links;
             }
             else if (rvalue instanceof PSResourceLinkAndLocation) {
-                List<PSResourceLinkAndLocation> links = new ArrayList<PSResourceLinkAndLocation>();
+                List<PSResourceLinkAndLocation> links = new ArrayList<>();
                 links.add((PSResourceLinkAndLocation) rvalue);
             }
             else {
@@ -152,7 +154,7 @@ public class PSResourceInstanceHelper
         }
         catch (Exception e)
         {
-            throw new RuntimeException("Error executing link script for resource instance: " + resourceInstance, e);
+            throw new IPSAssetService.PSAssetServiceException("Error executing link script for resource instance: " + resourceInstance, e);
         }
     }
     
@@ -175,7 +177,7 @@ public class PSResourceInstanceHelper
      * @return never <code>null</code>.
      * @throws RuntimeException if the folder path for resource is invalid.
      */
-    private String getPublishLocationFolderPath(PSResourceInstance r) {
+    private String getPublishLocationFolderPath(PSResourceInstance r) throws DataServiceNotFoundException {
         notNull(r, "r");
         String path = r.getItem().getFolderPath();
         path = path == null ? r.getLinkContext().getFolderPath() : path;
@@ -217,20 +219,17 @@ public class PSResourceInstanceHelper
      * @param r never <code>null</code>.
      * @return never <code>null</code>.
      */
-    private PSSiteSummary resolveSite(PSResourceInstance r) {
+    private PSSiteSummary resolveSite(PSResourceInstance r) throws DataServiceNotFoundException {
         if (r.getSite() != null) return r.getSite();
         PSSiteSummary site = r.getLinkContext().getSite();
-        try {
-            site = siteDataService.findByPath(r.getItem().getFolderPath());
-        }
-        catch (DataServiceNotFoundException e) {
-        }
+
+        site = siteDataService.findByPath(r.getItem().getFolderPath());
+
         notNull(site, "Either the link context or the item needs to belong a site");
         return site;
     }
     
-    public PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, PSAssetResource rd) 
-    {
+    public PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, PSAssetResource rd) throws IPSAssetService.PSAssetServiceException, DataServiceNotFoundException {
         PSResourceInstance r = new PSResourceInstance();
         if (item instanceof IPSLinkableContentItem) {
             r.setItem((IPSLinkableContentItem) item);
@@ -248,8 +247,7 @@ public class PSResourceInstanceHelper
         return r;
     }
     
-    private IPSLinkableContentItem getLinkableItem(String assetId, String folderPath) 
-    {
+    private IPSLinkableContentItem getLinkableItem(String assetId, String folderPath) throws IPSAssetService.PSAssetServiceException {
         PSAsset asset = loadPartialAsset(assetId);
         return new PSLinkableAsset(asset, folderPath);
     }
@@ -264,11 +262,11 @@ public class PSResourceInstanceHelper
      * 
      * @return the asset that includes summary properties only.
      */
-    public PSAsset loadPartialAsset(String assetId) {
+    public PSAsset loadPartialAsset(String assetId) throws IPSAssetService.PSAssetServiceException {
         return assetService.load(assetId, true);
     }
     
-    public IPSItemSummary findResourceAsset(String assetId) {
+    public IPSItemSummary findResourceAsset(String assetId) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         return assetService.find(assetId);
     }
     
@@ -278,7 +276,7 @@ public class PSResourceInstanceHelper
      * @param r never <code>null</code>.
      * @return never <code>null</code>, maybe empty.
      */
-    public List<PSResourceLinkAndLocation> getLinkAndLocations(PSResourceInstance r) {
+    public List<PSResourceLinkAndLocation> getLinkAndLocations(PSResourceInstance r) throws IPSAssetService.PSAssetServiceException {
         PSAssetResource rd = r.getResourceDefinition();
         PSLinkAndLocationsScript script = rd.getLinkAndLocationsScript();
         if (script != null && isNotBlank(script.getValue())) {
@@ -347,8 +345,7 @@ public class PSResourceInstanceHelper
      * @param pageId never <code>null</code>.
      * @return site  never <code>null</code>.
      */
-    public PSSiteSummary getSiteForPageId(String pageId)
-    {
+    public PSSiteSummary getSiteForPageId(String pageId) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException {
         /*
          * TODO should return page summary not whole page.
          */
@@ -374,6 +371,6 @@ public class PSResourceInstanceHelper
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSResourceInstanceHelper.class);
+    private static final Logger log = LogManager.getLogger(PSResourceInstanceHelper.class);
 }
 

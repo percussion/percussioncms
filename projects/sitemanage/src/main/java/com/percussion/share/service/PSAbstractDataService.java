@@ -23,22 +23,22 @@
  */
 package com.percussion.share.service;
 
-import static com.percussion.share.service.exception.PSParameterValidationUtils.*;
-import static java.text.MessageFormat.*;
-import static org.apache.commons.lang.Validate.*;
-
-import java.io.Serializable;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.IPSGenericDao.DeleteException;
 import com.percussion.share.dao.IPSGenericDao.LoadException;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
-import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.validation.PSValidationErrors;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.Serializable;
+
+import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfNull;
+import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.Validate.notNull;
 
 public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable> implements IPSDataService<FULL, SUM, PK>
 {
@@ -56,11 +56,11 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
         this.dao = dao;
     }
 
-    public PSValidationErrors validate(FULL obj) {
+    public PSValidationErrors validate(FULL obj) throws PSSpringValidationException {
         return PSBeanValidationUtils.getValidationErrorsOrFailIfInvalid(obj);
     }
     
-    public void delete(PK id) throws com.percussion.share.service.IPSDataService.DataServiceDeleteException
+    public void delete(PK id) throws PSDataServiceException
     {
         validateIdParameter("delete", id);
         try {
@@ -72,8 +72,7 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
         }
     }
 
-    public FULL load(PK id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException
-    {
+    public FULL load(PK id) throws DataServiceLoadException, DataServiceNotFoundException {
         validateIdParameter("load", id);
         
         try {
@@ -86,9 +85,8 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
         }
     }
 
-    public FULL save(FULL object) throws PSBeanValidationException,
-            com.percussion.share.service.IPSDataService.DataServiceSaveException
-    {
+    public FULL save(FULL object) throws PSSpringValidationException,
+            com.percussion.share.service.IPSDataService.DataServiceSaveException, DataServiceLoadException, DataServiceNotFoundException {
         try {
             validate(object);
             return getDao().save(object);

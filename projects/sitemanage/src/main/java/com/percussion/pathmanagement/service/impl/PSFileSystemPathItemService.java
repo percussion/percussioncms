@@ -48,6 +48,7 @@ import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.util.PSCharSets;
 
@@ -333,7 +334,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
     /**
      * Given a file extension, it returns the icon URL associated.
      * 
-     * @param extension The file extension.
+     * @param fileExtension The file extension.
      * @param isSys
      * @return The URL for the icon associated to the given file extension.
      */
@@ -396,7 +397,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
     }
 
     @Override
-    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSBeanValidationException
+    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSSpringValidationException
     {
         PSBeanValidationException errors = PSBeanValidationUtils.validate(item);
         errors.throwIfInvalid();
@@ -434,7 +435,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
         }
         catch (PSFolderOperationException e)
         {
-            // FIXME Fix the message here
+            // TODO Fix the message here
             errors.rejectValue("name", "renameFolderItem.unknownCause",
                     "Unknown problem when renaming the folder.");
             throw errors;
