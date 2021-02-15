@@ -27,6 +27,7 @@ import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResou
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSFileResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSFolderResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 
 /**
@@ -40,7 +41,7 @@ import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDe
 public interface IPSResourceDefinitionVisitor
 {
     
-    public void visit(PSAssetResource resource);
+    public void visit(PSAssetResource resource) throws PSDataServiceException;
     
     public void visit(PSFileResource resource);
     

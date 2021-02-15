@@ -160,6 +160,7 @@ public class PSBackEndTableProviderMetaData
     *
     * @throws     SQLException   If a SQL exception occurs.
     */
+   @Override
    public ResultSet getServers()
       throws SQLException
    {
@@ -197,6 +198,7 @@ public class PSBackEndTableProviderMetaData
     *
     * @throws     SQLException Never thrown
     */
+   @Override
    public ResultSet getObjectTypes()
          throws SQLException
    {
@@ -214,6 +216,7 @@ public class PSBackEndTableProviderMetaData
    }
 
    // see interface for description
+   @Override
    public ResultSet getObjects( String[] objectTypes, String [] filterPattern )
          throws SQLException
    {
@@ -245,21 +248,21 @@ public class PSBackEndTableProviderMetaData
             // Get an appropriate result set to come back for the caller
             stmt =  PSSQLStatement.getStatement(conn);
 
-            String uidSelect = m_uidSelect;
+            StringBuilder uidSelect = new StringBuilder(m_uidSelect);
             if (filterPattern != null && filterPattern.length > 0)
             {
-               uidSelect += " WHERE ";
+               uidSelect.append(" WHERE ");
                for (int i = 0; i < filterPattern.length; i++)
                {
-                  uidSelect += m_uidCol + " LIKE '";
-                  uidSelect += filterPattern[i];
-                  uidSelect += "'";
+                  uidSelect.append(m_uidCol).append(" LIKE '");
+                  uidSelect.append(filterPattern[i]);
+                  uidSelect.append("'");
                   if (i < filterPattern.length - 1)
-                     uidSelect += " OR ";
+                     uidSelect.append(" OR ");
                }
             }
 
-            ResultSet rs = stmt.executeQuery(uidSelect);
+            ResultSet rs = stmt.executeQuery(uidSelect.toString());
 
             // Fill the new kind of result set here (conn, stmt, etc)
             return new PSResultSetWrapper(rs, stmt, conn);
@@ -288,14 +291,20 @@ public class PSBackEndTableProviderMetaData
       }
    }
 
-   // see interface for description
+   /**
+    * @see
+    * @param objectTypes
+    * @return
+    * @throws SQLException
+    */
+   @Override
    public ResultSet getAttributes( String[] objectTypes )
          throws SQLException
    {
       PSResultSet rs = super.getEmptyAttributes();
       if ( m_userAttributes.length > 0 )
       {
-         Iterator types = PSIteratorUtils.iterator( objectTypes );
+         Iterator<String> types = PSIteratorUtils.iterator( objectTypes );
          Iterator attribs = PSIteratorUtils.iterator( m_userAttributes );
          while ( types.hasNext())
          {
@@ -307,7 +316,7 @@ public class PSBackEndTableProviderMetaData
             row[2] = "";
             while ( attribs.hasNext())
             {
-               row[1] = (String) attribs.next();
+               row[1] = attribs.next();
                rs.addRow( row );
             }
          }
@@ -322,6 +331,7 @@ public class PSBackEndTableProviderMetaData
     *
     * @return                  <code>true</code>
     */
+   @Override
    public boolean supportsGetServers()
    {
       return true;
@@ -333,6 +343,7 @@ public class PSBackEndTableProviderMetaData
     *
     * @return                  <code>true</code>
     */
+   @Override
    public boolean supportsGetObjects()
    {
       return true;
@@ -344,6 +355,7 @@ public class PSBackEndTableProviderMetaData
     *
     * @return                  <code>true</code>
     */
+   @Override
    public boolean supportsGetObjectTypes()
    {
       return true;

@@ -45,6 +45,7 @@ import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.sitemanage.data.PSSiteSummary;
@@ -94,8 +95,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     }
     
     @Override
-    public void handleEvent(PSEditorChangeEvent e)
-    {
+    public void handleEvent(PSEditorChangeEvent e) throws IPSGenericDao.SaveException {
         switch (e.getActionType())
         {
            case PSEditorChangeEvent.ACTION_TRANSITION:
@@ -139,8 +139,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     /**
      * @param e
      */
-    private void handleTransition(PSEditorChangeEvent e)
-    {
+    private void handleTransition(PSEditorChangeEvent e) throws IPSGenericDao.SaveException {
         IPSGuid guid = idMapper.getGuid(new PSLocator(e.getContentId()));
         String id = guid.toString();
         long contentTypeId = e.getContentTypeId();
@@ -196,8 +195,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     /**
      * @param e
      */
-    private void handleUpdate(PSEditorChangeEvent e)
-    {
+    private void handleUpdate(PSEditorChangeEvent e) throws IPSGenericDao.SaveException {
         IPSGuid guid = idMapper.getGuid(new PSLocator(e.getContentId()));
         String id = guid.toString();
         if (wfHelper.isLocalAsset(id))
@@ -211,7 +209,13 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
                 }
                 else if(wfHelper.isPage(owner) && isStagingItem(owner))
                 {
-                    doAdd(owner, PSContentChangeType.PENDING_STAGED, getPageSiteId(owner));
+                    try {
+                        doAdd(owner, PSContentChangeType.PENDING_STAGED, getPageSiteId(owner));
+                    } catch (IPSGenericDao.SaveException saveException) {
+                        log.error(saveException.getMessage());
+                        log.debug(saveException.getMessage(),saveException);
+                        //continue processing
+                    }
                 }
             }
         }
@@ -222,8 +226,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     }
 
 
-    private void handleAdd(String id, PSItemTypeEnum itemType, PSContentChangeType changeType, long contentTypeId)
-    {
+    private void handleAdd(String id, PSItemTypeEnum itemType, PSContentChangeType changeType, long contentTypeId) throws IPSGenericDao.SaveException {
         if (itemType.equals(PSItemTypeEnum.PAGE))
         {
             // page approved
@@ -264,9 +267,9 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     {
         // shared asset is approved (all live pages, all templates using it-their pages)
         Set<String> owners = widgetAssetRelationshipService.getRelationshipOwners(assetId);
-        Set<String> pageOwners = new HashSet<String>();
-        Set<String> pageOwnersStaging = new HashSet<String>();
-        Set<String> templateOwners = new HashSet<String>();
+        Set<String> pageOwners = new HashSet<>();
+        Set<String> pageOwnersStaging = new HashSet<>();
+        Set<String> templateOwners = new HashSet<>();
         for (String owner : owners)
         {
 
@@ -287,11 +290,23 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         // process page owners first, then templates as a page may be added and subsequently removed by a template change
         for (String owner : pageOwners)
         {
-        	doAdd(owner, getPageSiteId(owner));
+            try {
+                doAdd(owner, getPageSiteId(owner));
+            } catch (IPSGenericDao.SaveException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage());
+                //continue loop
+            }
         }
         for(String owner : pageOwnersStaging)
         {
-            doAdd(owner, PSContentChangeType.PENDING_STAGED, getPageSiteId(owner));
+            try {
+                doAdd(owner, PSContentChangeType.PENDING_STAGED, getPageSiteId(owner));
+            } catch (IPSGenericDao.SaveException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage());
+                //continue loop
+            }
         }
         for (String owner : templateOwners)
         {
@@ -309,22 +324,32 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
             String pageId = idMapper.getString(new PSLocator(id));
             if (isPublishedPage(pageId))
             {
-                doAdd(pageId, getPageSiteId(pageId));
+                try {
+                    doAdd(pageId, getPageSiteId(pageId));
+                } catch (IPSGenericDao.SaveException e) {
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage());
+                    //continue loop
+                }
             }
             else if(wfHelper.isItemInStagingState(id))
             {
-                doAdd(pageId, PSContentChangeType.PENDING_STAGED, getPageSiteId(pageId));
+                try {
+                    doAdd(pageId, PSContentChangeType.PENDING_STAGED, getPageSiteId(pageId));
+                } catch (IPSGenericDao.SaveException e) {
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage());
+                    //continue loop
+                }
             }
         }
     }
 
-    private void doAdd(String id, long... siteIds)
-    {
+    private void doAdd(String id, long... siteIds) throws IPSGenericDao.SaveException {
     	doAdd(id, PSContentChangeType.PENDING_LIVE, siteIds);
     	doAdd(id, PSContentChangeType.PENDING_STAGED, siteIds);
     }
-    private void doAdd(String id, PSContentChangeType changeType, long... siteIds)
-    {
+    private void doAdd(String id, PSContentChangeType changeType, long... siteIds) throws IPSGenericDao.SaveException {
         for (long siteId : siteIds)
         {
             if (siteId == -1L)
@@ -390,12 +415,12 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         {
             return -1L;
         }
-        return sites.get(0).getSiteId().longValue();
+        return sites.get(0).getSiteId();
     }
 
     private long[] getAssetSiteIds(String assetId)
     {
-        List<Long> siteList = new ArrayList<Long>();
+        List<Long> siteList = new ArrayList<>();
         String allowedSites = folderHelper.getRootLevelFolderAllowedSitesPropertyValue(assetId);
         if (!StringUtils.isBlank(allowedSites))
         {
@@ -433,7 +458,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         }
         
         // remove any sites that do xml or db pub for incremental
-        List<Long> results = new ArrayList<Long>();
+        List<Long> results = new ArrayList<>();
         for (Long siteId : siteList)
         {
             if (canPublishAssetIncremental(siteId))
@@ -448,10 +473,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     private boolean canPublishAssetIncremental(Long siteId)
     {
         PSPubServer pubServer = PSSitePublishDaoHelper.getDefaultPubServer(PSGuidUtils.makeGuid(siteId, PSTypeEnum.SITE));
-        if (pubServer.isXmlFormat() || pubServer.isDatabaseType())
-            return false;
-        
-        return true;
+        return !pubServer.isXmlFormat() && !pubServer.isDatabaseType();
     }
 
     private boolean isResource(long contentTypeId)

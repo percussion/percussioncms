@@ -26,12 +26,14 @@ package com.percussion.apibridge;
 
 import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.NotAuthorizedException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSWorkflow;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.utils.guid.IPSGuid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +57,13 @@ public class SiteManageAdaptorBase
 		this.itemWorkflowService = itemWorkflowService;
 	}
 	
-    protected void checkAPIPermission()
-    {
-        if (!userService.isAdminUser(userService.getCurrentUser().getName()))
-        {
-            throw new NotAuthorizedException();
+    protected void checkAPIPermission() throws BackendException {
+        try {
+            if (!userService.isAdminUser(userService.getCurrentUser().getName())) {
+                throw new NotAuthorizedException();
+            }
+        } catch (PSDataServiceException e) {
+            throw new BackendException(e.getMessage(),e);
         }
     }
     

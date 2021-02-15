@@ -26,6 +26,8 @@ package com.percussion.category.service;
 
 import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSSpringValidationException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -43,7 +45,7 @@ public interface IPSCategoryService {
 	 * Get a list of all the categories in the system
 	 * @return list of categories
 	 */
-	public PSCategory getCategoryList(String siteName);
+	public PSCategory getCategoryList(String siteName) throws PSDataServiceException;
 
 
     /**
@@ -51,7 +53,7 @@ public interface IPSCategoryService {
      * @param sitename - name of the site.
      * @return list of categories
      */
-	public PSCategory getCategoryTreeForSite(String sitename, String rootPath, boolean includeDeleted, boolean includeSelectable);
+	public PSCategory getCategoryTreeForSite(String sitename, String rootPath, boolean includeDeleted, boolean includeSelectable) throws PSDataServiceException;
     
 	/**
 	 * Method to add new / update / mark as deleted a category in the respective xml.
@@ -59,7 +61,7 @@ public interface IPSCategoryService {
 	 * @param category
 	 * @return the updated list of categories
 	 */
-	public PSCategory updateCategories(PSCategory category, String sitename);
+	public PSCategory updateCategories(PSCategory category, String sitename) throws PSSpringValidationException;
 	
 	/**
 	 * Method to get the information whether the category tab in the 'Administration' ui is being used by an admin.

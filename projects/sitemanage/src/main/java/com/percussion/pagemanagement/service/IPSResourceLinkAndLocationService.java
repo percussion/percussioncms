@@ -25,10 +25,12 @@ package com.percussion.pagemanagement.service;
 
 import java.util.List;
 
+import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.pagemanagement.data.PSRenderLinkContext;
 import com.percussion.pagemanagement.data.PSResourceInstance;
 import com.percussion.pagemanagement.data.PSResourceLinkAndLocation;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSLinkableItem;
 
 /**
@@ -57,7 +59,7 @@ public interface IPSResourceLinkAndLocationService
      * @throws PSResourceServiceException If the resource definition is not applicable for the item.
      */
     PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId)
-        throws PSResourceServiceException;
+            throws PSResourceServiceException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException;
     
     /**
      * Resolves link and locations for the resource instance.
@@ -68,6 +70,6 @@ public interface IPSResourceLinkAndLocationService
      * @see {@link PSResourceInstance#getLinkAndLocations()}
      */
     List<PSResourceLinkAndLocation> resolveLinkAndLocations(PSResourceInstance resourceInstance)
-        throws PSResourceServiceException;
+            throws PSResourceServiceException, IPSAssetService.PSAssetServiceException;
     
 }

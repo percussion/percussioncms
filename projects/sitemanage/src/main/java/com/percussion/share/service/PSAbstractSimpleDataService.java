@@ -48,7 +48,7 @@ public abstract class PSAbstractSimpleDataService<T, PK extends Serializable> ex
     
 
 
-    public List<T> findAll() {
+    public List<T> findAll() throws DataServiceLoadException {
         try {
             return getDao().findAll();
         } catch (LoadException e) {

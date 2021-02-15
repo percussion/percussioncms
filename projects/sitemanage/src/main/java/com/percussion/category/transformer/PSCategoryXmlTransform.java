@@ -49,19 +49,22 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.UUID;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 
 
 public class PSCategoryXmlTransform
 {
 	private static final String CATEGORIES_ROOT = "/Categories";
-    private static Log log = LogFactory.getLog(PSCategoryXmlTransform.class);
+	private static final String CAT_SEP="/";
+    private static final Logger log = LogManager.getLogger(PSCategoryXmlTransform.class);
 
     private Connection conn = null;
     private PSJdbcDbmsDef dbmsDef = null;
@@ -75,52 +78,44 @@ public class PSCategoryXmlTransform
       // Read the old category xml file
       PSTransformCategory category = getCategoryFromXml(fromFile);
 
-      PSCategory newFormatCategory = transformToNewFormat(category);
-      
-      createNewFormatXml(newFormatCategory, toFile);
-      
-      Map<String, String> categoryMap = createCategoryMap(newFormatCategory);
-      
-      log.debug("CategoryMap = "+categoryMap);
-      
-      updateDbCategories(categoryMap);
-     
+      if(category!=null) {
+          PSCategory newFormatCategory = transformToNewFormat(category);
+
+          createNewFormatXml(newFormatCategory, toFile);
+
+          Map<String, String> categoryMap = createCategoryMap(newFormatCategory);
+
+          log.debug("CategoryMap = {}", categoryMap);
+
+          updateDbCategories(categoryMap);
+      }
    }
    
    
    private void updateDbCategories(Map<String,String> categoryMap)
    {
-       Connection c = getConnection();
-       
-       
-        PreparedStatement st = null;
-      
-       try
+       try(Connection c = getConnection())
        {
            String categoryTable = PSSqlHelper.qualifyTableName("CT_PAGE_PAGE_CATEGORIES_SET");
            String categoryUpdate = "UPDATE " + categoryTable +" SET PAGE_CATEGORIES_TREE=? WHERE PAGE_CATEGORIES_TREE LIKE ?";
         
-           st = PSPreparedStatement.getPreparedStatement(c,
-                   categoryUpdate);
-           
-           for (Entry<String,String> entry : categoryMap.entrySet())
-           {
-               st.setString(1, entry.getValue());
-               st.setString(2, entry.getKey());
-               st.execute();
-               int update = st.getUpdateCount();
-               if (update>0)
-                   log.info("Updated "+update+" rows converting "+ entry.getKey() +" to "+ entry.getValue());
+           try(PreparedStatement st = PSPreparedStatement.getPreparedStatement(c,
+                   categoryUpdate)) {
+
+               for (Entry<String, String> entry : categoryMap.entrySet()) {
+                   st.setString(1, entry.getValue());
+                   st.setString(2, entry.getKey());
+                   st.execute();
+                   int update = st.getUpdateCount();
+                   if (update > 0)
+                       log.info("Updated {} rows converting {} to {}", update, entry.getKey(), entry.getValue());
+               }
            }
        }
        catch(Exception e)
        {
-           log.error("Error updating DB Categories to new format",e);
-       }
-       finally
-       {
-           try{st.close();} catch(Exception e){}
-           try{conn.close();} catch(Exception e){}
+           log.error("Error updating DB Categories to new format: {}",e.getMessage());
+           log.debug(e);
        }
        log.info("Finished updating categories in db to new structure");
        
@@ -129,7 +124,7 @@ public class PSCategoryXmlTransform
    
    private Map<String,String> createCategoryMap(PSCategory newFormatCategory)
    {
-       Map<String,String> itemTransformMap = new HashMap<String,String>();
+       Map<String,String> itemTransformMap = new HashMap<>();
        createCategoryMap(itemTransformMap, newFormatCategory.getTopLevelNodes(), CATEGORIES_ROOT, CATEGORIES_ROOT);
        return itemTransformMap;
    }
@@ -142,8 +137,8 @@ public class PSCategoryXmlTransform
            String title = node.getOldId();
            String id = node.getId();
            
-           String newNamePath = namePath + "/" + title;
-           String newIdPath =  idPath + "/" + id;
+           String newNamePath = namePath + CAT_SEP + title;
+           String newIdPath =  idPath + CAT_SEP + id;
            
           
            transformMap.put(newNamePath, newIdPath);
@@ -173,7 +168,8 @@ public class PSCategoryXmlTransform
             category = (PSTransformCategory) jaxbUnmarshaller.unmarshal(oldFile);
 
           } catch (JAXBException e) {
-              log.error("Error XML Parsing old categories file "+oldFile.getAbsolutePath() );
+              log.error("Error XML Parsing old categories file {} : {}",oldFile.getAbsolutePath(),e.getMessage() );
+              log.debug(e);
           }
          
       }
@@ -181,10 +177,10 @@ public class PSCategoryXmlTransform
       
    }
    
-   private PSCategory transformToNewFormat(PSTransformCategory category) {
+   private PSCategory transformToNewFormat(@NotNull PSTransformCategory category) {
       
       PSCategory newFormatCategory = new PSCategory();
-      List<PSCategoryNode> topNodes = new ArrayList<PSCategoryNode>();
+      List<PSCategoryNode> topNodes = new ArrayList<>();
       
       newFormatCategory.setTitle(category.getLabel());
       if(category.getTopNodes() != null && !category.getTopNodes().isEmpty()) {
@@ -194,7 +190,7 @@ public class PSCategoryXmlTransform
 
             newNode.setId((UUID.randomUUID()).toString());
             newNode.setTitle(node.getLabel());
-            newNode.setSelectable((node.getSelectable()!= null && node.getSelectable().equalsIgnoreCase("yes")) ? true : false);
+            newNode.setSelectable(node.getSelectable() != null && node.getSelectable().equalsIgnoreCase("yes"));
             newNode.setCreationDate(LocalDateTime.now());
             newNode.setCreatedBy("Transformation");
             newNode.setOldId(node.getId());
@@ -211,7 +207,7 @@ public class PSCategoryXmlTransform
    
    private List<PSCategoryNode> getChildNodes(PSTransformCategoryNode node) {
       
-      List<PSCategoryNode> childNodes = new ArrayList<PSCategoryNode>();
+      List<PSCategoryNode> childNodes = new ArrayList<>();
       
       for(PSTransformCategoryNode n : node.getChildNodes()) {
          
@@ -219,7 +215,7 @@ public class PSCategoryXmlTransform
          newChildNode.setId((UUID.randomUUID()).toString());
          newChildNode.setOldId(n.getId());
          newChildNode.setTitle(n.getLabel());
-         newChildNode.setSelectable((n.getSelectable()!= null && n.getSelectable().equalsIgnoreCase("yes"))  ? true : false);
+         newChildNode.setSelectable(n.getSelectable() != null && n.getSelectable().equalsIgnoreCase("yes"));
          newChildNode.setCreationDate(LocalDateTime.now());
          newChildNode.setCreatedBy("Transform");
          
@@ -243,10 +239,10 @@ public class PSCategoryXmlTransform
          jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
          jaxbMarshaller.marshal(category, toFile);
-        // jaxbMarshaller.marshal(category, System.out);
 
      } catch (JAXBException e) {
-        e.printStackTrace();
+        log.error(e.getMessage());
+        log.debug(e);
      }
       
    }
@@ -268,8 +264,8 @@ public class PSCategoryXmlTransform
        try {
            result = stat.executeQuery(sqlStat);
        } catch (Exception e) {
-           e.printStackTrace();
-           log.error("executeSqlStatement : " + e.getMessage());               
+           log.error("executeSqlStatement : {}", e.getMessage());
+           log.debug(e);
        } 
        return result;
    }
@@ -277,7 +273,6 @@ public class PSCategoryXmlTransform
    /**
     * Create a connection to the database
     * @return Connection Object may be null
-    * @throws Exception
     */
    public Connection getConnection()
    {
@@ -290,12 +285,16 @@ public class PSCategoryXmlTransform
                dbmsDef = new PSJdbcDbmsDef(repprops);
            }
            connection = PSJdbcTableFactory.getConnection(dbmsDef);
-           
-           log.debug("Connection Made: " + connection.toString());
+
+           if(connection!=null) {
+               String msg = connection.toString();
+               log.debug("Connection Made: {}" , msg);
+           }
        }
        catch(Exception e)
        {
-           log.warn(e.getMessage(),e);
+           log.warn(e.getMessage());
+           log.debug(e);
        }
        return connection;
    }
@@ -314,8 +313,8 @@ public class PSCategoryXmlTransform
            }
            catch(SQLException e)
            {
-               e.printStackTrace();
                log.warn(e.getMessage());
+               log.debug(e);
                return false;
            }
            conn = null; 

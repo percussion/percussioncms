@@ -23,14 +23,13 @@
  */
 package com.percussion.share.service.exception;
 
-public class PSDataServiceException extends RuntimeException {
+public class PSDataServiceException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
     
     public PSDataServiceException() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public PSDataServiceException(String message) {

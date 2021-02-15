@@ -32,6 +32,9 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemProperties;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.PSErrorException;
@@ -173,9 +176,9 @@ public interface IPSFolderHelper {
      * 
      * @return the item, never <code>null</code>.
      */
-    public PSPathItem findItemById(String id);
+    public PSPathItem findItemById(String id) throws IPSDataService.DataServiceLoadException, PSValidationException;
 
-    public PSPathItem findItemById(String id, String relationshipTypeName);
+    public PSPathItem findItemById(String id, String relationshipTypeName) throws IPSDataService.DataServiceLoadException, PSValidationException;
     
     /**
      * Gets the parent folder ID for the specified item.
@@ -209,7 +212,7 @@ public interface IPSFolderHelper {
      * @return the item which contains the access level for the current user, 
      * never <code>null</code>.
      */
-    public PSPathItem setFolderAccessLevel(PSPathItem item);
+    public PSPathItem setFolderAccessLevel(PSPathItem item) throws PSValidationException;
 
     /**
      * Sets the access level for current user to the specified items (siblings).
@@ -227,7 +230,7 @@ public interface IPSFolderHelper {
      * @param path never <code>null</code> or empty.
      * @return never <code>null</code>.
      */
-    public PathTarget pathTarget(String path);
+    public PathTarget pathTarget(String path) throws IPSDataService.DataServiceNotFoundException;
 
     /**
      * {@link #pathTarget(String)}
@@ -238,7 +241,7 @@ public interface IPSFolderHelper {
      *                      type is used or not.
      * @return never <code>null</code>.
      */
-    public PathTarget pathTarget(String path, boolean shouldRecycle);
+    public PathTarget pathTarget(String path, boolean shouldRecycle) throws IPSDataService.DataServiceNotFoundException;
     
     
     /**
@@ -320,10 +323,9 @@ public interface IPSFolderHelper {
          * @return never <code>null</code>.
          * @throws Exception if item does not exist.
          */
-        public IPSItemSummary getItem() throws Exception
-        {
+        public IPSItemSummary getItem() throws PSDataServiceException {
             if (item == null)
-                throw new RuntimeException("Item not found.");
+                throw new PSDataServiceException("Item not found.");
             return item;
         }
         
@@ -578,7 +580,7 @@ public interface IPSFolderHelper {
      * 
      * @return the access level, never <code>null</code>.
      */
-    public PSFolderPermission.Access getFolderAccessLevel(String id);
+    public PSFolderPermission.Access getFolderAccessLevel(String id) throws PSValidationException;
     
     /**
      * Gets the specified folder properties from its ID.
@@ -589,7 +591,7 @@ public interface IPSFolderHelper {
      * 
      * @throws PSErrorException If cannot be found the folder with the given path.
      */
-    public PSFolderProperties findFolderProperties(String id) throws PSErrorException;
+    public PSFolderProperties findFolderProperties(String id) throws PSErrorException, PSValidationException;
     
     /**
      * Saves the specified folder properties.

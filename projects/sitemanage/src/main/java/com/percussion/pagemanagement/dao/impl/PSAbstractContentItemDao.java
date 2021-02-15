@@ -58,7 +58,7 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
     protected abstract void convertToItem(T page, PSContentItem contentItem);
     
     protected void postItemSave(@SuppressWarnings("unused") T object, 
-            @SuppressWarnings("unused") PSContentItem contentItem) {
+            @SuppressWarnings("unused") PSContentItem contentItem) throws SaveException, LoadException {
     }
 
     public PSAbstractContentItemDao(IPSContentItemDao contentItemDao, IPSIdMapper idMapper)
@@ -73,14 +73,12 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
         return contentItemDao;
     }
 
-    @Override
-    public void delete(String id) throws com.percussion.share.dao.IPSGenericDao.DeleteException
-    {
+
+    public void delete(String id) throws DeleteException, LoadException {
         find(id);
         contentItemDao.delete(id);
     }
 
-    @Override
     public List<T> findAll() throws LoadException
     {
         
@@ -95,16 +93,14 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
         return results;
     }
 
-    @Override
-    public T find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException
+    public T find(String id) throws LoadException
     {
         notNull(id, "id");
         PSContentItem contentItem = contentItemDao.find(id);
         if (contentItem == null) return null;
         
         if ( ! getType().equals(contentItem.getType()) ) {
-            log.debug("Item is not of template type");
-            return null;
+           throw new LoadException("Type does not match!");
         }
         
         return getObjectFromContentItem(contentItem);
@@ -131,9 +127,8 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
         return object;        
     }
 
-    @Override
-    public T save(T object) throws com.percussion.share.dao.IPSGenericDao.SaveException
-    {
+
+    public T save(T object) throws SaveException, LoadException {
         PSContentItem item = new PSContentItem();
         item.setId(object.getId());
         item.setType(getType());

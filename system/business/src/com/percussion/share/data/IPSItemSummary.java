@@ -31,7 +31,6 @@ import java.util.List;
  * A low-level summary of an item in the system.
  * 
  * @author adamgent
- * @see PSItemSummaryUtils#copyProperties(IPSItemSummary, IPSItemSummary)
  *
  */
 public interface IPSItemSummary

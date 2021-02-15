@@ -62,6 +62,7 @@ public class PSMembershipLoginHandler extends SavedRequestAwareAuthenticationSuc
 	        {
 	            Cookie cookie = new Cookie(membershipConfig.getMembershipSessionCookieName(), sessionId);
 	            cookie.setSecure(true);
+	            cookie.setHttpOnly(true);
 	            cookie.setPath("/");
 	            response.addCookie(cookie);            
 	        }

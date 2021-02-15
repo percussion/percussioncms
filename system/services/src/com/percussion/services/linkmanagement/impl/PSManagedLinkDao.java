@@ -35,6 +35,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,8 +95,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
         return link;
     }
 
-    public void saveLink(PSManagedLink link)
-    {
+    public void saveLink(PSManagedLink link) throws IPSGenericDao.SaveException {
         Validate.notNull(link);
         if (link.getLinkId() == -1)
         {
@@ -119,16 +119,15 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
         }        
     }
 
-    @SuppressWarnings("unchecked")
     public PSManagedLink findLinkByLinkId(long linkId)
     {
         Session session = sessionFactory.getCurrentSession();
 
-            return (PSManagedLink) session.get(PSManagedLink.class,linkId);
+            return session.get(PSManagedLink.class,linkId);
 
     }
 
-    public void deleteLink(PSManagedLink link) throws Exception
+    public void deleteLink(PSManagedLink link)
     {
         Validate.notNull(link);
         Session session = sessionFactory.getCurrentSession();
@@ -214,7 +213,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
     {
        if(isEmpty(parentIds))
        {
-           return new ArrayList<PSManagedLink>();
+           return new ArrayList<>();
        }
        
        if (parentIds.size() < MAX_IDS)
@@ -224,10 +223,10 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
        else
        {
            // use pagination to avoid issues with some DB engines
-           List<PSManagedLink> results =  new ArrayList<PSManagedLink>();
+           List<PSManagedLink> results =  new ArrayList<>();
            for (int i = 0; i < parentIds.size(); i += MAX_IDS)
            {
-               int end = (i + MAX_IDS > parentIds.size()) ? parentIds.size() : i + MAX_IDS;
+               int end = Math.min(i + MAX_IDS, parentIds.size());
                // make the query
                results.addAll(findLinksByListOfParentIds(parentIds.subList(i, end)));
            }
@@ -254,10 +253,10 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
       Session session = sessionFactory.getCurrentSession();
 
      Query query = session
-           .createQuery("from PSManagedLink " + " where childId =  " + Integer.toString(childId));
-     List<PSManagedLink> results = query.list();
-     return results;
-
+           .createQuery("from PSManagedLink " + " where childId = :childid");
+     query.setInteger("childid", + childId);
+     query.addQueryHint(QueryHints.CACHEABLE);
+     return  query.list();
    }
     
 }

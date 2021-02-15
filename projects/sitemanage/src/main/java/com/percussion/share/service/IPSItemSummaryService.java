@@ -51,7 +51,7 @@ public interface IPSItemSummaryService<S extends IPSItemSummary> extends IPSCata
      * @param path never <code>null</code> or empty.
      * @return maybe <code>null</code> if there is not item at the given path.
      */
-    public String pathToId(String path);
+    public String pathToId(String path) throws IPSDataService.DataServiceNotFoundException;
     /**
      * Returns the id for the given path.
      * The path could be to an asset, page, or folder.
@@ -62,7 +62,7 @@ public interface IPSItemSummaryService<S extends IPSItemSummary> extends IPSCata
      * @param path never <code>null</code> or empty.
      * @return maybe <code>null</code> if there is not item at the given path.
      */
-    public String pathToId(String path, String relationshipTypeName);
+    public String pathToId(String path, String relationshipTypeName) throws IPSDataService.DataServiceNotFoundException;
     
     /**
      * Returns the items that are children to the given id.

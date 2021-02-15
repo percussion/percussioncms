@@ -23,13 +23,13 @@
  */
 package com.percussion.sitemanage.error;
 
-import com.percussion.error.PSRuntimeException;
+import com.percussion.error.PSException;
 
 /**
  * @author LucasPiccoli
  *
  */
-public class PSSiteImportException extends PSRuntimeException
+public class PSSiteImportException extends PSException
 {
     @Deprecated
     public PSSiteImportException(String message)

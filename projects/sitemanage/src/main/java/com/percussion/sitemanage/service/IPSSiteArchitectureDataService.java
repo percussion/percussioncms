@@ -26,10 +26,6 @@ package com.percussion.sitemanage.service;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.sitemanage.data.PSSiteArchitecture;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-
 /**
  * Site architecture data service class. This interface extends from
  * {@link IPSDataService}.
@@ -43,6 +39,5 @@ public interface IPSSiteArchitectureDataService extends
    /**
     * Returns the site site architecture object.
     */
-   public PSSiteArchitecture find(@PathParam("id")
-   String id) throws DataServiceLoadException;
+   public PSSiteArchitecture find(String id) throws DataServiceLoadException,DataServiceNotFoundException;
 }

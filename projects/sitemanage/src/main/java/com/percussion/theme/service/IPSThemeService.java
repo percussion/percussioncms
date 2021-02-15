@@ -25,10 +25,12 @@
 package com.percussion.theme.service;
 
 import com.percussion.share.service.IPSCatalogService;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSDataService.DataServiceSaveException;
 import com.percussion.share.service.IPSReadOnlyDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.theme.data.PSRegionCSS;
 import com.percussion.theme.data.PSRegionCssList;
 import com.percussion.theme.data.PSRichTextCustomStyle;
@@ -59,7 +61,7 @@ public interface IPSThemeService extends IPSCatalogService<PSThemeSummary, Strin
      * @throws DataServiceLoadException if the theme does not have a CSS file or multiple css files.
      * @throws DataServiceNotFoundException if the theme is not found.
      */
-    PSTheme load(String name) throws DataServiceLoadException, DataServiceNotFoundException;
+    PSTheme load(String name) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
     
     /**
      * Creates a new theme from an existing theme.  The newly created theme will be a copy of the existing theme.
@@ -97,7 +99,7 @@ public interface IPSThemeService extends IPSCatalogService<PSThemeSummary, Strin
      *
      * @throws DataServiceNotFoundException if the theme does not exist.
      */
-    void delete(String name) throws DataServiceNotFoundException;
+    void delete(String name) throws DataServiceNotFoundException, IPSDataService.DataServiceDeleteException;
     
     /**
      * Gets the root URL of the specified theme.
@@ -122,7 +124,7 @@ public interface IPSThemeService extends IPSCatalogService<PSThemeSummary, Strin
      * @param region the name of the region that contains the CSS properties, not blank
      * @return the region CSS, never <code>null</code>.
      */
-    public PSRegionCSS getRegionCSS(String theme, String templatename, String outerregion, String region);
+    public PSRegionCSS getRegionCSS(String theme, String templatename, String outerregion, String region) throws IPSDataService.PSThemeNotFoundException;
 
     /**
      * Saves the specified region CSS
@@ -130,7 +132,7 @@ public interface IPSThemeService extends IPSCatalogService<PSThemeSummary, Strin
      * @param templatename the template name, not blank
      * @param regionCSS the saved region CSS, not <code>null</code>.
      */
-    public void saveRegionCSS(String theme, String templatename, PSRegionCSS regionCSS);
+    public void saveRegionCSS(String theme, String templatename, PSRegionCSS regionCSS) throws IPSDataService.PSThemeNotFoundException;
 
     /**
      * Deletes the specified region CSS.
@@ -139,7 +141,7 @@ public interface IPSThemeService extends IPSCatalogService<PSThemeSummary, Strin
      * @param outerregion the most outer region name, not blank
      * @param region the name of the region that contains the CSS properties, not blank
      */
-    public void deleteRegionCSS(String theme, String templatename, String outerregion, String region);
+    public void deleteRegionCSS(String theme, String templatename, String outerregion, String region) throws IPSDataService.PSThemeNotFoundException;
 
     /**
      * Merges the cached region CSS file from the temporary location into the theme's region CSS file.
@@ -149,7 +151,7 @@ public interface IPSThemeService extends IPSCatalogService<PSThemeSummary, Strin
      * @param templatename the template name, not blank
      * @param deletedRegions
      */
-    public void mergeRegionCSS(String theme, String templatename, PSRegionCssList deletedRegions);
+    public void mergeRegionCSS(String theme, String templatename, PSRegionCssList deletedRegions) throws IPSDataService.PSThemeNotFoundException;
     
     /**
      * Prepare for editing the region CSS file. It copies the file from the location of the theme
@@ -158,7 +160,7 @@ public interface IPSThemeService extends IPSCatalogService<PSThemeSummary, Strin
      * @param theme the theme name, not blank
      * @param templatename the template name, not blank
      */
-    public void prepareForEditRegionCSS(String theme, String templatename);
+    public void prepareForEditRegionCSS(String theme, String templatename) throws IPSDataService.PSThemeNotFoundException;
     
     /**
      * Clear the temporary cached region CSS file if exist. This file is created by calling

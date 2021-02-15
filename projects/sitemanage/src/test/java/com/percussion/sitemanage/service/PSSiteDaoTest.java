@@ -61,6 +61,8 @@ import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.security.PSSecurityWsLocator;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Collections;
 import java.util.List;
@@ -74,7 +76,9 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSSiteDaoTest extends PSServletTestCase
 {
-    
+
+    private static final Logger log = LogManager.getLogger(PSSiteDaoTest.class);
+
     /**
      * Test all crud methods.
      *  
@@ -258,7 +262,7 @@ public class PSSiteDaoTest extends PSServletTestCase
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                log.error(e.getMessage(),e);
             }
             // test save
             siteDao.save(testingsite);
@@ -324,7 +328,7 @@ public class PSSiteDaoTest extends PSServletTestCase
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+               log.error(e.getMessage(),e);
             }
             // test save
             siteDao.save(testingsite1);

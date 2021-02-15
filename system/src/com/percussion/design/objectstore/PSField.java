@@ -300,9 +300,7 @@ public class PSField extends PSComponent
 
    /**
     * Translates a field value type code into a string suitable for writing to 
-    * the output document. 
-    *
-    * @param fieldValueType One of the FIELD_VALUE_TYPE_XXX types.
+    * the output document.
     *
     * @return The string to use as the attribute value. One of the values in
     * the PSField.FIELD_VALUE_TYPE_ENUM[] array. Never empty. 
@@ -2998,7 +2996,7 @@ public class PSField extends PSComponent
     * Sets the mime type meta data. This consists of both the mime type mode and
     * the mime type value.
     * 
-    * @param mode the mime type mode. Must not be <code>null</code>.
+    * @param modeEnum the mime type mode. Must not be <code>null</code>.
     * @param value the mime type. This will be a mime type string if the mode is
     * {@link PSMimeTypeModeEnum#FROM_SELECTION} or a field name for the
     * other modes. Cannot be <code>null</code> or empty.

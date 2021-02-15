@@ -23,6 +23,7 @@
  */
 package com.percussion.share.validation;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import net.sf.oval.integration.spring.SpringValidator;
 
 import org.springframework.validation.Errors;
@@ -51,7 +52,7 @@ public abstract class PSAbstractBeanValidator<FULL> implements Validator
         return e;
     }
 
-    protected abstract void doValidation(FULL obj, PSBeanValidationException e);
+    protected abstract void doValidation(FULL obj, PSBeanValidationException e) throws PSDataServiceException;
     
     @SuppressWarnings("unchecked")
     public boolean supports(Class clazz)

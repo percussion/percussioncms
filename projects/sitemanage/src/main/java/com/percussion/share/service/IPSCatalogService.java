@@ -26,8 +26,10 @@ package com.percussion.share.service;
 import java.io.Serializable;
 import java.util.List;
 
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
+import com.percussion.share.service.exception.PSValidationException;
 
 /**
  * Represents a READ portion of a data service.
@@ -46,7 +48,7 @@ public interface IPSCatalogService <T, PK extends Serializable>
      * @throws DataServiceLoadException 
      * @throws DataServiceNotFoundException 
      */
-    List<T> findAll() throws DataServiceLoadException, DataServiceNotFoundException;
+    List<T> findAll() throws DataServiceLoadException, DataServiceNotFoundException, IPSGenericDao.LoadException;
 
     /**
      * Generic method to get an object based on class and identifier. An
@@ -57,6 +59,6 @@ public interface IPSCatalogService <T, PK extends Serializable>
      * @return a populated object
      * @throws DataServiceLoadException TODO
      */
-    T find(PK id) throws DataServiceLoadException,DataServiceNotFoundException;
+    T find(PK id) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
     
 }

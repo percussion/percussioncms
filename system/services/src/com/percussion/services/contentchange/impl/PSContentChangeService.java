@@ -50,6 +50,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -82,8 +83,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    }
    
    @Transactional
-   public void contentChanged(PSContentChangeEvent changeEvent)
-   {
+   public void contentChanged(PSContentChangeEvent changeEvent) throws IPSGenericDao.SaveException {
       Validate.notNull(changeEvent);
       
       Session session = sessionFactory.getCurrentSession();
@@ -113,10 +113,10 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
       Query query = session.createQuery("from PSContentChangeEvent where changeType = :changeType and siteId = :siteId");
       query.setParameter("changeType", changeType.name());
       query.setParameter("siteId", siteId);
-      
+      query.addQueryHint(QueryHints.CACHEABLE);
 
       List<PSContentChangeEvent> results = query.list();
-      List<Integer> changedContentIds = new ArrayList<Integer>();
+      List<Integer> changedContentIds = new ArrayList<>();
       for (PSContentChangeEvent result : results)
       {
          changedContentIds.add(result.getContentId());

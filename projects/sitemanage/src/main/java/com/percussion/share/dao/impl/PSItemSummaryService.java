@@ -26,7 +26,6 @@ package com.percussion.share.dao.impl;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.pagemanagement.service.IPSPageService;
@@ -49,10 +48,9 @@ import com.percussion.utils.thread.PSThreadUtils;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,6 +61,7 @@ import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notEmpty;
+
 
 @PSSiteManageBean("itemSummaryService")
 public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDataItemSummaryService
@@ -101,14 +100,12 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     }
 
     @Override
-    public String pathToId(String path)
-    {
+    public String pathToId(String path) throws DataServiceNotFoundException {
         return pathToId(path, FOLDER_RELATE_TYPE);
     }
 
     @Override
-    public String pathToId(String path, String relationshipTypeName)
-    {
+    public String pathToId(String path, String relationshipTypeName) throws DataServiceNotFoundException {
         notEmpty(path, "Path cannot be null or empty");
         try
         {
@@ -143,8 +140,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     }
     
     @Override
-    public List<PSDataItemSummary> findChildFolders(String id)
-    {
+    public List<PSDataItemSummary> findChildFolders(String id) throws DataServiceLoadException {
         notEmpty(id, "id");
         try
         {
@@ -155,8 +151,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
         }
         catch (Exception e)
         {
-            String err = "Failed to load: " + id;
-            log.error(err, e);
+            log.error("Failed to load: {}" ,id);
             throw new DataServiceLoadException(e);
         }
     }
@@ -178,13 +173,12 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    public static final Log log = LogFactory.getLog(PSItemSummaryService.class);
+    public static final Logger log = LogManager.getLogger(PSItemSummaryService.class);
 
 
     
     private <F extends IPSItemSummary> List<F> convert(IPSCatalogItemFactory<F, String> factory,
-            List<PSItemSummary> sums, int landingPageId, String relationshipTypeName) throws PSErrorException, PSInvalidContentTypeException
-    {
+            List<PSItemSummary> sums, int landingPageId, String relationshipTypeName) throws PSErrorException, PSInvalidContentTypeException, DataServiceLoadException {
         List<F> items = new ArrayList<F>();
         for(PSItemSummary sum : sums) 
         {
@@ -264,7 +258,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
      * Gets the category for the given item.
      * 
      * @param itemSummary the item in question, assumed not <code>null</code>.
-     * @param isNavFolder <code>true</code> if the category is for a
+     * @param navType <code>true</code> if the category is for a
      * navigation folder.
      * @param isLandingPage <code>true</code> if the category is for a landing
      * page.
@@ -357,7 +351,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
      * @param item the item in question, not <code>null</code>.
      * @param isLandingPage <code>true</code> if the item is a landing page;
      * otherwise it is <code>false</code>.
-     * @param isNavFolder <code>true</code> if the item is a navigation folder. 
+     * @param navType <code>true</code> if the item is a navigation folder.
      * 
      * @return the icon path, never blank.
      */
@@ -479,8 +473,6 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
             IPSCatalogItemFactory<F, String> factory)
             throws DataServiceLoadException, DataServiceNotFoundException
     {
-        // TODO Auto-generated method stub
-        //return null;
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
 

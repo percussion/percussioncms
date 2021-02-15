@@ -217,6 +217,7 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
     * @throws IllegalArgumentException if conn is <code>null</code>.
     * @throws SQLException if any errors occur.
     */
+   @Override
    public int execute(Connection conn) throws SQLException
    {
       if (conn == null)
@@ -282,8 +283,8 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
       PreparedStatement lobStmt = null;
       ResultSet lobRs = null;
       boolean commit = conn.getAutoCommit();
-      List tempClobsList = new ArrayList();
-      List tempBlobsList = new ArrayList();
+      List<CLOB> tempClobsList = new ArrayList<>();
+      List<BLOB> tempBlobsList = new ArrayList<>();
       try
       {
          lobStmt =
@@ -606,18 +607,18 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
    /**
     * Closes all the temporary LOBs in the two lists.
     *
-    * @param clobsToCloseList list containing temporary CLOBs, assumed
+    * @param tempclobsList list containing temporary CLOBs, assumed
     * not <code>null</code>, may be empty list.
-    * @param blobsToCloseList list containing temporary BLOBs, assumed
+    * @param tempBlobsList list containing temporary BLOBs, assumed
     * not <code>null</code>, may be empty list.
     */
-   private void closeTempLOBs(List tempclobsList, List tempBlobsList)
+   private void closeTempLOBs(List<CLOB> tempclobsList, List<BLOB> tempBlobsList)
    {
       Iterator it = tempclobsList.iterator();
       while (it.hasNext())
       {
          Object obj = it.next();
-         if ((obj != null ) && (obj instanceof CLOB))
+         if (obj instanceof CLOB)
          {
             // If the CLOB is open, close it
             CLOB clob = (CLOB)obj;
@@ -628,7 +629,7 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
       while (it.hasNext())
       {
          Object obj = it.next();
-         if ((obj != null ) && (obj instanceof BLOB))
+         if (obj instanceof BLOB)
          {
             // If the CLOB is open, close it
             BLOB blob = (BLOB)obj;

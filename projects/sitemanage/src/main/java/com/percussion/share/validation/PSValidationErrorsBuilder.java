@@ -25,6 +25,7 @@ package com.percussion.share.validation;
 
 import static org.apache.commons.lang.Validate.*;
 
+import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.lang.StringUtils;
 
 import com.percussion.share.service.exception.PSParametersValidationException;
@@ -65,7 +66,6 @@ public class PSValidationErrorsBuilder {
         notNull(defaultMessage);
         PSFieldError e = new PSFieldError();
         e.setCode(code);
-        //e.setCode(validationErrors.getMethodName() + "#" + field);
         e.setDefaultMessage(defaultMessage);
         e.setField(field);
         validationErrors.getFieldErrors().add(e);
@@ -95,7 +95,7 @@ public class PSValidationErrorsBuilder {
         return validationErrors;
     }
     
-    public PSValidationErrorsBuilder throwIfInvalid() {
+    public PSValidationErrorsBuilder throwIfInvalid() throws PSValidationException {
         new PSParametersValidationException(validationErrors).throwIfInvalid();
         return this;
     }
