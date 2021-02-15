@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 
@@ -44,10 +45,15 @@ public abstract class PSAbstractTransformer<OLD,NEW> implements Transformer
     @Override
     public Object transform(Object old)
     {
-        return doTransform((OLD)old);
+        try {
+            return doTransform((OLD)old);
+        } catch (PSDataServiceException e) {
+            //TODO: Not sure how to handle the error state here.
+            throw new RuntimeException(e);
+        }
     }
     
-    protected abstract NEW doTransform(OLD old);
+    protected abstract NEW doTransform(OLD old) throws PSDataServiceException;
 
 }
 

@@ -28,6 +28,7 @@ import java.util.List;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
+import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.share.dao.IPSGenericDao;
@@ -52,7 +53,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * 
      * @return the saved template, not <code>null</code>.
      */
-    public PSTemplate save(PSTemplate template, String siteId);
+    public PSTemplate save(PSTemplate template, String siteId) throws SaveException, LoadException;
  
     /**
      * Loads the specified base template by ID.
@@ -61,7 +62,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * 
      * @return the template, never <code>null</code>.
      */
-    public IPSAssemblyTemplate loadBaseTemplateById(IPSGuid id);
+    public IPSAssemblyTemplate loadBaseTemplateById(IPSGuid id) throws IPSTemplateService.PSTemplateException;
 
     /**
      * Loads the specified base template by name.
@@ -71,9 +72,9 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      *
      * @return the template, never <code>null</code>.
      */
-    public PSAssemblyTemplate loadBaseTemplateByName(String name);
+    public PSAssemblyTemplate loadBaseTemplateByName(String name) throws IPSTemplateService.PSTemplateException;
     
-    public PSTemplate createTemplate(String name, String sourceTemplateId);
+    public PSTemplate createTemplate(String name, String sourceTemplateId) throws IPSTemplateService.PSTemplateException, LoadException;
     
     /**
      * Find all readonly system templates for the supplied type.
@@ -90,7 +91,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * @return the template summaries, never <code>null</code>, may be empty.  Results will be sorted alphabetically by
      * name.
      */
-    public List<PSTemplateSummary> findAllUserTemplates();
+    public List<PSTemplateSummary> findAllUserTemplates() throws IPSTemplateService.PSTemplateException;
 
     /**
      * Find all templates (excluding ones with type PSTemplateTypeEnum.UNASSIGNED)
@@ -99,7 +100,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * name.
      * @throws com.percussion.share.dao.IPSGenericDao.LoadException 
      */
-    public List<PSTemplateSummary> findAllSummaries() throws com.percussion.share.dao.IPSGenericDao.LoadException;
+    public List<PSTemplateSummary> findAllSummaries() throws com.percussion.share.dao.IPSGenericDao.LoadException, IPSTemplateService.PSTemplateException;
     
     /**
      * Find all templates (excluding ones with type PSTemplateTypeEnum.UNASSIGNED)
@@ -109,7 +110,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * @throws com.percussion.share.dao.IPSGenericDao.LoadException
      * @param siteName accepts the siteName from PercSiteTemplatesController.js 
      */
-    public List<PSTemplateSummary> findAllSummaries(String siteName) throws com.percussion.share.dao.IPSGenericDao.LoadException;
+    public List<PSTemplateSummary> findAllSummaries(String siteName) throws com.percussion.share.dao.IPSGenericDao.LoadException, IPSTemplateService.PSTemplateException;
  
     /**
      * Loads a list of user template summaries.
@@ -118,7 +119,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * 
      * @return the loaded template summaries, not <code>null</code>, but may be empty
      */
-    public List<PSTemplateSummary> loadUserTemplateSummaries(List<String> ids, String siteName);
+    public List<PSTemplateSummary> loadUserTemplateSummaries(List<String> ids, String siteName) throws IPSTemplateService.PSTemplateException;
 
     /**
      * Finds the user template with the specified name. This is used by unit test only.
@@ -132,7 +133,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * can be used for different site. This is only used by unit test for now
      * and should be removed along with related unit test.
      */
-    public PSTemplate findUserTemplateByName_UsedByUnitTestOnly(String name);
+    public PSTemplate findUserTemplateByName_UsedByUnitTestOnly(String name) throws IPSTemplateService.PSTemplateException, LoadException;
     
     /**
      * Finds the user template for the specified name and site.
@@ -152,7 +153,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * 
      * @return the loaded template 
      */
-    public PSTemplate generateTemplateToExport(String id, String name);
+    public PSTemplate generateTemplateToExport(String id, String name) throws IPSTemplateService.PSTemplateException;
     
     /**
      * Import a given template
@@ -162,7 +163,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * 
      * @return the loaded template 
      */
-    public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId);
+    public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId) throws IPSTemplateService.PSTemplateException;
    
    /**
     * Gets the thumbnail path for a template given the specific site name.
@@ -188,7 +189,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * @return the list of templates that correspond to that type. Never <code>null</code>.
      * May be <code>empty</code>
      */
-    public List<PSTemplate> findUserTemplatesByType(PSTemplateTypeEnum type);
+    public List<PSTemplate> findUserTemplatesByType(PSTemplateTypeEnum type) throws IPSTemplateService.PSTemplateException;
 
     /**
      * Retrieves the list of summaries that correspond to user templates (not base templates)
@@ -200,7 +201,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * @return the list of template summaries that correspond to that type. Never <code>null</code>.
      * May be <code>empty</code>
      */
-    public List<PSTemplateSummary> findAllUserTemplateSummariesByType(PSTemplateTypeEnum type);
+    public List<PSTemplateSummary> findAllUserTemplateSummariesByType(PSTemplateTypeEnum type) throws IPSTemplateService.PSTemplateException;
 
     public enum BaseTemplateTypeEnum{
  	   all,base,resp

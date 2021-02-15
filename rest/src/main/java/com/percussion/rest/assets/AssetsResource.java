@@ -25,6 +25,7 @@
 package com.percussion.rest.assets;
 
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.util.APIUtilities;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.Api;
@@ -99,7 +100,11 @@ public class AssetsResource
         {
             // UTF-8 always supported
         }
-        return assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
+        try {
+            return assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
+        } catch (BackendException e) {
+            throw new WebApplicationException();
+        }
     }
 
     @GET
@@ -177,9 +182,12 @@ public class AssetsResource
 
         org.apache.tika.mime.MediaType mimeType = det.detect(tis, metadata);
         String fileMimeType = mimeType.toString();
-
-        return assetAdaptor.uploadBinary(uriInfo.getBaseUri(), path, assetType, tis,
-                uploadFilename, fileMimeType, forceCheckOut);
+        try {
+            return assetAdaptor.uploadBinary(uriInfo.getBaseUri(), path, assetType, tis,
+                    uploadFilename, fileMimeType, forceCheckOut);
+        } catch (BackendException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @GET
@@ -202,29 +210,33 @@ public class AssetsResource
         {
             // UTF-8 always supported
         }
-        
-        StreamingOutput out = assetAdaptor.getBinary(path);
-        Asset asset = assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
 
-        ResponseBuilder r = Response.ok(out);
-        String filename = StringUtils.substringAfter(path, "/");
-        boolean thumbReq = filename.startsWith("thumb_");
+        try {
+            StreamingOutput out = assetAdaptor.getBinary(path);
+            Asset asset = assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
 
-        String type = "application/octet-stream";
+            ResponseBuilder r = Response.ok(out);
+            String filename = StringUtils.substringAfter(path, "/");
+            boolean thumbReq = filename.startsWith("thumb_");
 
-        if (asset.getImage() != null && thumbReq)
-            type = asset.getThumbnail().getType();
-        else if (asset.getFile() != null)
-            type = asset.getFile().getType();
-        else if (asset.getImage() != null)
-            type = asset.getImage().getType();
-        else if (asset.getFlash() != null)
-            type = asset.getFlash().getType();
+            String type = "application/octet-stream";
 
-        r.header("Content-Type", type);
+            if (asset.getImage() != null && thumbReq)
+                type = asset.getThumbnail().getType();
+            else if (asset.getFile() != null)
+                type = asset.getFile().getType();
+            else if (asset.getImage() != null)
+                type = asset.getImage().getType();
+            else if (asset.getFlash() != null)
+                type = asset.getFlash().getType();
 
-        r.header("Content-Disposition", "attachment; filename=" + filename);
-        return r.build();
+            r.header("Content-Type", type);
+
+            r.header("Content-Disposition", "attachment; filename=" + filename);
+            return r.build();
+        } catch (BackendException e) {
+            throw new WebApplicationException();
+        }
     }
 
     @PUT
@@ -239,19 +251,16 @@ public class AssetsResource
     public Asset upsertAssetByPath(Asset asset, @PathParam("assetpath") String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
+
+            String filename = StringUtils.substringAfterLast(path, "/");
+            asset.setName(filename);
+            asset.setFolderPath(StringUtils.substringBeforeLast(path, "/"));
+            return assetAdaptor.createOrUpdateSharedAsset(uriInfo.getBaseUri(), path, asset);
+        } catch (BackendException | UnsupportedEncodingException e) {
+           throw new WebApplicationException();
         }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        String filename = StringUtils.substringAfterLast(path, "/");
-        asset.setName(filename);
-        asset.setFolderPath(StringUtils.substringBeforeLast(path, "/"));
-        return assetAdaptor.createOrUpdateSharedAsset(uriInfo.getBaseUri(), path, asset);
     }
     
     @DELETE
@@ -265,15 +274,12 @@ public class AssetsResource
     public Status deleteSingleAsset(@PathParam("assetpath") String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
+            return assetAdaptor.deleteSharedAssetByPath(path);
+        } catch (BackendException | UnsupportedEncodingException e) {
+            throw new WebApplicationException();
         }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        return assetAdaptor.deleteSharedAssetByPath(path);
     }
     
    
@@ -288,28 +294,26 @@ public class AssetsResource
     public Asset renameAsset(@PathParam("assetpath") String path, @PathParam("name") String newName)
     {
    	 	// Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String assetName = "";
-        String apiPath = "";
 
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            apiPath = StringUtils.defaultString(m.group(3));
-            assetName = StringUtils.defaultString(m.group(5));
-        }
-        
 
-        return assetAdaptor.renameSharedAsset(uriInfo.getBaseUri(), siteName,apiPath,assetName, newName);
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String assetName = "";
+            String apiPath = "";
+
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                apiPath = StringUtils.defaultString(m.group(3));
+                assetName = StringUtils.defaultString(m.group(5));
+            }
+
+
+            return assetAdaptor.renameSharedAsset(uriInfo.getBaseUri(), siteName, apiPath, assetName, newName);
+        } catch (BackendException | UnsupportedEncodingException e) {
+            throw new WebApplicationException();
+        }
     }
     
     @GET

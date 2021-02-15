@@ -35,6 +35,7 @@ import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSUnassignedResults;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSSpringValidationException;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @param page the Page, never <code>null</code>.
     * @return Page never <code>null</code>.
     */
-   public PSPage save(PSPage page);
+   PSPage save(PSPage page) throws DataServiceLoadException, PSSpringValidationException, DataServiceSaveException, DataServiceNotFoundException;
 
    /**
     * Finds the specified page.
@@ -59,7 +60,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * 
     * @return the page item. It may be <code>null</code> if cannot find one.
     */
-   public PSPage find(String id);
+   PSPage find(String id) throws DataServiceLoadException, DataServiceNotFoundException;
 
    /**
     * Loads the specified page.
@@ -68,7 +69,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * 
     * @return the page, never <code>null</code>.
     */
-   public PSPage load(String id);
+   PSPage load(String id) throws DataServiceLoadException, IPSDataService.DataServiceNotFoundException;
 
    /**
     * Finds the specified page by name and folder path.
@@ -81,7 +82,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * 
     * @throws PSPageException if an error occurs finding the page.
     */
-   public PSPage findPage(String name, String folderPath)
+   PSPage findPage(String name, String folderPath)
       throws PSPageException;
 
     /**
@@ -94,7 +95,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @throws PSPageException if an error occurs finding the page.
      * 
      */
-   public PSPage findPageByPath(String fullPath) throws PSPageException;
+    PSPage findPageByPath(String fullPath) throws PSPageException;
    
     /**
      * Find all the pages that use a certain template and return the results
@@ -119,7 +120,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @throws PSPageException If there was a problem retrieving the list of
      *             pages.
      */
-    public PSPagedItemList findPagesByTemplate(String templateId, Integer startIndex, Integer maxResults,
+    PSPagedItemList findPagesByTemplate(String templateId, Integer startIndex, Integer maxResults,
             String sortColumn, String sortOrder, String pageId) throws PSPageException;
     
     
@@ -131,7 +132,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @return the seo statistics for pages which are considered sub-optimal for searching.
     * @throws PSPageException If the workflow could not be found, or other system failure.
     */
-   public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSPageException;
+    List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSPageException;
    
    /**
     * Deletes the specified page.  All local content of the page will also be deleted.  The page will not be deleted if
@@ -139,7 +140,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * 
     * @param id the ID of the page, never <code>null</code> or empty.
     */
-   public void delete(String id);
+   void delete(String id);
    
    /**
     * See {@link #delete(String)}.
@@ -148,7 +149,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @param force <code>true</code> to delete the page even if it is being edited by another user, <code>false</code>
     * otherwise. 
     */
-   public void delete(String id, boolean force);
+   void delete(String id, boolean force);
 
     /**
      * See {@link #delete(String, boolean)}.
@@ -158,7 +159,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @param purgeItem <code>true</code> if the item should be purged. <code>false</code> if it should be recycled.
      * otherwise.
      */
-    public void delete(String id, boolean force, boolean purgeItem);
+    void delete(String id, boolean force, boolean purgeItem);
    
    /**
     * Generates a new page name
@@ -166,7 +167,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @param folderPath
     * @return
     */
-   public String generateNewPageName(String pageName, String folderPath);
+    String generateNewPageName(String pageName, String folderPath) throws PSPageException;
    
    /**
     * Creates a copy of the page in it's current folder.
@@ -174,7 +175,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @return
     * @throws DataServiceSaveException
     */
-   public String copy(String id, boolean addToRecent) throws DataServiceSaveException;
+    String copy(String id, boolean addToRecent) throws DataServiceSaveException, DataServiceLoadException, PSSpringValidationException, DataServiceNotFoundException;
 
     /**
      *Creates a copy of the page in the specified folder.
@@ -182,7 +183,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @return
      * @throws DataServiceSaveException
      */
-    public String copy(String id, String targetFolder, boolean addToRecent) throws DataServiceSaveException;
+     String copy(String id, String targetFolder, boolean addToRecent) throws DataServiceSaveException, DataServiceLoadException, PSSpringValidationException, DataServiceNotFoundException;
 
    /**
     * Gets an URL which can be used for editing an existing page.
@@ -191,7 +192,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * 
     * @return the URL described above, never blank.
     */  
-   public String getPageEditUrl(String id);
+    String getPageEditUrl(String id);
    
    /**
     * Gets an URL which can be used for viewing a read only page.
@@ -200,20 +201,20 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * 
     * @return the URL described above, never blank.
     */  
-   public String getPageViewUrl(String id);
+    String getPageViewUrl(String id);
 
    /**
     * Determines if the supplied item is one of the pages or its content type is {@link #PAGE_CONTENT_TYPE}.
     * @param id the item ID in question, it may be <code>null</code> or empty.
     * @return <code>true</code> if the item is a page; otherwise <code>false</code>.
     */
-   public boolean isPageItem(String id);
+    boolean isPageItem(String id) throws PSPageException;
    
    /**
     * Add a page change listener to get notified when the page change happens.
     * @param pageChangeListener, must not be <code>null</code>.
     */
-   public void addPageChangeListener(IPSPageChangeListener pageChangeListener);
+    void addPageChangeListener(IPSPageChangeListener pageChangeListener);
    
    /**
     * Call this method to notify the listeners that the page has changed.
@@ -226,13 +227,12 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * At present the page meta-data saving happens through the content editor. Adding a dummy service to get notified
     * on page meta-data save.
     * 
-    * @TODO - The page meta-data save needs to be rerouted from this method to the content editor, at that time
-    * depending on the implementation the signature needs to be updated.
+    * TODO: - The page meta-data save needs to be rerouted from this method to the content editor, at that time depending on the implementation the signature needs to be updated.
     * 
     * @param pageId, the string representation of the page guid. must not be <code>null</code>.
     * returns PSNoContent, never blank
     */
-   public PSNoContent savePageMetadata(String pageId);
+    PSNoContent savePageMetadata(String pageId);
    
    /**
     * Changes the template of the supplied page.
@@ -240,7 +240,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @param templateId the string representation of the page guid. must not be <code>null</code>.
     * @return PSNoContent, never blank
     */
-   public PSNoContent changeTemplate(String pageId, String templateId);
+    PSNoContent changeTemplate(String pageId, String templateId);
 
     /**
      * Update the template migration version of the page to match the version in its template
@@ -248,7 +248,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @param pageId The id of the page to update, must specify an existing page, and the page must be checked out to
      * the current user.
      */
-    public void updateTemplateMigrationVersion(String pageId);
+     void updateTemplateMigrationVersion(String pageId) throws DataServiceLoadException, PSSpringValidationException, DataServiceSaveException, PSPageException, DataServiceNotFoundException;
     
     /**
      * Update the migration empty widget flag for the page
@@ -256,7 +256,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @param pageId The id of the page to update, must specify an existing page, and the page must be checked out to
      * the current user.
      */
-    public void updateMigrationEmptyWidgetFlag(String pageId, boolean flag);
+     void updateMigrationEmptyWidgetFlag(String pageId, boolean flag) throws PSSpringValidationException, DataServiceSaveException, DataServiceLoadException, DataServiceNotFoundException;
     
     /**
      * Get the status of empty widget flag for the page
@@ -264,14 +264,14 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @param pageId The id of the page to get the flag, must specify an existing page, and the page must be checked out to
      * the current user.
      */
-    public boolean getMigrationEmptyWidgetFlag(String pageId);
+     boolean getMigrationEmptyWidgetFlag(String pageId) throws DataServiceLoadException, DataServiceNotFoundException;
 
     /***
      * A listing of all Pages in the Content Repository for the specified site.
      * @return A list of CSV formattable report lines. 
      * @throws PSReportFailedToRunException 
      */
-    public List<PSPageReportLine> findAllPages(String siteName) throws PSReportFailedToRunException;
+    public List<PSPageReportLine> findAllPages(String siteName) throws PSReportFailedToRunException, PSPageException;
    
     /**
      * get the import status for cataloged pages.
@@ -288,11 +288,11 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      *         <code>null</code>.
      * @throws Exception 
      */
-    public PSUnassignedResults getUnassignedPagesBySite(String sitename,Integer startIndex, Integer maxResults);
+    public PSUnassignedResults getUnassignedPagesBySite(String sitename,Integer startIndex, Integer maxResults) throws PSPageException;
 
 
     
-    public PSNoContent clearMigrationEmptyFlag(String pageid);
+    public PSNoContent clearMigrationEmptyFlag(String pageid) throws DataServiceLoadException, PSSpringValidationException, DataServiceSaveException, DataServiceNotFoundException;
    
     /*
     * (Runtime) Exception is thrown when an unexpected error occurs in this
@@ -350,11 +350,10 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
    /**
     * The content type name of the page item.
     */
-   public final static String PAGE_CONTENT_TYPE = "percPage";
+   String PAGE_CONTENT_TYPE = "percPage";
 
 
-
-public PSNoContent validateDelete(String id);
+    PSNoContent validateDelete(String id);
 
 
 

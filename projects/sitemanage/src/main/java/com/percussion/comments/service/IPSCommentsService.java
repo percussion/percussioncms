@@ -26,6 +26,7 @@ package com.percussion.comments.service;
 import com.percussion.comments.data.PSComment;
 import com.percussion.comments.data.PSCommentModeration;
 import com.percussion.comments.data.PSCommentsSummary;
+import com.percussion.share.service.IPSDataService;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public interface IPSCommentsService
      * 
      * @return the comment summary information for the page, never <code>null</code>.
      */
-    public PSCommentsSummary getCommentsSummary(String id);
+    public PSCommentsSummary getCommentsSummary(String id) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException;
     
     /**
      * Provides a list of count info only for all pages with comments for the given site.

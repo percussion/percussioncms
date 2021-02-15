@@ -24,6 +24,7 @@
 
 package com.percussion.rest.pages;
 
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.ContentMigrationException;
 
 import java.net.URI;
@@ -32,15 +33,15 @@ import java.util.List;
 public interface IPageAdaptor
 {
 
-    public Page getPage(URI baseURI, String siteName, String path, String pageName);
+    public Page getPage(URI baseURI, String siteName, String path, String pageName) throws BackendException;
 
-    public Page updatePage(URI baseURI, Page page);
+    public Page updatePage(URI baseURI, Page page) throws BackendException;
 
-    public void deletePage(URI baseURI, String siteName, String path, String pageName);
+    public void deletePage(URI baseURI, String siteName, String path, String pageName) throws BackendException;
 
-    public Page getPage(URI baseURI, String id);
+    public Page getPage(URI baseURI, String id) throws BackendException;
     
-    public Page renamePage(URI baseURI, String siteName, String path, String pageName, String newName);
+    public Page renamePage(URI baseURI, String siteName, String path, String pageName, String newName) throws BackendException;
   
     public int approveAllPages(URI baseURI, String folderPath);
     
@@ -48,8 +49,8 @@ public interface IPageAdaptor
     
     public int submitForReviewAllPages(URI baseUri, String folderPath);
 
-	public Page changePageTemplate(URI baseUri, Page p) throws ContentMigrationException;
+	public Page changePageTemplate(URI baseUri, Page p) throws ContentMigrationException, BackendException;
 	
-	public List<String> allPagesReport(URI baseUri, String siteFolderPath); 
+	public List<String> allPagesReport(URI baseUri, String siteFolderPath) throws BackendException;
 	
 }

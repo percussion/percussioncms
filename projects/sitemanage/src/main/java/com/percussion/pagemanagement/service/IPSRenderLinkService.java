@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.service;
 
+import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.pagemanagement.assembler.PSRenderAsset;
 import com.percussion.pagemanagement.assembler.PSAbstractAssemblyContext.EditType;
 import com.percussion.pagemanagement.data.PSInlineLinkRequest;
@@ -33,7 +34,9 @@ import com.percussion.pagemanagement.data.PSRenderLinkContext;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.share.data.IPSFolderPath;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 import java.util.List;
 import java.util.Set;
@@ -61,7 +64,7 @@ public interface IPSRenderLinkService
      * @param linkableItem never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem);
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException;
     
     
     /**
@@ -71,7 +74,7 @@ public interface IPSRenderLinkService
      * @param resourceDefinitionId never <code>null</code>, empty, or blank.
      * @return never <code>null</code>.
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem, String resourceDefinitionId);
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem, String resourceDefinitionId) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException;
     
     /**
      * Renders a link to the region CSS file of specified theme.
@@ -83,7 +86,7 @@ public interface IPSRenderLinkService
      * @return the link, never <code>null</code>.
      */
     public PSRenderLink renderLinkThemeRegionCSS(PSRenderLinkContext context, String themeName, 
-            boolean isEdit, EditType editType);
+            boolean isEdit, EditType editType) throws IPSDataService.PSThemeNotFoundException;
     
     /**
      * Renders a link to a file or folder.
@@ -91,7 +94,7 @@ public interface IPSRenderLinkService
      * @param resourceDefinitionId Must be the id of a file or folder resource, never <code>null</code>, empty, or blank.
      * @return never <code>null</code>.
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, String resourceDefinitionId);
+    public PSRenderLink renderLink(PSRenderLinkContext context, String resourceDefinitionId) throws PSDataServiceException;
     
     /**
      * All Javascript links from the resource definitions that match the the supplied widget definitions in order based on the resources dependency,
@@ -102,7 +105,7 @@ public interface IPSRenderLinkService
      * @param widgetDefIds set of widget definitions whose JavaScript  resource definitions needs to be returned.
      * @return javascript links in correct order, never <code>null</code> but maybe empty.
      */
-    public List<PSRenderLink> renderJavascriptLinks(PSRenderLinkContext context, Set<String> widgetDefIds);
+    public List<PSRenderLink> renderJavascriptLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException;
     
     /**
      * All CSS links from the resource definitions that match the the supplied widget definitions in order based on the resources dependency,
@@ -112,7 +115,7 @@ public interface IPSRenderLinkService
      * @param widgetDefIds set of widget definitions whose css  resource definitions needs to be returned.
      * @return css links in correct order, never <code>null</code> but maybe empty.
      */
-    public List<PSRenderLink> renderCssLinks(PSRenderLinkContext context, Set<String> widgetDefIds);
+    public List<PSRenderLink> renderCssLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException;
     
     /**
      * Renders a preview link to a file.
@@ -127,7 +130,7 @@ public interface IPSRenderLinkService
      * @param renderType this is the rendered type, "html", "xml" or "database". It is default to "html".
      * @return the link to a page, never blank.
      */
-    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType);
+    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException;
     
     /**
      * Creates a preview image link.
@@ -137,7 +140,7 @@ public interface IPSRenderLinkService
      * @return never <code>null</code>.
      * @see PSInlineLinkRequest
      */
-    public PSInlineRenderLink renderPreviewResourceLink(PSInlineLinkRequest inlineLinkRequest);
+    public PSInlineRenderLink renderPreviewResourceLink(PSInlineLinkRequest inlineLinkRequest) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException;
     
     
     /**
@@ -173,6 +176,6 @@ public interface IPSRenderLinkService
     public PSAssetResource resolveResourceDefinition(
             String resourceDefinitionId,  
             String legacyTemplate,
-            String contentType);
+            String contentType) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException;
     
 }

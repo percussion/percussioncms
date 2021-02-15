@@ -63,7 +63,7 @@ public abstract class PSSpringValidationException  extends PSValidationException
     }
 
     @Override
-    public PSSpringValidationException throwIfInvalid() {
+    public PSSpringValidationException throwIfInvalid() throws PSSpringValidationException {
         if (hasErrors())
             throw this;
         return this;

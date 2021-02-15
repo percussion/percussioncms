@@ -23,6 +23,7 @@
  */
 package com.percussion.share.dao;
 
+import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
@@ -292,7 +293,7 @@ public abstract class PSFileDataRepository<T>
      * 
      * @throws IOException
      */
-    protected abstract T update(Set<PSFileDataRepository.PSFileEntry> files) throws IOException;
+    protected abstract T update(Set<PSFileDataRepository.PSFileEntry> files) throws IOException, PSValidationException;
 
     /**
      * Turns the filename into an id.

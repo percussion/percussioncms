@@ -28,6 +28,7 @@ import java.io.Serializable;
 import com.percussion.share.service.exception.IPSNotFoundException;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 
 /**
@@ -50,7 +51,7 @@ public interface IPSDataService<FULL, SUMMARY, PK extends Serializable>
      * @return the persisted object
      * @throws PSBeanValidationException If the bean is not valid.
      */
-    FULL save(FULL object) throws PSBeanValidationException, DataServiceSaveException;
+    FULL save(FULL object) throws PSSpringValidationException, DataServiceSaveException, DataServiceLoadException, DataServiceNotFoundException;
 
     /**
      * Generic method to delete an object based on class and id
@@ -58,7 +59,7 @@ public interface IPSDataService<FULL, SUMMARY, PK extends Serializable>
      * @param id the identifier (primary key) of the object to remove
      * @throws DataServiceDeleteException
      */
-    void delete(PK id) throws DataServiceDeleteException;
+    void delete(PK id) throws PSDataServiceException;
 
     /**
      * Validate.
@@ -66,7 +67,7 @@ public interface IPSDataService<FULL, SUMMARY, PK extends Serializable>
      * @param object crud object
      * @return validation exception.
      */
-    PSValidationErrors validate(FULL object);
+    PSValidationErrors validate(FULL object) throws PSSpringValidationException;
 
     /**
      * DataServiceSaveException is thrown when a site cannot be saved

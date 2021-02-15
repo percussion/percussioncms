@@ -35,6 +35,9 @@ import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.role.service.IPSRoleService;
 import com.percussion.role.service.impl.PSRoleService;
 import com.percussion.security.IPSPasswordFilter;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.security.PSSecurityException;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSThreadRequestUtils;
@@ -64,6 +67,7 @@ import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.dao.IPSUserLoginDao;
@@ -85,9 +89,7 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.PSSpringBeanProvider;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.security.IPSTypedPrincipal;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.security.PSSecurityCatalogException;
+import com.percussion.utils.security.ToDoVulnerability;
 import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.utils.service.impl.PSBackEndRoleManagerFacade;
 import com.percussion.utils.service.impl.PSUtilityService;
@@ -95,8 +97,8 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.security.IPSSecurityWs;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -148,10 +150,10 @@ import static org.apache.commons.lang.Validate.notNull;
 @Lazy
 public class PSUserService implements IPSUserService
 {
-    private static Log log = LogFactory.getLog(PSUserService.class);
+    private static final Logger log = LogManager.getLogger(PSUserService.class);
 
     // Used to get the email on the user
-    private static String EMAIL_ATTRIBUTE_NAME = "sys_email";
+    private static final String EMAIL_ATTRIBUTE_NAME = "sys_email";
 
     private IPSUserLoginDao userLoginDao;
 
@@ -180,7 +182,7 @@ public class PSUserService implements IPSUserService
     
     private static final String PERCUSSION_ADMIN_NAME = "PercussionAdmin";
     
-    public final static List<String> SYSTEM_USERS = asList("rxserver",PERCUSSION_ADMIN_NAME);
+    public static final List<String> SYSTEM_USERS = asList("rxserver",PERCUSSION_ADMIN_NAME);
     private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
     private PSUserManagementEvent psUserManagementEvent;
 
@@ -284,13 +286,15 @@ public class PSUserService implements IPSUserService
     /**
      * Create the PercussionUser
      */
+    @ToDoVulnerability
+    //TODO: Fix Me
     protected void createPercussionUser() {
         PSUser user = new PSUser();
         user.setName(PERCUSSION_ADMIN_NAME);
         //user.setPassword(UUID.randomUUID().toString());
         user.setPassword("demo");
         user.setEmail("");
-        List<String> roles = new ArrayList<String>();
+        List<String> roles = new ArrayList<>();
         roles.add(IPSRoleService.ADMINISTRATOR_ROLE); 
         
         user.setRoles(roles);
@@ -304,11 +308,10 @@ public class PSUserService implements IPSUserService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSUser create(PSUser user) throws PSDataServiceException
     {
-        log.debug("creating user " + user);
+        log.debug("creating user {}", user);
         doValidation(user, true);
 
-        PSUser rvalue = createUser(user);
-        return rvalue;
+        return createUser(user);
     }
 
     private PSUser createUser(PSUser user)
@@ -323,9 +326,10 @@ public class PSUserService implements IPSUserService
             updateRoles(user.getName(), user.getRoles());
             backEndRoleMgr.setSubjectEmail(user.getName(), user.getEmail());
         }
-        catch (Throwable e)
+        catch (RuntimeException e)
         {
-            log.error("Failed to create user " + user.getName() + " because could not add roles to user:", e);
+            log.error("Failed to create user {} because could not add roles to user: {}",user.getName() , e.getMessage());
+            log.debug(e.getMessage(),e);
             userLoginDao.delete(login.getUserid());
         }
 
@@ -341,7 +345,7 @@ public class PSUserService implements IPSUserService
     @Path("/delete/{name}")
     public void delete(@PathParam("name") String name) throws PSDataServiceException
     {
-        log.debug("deleting user " + name);
+        log.debug("deleting user {}", name);
         checkUser(name);
         if (PSCollectionUtils.containsIgnoringCase(SYSTEM_USERS, name))
             PSParameterValidationUtils.validateParameters("delete").rejectField("name", "Cannot delete system user",
@@ -396,7 +400,7 @@ public class PSUserService implements IPSUserService
             }
             catch (PSSecurityCatalogException e)
             {
-                log.error("Failed to get the email for the user: " + name);
+                log.error("Failed to get the email for the user: {}",name);
             }
         }
         return user;
@@ -413,7 +417,7 @@ public class PSUserService implements IPSUserService
      */
     private List<String> filterOutSystemRoles(Collection<String> srcRoles)
     {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (String role : srcRoles)
         {
             if (!PSCollectionUtils.containsIgnoringCase(PSRoleService.SYSTEM_ROLES, role))
@@ -657,7 +661,7 @@ public class PSUserService implements IPSUserService
             {
                 wf = workflowService.loadWorkflow(PSGuidUtils.makeGuid(workflowId, PSTypeEnum.WORKFLOW));
                 if (wf == null)
-                    log.debug("Got invalid workflow id '" + workflowId + "'.");
+                    log.debug("Got invalid workflow id '{}", workflowId);
             }
             if (wf == null)
             {
@@ -674,8 +678,9 @@ public class PSUserService implements IPSUserService
         }
         catch (Exception e)
         {
-            log.error("Error occurred determining access level of current user for type '" + type + "', workflow id '"
-                    + workflowId + "'.", e);
+            log.error("Error occurred determining access level of current user for type '{}', workflow id '{}'. {}",
+                    type,workflowId , e.getMessage());
+            log.debug(e);
         }
         
         PSAccessLevel accessLevel = new PSAccessLevel();
@@ -743,7 +748,7 @@ public class PSUserService implements IPSUserService
      * @throws PSBeanValidationException if failed to validate the specified
      *             user.
      */
-    protected void doValidation(PSUser user, boolean isCreateUser) throws PSBeanValidationException
+    protected void doValidation(PSUser user, boolean isCreateUser) throws PSSpringValidationException
     {
         log.debug("validating user " + user);
         PSUserValidator validator = new PSUserValidator(isCreateUser);
@@ -765,7 +770,7 @@ public class PSUserService implements IPSUserService
         /*
          * We use a set to remove duplicates and add the default roles.
          */
-        Set<String> updateRoles = roles != null ? new HashSet<String>(roles) : new HashSet<String>();
+        Set<String> updateRoles = roles != null ? new HashSet<>(roles) : new HashSet<>();
         updateRoles.addAll(PSRoleService.DEFAULT_ROLES);
         backEndRoleMgr.setRoles(userName, updateRoles);
     }
@@ -784,7 +789,7 @@ public class PSUserService implements IPSUserService
         /*
          * We use a set to remove duplicates and add the default roles.
          */
-        Set<String> updateRoles = roles != null ? new HashSet<String>(roles) : new HashSet<String>();
+        Set<String> updateRoles = roles != null ? new HashSet<>(roles) : new HashSet<>();
         updateRoles.addAll(PSRoleService.DEFAULT_ROLES);
         backEndRoleMgr.setRoles(userNames, updateRoles);
     }    
@@ -800,8 +805,7 @@ public class PSUserService implements IPSUserService
     {
         try
         {
-            List<String> roles = backEndRoleMgr.getRoles(userName);
-            return roles;
+            return backEndRoleMgr.getRoles(userName);
         }
         catch (Exception e)
         {
@@ -846,8 +850,8 @@ public class PSUserService implements IPSUserService
         {
             List<Subject> subjects = findExistingUsers(nameFilter);
             int size = subjects == null ? 0 : subjects.size();
-            List<String> userNames = new ArrayList<String>(size);
-            //FB: NP_NULL_ON_SOME_PATH NC 1-16-16
+            List<String> userNames = new ArrayList<>(size);
+
             if(subjects != null){
 	            for (Subject s : subjects)
 	            {
@@ -858,7 +862,7 @@ public class PSUserService implements IPSUserService
             	if(nameFilter == null){
             		nameFilter = "null";
             	}
-            	log.warn("No users found for filter: " + nameFilter);
+            	log.warn("No users found for filter: {}" ,nameFilter);
             }
             return userNames;
         }
@@ -910,7 +914,7 @@ public class PSUserService implements IPSUserService
                 PSAttribute attribute = attrs.getAttribute(EMAIL_ATTRIBUTE_NAME);
                 if (attribute != null)
                 {
-                    List attrList = attribute.getValues();
+                    List<PSAttribute> attrList = attribute.getValues();
                     if (!attrList.isEmpty())
                     {
                         email = attrList.get(0).toString();
@@ -991,7 +995,8 @@ public class PSUserService implements IPSUserService
         }
         catch (PSSecurityCatalogException e)
         {
-            log.error("General directory service failure: " + e.getMessage(),e);
+            log.error("General directory service failure: {}" , e.getMessage());
+            log.debug(e);
             if(e.getMessage().contains("LDAP: error code 4 - Sizelimit Exceeded")){
                 throw new PSDirectoryServiceException("The returned results exceeded LDAP server limit, please refine your search to get the results.");
             }
@@ -999,7 +1004,8 @@ public class PSUserService implements IPSUserService
         }
         catch (PSSecurityException e)
         {
-            log.error("Failed to connect to Directory Server: " + e.getMessage(),e);
+            log.error("Failed to connect to Directory Server: {}", e.getMessage());
+            log.debug(e);
             throw new PSDirectoryServiceConnectionException(e);
         }
         catch (IllegalArgumentException ae)
@@ -1007,8 +1013,7 @@ public class PSUserService implements IPSUserService
             throw new PSDirectoryServiceDisabledException("No directory service enabled:", ae);
         }
         int size = subjects == null ? 0 : subjects.size();
-        List<PSExternalUser> users = new ArrayList<PSExternalUser>(size);
-        //FB: NP_NULL_ON_SOME_PATH NC 1-16-16
+        List<PSExternalUser> users = new ArrayList<>(size);
         if(subjects!=null){
 	        for (Subject s : subjects)
 	        {
@@ -1021,7 +1026,7 @@ public class PSUserService implements IPSUserService
 	        }
 	        Collections.sort(users);
         }else{
-        	log.warn("No users found in Directory Service matching query [" + query + "]");
+        	log.warn("No users found in Directory Service matching query [{}]", query );
         }
         return users;
     }
@@ -1031,14 +1036,13 @@ public class PSUserService implements IPSUserService
     @Path("/import")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PSImportedUser> importDirectoryUsers(PSImportUsers importUsers) throws PSDirectoryServiceException
-    {
+    public List<PSImportedUser> importDirectoryUsers(PSImportUsers importUsers) throws PSDirectoryServiceException, PSSpringValidationException {
         PSUtilityService utilityService = (PSUtilityService) PSSpringBeanProvider.getBean("utilityService");
 
         PSParameterValidationUtils.rejectIfNull("importDirectoryUsers", "importUsers", importUsers);
         PSBeanValidationUtils.validate(importUsers).throwIfInvalid();
         List<PSExternalUser> users = importUsers.getExternalUsers();
-        List<String> userNames = new ArrayList<String>();
+        List<String> userNames = new ArrayList<>();
         
         for (PSExternalUser e : users)
         {
@@ -1075,7 +1079,8 @@ public class PSUserService implements IPSUserService
         }
         catch (Exception e)
         {
-            log.error("While importing invalid  user name: " + name, e);
+            log.error("While importing invalid  user name: {}. Error: {}", name, e.getMessage());
+            log.debug(e.getMessage(),e);
             status = ImportStatus.INVALID;
         }
 
@@ -1092,7 +1097,8 @@ public class PSUserService implements IPSUserService
             }
             catch (Exception e)
             {
-                log.error("Error importing user: " + name, e);
+                log.error("Error importing user: {} {}", name, e.getMessage());
+                log.debug(e);
                 status = ImportStatus.ERROR;
             }
         }
@@ -1117,8 +1123,8 @@ public class PSUserService implements IPSUserService
 
         String user = null;
         ImportStatus status = null;
-        List<String> updateRolesUsers = new ArrayList<String>();
-        List<PSImportedUser> users = new ArrayList<PSImportedUser>();
+        List<String> updateRolesUsers = new ArrayList<>();
+        List<PSImportedUser> users = new ArrayList<>();
 
         for (String name : names)
         {
@@ -1137,7 +1143,8 @@ public class PSUserService implements IPSUserService
             }
             catch (Exception e)
             {
-                log.error("While importing invalid  user name: " + name, e);
+                log.error("While importing invalid  user name: {} Error: {}",name, e.getMessage());
+                log.debug(e.getMessage(),e);
                 status = ImportStatus.INVALID;
             }
             
@@ -1196,7 +1203,7 @@ public class PSUserService implements IPSUserService
      * Set the system properties on this service.  This service will always use the the values provided by
      * the most recently set instance of the properties.
      * 
-     * @param systemProps the system properties
+     * @param props the system properties
      */
     @Autowired
     public void setSystemProps(IPSSystemProperties props)
@@ -1217,13 +1224,13 @@ public class PSUserService implements IPSUserService
         if (accessibilityRoles != null)
             return accessibilityRoles;
         
-        accessibilityRoles = new ArrayList<String>();
+        accessibilityRoles = new ArrayList<>();
         String roles = systemProps.getProperty("accessibilityRoles");
         if (StringUtils.isBlank(roles))
             return accessibilityRoles;
         
         String[] array = roles.split(",");
-        accessibilityRoles = new ArrayList<String>(Arrays.asList(array));
+        accessibilityRoles = new ArrayList<>(Arrays.asList(array));
         
         return accessibilityRoles;
     }
@@ -1316,7 +1323,7 @@ public class PSUserService implements IPSUserService
                 List<PSUserLogin> users = userLoginDao.findByName(newName);
                 if (users.size() > 1)
                 {
-                    log.warn("Multiple user login entries found for name : " + newName);
+                    log.warn("Multiple user login entries found for name : {}", newName);
                 }
                 for (PSUserLogin usr : users)
                 {

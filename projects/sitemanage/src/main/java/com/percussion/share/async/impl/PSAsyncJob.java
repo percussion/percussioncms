@@ -23,20 +23,18 @@
  */
 package com.percussion.share.async.impl;
 
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.server.PSRequest;
 import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.IPSAsyncJobListener;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.thread.PSThreadUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author JaySeletz
@@ -57,7 +55,7 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      * 
      * @param config The configuration object, never <code>null</code>.
      */
-    protected abstract void doInit(Object config);
+    protected abstract void doInit(Object config) throws IPSFolderService.PSWorkflowNotFoundException;
     
     private static final Log log = LogFactory.getLog(PSAsyncJob.class);
 
@@ -65,8 +63,7 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      * Required implementation for jobs running within the server that need to access the current request info.  
      * Derived classes should implement {@link #doInit(Object)}.
      */
-    public void init(Object config)
-    {
+    public void init(Object config) throws IPSFolderService.PSWorkflowNotFoundException {
         m_requestInfoMap = PSRequestInfo.copyRequestInfoMap();
         PSRequest request = (PSRequest) m_requestInfoMap.get(PSRequestInfo.KEY_PSREQUEST);
         m_requestInfoMap.put(PSRequestInfo.KEY_PSREQUEST, request.cloneRequest());
@@ -196,7 +193,7 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      * Override the Thread.run() from Runnable. Derived classes should not override this
      * method, and instead implement {@link #doRun()}.
      * 
-     * @throws IllegalStateException if {@link #setId()} has not already been called. 
+     * @throws IllegalStateException if {@link #setId(long)} has not already been called.
      */
     @Override
     public void run()
@@ -332,7 +329,7 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     /**
      * List of job listeners, never <code>null</code>, may be empty.
      */
-    private CopyOnWriteArrayList<IPSAsyncJobListener> m_listeners = new CopyOnWriteArrayList<IPSAsyncJobListener>();
+    private CopyOnWriteArrayList<IPSAsyncJobListener> m_listeners = new CopyOnWriteArrayList<>();
 
     /**
      * The actual request that will result in spawning a thread.

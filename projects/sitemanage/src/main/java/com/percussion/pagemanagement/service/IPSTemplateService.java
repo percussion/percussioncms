@@ -30,6 +30,7 @@ import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -136,7 +137,7 @@ public interface IPSTemplateService extends IPSDataService<PSTemplate, PSTemplat
     * @throws PSBeanValidationException if there is any invalid properties in the template.
     * @throws com.percussion.share.service.IPSDataService.DataServiceSaveException if there is any unexpected error.
     */
-   public PSTemplate save(PSTemplate object, String siteId, String pageId) throws PSBeanValidationException,
+   public PSTemplate save(PSTemplate template, String siteId, String pageId) throws PSBeanValidationException,
    com.percussion.share.service.IPSDataService.DataServiceSaveException;
    
    /**
@@ -192,7 +193,7 @@ public interface IPSTemplateService extends IPSDataService<PSTemplate, PSTemplat
    
    /**
     * This method is a wrapper to expose as a service the following method:
-    * {@link IPSTemplateDao#getTemplateThumbPath(PSTemplateSummary, String)}
+    * {@link com.percussion.pagemanagement.dao.IPSTemplateDao#getTemplateThumbPath(PSTemplateSummary, String)}
     * 
     * For additional information please refer to it.
     * 

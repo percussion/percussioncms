@@ -25,6 +25,7 @@ package com.percussion.pagemanagement.data;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.percussion.share.data.PSAbstractPersistantObject;
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -205,7 +206,7 @@ public class PSResourceDefinitionGroup extends PSAbstractPersistantObject
          * Visitor pattern
          * @param visitor never <code>null</code>.
          */
-        public abstract void accept(IPSResourceDefinitionVisitor visitor);
+        public abstract void accept(IPSResourceDefinitionVisitor visitor) throws PSDataServiceException;
         
     }
     
@@ -456,8 +457,7 @@ public class PSResourceDefinitionGroup extends PSAbstractPersistantObject
         
         
         @Override
-        public void accept(IPSResourceDefinitionVisitor visitor)
-        {
+        public void accept(IPSResourceDefinitionVisitor visitor) throws PSDataServiceException {
             visitor.visit(this);
         }   
         

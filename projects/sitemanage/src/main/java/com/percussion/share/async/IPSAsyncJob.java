@@ -24,6 +24,8 @@
 package com.percussion.share.async;
 
 
+import com.percussion.foldermanagement.service.IPSFolderService;
+
 /**
  * A job that can be run asynchronously and report status
  * 
@@ -120,7 +122,7 @@ public interface IPSAsyncJob extends Runnable
      * 
      * @param config Implementation specific object that provides any data needed by the job.  Will not be <code>null</code>.
      */
-    public void init(Object config);
+    public void init(Object config) throws IPSFolderService.PSWorkflowNotFoundException;
     
     /**
      * Determine if the job, having completed, can be discarded.  Each job must determine it's own lifecycle once it has

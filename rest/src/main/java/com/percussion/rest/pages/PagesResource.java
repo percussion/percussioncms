@@ -27,6 +27,7 @@ package com.percussion.rest.pages;
 
 import com.percussion.rest.Status;
 import com.percussion.rest.assets.PSCSVStreamingOutput;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.LocationMismatchException;
 import com.percussion.rest.util.APIUtilities;
 import com.percussion.util.PSSiteManageBean;
@@ -66,7 +67,11 @@ public class PagesResource
     {MediaType.APPLICATION_JSON})
     public Page getPageById(@PathParam("id") String id)
     {
-        return pageAdaptor.getPage(uriInfo.getBaseUri(),id);
+        try {
+            return pageAdaptor.getPage(uriInfo.getBaseUri(), id);
+        } catch (BackendException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     
@@ -103,7 +108,11 @@ public class PagesResource
             apiPath = StringUtils.defaultString(m.group(3));
             pageName = StringUtils.defaultString(m.group(5));
         }
-        return pageAdaptor.getPage(uriInfo.getBaseUri(),siteName, apiPath, pageName);
+        try {
+            return pageAdaptor.getPage(uriInfo.getBaseUri(), siteName, apiPath, pageName);
+        } catch (BackendException e) {
+            throw new WebApplicationException();
+        }
     }
     
     /**
@@ -171,7 +180,11 @@ public class PagesResource
         page.setName(pageName);
         page.setFolderPath(apiPath);
         page.setSiteName(siteName);
-        page = pageAdaptor.updatePage(uriInfo.getBaseUri(),page);
+        try {
+            page = pageAdaptor.updatePage(uriInfo.getBaseUri(), page);
+        } catch (BackendException e) {
+           throw new WebApplicationException();
+        }
 
         return page;
     }
@@ -219,9 +232,11 @@ public class PagesResource
             pageName = StringUtils.defaultString(m.group(5));
         }
         
-    
-
-            return pageAdaptor.renamePage(uriInfo.getBaseUri(),siteName, apiPath, pageName, name);
+        try {
+            return pageAdaptor.renamePage(uriInfo.getBaseUri(), siteName, apiPath, pageName, name);
+        } catch (BackendException e) {
+            throw new WebApplicationException();
+        }
     }
     
   
@@ -259,8 +274,11 @@ public class PagesResource
             pageName = StringUtils.defaultString(m.group(5));
         }
         
-   
-        pageAdaptor.deletePage(uriInfo.getBaseUri(),siteName,apiPath,pageName);
+       try {
+           pageAdaptor.deletePage(uriInfo.getBaseUri(), siteName, apiPath, pageName);
+       } catch (BackendException e) {
+           throw new WebApplicationException();
+       }
         return new Status("Deleted");
     }
     
@@ -334,7 +352,11 @@ public class PagesResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Page changePageTemplate(Page p){
-    	 return pageAdaptor.changePageTemplate(uriInfo.getBaseUri(), p);
+        try {
+            return pageAdaptor.changePageTemplate(uriInfo.getBaseUri(), p);
+        } catch (BackendException e) {
+            throw new WebApplicationException();
+        }
     }
     
     @GET

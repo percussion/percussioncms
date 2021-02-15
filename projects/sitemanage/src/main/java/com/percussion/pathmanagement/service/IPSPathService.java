@@ -32,6 +32,7 @@ import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.exception.IPSNotFoundException;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
 
 import java.util.List;
@@ -136,7 +137,7 @@ public interface IPSPathService
      * @throws PSBeanValidationException If the item is not valid.
      */
     PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathNotFoundServiceException, PSPathServiceException,
-    PSBeanValidationException;
+            PSSpringValidationException;
     
     /**
      * Moves the specified item to the specified folder.

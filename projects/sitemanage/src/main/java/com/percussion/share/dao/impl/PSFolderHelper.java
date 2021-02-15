@@ -50,7 +50,6 @@ import com.percussion.security.PSSecurityProvider;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSItemSummary;
 import com.percussion.services.guidmgr.PSGuidUtils;
-import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
@@ -75,8 +74,10 @@ import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSItemSummaryUtils;
 import com.percussion.share.service.IPSDataItemSummaryService;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.util.IPSHtmlParameters;
@@ -90,8 +91,8 @@ import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -149,7 +150,7 @@ public class PSFolderHelper implements IPSFolderHelper
     private IPSRecycleService recycleService;
     
     
-    private static Log log = LogFactory.getLog(PSFolderHelper.class);
+    private static Logger log = LogManager.getLogger(PSFolderHelper.class);
     
     private List<String> reservedPathNames = Arrays.asList(
             "web_resources",
@@ -259,14 +260,12 @@ public class PSFolderHelper implements IPSFolderHelper
     }
 
     @Override
-    public PSItemProperties findItemPropertiesById(String id)
-    {
+    public PSItemProperties findItemPropertiesById(String id) throws DataServiceLoadException, LoadException {
         return findItemPropertiesById(id, FOLDER_RELATE_TYPE);
     }
 
     @Override
-    public PSItemProperties findItemPropertiesById(String id, String relationshipTypeName)
-    {
+    public PSItemProperties findItemPropertiesById(String id, String relationshipTypeName) throws DataServiceLoadException, LoadException {
         IPSItemSummary item = dataItemSummaryService.find(id, relationshipTypeName);
         int contentId = ((PSLegacyGuid) idMapper.getGuid(id)).getContentId();
         PSComponentSummary compSum = getItemSummary(contentId);
@@ -462,8 +461,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * (non-Javadoc)
      * @see com.percussion.share.dao.IPSFolderHelper#findFolderProperties(java.lang.String)
      */
-    public PSFolderProperties findFolderProperties(String id)
-    {
+    public PSFolderProperties findFolderProperties(String id) throws PSValidationException {
         notNull(id);
         notEmpty(id);
         
@@ -572,8 +570,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * (non-Javadoc)
      * @see com.percussion.share.dao.IPSFolderHelper#addFolderAccessLevel(com.percussion.pathmanagement.data.PSPathItem)
      */
-    public PSPathItem setFolderAccessLevel(PSPathItem item)
-    {
+    public PSPathItem setFolderAccessLevel(PSPathItem item) throws PSValidationException {
 		// FIXME Change this. We need to skip PSPathItem that point
 		// to the file system.
         if (StringUtils.startsWith(item.getType(), "FS"))
@@ -660,8 +657,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * (non-Javadoc)
      * @see com.percussion.share.dao.IPSFolderHelper#getFolderAccessLevel(java.lang.String)
      */
-    public PSFolderPermission.Access getFolderAccessLevel(String id)
-    {
+    public PSFolderPermission.Access getFolderAccessLevel(String id) throws PSValidationException {
         String userName = getUserName();
         List<String> roles = getUserRoles();
         PSFolder folder = loadFolder(id);
@@ -841,8 +837,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * 
      * @return name or link text of the item, never <code>null</code>.
      */
-    private String getItemPropertyName(IPSItemSummary item, Node pageNode)
-    {
+    private String getItemPropertyName(IPSItemSummary item, Node pageNode) throws LoadException {
         if (pageNode == null)
         {
             return item.getName();
@@ -868,8 +863,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * 
      * @return content type label or template name of the item, never <code>null</code>.
      */
-    private String getItemPropertyType(IPSItemSummary item, Node pageNode)
-    {
+    private String getItemPropertyType(IPSItemSummary item, Node pageNode) throws LoadException {
         if (pageNode == null)
         {
             return item.getLabel();
@@ -944,7 +938,7 @@ public class PSFolderHelper implements IPSFolderHelper
         return pathToCheck.toString();
     }
     
-    public void addItem(String path, String id) throws PSErrorException {
+    public void addItem(String path, String id) throws PSErrorException, IPSDataService.DataServiceNotFoundException {
         validatePath(path);
         createFolder(path);
         IPSGuid guid = idMapper.getGuid(id);
@@ -952,12 +946,12 @@ public class PSFolderHelper implements IPSFolderHelper
         
     }
     
-    public List<IPSItemSummary> findItems(String path) throws DataServiceLoadException, Exception
+    public List<IPSItemSummary> findItems(String path) throws PSDataServiceException
     {
         PathTarget p = pathTarget(path);
-        if ( p.isToNothing() ) return new ArrayList<IPSItemSummary>();
+        if ( p.isToNothing() ) return new ArrayList<>();
         List<PSDataItemSummary> sums = dataItemSummaryService.findFolderChildren(p.getItem().getId());
-        return new ArrayList<IPSItemSummary>(sums);
+        return new ArrayList<>(sums);
     }
     
     
@@ -969,15 +963,15 @@ public class PSFolderHelper implements IPSFolderHelper
             return findItems(path);
         
         PathTarget p = pathTarget(path);
-        if ( p.isToNothing() ) return new ArrayList<IPSItemSummary>();
+        if ( p.isToNothing() ) return new ArrayList<>();
         List<PSDataItemSummary> sums = dataItemSummaryService.findChildFolders(p.getItem().getId());
-        return new ArrayList<IPSItemSummary>(sums);
+        return new ArrayList<>(sums);
     }
 
     public List<String> findChildren(String path) throws DataServiceLoadException, Exception
     {
         List<IPSItemSummary> sums = findItems(path);
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         for (IPSItemSummary sum : sums) {
             if (sum.isFolder()) {
                 String p = concatPath(path, sum.getName());
@@ -989,7 +983,7 @@ public class PSFolderHelper implements IPSFolderHelper
     
     public List<String> findItemIdsByPath(String path) throws Exception
     {
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         List<Integer> ids = contentWs.findItemIdsByFolder(path);
         if (ids == null)
             return results;
@@ -1007,12 +1001,12 @@ public class PSFolderHelper implements IPSFolderHelper
     }
 
     @Override
-    public PathTarget pathTarget(String path ) {
+    public PathTarget pathTarget(String path ) throws IPSDataService.DataServiceNotFoundException {
         return pathTarget(path, true);
     }
 
     @Override
-    public PathTarget pathTarget(String path, boolean shouldRecycle) {
+    public PathTarget pathTarget(String path, boolean shouldRecycle) throws IPSDataService.DataServiceNotFoundException {
         validatePath(path);
         String relType = shouldRecycle ? FOLDER_RELATE_TYPE : RECYCLED_TYPE;
         String id = dataItemSummaryService.pathToId(path, relType);
@@ -1033,13 +1027,11 @@ public class PSFolderHelper implements IPSFolderHelper
         return new PathTarget(path, item);
     }
 
-    public void createFolder(String path) throws PSErrorException
-    {
+    public void createFolder(String path) throws PSErrorException, IPSDataService.DataServiceNotFoundException {
         createFolder(path, null);
     }
     
-    public void createFolder(String path, PSFolderPermission.Access acl) throws PSErrorException
-    {
+    public void createFolder(String path, PSFolderPermission.Access acl) throws PSErrorException, IPSDataService.DataServiceNotFoundException {
         validatePath(path);
         PathTarget p = pathTarget(path);
         if (p.isToNothing())
@@ -1193,8 +1185,7 @@ public class PSFolderHelper implements IPSFolderHelper
     }
 
 
-    public void renameFolder(String path, String name) throws PSReservedNameServiceException, PSInvalidCharacterInFolderNameException
-    {
+    public void renameFolder(String path, String name) throws PSReservedNameServiceException, PSInvalidCharacterInFolderNameException, IPSDataService.DataServiceNotFoundException {
         if (StringUtils.isBlank(name))
         {
             throw new IllegalArgumentException("name may not be blank");
@@ -1255,12 +1246,12 @@ public class PSFolderHelper implements IPSFolderHelper
      */
     private String getInvalidCharsAsString()
     {
-        String chars = "";
+        StringBuilder chars = new StringBuilder();
         for(Character invalidChar : INVALID_CHARS)
         {
-            chars += invalidChar + " ";
+            chars.append(invalidChar).append(" ");
         }
-        return chars;
+        return chars.toString();
     }
     
     protected void validatePath(String path) {
@@ -1306,13 +1297,11 @@ public class PSFolderHelper implements IPSFolderHelper
         
         return dataItemSummaryService.find(id);
     }
-    public PSPathItem findItemById(String id)
-    {
+    public PSPathItem findItemById(String id) throws DataServiceLoadException, PSValidationException {
         return findItemById(id, FOLDER_RELATE_TYPE);
     }
     
-    public PSPathItem findItemById(String id, String relationshipTypeName)
-    {
+    public PSPathItem findItemById(String id, String relationshipTypeName) throws DataServiceLoadException, PSValidationException {
         IPSItemSummary sum = dataItemSummaryService.find(id, relationshipTypeName);
         // throw validation exception if cannot find the item
         //FB: NP_NULL_PARAM_DEREF NC 1-16-16
@@ -1405,7 +1394,7 @@ public class PSFolderHelper implements IPSFolderHelper
         String uniqueName = baseName;
         String name = uniqueName;
         
-        Set<String> newFolderNames = new HashSet<String>();
+        Set<String> newFolderNames = new HashSet<>();
         for (IPSItemSummary summary : summaries)
         {
             String sumName = summary.getName();

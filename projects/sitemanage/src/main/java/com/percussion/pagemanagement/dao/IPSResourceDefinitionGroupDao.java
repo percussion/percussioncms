@@ -26,10 +26,9 @@ package com.percussion.pagemanagement.dao;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionGroupNotFoundException;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionNotFoundException;
+import com.percussion.pagemanagement.service.PSResourceServiceException;
 import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 
 import java.util.List;
 
@@ -43,17 +42,10 @@ import java.util.List;
 public interface IPSResourceDefinitionGroupDao extends IPSGenericDao<PSResourceDefinitionGroup, String>
 {
 
-    /**
-     * 
-     * Will find a resource definition group.
-     *
-     * @param id the id is the filename minus the extension.
-     * @return a resource definition group.
-     * @throws DataServiceLoadException TODO
-     */
-    PSResourceDefinitionGroup find(String id) throws DataServiceLoadException, PSResourceDefinitionGroupNotFoundException;
-    
-    List<PSResourceDefinition> findAllResources();
+
+    PSResourceDefinitionGroup find(String id) throws LoadException;
+
+    List<PSResourceDefinition> findAllResources() throws PSResourceServiceException;
     
     /**
      * Finds a resource based on the uniqueId.
@@ -77,13 +69,13 @@ public interface IPSResourceDefinitionGroupDao extends IPSGenericDao<PSResourceD
      * @param contentType
      * @return never <code>null</code>, maybe empty.
      */
-    List<PSAssetResource> findAssetResourcesForType(String contentType);
+    List<PSAssetResource> findAssetResourcesForType(String contentType) throws PSResourceServiceException;
     
     /**
      * Finds resources associated to a legacy template.
      * @param template never <code>null</code>.
      * @return never <code>null</code>, maybe empty.
      */
-    List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template);
+    List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template) throws PSResourceServiceException;;
     
 }

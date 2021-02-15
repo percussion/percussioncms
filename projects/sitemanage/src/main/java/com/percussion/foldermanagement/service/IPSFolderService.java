@@ -23,12 +23,14 @@
  */
 package com.percussion.foldermanagement.service;
 
+import com.percussion.error.PSException;
 import com.percussion.foldermanagement.data.PSFolderItem;
 import com.percussion.foldermanagement.data.PSGetAssignedFoldersJobStatus;
 import com.percussion.foldermanagement.data.PSWorkflowAssignment;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.data.PSLightWeightObject;
 import com.percussion.share.service.exception.IPSNotFoundException;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.List;
 
@@ -118,7 +120,7 @@ public interface IPSFolderService
      * @throws PSWorkflowNotFoundException If the specified workflow cannot be found.
      * @throws PSWorkflowAssignmentInProgressException if an assignment is currently in progress.
      */
-    public void assignFoldersToWorkflow(PSWorkflowAssignment workflowAssignment) throws PSWorkflowNotFoundException, PSWorkflowAssignmentInProgressException, Exception;
+    public void assignFoldersToWorkflow(PSWorkflowAssignment workflowAssignment) throws PSWorkflowNotFoundException, PSWorkflowAssignmentInProgressException;
     
     /**
      * For all content in the supplied folder paths, apply the folder's workflow property to the
@@ -140,7 +142,7 @@ public interface IPSFolderService
      *            <code>null</code> nor empty.
      * @return A {@link PSWorkflow} object containing the requested workflow.
      */
-    public PSWorkflow validateWorkflow(String workflowName);
+    public PSWorkflow validateWorkflow(String workflowName) throws PSWorkflowNotFoundException;
 
     /**
      * Returns the pages from the specified folder.
@@ -148,7 +150,7 @@ public interface IPSFolderService
      * @return List of PSLightWeightObject that hase name and id of the pages from the supplied folder, may be empty, never <code>null</code>.
      * @throws PSFolderNotFoundException if the supplied folderid doesn't correspond to a folder
      */
-    public List<PSLightWeightObject> getPagesFromFolder(String folderId) throws PSFolderNotFoundException;
+    public List<PSLightWeightObject> getPagesFromFolder(String folderId) throws PSFolderNotFoundException, PSValidationException, PSPagesNotFoundException;
 
     /**
      * Exception thrown if a requested workflow for assignment or for listing is
@@ -157,7 +159,7 @@ public interface IPSFolderService
      * @author Santiago M. Murchio
      * 
      */
-    public static class PSWorkflowNotFoundException extends RuntimeException implements IPSNotFoundException
+    public static class PSWorkflowNotFoundException extends PSException implements IPSNotFoundException
     {
         public PSWorkflowNotFoundException(String message)
         {
@@ -170,7 +172,7 @@ public interface IPSFolderService
      * not found.
      * 
      */
-    public static class PSWorkflowAssignmentInProgressException extends RuntimeException
+    public static class PSWorkflowAssignmentInProgressException extends PSException
     {
         public PSWorkflowAssignmentInProgressException(String message)
         {
@@ -182,7 +184,7 @@ public interface IPSFolderService
      * Exception thrown if the supplied folder path or id doesn't correspond to a folder in system.
      * 
      */
-    public static class PSFolderNotFoundException extends RuntimeException implements IPSNotFoundException
+    public static class PSFolderNotFoundException extends PSException implements IPSNotFoundException
     {
         public PSFolderNotFoundException(String message)
         {
@@ -194,7 +196,7 @@ public interface IPSFolderService
      * Exception thrown if the pages from the supplied folder could not be retrieved.
      * 
      */
-    public static class PSPagesNotFoundException extends RuntimeException implements IPSNotFoundException
+    public static class PSPagesNotFoundException extends PSException implements IPSNotFoundException
     {
         public PSPagesNotFoundException(String message)
         {

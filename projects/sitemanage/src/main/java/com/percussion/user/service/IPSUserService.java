@@ -25,6 +25,7 @@ package com.percussion.user.service;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.web.service.PSExceptionJaxbXmlAdapter;
 import com.percussion.user.data.PSAccessLevel;
 import com.percussion.user.data.PSAccessLevelRequest;
@@ -89,7 +90,7 @@ public interface IPSUserService
      * @return never <code>null</code>.
      * @throws PSNoCurrentUserException if the callers thread-local does not have the user name available.
      */
-    public PSCurrentUser getCurrentUser() throws PSNoCurrentUserException;
+    public PSCurrentUser getCurrentUser() throws PSNoCurrentUserException, PSDataServiceException;
     
     /**
      * Check if user has admin role.
@@ -160,7 +161,7 @@ public interface IPSUserService
      * @throws PSDirectoryServiceException if the directory service is not enabled or is not available.
      * @see #findUsersFromDirectoryService(String)
      */
-    public List<PSImportedUser> importDirectoryUsers(PSImportUsers importUsers) throws PSDirectoryServiceException;
+    public List<PSImportedUser> importDirectoryUsers(PSImportUsers importUsers) throws PSDirectoryServiceException, PSSpringValidationException;
     
     
     /**
