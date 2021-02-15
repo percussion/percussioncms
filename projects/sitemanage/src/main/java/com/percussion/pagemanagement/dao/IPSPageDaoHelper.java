@@ -24,6 +24,7 @@
 package com.percussion.pagemanagement.dao;
 
 import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,7 +41,7 @@ public interface IPSPageDaoHelper
      * to the parent folder workflow association.
      * @param page
      */
-    void setWorkflowAccordingToParentFolder(PSPage page);
+    void setWorkflowAccordingToParentFolder(PSPage page) throws PSValidationException;
     
     /**
      * Get the workflow Id to use when creating pages in the specified folder path.
@@ -49,7 +50,7 @@ public interface IPSPageDaoHelper
      * 
      * @return The workflow Id
      */
-    int getWorkflowIdForPath(String folderPath);
+    int getWorkflowIdForPath(String folderPath) throws PSValidationException;
     
     /**
      * Finds all page IDs which utilize the specified template.
