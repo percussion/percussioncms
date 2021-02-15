@@ -78,7 +78,7 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
     @Transactional
     public Set<String> findSitesForCommentIds(Collection<String> ids)
     {
-        Collection<Long> longIds = new ArrayList<Long>(ids.size());
+        Collection<Long> longIds = new ArrayList<>(ids.size());
         for(String s : ids)
             longIds.add(Long.valueOf(s));
         String selectComments = "select site from PSComment where id in (:idList)";
@@ -112,7 +112,7 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
     @Transactional
     public void delete(Collection<String> commentIds)
     {
-        Collection<Long> longIds = new ArrayList<Long>(commentIds.size());
+        Collection<Long> longIds = new ArrayList<>(commentIds.size());
         for(String s : commentIds)
             longIds.add(Long.valueOf(s));
         Session session = getSession();
@@ -133,7 +133,7 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
     @Transactional
     public void moderate(Collection<String> commentIds, APPROVAL_STATE newApprovalState) throws Exception
     {
-        Collection<Long> longIds = new ArrayList<Long>(commentIds.size());
+        Collection<Long> longIds = new ArrayList<>(commentIds.size());
         for(String s : commentIds)
             longIds.add(Long.valueOf(s));
         Session session = getSession();
@@ -168,7 +168,7 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
             query.setParameter("site", site);
 
             List<Object[]> result = query.list();
-            List<PSPageInfo> pages = new ArrayList<PSPageInfo>();
+            List<PSPageInfo> pages = new ArrayList<>();
             for(Object[] r : result)
                 pages.add(new PSPageInfo((String)r[0], (String)r[1], (Long)r[2], (Boolean)r[3]));
             return pages;

@@ -119,7 +119,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 	}
 	
 	private List<Status> parseStatusXML(String xml) {
-		List<Status> ret = new ArrayList<Status>();
+		List<Status> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -164,7 +164,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 	@Override
 	public List<Booking> getBookings(PSBookingsQuery query) {
 		
-		List<Booking> ret= new ArrayList<Booking>();
+		List<Booking> ret= new ArrayList<>();
 		ArrayOfInt buildings = null;
 		ArrayOfInt eventTypes = null;
 		ArrayOfInt groups = null;
@@ -232,7 +232,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 	}
 	
 	private List<Booking>parseBookingXML(String xml){
-		List<Booking> ret = new ArrayList<Booking>();	
+		List<Booking> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -401,7 +401,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 	}
 
 	private List<Building> parseBuildingXML(String xml) {
-		List<Building> ret = new ArrayList<Building>();
+		List<Building> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -470,7 +470,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 	}
 
 	private List<GroupType> parseGroupXML(String xml) {
-		List<GroupType> ret = new ArrayList<GroupType>();
+		List<GroupType> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -512,7 +512,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 	}
 
 	private List<EventType> parseEventTypeXML(String xml) {
-		List<EventType> ret = new ArrayList<EventType>();
+		List<EventType> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);

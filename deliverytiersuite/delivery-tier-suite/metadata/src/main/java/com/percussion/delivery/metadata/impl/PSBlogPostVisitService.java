@@ -57,7 +57,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PSBlogPostVisitService implements IPSBlogPostVisitService, InitializingBean {
 	private Map<String, IPSBlogPostVisit> inMemoryVisitMap = new ConcurrentHashMap<>();
-	private List<PSCookieConsentQuery> inMemoryCookieConsentMap = new ArrayList<PSCookieConsentQuery>();
+	private List<PSCookieConsentQuery> inMemoryCookieConsentMap = new ArrayList<>();
 	private ScheduledExecutorService visitExecutor = Executors.newScheduledThreadPool(1);
 	private long lastSave;
 	private IPSBlogPostVisitDao visitDao;
