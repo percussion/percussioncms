@@ -78,7 +78,7 @@ public class Role {
 	}
 	public List<String> getUsers() {
 		if(users == null)
-			users = new ArrayList<String>();
+			users = new ArrayList<>();
 		return users;
 	}
 
