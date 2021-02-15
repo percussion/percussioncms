@@ -87,7 +87,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	
 	@Override
 	public List<MCEventDetail> getMasterCalendarEvents(PSEventQuery query) {
-		List<MCEventDetail> ret  = new ArrayList<MCEventDetail>();
+		List<MCEventDetail> ret  = new ArrayList<>();
 		String eventName = null;
 		String location = null;
 		int[] eventTypes = null;
@@ -153,7 +153,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	}
 
 	private List<MCEventDetail> parseEventDetailXML(String xml) {
-		List<MCEventDetail> ret = new ArrayList<MCEventDetail>();
+		List<MCEventDetail> ret = new ArrayList<>();
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
@@ -265,7 +265,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 
 	@Override
 	public List<MCEventDetail> getMasterCalendarFeaturedEvents(PSFeaturedEventsQuery query) {
-		List<MCEventDetail> ret  = new ArrayList<MCEventDetail>();
+		List<MCEventDetail> ret  = new ArrayList<>();
 		String eventName = null;
 		String location = null;
 		int[] eventTypes = null;
@@ -318,7 +318,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 
 	@Override
 	public List<MCEventType> getMasterCalendarEventTypes() {
-		List<MCEventType> ret = new ArrayList<MCEventType>();
+		List<MCEventType> ret = new ArrayList<>();
 		
 		try {
 			String xml = soap.getEventTypes(mcUserName, mcPassword);
@@ -336,7 +336,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	}
 
 	private List<MCEventType> parseEventTypesXML(String xml) {
-		List<MCEventType> ret = new ArrayList<MCEventType>();
+		List<MCEventType> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -379,7 +379,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 
 	@Override
 	public List<MCLocation> getMasterCalendarLocations() {
-		List<MCLocation> ret = new ArrayList<MCLocation>();
+		List<MCLocation> ret = new ArrayList<>();
 		
 		try {
 			String xml = soap.getLocations(mcUserName, mcPassword);
@@ -397,7 +397,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	}
 
 	private List<MCLocation> parseLocationsXML(String xml) {
-		List<MCLocation> ret = new ArrayList<MCLocation>();
+		List<MCLocation> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -440,7 +440,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 
 	@Override
 	public List<MCCalendar> getMasterCalendarCalendars() {
-		List<MCCalendar> ret = new ArrayList<MCCalendar>();
+		List<MCCalendar> ret = new ArrayList<>();
 		
 		try {
 			String xml = soap.getCalendars(mcUserName, mcPassword);
@@ -544,7 +544,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	}
 	
 	private List<MCCalendarEntry> parseCalendarListXML(String xml) {
-		List<MCCalendarEntry> ret = new ArrayList<MCCalendarEntry>();
+		List<MCCalendarEntry> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -585,7 +585,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 
 	public List<MCGrouping>getMasterCalendarGroupings(){
 		
-		List<MCGrouping> ret = new ArrayList<MCGrouping>();
+		List<MCGrouping> ret = new ArrayList<>();
 		
 		String xml;
 		try {
@@ -606,7 +606,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	}
 
 	private List<MCGrouping> parseGroupingsXML(String xml) {
-		List<MCGrouping> ret = new ArrayList<MCGrouping>();
+		List<MCGrouping> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);

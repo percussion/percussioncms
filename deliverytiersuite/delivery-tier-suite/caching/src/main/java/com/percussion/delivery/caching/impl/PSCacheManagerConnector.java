@@ -74,7 +74,7 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
     private int maxWait = 360;
     
     // Map tasks to cache regions. Hashtable because thread safe
-    Hashtable<String, FlushTask> tasks = new Hashtable<String, FlushTask>();
+    Hashtable<String, FlushTask> tasks = new Hashtable<>();
     private final String PERC_CACHING_MANAGER_CONFIG = "/perc-caching/manager/config";
     Set<String> cacheRegions;
     
@@ -328,8 +328,8 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
             return null;
         }
 
-        Set<PSCacheRegion> cacheRegions = new HashSet<PSCacheRegion>(cacheConfig.getCacheRegion());
-        HashSet<String> cacheRegionNames = new HashSet<String>(cacheRegions.size());
+        Set<PSCacheRegion> cacheRegions = new HashSet<>(cacheConfig.getCacheRegion());
+        HashSet<String> cacheRegionNames = new HashSet<>(cacheRegions.size());
 
         for(PSCacheRegion cacheRegion : cacheRegions)
         {

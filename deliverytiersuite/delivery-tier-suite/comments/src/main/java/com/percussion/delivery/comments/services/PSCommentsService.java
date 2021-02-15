@@ -56,7 +56,7 @@ public class PSCommentsService implements IPSCommentsService
     
     private IPSCommentsDao dao;
 
-    private List<IPSServiceDataChangeListener> listeners = new ArrayList<IPSServiceDataChangeListener>();
+    private List<IPSServiceDataChangeListener> listeners = new ArrayList<>();
     private final String[] PERC_COMMENTS_SERVICES = {"perc-comments-services"};
     
     
@@ -95,7 +95,7 @@ public class PSCommentsService implements IPSCommentsService
     public IPSComment addComment(IPSComment comment)
     {
         String siteName = comment.getSite();
-        HashSet<String> siteSet = new HashSet<String>(1);
+        HashSet<String> siteSet = new HashSet<>(1);
         siteSet.add(siteName);
         this.fireDataChangeRequestedEvent(siteSet);
         
@@ -207,7 +207,7 @@ public class PSCommentsService implements IPSCommentsService
      */
     private void moderateComments(Collection<String> commentIds, APPROVAL_STATE newApprovalState)
     {
-        Set<String> siteNames = new HashSet<String>();
+        Set<String> siteNames = new HashSet<>();
         try
         {
         	siteNames = dao.findSitesForCommentIds(commentIds);
@@ -246,7 +246,7 @@ public class PSCommentsService implements IPSCommentsService
 
         log.info("Deleting comments with the following IDs: " + commentIds.toString());
 
-        Set<String> siteNames = new HashSet<String>();
+        Set<String> siteNames = new HashSet<>();
         try
         {
         	siteNames = dao.findSitesForCommentIds(commentIds);
@@ -275,7 +275,7 @@ public class PSCommentsService implements IPSCommentsService
     {
         log.info("Getting all comments according to the given criteria object");
 
-        List<IPSComment> comments = new ArrayList<IPSComment>();
+        List<IPSComment> comments = new ArrayList<>();
 
        
         try
@@ -361,7 +361,7 @@ public class PSCommentsService implements IPSCommentsService
 
         log.info("Getting all pages with comments");
 
-        List<PSPageSummary> pageSummaries = new ArrayList<PSPageSummary>();
+        List<PSPageSummary> pageSummaries = new ArrayList<>();
 
         
         try
@@ -446,14 +446,14 @@ public class PSCommentsService implements IPSCommentsService
      */
     private List<PSPageSummary> createPageSummaries(List<PSPageInfo> pagePathSummaryQuery)
     {
-        List<PSPageSummary> pageSummaries = new ArrayList<PSPageSummary>();
+        List<PSPageSummary> pageSummaries = new ArrayList<>();
 
         // Create a Map with the pagepath as key, and a Long array with the
         // approved
         // comments count in the first position, and unapproved ones in the
         // second
         // position.
-        Map<String, CommentCount> pagepathAndCommentsCountMap = new HashMap<String, CommentCount>();
+        Map<String, CommentCount> pagepathAndCommentsCountMap = new HashMap<>();
         CommentCount pagepathWithCommentCount;
 
         for (PSPageInfo tmp : pagePathSummaryQuery)
