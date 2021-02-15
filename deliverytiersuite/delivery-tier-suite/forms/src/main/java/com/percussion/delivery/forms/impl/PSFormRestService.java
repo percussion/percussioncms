@@ -178,8 +178,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             log.debug("Http Header in the service is :" + header.getRequestHeaders());
         }
 
-        Map<String, String[]> formFields = new HashMap<String, String[]>();
-        Map<String, String[]> percFields = new HashMap<String, String[]>();
+        Map<String, String[]> formFields = new HashMap<>();
+        Map<String, String[]> percFields = new HashMap<>();
 
         boolean encryptExist = false;
         boolean isSpamBot = false;
@@ -380,7 +380,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
                     HttpClient client = new HttpClient( );
                     PostMethod post = new PostMethod(processorUrl);
-                    List<NameValuePair> data = new ArrayList<NameValuePair>();
+                    List<NameValuePair> data = new ArrayList<>();
                     String urlParameters = "";
                     //Loop through form parameters and set up for re-posting
                     for(String key : params.keySet()){
@@ -540,7 +540,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         try
         {
-            List<String> formNames = new ArrayList<String>();
+            List<String> formNames = new ArrayList<>();
             if (formName != null)
             {
                 formNames.add(formName);
@@ -582,7 +582,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
     {
         try
         {
-            List<String> formNames = new ArrayList<String>();
+            List<String> formNames = new ArrayList<>();
             formNames.addAll(formService.findDistinctFormNames());
 
             PSFormSummaries formResult = new PSFormSummaries();
@@ -623,7 +623,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         try
         {
-            List<IPSFormData> forms = new ArrayList<IPSFormData>();
+            List<IPSFormData> forms = new ArrayList<>();
             forms = formService.findFormsByName(formName);
 
             if(log.isDebugEnabled()){

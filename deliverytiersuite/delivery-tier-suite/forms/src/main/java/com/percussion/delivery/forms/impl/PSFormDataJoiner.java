@@ -86,7 +86,7 @@ public class PSFormDataJoiner
      */
     private List<CaselessString> prepareHeader(SortedSet<CaselessString> headerColumns)
     {
-        List<CaselessString> finalHeader = new ArrayList<CaselessString>(headerColumns);
+        List<CaselessString> finalHeader = new ArrayList<>(headerColumns);
 
         // Add "form name" and "create date" fields at the beginning
         // of the header list
@@ -111,7 +111,7 @@ public class PSFormDataJoiner
     {
         Map<String, String> formDataFields = formData.getFields();
 
-        Map<CaselessString, String> processedFormDataFields = new HashMap<CaselessString, String>();
+        Map<CaselessString, String> processedFormDataFields = new HashMap<>();
 
         for (String key : formDataFields.keySet())
             processedFormDataFields.put(new CaselessString(key), formDataFields.get(key));
@@ -135,8 +135,8 @@ public class PSFormDataJoiner
      */
     private FormDataProcessingResult parseCSVData(List<IPSFormData> formsList) throws IOException
     {
-        SortedSet<CaselessString> finalHeaderSet = new TreeSet<CaselessString>();
-        List<Map<CaselessString, String>> currentDataList = new ArrayList<Map<CaselessString, String>>();
+        SortedSet<CaselessString> finalHeaderSet = new TreeSet<>();
+        List<Map<CaselessString, String>> currentDataList = new ArrayList<>();
 
         for (IPSFormData aForm : formsList)
         {
@@ -148,7 +148,7 @@ public class PSFormDataJoiner
 
         // add every row with all columns
         Map<String, String> aFinalCsvRow;
-        List<Map<String, String>> finalCsvRowList = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> finalCsvRowList = new ArrayList<>();
 
         // Final header is based on 'finalHeaderSet'. It has the 'form name' and
         // 'create date' at the beginning.
@@ -156,7 +156,7 @@ public class PSFormDataJoiner
 
         for (Map<CaselessString, String> aCsvRow : currentDataList)
         {
-            aFinalCsvRow = new HashMap<String, String>();
+            aFinalCsvRow = new HashMap<>();
 
             for (CaselessString aHeader : finalHeader)
             {
@@ -232,7 +232,7 @@ public class PSFormDataJoiner
     {
         Validate.notNull(form);
         
-        SortedSet<CaselessString> finalHeaderSet = new TreeSet<CaselessString>();
+        SortedSet<CaselessString> finalHeaderSet = new TreeSet<>();
         addColumnNames(finalHeaderSet, form.getFieldNames());
         List<CaselessString> finalHeader = prepareHeader(finalHeaderSet);
         Map<CaselessString, String> fieldMap = processCsvRow(form);
