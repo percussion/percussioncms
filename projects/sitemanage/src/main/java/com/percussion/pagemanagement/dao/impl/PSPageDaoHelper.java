@@ -39,6 +39,7 @@ import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
 
@@ -91,8 +92,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
      * (non-Javadoc)
      * @see com.percussion.pagemanagement.dao.IPSPageDaoHelper#setWorkflowAccordingToParentFolder(com.percussion.pagemanagement.data.PSPage)
      */
-    public void setWorkflowAccordingToParentFolder(PSPage page)
-    {
+    public void setWorkflowAccordingToParentFolder(PSPage page) throws PSValidationException {
         notNull(page, "page cannot be null");
         notEmpty(page.getFolderPaths(), "page.folderpaths cannot be null");
         
@@ -100,8 +100,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         page.setWorkflowId(getWorkflowIdForPath(page.getFolderPaths().get(0)));
     }
     
-    public int getWorkflowIdForPath(String folderPath)
-    {
+    public int getWorkflowIdForPath(String folderPath) throws PSValidationException {
         notEmpty(folderPath);
         
         int workflowId;

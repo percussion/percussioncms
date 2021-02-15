@@ -49,6 +49,7 @@ import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSNameGenerator;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.service.impl.PSJsoupUtils;
 import org.apache.commons.lang.StringUtils;
@@ -242,7 +243,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
      * @param unusedAsset assumed not <code>null</code>
      * @return String content from the unused asset, may be null or empty.
      */
-    private String getUnUsedContent(PSOrphanedAssetSummary unusedAsset) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException {
+    private String getUnUsedContent(PSOrphanedAssetSummary unusedAsset) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException {
         PSAsset asset = assetService.load(unusedAsset.getId());
         String content = null;
         if(asset.getType().equalsIgnoreCase("percRawHtmlAsset"))
@@ -268,7 +269,12 @@ public class PSContentMigrationService implements IPSContentMigrationService
         Set<PSOrphanedAssetSummary> unusedAssets = PSPreviewPageUtils.getOrphanedAssetsSummaries(page, template);
         for (PSOrphanedAssetSummary unusedAsset : unusedAssets)
         {
-            String content = getUnUsedContent(unusedAsset);
+            String content=null;
+            try {
+                content = getUnUsedContent(unusedAsset);
+            } catch (PSValidationException e) {
+                e.printStackTrace();
+            }
             if(StringUtils.isNotBlank(content))
             {
                 Document doc = Jsoup.parseBodyFragment(content);
