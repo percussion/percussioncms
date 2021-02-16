@@ -118,14 +118,14 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
        log.debug("Executing query for metadata entries");
        Transaction tx = null;
 
-       PSPair<List<IPSMetadataEntry>, Integer>  searchResults = new PSPair<List<IPSMetadataEntry>, Integer>();
-       PSPair<Query, SORTTYPE>  queryInfo = new PSPair<Query, SORTTYPE>();
+       PSPair<List<IPSMetadataEntry>, Integer>  searchResults = new PSPair<>();
+       PSPair<Query, SORTTYPE>  queryInfo = new PSPair<>();
 
        try(Session session = getSession())
        {
            tx = session.beginTransaction();
 
-         List<IPSMetadataEntry> results = new ArrayList<IPSMetadataEntry>();
+         List<IPSMetadataEntry> results = new ArrayList<>();
          Integer totalResults = null; 
      
          if(!isPagingSupported(query))
@@ -146,7 +146,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
              }
 
              // call the method for second time to get list of objects based on the query
-             queryInfo = new PSPair<Query, SORTTYPE>();
+             queryInfo = new PSPair<>();
              queryInfo = buildHibernateQuery(session, query,false);
              if(queryInfo.getSecond().equals(SORTTYPE.PROPERTY))
              {
@@ -204,9 +204,9 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     private PSPair<Query, SORTTYPE> buildHibernateQuery(Session sess, PSMetadataQuery rawQuery, boolean isCount)
            throws PSMalformedMetadataQueryException, HibernateException, ParseException
     {
-        List<PSCriteriaElement> entryCrit = new ArrayList<PSCriteriaElement>();
-        List<PSCriteriaElement> propsCrit = new ArrayList<PSCriteriaElement>();
-        Map<String, String> sortColumns = new HashMap<String, String>();
+        List<PSCriteriaElement> entryCrit = new ArrayList<>();
+        List<PSCriteriaElement> propsCrit = new ArrayList<>();
+        Map<String, String> sortColumns = new HashMap<>();
 
         String orderBy = rawQuery.getOrderBy();
         orderBy= StringEscapeUtils.escapeSql(orderBy);
@@ -304,8 +304,8 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         String clauseTemplate = " me.{0} {1} :{2}";
         String inClauseTemplate = " me.{0} {1} (:{2})";
         int paramIndex = 0;
-        Map<String, Object> paramValues = new HashMap<String, Object>();
-        Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<String, PSCriteriaElement.OPERATION_TYPE>();
+        Map<String, Object> paramValues = new HashMap<>();
+        Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<>();
         boolean needConjunction = false;
         if(isSortingOnProperty) 
         {
@@ -484,7 +484,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     
     private List<String> getCharactersToEscape()
     {
-        List<String> specialChars = new ArrayList<String>();
+        List<String> specialChars = new ArrayList<>();
 
         // Escape the char that is used to escape too, in case it appears in the
         // string. MUST be escaped first.
@@ -551,7 +551,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      */
     private Map<String, String> getAdditionalSortCriteria(String orderBy)
     {
-        Map<String, String> hMapColumns = new HashMap<String, String>();
+        Map<String, String> hMapColumns = new HashMap<>();
         if (orderBy.contains(","))
         {    
             String orderByColumns = orderBy.substring(orderBy.indexOf(",")+1);
@@ -575,7 +575,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      */
     private PSPair<Query, SORTTYPE> getBuildQueryInfo(Query query, SORTTYPE type)
     {
-        PSPair<Query, SORTTYPE>  queryInfo = new PSPair<Query, SORTTYPE>();
+        PSPair<Query, SORTTYPE>  queryInfo = new PSPair<>();
         queryInfo.setFirst(query);
         queryInfo.setSecond(type);
         return queryInfo;

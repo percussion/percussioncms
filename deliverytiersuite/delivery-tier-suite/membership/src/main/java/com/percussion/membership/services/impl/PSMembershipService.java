@@ -428,7 +428,7 @@ public class PSMembershipService implements IPSMembershipService
     @Override
     public List<PSUserSummary> findUsers() throws Exception
     {
-        List<PSUserSummary> users = new ArrayList<PSUserSummary>();
+        List<PSUserSummary> users = new ArrayList<>();
 
         List<IPSMembership> members = dao.findMembers();
         for (IPSMembership member : members)
