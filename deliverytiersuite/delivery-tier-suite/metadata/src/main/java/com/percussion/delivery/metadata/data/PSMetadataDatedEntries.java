@@ -39,7 +39,7 @@ public class PSMetadataDatedEntries
     
     public PSMetadataDatedEntries()
     {
-        events = new ArrayList<PSMetadataDatedEvent>();
+        events = new ArrayList<>();
     }
     
     /**

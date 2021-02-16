@@ -48,7 +48,7 @@ public class PSMembershipAuthUtils {
 	
 	public static List<String> getAccessGroupsFromXML(String accessGroupFileName) {
 
-		List<String> groups = new ArrayList<String>();
+		List<String> groups = new ArrayList<>();
        String accessString;
        
        WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();

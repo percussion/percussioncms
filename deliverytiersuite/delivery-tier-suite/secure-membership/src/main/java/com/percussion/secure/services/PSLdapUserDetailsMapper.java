@@ -76,7 +76,7 @@ public class PSLdapUserDetailsMapper extends LdapUserDetailsMapper
 
        originalUser.getAuthorities();
 
-       List<SimpleGrantedAuthority> allAuthorities = new ArrayList<SimpleGrantedAuthority>();
+       List<SimpleGrantedAuthority> allAuthorities = new ArrayList<>();
 
        for (GrantedAuthority auth : authority) {
            if (auth != null && !auth.getAuthority().isEmpty()) {
@@ -100,7 +100,7 @@ public class PSLdapUserDetailsMapper extends LdapUserDetailsMapper
    
    public List<String> getAccessGroupsFromXML() {
        
-       List<String> groups = new ArrayList<String>();
+       List<String> groups = new ArrayList<>();
        String accessString;
        
        WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();

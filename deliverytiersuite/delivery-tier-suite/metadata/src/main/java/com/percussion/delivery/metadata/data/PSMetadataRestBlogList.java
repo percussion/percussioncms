@@ -28,7 +28,7 @@ import java.util.List;
 
 public class PSMetadataRestBlogList
 {
-    private List<PSMetadataBlogYear> years = new ArrayList<PSMetadataBlogYear>();
+    private List<PSMetadataBlogYear> years = new ArrayList<>();
 
     public List<PSMetadataBlogYear> getYears()
     {

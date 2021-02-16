@@ -46,7 +46,7 @@ public class PSMapAdapter extends XmlAdapter<PSCacheProviderProperties, Map<Stri
     @Override
     public Map<String, String> unmarshal(PSCacheProviderProperties v) throws Exception
     {
-        HashMap<String, String> hashMap = new HashMap<String, String>();
+        HashMap<String, String> hashMap = new HashMap<>();
         
         for (PSCacheProviderProperty providerProp : v.getProperty())
             hashMap.put(providerProp.getName(), providerProp.getValue());
