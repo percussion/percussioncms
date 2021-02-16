@@ -53,8 +53,8 @@ public class PSMetadataRestCategory
     {
         super();
         this.category = category;
-        this.count = new PSPair<Integer, Integer>(0, 0);
-        this.children = new ArrayList<PSMetadataRestCategory>();
+        this.count = new PSPair<>(0, 0);
+        this.children = new ArrayList<>();
     }
 
     /**

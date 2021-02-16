@@ -64,7 +64,7 @@ public class PSPollsService implements IPSPollsService
 		Set<IPSPollAnswer> dbPollAnswers = poll.getPollAnswers();
 		if(dbPollAnswers == null)
 		{
-			dbPollAnswers = new HashSet<IPSPollAnswer>();
+			dbPollAnswers = new HashSet<>();
 			updateAnswers(dbPollAnswers, pollAnswers,(PSPoll)poll);
 
 			poll.setPollAnswers(dbPollAnswers);

@@ -69,7 +69,7 @@ public class PSMultiAppVersionRedirectorValve extends ValveBase implements Lifec
 	private Properties properties = new Properties();
 	
 	//When true routing logic is attempted, when false it is skipped.
-	protected ThreadLocal<Boolean> pipelining = new ThreadLocal<Boolean>();
+	protected ThreadLocal<Boolean> pipelining = new ThreadLocal<>();
 	private PSVersionRoutingTable routingTable = new PSVersionRoutingTable();
 	
 	boolean started;

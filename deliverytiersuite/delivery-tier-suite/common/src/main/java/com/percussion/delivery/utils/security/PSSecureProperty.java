@@ -283,7 +283,7 @@ public class PSSecureProperty
     */
    private static String[] expandMatchingKeys(String regex, Properties props)
    {
-       List<String> results = new ArrayList<String>();
+       List<String> results = new ArrayList<>();
        Pattern pattern = Pattern.compile(regex);
        Matcher matcher = null;
        for(Object key : props.keySet())
