@@ -82,7 +82,7 @@ public class PSConfigMapper
    {
       validateConfigProperties(configDefFile, props, curProps, preProps);
       
-      List<IPSConfigHandler> cfgHandlers = new ArrayList<IPSConfigHandler>();
+      List<IPSConfigHandler> cfgHandlers = new ArrayList<>();
       PSImplConfigLoader loader = null;
       try
       {
@@ -173,7 +173,7 @@ public class PSConfigMapper
          ms_log.debug("\"" + propName + "\" properties is empty.");
       else
          ms_log.debug("\"" + propName + "\" properties are:");
-      List<String> keys = new ArrayList<String>();
+      List<String> keys = new ArrayList<>();
       keys.addAll(props.keySet());
       Collections.sort(keys);
       for (String k : keys)
@@ -272,7 +272,7 @@ public class PSConfigMapper
       }
       
       // resolve handler specific properties
-      Map<String, Object> tgtProps = new HashMap<String, Object>();
+      Map<String, Object> tgtProps = new HashMap<>();
 
       // pre-populate previous properties, needed for constant properties
       if (!isCurProps)
@@ -377,7 +377,7 @@ public class PSConfigMapper
          return null;
       
       boolean replaced = false;
-      Map<String, Object> replacedProps = new HashMap<String, Object>();
+      Map<String, Object> replacedProps = new HashMap<>();
       for (Map.Entry<String, Object> prop : setterProps.entrySet())
       {
          PSPair<Object, Boolean> value;
@@ -421,7 +421,7 @@ public class PSConfigMapper
       if (value instanceof Collection)
       {
          Collection values = (Collection) value;
-         List<Object> tmpList = new ArrayList<Object>();
+         List<Object> tmpList = new ArrayList<>();
          tmpList.addAll(values);
          values.clear();
          
@@ -615,10 +615,10 @@ public class PSConfigMapper
       if (oneHolder != null)
       {
          List<String> list = Collections.singletonList(oneHolder);
-         return new PSPair<List<String>, Boolean>(list, true);
+         return new PSPair<>(list, true);
       }
             
-      List<String> holders = new ArrayList<String>();
+      List<String> holders = new ArrayList<>();
       // take the part before PREFIX
       int i = origValue.indexOf(PREFIX);
       if (i == -1)
@@ -640,7 +640,7 @@ public class PSConfigMapper
       }
       else
       {
-         return new PSPair<List<String>, Boolean>(holders, false);
+         return new PSPair<>(holders, false);
       }
    }
 
@@ -741,7 +741,7 @@ public class PSConfigMapper
                ms_log.warn("Cannot find value for \"" + PREFIX + key + SUFFIX
                      + "\".");
             }
-            return new PSPair<Object, Boolean>(origValue, false);
+            return new PSPair<>(origValue, false);
          }
          
          // the replaced value is null 

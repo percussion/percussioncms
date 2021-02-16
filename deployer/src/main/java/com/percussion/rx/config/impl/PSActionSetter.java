@@ -152,7 +152,7 @@ public class PSActionSetter extends PSSimplePropertySetter
          aps.setParameter(name, params.get(name));
       }
       // Prepare a delete list by getting current params
-      List<PSActionParameter> deleteList = new ArrayList<PSActionParameter>();
+      List<PSActionParameter> deleteList = new ArrayList<>();
       Iterator iter = aps.iterator();
       while (iter.hasNext())
       {
@@ -178,7 +178,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    private Map<String, Object> getUrlParams(PSAction action)
    {
-      Map<String, Object> params = new HashMap<String, Object>();
+      Map<String, Object> params = new HashMap<>();
       PSActionParameters aps = action.getParameters();
       Iterator iter = aps.iterator();
       while (iter.hasNext())
@@ -198,7 +198,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    private Map<String, Object> getActionVisibility(PSAction action)
    {
-      Map<String, Object> propValue = new HashMap<String, Object>();
+      Map<String, Object> propValue = new HashMap<>();
       PSActionVisibilityContexts actionContexts = action
             .getVisibilityContexts();
       Iterator ctxIter = actionContexts.iterator();
@@ -206,7 +206,7 @@ public class PSActionSetter extends PSSimplePropertySetter
       Map<String, String> contexts = getResourceLookupData(VISIBILITY_CONTEXTS_LOOKUP_KEY);
       Map<String, String> revContexts = getReverseMap(contexts);
       initVisibilityContexts();
-      List<String> processedContexts = new ArrayList<String>();
+      List<String> processedContexts = new ArrayList<>();
       while (ctxIter.hasNext())
       {
          PSActionVisibilityContext avContext = (PSActionVisibilityContext) ctxIter
@@ -214,10 +214,10 @@ public class PSActionSetter extends PSSimplePropertySetter
          avCxtName = avContext.getName();
          processedContexts.add(avCxtName);
          Iterator propsIter = avContext.iterator();
-         List<String> values = new ArrayList<String>();
+         List<String> values = new ArrayList<>();
          String resource = m_vcResources.get(avCxtName);
 
-         Map<String, String> supportedVals = new HashMap<String, String>();
+         Map<String, String> supportedVals = new HashMap<>();
          if (resource != null)
             supportedVals = getReverseMap(getResourceLookupData(resource));
 
@@ -298,7 +298,7 @@ public class PSActionSetter extends PSSimplePropertySetter
             actionContexts.addContext(contextVal, validValues);
             continue;
          }
-         List<String> delList = new ArrayList<String>();
+         List<String> delList = new ArrayList<>();
          Iterator iter1 = cxt.iterator();
          while (iter1.hasNext())
          {
@@ -332,8 +332,8 @@ public class PSActionSetter extends PSSimplePropertySetter
    private String[] getValidValues(String context, String contextVal,
          List<String> values)
    {
-      List<String> results = new ArrayList<String>();
-      Map<String, String> supportedVals = new HashMap<String, String>();
+      List<String> results = new ArrayList<>();
+      Map<String, String> supportedVals = new HashMap<>();
       if (contextVal
             .equals(PSActionVisibilityContext.VIS_CONTEXT_CONTENT_TYPE))
       {
@@ -399,7 +399,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    private Map<String, String> getNormalizedMaps(Map<String, String> inputMap)
    {
-      Map<String, String> normalizedMap = new HashMap<String, String>();
+      Map<String, String> normalizedMap = new HashMap<>();
       Iterator<String> iter = inputMap.keySet().iterator();
       while (iter.hasNext())
       {
@@ -422,7 +422,7 @@ public class PSActionSetter extends PSSimplePropertySetter
    @SuppressWarnings("unchecked")
    private static Map<String, String> getResourceLookupData(String resource)
    {
-      Map<String, String> data = new HashMap<String, String>();
+      Map<String, String> data = new HashMap<>();
       Map params = new HashMap();
       try
       {
@@ -486,7 +486,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    private Map getReverseMap(Map<String,String> map)
    {
-      Map<String,String> revMap = new HashMap<String,String>();
+      Map<String,String> revMap = new HashMap<>();
       Iterator i = map.entrySet().iterator();
       while(i.hasNext())
       {

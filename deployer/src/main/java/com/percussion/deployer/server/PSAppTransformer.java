@@ -2683,12 +2683,12 @@ public class PSAppTransformer
          if (ids.size() == 0)
             continue;
          
-         List<PSParam> paramList = new ArrayList<PSParam>(ids.size());
+         List<PSParam> paramList = new ArrayList<>(ids.size());
          // the occurence map, or histogram map, this will keep track of
          // the occurences of a value within this binding
          // Map holds this information: Map<"301", 3> to say id 301 occurs 3
          // times and build up a param list
-         Map<String, Integer> occurenceMap = new HashMap<String, Integer>();
+         Map<String, Integer> occurenceMap = new HashMap<>();
          if (ids.size() > 1)
          {
             Iterator<String> it = ids.iterator();
