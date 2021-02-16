@@ -105,13 +105,13 @@ public class PSAssemblyServiceHelper
          m_slots = null;
       }
          
-      m_namedTemplatesMap = new HashMap<String, IPSAssemblyTemplate>();
-      m_guidTemplatesMap  = new HashMap<IPSGuid, IPSAssemblyTemplate>();
-      m_legacyTemplatesMap= new HashMap<String, IPSAssemblyTemplate>();
-      m_templateSlotMap   = new HashMap<String, Set<IPSTemplateSlot>>();
-      m_slotContentTypeMap= new HashMap<IPSGuid, Set<IPSNodeDefinition>>();
-      m_slotTemplatesMap  = new HashMap<IPSGuid, Set<IPSAssemblyTemplate>>();  
-      m_slots             = new ArrayList<IPSTemplateSlot>();
+      m_namedTemplatesMap = new HashMap<>();
+      m_guidTemplatesMap  = new HashMap<>();
+      m_legacyTemplatesMap= new HashMap<>();
+      m_templateSlotMap   = new HashMap<>();
+      m_slotContentTypeMap= new HashMap<>();
+      m_slotTemplatesMap  = new HashMap<>();
+      m_slots             = new ArrayList<>();
    }
 
    
@@ -193,7 +193,7 @@ public class PSAssemblyServiceHelper
     */
    public List<IPSGuid> getContentTypesByTemplate(IPSAssemblyTemplate t)
    {
-      List<IPSGuid> cTypes = new ArrayList<IPSGuid>();
+      List<IPSGuid> cTypes = new ArrayList<>();
       try
       {
          List<IPSNodeDefinition> nodeDefs = m_contentMgr
@@ -305,13 +305,13 @@ public class PSAssemblyServiceHelper
       if (m_namedTemplatesMap != null )
       {
          m_namedTemplatesMap.clear();
-         m_namedTemplatesMap = new HashMap<String, IPSAssemblyTemplate>();
+         m_namedTemplatesMap = new HashMap<>();
       }
       
       if ( m_guidTemplatesMap != null )
       {
          m_guidTemplatesMap.clear();
-         m_guidTemplatesMap  = new HashMap<IPSGuid, IPSAssemblyTemplate>();
+         m_guidTemplatesMap  = new HashMap<>();
       }
       catalogTemplatesMap();
       return m_namedTemplatesMap;
@@ -337,7 +337,7 @@ public class PSAssemblyServiceHelper
    {
       m_legacyTemplatesMap.clear();
       m_legacyTemplatesMap = null;
-      m_legacyTemplatesMap = new HashMap<String, IPSAssemblyTemplate>();
+      m_legacyTemplatesMap = new HashMap<>();
       catalogLegacyTemplatesMap();
       return m_legacyTemplatesMap;
    }
@@ -352,9 +352,9 @@ public class PSAssemblyServiceHelper
          sumList = m_assemblySvc.getSummaries(PSTypeEnum.SLOT);
          if ( sumList != null && sumList.size() != 0)
          {
-            m_slots = new ArrayList<IPSTemplateSlot>();
+            m_slots = new ArrayList<>();
             Iterator<IPSCatalogSummary> it = sumList.iterator();
-            List<IPSGuid> slotGuids = new ArrayList<IPSGuid>();
+            List<IPSGuid> slotGuids = new ArrayList<>();
             while(it.hasNext())
             {
                IPSCatalogSummary slot = it.next();
@@ -392,7 +392,7 @@ public class PSAssemblyServiceHelper
    {
       m_slots.clear();
       m_slots = null;
-      m_slots  = new ArrayList<IPSTemplateSlot>();
+      m_slots  = new ArrayList<>();
       catalogSlots();
       return m_slots;
    }

@@ -72,7 +72,7 @@ public class PSConfigMerger
    {
       if (cfgHandlers == null)
          throw new IllegalArgumentException("cfgHandlers must not be null");
-      List<IPSGuid> processedGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> processedGuids = new ArrayList<>();
       PSConfigException exceptionDuringSave = null;
       IPSDesignModelFactory dmFactory = PSDesignModelFactoryLocator
             .getDesignModelFactory();
@@ -145,7 +145,7 @@ public class PSConfigMerger
          exceptionDuringSave = e;
       }
       
-      return new PSPair<Collection<IPSGuid>, PSConfigException>(
+      return new PSPair<>(
             processedGuids, exceptionDuringSave);
    }
 
@@ -168,8 +168,8 @@ public class PSConfigMerger
    {
       if (cfgHandlers == null)
          throw new IllegalArgumentException("cfgHandlers must not be null");
-      Map<String, Object> props = new HashMap<String, Object>();
-      List<Exception> cfgExceptions = new ArrayList<Exception>();
+      Map<String, Object> props = new HashMap<>();
+      List<Exception> cfgExceptions = new ArrayList<>();
       PSPair<Map<String, Object>, List<Exception>> result = new PSPair(
             props, cfgExceptions);
       for (IPSConfigHandler handler : cfgHandlers)
@@ -214,7 +214,7 @@ public class PSConfigMerger
       Map<String, Object> typeMap = m_designObjects.get(type);
       if (typeMap== null)
       {
-         typeMap = new HashMap<String, Object>();
+         typeMap = new HashMap<>();
          m_designObjects.put(type, typeMap);
       }
 
@@ -223,7 +223,7 @@ public class PSConfigMerger
          return handler.getDesignObjects(typeMap);
       
       // get the Design Objects by name 
-      List<PSPair<Object, ObjectState>> objs = new ArrayList<PSPair<Object, ObjectState>>();
+      List<PSPair<Object, ObjectState>> objs = new ArrayList<>();
       
       // load object from current configure
       String name = handler.getName();
@@ -236,7 +236,7 @@ public class PSConfigMerger
       
       // load object from previous configure if there is any
       ObjectState state = hasPrevProps ? ObjectState.BOTH : ObjectState.CURRENT;
-      objs.add(new PSPair<Object, ObjectState>(obj, state));
+      objs.add(new PSPair<>(obj, state));
       
       return objs;
    }
@@ -270,7 +270,7 @@ public class PSConfigMerger
       Map<String, Object> typeMap = m_designObjects.get(type);
       if (typeMap== null)
       {
-         typeMap = new HashMap<String, Object>();
+         typeMap = new HashMap<>();
          m_designObjects.put(type, typeMap);
       }
       if (handler.isGetDesignObjects())
@@ -321,5 +321,5 @@ public class PSConfigMerger
     * from this map.
     */
    private Map<PSTypeEnum, Map<String, Object>> m_designObjects = 
-      new HashMap<PSTypeEnum, Map<String, Object>>();
+      new HashMap<>();
 }

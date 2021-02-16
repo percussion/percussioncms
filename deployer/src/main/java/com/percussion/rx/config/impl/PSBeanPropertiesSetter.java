@@ -108,5 +108,5 @@ public class PSBeanPropertiesSetter extends PSSimplePropertySetter
     * The place-holder to collect all defined properties while executing
     * {@link #applyProperty(Object, ObjectState, List, String, Object)}.
     */
-   Map<String, Object> m_configProps = new HashMap<String, Object>();
+   Map<String, Object> m_configProps = new HashMap<>();
 }

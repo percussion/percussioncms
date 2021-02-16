@@ -127,7 +127,7 @@ public class PSConfigDeNormalizer
       if (hasFixMe)
       {
          if (errors == null)
-            errors = new ArrayList<String>(1);
+            errors = new ArrayList<>(1);
          errors.add(0, ERROR_FIXME);
       }
       addComments(rootElem, errors);
@@ -306,7 +306,7 @@ public class PSConfigDeNormalizer
     */
    private Map<String, Object> sortMap(Map<String, Object> map)
    {
-      return new TreeMap<String, Object>(map);
+      return new TreeMap<>(map);
    }
 
    /**
