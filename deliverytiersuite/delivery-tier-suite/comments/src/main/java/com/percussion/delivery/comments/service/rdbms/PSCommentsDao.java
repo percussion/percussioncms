@@ -39,7 +39,6 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.jpa.QueryHints;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,7 +69,6 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
 
             Criteria queryCriteria = session.createCriteria(PSComment.class);
             prepareCriteria(criteria, queryCriteria);
-            queryCriteria.addQueryHint(QueryHints.HINT_CACHEABLE).addQueryHint(QueryHints.HINT_READONLY);
             return queryCriteria.list();
     }
 
@@ -164,8 +162,7 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
                     + "where site = :site " + "group by pagePath, approvalState, viewed ";
 
             Query query = session.createQuery(stringQuery);
-            query.setHint(QueryHints.HINT_CACHEABLE,true).setHint(QueryHints.HINT_READONLY,true);
-            query.setParameter("site", site);
+             query.setParameter("site", site);
 
             List<Object[]> result = query.list();
             List<PSPageInfo> pages = new ArrayList<PSPageInfo>();
@@ -186,7 +183,6 @@ public class PSCommentsDao extends HibernateDaoSupport implements IPSCommentsDao
         Session session = getSession();
 
             Query query = session.createQuery("from PSDefaultModerationState where site = :site");
-            query.setHint(QueryHints.HINT_READONLY,true).setHint(QueryHints.HINT_CACHEABLE,true);
             query.setParameter("site", site);
             List<Object> result = query.list();
             APPROVAL_STATE state = APPROVAL_STATE.APPROVED;

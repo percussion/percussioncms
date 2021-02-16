@@ -30,7 +30,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.jpa.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -76,8 +75,6 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 					criteriaBuilder.equal(root.get("name"), name)));
 
 			List<IPSFeedDescriptor> results = session.createQuery(criteriaQuery).
-					setHint(QueryHints.HINT_CACHEABLE,true).
-					setHint(QueryHints.HINT_READONLY,true).
 					getResultList();
 
 			if (results.isEmpty())
@@ -107,8 +104,6 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			criteriaQuery.where(criteriaBuilder.equal(root.get("site"),site));
 			criteriaQuery.select(root);
 			return  session.createQuery(criteriaQuery).
-					setHint(QueryHints.HINT_CACHEABLE,true).
-					setHint(QueryHints.HINT_READONLY,true).
 					getResultList();
 
 	}
@@ -129,8 +124,6 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			Root<PSConnectionInfo> root = criteriaQuery.from(PSConnectionInfo.class);
 			criteriaQuery.select(root);
 			List<PSConnectionInfo> results = session.createQuery(criteriaQuery).
-					setHint(QueryHints.HINT_CACHEABLE,true).
-					setHint(QueryHints.HINT_READONLY,true).
 					getResultList();
 			if (results.isEmpty())
 				return null;
@@ -205,8 +198,6 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			criteriaQuery.select(root);
 
 		return session.createQuery(criteriaQuery).
-					setHint(QueryHints.HINT_CACHEABLE,true).
-					setHint(QueryHints.HINT_READONLY,true).
 					getResultList();
 
 	}
