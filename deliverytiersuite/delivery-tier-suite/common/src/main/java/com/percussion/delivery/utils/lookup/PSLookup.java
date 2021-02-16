@@ -48,7 +48,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PSLookup implements List<PSXEntry>{
 
 	@XmlElement(name="PSXEntry")
-	private List<PSXEntry> list = new ArrayList<PSXEntry>();
+	private List<PSXEntry> list = new ArrayList<>();
 	
 	public PSLookup(){}
 	
