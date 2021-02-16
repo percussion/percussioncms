@@ -163,6 +163,11 @@
             <AppenderRef ref="VELOCITY"/>
         </AsyncLogger>
 
+        <AsyncLogger name="velocity" level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="VELOCITY"/>
+        </AsyncLogger>
+
         <AsyncLogger name="com.percussion.services.assembly.impl.plugin.PSVelocityAssembler" level="info" includeLocation="true" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="VELOCITY"/>

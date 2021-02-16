@@ -24,6 +24,7 @@
 package com.percussion.pagemanagement.service.impl;
 
 
+import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
@@ -145,39 +146,42 @@ public class PSPageChangeHandler implements IPSPageChangeListener
      */
     private void updateBlogPostWidgetTitle(PSContentItem page)
     {
-        // get all the local assets and retrieve them to see their types
-        Set<String> assets = widgetAssetRelationshipService.getLocalAssets(page.getId());
-        IPSItemWorkflowService workFlowService = (PSItemWorkflowService) getWebApplicationContext()
-        .getBean("workflowRestService");
+        try {
+            // get all the local assets and retrieve them to see their types
+            Set<String> assets = widgetAssetRelationshipService.getLocalAssets(page.getId());
+            IPSItemWorkflowService workFlowService = (PSItemWorkflowService) getWebApplicationContext()
+                    .getBean("workflowRestService");
 
-        if(assets != null)
-        {
-            for(String assetId : assets)
-            {
-                try {
-                    PSContentItem asset = contentItemDao.find(assetId);
-                    if (BLOG_POST_ASSET_TYPE.equals(asset.getType())) {
-                        Map pageFields = page.getFields();
-                        String pageTitle = (String) pageFields.get(PAGE_LINK_TEXT_FIELD_NAME);
+            if (assets != null) {
+                for (String assetId : assets) {
+                    try {
+                        PSContentItem asset = contentItemDao.find(assetId);
+                        if (BLOG_POST_ASSET_TYPE.equals(asset.getType())) {
+                            Map<String,Object> pageFields = page.getFields();
+                            String pageTitle = (String) pageFields.get(PAGE_LINK_TEXT_FIELD_NAME);
 
-                        Map assetFields = asset.getFields();
-                        if (assetFields.containsKey(BLOG_POST_WIDGET_TITLE)) {
-                            assetFields.put(BLOG_POST_WIDGET_TITLE, pageTitle);
+                            Map<String,Object> assetFields = asset.getFields();
+                            if (assetFields.containsKey(BLOG_POST_WIDGET_TITLE)) {
+                                assetFields.put(BLOG_POST_WIDGET_TITLE, pageTitle);
 
-                            if (!workFlowService.isCheckedOutToCurrentUser(asset.getId())) {
-                                workFlowService.checkOut(asset.getId());
+                                if (!workFlowService.isCheckedOutToCurrentUser(asset.getId())) {
+                                    workFlowService.checkOut(asset.getId());
+                                }
+
+                                contentItemDao.save(asset);
                             }
 
-                            contentItemDao.save(asset);
+                            break;
                         }
-
-                        break;
+                    } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+                        log.warn("Error updating Linked Title. Error:{}", e.getMessage());
+                        log.debug(e.getMessage(), e);
                     }
-                } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
-                    log.warn("Error updating Linked Title. Error:{}",e.getMessage());
-                    log.debug(e.getMessage(),e);
                 }
             }
+        } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+            log.warn("Error updating Linked Title. Error:{}", e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -302,7 +306,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                    }
                }
            }
-       } catch (IPSGenericDao.LoadException e) {
+       } catch (IPSGenericDao.LoadException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
           log.warn("Error generating Page summary for Page: {} Error: {}",pageId,e.getMessage());
           log.debug(e.getMessage(),e);
        }
@@ -341,10 +345,10 @@ public class PSPageChangeHandler implements IPSPageChangeListener
    static
    {
       moreLinkSupportTypes.put("percRichTextAsset", "text");
-      moreLinkSupportTypes.put("percBlogPostAsset", "postbody");
+      moreLinkSupportTypes.put(BLOG_POST_ASSET_TYPE, "postbody");
    }
    
-   private static Map<String, String> authorSupportedTypes = new HashMap<String, String>();
+   private static Map<String, String> authorSupportedTypes = new HashMap<>();
    static
    {
       authorSupportedTypes.put("percBlogPostAsset", "authorname");
@@ -352,6 +356,6 @@ public class PSPageChangeHandler implements IPSPageChangeListener
    /**
     * Logger for this class
     */
-   public static Logger log = LogManager.getLogger(PSPageChangeHandler.class);
+   public static final Logger log = LogManager.getLogger(PSPageChangeHandler.class);
 
 }

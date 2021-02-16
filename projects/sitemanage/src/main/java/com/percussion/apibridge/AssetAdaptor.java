@@ -437,9 +437,14 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                 PSMoveFolderItem request = new PSMoveFolderItem();
                 request.setItemPath(currentPath + "/" + oldPSAsset.getName());
                 request.setTargetFolderPath(asset.getFolderPath() + "/");
-                this.pathService.moveItem(request); // PXA What to do if this
-                                                    // fails? Have we changed
-                                                    // anything yet?
+                try {
+                    this.pathService.moveItem(request); // PXA What to do if this
+                    // fails? Have we changed
+                    // anything yet?
+                } catch (PSDataServiceException e) {
+                    log.error(e.getMessage());
+                    throw new BackendException(e.getMessage(),e);
+                }
                 oldPSAsset.setFolderPaths(Arrays.asList("//" + PSPathUtils.getFolderPath(asset.getFolderPath())));
             }
         }
@@ -647,7 +652,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         else {
             try {
                 resource = assetService.createAsset(ar);
-            } catch (IPSAssetService.PSAssetServiceException e) {
+            } catch (IPSAssetService.PSAssetServiceException | PSValidationException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
                 throw new WebApplicationException();

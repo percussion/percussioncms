@@ -23,21 +23,6 @@
  */
 package com.percussion.assetmanagement.service.impl;
 
-import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getPageWidgets;
-import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getUsedPageAssets;
-import static com.percussion.pagemanagement.assembler.PSWidgetContentFinderUtils.getLocalSharedAssetRelationships;
-import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
-
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.split;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.assetmanagement.dao.IPSAssetDao;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetDropCriteria;
@@ -70,17 +55,25 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidHelper;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.memory.IPSCacheAccess;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSAbstractPersistantObject;
 import com.percussion.share.data.PSContentItemUtils;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSNameGenerator;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.system.IPSSystemWs;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,11 +85,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getPageWidgets;
+import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getUsedPageAssets;
+import static com.percussion.pagemanagement.assembler.PSWidgetContentFinderUtils.getLocalSharedAssetRelationships;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
+import static java.util.Arrays.asList;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.split;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 @Component("widgetAssetRelationshipService")
 public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelationshipService
@@ -185,8 +185,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         this.ehCache = ehCache;
     }
     
-    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel)
-    {
+    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSWidgetAssetRelationshipServiceException {
         // delete the original asset relationship if there is any
         if (awRel.getReplacedRelationshipId() >= 0)
         {
@@ -258,9 +257,9 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      * 
      * @param rid the id of the relationship that is being searched.
      * @return {@link PSRelationship} object, never <code>null</code>.
+     * @throws PSWidgetAssetRelationshipServiceException
      */
-    private PSRelationship getRelationshipById(int rid)
-    {
+    private PSRelationship getRelationshipById(int rid) throws PSWidgetAssetRelationshipServiceException {
         if (rid < 0)
             throw new PSWidgetAssetRelationshipServiceException("Invalid relationship ID = " + rid);
         PSRelationship rel = getRelationshipByIdIfExists(rid);
@@ -277,8 +276,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
             PSAssetResourceType resourceType,
             int order, 
             String widgetName,
-            int replacedRelationshipId)
-    {
+            int replacedRelationshipId) throws PSWidgetAssetRelationshipServiceException {
         notNull(owner, "owner");
         notNull(asset, "asset");
         notEmpty(widgetId, "widgetId");
@@ -348,8 +346,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         }
     }
     
-    public void clearAssetFromWidget(String ownerId, String assetId, String widgetId) 
-    {
+    public void clearAssetFromWidget(String ownerId, String assetId, String widgetId) throws PSWidgetAssetRelationshipServiceException {
         notEmpty(ownerId, "ownerId");
         notEmpty(assetId, "assetId");
         notEmpty(widgetId, "widgetId");             
@@ -385,8 +382,14 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         // after being public may not be removed here.
         if (getRelationshipOwners(assetId).isEmpty())
         {
-            // delete asset
-            assetDao.delete(assetId);
+            try {
+                // delete asset
+                assetDao.delete(assetId);
+                log.debug("Deleted asset with id: {}", assetId);
+            } catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException e) {
+                log.error("Error deleting Asset with id: {} Error: {}",assetId,e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
         }
     }
     
@@ -475,18 +478,21 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         return owners;
     }
 
-    public void deleteLocalAssets(String id)
-    {
+    public void deleteLocalAssets(String id) throws PSWidgetAssetRelationshipServiceException {
         notEmpty(id, "id");
-        
-        for (String assetId : getLocalAssets(id))
-        {
-            assetDao.delete(assetId);
-        }
+            for (String assetId : getLocalAssets(id)) {
+                try {
+                    assetDao.delete(assetId);
+                    log.debug("Deleted local asset with id: {}", assetId);
+                } catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException e) {
+                    log.error("Error deleting local asset with id: {} Error: {}",assetId,e.getMessage());
+                    log.debug(e.getMessage(),e);
+                    //Continue processing so one bad asset doesn't prevent the reset from being processing.
+                }
+            }
     }
     
-    public Collection<String> copyAssetWidgetRelationships(String srcId, String destId)
-    {
+    public Collection<String> copyAssetWidgetRelationships(String srcId, String destId) throws PSWidgetAssetRelationshipServiceException {
 		Set<String> assetIds = new HashSet<String>();
 		String copyId=null;
 		try {
@@ -539,8 +545,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         return assetIds;
     }
     
-    public void cleanupOrphanedPageAssets(PSPage page, PSPage previousPage, PSTemplate template, PSTemplate previousTemplate)
-    {
+    public void cleanupOrphanedPageAssets(PSPage page, PSPage previousPage, PSTemplate template, PSTemplate previousTemplate) throws PSWidgetAssetRelationshipServiceException {
         Set<String> widgetIds = getWidgetIds(page.getWidgets());
         Set<String> templateWidgetIds = getWidgetIds(template.getWidgets());
         
@@ -565,7 +570,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     
     private Set<String> getWidgetIds(Collection<PSWidgetItem> widgets)
     {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (PSWidgetItem w : widgets)
         {
             result.add(w.getId());
@@ -573,8 +578,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         return result;
     }
     
-    public void removeAssetWidgetRelationships(String ownerId, Collection<PSWidgetItem> widgets)
-    {
+    public void removeAssetWidgetRelationships(String ownerId, Collection<PSWidgetItem> widgets) throws PSWidgetAssetRelationshipServiceException {
         notEmpty(ownerId, "ownerId");
         notNull(widgets, "widgets");
         
@@ -582,8 +586,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         cleanupAssetRelationships(ownerId, widgetIds);
     }
 
-    private void cleanupPageAssetRelationships(String ownerId, Set<String> removedWidgetIds)
-    {
+    private void cleanupPageAssetRelationships(String ownerId, Set<String> removedWidgetIds) throws PSWidgetAssetRelationshipServiceException {
         List<PSRelationship> rels = getAssetRelationships(ownerId, null);
         for (PSRelationship rel : rels)
         {
@@ -597,8 +600,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         }
     }
 
-    private void cleanupAssetRelationships(String ownerId, Set<String> widgetIds)
-    {
+    private void cleanupAssetRelationships(String ownerId, Set<String> widgetIds) throws PSWidgetAssetRelationshipServiceException {
         List<PSRelationship> rels = getAssetRelationships(ownerId, null);
         for (PSRelationship rel : rels)
         {
@@ -610,8 +612,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         }
     }
 
-    public Set<String> getLocalAssets(String id)
-    {
+    public Set<String> getLocalAssets(String id) throws PSWidgetAssetRelationshipServiceException {
         notEmpty(id, "id");
         
         try
@@ -624,8 +625,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         }
     }
     
-    public Set<String> getSharedAssets(String id)
-    {
+    public Set<String> getSharedAssets(String id) throws PSWidgetAssetRelationshipServiceException {
         notEmpty(id, "id");
         
         try
@@ -638,11 +638,10 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         }
     }
     
-    public Set<String> getResourceAssets(String id)
-    {
+    public Set<String> getResourceAssets(String id) throws PSWidgetAssetRelationshipServiceException {
         notEmpty(id, "id");
         
-        Set<String> resourceAssets = new HashSet<String>();
+        Set<String> resourceAssets = new HashSet<>();
         try
         {
             resourceAssets.addAll(getSharedAssets(id));
@@ -650,13 +649,17 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
             Iterator<String> iter = resourceAssets.iterator();
             while (iter.hasNext())
             {
-                if (!assetDao.find(iter.next()).isResource())
-                {
-                    iter.remove();
+                try {
+                    if (!assetDao.find(iter.next()).isResource()) {
+                        iter.remove();
+                    }
+                }catch(IPSGenericDao.LoadException e){
+                    log.error("Error processing resources Assets for id: {} Error: {}",
+                            id,e.getMessage());
                 }
             }
         }
-        catch (PSErrorException e)
+        catch (PSErrorException | PSWidgetAssetRelationshipServiceException e)
         {
             throw new PSWidgetAssetRelationshipServiceException("Failed to find resource assets", e);
         }
@@ -665,8 +668,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }
     
     @Override
-    public boolean isUsedByTemplate(String id)
-    {
+    public boolean isUsedByTemplate(String id) throws PSValidationException {
         rejectIfBlank("isUsedByTemplate", "id", id);
         
         Set<String> owners = getRelationshipOwners(id);
@@ -724,8 +726,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }
     
     @Override
-    public Set<String> getLinkedAssets(String id)
-    {
+    public Set<String> getLinkedAssets(String id) throws PSWidgetAssetRelationshipServiceException {
         notNull(id, "id");
         notEmpty(id, "id");
         
@@ -911,8 +912,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      * @see com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService#createRelationship(java.lang.String, java.lang.String, java.lang.String)
      */
     public void createRelationship(String assetId, String ownerId, String widgetId,
-            String widgetName, boolean isSharedAsset)
-    {
+            String widgetName, boolean isSharedAsset) throws PSDataServiceException {
         notEmpty(widgetId);
         notEmpty(assetId);
         notEmpty(ownerId);
@@ -1185,46 +1185,47 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     
     private void setSupportedCTypes(PSAssetDropCriteria criteria, String widgetDefId)
     {
-        Boolean appendSupport = false;
-        Boolean multiItemSupport = false; 
+        try {
+            boolean appendSupport = false;
+            boolean multiItemSupport = false;
 
-        List<String> ctypes = new ArrayList<String>();
-        PSWidgetDefinition widgetDef = widgetService.load(widgetDefId);
-        List<DnDPref> dndPrefs = new ArrayList<DnDPref>();
-        dndPrefs = widgetDef.getDnDPref();
-        
-        // Check Properties
-        for (DnDPref pref : dndPrefs)
-        {
-            if (pref.getAction().equalsIgnoreCase("append"))
-            {
-                appendSupport = true;
+            List<String> ctypes = new ArrayList<>();
+            PSWidgetDefinition widgetDef = widgetService.load(widgetDefId);
+            List<DnDPref> dndPrefs;
+            dndPrefs = widgetDef.getDnDPref();
+
+            // Check Properties
+            for (DnDPref pref : dndPrefs) {
+                if (pref.getAction().equalsIgnoreCase("append")) {
+                    appendSupport = true;
+                }
+
+                if (pref.getSourceType().equalsIgnoreCase("multi")) {
+                    multiItemSupport = true;
+                }
+                ctypes = asList(split(pref.getAcceptedTypes().trim(), ','));
             }
 
-            if (pref.getSourceType().equalsIgnoreCase("multi"))
-            {
-                multiItemSupport = true;
-            }
-            ctypes = asList(split(pref.getAcceptedTypes().trim(), ','));
-        }
+            criteria.setAppendSupport(appendSupport);
+            criteria.setMultiItemSupport(multiItemSupport);
 
-        criteria.setAppendSupport(appendSupport);
-        criteria.setMultiItemSupport(multiItemSupport);
-        
-        if (ctypes.isEmpty())
-        {
-            ctypes.add(widgetDef.getWidgetPrefs().getContenttypeName());
-            criteria.setSupportedCtypes(ctypes);
-        }
-        else
-        {
-            criteria.setSupportedCtypes(ctypes);
+            if (ctypes.isEmpty()) {
+                ctypes.add(widgetDef.getWidgetPrefs().getContenttypeName());
+                criteria.setSupportedCtypes(ctypes);
+            } else {
+                criteria.setSupportedCtypes(ctypes);
+            }
+        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+            log.error("Error loading Widget definition for id: {} Error: {}",
+                    widgetDefId,
+                    e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
     
     private List<PSAssetDropCriteria> processWidgetList(String id, Collection<PSWidgetItem> widgetList, Map<String, PSRelationship> widToRelationship)
     {
-        ArrayList<PSAssetDropCriteria> criteriaList = new ArrayList<PSAssetDropCriteria>();
+        ArrayList<PSAssetDropCriteria> criteriaList = new ArrayList<>();
         for (PSWidgetItem widget : widgetList)
         {
             PSRelationship rel = widToRelationship.get(widget.getId());
@@ -1323,9 +1324,8 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      * 
      * @return set of id's (string representation) for the direct assets, never <code>null</code>, may be empty.
      */
-    private Set<String> getDirectAssets(String id)
-    {
-        Set<String> directAssets = new HashSet<String>();
+    private Set<String> getDirectAssets(String id) throws PSWidgetAssetRelationshipServiceException {
+        Set<String> directAssets = new HashSet<>();
         
         directAssets.addAll(getLocalAssets(id));
         directAssets.addAll(getSharedAssets(id));
@@ -1391,6 +1391,6 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSWidgetAssetRelationshipService.class);
+    public static Logger log = LogManager.getLogger(PSWidgetAssetRelationshipService.class);
 
 }

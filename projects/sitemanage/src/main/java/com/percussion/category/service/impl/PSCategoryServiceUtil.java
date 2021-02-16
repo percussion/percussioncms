@@ -30,6 +30,7 @@ import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.marshaller.PSCategoryMarshaller;
 import com.percussion.category.marshaller.PSCategoryUnMarshaller;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 
 import java.util.ArrayList;
@@ -238,7 +239,7 @@ public class PSCategoryServiceUtil {
         return categoryJson;
     }
 
-    public static void publishToDTS(String category, String sitename, String deliveryServer, IPSDeliveryInfoService deliveryService) {
+    public static void publishToDTS(String category, String sitename, String deliveryServer, IPSDeliveryInfoService deliveryService) throws PSValidationException {
 
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER, deliveryServer.toUpperCase());
         //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
