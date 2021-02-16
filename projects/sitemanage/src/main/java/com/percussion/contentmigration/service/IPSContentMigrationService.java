@@ -29,6 +29,7 @@ import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public interface IPSContentMigrationService
      *   
      * @throws PSContentMigrationException in case of an error.
      */
-    void migrateContent(String siteName, String templateId, String referencePageId, List<String> newPageIds) throws PSContentMigrationException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSSpringValidationException, IPSDataService.DataServiceSaveException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException;
+    void migrateContent(String siteName, String templateId, String referencePageId, List<String> newPageIds) throws PSContentMigrationException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceSaveException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException;
     
     /**
      * Migrates content on template change, all the content that can be matched by widget name will be automatically matched and for rest of the empty widgets
@@ -66,7 +67,7 @@ public interface IPSContentMigrationService
      * @param newPageIds must not be empty.
      * @throws PSContentMigrationException in case of error.
      */
-    void migrateContentOnTemplateChange(String templateId, String referencePageId, List<String> newPageIds) throws PSContentMigrationException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceSaveException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSSpringValidationException;
+    void migrateContentOnTemplateChange(String templateId, String referencePageId, List<String> newPageIds) throws PSContentMigrationException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceSaveException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException;
 
     /**
      * Migrates same template changes to the other pages of the template, if page content migration version matches with the template content migration
@@ -74,7 +75,7 @@ public interface IPSContentMigrationService
      * @param templateId must not be blank.
      * @param pageIds if <code>null</code> migrates content for all pages using the supplied template, if not migrates content only for the pages in the list.
      */
-    void migrateSameTemplateChanges(String templateId, List<String> pageIds) throws PSContentMigrationException, IPSDataService.DataServiceSaveException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSSpringValidationException, IPSPageService.PSPageException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, IPSAssetService.PSAssetServiceException;
+    void migrateSameTemplateChanges(String templateId, List<String> pageIds) throws PSContentMigrationException, IPSDataService.DataServiceSaveException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSValidationException, IPSPageService.PSPageException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, IPSAssetService.PSAssetServiceException;
     
     /**
      * Gets all the pages using the supplied template.

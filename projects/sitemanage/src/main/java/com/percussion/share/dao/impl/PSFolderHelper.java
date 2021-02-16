@@ -336,8 +336,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * (non-Javadoc)
      * @see com.percussion.share.dao.IPSFolderHelper#saveFolderProperties(com.percussion.pathmanagement.data.PSFolderProperties)
      */
-    public void saveFolderProperties(PSFolderProperties folderProps)
-    {
+    public void saveFolderProperties(PSFolderProperties folderProps) throws PSValidationException {
         validateSaveFolderProperties(folderProps);
         
         PSFolder folder = contentWs.loadFolder(idMapper.getGuid(folderProps.getId()), false);
@@ -381,8 +380,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * Validates for the specified folder properties, make sure the name is unique among its siblings.
      * @param folderProps the folder properties in question.
      */
-    private void validateSaveFolderProperties(PSFolderProperties folderProps)
-    {
+    private void validateSaveFolderProperties(PSFolderProperties folderProps) throws PSValidationException {
         PSValidationErrorsBuilder builder = 
             validateParameters("saveFolderProperties").rejectIfNull("folderProps", folderProps).throwIfInvalid();
         
@@ -529,8 +527,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * @return the folder ID, never <code>null</code> if <code>isRequired</code> is <code>true</code>. 
      * It may be <code>null</code> if cannot find parent folder and <code>isRequired</code> is <code>false</code>.
      */
-    private PSItemSummary getParentFolder(IPSGuid itemId, boolean isRequired)
-    {
+    private PSItemSummary getParentFolder(IPSGuid itemId, boolean isRequired) throws PSValidationException {
         List<PSItemSummary> parents = contentWs.findFolderParents(itemId, false);
         if (parents.isEmpty() && (!isRequired))
             return null;
@@ -550,8 +547,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * (non-Javadoc)
      * @see com.percussion.share.dao.IPSFolderHelper#getParentFolderId(com.percussion.utils.guid.IPSGuid)
      */
-    public IPSGuid getParentFolderId(IPSGuid itemId)
-    {
+    public IPSGuid getParentFolderId(IPSGuid itemId) throws PSValidationException {
         PSItemSummary parent = getParentFolder(itemId, true);
         return parent.getGUID();
     }
@@ -560,8 +556,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * (non-Javadoc)
      * @see com.percussion.share.dao.IPSFolderHelper#getParentFolderId(com.percussion.utils.guid.IPSGuid, boolean)
      */
-    public IPSGuid getParentFolderId(IPSGuid itemId, boolean isRequired)
-    {
+    public IPSGuid getParentFolderId(IPSGuid itemId, boolean isRequired) throws PSValidationException {
         PSItemSummary parent = getParentFolder(itemId, isRequired);
         return (parent == null) ? null : parent.getGUID();
     }
@@ -903,7 +898,7 @@ public class PSFolderHelper implements IPSFolderHelper
         return idMapper.getGuid(folder.getId()).getUUID();
     }
 
-    public void removeItem(String path, String itemId, boolean purgeItem) throws PSErrorsException, PSErrorException {
+    public void removeItem(String path, String itemId, boolean purgeItem) throws PSErrorsException {
         validatePath(path);
 
         if (purgeItem) {

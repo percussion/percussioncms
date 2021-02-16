@@ -32,6 +32,7 @@ import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.exception.IPSNotFoundException;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
 
@@ -152,7 +153,7 @@ public interface IPSPathService
      * @return no content object where operation = "moveItem" if the item is
      * successfully moved.
      */    
-    PSNoContent moveItem(PSMoveFolderItem request);
+    PSNoContent moveItem(PSMoveFolderItem request) throws PSDataServiceException;
     
     /**
      * Deletes a folder accordingly as specified by a given {@link PSDeleteFolderCriteria}.

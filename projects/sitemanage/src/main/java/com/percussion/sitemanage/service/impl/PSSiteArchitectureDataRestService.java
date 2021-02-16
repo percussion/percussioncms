@@ -24,6 +24,7 @@
 
 package com.percussion.sitemanage.service.impl;
 
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.sitemanage.data.PSSiteArchitecture;
 import com.percussion.sitemanage.service.IPSSiteArchitectureDataService;
@@ -32,8 +33,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -43,7 +47,8 @@ import org.springframework.stereotype.Component;
 @Lazy
 public class PSSiteArchitectureDataRestService
 {
-    private IPSSiteArchitectureDataService ds;
+    private final IPSSiteArchitectureDataService ds;
+
     @Autowired
     public PSSiteArchitectureDataRestService(IPSSiteArchitectureDataService ds)
     {
@@ -54,8 +59,16 @@ public class PSSiteArchitectureDataRestService
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSSiteArchitecture find(@PathParam("id")
-    String id) throws DataServiceLoadException
+    String id)
     {
-        return ds.find(id);
+        try {
+            return ds.find(id);
+        } catch (DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException();
+        }
     }
+
+    private static final Logger log = LogManager.getLogger(PSSiteArchitectureDataRestService.class);
 }

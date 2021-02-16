@@ -45,6 +45,7 @@ import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 
 /**
@@ -71,7 +72,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @throws PSAssetServiceException if the relationship cannot be created.
      */    
-    public String createAssetWidgetRelationship(PSAssetWidgetRelationship rel) throws PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSSpringValidationException, DataServiceLoadException;
+    public String createAssetWidgetRelationship(PSAssetWidgetRelationship rel) throws PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSValidationException, DataServiceLoadException;
 
     /**
      * Updates the relationship defined by the specified asset widget relationship.
@@ -81,7 +82,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @throws PSAssetServiceException if the relationship cannot be created.
      */    
-    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship rel) throws PSAssetServiceException;
+    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship rel) throws PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException;
 
     /**
      * 
@@ -89,7 +90,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @return
      * @throws PSAssetServiceException
      */
-    public PSNoContent promoteAssetWidget(PSAssetWidgetRelationship rel) throws PSAssetServiceException, DataServiceSaveException, DataServiceNotFoundException, PSSpringValidationException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException;
+    public PSNoContent promoteAssetWidget(PSAssetWidgetRelationship rel) throws PSAssetServiceException, DataServiceSaveException, DataServiceNotFoundException, PSValidationException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException;
     
     /**
      * Clears the specified relationship.  If no other asset widget relationships exist for the asset, the item will
@@ -99,9 +100,9 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @throws PSAssetServiceException if the relationship cannot be deleted.
      */
-    public void clearAssetWidgetRelationship(PSAssetWidgetRelationship rel) throws PSAssetServiceException, PSSpringValidationException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException;
+    public void clearAssetWidgetRelationship(PSAssetWidgetRelationship rel) throws PSAssetServiceException, PSValidationException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException;
     
-    public PSValidationErrors validateAssetWidgetRelationship(PSAssetWidgetRelationship awr) throws PSSpringValidationException;
+    public PSValidationErrors validateAssetWidgetRelationship(PSAssetWidgetRelationship awr) throws PSValidationException;
 
     /**
      * Gets The criteria for a widget to allow an asset drop.
@@ -110,7 +111,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @return PSAssetDropCriteria
      */
-    public List<PSAssetDropCriteria> getWidgetAssetCriteria(String id, Boolean isPage) throws DataServiceLoadException, DataServiceNotFoundException;
+    public List<PSAssetDropCriteria> getWidgetAssetCriteria(String id, Boolean isPage) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
 
     /**
      * Gets list of asset editors and their URLs.
@@ -120,7 +121,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * used.
      * @return never <code>null</code>.
      */
-    public List<PSAssetEditor> getAssetEditors(String parentFolderPath) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException;
+    public List<PSAssetEditor> getAssetEditors(String parentFolderPath) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
     
     /**
      * Gets list of asset editors and their URLs.
@@ -131,7 +132,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @param filterDisabledWidgets if not null and equals ignore case to "yes", then disabled widgets are filtered.
      * @return never <code>null</code>.
      */
-    public List<PSAssetEditor> getAssetEditors(String parentFolderPath, String filterDisabledWidgets) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException;
+    public List<PSAssetEditor> getAssetEditors(String parentFolderPath, String filterDisabledWidgets) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
     
     /**
      * Gets list of asset type names and their internal ids.
@@ -139,21 +140,21 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @param filterDisabledWidgets if not null and equals ignore case to "yes", then disabled widgets are filtered.
      * @return never <code>null</code> may be empty.
      */
-    public List<PSWidgetContentType> getAssetTypes(String filterDisabledWidgets) throws DataServiceLoadException, DataServiceNotFoundException;
+    public List<PSWidgetContentType> getAssetTypes(String filterDisabledWidgets) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
     
     /**
      * Gets the asset editor for the widgetId
      * @param widgetId must not be <code>null</code>
      * @return never <code>null</code>.
      */
-    public PSAssetEditor getAssetEditor(String widgetId) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException;
+    public PSAssetEditor getAssetEditor(String widgetId) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
     
     /**
      * Gets the asset editor for the widgetId and specified folder path
      * @param widgetId must not be <code>null</code>
      * @return never <code>null</code>.
      */
-    public PSAssetEditor getAssetEditor(String widgetId, String folderPath) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException;
+    public PSAssetEditor getAssetEditor(String widgetId, String folderPath) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException, PSValidationException;
     
     /**
      * Gets edit URL for an asset.
@@ -168,13 +169,13 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * Adds the specified asset to the specified folder.
      * @param assetFolderRelationship never <code>null</code>. 
      */
-    public void addAssetToFolder(PSAssetFolderRelationship assetFolderRelationship) throws PSAssetServiceException, PSSpringValidationException, DataServiceLoadException, DataServiceNotFoundException;
+    public void addAssetToFolder(PSAssetFolderRelationship assetFolderRelationship) throws PSAssetServiceException, PSValidationException, DataServiceLoadException, DataServiceNotFoundException;
        
     /** 
      * Removes the specified asset from the specified folder.
      * @param assetFolderRelationship never <code>null</code>.
      */
-    public void removeAssetFromFolder(PSAssetFolderRelationship assetFolderRelationship) throws DataServiceLoadException, DataServiceNotFoundException, PSSpringValidationException, PSAssetServiceException;
+    public void removeAssetFromFolder(PSAssetFolderRelationship assetFolderRelationship) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException, PSAssetServiceException;
     
     /**
      * Gets an object of {@link PSContentEditCriteria} for the given
@@ -185,7 +186,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @return the content editor criteria, never <code>null</code>.
      */
-    public PSContentEditCriteria getContentEditCriteria(PSAssetEditUrlRequest request) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException;
+    public PSContentEditCriteria getContentEditCriteria(PSAssetEditUrlRequest request) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException, PSValidationException;
     
     /**
      * Creates a new asset for the specified request.  Any required parent folders will also be created if necessary.
@@ -196,7 +197,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * warnings.
      * @throws PSAssetServiceException if an error occurs creating the asset.
      */
-    public PSAsset createAsset(PSAbstractAssetRequest request) throws PSAssetServiceException;
+    public PSAsset createAsset(PSAbstractAssetRequest request) throws PSAssetServiceException, PSValidationException;
        
     /**
      * Finds all assets of the specified type in the specified workflow and state.
@@ -229,7 +230,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @return collection of assets, never <code>null</code>, may be empty.
      */
-    public Collection<PSAsset> findLocalByType(String type) throws PSAssetServiceException;
+    public Collection<PSAsset> findLocalByType(String type) throws PSAssetServiceException, PSValidationException;
     
     
     /**
@@ -291,7 +292,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @return List of newly created html assets, Never <code>null</code> may be empty.
      * @throws PSAssetServiceException
      */
-    public List<PSAsset> updateInspectedElements(PSInspectedElementsData inspectedElementsData) throws PSAssetServiceException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSSpringValidationException, DataServiceSaveException, IPSPageService.PSPageException;
+    public List<PSAsset> updateInspectedElements(PSInspectedElementsData inspectedElementsData) throws PSAssetServiceException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSValidationException, DataServiceSaveException, IPSPageService.PSPageException;
     
     /***
      * Will return an Image report that lists all images. 
