@@ -187,7 +187,7 @@ public interface IPSFolderHelper {
      * 
      * @return the folder ID, never <code>null</code>.
      */
-    public IPSGuid getParentFolderId(IPSGuid itemId);
+    public IPSGuid getParentFolderId(IPSGuid itemId) throws PSValidationException;
 
     /**
      * Gets the parent folder ID for the specified item.
@@ -200,7 +200,7 @@ public interface IPSFolderHelper {
      * and cannot find the parent folder; otherwise it can never be <code>null</code> if 
      * <code>isRequired</code> is <code>true</code>.
      */
-    public IPSGuid getParentFolderId(IPSGuid itemId, boolean isRequired);
+    public IPSGuid getParentFolderId(IPSGuid itemId, boolean isRequired) throws PSValidationException;
 
     /**
      * Sets the access level to the specified item. The ACL is calculated according 
@@ -603,7 +603,7 @@ public interface IPSFolderHelper {
      * 
      * @param folder the folder properties, never <code>null</code>.
      */
-    public void saveFolderProperties(PSFolderProperties folder);
+    public void saveFolderProperties(PSFolderProperties folder) throws PSValidationException;
     
     /**
      * When trying to find a folder under Assets, the folders system path is

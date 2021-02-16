@@ -385,7 +385,7 @@ public class PSRoleService implements IPSRoleService
      * @throws PSBeanValidationException if failed to validate the specified
      *             role.
      */
-    protected void doValidation(PSRole role, boolean isCreateRole) throws PSSpringValidationException
+    protected void doValidation(PSRole role, boolean isCreateRole) throws PSValidationException
     {
         PSRoleValidator validator = new PSRoleValidator(isCreateRole);
 
@@ -448,10 +448,18 @@ public class PSRoleService implements IPSRoleService
         }
 
         @Override
-        protected void doValidation(PSRole role, PSBeanValidationException e) throws PSDataServiceException {
-            // make sure all users exist in the system.
-            List<String> allUsers = userService.getUsers().getUsers();
+        protected void doValidation(PSRole role, PSBeanValidationException e) {
+            List<String> allUsers = new ArrayList<>();
+            try {
+                //TODO:  Should this really be getting all users like this?
 
+                // make sure all users exist in the system.
+                allUsers = userService.getUsers().getUsers();
+            } catch (PSDataServiceException psDataServiceException) {
+                log.error("Error listing system users. Error: {}",e.getMessage());
+                log.debug(e.getMessage(),e);
+                e.addSuppressed(e);
+            }
             if (PSCollectionUtils.containsIgnoringCase(SYSTEM_ROLES, role.getName()))
             {
                 e.rejectValue("name", "role.nameRestricted",
@@ -495,7 +503,12 @@ public class PSRoleService implements IPSRoleService
             }
             else
             {
-                cannotRemoveYourselfFromAdminRole(role, e);
+                try {
+                    cannotRemoveYourselfFromAdminRole(role, e);
+                } catch (PSDataServiceException psDataServiceException) {
+                    e.addSuppressed(psDataServiceException);
+                    log.debug(e.getMessage(),e);
+                }
             }
         }
 

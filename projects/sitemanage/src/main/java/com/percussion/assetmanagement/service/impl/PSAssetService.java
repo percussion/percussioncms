@@ -88,6 +88,7 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.dao.PSHtmlUtils;
 import com.percussion.share.data.IPSItemSummary;
@@ -102,6 +103,7 @@ import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSExtractHTMLException;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
@@ -118,8 +120,8 @@ import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.workflow.service.IPSSteppedWorkflowMetadata;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -730,8 +732,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 		return ret;
 	}
 
-    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSAssetServiceException
-    {
+    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException {
         rejectIfNull("updateAssetWidgetRelationship", "awRel", awRel);
         return widgetAssetRelationshipService.updateAssetWidgetRelationship(awRel);
     }
@@ -740,11 +741,11 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      *
      * {@inheritDoc}
      */
-    public String createAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSSpringValidationException, DataServiceLoadException {
+    public String createAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSValidationException, DataServiceLoadException {
         return createAssetWidgetRelationship(awRel, true);
     }
 
-    private String createAssetWidgetRelationship(PSAssetWidgetRelationship awRel, boolean notify) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSSpringValidationException {
+    private String createAssetWidgetRelationship(PSAssetWidgetRelationship awRel, boolean notify) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException {
         rejectIfNull("createAssetWidgetRelationship", "awRel", awRel);
         if (log.isDebugEnabled())
             log.debug("Associated asset to widget: " + awRel);
@@ -797,7 +798,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * (non-Javadoc)
      * @see com.percussion.assetmanagement.service.IPSAssetService#updateInspectedElements(com.percussion.assetmanagement.data.PSInspectedElementsData)
      */
-    public List<PSAsset> updateInspectedElements(PSInspectedElementsData newHtmlAssetData) throws PSAssetServiceException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSSpringValidationException, DataServiceSaveException, IPSPageService.PSPageException {
+    public List<PSAsset> updateInspectedElements(PSInspectedElementsData newHtmlAssetData) throws PSAssetServiceException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSValidationException, DataServiceSaveException, IPSPageService.PSPageException {
         List<PSHtmlAssetData> assets = newHtmlAssetData.getNewAssets();
         List<PSAsset> results = new ArrayList<PSAsset>();
         String updatedPageId = null;
@@ -843,7 +844,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     /**
      * Clone the asset and then promote the new asset to the template level.
      */
-    public PSNoContent promoteAssetWidget(PSAssetWidgetRelationship awRel) throws PSAssetServiceException, DataServiceSaveException, DataServiceNotFoundException, PSSpringValidationException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
+    public PSNoContent promoteAssetWidget(PSAssetWidgetRelationship awRel) throws PSAssetServiceException, DataServiceSaveException, DataServiceNotFoundException, PSValidationException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
         rejectIfNull("createAssetWidgetRelationship", "awRel", awRel);
         if (log.isDebugEnabled())
             log.debug("Associated asset to widget: " + awRel);
@@ -879,7 +880,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      *
      *    @return PSAsset
      */
-    private PSAsset copy(String id) throws DataServiceSaveException, DataServiceLoadException, DataServiceNotFoundException, PSSpringValidationException {
+    private PSAsset copy(String id) throws DataServiceSaveException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         PSAsset asset = null;
         try
         {
@@ -932,7 +933,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         return newAsset;
     }
 
-    public void clearAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSAssetServiceException, PSSpringValidationException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
+    public void clearAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSAssetServiceException, PSValidationException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
         rejectIfNull("clearAssetWidgetRelationship", "awRel", awRel);
 
         validateAssetWidgetRelationship(awRel);
@@ -975,7 +976,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     /*
      * //see base interface method for details
      */
-	public PSContentEditCriteria getContentEditCriteria(PSAssetEditUrlRequest request) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException {
+	public PSContentEditCriteria getContentEditCriteria(PSAssetEditUrlRequest request) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException, PSValidationException {
         rejectIfNull("getContentEditCriteria", "request", request);
         PSContentEditCriteria ceCrit = new PSContentEditCriteria();
         boolean isPage = validateEditUrlRequest(request);
@@ -1062,14 +1063,14 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     /*
      * //see base interface method for details
      */
-    public List<PSAssetEditor> getAssetEditors(String parentFolderPath) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException {
+    public List<PSAssetEditor> getAssetEditors(String parentFolderPath) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         return getAssetEditors(parentFolderPath, null);
     }
 
     /*
      * //see base interface method for details
      */
-    public List<PSAssetEditor> getAssetEditors(String parentFolderPath, String filterDisabledWidgets) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException {
+    public List<PSAssetEditor> getAssetEditors(String parentFolderPath, String filterDisabledWidgets) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         List<PSAssetEditor> assetEditors = new ArrayList<PSAssetEditor>();
         List<PSWidgetSummary> widgetList = widgetService.findByType("All", filterDisabledWidgets);
 
@@ -1091,7 +1092,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * (non-Javadoc)
      * @see com.percussion.assetmanagement.service.IPSAssetService#getAssetEditor(java.lang.String)
      */
-    public PSAssetEditor getAssetEditor(String widgetId) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException {
+    public PSAssetEditor getAssetEditor(String widgetId) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         rejectIfNull("getAssetEditor", "widgetId", widgetId);
         PSWidgetSummary widget = widgetService.find(widgetId);
         String parentFolderPath = assetUploadFolderPathMap.getFolderPathForType(widget.getType());
@@ -1103,7 +1104,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * (non-Javadoc)
      * @see com.percussion.assetmanagement.service.IPSAssetService#getAssetEditor(java.lang.String, java.lang.String)
      */
-    public PSAssetEditor getAssetEditor(String widgetId, String folderPath) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException {
+    public PSAssetEditor getAssetEditor(String widgetId, String folderPath) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException, PSValidationException {
         rejectIfNull("getAssetEditor", "widgetId", widgetId);
         rejectIfNull("getAssetEditor", "folderPath", folderPath);
         PSWidgetSummary widget = widgetService.find(widgetId);
@@ -1117,7 +1118,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * @param widget assumed not <code>null</code>
      * @return PSAssetEditor for the supplied widget.
      */
-    private PSAssetEditor getAssetEditor(String parentFolderPath, PSWidgetSummary widget) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException {
+    private PSAssetEditor getAssetEditor(String parentFolderPath, PSWidgetSummary widget) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         boolean createSharedAsset = true;
         PSAssetEditor assetEditor = new PSAssetEditor();
         PSWidgetDefinition widgetDef = widgetService.load(widget.getId());
@@ -1135,7 +1136,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     }
 
     @Override
-    public List<PSWidgetContentType> getAssetTypes(String filterDisabledWidgets) throws DataServiceLoadException, DataServiceNotFoundException {
+    public List<PSWidgetContentType> getAssetTypes(String filterDisabledWidgets) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         List<PSWidgetContentType> results = new ArrayList<PSWidgetContentType>();
         List<PSWidgetSummary> widgetList = widgetService.findByType("All", filterDisabledWidgets);
         //Loop all widgets
@@ -1185,7 +1186,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * @param parentFolderPath Assumed not <code>null</code>.
      * @return The workflow ID associated with the folder path.
      */
-    private int getWorkflowIdFromFolder(String parentFolderPath) throws PSAssetServiceException {
+    private int getWorkflowIdFromFolder(String parentFolderPath) throws PSAssetServiceException, PSValidationException {
         // I need to load an IPSItemSummary here, as the path pointed by parentFolderPath may not be
         // a folder, but an asset path.
         IPSItemSummary itemSummary;
@@ -1237,7 +1238,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * @return workflow id, may return -1 if not found.
      * @throws Exception
      */
-    private int getWorkflowId(String ctypeName, boolean producesResource, String parentFolderPath) throws PSAssetServiceException {
+    private int getWorkflowId(String ctypeName, boolean producesResource, String parentFolderPath) throws PSAssetServiceException, PSValidationException {
         int wfid = -1;
 
         if (isNotEmpty(parentFolderPath))
@@ -1267,7 +1268,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     /*
        * //see base interface method for details
        */
-   public List<PSAssetDropCriteria> getWidgetAssetCriteria(String id, Boolean isPage) throws DataServiceLoadException, DataServiceNotFoundException {
+   public List<PSAssetDropCriteria> getWidgetAssetCriteria(String id, Boolean isPage) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
        validateParameters("getWidgetAssetCriteria")
            .rejectIfBlank("id", id)
            .rejectIfNull("isPage", isPage)
@@ -1393,23 +1394,25 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         if (isNotBlank(request.getWidgetDefinition()))
         {
             String assetType = request.getWidgetDefinition();
-
-            List<PSWidgetSummary> widgetList = widgetService.findAll();
-            if (widgetList != null)
-            {
-                for(PSWidgetSummary widgetSummary : widgetList)
-                {
-                    if (widgetSummary.getId().equalsIgnoreCase(assetType)
-                            || widgetSummary.getName().equalsIgnoreCase(assetType))
-                    {
-                        w  = new PSWidgetItem();
-                        w .setDefinitionId(widgetSummary.getId());
-                        if (w != null)
-                            return w;
-                    }
-                }
-            }
-        }
+			try {
+				List<PSWidgetSummary> widgetList = widgetService.findAll();
+				if (widgetList != null) {
+					for (PSWidgetSummary widgetSummary : widgetList) {
+						if (widgetSummary.getId().equalsIgnoreCase(assetType)
+								|| widgetSummary.getName().equalsIgnoreCase(assetType)) {
+							w = new PSWidgetItem();
+							w.setDefinitionId(widgetSummary.getId());
+							if (w != null)
+								return w;
+						}
+					}
+				}
+			} catch (IPSGenericDao.LoadException e) {
+				log.error("Error loading asset with id: {} Error: {}",
+						request.getWidgetId(),
+						e.getMessage());
+			}
+		}
 
         throw new PSAssetServiceException("Cannot find widget id=" + request.getWidgetId() + " in " + request.getType()
                 + " parent id=" + request.getParentId());
@@ -1468,18 +1471,18 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     /**
      * {@inheritDoc}
      */
-    public PSValidationErrors validateAssetWidgetRelationship(PSAssetWidgetRelationship awr) throws PSSpringValidationException {
+    public PSValidationErrors validateAssetWidgetRelationship(PSAssetWidgetRelationship awr) throws PSValidationException {
         return assetWidgetRelationshipValidator.validate(awr)
             .throwIfInvalid()
             .getValidationErrors();
     }
 
-    public void addAssetToFolder(PSAssetFolderRelationship assetFolderRelationship) throws PSAssetServiceException, PSSpringValidationException, DataServiceLoadException, DataServiceNotFoundException {
+    public void addAssetToFolder(PSAssetFolderRelationship assetFolderRelationship) throws PSAssetServiceException, PSValidationException, DataServiceLoadException, DataServiceNotFoundException {
         PSBeanValidationUtils.validate(assetFolderRelationship).throwIfInvalid();
         addAssetToFolder(assetFolderRelationship.getFolderPath(), assetFolderRelationship.getAssetId());
     }
 
-    public void addAssetToFolder(String folderPath, String assetId) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException {
+    public void addAssetToFolder(String folderPath, String assetId) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         IPSItemSummary item = itemSummaryService.find(assetId);
         try
         {
@@ -1496,7 +1499,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         }
     }
 
-    public void removeAssetFromFolder(PSAssetFolderRelationship assetFolderRelationship) throws DataServiceLoadException, DataServiceNotFoundException, PSSpringValidationException, PSAssetServiceException {
+    public void removeAssetFromFolder(PSAssetFolderRelationship assetFolderRelationship) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException, PSAssetServiceException {
         PSBeanValidationUtils.validate(assetFolderRelationship).throwIfInvalid();
 
         IPSItemSummary item = itemSummaryService.find(assetFolderRelationship.getAssetId());
@@ -1531,16 +1534,20 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     protected class PSAssetWidgetRelationshipValidator extends PSAbstractBeanValidator<PSAssetWidgetRelationship> {
 
         @Override
-        protected void doValidation(PSAssetWidgetRelationship obj, PSBeanValidationException e) throws DataServiceLoadException, DataServiceNotFoundException {
-            PSTemplateSummary t = templateService.find(obj.getOwnerId());
-            if (t == null) {
-                PSPage p = pageService.find(obj.getOwnerId());
-                if (p == null) {
-                    e.rejectValue("ownerId", "asset.template_or_page_not_exist", "The template or page does not exist for ownerid.");
-                }
-            }
+        protected void doValidation(PSAssetWidgetRelationship obj, PSBeanValidationException e) {
+            try {
+				PSTemplateSummary t = templateService.find(obj.getOwnerId());
+				if (t == null) {
+					PSPage p = pageService.find(obj.getOwnerId());
+					if (p == null) {
+						e.rejectValue("ownerId", "asset.template_or_page_not_exist", "The template or page does not exist for ownerid.");
+					}
+				}
+			} catch (DataServiceLoadException | DataServiceNotFoundException dataServiceLoadException) {
+				e.addSuppressed(dataServiceLoadException);
+			}
 
-        }
+		}
 
     }
 
@@ -1561,8 +1568,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
 
-    public PSAsset createAsset(PSAbstractAssetRequest request) throws PSAssetServiceException
-    {
+    public PSAsset createAsset(PSAbstractAssetRequest request) throws PSAssetServiceException, PSValidationException {
         notNull(request, "request must not be null.");
 
         if (!(request instanceof PSBinaryAssetRequest) && !(request instanceof PSExtractedAssetRequest))
@@ -1601,10 +1607,13 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         return updateBinaryAsset(itemId, (PSBinaryAssetRequest) request, forceCheckOut);
     }
 
-    public PSAsset load(String id, boolean isSummary)
-    {
-        return assetDao.find(id, isSummary);
-    }
+    public PSAsset load(String id, boolean isSummary) throws PSAssetServiceException {
+    	try {
+			return assetDao.find(id, isSummary);
+		} catch (IPSGenericDao.LoadException e) {
+			throw new PSAssetServiceException(e.getMessage(),e);
+		}
+	}
 
     public Collection<PSAsset> findByTypeAndWf(String type, String workflow, String state) throws PSAssetServiceException {
         notEmpty(type);
@@ -1629,7 +1638,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         return assetDao.findByTypeAndWf(type, workflowId, stateId);
     }
 
-    public Collection<PSAsset> findLocalByType(String type) throws PSAssetServiceException {
+    public Collection<PSAsset> findLocalByType(String type) throws PSAssetServiceException, PSValidationException {
         notEmpty(type);
 
         return assetDao.findByTypeAndWf(type, getWorkflowId(type, false, null), -1);
@@ -1823,8 +1832,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      *
      * @throws PSAssetServiceException If there are any errors.
      */
-    private void updateWorkflow(String assetId, String path) throws PSAssetServiceException
-    {
+    private void updateWorkflow(String assetId, String path) throws PSAssetServiceException, PSValidationException {
         int wfId = getWorkflowIdFromFolder(path);
         IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
         try
@@ -1896,8 +1904,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * @return the created asset, never <code>null</code>.
      * @throws PSAssetServiceException if an error occurs creating the asset.
      */
-    private PSAsset createBinaryAsset(PSBinaryAssetRequest request) throws PSAssetServiceException
-    {
+    private PSAsset createBinaryAsset(PSBinaryAssetRequest request) throws PSAssetServiceException, PSValidationException {
         PSAsset asset = new PSAsset();
         String type;
         String fieldBase;
@@ -2003,8 +2010,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * @throws PSAssetServiceException if an error occurs creating the asset.
      * @throws PSExtractHTMLException if fail to create asset due to error on extracting content
      */
-    private PSAsset createExtractedAsset(PSExtractedAssetRequest request) throws PSAssetServiceException
-    {
+    private PSAsset createExtractedAsset(PSExtractedAssetRequest request) throws PSAssetServiceException, PSValidationException {
         PSAsset asset = new PSAsset();
         String type;
         String contentFieldName;
@@ -2031,16 +2037,14 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         {
             String extractedContent = extractContent(request);
             fieldsMap.put(contentFieldName, extractedContent);
-
-          // return assetDao.save(asset);
             return assetDao.save(asset);
         }
-        catch (IOException e)
+        catch (IOException | IPSGenericDao.SaveException | IPSGenericDao.LoadException e)
         {
             log.error("Could not create asset : \"" + name + "\"", e);
             throw new PSAssetServiceException(e);
         }
-    }
+	}
 
     /**
      * Extracts the HTML content for the specified request.
@@ -2206,7 +2210,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSAssetService.class);
+    public static final Logger log = LogManager.getLogger(PSAssetService.class);
 
     private static int MAX_MULTINE_CHARACTERS=32000;
 

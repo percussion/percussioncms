@@ -26,7 +26,6 @@ package com.percussion.pathmanagement.service.impl;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.designmanagement.service.IPSFileSystemService.PSInvalidCharacterInFolderNameException;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
@@ -41,8 +40,6 @@ import com.percussion.pathmanagement.data.PSMoveFolderItem;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.data.PSRenameFolderItem;
 import com.percussion.pathmanagement.service.IPSPathService;
-import com.percussion.recycle.service.impl.PSRecycleService;
-import com.percussion.server.PSServer;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.workflow.IPSWorkflowService;
@@ -56,6 +53,9 @@ import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.user.data.PSAccessLevel;
 import com.percussion.user.data.PSAccessLevelRequest;
@@ -66,8 +66,8 @@ import com.percussion.utils.thread.PSThreadUtils;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
@@ -141,9 +141,9 @@ public abstract class PSPathItemService implements IPSPathService
         this.rolesAllowed = rolesAllowed;
     }
     
-    public PSPathItem find(String path) throws PSPathNotFoundServiceException, PSPathServiceException
+    public PSPathItem find(String path) throws PSPathServiceException
     {
-        log.debug("Find root of path: " + path);
+        log.debug("Find root of path: {}", path);
         if ("/".equals(path))
             return findRoot();
 
@@ -154,7 +154,7 @@ public abstract class PSPathItemService implements IPSPathService
     {
         notEmpty(path, "path");
         if (log.isDebugEnabled())
-            log.debug("find item properties: " + path);
+            log.debug("find item properties: {}" , path);
         String fullFolderPath = getFullFolderPath(path);
         PSItemProperties props;
         try
@@ -252,8 +252,7 @@ public abstract class PSPathItemService implements IPSPathService
     /*
      * //see base interface method for details
      */
-    public PSNoContent moveItem(PSMoveFolderItem request)
-    {
+    public PSNoContent moveItem(PSMoveFolderItem request) throws PSDataServiceException {
         String path = request.getTargetFolderPath();
         String relativePath = path.substring(path.indexOf('/'));
         if (relativePath.charAt(relativePath.length() - 1) != '/')
@@ -279,7 +278,7 @@ public abstract class PSPathItemService implements IPSPathService
      * @param srcPath assumed not blank.
      * @param targetPath assume not blank.
      */
-    private void validateUserAccessBeforeMove(String srcPath, String targetPath){
+    private void validateUserAccessBeforeMove(String srcPath, String targetPath) throws PSDataServiceException {
         PSCurrentUser curUser = userService.getCurrentUser();
         //If the logged in user is not an admin or designer, check access
         if(!(curUser.isAdminUser() || curUser.isDesignerUser())){
@@ -360,8 +359,7 @@ public abstract class PSPathItemService implements IPSPathService
 
     }
 
-    public PSPathItem renameFolder(PSRenameFolderItem item)
-    {
+    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSSpringValidationException {
         PSBeanValidationException errors = PSBeanValidationUtils.validate(item);
         errors.throwIfInvalid();
 
@@ -807,9 +805,14 @@ public abstract class PSPathItemService implements IPSPathService
     {
         for (PSPathItem item : items)
         {
-            if (widgetAssetRelationshipService.isUsedByTemplate(item.getId()))
-            {
-                return false;
+            try {
+                if (widgetAssetRelationshipService.isUsedByTemplate(item.getId())) {
+                    return false;
+                }
+            } catch (PSValidationException e) {
+               log.warn("Validation error preparing for delete action, id: {} Error: {}",
+                       item.getId(),
+                       e.getMessage());
             }
         }
 
@@ -858,16 +861,15 @@ public abstract class PSPathItemService implements IPSPathService
 
     /**
      * Removes the specified path item from the given folder. The item may also
-     * be purged depending on the value of {@link #shouldPurgeFolderItems()}.
+     * be purged depending on the value of @param shouldPurge.
      * 
      * @param fullFolderPath path to the folder which contains the item, never
      *            blank.
      * @param item never <code>null</code>.
-     * 
-     * @throws Exception if an error occurs.
+     * @param shouldPurge true if the item should be permanently deleted
+     *
      */
-    protected void removeItem(String fullFolderPath, PSPathItem item, boolean shouldPurge) throws Exception
-    {
+    protected void removeItem(String fullFolderPath, PSPathItem item, boolean shouldPurge) throws Exception {
         notEmpty(fullFolderPath);
         notNull(item);
 
@@ -913,7 +915,6 @@ public abstract class PSPathItemService implements IPSPathService
      * @param path the folder path, assumed not <code>null</code>.
      * @param inUseItems list of in use item paths, assumed not
      *            <code>null</code>.
-     * @param skipItems if value is {@link SkipItemsType#YES},
      *            {@link SkipItemsType#EMPTY} or <code>null</code>, in use items
      *            will be skipped.
      * 
@@ -959,15 +960,11 @@ public abstract class PSPathItemService implements IPSPathService
     }
 
     /**
-     * Purge the child items for the specified folder. It (indirectly recursive)
-     * calls {@link #deleteFolder(String, List, SkipItemsType)} for sub-folders.
+     * Purge the child items for the specified folder.
      * 
      * @param path the path of the specified folder, assumed not blank.
      * @param inUseItems list of in use item paths, assumed not
      *            <code>null</code>.
-     * @param skipItems if value is {@link SkipItemsType#YES},
-     *            {@link SkipItemsType#EMPTY} or <code>null</code>, in use items
-     *            will be skipped.
      * 
      * @return number of undeleted items;
      */
@@ -1045,8 +1042,7 @@ public abstract class PSPathItemService implements IPSPathService
      *         item; otherwise current user does not have privilege to delete
      *         the item.
      */
-    private boolean hasDeletePermission(String itemId)
-    {
+    private boolean hasDeletePermission(String itemId) throws PSValidationException {
         IPSGuid id = idMapper.getGuid(itemId);
 
         PSComponentSummary sum = getItemSummary(((PSLegacyGuid) id).getContentId());
@@ -1159,7 +1155,7 @@ public abstract class PSPathItemService implements IPSPathService
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPathItemService.class);
+    private static final Logger log = LogManager.getLogger(PSPathItemService.class);
 
     /**
      * The constant to represent the recycled content relationship type.

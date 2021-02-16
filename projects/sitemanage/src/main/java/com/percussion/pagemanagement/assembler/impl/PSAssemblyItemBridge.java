@@ -39,6 +39,9 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
@@ -157,7 +160,7 @@ public class PSAssemblyItemBridge {
     /**
      * Creates a resource instance from a content list item for generating locations
      * during content list generating
-     * @param assemblyItem never <code>null</code>.
+     * @param item never <code>null</code>.
      * @param resourceId the unique resource ID. It may be blank or <code>null</code> if the resource is determined by the content type of the item.
      * @return never <code>null</code>.
      */
@@ -181,17 +184,11 @@ public class PSAssemblyItemBridge {
      * @param resourceId the resource ID. It may be blank if the resource is determined by the content type of the item.
      * @return never <code>null</code>.
      */
-    public PSResourceLocation getResourceLocation(PSContentListItem listItem, String resourceId) 
-    {
+    public PSResourceLocation getResourceLocation(PSContentListItem listItem, String resourceId) throws Exception {
         PSResourceInstance resource;
-        try
-        {
-            resource = createResourceInstance(listItem, resourceId);
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException("Error creating a resource for: " + listItem, e);
-        }
+
+        resource = createResourceInstance(listItem, resourceId);
+
         List<PSResourceLinkAndLocation> linkAndLocations = resourceLinkandLocationService.resolveLinkAndLocations(resource);
         if (linkAndLocations.isEmpty()) return null;
         return linkAndLocations.get(0).getResourceLocation();
@@ -200,7 +197,7 @@ public class PSAssemblyItemBridge {
     /**
      * Loads the content node for the specified item.
      * 
-     * @param item the item, assumed not <code>null</code>.
+     * @param guid the item, assumed not <code>null</code>.
      * 
      * @return the node of the item, not <code>null</code>.
      * 
@@ -231,7 +228,7 @@ public class PSAssemblyItemBridge {
      * @param assemblyItem never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public PSResourceInstance createResourceInstance(IPSAssemblyItem assemblyItem) {
+    public PSResourceInstance createResourceInstance(IPSAssemblyItem assemblyItem) throws PSAssemblyException {
         
         PSResourceInstance rvalue = getResourceInstance(assemblyItem);
         if (rvalue != null)
@@ -242,8 +239,12 @@ public class PSAssemblyItemBridge {
         String id = idMapper.getString(assemblyItem.getId());
         IPSLinkableItem linkableItem = PSPathUtils.getLinkableItem(id);
         PSRenderLinkContext context = getRenderLinkContext(assemblyItem, linkableItem);
-        
-        return resourceLinkandLocationService.createResourceInstance(context, linkableItem, resourceDefinitionId);
+
+        try {
+            return resourceLinkandLocationService.createResourceInstance(context, linkableItem, resourceDefinitionId);
+        } catch (IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | IPSAssetService.PSAssetServiceException e) {
+            throw new PSAssemblyException(22,e,id);
+        }
     }
     
     /**
@@ -252,8 +253,7 @@ public class PSAssemblyItemBridge {
      * @param assemblyItem never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public PSResourceLocation getResourceLocation(IPSAssemblyItem assemblyItem) 
-    {
+    public PSResourceLocation getResourceLocation(IPSAssemblyItem assemblyItem) throws PSAssemblyException, IPSAssetService.PSAssetServiceException {
         PSResourceInstance resource = createResourceInstance(assemblyItem);
         List<PSResourceLinkAndLocation> linkAndLocations = resourceLinkandLocationService.resolveLinkAndLocations(resource);
         if (linkAndLocations.isEmpty()) return null;
@@ -297,8 +297,7 @@ public class PSAssemblyItemBridge {
      * @return never <code>null</code>.
      * @see PSRenderAsset
      */
-    public PSRenderAsset createRenderAsset(IPSAssemblyItem assemblyItem)
-    {
+    public PSRenderAsset createRenderAsset(IPSAssemblyItem assemblyItem) throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         PSRenderAsset asset = new PSRenderAsset();
         String id = idMapper.getString(assemblyItem.getId());
         PSAssetSummary sum = assetService.find(id);
@@ -358,8 +357,7 @@ public class PSAssemblyItemBridge {
      * @param assemblyItem never <code>null</code>.
      * @return never <code>null</code> maybe empty.
      */
-    public List<PSAssetResource> getResourceDefinitions(IPSAssemblyItem assemblyItem) 
-    {
+    public List<PSAssetResource> getResourceDefinitions(IPSAssemblyItem assemblyItem) throws IPSResourceDefinitionService.PSResourceDefinitionNotFoundException {
         String contentType = getContentType(assemblyItem);
         if (IPSPageService.PAGE_CONTENT_TYPE.equals(contentType))
         {
@@ -562,7 +560,11 @@ public class PSAssemblyItemBridge {
         }
         else {
             if (tp.page == null) {
-                tp.page = pageService.load(idTemplateOrPage);
+                try {
+                    tp.page = pageService.load(idTemplateOrPage);
+                } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
+                    throw new RepositoryException(e.getMessage(),e);
+                }
             }
             if (tp.template == null) {
                 String templateId = tp.page.getTemplateId();
