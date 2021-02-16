@@ -88,7 +88,7 @@ import org.springframework.core.io.Resource;
 public class PSPropertiesFactoryBean extends PropertiesFactoryBean
 {
    private static final Logger log = LogManager.getLogger(PSPropertiesFactoryBean.class);
-   private final List<Resource> resList = new ArrayList<Resource>();
+   private final List<Resource> resList = new ArrayList<>();
    private String[] securedProperties;
    private boolean autoSecure;
 

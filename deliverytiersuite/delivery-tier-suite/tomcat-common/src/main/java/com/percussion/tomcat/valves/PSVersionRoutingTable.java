@@ -58,9 +58,9 @@ public class PSVersionRoutingTable {
 
 	public void addServiceContext(String context){
 		if(serviceContexts == null)
-			serviceContexts = new HashMap<String,HashMap<String,String>>();
+			serviceContexts = new HashMap<>();
 		if(!serviceContexts.containsKey(context)){
-			serviceContexts.put(context, new HashMap<String,String>());
+			serviceContexts.put(context, new HashMap<>());
 		}
 	}
 	
