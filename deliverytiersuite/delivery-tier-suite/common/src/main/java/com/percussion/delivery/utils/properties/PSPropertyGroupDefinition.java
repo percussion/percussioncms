@@ -112,7 +112,7 @@ public class PSPropertyGroupDefinition {
 	 */
 	public List<PSPropertyDefinition> getProperties() {
 		if(properties==null)
-			properties = new ArrayList<PSPropertyDefinition>();
+			properties = new ArrayList<>();
 		return properties;
 	}
 	/**

@@ -91,7 +91,7 @@ public class PSPropertyDefinition {
 	         */
 	        public List<EnumValue> getEnumValue() {
 	            if (enumValue == null) {
-	                enumValue = new ArrayList<EnumValue>();
+	                enumValue = new ArrayList<>();
 	            }
 	            return this.enumValue;
 	        }

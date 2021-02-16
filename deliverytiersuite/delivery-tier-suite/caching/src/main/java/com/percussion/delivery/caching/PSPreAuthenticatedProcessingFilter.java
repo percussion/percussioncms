@@ -65,7 +65,7 @@ public class PSPreAuthenticatedProcessingFilter extends AbstractPreAuthenticated
                 return new PreAuthenticatedAuthenticationToken("ANONYMOUS","N/A");
             }else{
                 MemoryUser memoryUser = (MemoryUser) principal;
-                List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+                List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
                 Iterator roles = memoryUser.getRoles();
                 while (roles.hasNext()){
                     MemoryRole role = (MemoryRole) roles.next();
