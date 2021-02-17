@@ -71,11 +71,11 @@ public class GenericLinkbackController extends AbstractController {
 
     private LinkbackTokenCodec linkbackCodec = null;
 
-    private List<String> requiredParameterNames = new ArrayList<String>();
+    private List<String> requiredParameterNames = new ArrayList<>();
 
-    private List<String> optionalParameterNames = new ArrayList<String>();
+    private List<String> optionalParameterNames = new ArrayList<>();
 
-    private Map<String, String> additionalParameters = new HashMap<String, String>();
+    private Map<String, String> additionalParameters = new HashMap<>();
 
     /**
      * If linkback token is not blank, this method calls
@@ -115,7 +115,7 @@ public class GenericLinkbackController extends AbstractController {
      * @return ModelAndView
      */
     protected ModelAndView handleLinkBackRedirect(Map<String, String> tokenParams) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         if (!checkAndCopyRequiredParams(tokenParams, params)) {
             String message = "Required Parameter missing, required parameters are " + getRequiredParameterNames();
             return createErrorView(message);

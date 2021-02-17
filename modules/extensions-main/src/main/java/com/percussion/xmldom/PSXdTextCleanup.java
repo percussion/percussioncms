@@ -394,7 +394,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
    private void removeNamespaceAttributes(Node node)
    {
       NamedNodeMap nnm = node.getAttributes();
-      Set<String> remove = new HashSet<String>();
+      Set<String> remove = new HashSet<>();
       if (nnm != null)
       {
          Element el = (Element) node;
