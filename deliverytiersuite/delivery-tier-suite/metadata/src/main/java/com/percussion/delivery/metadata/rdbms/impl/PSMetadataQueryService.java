@@ -33,11 +33,8 @@ import com.percussion.delivery.metadata.impl.PSPropertyDatatypeMappings;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
-import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -61,6 +58,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -83,7 +82,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
    /**
     * Logger for this class.
     */
-    public static Log log = LogFactory.getLog(PSMetadataQueryService.class);
+    public static final Logger log = LogManager.getLogger(PSMetadataQueryService.class);
     
     /**
      * Property datatype mappings, loaded by Spring.
@@ -412,13 +411,12 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         int useLimit=queryLimit;
         //All caller to set a query limit, but they can't allow higher than the server limit. 
         if(rawQuery.getTotalMaxResults() > 0 && rawQuery.getTotalMaxResults() < queryLimit){
-        	log.debug("Setting max query limit to client provided value :" + rawQuery.getTotalMaxResults());
+        	log.debug("Setting max query limit to client provided value : {}" , rawQuery.getTotalMaxResults());
         	useLimit=rawQuery.getTotalMaxResults();
         }
         
         q.setMaxResults(useLimit);
         q.setCacheable(true);
-        q.addQueryHint(QueryHints.HINT_READONLY);
         
         //If it is not for count then only pagination properties need to be set on the query
         if(!isCount && rawQuery.getMaxResults() >0 && rawQuery.getMaxResults() <= useLimit)
@@ -536,7 +534,8 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         }
         catch (SQLException | RuntimeException e)
         {
-            log.error("There was an error getting jdbc driver name", e);
+            log.error("There was an error getting jdbc driver name. ERROR: {}", e.getMessage());
+            log.debug( e.getMessage(),e);
         }
 
         return jdbcConnectionUrl;
