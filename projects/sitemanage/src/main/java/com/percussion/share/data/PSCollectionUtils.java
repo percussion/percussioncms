@@ -74,7 +74,7 @@ public class PSCollectionUtils
     }
     
     public static <KEY,VALUE, OBJECT> Map<KEY,VALUE> toMap(Iterator<OBJECT> objects, ToMap<KEY,VALUE, OBJECT> toMap) {
-        Map<KEY, VALUE> map = new HashMap<KEY, VALUE>();
+        Map<KEY, VALUE> map = new HashMap<>();
         if (objects != null) {
             while(objects.hasNext()) {
                 OBJECT o = objects.next();

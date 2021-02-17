@@ -33,7 +33,7 @@ import com.percussion.share.data.IPSContentItem;
 @XmlRootElement(name = "Asset")
 public class PSAsset extends PSAssetSummary implements IPSContentItem
 { 
-    private Map<String, Object> fields = new HashMap<String, Object>();
+    private Map<String, Object> fields = new HashMap<>();
 
     public Map<String, Object> getFields()
     {

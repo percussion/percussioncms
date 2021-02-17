@@ -56,9 +56,9 @@ public class PSCommentModeration
 
     public PSCommentModeration()
     {
-        deletes = new ArrayList<PSSiteComments>();
-        approves = new ArrayList<PSSiteComments>();
-        rejects = new ArrayList<PSSiteComments>();
+        deletes = new ArrayList<>();
+        approves = new ArrayList<>();
+        rejects = new ArrayList<>();
     }
 
     /**

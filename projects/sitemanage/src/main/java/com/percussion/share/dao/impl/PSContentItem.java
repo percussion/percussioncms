@@ -43,7 +43,7 @@ public class PSContentItem extends PSDataItemSummary implements IPSContentItem
     /**
      * never <code>null</code>.
      */
-    private Map<String, Object> fields = new HashMap<String, Object>();
+    private Map<String, Object> fields = new HashMap<>();
     
 
     /**

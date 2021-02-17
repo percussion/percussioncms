@@ -124,7 +124,7 @@ public class PSContentItemDao implements IPSContentItemDao
     public Collection<Integer> findAllItemIdsByType(String name) throws PSDataServiceException {
         List<IPSNodeDefinition> nodes = PSContentTypeHelper.loadNodeDefs(name);
         if (nodes.isEmpty())
-            return new ArrayList<Integer>();
+            return new ArrayList<>();
         
         IPSGuid ctypeId = nodes.get(0).getGUID();
         try

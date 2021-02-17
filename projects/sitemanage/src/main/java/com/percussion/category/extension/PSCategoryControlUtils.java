@@ -130,7 +130,7 @@ public class PSCategoryControlUtils {
 	 */
 	private static PSCategoryNode filterNode(PSCategoryNode parentNode) {
 		
-		List<PSCategoryNode> childNodeList = new ArrayList<PSCategoryNode>();
+		List<PSCategoryNode> childNodeList = new ArrayList<>();
 		
 		if(parentNode.getChildNodes() != null && !parentNode.getChildNodes().isEmpty()) {
 			for(PSCategoryNode node : parentNode.getChildNodes()) {

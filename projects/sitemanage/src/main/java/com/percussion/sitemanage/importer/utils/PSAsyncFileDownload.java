@@ -49,9 +49,9 @@ public class PSAsyncFileDownload
 
     private Log m_log = LogFactory.getLog(PSPageImportQueue.class);
 
-    private List<PSPair<Boolean, String>> results = new ArrayList<PSPair<Boolean, String>>();
+    private List<PSPair<Boolean, String>> results = new ArrayList<>();
 
-    private List<PSFileDownloadJob> jobs = new ArrayList<PSFileDownloadJob>();
+    private List<PSFileDownloadJob> jobs = new ArrayList<>();
 
     private Integer MAX_THREADS = 6;
 
@@ -79,8 +79,8 @@ public class PSAsyncFileDownload
 
         this.setRequestInfo(this.m_requestMap);
         Iterator<PSFileDownloadJob> i = jobs.iterator();
-        ArrayList<PSFileDownLoadJobRunner> runningJobs = new ArrayList<PSFileDownLoadJobRunner>();
-        List<Thread> threads = new ArrayList<Thread>();
+        ArrayList<PSFileDownLoadJobRunner> runningJobs = new ArrayList<>();
+        List<Thread> threads = new ArrayList<>();
         while (i.hasNext())
         {
             if (runningJobs.size() < MAX_THREADS)

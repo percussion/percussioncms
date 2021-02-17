@@ -63,7 +63,7 @@ public class PSAssetUploadFolderPathMap
      */
     private static final String UPLOADS_FOLDER_NAME = "uploads";
     private IPSFolderHelper folderHelper;
-    private Map<String, String> typeToFolderPathMap = new HashMap<String, String>();
+    private Map<String, String> typeToFolderPathMap = new HashMap<>();
     private static String ASSET_ROOT = PSAssetPathItemService.ASSET_ROOT;
     
     public PSAssetUploadFolderPathMap(IPSFolderHelper folderHelper)
@@ -92,7 +92,7 @@ public class PSAssetUploadFolderPathMap
     }
     
     private Map<String,Number> getFolderIdsForPaths(Collection<String> paths) {
-        Map<String, Number> pathToFolderId = new HashMap<String, Number>();
+        Map<String, Number> pathToFolderId = new HashMap<>();
         if (paths == null) return pathToFolderId;
         for(String p : paths) {
             try
