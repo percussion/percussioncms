@@ -82,7 +82,7 @@ public class ContextAdaptor implements IContextsAdaptor {
      */
     @Override
     public List<Context> listContexts(URI baseURI) {
-        List<Context> ret = new ArrayList<Context>();
+        List<Context> ret = new ArrayList<>();
         List<IPSPublishingContext> contexts = siteManager.findAllContexts();
 
         for(IPSPublishingContext c : contexts){
@@ -125,7 +125,7 @@ public class ContextAdaptor implements IContextsAdaptor {
         }
         List<IPSLocationScheme> schemesByContextId = siteManager.findSchemesByContextId(context.getGUID());
 
-        List<LocationScheme> schemes = new ArrayList<LocationScheme>();
+        List<LocationScheme> schemes = new ArrayList<>();
         if (schemesByContextId != null) {
             for(IPSLocationScheme s : schemesByContextId){
                 schemes.add(ApiUtils.copyLocationScheme(s));

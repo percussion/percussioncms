@@ -85,6 +85,13 @@ public class AssetsResource
 
     public static final Logger log = LogManager.getLogger(AssetsResource.class);
 
+    private static final String UTF8="UTF-8";
+    private static final String HTML_HEADER_CONTENT_TYPE="Content-Type";
+    private static final String HTML_HEADER_CONTENT_DISPOSITION="Content-Disposition";
+    private static final String HTML_HEADER_CONTENT_TYPE_VAL= "application/csv";
+    private static final String HTML_HEADER_CONTENT_VAL="attachment; filename=";
+    private static final String ERROR_NO_FILE="No File Sent";
+
     private static class TikaConfigHolder {
         public static final TikaConfig INSTANCE = TikaConfig.getDefaultConfig();
     }
@@ -107,7 +114,7 @@ public class AssetsResource
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try
         {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+            path = java.net.URLDecoder.decode(path, UTF8);
         }
         catch (UnsupportedEncodingException e)
         {
@@ -143,8 +150,8 @@ public class AssetsResource
         
         ResponseBuilder r = Response.ok(out);
         
-        r.header("Content-Type", "application/csv");
-        r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("asset-import-preview","csv"));
+        r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+        r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("asset-import-preview","csv"));
   
         return r.build();
 	}
@@ -170,14 +177,14 @@ public class AssetsResource
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try
         {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+            path = java.net.URLDecoder.decode(path, UTF8);
         }
         catch (UnsupportedEncodingException e)
         {
             // UTF-8 always supported
         }
         if (body == null || body.isEmpty())
-            throw new RuntimeException("No file sent");
+            throw new RuntimeException(ERROR_NO_FILE);
         Attachment att = body.get(0);
 
         String uploadFilename = att.getContentDisposition().getFilename();
@@ -217,7 +224,7 @@ public class AssetsResource
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try
         {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+            path = java.net.URLDecoder.decode(path, UTF8);
         }
         catch (UnsupportedEncodingException e)
         {
@@ -243,9 +250,9 @@ public class AssetsResource
             else if (asset.getFlash() != null)
                 type = asset.getFlash().getType();
 
-            r.header("Content-Type", type);
+            r.header(HTML_HEADER_CONTENT_TYPE, type);
 
-            r.header("Content-Disposition", "attachment; filename=" + filename);
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + filename);
             return r.build();
         } catch (BackendException e) {
             throw new WebApplicationException();
@@ -265,7 +272,7 @@ public class AssetsResource
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+            path = java.net.URLDecoder.decode(path, UTF8);
 
             String filename = StringUtils.substringAfterLast(path, "/");
             asset.setName(filename);
@@ -288,7 +295,7 @@ public class AssetsResource
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+            path = java.net.URLDecoder.decode(path, UTF8);
             return assetAdaptor.deleteSharedAssetByPath(path);
         } catch (BackendException | UnsupportedEncodingException e) {
             throw new WebApplicationException();
@@ -308,7 +315,7 @@ public class AssetsResource
     {
    	 	// Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+            path = java.net.URLDecoder.decode(path, UTF8);
 
 
             Matcher m = p.matcher(path);
@@ -349,8 +356,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-		    log.error("Error occurred while generating Non ADA compliant images report, cause: {}", e);
-			//e.printStackTrace();
+		    log.error("Error occurred while generating Non ADA compliant images report, cause: {}", e.getMessage());
 			return Response.serverError().build();
 		}
 		// check for empty resultset, if empty then return No Content message | CMS-3216
@@ -361,8 +367,8 @@ public class AssetsResource
         else {
             r = Response.ok(out);
 
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("non-ada-images", "csv"));
+            r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("non-ada-images", "csv"));
         }
         return r.build();
     }
@@ -388,8 +394,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-		    log.error("Error occurred while generating Non ADA compliant files report, cause: {}", e);
-			//e.printStackTrace(); //added in logger, so not required here
+		    log.error("Error occurred while generating Non ADA compliant files report, cause:{}", e.getMessage());
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -400,8 +405,8 @@ public class AssetsResource
         else {
             r = Response.ok(out);
 
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("non-ada-files", "csv"));
+            r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("non-ada-files", "csv"));
         }
         return r.build();
         
@@ -428,7 +433,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-            log.error("Error occurred while generating All images report, cause: {}", e);
+            log.error("Error occurred while generating All images report, cause: {}", e.getMessage());
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -439,8 +444,8 @@ public class AssetsResource
         else {
             r = Response.ok(out);
 
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("all-images", "csv"));
+            r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("all-images", "csv"));
         }
         return r.build();
     }
@@ -466,7 +471,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-            log.error("Error occurred while generating All files report, cause: {}", e);
+            log.error("Error occurred while generating All files report, cause: {}", e.getMessage());
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -477,8 +482,8 @@ public class AssetsResource
         else {
             r = Response.ok(out);
 
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("all-files", "csv"));
+            r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("all-files", "csv"));
         }
 		return r.build();
     
@@ -498,19 +503,15 @@ public class AssetsResource
     public Status bulkupdateNonADACompliantImages(List<Attachment> atts)
     {
     	  if (atts == null || atts.isEmpty())
-              throw new RuntimeException("No file sent");
+              throw new RuntimeException(ERROR_NO_FILE);
         
     	  Attachment att = atts.get(0);
-          String uploadFilename = att.getContentDisposition().getFilename();
-          InputStream stream = att.getObject(InputStream.class);
-          
-          // Strip out any path portion of the uploaded filename as per rfc spec.
-          uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-          if (StringUtils.contains(uploadFilename, "/"))
-              uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
-          return assetAdaptor.bulkupdateNonADACompliantImages(uriInfo.getBaseUri(),stream);
+          try(InputStream stream = att.getObject(InputStream.class)) {
+              return assetAdaptor.bulkupdateNonADACompliantImages(uriInfo.getBaseUri(), stream);
+          } catch (IOException e) {
+              log.error("Error Reading File {}",e.getMessage());
+          }
+          return null;
     }
     
     
@@ -525,20 +526,12 @@ public class AssetsResource
     {
       
         if (atts == null || atts.isEmpty())
-            throw new RuntimeException("No file sent");
+            throw new RuntimeException(ERROR_NO_FILE);
       
         Attachment att = atts.get(0);
-        
-        String uploadFilename = att.getContentDisposition().getFilename();
-        InputStream stream = att.getObject(InputStream.class);
-        
-        // Strip out any path portion of the uploaded filename as per rfc spec.
-        uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-        if (StringUtils.contains(uploadFilename, "/"))
-            uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
-        return assetAdaptor.bulkupdateNonADACompliantFiles(uriInfo.getBaseUri(),stream);
+        try(InputStream stream = att.getObject(InputStream.class)) {
+            return assetAdaptor.bulkupdateNonADACompliantFiles(uriInfo.getBaseUri(), stream);
+        }
     }
     
     
@@ -553,20 +546,12 @@ public class AssetsResource
     public Status bulkupdateImageAssets(List<Attachment> atts) throws IOException
     {
         if (atts == null || atts.isEmpty())
-            throw new RuntimeException("No file sent");
+            throw new RuntimeException(ERROR_NO_FILE);
       
         Attachment att = atts.get(0);
-        
-        String uploadFilename = att.getContentDisposition().getFilename();
-        InputStream stream = att.getObject(InputStream.class);
-        
-          // Strip out any path portion of the uploaded filename as per rfc spec.
-          uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-          if (StringUtils.contains(uploadFilename, "/"))
-              uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
-          return assetAdaptor.bulkupdateImageAssets(uriInfo.getBaseUri(),stream);
+        try(InputStream stream = att.getObject(InputStream.class)) {
+            return assetAdaptor.bulkupdateImageAssets(uriInfo.getBaseUri(), stream);
+        }
     }
     
     @POST
@@ -581,20 +566,13 @@ public class AssetsResource
     public Status bulkupdateFileAssets(List<Attachment> atts) throws IOException
     {
     	  if (atts == null || atts.isEmpty())
-              throw new RuntimeException("No file sent");
+              throw new RuntimeException(ERROR_NO_FILE);
           
           Attachment att = atts.get(0);
-          
-          String uploadFilename = att.getContentDisposition().getFilename();
-          InputStream stream = att.getObject(InputStream.class);
-          
-          // Strip out any path portion of the uploaded filename as per rfc spec.
-          uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
+          try(InputStream stream = att.getObject(InputStream.class)){
+              return assetAdaptor.bulkupdateFileAssets(uriInfo.getBaseUri(),stream);
+          }
 
-          if (StringUtils.contains(uploadFilename, "/"))
-              uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
-          return assetAdaptor.bulkupdateFileAssets(uriInfo.getBaseUri(),stream);
     }
     
     @POST

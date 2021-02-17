@@ -100,7 +100,7 @@ public class PSInputValidatorFilter implements Filter
      * Map of params that need to be validated. The key is the parameter name
      * the value is the restriction type to validate against.
      */
-    private static final Map<String, String[]> restrictionProps = new HashMap<String, String[]>();
+    private static final Map<String, String[]> restrictionProps = new HashMap<>();
     
     /**
      * Restriction type enumeration. Defines types that a parameter should be
@@ -341,7 +341,7 @@ public class PSInputValidatorFilter implements Filter
     {
         if(val == null)
             return new String[]{};
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         StringReader sr = new StringReader(val);
         int current = -1;
         StringBuilder buff = new StringBuilder();
