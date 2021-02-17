@@ -43,7 +43,6 @@ import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.pathmanagement.data.PSMoveFolderItem;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.IPSPathService;
-import com.percussion.pathmanagement.service.IPSPathService.PSPathNotFoundServiceException;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.redirect.service.IPSRedirectService;
 import com.percussion.rest.Status;
@@ -69,7 +68,6 @@ import com.percussion.share.data.IPSItemSummary.Category;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.importer.theme.PSAssetCreator;
 import com.percussion.sitemanage.service.IPSSiteDataService;
@@ -184,15 +182,15 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         {
             item = pathService.find(folder+"/"+filename);
         }
-        catch (PSPathNotFoundServiceException e)
+        catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
         {
             throw new AssetNotFoundException();
         }
         
-        // TODO - Checkout item.
+        // TODO: - Checkout item.
         try {
             return this.psAssetToAsset(baseURI, this.assetDao.find(item.getId()));
-        } catch (IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
     }
@@ -246,7 +244,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             {
                 item = pathService.find(path);
             }
-            catch (PSPathNotFoundServiceException e)
+            catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
             {
                 throw new AssetNotFoundException();
             }
@@ -270,11 +268,13 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         notEmpty(id);
         PSAsset asset;
+
         try {
             asset = this.assetDao.find(id);
-        } catch (IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
+
         if (asset == null)
         {
             throw new AssetNotFoundException();
@@ -291,9 +291,10 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         PSAsset asset;
         try {
             asset = this.assetDao.find(id);
-        } catch (IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
+
         if (asset == null)
         {
             throw new AssetNotFoundException();
@@ -318,7 +319,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         {
             item = pathService.find(path);
         }
-        catch (PSPathNotFoundServiceException e)
+        catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
         {
             throw new AssetNotFoundException();
         }
@@ -342,7 +343,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         {
             item = pathService.find(path);
         }
-        catch (PSPathNotFoundServiceException e)
+        catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
         {
             // Nothing found at this path, create a new asset
             return this.createSharedAsset(baseURI, path, asset);
@@ -381,7 +382,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         if (this.workflowHelper.isItemInApproveState(idMapper.getContentId(id)))
         { // If this is pending or live it needs to be in quick edit while we
           // work with it
-            workflowInfo.setState(this.setWorkflowState(id, DefaultWorkflowStates.quickEdit, new ArrayList<String>()));
+            workflowInfo.setState(this.setWorkflowState(id, DefaultWorkflowStates.quickEdit, new ArrayList<>()));
         }
         if (!this.workflowHelper.isCheckedOutToCurrentUser(id))
         { // If this isn't checked out to the currently logged in user it needs
@@ -433,15 +434,16 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
                 // Try to create the folder, this shouldn't fail if the folder
                 // exists.
+                try {
                 this.pathService.addFolder(asset.getFolderPath() + "/");
                 PSMoveFolderItem request = new PSMoveFolderItem();
                 request.setItemPath(currentPath + "/" + oldPSAsset.getName());
                 request.setTargetFolderPath(asset.getFolderPath() + "/");
-                try {
+
                     this.pathService.moveItem(request); // PXA What to do if this
                     // fails? Have we changed
                     // anything yet?
-                } catch (PSDataServiceException e) {
+                } catch (PSDataServiceException | IPSPathService.PSPathServiceException e) {
                     log.error(e.getMessage());
                     throw new BackendException(e.getMessage(),e);
                 }
@@ -452,12 +454,12 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         try {
             // Save down the object! Woo!
             this.assetDao.save(oldPSAsset);
-        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
             throw new BackendException(e.getMessage(),e);
         }
 
         // Finish up the workflow stuff
-        workflowInfo.setState(this.setWorkflowState(id, endState, new ArrayList<String>()));
+        workflowInfo.setState(this.setWorkflowState(id, endState, new ArrayList<>()));
 
         //Checkin the item before we leave.
         if (this.itemWorkflowService.isCheckedOutToCurrentUser(id))
@@ -556,7 +558,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         try {
             this.assetService.validate(newAsset);
-        } catch (PSSpringValidationException e) {
+        } catch (PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException();
@@ -565,7 +567,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         // Save it once.
         try {
             newAsset = this.assetDao.save(newAsset);
-        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
            throw new BackendException(e.getMessage(),e);
         }
 
@@ -589,7 +591,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
                     try {
                         newAsset = this.assetDao.save(newAsset);
-                    } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+                    } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
                         throw new BackendException(e.getMessage(),e);
                     }
                 }
@@ -616,10 +618,8 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         try
         {
              item = pathService.find("/" + path);
-        }
-        catch (PSPathNotFoundServiceException e)
-        {
-            // Expect to not find item
+        }catch (IPSPathService.PSPathServiceException | PSDataServiceException e) {
+           throw new BackendException(e.getMessage(),e);
         }
 
         String folder = StringUtils.substringBeforeLast(path, "/");
@@ -691,7 +691,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         {
             item = pathService.find(folder+"/"+filename);
         }
-        catch (PSPathNotFoundServiceException e)
+        catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
         {
             throw new AssetNotFoundException();
         }
@@ -700,9 +700,10 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         PSAsset asset=null;
         try {
             asset = this.assetDao.find(item.getId());
-        } catch (IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
+
         if (asset == null)
         {
             throw new AssetNotFoundException();
@@ -954,7 +955,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	           pathService.find(pathServicePath);
 
 	        }
-	        catch (PSPathNotFoundServiceException e)
+	        catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
 	        {
 	            throw new FolderNotFoundException();
 	        }
@@ -985,7 +986,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
 	        try {
                 update = this.assetService.save(update);
-            } catch (IPSDataService.DataServiceNotFoundException | PSSpringValidationException | IPSDataService.DataServiceSaveException | IPSDataService.DataServiceLoadException e) {
+            } catch (PSDataServiceException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
                 throw new WebApplicationException();
@@ -1129,7 +1130,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	}
 
 	
-	private int recursivelyWorkflowAllAssets(WorkflowStates state, int counter, String path){
+	private int recursivelyWorkflowAllAssets(WorkflowStates state, int counter, String path) throws IPSPathService.PSPathServiceException, PSDataServiceException {
 		int ctr = counter;
 		
 		PSPathItem pi = pathService.find(path);
@@ -1162,17 +1163,20 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	}
 	
 	@Override
-	public int approveAllAssets(URI baseUri, String  folderPath) {
+	public int approveAllAssets(URI baseUri, String  folderPath) throws BackendException {
 		int counter = 0;
-		
-		if(folderPath == null)
-			folderPath = "";
-		
-		folderPath = StringUtils.substringBeforeLast(folderPath, "/");
-		String path = folderPath;
-	
-		counter = recursivelyWorkflowAllAssets(WorkflowStates.APPROVE,0, path);
-		return counter;
+		try {
+            if (folderPath == null)
+                folderPath = "";
+
+            folderPath = StringUtils.substringBeforeLast(folderPath, "/");
+            String path = folderPath;
+
+            counter = recursivelyWorkflowAllAssets(WorkflowStates.APPROVE, 0, path);
+        } catch (IPSPathService.PSPathServiceException | PSDataServiceException e) {
+            throw new BackendException(e.getMessage(),e);
+        }
+        return counter;
 	}
 
 	@Override
@@ -1231,32 +1235,38 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	}
 
 	@Override
-	public int archiveAllAsets(URI baseUri, String folder) {
+	public int archiveAllAssets(URI baseUri, String folder) throws BackendException {
 		int counter = 0;
-		
-		if(folder == null)
-			folder = "";
-		
-		folder = StringUtils.substringBeforeLast(folder, "/");
-		String path = folder;
-	
-		counter = recursivelyWorkflowAllAssets(WorkflowStates.ARCHIVE, 0, path);
-		return counter;
+		try {
+            if (folder == null)
+                folder = "";
+
+            folder = StringUtils.substringBeforeLast(folder, "/");
+            String path = folder;
+
+            counter = recursivelyWorkflowAllAssets(WorkflowStates.ARCHIVE, 0, path);
+        } catch (IPSPathService.PSPathServiceException | PSDataServiceException e) {
+            throw new BackendException(e.getMessage(),e);
+        }
+        return counter;
 	}
 
 	@Override
-	public int submitForReviewAllAsets(URI baseUri, String folder) {
-		int counter = 0;
-		
-		if(folder == null)
-			folder = "";
-		
-		folder = StringUtils.substringBeforeLast(folder, "/");
-		String path = folder;
-	
-		counter = recursivelyWorkflowAllAssets(WorkflowStates.REVIEW, 0, path);
-		return counter;
-	}
+	public int submitForReviewAllAssets(URI baseUri, String folder) throws BackendException {
+        int counter = 0;
+        try {
+            if (folder == null)
+                folder = "";
+
+            folder = StringUtils.substringBeforeLast(folder, "/");
+            String path = folder;
+
+            counter = recursivelyWorkflowAllAssets(WorkflowStates.REVIEW, 0, path);
+            return counter;
+        } catch (IPSPathService.PSPathServiceException | PSDataServiceException e) {
+            throw new BackendException(e.getMessage(),e);
+        }
+    }
 
     public void setPathService(IPSPathService pathService)
     {
@@ -1276,7 +1286,7 @@ class PSStreamingOutput implements StreamingOutput
     }
 
     @Override
-    public void write(OutputStream arg0) throws IOException, WebApplicationException
+    public void write(OutputStream arg0) throws IOException
     {
         PSCopyStream.copyStream(fis, arg0);
     }

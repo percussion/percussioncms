@@ -40,6 +40,7 @@ import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
@@ -266,7 +267,7 @@ public class PSCategoryService implements IPSCategoryService {
         return updateCategories(category, null);
     }
 
-    public PSCategory updateCategories(PSCategory category,  String sitename) throws PSSpringValidationException {
+    public PSCategory updateCategories(PSCategory category,  String sitename) throws PSValidationException {
 
         PSCategory updatedCategory = null;
         doValidation(category);
@@ -409,7 +410,7 @@ public class PSCategoryService implements IPSCategoryService {
      * @throws PSBeanValidationException if failed to validate the specified
      *                                   role.
      */
-    protected void doValidation(PSCategory category) throws PSSpringValidationException {
+    protected void doValidation(PSCategory category) throws PSValidationException {
         PSCategoryValidator validator = new PSCategoryValidator();
 
         validator.validate(category).throwIfInvalid();

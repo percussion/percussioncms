@@ -24,6 +24,8 @@
 package com.percussion.share.async;
 
 
+import com.percussion.foldermanagement.service.IPSFolderService;
+
 /**
  * Service to start and manage jobs that need to run asynchronously.  
  * 
@@ -40,7 +42,7 @@ public interface IPSAsyncJobService
      * 
      * @return A job id, used to query for job status and to cancel the job.
      */
-    public long startJob(String jobType, Object config);
+    public long startJob(String jobType, Object config) throws IPSFolderService.PSWorkflowNotFoundException;
     
     /**
      * Checks the status of the specified job. The result contains

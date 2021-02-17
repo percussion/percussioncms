@@ -30,6 +30,7 @@ import com.percussion.share.dao.IPSGenericDao.SaveException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,7 +57,7 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
         this.dao = dao;
     }
 
-    public PSValidationErrors validate(FULL obj) throws PSSpringValidationException {
+    public PSValidationErrors validate(FULL obj) throws PSValidationException {
         return PSBeanValidationUtils.getValidationErrorsOrFailIfInvalid(obj);
     }
     
@@ -72,7 +73,7 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
         }
     }
 
-    public FULL load(PK id) throws DataServiceLoadException, DataServiceNotFoundException {
+    public FULL load(PK id) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         validateIdParameter("load", id);
         
         try {
@@ -80,17 +81,16 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
             if (item == null) 
                 throw new DataServiceNotFoundException("Item not found:" + id.toString());
             return item;
-        } catch (LoadException e) {
+        } catch (PSDataServiceException e) {
             throw new DataServiceLoadException(e);
         }
     }
 
-    public FULL save(FULL object) throws PSSpringValidationException,
-            com.percussion.share.service.IPSDataService.DataServiceSaveException, DataServiceLoadException, DataServiceNotFoundException {
+    public FULL save(FULL object) throws PSDataServiceException {
         try {
             validate(object);
             return getDao().save(object);
-        } catch (SaveException e) {
+        } catch (SaveException | LoadException | DeleteException e) {
             String error = format("Error saving object: {0}", object);
             throw new DataServiceSaveException(error,e);
         }
@@ -100,7 +100,8 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
         return dao;
     }
     
-    protected void validateIdParameter(String action, PK id) {
+    protected void validateIdParameter(String action, PK id) throws PSValidationException {
+
         rejectIfNull(action, "id", id);
     }
     

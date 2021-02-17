@@ -26,6 +26,7 @@ package com.percussion.pagemanagement.dao;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionNotFoundException;
 import com.percussion.pagemanagement.service.PSResourceServiceException;
 import com.percussion.share.dao.IPSGenericDao;
@@ -54,7 +55,7 @@ public interface IPSResourceDefinitionGroupDao extends IPSGenericDao<PSResourceD
      * @return maybe <code>null</code>.
      * @throws PSResourceDefinitionNotFoundException 
      */
-    PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException;
+    PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException;
     
     /**
      * Finds the primary {@link PSAssetResource} for the given content type.

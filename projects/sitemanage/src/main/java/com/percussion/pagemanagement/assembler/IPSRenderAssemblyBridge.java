@@ -26,7 +26,9 @@ package com.percussion.pagemanagement.assembler;
 import com.percussion.pagemanagement.assembler.PSAbstractAssemblyContext.EditType;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplate;
+import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 
 /**
@@ -51,7 +53,7 @@ public interface IPSRenderAssemblyBridge
      * and macros then make use of this variable to strip the script tags.
      * @return never <code>null</code>.
      */
-    public String renderPage(PSPage page, boolean editMode, boolean scriptsOff);
+    public String renderPage(PSPage page, boolean editMode, boolean scriptsOff) throws IPSPageService.PSPageException;
     
     /**
      * Renders a valid template. Sets editMode to <code>true</code>.
@@ -60,7 +62,7 @@ public interface IPSRenderAssemblyBridge
      * and macros then make use of this variable to strip the script tags.
      * @return never <code>null</code>.
      */
-    public String renderTemplate(PSTemplate template, boolean scriptsOff);
+    public String renderTemplate(PSTemplate template, boolean scriptsOff) throws IPSPageService.PSPageException;
     
     /**
      * Renders a valid template with a page in it. Sets editMode to <code>true</code>.
@@ -70,7 +72,7 @@ public interface IPSRenderAssemblyBridge
      * and macros then make use of this variable to strip the script tags.
      * @return never <code>null</code>.
      */
-    public String renderTemplateWithPage(PSTemplate template, PSPage page, boolean scriptsOff);
+    public String renderTemplateWithPage(PSTemplate template, PSPage page, boolean scriptsOff) throws IPSPageService.PSPageException;
 
     /**
      * Assembles a page with the given id.
@@ -87,14 +89,14 @@ public interface IPSRenderAssemblyBridge
      * 
      * @return never <code>null</code>.
      */
-    public String renderPage(String id, boolean editMode, boolean scriptsOff);
+    public String renderPage(String id, boolean editMode, boolean scriptsOff) throws IPSPageService.PSPageException, PSValidationException;
 
     /**
      * This is the same as {@link #renderPage(String, boolean, boolean)}, 
      * in addition, it provides an option to specify the edited item type. 
      * @param type the edited item type.
      */
-    public String renderPage(String id, boolean editMode, boolean scriptsOff, EditType type);
+    public String renderPage(String id, boolean editMode, boolean scriptsOff, EditType type) throws IPSPageService.PSPageException, PSValidationException;
 
 
     /**
@@ -104,7 +106,7 @@ public interface IPSRenderAssemblyBridge
      * and macros then make use of this variable to strip the script tags.
      * @return never <code>null</code>.
      */
-    public String renderTemplate(String id, boolean scriptsOff);
+    public String renderTemplate(String id, boolean scriptsOff) throws IPSPageService.PSPageException, PSValidationException;
     
     /**
      * The <strong>name</strong> of the legacy assembly template used to assemble the page/template.
@@ -118,7 +120,7 @@ public interface IPSRenderAssemblyBridge
      * 
      * @return the ID of the dispatch template, never <code>null</code>.
      */
-    public IPSGuid getDispatchTemplateId();
+    public IPSGuid getDispatchTemplateId() throws IPSPageService.PSPageException;
     
     /**
      * Gets the {@link IPSAssemblyItem} object used for previewing the specified page.
@@ -130,7 +132,7 @@ public interface IPSRenderAssemblyBridge
      * 
      * @return a {@link IPSAssemblyItem} object, never <code>null</code> or empty.
      */
-    public IPSAssemblyItem getWorkItemForPreview(String id, boolean editMode, boolean scriptsOff, EditType editType);    
+    public IPSAssemblyItem getWorkItemForPreview(String id, boolean editMode, boolean scriptsOff, EditType editType) throws IPSPageService.PSPageException;
     
     public static class PSRenderAssemblyBridgeException extends RuntimeException
     {

@@ -30,6 +30,8 @@ import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSFileResour
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSFolderResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
 import com.percussion.pagemanagement.data.PSThemeResource;
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Lazy;
@@ -60,7 +62,7 @@ public class PSResourceDefinitionData
     
     private IPSResourceDefinitionVisitor resourceVisitor = new ResourceVisitor();
     
-    public void add(PSResourceDefinitionGroup group) {
+    public void add(PSResourceDefinitionGroup group) throws PSDataServiceException {
         notNull(group);
         notEmpty(group.getId());
         resourceDefinitionGroups.put(group.getId(), group);

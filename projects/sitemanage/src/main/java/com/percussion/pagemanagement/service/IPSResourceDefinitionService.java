@@ -33,6 +33,7 @@ import com.percussion.share.service.IPSCatalogService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 
 /**
  * 
@@ -86,7 +87,7 @@ public interface IPSResourceDefinitionService extends IPSCatalogService<PSResour
      * @return never <code>null</code>.
      * @throws PSResourceDefinitionNotFoundException
      */
-    PSResourceDefinition findResource(String uniqueId) throws DataServiceNotFoundException, DataServiceLoadException;
+    PSResourceDefinition findResource(String uniqueId) throws DataServiceNotFoundException, DataServiceLoadException, PSValidationException, PSResourceDefinitionInvalidIdException;
     
     
     /**

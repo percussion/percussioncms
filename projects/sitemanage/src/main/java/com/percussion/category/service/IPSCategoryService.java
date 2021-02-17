@@ -28,6 +28,7 @@ import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -61,7 +62,7 @@ public interface IPSCategoryService {
 	 * @param category
 	 * @return the updated list of categories
 	 */
-	public PSCategory updateCategories(PSCategory category, String sitename) throws PSSpringValidationException;
+	public PSCategory updateCategories(PSCategory category, String sitename) throws PSValidationException;
 	
 	/**
 	 * Method to get the information whether the category tab in the 'Administration' ui is being used by an admin.

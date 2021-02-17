@@ -26,6 +26,8 @@ package com.percussion.share.service;
 import java.io.Serializable;
 import java.util.List;
 
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -41,14 +43,14 @@ public abstract class PSAbstractSimpleDataService<T, PK extends Serializable> ex
 	}
 
 
-    public T find(PK id) throws DataServiceLoadException, DataServiceNotFoundException {
+    public T find(PK id) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         validateIdParameter("find", id);
         return load(id);
     }
     
 
 
-    public List<T> findAll() throws DataServiceLoadException {
+    public List<T> findAll() throws PSDataServiceException {
         try {
             return getDao().findAll();
         } catch (LoadException e) {

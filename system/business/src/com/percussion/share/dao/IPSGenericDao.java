@@ -49,7 +49,7 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * @return List of populated objects
      * @throws LoadException 
      */
-    List<T> findAll() throws LoadException;
+    List<T> findAll() throws PSDataServiceException;
 
     /**
      * Generic method to get an object based on class and identifier. An
@@ -61,7 +61,7 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * @throws LoadException 
      * @see org.springframework.orm.ObjectRetrievalFailureException
      */
-    T find(PK id) throws LoadException;
+    T find(PK id) throws PSDataServiceException;
 
     /**
      * Generic method to save an object - handles both update and insert.
@@ -70,7 +70,7 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * @return the persisted object
      * @throws SaveException 
      */
-    T save(T object) throws SaveException, LoadException;
+    T save(T object) throws SaveException, LoadException, DeleteException;
 
     /**
      * Generic method to delete an object based on class and id

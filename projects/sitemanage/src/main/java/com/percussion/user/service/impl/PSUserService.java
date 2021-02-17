@@ -59,6 +59,7 @@ import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.servlets.PSSecurityFilter;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.impl.PSServerConfigUpdater;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSSystemProperties;
@@ -68,6 +69,7 @@ import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.dao.IPSUserLoginDao;
@@ -112,7 +114,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -320,17 +324,15 @@ public class PSUserService implements IPSUserService
         login.setUserid(user.getName());
         String cryptPW = (passwordFilter == null) ? user.getPassword() : passwordFilter.encrypt(user.getPassword());
         login.setPassword(cryptPW);
-        login = userLoginDao.create(login);
         try
         {
+            login = userLoginDao.create(login);
+
             updateRoles(user.getName(), user.getRoles());
             backEndRoleMgr.setSubjectEmail(user.getName(), user.getEmail());
-        }
-        catch (RuntimeException e)
-        {
+        } catch (IPSGenericDao.SaveException e) {
             log.error("Failed to create user {} because could not add roles to user: {}",user.getName() , e.getMessage());
             log.debug(e.getMessage(),e);
-            userLoginDao.delete(login.getUserid());
         }
 
         PSUser rvalue = user.clone();
@@ -511,8 +513,7 @@ public class PSUserService implements IPSUserService
         return userList;
     }
 
-    private PSUserProviderType fromProvider(String name)
-    {
+    private PSUserProviderType fromProvider(String name) throws PSDataServiceException {
         boolean internal = userLoginDao.find(name) != null;
         return internal ? PSUserProviderType.INTERNAL : PSUserProviderType.DIRECTORY;
     }
@@ -647,46 +648,48 @@ public class PSUserService implements IPSUserService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSAccessLevel getAccessLevel(PSAccessLevelRequest request)
     {
-        PSParameterValidationUtils.rejectIfNull("getAccessLevel", "request", request);
-        
-        PSAssignmentTypeEnum assignmentType = PSAssignmentTypeEnum.READER;
-        
-        String type = request.getType();
-        int workflowId = request.getWorkflowId()>0?request.getWorkflowId():getWorkflowId(request);
-        
-        try
-        {
-            PSWorkflow wf = null;
-            if (workflowId > 0)
-            {
-                wf = workflowService.loadWorkflow(PSGuidUtils.makeGuid(workflowId, PSTypeEnum.WORKFLOW));
-                if (wf == null)
-                    log.debug("Got invalid workflow id '{}", workflowId);
-            }
-            if (wf == null)
-            {
-                wf = workflowService.getDefaultWorkflow();
+        try {
+            PSParameterValidationUtils.rejectIfNull("getAccessLevel", "request", request);
+
+            PSAssignmentTypeEnum assignmentType = PSAssignmentTypeEnum.READER;
+
+            String type = request.getType();
+            int workflowId = request.getWorkflowId() > 0 ? request.getWorkflowId() : getWorkflowId(request);
+
+            try {
+                PSWorkflow wf = null;
+                if (workflowId > 0) {
+                    wf = workflowService.loadWorkflow(PSGuidUtils.makeGuid(workflowId, PSTypeEnum.WORKFLOW));
+                    if (wf == null)
+                        log.debug("Got invalid workflow id '{}", workflowId);
+                }
+                if (wf == null) {
+                    wf = workflowService.getDefaultWorkflow();
+                }
+
+                PSState state = wf.getInitialState();
+                int communityId = (int) securityWs.loadCommunities("Default").get(0).getId();
+
+                PSUser user = getCurrentUser();
+                PSAssignmentTypeHelper helper = new PSAssignmentTypeHelper(user.getName(), user.getRoles(),
+                        communityId);
+                assignmentType = helper.getAssignmentType(wf, state, communityId, null);
+            } catch (SQLException | PSDataServiceException throwables) {
+                log.error("Error occurred determining access level of current user for type '{}', workflow id '{}'. {}",
+                        type, workflowId, throwables.getMessage());
+                log.debug(throwables.getMessage(),throwables);
+                throw new WebApplicationException(throwables.getMessage());
             }
 
-            PSState state = wf.getInitialState();
-            int communityId = (int) securityWs.loadCommunities("Default").get(0).getId();
+            PSAccessLevel accessLevel = new PSAccessLevel();
+            accessLevel.setAccessLevel(assignmentType.name());
 
-            PSUser user = getCurrentUser();
-            PSAssignmentTypeHelper helper = new PSAssignmentTypeHelper(user.getName(), user.getRoles(),
-                    communityId);
-            assignmentType = helper.getAssignmentType(wf, state, communityId, null);
+            return accessLevel;
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
         }
-        catch (Exception e)
-        {
-            log.error("Error occurred determining access level of current user for type '{}', workflow id '{}'. {}",
-                    type,workflowId , e.getMessage());
-            log.debug(e);
-        }
-        
-        PSAccessLevel accessLevel = new PSAccessLevel();
-        accessLevel.setAccessLevel(assignmentType.name());
-        
-        return accessLevel;
     }
 
     /**
@@ -748,7 +751,7 @@ public class PSUserService implements IPSUserService
      * @throws PSBeanValidationException if failed to validate the specified
      *             user.
      */
-    protected void doValidation(PSUser user, boolean isCreateUser) throws PSSpringValidationException
+    protected void doValidation(PSUser user, boolean isCreateUser) throws PSValidationException
     {
         log.debug("validating user " + user);
         PSUserValidator validator = new PSUserValidator(isCreateUser);
@@ -803,18 +806,7 @@ public class PSUserService implements IPSUserService
      */
     protected List<String> findRoles(String userName)
     {
-        try
-        {
-            return backEndRoleMgr.getRoles(userName);
-        }
-        catch (Exception e)
-        {
-            String msg = "Failed to get roles for user \"" + userName + "\".";
-            log.error(msg, e);
-            PSValidationErrorsBuilder builder = new PSValidationErrorsBuilder(PSUser.class.getCanonicalName());
-            builder.reject("security.error", msg + " Underlying error is: " + e.getMessage()).throwIfInvalid();
-            return Collections.emptyList();
-        }
+        return backEndRoleMgr.getRoles(userName);
     }
 
     /**
@@ -822,18 +814,16 @@ public class PSUserService implements IPSUserService
      * 
      * @param name never <code>null</code> or empty.
      */
-    protected void checkUser(String name)
-    {
+    protected void checkUser(String name) throws PSDataServiceException {
         PSParameterValidationUtils.rejectIfBlank("checkUser", "name", name);
 
         boolean found = findUsername(name) != null || userLoginDao.find(name) != null;
 
         if (!found)
         {
-            String emsg = "User not found " + name;
-            log.error(emsg);
+            log.error("User not found {}" ,name);
             PSValidationErrorsBuilder builder = new PSValidationErrorsBuilder(PSUser.class.getCanonicalName());
-            builder.reject("no.such.user", emsg).throwIfInvalid();
+            builder.reject("no.such.user", "User not found").throwIfInvalid();
         }
     }
 
@@ -1039,23 +1029,28 @@ public class PSUserService implements IPSUserService
     public List<PSImportedUser> importDirectoryUsers(PSImportUsers importUsers) throws PSDirectoryServiceException, PSSpringValidationException {
         PSUtilityService utilityService = (PSUtilityService) PSSpringBeanProvider.getBean("utilityService");
 
-        PSParameterValidationUtils.rejectIfNull("importDirectoryUsers", "importUsers", importUsers);
-        PSBeanValidationUtils.validate(importUsers).throwIfInvalid();
-        List<PSExternalUser> users = importUsers.getExternalUsers();
-        List<String> userNames = new ArrayList<>();
-        
-        for (PSExternalUser e : users)
-        {
-            userNames.add(e.getName());
-                    psUserManagementEvent=new PSUserManagementEvent(PSSecurityFilter.getCurrentRequest().getServletRequest(),
-                    PSUserManagementEvent.UserEventActions.create,
-                    PSActionOutcome.SUCCESS);
-            psAuditLogService.logUserManagementEvent(psUserManagementEvent);
+        try {
+            PSParameterValidationUtils.rejectIfNull("importDirectoryUsers", "importUsers", importUsers);
+            PSBeanValidationUtils.validate(importUsers).throwIfInvalid();
+            List<PSExternalUser> users = importUsers.getExternalUsers();
+            List<String> userNames = new ArrayList<>();
+
+            for (PSExternalUser e : users) {
+                userNames.add(e.getName());
+                psUserManagementEvent = new PSUserManagementEvent(PSSecurityFilter.getCurrentRequest().getServletRequest(),
+                        PSUserManagementEvent.UserEventActions.create,
+                        PSActionOutcome.SUCCESS);
+                psAuditLogService.logUserManagementEvent(psUserManagementEvent);
+            }
+
+            List<PSImportedUser> importedUsers = importUsers(userNames);
+
+            return new PSImportedUserList(importedUsers);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
         }
-        
-        List<PSImportedUser> importedUsers = importUsers(userNames);
-        
-        return new PSImportedUserList(importedUsers);
     }
 
     /**
@@ -1287,78 +1282,68 @@ public class PSUserService implements IPSUserService
         }
 
         @Override
-        protected void doValidation(PSUser user, PSBeanValidationException e)
-        {
-            // make sure all roles exist in the system.
-            List<String> allRoles = backEndRoleMgr.getRoles();
+        protected void doValidation(PSUser user, PSBeanValidationException e) {
+           try {
+               // make sure all roles exist in the system.
+               List<String> allRoles = backEndRoleMgr.getRoles();
 
-            if (PSCollectionUtils.containsIgnoringCase(SYSTEM_USERS, user.getName()))
-            {
-                e.rejectValue("name", "user.nameRestricted",
-                        "That user name is restricted for system use. Please choose a different user name");
-            }
-            /*
-             * Lets not continue validating if it's already invalid.
-             */
-            if (e.hasErrors())
-            {
-                return;
-            }
+               if (PSCollectionUtils.containsIgnoringCase(SYSTEM_USERS, user.getName())) {
+                   e.rejectValue("name", "user.nameRestricted",
+                           "That user name is restricted for system use. Please choose a different user name");
+               }
+               /*
+                * Lets not continue validating if it's already invalid.
+                */
+               if (e.hasErrors()) {
+                   return;
+               }
 
-            for(String rl : user.getRoles())
-            {
-                if (!PSCollectionUtils.containsIgnoringCase(allRoles, rl))
-                {
-                    String msg = "Cannot add role \"" + rl + "\" because role named \"" + rl + "\" does not exist.";
-                    e.rejectValue("roles" , "no.such.role", msg);                   
-                }
-            }
+               for (String rl : user.getRoles()) {
+                   if (!PSCollectionUtils.containsIgnoringCase(allRoles, rl)) {
+                       String msg = "Cannot add role \"" + rl + "\" because role named \"" + rl + "\" does not exist.";
+                       e.rejectValue("roles", "no.such.role", msg);
+                   }
+               }
 
-            if (isCreateUser)
-            {
-                // make sure created user not in the system
-                boolean differByCase = false;
-                String existingName = null;
-                String newName = user.getName();
-                List<PSUserLogin> users = userLoginDao.findByName(newName);
-                if (users.size() > 1)
-                {
-                    log.warn("Multiple user login entries found for name : {}", newName);
-                }
-                for (PSUserLogin usr : users)
-                {
-                    String userId = usr.getUserid();
-                    if (userId.equals(newName))
-                    {
-                        existingName = userId;
-                        break;
-                    }
-                    else if (userId.equalsIgnoreCase(newName))
-                    {
-                        existingName = userId;
-                        differByCase = true;
-                        break;
-                    }
-                }
-                if (existingName != null)
-                    existingName = findUsername(newName);
+               if (isCreateUser) {
+                   // make sure created user not in the system
+                   boolean differByCase = false;
+                   String existingName = null;
+                   String newName = user.getName();
+                   List<PSUserLogin> users = userLoginDao.findByName(newName);
+                   if (users.size() > 1) {
+                       log.warn("Multiple user login entries found for name : {}", newName);
+                   }
 
-                if (existingName != null)
-                {
-                    String errorMsg = "Cannot create user \"" + user.getName() + "\" because a user named \""
-                            + existingName + "\" already exists.";
-                    if (differByCase)
-                    {
-                        errorMsg += "  User names must differ by more than just case.";
-                    }
-                    log.debug(errorMsg);
-                    e.rejectValue("name", "not.create.existing.user", errorMsg);
-                }
-            }
-            else
-            {
-                cannotRemoveAdminRoleByYourself(user, e);
-            }
+                   for (PSUserLogin usr : users) {
+                       String userId = usr.getUserid();
+                       if (userId.equals(newName)) {
+                           existingName = userId;
+                           break;
+                       } else if (userId.equalsIgnoreCase(newName)) {
+                           existingName = userId;
+                           differByCase = true;
+                           break;
+                       }
+                   }
+                   if (existingName != null)
+                       existingName = findUsername(newName);
+
+                   if (existingName != null) {
+                       String errorMsg = "Cannot create user \"" + user.getName() + "\" because a user named \""
+                               + existingName + "\" already exists.";
+                       if (differByCase) {
+                           errorMsg += "  User names must differ by more than just case.";
+                       }
+                       log.debug(errorMsg);
+                       e.rejectValue("name", "not.create.existing.user", errorMsg);
+                   }
+               } else {
+                   cannotRemoveAdminRoleByYourself(user, e);
+               }
+           } catch (IPSGenericDao.LoadException loadException) {
+               e.addSuppressed(loadException);
+           }
         }
 
         /**

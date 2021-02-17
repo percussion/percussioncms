@@ -46,6 +46,8 @@ import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.service.IPSSiteDataService.PublishType;
 import com.percussion.user.service.impl.PSUserService;
 import com.percussion.utils.PSDTSStatusProvider;
@@ -101,8 +103,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     private PSPubServerService pubServerService;
     
     @Override
-    public synchronized String start(final IntegrityTaskType type)
-    {
+    public synchronized String start(final IntegrityTaskType type) throws PSDataServiceException {
         ms_log.info("Started integrity checker.");
         validateUsage();
         PSIntegrityStatus status = getRunningStatus();
@@ -136,13 +137,12 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
         return status.getToken();
     }
 
-    private void runTasks(IntegrityTaskType type)
-    {
+    private void runTasks(IntegrityTaskType type) throws IPSGenericDao.SaveException {
         ms_log.info("Started running the tasks.");
         PSIntegrityStatus status = getRunningStatus();
         if (status != null)
         {
-            Set<PSIntegrityTask> tasks = new HashSet<PSIntegrityTask>();
+            Set<PSIntegrityTask> tasks = new HashSet<>();
             Status topSt = Status.SUCCESS;
             if (type.equals(IntegrityTaskType.all) || type.equals(IntegrityTaskType.cm1))
             {
@@ -185,7 +185,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     }
     
     private Set<PSIntegrityTask> getDtsTasks(String token){
-        Set<PSIntegrityTask> dtsTasks = new HashSet<PSIntegrityTask>();
+        Set<PSIntegrityTask> dtsTasks = new HashSet<>();
         Map<String,PSPair<TaskStatus, String>> dtsStatus = dtsStatusProvider.getDTSStatusReport();
         for (String name : dtsStatus.keySet())
         {
@@ -201,7 +201,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     }
     
     private Set<PSIntegrityTask> getCmsTasks(String token){
-        Set<PSIntegrityTask> cmsTasks = new HashSet<PSIntegrityTask>();
+        Set<PSIntegrityTask> cmsTasks = new HashSet<>();
         Map<String,PSPair<TaskStatus, String>> cm1Status = runImageTasks(token);
         for (String name : cm1Status.keySet())
         {
@@ -218,8 +218,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     }
 
     @Override
-    public void stop()
-    {
+    public void stop() throws PSDataServiceException {
         validateUsage();
         PSIntegrityStatus status = getRunningStatus();
         if(status != null){
@@ -229,7 +228,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
         }
     }
     
-    private PSIntegrityStatus getRunningStatus(){
+    private PSIntegrityStatus getRunningStatus() throws IPSGenericDao.SaveException {
         PSIntegrityStatus result = null;
         List<PSIntegrityStatus> statuses = integrityDao.find(Status.RUNNING);
         if(statuses.size()==1){
@@ -247,29 +246,25 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     }
     
     @Override
-    public PSIntegrityStatus getStatus(String token)
-    {
+    public PSIntegrityStatus getStatus(String token) throws PSDataServiceException {
         validateUsage();
         return integrityDao.find(token);
     }
 
     @Override
-    public List<PSIntegrityStatus> getHistory()
-    {
+    public List<PSIntegrityStatus> getHistory() throws PSDataServiceException {
         validateUsage();
         return getHistory(null);
     }
 
     @Override
-    public List<PSIntegrityStatus> getHistory(Status status)
-    {
+    public List<PSIntegrityStatus> getHistory(Status status) throws PSDataServiceException {
         validateUsage();
         return integrityDao.find(status);
     }
 
     @Override
-    public void delete(String token)
-    {
+    public void delete(String token) throws PSDataServiceException {
         validateUsage();
         PSIntegrityStatus status = integrityDao.find(token);
         if(status != null){
@@ -283,7 +278,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
      * @return Map<String, PSPair<TaskStatus, String>> map of task name and pair of status and message.
      */
     private Map<String, PSPair<TaskStatus, String>> runImageTasks(String token) {
-        Map<String, PSPair<TaskStatus, String>> result = new HashMap<String, PSPair<TaskStatus,String>>();
+        Map<String, PSPair<TaskStatus, String>> result = new HashMap<>();
         PSAsset percussionImage = null;
         InputStream in = null;
         //Create Image Asset
@@ -296,10 +291,10 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
 
             percussionImage = assetService.createAsset(ar);
 
-            PSPair<TaskStatus, String> imgCreate = new PSPair<TaskStatus, String>(TaskStatus.SUCCESS,"");
+            PSPair<TaskStatus, String> imgCreate = new PSPair<>(TaskStatus.SUCCESS,"");
             result.put(IMAGE_CREATE_TASK, imgCreate);
         } catch (Exception e) {
-            PSPair<TaskStatus, String> imgCreate = new PSPair<TaskStatus, String>(TaskStatus.FAILED, e.getMessage());
+            PSPair<TaskStatus, String> imgCreate = new PSPair<>(TaskStatus.FAILED, e.getMessage());
             result.put(IMAGE_CREATE_TASK, imgCreate);
             //Return the result here
             return result;
@@ -332,8 +327,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
         return result;
     }
     
-    private void validateUsage()
-    {
+    private void validateUsage() throws PSDataServiceException {
         if(!userService.isAdminUser(userService.getCurrentUser().getName())){
             throw new RuntimeException("You are not authorized to use " + PSIntegrityCheckerService.class.getName() + " API.");
         }

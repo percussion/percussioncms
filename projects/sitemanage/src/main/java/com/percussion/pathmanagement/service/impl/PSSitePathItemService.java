@@ -37,8 +37,10 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSDataItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.ui.service.IPSListViewHelper;
@@ -87,8 +89,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
 
     @Override
-    protected PSPathItem findItem(String path)
-    {
+    protected PSPathItem findItem(String path) throws PSPathNotFoundServiceException, IPSDataService.DataServiceNotFoundException {
         SiteIdAndFolderPath sfp = getSiteIdAndFolderPath(path);
         PSSiteSummary site = null;
         try
@@ -99,7 +100,7 @@ public class PSSitePathItemService extends PSPathItemService
         {
             try {
                 site = siteDataService.findByPath(("/Sites/" + path).replace("//","/"));
-            }catch (DataServiceLoadException e1){
+            }catch ( IPSDataService.DataServiceNotFoundException e1){
                 // Site not found, if we have assume we have a valid path and the path item is orphaned
                 String msg = sfp.isOnlySiteId() ? "Oops.  We can't find the site " + sfp.getSiteId() + ".  It may have been deleted." : "Oops. We're sorry. This page should have been deleted when its site was deleted. Please contact Customer Success for assistance.";
                 throw new PSPathNotFoundServiceException(msg);
@@ -150,7 +151,7 @@ public class PSSitePathItemService extends PSPathItemService
     
     protected List<PSPathItem> findRootChildren() {
         List<PSSiteSummary> sites = siteDataService.findAll();
-        List<PSPathItem> items = new ArrayList<PSPathItem>();
+        List<PSPathItem> items = new ArrayList<>();
         for(PSSiteSummary site : sites) {
             PSPathItem item = createPathItem();
             convert(site, item);
@@ -160,16 +161,14 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    protected List<PSPathItem> findItems(String path)
-    {
+    protected List<PSPathItem> findItems(String path) throws IPSDataService.DataServiceNotFoundException, PSPathNotFoundServiceException {
         if ("/".equals(path)) return findRootChildren();
                
         return super.findItems(path);
     }
     
     @Override
-    protected String getFullFolderPath(String path)
-    {
+    protected String getFullFolderPath(String path) throws IPSDataService.DataServiceNotFoundException, PSPathNotFoundServiceException {
         notEmpty(path, "path");
         
         String fullFolderPath = SITE_ROOT;
@@ -184,8 +183,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    public PSPathItem addNewFolder(String path)
-    {
+    public PSPathItem addNewFolder(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException {
         PSPathUtils.validatePath(path);
         
         if ("/".equals(path))
@@ -197,8 +195,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    public PSPathItem renameFolder(PSRenameFolderItem item)
-    {
+    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSSpringValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException {
         String path = item.getPath();
         if (getSiteIdAndFolderPath(path).isOnlySiteId())
         {
@@ -209,7 +206,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
 
     @Override
-    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException {
+    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException {
         String path = criteria.getPath();
         if (getSiteIdAndFolderPath(path).isOnlySiteId())
         {
@@ -351,7 +348,7 @@ public class PSSitePathItemService extends PSPathItemService
         return filteredItemNames;
     }
     
-    private PSSiteSummary getSite(String id) {
+    private PSSiteSummary getSite(String id) throws PSPathNotFoundServiceException, DataServiceLoadException {
         PSSiteSummary site = siteDataService.find(id);
         if(log.isDebugEnabled())
             log.debug("Loaded site: " + site);

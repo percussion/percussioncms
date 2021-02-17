@@ -33,9 +33,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.TikaInputStream;
@@ -43,9 +43,22 @@ import org.apache.tika.metadata.Metadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.StreamingOutput;
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,9 +81,9 @@ public class AssetsResource
     @Context
     private UriInfo uriInfo;
     
-    private Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
+    private static final Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
 
-    public static Log log = LogFactory.getLog(AssetsResource.class);
+    public static final Logger log = LogManager.getLogger(AssetsResource.class);
 
     private static class TikaConfigHolder {
         public static final TikaConfig INSTANCE = TikaConfig.getDefaultConfig();
@@ -593,11 +606,17 @@ public class AssetsResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status approveAllAssets(@PathParam("folderPath") String folder){
-    	Status status = new Status("OK");
-    	
-    	int ctr = assetAdaptor.approveAllAssets(uriInfo.getBaseUri(), folder);
-    	status.setMessage("Approved " + ctr + " Assets");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = assetAdaptor.approveAllAssets(uriInfo.getBaseUri(), folder);
+            status.setMessage("Approved " + ctr + " Assets");
+            return status;
+        }catch(BackendException e){
+    	    log.error(e.getMessage());
+    	    log.debug(e.getMessage(),e);
+    	    throw new WebApplicationException(e.getMessage());
+        }
     }
     
 
@@ -610,11 +629,17 @@ public class AssetsResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status archiveAllAssets(@PathParam("folderPath") String folder){
-    	Status status = new Status("OK");
-    	
-    	int ctr = assetAdaptor.archiveAllAsets(uriInfo.getBaseUri(), folder);
-    	status.setMessage("Archived " + ctr + " Assets");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = assetAdaptor.archiveAllAssets(uriInfo.getBaseUri(), folder);
+            status.setMessage("Archived " + ctr + " Assets");
+            return status;
+        }catch(BackendException e){
+    	    log.error(e.getMessage());
+    	    log.debug(e.getMessage(),e);
+    	    throw new WebApplicationException(e.getMessage());
+        }
     }
 
     public void setAssetAdaptor(IAssetAdaptor assetAdaptor){
@@ -630,10 +655,16 @@ public class AssetsResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status submitAllAssets(@PathParam("folderPath") String folder){
-    	Status status = new Status("OK");
-    	
-    	int ctr = assetAdaptor.submitForReviewAllAsets(uriInfo.getBaseUri(), folder);
-    	status.setMessage("Submitted " + ctr + " Assets");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = assetAdaptor.submitForReviewAllAssets(uriInfo.getBaseUri(), folder);
+            status.setMessage("Submitted " + ctr + " Assets");
+            return status;
+        }catch(BackendException e){
+    	    log.error(e.getMessage());
+    	    log.debug(e.getMessage(),e);
+    	    throw new WebApplicationException(e.getMessage());
+        }
     }
 }

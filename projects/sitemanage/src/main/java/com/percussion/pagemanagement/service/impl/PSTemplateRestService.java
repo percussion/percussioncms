@@ -30,21 +30,27 @@ import com.percussion.pagemanagement.data.PSTemplateSummaryList;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.share.service.IPSDataService.DataServiceSaveException;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.web.service.PSRestServicePathConstants;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 
 @Path("/template")
@@ -52,6 +58,7 @@ import org.springframework.stereotype.Component;
 public class PSTemplateRestService {
     
     private IPSTemplateService templateService;
+    private static final Logger log = LogManager.getLogger(PSTemplateRestService.class);
 
     @Autowired
     public PSTemplateRestService(IPSTemplateService templateService) {
@@ -59,7 +66,6 @@ public class PSTemplateRestService {
         this.templateService = templateService;
     }
 
-    @SuppressWarnings("deprecation")
     @GET
     @Path("/create/{name}/{srcId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -140,27 +146,23 @@ public class PSTemplateRestService {
         // The following code is to make sure always inject XML element
         // for NULL valued properties. This is to insure easy update the XML
         // content with JavaScript.
-        // We may not to do this if the client side is processing JASON object
+        // We may not to do this if the client side is processing JSON object
         // in the future.
-        
-        // if turn on debug, expose all optional NULL properties
-        //if (log.isDebugEnabled())
-        //{
-            if (template.getHtmlHeader() == null)
-                template.setHtmlHeader("");
-            if (template.getDescription() == null)
-                template.setDescription("");
-            if (template.getImageThumbPath() == null)
-                template.setImageThumbPath("");
-            if (template.getLabel() == null)
-                template.setLabel("");
-            if (template.getTheme() == null)
-                template.setTheme("");
-            if (template.getCssOverride() == null)
-                template.setCssOverride("");
-            if (template.getCssRegion() == null)
-                template.setCssRegion("");
-        //}
+        if (template.getHtmlHeader() == null)
+            template.setHtmlHeader("");
+        if (template.getDescription() == null)
+            template.setDescription("");
+        if (template.getImageThumbPath() == null)
+            template.setImageThumbPath("");
+        if (template.getLabel() == null)
+            template.setLabel("");
+        if (template.getTheme() == null)
+            template.setTheme("");
+        if (template.getCssOverride() == null)
+            template.setCssOverride("");
+        if (template.getCssRegion() == null)
+            template.setCssRegion("");
+
         return template;
     }
        
@@ -168,9 +170,15 @@ public class PSTemplateRestService {
     @Path(PSRestServicePathConstants.SAVE_PATH)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSTemplate save(PSTemplate object) throws PSBeanValidationException, DataServiceSaveException
+    public PSTemplate save(PSTemplate object)
     {
-        return templateService.save(object);
+        try {
+            return templateService.save(object);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     @POST
@@ -188,7 +196,13 @@ public class PSTemplateRestService {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSValidationErrors validate(PSTemplate object)
     {
-        return templateService.validate(object);
+        try {
+            return templateService.validate(object);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
 }

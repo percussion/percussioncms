@@ -84,7 +84,7 @@ public interface IPSFolderService
      *            
      * @return The job id, never <code>null</code>.
      */
-    public String startGetAssignedFoldersJob(String workflowName, String path, boolean includeFoldersWithDifferentWorkflow);
+    public String startGetAssignedFoldersJob(String workflowName, String path, boolean includeFoldersWithDifferentWorkflow) throws PSWorkflowNotFoundException;
 
     /**
      * Get the status of the job started by {@link #startGetAssignedFoldersJob(String, String, boolean)}
