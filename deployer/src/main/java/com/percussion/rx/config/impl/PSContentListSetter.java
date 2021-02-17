@@ -93,13 +93,13 @@ public class PSContentListSetter extends PSSimplePropertySetter
       IPSContentList cList = (IPSContentList) obj;
       if (EXPANDER_PARAMS.equals(propName))
       {
-         Map<String, Object> params = new HashMap<String, Object>();
+         Map<String, Object> params = new HashMap<>();
          params.putAll(cList.getExpanderParams());
          addPropertyDefsForMap(propName, pvalue, params, defs);
       }
       else if (GEN_PARAMS.equals(propName))
       {
-         Map<String, Object> params = new HashMap<String, Object>();
+         Map<String, Object> params = new HashMap<>();
          params.putAll(cList.getGeneratorParams());
          addPropertyDefsForMap(propName, pvalue, params, defs);
       }

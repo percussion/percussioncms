@@ -159,7 +159,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
       if (StringUtils.isBlank(nameFilter))
          throw new IllegalArgumentException("nameFilter may not be null or empty string");
      
-      List<PSConfigStatus> resultList = new ArrayList<PSConfigStatus>();
+      List<PSConfigStatus> resultList = new ArrayList<>();
       List<PSConfigStatus> cfgStatusList = findConfigStatus(nameFilter);
       if(!cfgStatusList.isEmpty())
       {

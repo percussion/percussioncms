@@ -56,7 +56,7 @@ public class PSConvertToSource
     */
    public PSPair<Boolean, String> convert(String packageName)
    {
-      PSPair<Boolean,String> message = new PSPair<Boolean,String>();
+      PSPair<Boolean,String> message = new PSPair<>();
       
       IPSPkgInfoService pkgSvc = PSPkgInfoServiceLocator.getPkgInfoService();
       PSPkgInfo pkgInfo = pkgSvc.findPkgInfo(packageName);
@@ -124,7 +124,7 @@ public class PSConvertToSource
     */
    private PSPair<Boolean, String> moveDescriptor(String packageName)
    {
-      PSPair<Boolean,String> message = new PSPair<Boolean,String>();
+      PSPair<Boolean,String> message = new PSPair<>();
       
       // get the converted descriptor
       File descFile = new File(PSDeploymentHandler.IMPORT_ARCHIVE_DIR,

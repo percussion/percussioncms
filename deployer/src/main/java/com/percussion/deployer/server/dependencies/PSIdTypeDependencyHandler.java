@@ -103,7 +103,7 @@ public abstract class PSIdTypeDependencyHandler extends PSDependencyHandler
       if (handler == null)
          throw new IllegalArgumentException("handler may not be null");
             
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       // get dependencies specified by id type map
       Iterator mappings = PSIdTypeManager.getIdTypeDependencies(tok, dep);

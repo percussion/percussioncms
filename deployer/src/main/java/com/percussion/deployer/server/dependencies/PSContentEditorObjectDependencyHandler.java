@@ -85,7 +85,7 @@ public abstract class PSContentEditorObjectDependencyHandler
       if (uiDef == null)
          throw new IllegalArgumentException("uiDef may not be null");
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       Iterator defSets = uiDef.getDefaultUI();
       if (defSets != null)
@@ -122,7 +122,7 @@ public abstract class PSContentEditorObjectDependencyHandler
       if (mapper == null)
          throw new IllegalArgumentException("mapper may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
 
       Iterator dispMappings = mapper.iterator();
       while (dispMappings.hasNext())
@@ -163,7 +163,7 @@ public abstract class PSContentEditorObjectDependencyHandler
       if (uiSet == null)
          throw new IllegalArgumentException("uiSet may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       PSChoices choices = uiSet.getChoices();
 
       PSDependencyHandler keywordHandler = getDependencyHandler(

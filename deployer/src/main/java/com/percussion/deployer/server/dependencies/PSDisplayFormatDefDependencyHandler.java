@@ -87,7 +87,7 @@ public class PSDisplayFormatDefDependencyHandler
       if (! dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       PSDisplayFormat df = loadDisplayFormat(getComponentProcessor(tok),
          dep.getDependencyId());
@@ -112,7 +112,7 @@ public class PSDisplayFormatDefDependencyHandler
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       Iterator<PSDisplayFormat> dfs = loadAll(getComponentProcessor(tok));
       while (dfs.hasNext())
       {
@@ -177,7 +177,7 @@ public class PSDisplayFormatDefDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       // load the component
       PSDisplayFormat df = loadDisplayFormat(getComponentProcessor(tok),
@@ -396,7 +396,7 @@ public class PSDisplayFormatDefDependencyHandler
       {
          Element[] elements = proc.load(PSDisplayFormat.getComponentType(
             PSDisplayFormat.class), null);
-         List<PSDisplayFormat> result = new ArrayList<PSDisplayFormat>(
+         List<PSDisplayFormat> result = new ArrayList<>(
                elements.length);
          for (int i = 0; i < elements.length; i++)
          {
@@ -448,7 +448,7 @@ public class PSDisplayFormatDefDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {
