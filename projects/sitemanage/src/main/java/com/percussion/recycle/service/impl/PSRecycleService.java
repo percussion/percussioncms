@@ -51,6 +51,7 @@ import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.service.IPSDataItemSummaryService;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorException;
@@ -59,7 +60,8 @@ import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.system.IPSSystemWs;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -81,7 +83,7 @@ public class PSRecycleService implements IPSRecycleService {
     /**
      * Logger for this class.
      */
-    private static final Logger log = Logger.getLogger(PSRecycleService.class.getName());
+    private static final Logger log = LogManager.getLogger(PSRecycleService.class);
 
     /**
      * Constant to represent the recycled relationship name.
@@ -277,7 +279,10 @@ public class PSRecycleService implements IPSRecycleService {
         try {
 
             path= itemSummaryService.find(itemGuid.toString(), FOLDER_TYPE).getFolderPaths().get(0);
-            log.debug("Recycling item with relationship ID: " + folderRel.getId() + " and item id: " + dependentId);
+            log.debug("Recycling item with relationship ID: {} and item id: {}",
+                    folderRel.getId(),
+                    dependentId);
+
             createRootSiteDeleteRelationship(path);
             // transition the item to archive state if necessary
             transitionWorkflowItem(folderRel, dependentId);
@@ -285,22 +290,23 @@ public class PSRecycleService implements IPSRecycleService {
             renameIfRequired(itemGuid, FOLDER_TYPE,false);
             updateRelationshipConfigId(RECYCLED_TYPE, folderRel);
             if (cache != null) {
-                log.debug("The parent locators for the item are: " + folderRel.getDependent().toString());
+                log.debug("The parent locators for the item are: {}", folderRel.getDependent());
                 updateParentFolders(  idMapper.getGuid(folderRel.getDependent()), FOLDER_TYPE, RECYCLED_TYPE);
             }
             psContentEvent=new PSContentEvent(itemGuid.toString(),String.valueOf(dependentId),path, PSContentEvent.ContentEventActions.recycle, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
             psAuditLogService.logContentEvent(psContentEvent);
-        } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException e) {
+        } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException | IPSDataService.DataServiceLoadException e) {
             psContentEvent=new PSContentEvent(itemGuid.toString(),String.valueOf(dependentId),path, PSContentEvent.ContentEventActions.recycle,PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.FAILURE);
             psAuditLogService.logContentEvent(psContentEvent);
-            log.error("Unable to recycle item with dependent id: " + dependentId, e);
-            return;
+            log.error("Unable to recycle item with dependent id: {} Error: {}",
+                    dependentId, e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
 
     @Override
     public void recycleFolder(IPSGuid guid) {
-        log.debug("Received guid for deleting a folder: " + guid);
+        log.debug("Received guid for deleting a folder: {}", guid);
         PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
         int folderId = idMapper.getContentId(guid);
         String path;
@@ -335,7 +341,7 @@ public class PSRecycleService implements IPSRecycleService {
                     }
                 }
             }
-            if ((childRels != null && childRels.size() == 0) || (foundNavonType && childRels.size() == 1)) {
+            if ((childRels != null && childRels.isEmpty()) || (foundNavonType && childRels.size() == 1)) {
                 PSRelationshipFilter dependentFilter = generateDependentFilter(folderId, FOLDER_TYPE);
                 List<PSRelationship> rels = systemWs.loadRelationships(dependentFilter);
                 FoundTypeAndFolderIndex obj = checkForExistingRelType(rels, RECYCLED_TYPE, FOLDER_TYPE);
@@ -351,14 +357,15 @@ public class PSRecycleService implements IPSRecycleService {
                 systemWs.deleteRelationships(Collections.singletonList(rel.getGuid()));
 
             }
-        } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException e) {
-            log.error("Error recycling folder with guid: " + guid, e);
+        } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException | IPSDataService.DataServiceLoadException e) {
+            log.error("Error recycling folder with guid: {} Error:" ,guid, e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
 
     @Override
     public void restoreItem(String guid) {
-        log.debug("Received guid for item restore: " + guid);
+        log.debug("Received guid for item restore: {}" , guid);
         int iGuid = idMapper.getContentId(guid);
         PSLocator depLocator = new PSLocator(iGuid, -1);
         // first set the item to be a folder rel instead of recycled rel.
@@ -378,11 +385,12 @@ public class PSRecycleService implements IPSRecycleService {
             updateParentFolders(parentLocators, RECYCLED_TYPE,FOLDER_TYPE,cache );
 
         } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException e) {
-            log.error("Error restoring item with guid: " + guid, e);
+            log.error("Error restoring item with guid: {} Error: {}" , guid, e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
 
-    private void updateParentFolders(List<PSLocator> parentLocators, String originalType, String newType,PSFolderRelationshipCache cache) throws PSErrorsException, PSErrorException {
+    private void updateParentFolders(List<PSLocator> parentLocators, String originalType, String newType,PSFolderRelationshipCache cache) throws  PSErrorException {
         if (parentLocators == null) {
             return;
         }
@@ -420,7 +428,7 @@ public class PSRecycleService implements IPSRecycleService {
 
     @Override
     public void restoreFolder(String guid) {
-        log.debug("Received guid for delete folder: " + guid);
+        log.debug("Received guid for delete folder: {}" , guid);
         PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
 
         // load relationships for the folder being restored
@@ -442,7 +450,7 @@ public class PSRecycleService implements IPSRecycleService {
 
 
         } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException e) {
-            log.error("Error restoring folder with guid: " + guid, e);
+            log.error("Error restoring folder with guid: {} Error: {}", guid, e.getMessage());
         }
     }
 
@@ -478,7 +486,7 @@ public class PSRecycleService implements IPSRecycleService {
         PSRelationshipProcessor m_relProc = PSRelationshipProcessor.getInstance();
         PSRelationshipFilter filter = new PSRelationshipFilter();
         List<PSRelationship> relSet = null;
-        HashMap<IPSGuid,Boolean> matchedFolders = new HashMap<IPSGuid,Boolean>();
+        HashMap<IPSGuid,Boolean> matchedFolders = new HashMap<>();
         int folderId  = itemGuid.getUUID();
         filter.setOwnerId(folderId);
         filter.setCategory(config.getCategory());
@@ -491,7 +499,7 @@ public class PSRecycleService implements IPSRecycleService {
             IPSCmsContentSummaries summaries = PSCmsContentSummariesLocator.getObjectManager();
             PSComponentSummary summ = summaries.loadComponentSummary(relationship.getDependent().getId());
             if (summ.getContentTypeId() == navService.getNavonContentTypeId()) {
-                List<String> temp = new ArrayList<String>();
+                List<String> temp = new ArrayList<>();
                 temp.add(NAVON_FIELD_DISPLAYTITLE);
                 Map<String, String> navProps = navService.getNavonProperties(sectionGuid, temp);
                 navProps.put(NAVON_FIELD_DISPLAYTITLE,fenamedSectionName );
@@ -503,7 +511,7 @@ public class PSRecycleService implements IPSRecycleService {
 
     private void restoreChildItems(List<PSRelationship> childRels,PSFolderRelationshipCache cache) throws PSErrorException {
         for (PSRelationship child : childRels) {
-            log.debug("Child flagged for restore to a folder is: " + child.getDependent().getId());
+            log.debug("Child flagged for restore to a folder is: {}" , child.getDependent().getId());
             if (child.getConfig().getName().equalsIgnoreCase(RECYCLED_TYPE)) {
                 IPSCmsContentSummaries summaries = PSCmsContentSummariesLocator.getObjectManager();
                 PSComponentSummary summ = summaries.loadComponentSummary(child.getDependent().getId());
@@ -540,16 +548,22 @@ public class PSRecycleService implements IPSRecycleService {
             filter.setName(PSRelationshipConfig.TYPE_RECYCLED_CONTENT);
             List<IPSGuid> depGuids = systemWs.findDependents(guid, filter);
             for (IPSGuid depGuid : depGuids) {
-                String depId = idMapper.getString(depGuid);
-                IPSItemSummary itemSummary = itemSummaryService.find(depId, RECYCLED_TYPE);
-                summs.add(itemSummary);
+                try {
+                    String depId = idMapper.getString(depGuid);
+                    IPSItemSummary itemSummary = itemSummaryService.find(depId, RECYCLED_TYPE);
+                    summs.add(itemSummary);
+                } catch (IPSDataService.DataServiceLoadException e) {
+                    log.warn(e.getMessage());
+                    log.debug(e.getMessage(),e);
+                    //continue loop.
+                }
             }
         }
         return summs;
     }
 
     @Override
-    public IPSItemSummary findItem(String path) {
+    public IPSItemSummary findItem(String path) throws IPSDataService.DataServiceLoadException {
         int itemId = getItemIdFromPath(path, RECYCLED_TYPE);
         IPSItemSummary itemSummary = new PSDataItemSummary();
         if (itemId != -1) {
@@ -650,7 +664,8 @@ public class PSRecycleService implements IPSRecycleService {
             itemId = processor.getIdByPath(PSRelationshipProcessorProxy.RELATIONSHIP_COMPTYPE, path,
                     relationshipTypeName);
         } catch (PSCmsException e) {
-            log.error("Error finding properties for item with path: " + path, e);
+            log.error("Error finding properties for item with path: {} Error: {}" , path, e.getMessage());
+            log.debug(e.getMessage(),e);
         }
         return itemId;
     }

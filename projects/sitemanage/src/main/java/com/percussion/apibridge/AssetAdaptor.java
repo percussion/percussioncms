@@ -387,9 +387,17 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         if (!this.workflowHelper.isCheckedOutToCurrentUser(id))
         { // If this isn't checked out to the currently logged in user it needs
           // to be.
-            PSItemUserInfo userInfo = this.itemWorkflowService.forceCheckOut(id);
-            workflowInfo.setCheckedOut(true);
-            workflowInfo.setCheckedOutUser(userInfo.getCurrentUser());
+            PSItemUserInfo userInfo;
+            try {
+                userInfo = this.itemWorkflowService.forceCheckOut(id);
+            } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                throw new BackendException(e.getMessage(),e);
+            }
+
+            if(userInfo!=null) {
+                workflowInfo.setCheckedOut(true);
+                workflowInfo.setCheckedOutUser(userInfo.getCurrentUser());
+            }
         }
 
         // First, update the modified date to NOW

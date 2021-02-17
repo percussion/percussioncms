@@ -26,10 +26,6 @@ package com.percussion.rest.test.apibridge;
 
 import com.percussion.rest.locationscheme.ILocationSchemeAdaptor;
 import com.percussion.rest.locationscheme.LocationScheme;
-import com.percussion.services.sitemgr.IPSLocationScheme;
-import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.services.sitemgr.PSSiteManagerLocator;
-import com.percussion.util.PSSiteManageBean;
 import org.springframework.stereotype.Component;
 
 @Component
