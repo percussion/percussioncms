@@ -37,7 +37,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
-import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -418,7 +417,6 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         
         q.setMaxResults(useLimit);
         q.setCacheable(true);
-        q.addQueryHint(QueryHints.HINT_READONLY);
         
         //If it is not for count then only pagination properties need to be set on the query
         if(!isCount && rawQuery.getMaxResults() >0 && rawQuery.getMaxResults() <= useLimit)
