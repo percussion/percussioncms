@@ -30,6 +30,7 @@ import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.data.PSRenameFolderItem;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.IPSNotFoundException;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -75,7 +76,7 @@ public interface IPSPathService
      * @throws PSPathNotFoundServiceException If an item cannot be found for the given path or the path is invalid.
      * @throws PSPathServiceException thrown when a path item cannot be created or other system failure.
      */
-    PSPathItem find(String path) throws PSPathNotFoundServiceException, PSPathServiceException;
+    PSPathItem find(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException;
     
     /**
      * Finds the children of a given path.
@@ -86,7 +87,7 @@ public interface IPSPathService
      * @throws PSPathNotFoundServiceException
      * @throws PSPathServiceException
      */
-    List<PSPathItem> findChildren(String path) throws PSPathNotFoundServiceException, PSPathServiceException;
+    List<PSPathItem> findChildren(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException;
     
     /**
      * Find item properties for a given path.
@@ -95,7 +96,7 @@ public interface IPSPathService
      * 
      * @return the item properties.
      */
-    PSItemProperties findItemProperties(String path);
+    PSItemProperties findItemProperties(String path) throws PSDataServiceException, PSPathServiceException;
     
     /**
      * Find item properties for a given request.
@@ -107,7 +108,7 @@ public interface IPSPathService
      * @throws PSPathServiceException If the item properties or workflow could not be found, or other system failure.
      */
     List<PSItemProperties> findItemProperties(PSItemByWfStateRequest request) throws PSPathNotFoundServiceException,
-    PSPathServiceException;
+            PSPathServiceException, IPSDataService.DataServiceNotFoundException;
 
     /**
      * Adds a folder {@link PSPathItem} for a given path.
@@ -116,7 +117,7 @@ public interface IPSPathService
      * @throws PSPathNotFoundServiceException If the created folder item could not be found.
      * @throws PSPathServiceException If the folder could not be created or other system failure.
      */
-    PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException;
+    PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException;
     
     /**
      * Adds a new folder {@link PSPathItem} as a child of the given folder path or as a sibling of the given item path.
@@ -127,7 +128,7 @@ public interface IPSPathService
      * @throws PSPathNotFoundServiceException If the created folder item could not be found.
      * @throws PSPathServiceException If the folder could not be created or other system failure.
      */
-    PSPathItem addNewFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException;
+    PSPathItem addNewFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException;
     
     /**
      * Renames the folder accordingly as specified by a given {@link PSRenameFolderItem}.
@@ -137,8 +138,8 @@ public interface IPSPathService
      * @throws PSPathServiceException If the folder could not be renamed or other system failure.
      * @throws PSBeanValidationException If the item is not valid.
      */
-    PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathNotFoundServiceException, PSPathServiceException,
-            PSSpringValidationException;
+    PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathServiceException,
+            PSDataServiceException;
     
     /**
      * Moves the specified item to the specified folder.
@@ -153,7 +154,7 @@ public interface IPSPathService
      * @return no content object where operation = "moveItem" if the item is
      * successfully moved.
      */    
-    PSNoContent moveItem(PSMoveFolderItem request) throws PSDataServiceException;
+    PSNoContent moveItem(PSMoveFolderItem request) throws PSDataServiceException, PSPathServiceException;
     
     /**
      * Deletes a folder accordingly as specified by a given {@link PSDeleteFolderCriteria}.
@@ -164,7 +165,7 @@ public interface IPSPathService
      * 
      * @throws PSPathServiceException If the folder could not be deleted or other system failure.
      */
-    int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException;
+    int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException;
     
     /**
      * Validates a folder for deletion by the current user.
@@ -176,7 +177,7 @@ public interface IPSPathService
      * @throws PSPathNotFoundServiceException If the folder path could not be found.
      * @throws PSPathServiceException If the folder could not be validated or other system failure.
      */
-    String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException;
+    String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException;
     
     /**
      * Checks for the existence of a path and finds the last portion of the path which exists.  Never blank.
@@ -186,7 +187,7 @@ public interface IPSPathService
      * @return last existing path, never <code>null</code> or empty.  This is a relative path (no leading/trailing
      * forward slashes) or empty for root paths ("/Assets" or "/Sites").
      */
-    String findLastExistingPath(String path);
+    String findLastExistingPath(String path) throws PSPathServiceException;
 
         
     /**
@@ -194,7 +195,7 @@ public interface IPSPathService
      * @author adamgent
      *
      */
-    public static class PSPathServiceException extends RuntimeException {
+    public static class PSPathServiceException extends Exception {
     
         private static final long serialVersionUID = 1L;
     

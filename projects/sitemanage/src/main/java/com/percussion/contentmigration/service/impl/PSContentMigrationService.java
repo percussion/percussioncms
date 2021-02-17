@@ -29,7 +29,6 @@ import com.percussion.assetmanagement.data.PSAssetDropCriteria;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
 import com.percussion.assetmanagement.data.PSOrphanedAssetSummary;
 import com.percussion.assetmanagement.service.IPSAssetService;
-import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.assetmanagement.service.impl.PSPreviewPageUtils;
 import com.percussion.contentmigration.converters.IPSContentMigrationConverter;
 import com.percussion.contentmigration.rules.IPSContentMigrationRule;
@@ -48,6 +47,7 @@ import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSNameGenerator;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.service.impl.PSJsoupUtils;
@@ -101,7 +101,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
     
     @Override
     public void migrateContent(String siteName, String templateId, String refPageId, List<String> pageIds)
-            throws PSContentMigrationException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceSaveException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
+            throws PSContentMigrationException, PSDataServiceException {
         Validate.notEmpty(templateId, "templateId must not be empty for content migration");
         Validate.notEmpty(pageIds, "newPageIds must not be empty for content migration");
         migrateContentOnTemplateChange(templateId,refPageId, pageIds);
@@ -117,7 +117,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
 
     @Override
     public void migrateContentOnTemplateChange(String templateId, String referencePageId, List<String> newPageIds)
-            throws PSContentMigrationException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceSaveException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException {
+            throws PSContentMigrationException, PSDataServiceException {
         Map<String,String> failedItems = new HashMap<>();
         Document refDoc = getReferenceDocument(templateId, referencePageId);
         PSTemplate template = templateService.load(templateId);
@@ -167,7 +167,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
 
     @Override
     public void migrateSameTemplateChanges(String templateId, List<String> pageIds)
-            throws PSContentMigrationException, IPSDataService.DataServiceSaveException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSValidationException, IPSPageService.PSPageException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, IPSAssetService.PSAssetServiceException {
+            throws PSContentMigrationException, PSDataServiceException {
         Map<String,String> failedItems = new HashMap<>();
         Document refDoc = getReferenceDocument(templateId, null);
         if(pageIds == null)
@@ -342,8 +342,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
             //If the widget is from template and it has content skip it. 
             if(tplContentWidgetIds.contains(adc.getWidgetId()))
                 continue;
-            List<String> wc = new ArrayList<>();
-            wc.addAll(converterMap.keySet());
+            List<String> wc = new ArrayList<>(converterMap.keySet());
             wc.retainAll(adc.getSupportedCtypes());
             if(!adc.getExistingAsset() && converterMap.size() == wc.size() + adc.getSupportedCtypes().size())
             {
@@ -412,7 +411,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
      * @param templateId assumed not <code>null</code>.
      * @param applicableWidgets assumed not <code>null</code> and empty.
      */
-    private void updatePage(String pageId, String templateId, List<ApplicableWidget> applicableWidgets) throws IPSDataService.DataServiceSaveException, PSValidationException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceNotFoundException {
+    private void updatePage(String pageId, String templateId, List<ApplicableWidget> applicableWidgets) throws PSDataServiceException {
         boolean hasEmptyWidgets = false;
         //if the source of the widget is page, add widget to the template region
         for (ApplicableWidget widget : applicableWidgets)
@@ -436,7 +435,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
      * @param pageId assumed not <code>null</code>.
      * @param applicableWidget assumed not <code>null</code>.
      */
-    public void createAndAssociateAsset(String pageId, ApplicableWidget applicableWidget) throws PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, IPSDataService.DataServiceSaveException {
+    public void createAndAssociateAsset(String pageId, ApplicableWidget applicableWidget) throws PSDataServiceException {
         PSAsset asset = new PSAsset();
         asset.setType(converterMap.get(applicableWidget.widgetDefId).getWidgetContentType());
         String newName = nameGenerator.generateLocalContentName();

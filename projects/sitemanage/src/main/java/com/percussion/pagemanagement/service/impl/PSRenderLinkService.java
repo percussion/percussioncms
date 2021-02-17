@@ -166,7 +166,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     /**
      * {@inheritDoc}
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem item) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException {
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem item) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
         PSAssetResource r = resolveResourceDefinition(null, null, item.getType());
         return renderLinkHelper(context, r, item);
     }
@@ -174,7 +174,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     /**
      * {@inheritDoc}
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException {
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
         notNull(resourceDefinitionId, "resourceDefinitionId");
         PSAssetResource r = resolveResourceDefinition(resourceDefinitionId, null, null);
         return renderLinkHelper(context, r, item);
@@ -297,21 +297,21 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     {
         try {
             return renderPreviewPageLink(pageId, "html");
-        } catch (DataServiceNotFoundException | DataServiceLoadException | IPSAssetService.PSAssetServiceException e) {
+        } catch (DataServiceNotFoundException | DataServiceLoadException | IPSAssetService.PSAssetServiceException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
         }
     }
     
-    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException {
+    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
         notNull(pageId, "pageId");
         PSPage page = null;
         try
         {
             page = pageService.find(pageId);
         }
-        catch (DataServiceNotFoundException | DataServiceLoadException e)
+        catch (DataServiceNotFoundException | DataServiceLoadException | PSValidationException e)
         {
             log.error("page target {} does not exist. Error: {}",pageId, e.getMessage());
             log.debug(e.getMessage(),e);
@@ -469,6 +469,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         PSLinkableAsset linkAsset = new PSLinkableAsset(asset, folderPath);
 
         PSInlineRenderLink renLink = new PSInlineRenderLink();
+        try {
         /*
          * Resolve the targets resource definition.
          */
@@ -478,9 +479,9 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
                 asset.getType());
         isTrue(rd != null, "Target does not have a resource definition: ", asset);
 
-        try {
+
             renderLinkHelper(renLink, context, rd, linkAsset);
-        } catch (IPSAssetService.PSAssetServiceException e) {
+        } catch (IPSAssetService.PSAssetServiceException | PSValidationException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -491,17 +492,17 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
          * if it has one.
          */
         if (isNotBlank(request.getThumbResourceDefinitionId())) {
-
+            try {
             PSAssetResource thumbNailResource = 
                 resolveResourceDefinition(request.getThumbResourceDefinitionId(), null, null);
-           try {
+
                if (thumbNailResource != null) {
                    PSInlineRenderLink thumbLink = new PSInlineRenderLink();
                    renderLinkHelper(thumbLink, context, thumbNailResource, linkAsset);
                    renLink.setThumbUrl(thumbLink.getUrl());
                    renLink.setThumbResourceDefinition(thumbLink.getResourceDefinition());
                }
-           } catch (IPSAssetService.PSAssetServiceException e) {
+           } catch (IPSAssetService.PSAssetServiceException | PSValidationException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException e) {
                log.error(e.getMessage());
                log.debug(e.getMessage(),e);
                //It is just the thumbnail so don't completely fail out
@@ -542,7 +543,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     public PSAssetResource resolveResourceDefinition(
             String resourceDefinitionId,  
             String legacyTemplate,
-            String contentType) throws DataServiceNotFoundException, DataServiceLoadException {
+            String contentType) throws DataServiceNotFoundException, DataServiceLoadException, PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException {
         if (resourceDefinitionId != null)
             return findAssetResourceDefinition(resourceDefinitionId);
         if (legacyTemplate != null)
@@ -681,7 +682,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     /**
      * {@inheritDoc}
      */
-    public PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException {
+    public PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
         PSAssetResource rd = resolveResourceDefinition(resourceDefinitionId, null, item.getType());
         return resourceInstanceHelper.createResourceInstance(context, item, rd);
     }
@@ -691,10 +692,10 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
      * {@inheritDoc}
      */
     public PSRenderLink renderLinkThemeRegionCSS(final PSRenderLinkContext context, String themeName, 
-            boolean isEdit, EditType editType) throws PSThemeNotFoundException {
+            boolean isEdit, EditType editType) throws PSThemeNotFoundException, PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException {
         boolean useCachedRegionCSS = isEdit && editType == EditType.TEMPLATE;
-        if (log.isDebugEnabled())
-            log.debug("context: " + context.getMode() + ", useCached: " + useCachedRegionCSS + ", editType: " + editType.name());
+
+        log.debug("context: {}, useCached: {}, editType: {}", context.getMode(), useCachedRegionCSS,editType.name());
         
         PSThemeResource resource = (PSThemeResource) getResourceDefinition("theme." + themeName);
         if (resource == null)
@@ -795,8 +796,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         return new PSRenderLink(renderUrl, rd);
     }
 
-    private PSResourceDefinition getResourceDefinition(String resourceDefinitionId)
-    {
+    private PSResourceDefinition getResourceDefinition(String resourceDefinitionId) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
         PSResourceDefinition rd = null;
         try
         {
@@ -816,7 +816,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         return rd;
     }
     
-    private PSAssetResource findAssetResourceDefinition(String resourceDefinitionId) throws DataServiceLoadException, DataServiceNotFoundException {
+    private PSAssetResource findAssetResourceDefinition(String resourceDefinitionId) throws DataServiceLoadException, DataServiceNotFoundException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
         PSResourceDefinition definition = resourceDefinitionService.findResource(resourceDefinitionId);
         if (definition instanceof PSAssetResource)
         {

@@ -28,17 +28,22 @@ import com.percussion.dashboardmanagement.data.PSDashboardConfiguration;
 import com.percussion.dashboardmanagement.data.PSGadget;
 import com.percussion.dashboardmanagement.service.IPSDashboardDataService;
 import com.percussion.dashboardmanagement.service.IPSDashboardService;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.webservices.PSWebserviceUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +52,7 @@ import org.springframework.stereotype.Component;
 public class PSDashboardService implements IPSDashboardService {
 
 	private IPSDashboardDataService dashboardDataService;	
-	private static final Log log = LogFactory.getLog(PSDashboardService.class);
+	private static final Logger log = LogManager.getLogger(PSDashboardService.class);
 	
 	@Autowired
 	public PSDashboardService(IPSDashboardDataService dashboardDataService)
@@ -59,17 +64,17 @@ public class PSDashboardService implements IPSDashboardService {
 	@GET
 	@Path("/")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public PSDashboard load() throws PSDashboardNotFoundException
+	public PSDashboard load()
 	{
 
 		String user = getUserName();
-		if (log.isTraceEnabled())
-			log.trace("Loading dashboard: " + user);
+
+		log.debug("Loading dashboard: {}" ,user);
 		PSDashboard dashboard;
 		try {
 			dashboard = dashboardDataService.find(user);
-		} catch (DataServiceNotFoundException e) {
-			log.debug("Creating default dashboard for user: " + user);
+		} catch (DataServiceNotFoundException | IPSDataService.DataServiceLoadException | PSValidationException e) {
+			log.debug("Creating default dashboard for user: {}", user);
 			dashboard = createDefaultDashboard(user);
 		}
 		return dashboard;
@@ -85,23 +90,25 @@ public class PSDashboardService implements IPSDashboardService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public PSDashboard save(PSDashboard dashboard)
-			throws PSDashboardNotFoundException, PSDashboardServiceException
 	{
-		String user = getUserName();
-		if (log.isTraceEnabled())
-			log.trace("Saving dashboard for user: " + user);
-		dashboard.setId(user);
-		return dashboardDataService.save(dashboard);
+		try {
+			String user = getUserName();
+			log.trace("Saving dashboard for user: {}", user);
+			dashboard.setId(user);
+			return dashboardDataService.save(dashboard);
+		} catch (PSDataServiceException e) {
+			log.error(e.getMessage());
+			log.debug(e.getMessage(),e);
+			throw new WebApplicationException(e.getMessage());
+		}
 	}
 	
 	
 	private PSDashboard createDefaultDashboard(String user)
 	{
 		PSDashboardConfiguration config = new PSDashboardConfiguration();
-		List<Boolean> displays = new ArrayList<Boolean>();
-		for(int i=0; i<this.defaultDashboardColumnConfig.length; i++)
-			displays.add(this.defaultDashboardColumnConfig[i]);
-//		config.setColumnsDisplayed(displays);
+		List<Boolean> displays = new ArrayList<>();
+		Collections.addAll(displays, this.defaultDashboardColumnConfig);
 		
 		PSDashboard dashboard = new PSDashboard();
 		dashboard.setGadgets(this.createGadgetList(this.alexGadgetUrls));
@@ -112,7 +119,7 @@ public class PSDashboardService implements IPSDashboardService {
 	
 	private ArrayList<PSGadget> createGadgetList(String[] urlList)
 	{
-		ArrayList<PSGadget> list = new ArrayList<PSGadget>(urlList.length);
+		ArrayList<PSGadget> list = new ArrayList<>(urlList.length);
 		for(int i=0; i<urlList.length; i++)
 		{
 			String url = urlList[i];
@@ -120,15 +127,10 @@ public class PSDashboardService implements IPSDashboardService {
 			String name = url.substring(url.lastIndexOf('/')+1, url.lastIndexOf('.'));
 			String firstLetter = name.substring(0,1);  // Get first letter
 			String remainder   = name.substring(1);	// Get remainder of word.
-			String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
-//	 		gadget.setName(capitalized);
 			gadget.setUrl(url);
 			gadget.setInstanceId(Integer.parseInt(this.alexGadgetIds[i]));
 			gadget.setCol(this.alexGadgetLayout[i][0]);
 			gadget.setRow(this.alexGadgetLayout[i][1]);
-//			gadget.setId(this.alexGadgetIds[i]);
-//			gadget.setXPosition(this.alexGadgetLayout[i][0]);
-//			gadget.setYPosition(this.alexGadgetLayout[i][1]);
 			list.add(gadget);
 		}
 		return list;
@@ -164,7 +166,5 @@ public class PSDashboardService implements IPSDashboardService {
 	int[][] bobGadgetLayout = {{0,0},{1,0},{1,1}};
 
 	Boolean[] defaultDashboardColumnConfig = {new Boolean(true), new Boolean(true), new Boolean(false)};
-	
-	List<PSGadget> alexGadgets = new ArrayList<PSGadget>();
-	List<PSGadget> bobGadgets = new ArrayList<PSGadget>();
+
 }

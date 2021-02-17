@@ -29,6 +29,7 @@ import java.util.List;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 
 /**
@@ -48,7 +49,7 @@ public interface IPSCatalogService <T, PK extends Serializable>
      * @throws DataServiceLoadException 
      * @throws DataServiceNotFoundException 
      */
-    List<T> findAll() throws DataServiceLoadException, DataServiceNotFoundException, IPSGenericDao.LoadException;
+    List<T> findAll() throws PSDataServiceException;
 
     /**
      * Generic method to get an object based on class and identifier. An

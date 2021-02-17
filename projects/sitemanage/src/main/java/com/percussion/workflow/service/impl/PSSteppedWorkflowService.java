@@ -38,9 +38,19 @@ import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.workflow.IPSWorkflowService;
-import com.percussion.services.workflow.data.*;
+import com.percussion.services.workflow.data.PSAgingTransition;
+import com.percussion.services.workflow.data.PSAssignedRole;
+import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
+import com.percussion.services.workflow.data.PSNotification;
+import com.percussion.services.workflow.data.PSNotificationDef;
+import com.percussion.services.workflow.data.PSState;
+import com.percussion.services.workflow.data.PSTransition;
+import com.percussion.services.workflow.data.PSTransitionRole;
+import com.percussion.services.workflow.data.PSWorkflow;
+import com.percussion.services.workflow.data.PSWorkflowRole;
 import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.data.PSEnumVals.EnumVal;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.user.data.PSRoleList;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.util.PSSiteManageBean;
@@ -53,23 +63,45 @@ import com.percussion.workflow.data.PSUiWorkflowStepRole;
 import com.percussion.workflow.data.PSUiWorkflowStepRoleTransition;
 import com.percussion.workflow.service.IPSSteppedWorkflowService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.*;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.ARCHIVE_STATE;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.LIVE_STATE;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.PENDING_STATE;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.QUICK_EDIT_STATE;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.TRANSITION_NAME_APPROVE;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.TRANSITION_NAME_EDIT;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.TRANSITION_NAME_LIVE;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.TRANSITION_NAME_PUBLISH;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.TRANSITION_NAME_REJECT;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.TRANSITION_NAME_REMOVE;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.TRANSITION_NAME_SUBMIT;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.defaultTransitions;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.excludedStates;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.excludedWorkflows;
+import static com.percussion.workflow.service.impl.PSSteppedWorkflowMetadata.orderedTransitions;
 
 /**
  * See the interface for documentation.
@@ -184,7 +216,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     @Override
     public List<PSUiWorkflow> getWorkflowMetadataList() throws PSWorkflowEditorServiceException
     {
-        List<PSUiWorkflow> workflowList = new ArrayList<PSUiWorkflow>();
+        List<PSUiWorkflow> workflowList = new ArrayList<>();
         
         try
         {
@@ -394,8 +426,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
      * 
      * @param workflow
      */
-    private void correctWorkflowRoles(PSWorkflow workflow)
-    {
+    private void correctWorkflowRoles(PSWorkflow workflow) throws PSDataServiceException {
         List<PSWorkflowRole> workflowRoles = workflow.getRoles();
         PSRoleList roleList = userService.getRoles();
         for (String roleName : roleList.getRoles())
@@ -921,7 +952,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
 
     /**
      * Helper method that will create and add transitions to the supplied currentState. Loops through the transRoles map keys and creates 
-     * the transition for each key. See {@link #createTransition(IPSGuid, IPSGuid, String, long)} for details. The to state id is set based on the transition name.
+     * the transition for each key. See {@link #createTransition(PSWorkflow, IPSGuid, String, long)} for details. The to state id is set based on the transition name.
      * TRANSITION_NAME_REJECT -> previous state id, TRANSITION_NAME_SUBMIT -> next state id and  TRANSITION_NAME_APPROVE or TRANSITION_NAME_PUBLISH -> pending state id.
      * 
      * @param workflow assumed not <code>null</code>
@@ -1123,8 +1154,8 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     
     /**
      * Creates a transition object with supplied name and workflow and state guids, set the to state of the transition to the supplied toStateId.
+     * @param workflow The new transition is created with this workflow id, assumed not <code>null</code>
      * @param stateGuid used as the from state id of the transition, assumed not <code>null</code>
-     * @param workflowGuid The new transition is created with this workflow id, assumed not <code>null</code>
      * @param transitionName New transiton's label, description and name are set this string, assumed not <code>blank</code>
      * @param toStateId assumed a valid state id, transtions to state id is set to this id.
      */
@@ -1305,15 +1336,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         }
         return transition;
     }
-    
-    /**
-     * Helper method to get the transition object from a state given the transition name
-     * @param currentState the state that contains the transitions assumed not
-     *            <code>null</code>.
-     * @param transitionName the transition name to find assumed not <code>null</code>.
-     * * @return the notification Id, may be <code>null</code> if the there is no transition
-     *         definitions for the workflow.
-     */
+
     private long getNotificationId(PSWorkflow workflow)
     {
         long notificationId = 0;
@@ -1375,7 +1398,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                     if (assignmentRoleType == PSAssignmentTypeEnum.ADMIN
                             || assignmentRoleType == PSAssignmentTypeEnum.ASSIGNEE)
                     {
-                        Integer roleId = assignedRole.getGUID().getUUID();
+                        int roleId = assignedRole.getGUID().getUUID();
                         String roleName = getRoleName(workflow, roleId);
                         boolean isNotified = assignedRole.isDoNotify();
                         PSUiWorkflowStepRole uiWorkflowStepRol = new PSUiWorkflowStepRole(roleName, roleId, isNotified);
@@ -1417,7 +1440,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                 {    
                     PSUiWorkflowStep approvedState = getApprovedState(workflow, state);
                     
-                    List<String> permissionNamesForStep = new ArrayList<String>();
+                    List<String> permissionNamesForStep = new ArrayList<>();
                     for (PSTransition transition : state.getTransitions())
                     {
                         //The Remove transition permissions is handled by Publish transition, so it is not needed
@@ -1471,7 +1494,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                 PSUiWorkflowStepRole uiWorkflowStepRol = new PSUiWorkflowStepRole(roleName, roleId, isNotified);
                 workflowApprovedStepRoles.add(uiWorkflowStepRol);
 
-                List<PSUiWorkflowStepRoleTransition> uiWorkflowStepRoleTransitions = new ArrayList<PSUiWorkflowStepRoleTransition>();
+                List<PSUiWorkflowStepRoleTransition> uiWorkflowStepRoleTransitions = new ArrayList<>();
 
                 for (PSTransition transition : state.getTransitions())
                 {
@@ -1495,7 +1518,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             }
         }
 
-        List<PSUiWorkflowStepRoleTransition> workflowApprovedStepRoleTransitions = new ArrayList<PSUiWorkflowStepRoleTransition>();
+        List<PSUiWorkflowStepRoleTransition> workflowApprovedStepRoleTransitions = new ArrayList<>();
         
         for(String transitionName : defaultTransitions)
         {
@@ -1525,7 +1548,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
      */
     private Set<Integer> getNotificationRoleIds(PSWorkflow workflow, String stateName)
     {
-        Set<Integer> result = new HashSet<Integer>();
+        Set<Integer> result = new HashSet<>();
         PSState pendingState = getWorkflowStateByName(workflow, stateName);
         if (pendingState == null)
             return result;
@@ -1722,11 +1745,11 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     private void updateApprovedState(PSWorkflow workflow, List<String> stepRoleNames, List<String> stepRoleNamesWithEnableNotification)
     {
         //Assign the same roles for Edit transition of Pending and Live states
-        List<PSTransition> editTransitions = new ArrayList<PSTransition>();
+        List<PSTransition> editTransitions = new ArrayList<>();
         PSState pendingState = getWorkflowStateByName (workflow, PENDING_STATE);  
         
         //Assign the roles to the step
-        pendingState.setAssignedRoles(new ArrayList<PSAssignedRole>());
+        pendingState.setAssignedRoles(new ArrayList<>());
         addWorkflowRolesToState(workflow, pendingState, stepRoleNames, stepRoleNamesWithEnableNotification);
          
         //Update the transition roles
@@ -1740,7 +1763,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         if(transition == null)
             throw new PSWorkflowEditorServiceException("Can't find the transition by given name " + TRANSITION_NAME_EDIT);
         
-        List<PSTransitionRole> transitionRoles = new ArrayList<PSTransitionRole>();
+        List<PSTransitionRole> transitionRoles = new ArrayList<>();
         List<PSTransitionRole> tempRoles = createTransitionRoles(workflow, transition, stepRoleNames);
         transitionRoles.addAll(tempRoles);
         transition.setTransitionRoles(transitionRoles);
@@ -1750,11 +1773,13 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         pendingState.setTransitions(editTransitions);
         
         //Live state
-        List<PSTransition> liveTransitions = new ArrayList<PSTransition>();
+        List<PSTransition> liveTransitions = new ArrayList<>();
         PSState liveState = getWorkflowStateByName (workflow, LIVE_STATE);
         
         //Assign the roles to the step, do not set notification for Live
-        liveState.setAssignedRoles(new ArrayList<PSAssignedRole>());
+        if(liveState!=null) {
+            liveState.setAssignedRoles(new ArrayList<>());
+        }
         addWorkflowRolesToState(workflow, liveState, stepRoleNames, stepRoleNamesWithEnableNotification);
 
         //Update the transition roles
@@ -1762,7 +1787,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         if(editTransition == null)
             throw new PSWorkflowEditorServiceException("Can't find the transition by given name " + TRANSITION_NAME_EDIT);
         
-        transitionRoles = new ArrayList<PSTransitionRole>();
+        transitionRoles = new ArrayList<>();
         tempRoles = createTransitionRoles(workflow, editTransition, stepRoleNames);
         transitionRoles.addAll(tempRoles);
         editTransition.setTransitionRoles(transitionRoles);
@@ -1788,7 +1813,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         if(removeTransition == null)
             throw new PSWorkflowEditorServiceException("Can't find the transition by given name " + TRANSITION_NAME_REMOVE);
                 
-        List<PSTransitionRole> transitionRoles = new ArrayList<PSTransitionRole>();
+        List<PSTransitionRole> transitionRoles = new ArrayList<>();
         List<PSTransitionRole> tempRoles = createTransitionRoles(workflow, removeTransition, stepRoleNames);
         transitionRoles.addAll(tempRoles);          
         removeTransition.setTransitionRoles(transitionRoles);
@@ -1852,13 +1877,15 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
 
         in = this.getClass().getClassLoader().getResourceAsStream("com/percussion/services/workflow/data/DefaultWorkflow.xml");
          
-        if(in == null) return "";
-           br = new BufferedReader(new InputStreamReader(in));
+        if(in == null)
+            return "";
+
+        br = new BufferedReader(new InputStreamReader(in));
                            
         StringBuilder sb = new StringBuilder();
         String line = null;
         while ((line = br.readLine()) != null) {
-            sb.append(line + "\n");
+            sb.append(line).append("\n");
         }
         br.close();
           
@@ -1880,7 +1907,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         for(PSUiWorkflowStep step : workflow.getWorkflowSteps())
         {
             //Order the permissions for the step
-            List<String> orderedPermissionNames = new ArrayList<String>();
+            List<String> orderedPermissionNames = new ArrayList<>();
             
             for(String permissionName : orderedTransitions)
             {
@@ -2007,7 +2034,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     private IPSMetadataService metadataService;
 
     // Logger for this service.
-    public static Log log = LogFactory.getLog(PSSteppedWorkflowService.class);
+    public static final Logger log = LogManager.getLogger(PSSteppedWorkflowService.class);
 
     // Maximum name lenght when creating/updating a step/workflow
     private static final Integer NAME_MAX_LENGHT = 50;

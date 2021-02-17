@@ -31,6 +31,7 @@ import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.File;
@@ -38,15 +39,15 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 
 public class PSCategoryPostExit implements IPSResultDocumentProcessor {
 	
-	public static Log log = LogFactory.getLog(PSCategoryPostExit.class);
+	public static final Logger log = LogManager.getLogger(PSCategoryPostExit.class);
 
 	@Override
 	public void init(IPSExtensionDef def, File codeRoot) {
@@ -74,7 +75,9 @@ public class PSCategoryPostExit implements IPSResultDocumentProcessor {
 		
 		if(siteName.equals("null"))
 		    siteName=null;
-		PSCategory categoriesToReturn = PSCategoryControlUtils.getCategories(siteName,parentCategory, false, true);
+		try {
+
+			PSCategory categoriesToReturn = PSCategoryControlUtils.getCategories(siteName,parentCategory, false, true);
 		
 		if(categoriesToReturn == null)
 			throw new PSExtensionProcessingException
@@ -82,16 +85,14 @@ public class PSCategoryPostExit implements IPSResultDocumentProcessor {
 		
 		String returnString = PSCategoryControlUtils.getCategoryXmlInString(categoriesToReturn);
 		
-		try {
 			doc = PSXmlDocumentBuilder.createXmlDocument(new StringReader(returnString.trim()), false);
-		} catch (IOException e) {
-		    throw new PSExtensionProcessingException
-              ("Error converting categories to xml", e);
-		} catch (SAXException e) {
+		} catch (PSDataServiceException | IOException | SAXException e) {
+			log.error(e.getMessage());
+			log.debug(e.getMessage(),e);
 		    throw new PSExtensionProcessingException
               ("Error converting categories to xml", e);
 		}
-		
+
 		return doc;
 	}
 }

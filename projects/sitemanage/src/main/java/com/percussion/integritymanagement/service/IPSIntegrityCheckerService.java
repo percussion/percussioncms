@@ -26,17 +26,19 @@ package com.percussion.integritymanagement.service;
 
 import com.percussion.integritymanagement.data.PSIntegrityStatus;
 import com.percussion.integritymanagement.data.PSIntegrityStatus.Status;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 import java.util.List;
 
 public interface IPSIntegrityCheckerService
 {
-    public String start(IntegrityTaskType type);
-    public void stop();
-    public PSIntegrityStatus getStatus(String token);
-    public List<PSIntegrityStatus> getHistory();
-    public List<PSIntegrityStatus> getHistory(Status status);
-    public void delete(String token);
+    public String start(IntegrityTaskType type) throws PSDataServiceException;
+    public void stop() throws PSDataServiceException;
+    public PSIntegrityStatus getStatus(String token) throws PSDataServiceException;
+    public List<PSIntegrityStatus> getHistory() throws PSDataServiceException;
+    public List<PSIntegrityStatus> getHistory(Status status) throws PSDataServiceException;
+    public void delete(String token) throws PSDataServiceException;
     public static enum IntegrityTaskType {
         all, dts, cm1;
     };    

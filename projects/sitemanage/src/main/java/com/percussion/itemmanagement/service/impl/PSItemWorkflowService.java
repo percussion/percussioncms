@@ -55,6 +55,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
 import com.percussion.recycle.service.IPSRecycleService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -389,23 +390,24 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     @Path("transitionWithComments/{id}/{trigger}")
     public PSItemTransitionResults transitionWithComments(@PathParam("id") String id, @PathParam("trigger") String trigger, @QueryParam("comment") String comment)
     {
-        rejectIfBlank("transition", "id", id);
-        PSItemTransitionResults results = new PSItemTransitionResults();
-        //Make sure user has permission for publish transition while he is approving the content
-        //When the scheduled date is on
-        if(trigger.equalsIgnoreCase(TRANSITION_TRIGGER_APPROVE)) 
-        {
-        	results = performApproveTransition(id, true, comment);
+        try {
+            rejectIfBlank("transition", "id", id);
+            PSItemTransitionResults results = new PSItemTransitionResults();
+            //Make sure user has permission for publish transition while he is approving the content
+            //When the scheduled date is on
+            if (trigger.equalsIgnoreCase(TRANSITION_TRIGGER_APPROVE)) {
+                results = performApproveTransition(id, true, comment);
+            } else {
+                IPSGuid guid = idMapper.getGuid(id);
+                // transition the item
+                checkIn(id);
+                transitionItem(((PSLegacyGuid) guid).getContentId(), trigger, comment, null);
+                results.setItemId(id);
+            }
+            return results;
+        } catch (PSValidationException e) {
+            e.printStackTrace();
         }
-        else
-        {
-        	IPSGuid guid = idMapper.getGuid(id);
-        	// transition the item
-        	checkIn(id);
-        	transitionItem(((PSLegacyGuid) guid).getContentId(), trigger, comment, null);
-            results.setItemId(id);
-        }
-        return results;
     }
     
     /**

@@ -37,17 +37,15 @@ public class PSResourceDefinitionUniqueId {
     private String localId;
     
     
-    public PSResourceDefinitionUniqueId(String uniqueId)
-    {
+    public PSResourceDefinitionUniqueId(String uniqueId) throws PSResourceDefinitionInvalidIdException {
         super();
         init(uniqueId);
     }
-    public PSResourceDefinitionUniqueId(String groupId, String localId)
-    {
+    public PSResourceDefinitionUniqueId(String groupId, String localId) throws PSResourceDefinitionInvalidIdException {
         super();
         init(groupId, localId);
     }
-    public void init(String groupId, String localId) {
+    public void init(String groupId, String localId) throws PSResourceDefinitionInvalidIdException {
         setGroupId(groupId);
         setLocalId(localId);
         
@@ -56,8 +54,7 @@ public class PSResourceDefinitionUniqueId {
     {
         return groupId;
     }
-    public void setGroupId(String groupId)
-    {
+    public void setGroupId(String groupId) throws PSResourceDefinitionInvalidIdException {
         validateId("groupId", groupId);
         this.groupId = groupId;
     }
@@ -65,8 +62,7 @@ public class PSResourceDefinitionUniqueId {
     {
         return localId;
     }
-    public void setLocalId(String localId)
-    {
+    public void setLocalId(String localId) throws PSResourceDefinitionInvalidIdException {
         validateId("localId", localId);
         this.localId = localId;
     }
@@ -88,7 +84,7 @@ public class PSResourceDefinitionUniqueId {
         return groupId + IPSResourceDefinitionService.NAMESPACE_SEPARATOR + localId;
     }
     
-    public void init(String uniqueId) {
+    public void init(String uniqueId) throws PSResourceDefinitionInvalidIdException {
         if (isBlank(uniqueId)) {
             throw new PSResourceDefinitionInvalidIdException("PSResourceDefinitionUniqueId cannot be blank");
         }
@@ -105,7 +101,7 @@ public class PSResourceDefinitionUniqueId {
     }
     
     
-    public static void validateId(String name, String id) {
+    public static void validateId(String name, String id) throws PSResourceDefinitionInvalidIdException {
         if (isBlank(id))
             throw new PSResourceDefinitionInvalidIdException(name + " cannot be blank");
         if( contains(id, ".") ) {

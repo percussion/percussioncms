@@ -47,6 +47,7 @@ import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.DnDPref;
 import com.percussion.pagemanagement.data.PSWidgetItem;
+import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSWidgetAssetRelationshipDao;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.searchmanagement.service.IPSPageIndexService;
@@ -336,7 +337,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
 
            return idMapper.getString(rel.getGuid());
         }
-        catch (PSErrorException e)
+        catch (PSErrorException | IPSPageService.PSPageException e)
         {
             throw new PSWidgetAssetRelationshipServiceException("Failed to create asset-widget relationship", e);
         }
@@ -653,7 +654,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
                     if (!assetDao.find(iter.next()).isResource()) {
                         iter.remove();
                     }
-                }catch(IPSGenericDao.LoadException e){
+                }catch(PSDataServiceException e){
                     log.error("Error processing resources Assets for id: {} Error: {}",
                             id,e.getMessage());
                 }
@@ -1268,8 +1269,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      * @return the new relationship, never <code>null</code>.  The owner will be revision specific.
      */
     private PSRelationship createAssetWidgetRelationship(String type, IPSGuid owner, String widgetId,
-            IPSGuid asset, String order, String widgetName)
-    {
+            IPSGuid asset, String order, String widgetName) throws IPSPageService.PSPageException {
         PSRelationship rel = systemWs.createRelationship(type, contentDesignWs.getItemGuid(owner), asset);
         rel.setProperty(WIDGET_ID_PROP_NAME, widgetId);
         rel.setProperty(ASSET_ORDER_PROP_NAME, order);
@@ -1288,8 +1288,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      * 
      * @return the string representation of the dispatch template id, never blank.
      */
-    private String getDispatchTemplateId()
-    {
+    private String getDispatchTemplateId() throws IPSPageService.PSPageException {
         if (dispatchTemplateId == null)
         {
             dispatchTemplateId = String.valueOf(renderAssemblyBridge.getDispatchTemplateId().getUUID());

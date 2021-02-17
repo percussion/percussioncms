@@ -25,17 +25,21 @@
 package com.percussion.pagemanagement.service;
 
 import com.percussion.assetmanagement.data.PSReportFailedToRunException;
+import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.pagemanagement.data.PSNonSEOPagesRequest;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSPageChangeEvent;
 import com.percussion.pagemanagement.data.PSPageReportLine;
 import com.percussion.pagemanagement.data.PSSEOStatistics;
+import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSUnassignedResults;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.List;
 
@@ -51,7 +55,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @param page the Page, never <code>null</code>.
     * @return Page never <code>null</code>.
     */
-   PSPage save(PSPage page) throws DataServiceLoadException, PSSpringValidationException, DataServiceSaveException, DataServiceNotFoundException;
+   PSPage save(PSPage page) throws PSDataServiceException;
 
    /**
     * Finds the specified page.
@@ -60,7 +64,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * 
     * @return the page item. It may be <code>null</code> if cannot find one.
     */
-   PSPage find(String id) throws DataServiceLoadException, DataServiceNotFoundException;
+   PSPage find(String id) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
 
    /**
     * Loads the specified page.
@@ -69,7 +73,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * 
     * @return the page, never <code>null</code>.
     */
-   PSPage load(String id) throws DataServiceLoadException, IPSDataService.DataServiceNotFoundException;
+   PSPage load(String id) throws PSValidationException, DataServiceLoadException, IPSDataService.DataServiceNotFoundException;
 
    /**
     * Finds the specified page by name and folder path.
@@ -83,7 +87,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @throws PSPageException if an error occurs finding the page.
     */
    PSPage findPage(String name, String folderPath)
-      throws PSPageException;
+           throws PSPageException, IPSGenericDao.LoadException;
 
     /**
      * See {@link #findPage(String, String)}.
@@ -95,7 +99,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @throws PSPageException if an error occurs finding the page.
      * 
      */
-    PSPage findPageByPath(String fullPath) throws PSPageException;
+    PSPage findPageByPath(String fullPath) throws PSPageException, PSValidationException;
    
     /**
      * Find all the pages that use a certain template and return the results
@@ -121,7 +125,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      *             pages.
      */
     PSPagedItemList findPagesByTemplate(String templateId, Integer startIndex, Integer maxResults,
-            String sortColumn, String sortOrder, String pageId) throws PSPageException;
+            String sortColumn, String sortOrder, String pageId) throws PSDataServiceException;
     
     
     /**
@@ -132,7 +136,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @return the seo statistics for pages which are considered sub-optimal for searching.
     * @throws PSPageException If the workflow could not be found, or other system failure.
     */
-    List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSPageException;
+    List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSPageException, IPSGenericDao.LoadException;
    
    /**
     * Deletes the specified page.  All local content of the page will also be deleted.  The page will not be deleted if
@@ -140,7 +144,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * 
     * @param id the ID of the page, never <code>null</code> or empty.
     */
-   void delete(String id);
+   void delete(String id) throws PSValidationException;
    
    /**
     * See {@link #delete(String)}.
@@ -149,7 +153,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @param force <code>true</code> to delete the page even if it is being edited by another user, <code>false</code>
     * otherwise. 
     */
-   void delete(String id, boolean force);
+   void delete(String id, boolean force) throws PSValidationException;
 
     /**
      * See {@link #delete(String, boolean)}.
@@ -159,7 +163,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @param purgeItem <code>true</code> if the item should be purged. <code>false</code> if it should be recycled.
      * otherwise.
      */
-    void delete(String id, boolean force, boolean purgeItem);
+    void delete(String id, boolean force, boolean purgeItem) throws PSValidationException;
    
    /**
     * Generates a new page name
@@ -175,7 +179,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @return
     * @throws DataServiceSaveException
     */
-    String copy(String id, boolean addToRecent) throws DataServiceSaveException, DataServiceLoadException, PSSpringValidationException, DataServiceNotFoundException;
+    String copy(String id, boolean addToRecent) throws PSDataServiceException, IPSPathService.PSPathNotFoundServiceException;
 
     /**
      *Creates a copy of the page in the specified folder.
@@ -183,7 +187,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @return
      * @throws DataServiceSaveException
      */
-     String copy(String id, String targetFolder, boolean addToRecent) throws DataServiceSaveException, DataServiceLoadException, PSSpringValidationException, DataServiceNotFoundException;
+     String copy(String id, String targetFolder, boolean addToRecent) throws PSDataServiceException, IPSPathService.PSPathNotFoundServiceException;
 
    /**
     * Gets an URL which can be used for editing an existing page.
@@ -248,7 +252,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @param pageId The id of the page to update, must specify an existing page, and the page must be checked out to
      * the current user.
      */
-     void updateTemplateMigrationVersion(String pageId) throws DataServiceLoadException, PSSpringValidationException, DataServiceSaveException, PSPageException, DataServiceNotFoundException;
+     void updateTemplateMigrationVersion(String pageId) throws PSDataServiceException;
     
     /**
      * Update the migration empty widget flag for the page
@@ -256,7 +260,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @param pageId The id of the page to update, must specify an existing page, and the page must be checked out to
      * the current user.
      */
-     void updateMigrationEmptyWidgetFlag(String pageId, boolean flag) throws PSSpringValidationException, DataServiceSaveException, DataServiceLoadException, DataServiceNotFoundException;
+     void updateMigrationEmptyWidgetFlag(String pageId, boolean flag) throws PSDataServiceException;
     
     /**
      * Get the status of empty widget flag for the page
@@ -264,14 +268,14 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @param pageId The id of the page to get the flag, must specify an existing page, and the page must be checked out to
      * the current user.
      */
-     boolean getMigrationEmptyWidgetFlag(String pageId) throws DataServiceLoadException, DataServiceNotFoundException;
+     boolean getMigrationEmptyWidgetFlag(String pageId) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
 
     /***
      * A listing of all Pages in the Content Repository for the specified site.
      * @return A list of CSV formattable report lines. 
      * @throws PSReportFailedToRunException 
      */
-    public List<PSPageReportLine> findAllPages(String siteName) throws PSReportFailedToRunException, PSPageException;
+    public List<PSPageReportLine> findAllPages(String siteName) throws PSReportFailedToRunException, PSPageException, IPSGenericDao.LoadException;
    
     /**
      * get the import status for cataloged pages.
@@ -292,7 +296,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
 
 
     
-    public PSNoContent clearMigrationEmptyFlag(String pageid) throws DataServiceLoadException, PSSpringValidationException, DataServiceSaveException, DataServiceNotFoundException;
+    public PSNoContent clearMigrationEmptyFlag(String pageid) throws PSDataServiceException;
    
     /*
     * (Runtime) Exception is thrown when an unexpected error occurs in this
@@ -353,7 +357,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
    String PAGE_CONTENT_TYPE = "percPage";
 
 
-    PSNoContent validateDelete(String id);
+    PSNoContent validateDelete(String id) throws PSValidationException;
 
 
 

@@ -23,10 +23,6 @@
  */
 package com.percussion.pathmanagement.service.impl;
 
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.springframework.util.StringUtils.trimLeadingCharacter;
-import static org.springframework.util.StringUtils.trimTrailingCharacter;
-
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.designmanagement.service.IPSFileSystemService;
 import com.percussion.designmanagement.service.IPSFileSystemService.PSExistingFolderException;
@@ -50,12 +46,14 @@ import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
-import com.percussion.util.PSCharSets;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,10 +61,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.springframework.util.StringUtils.trimLeadingCharacter;
+import static org.springframework.util.StringUtils.trimTrailingCharacter;
 
 /**
  * {@link IPSPathService} implementation that handles requests to URL that
@@ -96,7 +93,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSFileSystemPathItemService.class);
+    private static final Logger log = LogManager.getLogger(PSFileSystemPathItemService.class);
     
     // FIXME We should not use this class directly.
     private PSItemDefManager itemDefManager = PSItemDefManager.getInstance();
@@ -149,7 +146,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
     {
         // By default, any role is allowed access URL served by this IPSPathService
         // implementation.
-        return null;
+        return new ArrayList<>();
     }
     
     /**
@@ -167,7 +164,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
         }
         catch (FileNotFoundException e)
         {
-            return new ArrayList<File>();
+            return new ArrayList<>();
         }
     }
     
@@ -190,8 +187,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
      * @param path
      * @return
      */
-    protected PSPathItem findItem(String path)
-    {
+    protected PSPathItem findItem(String path) throws PSPathNotFoundServiceException {
         notEmpty(path);
         
         File file = fileSystemService.getFile(path);
@@ -227,8 +223,8 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
     public List<PSPathItem> findChildren(String path) throws PSPathNotFoundServiceException, PSPathServiceException
     {
         List<File> children = getChildren(path);
-        List<PSPathItem> folderPathItems = new ArrayList<PSPathItem>();
-        List<PSPathItem> filePathItems = new ArrayList<PSPathItem>();
+        List<PSPathItem> folderPathItems = new ArrayList<>();
+        List<PSPathItem> filePathItems = new ArrayList<>();
         
         for (File child : children)
         {
@@ -250,8 +246,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
      * @param child
      * @return
      */
-    private PSPathItem getPathItemFromFile(String parentPath, File child)
-    {
+    private PSPathItem getPathItemFromFile(String parentPath, File child) throws PSPathNotFoundServiceException {
         // parent path should be a folder
         if(fileSystemService.getFile(parentPath).isFile())
         {
@@ -397,8 +392,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
     }
 
     @Override
-    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSSpringValidationException
-    {
+    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSSpringValidationException, PSPathNotFoundServiceException {
         PSBeanValidationException errors = PSBeanValidationUtils.validate(item);
         errors.throwIfInvalid();
         
@@ -472,7 +466,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
     {
         String[] paths = criteria.getPath().split("/");
         
-        if(paths[paths.length - 1] != "")
+        if(!paths[paths.length - 1].equals(""))
         {
             return paths[paths.length - 1];
         }
@@ -483,7 +477,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
     }
 
     @Override
-    public String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException
+    public String validateFolderDelete(String path) throws PSPathServiceException
     {
         notEmpty(path, "path");
         
@@ -513,7 +507,7 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
      * @return A {@link PSPathItem} object representing the root element. Never
      * <code>null</code>.
      */
-    protected abstract PSPathItem findRoot();
+    protected abstract PSPathItem findRoot() throws PSPathNotFoundServiceException;
     
     /**
      * Generates the full internal folder path for the specified relative path.
@@ -525,5 +519,5 @@ public abstract class PSFileSystemPathItemService implements IPSPathService
      * @return the complete folder path used for item lookup. Never
      *         <code>null</code> or empty.
      */
-    protected abstract String getFullFolderPath(String path);
+    protected abstract String getFullFolderPath(String path) throws PSPathNotFoundServiceException;
 }

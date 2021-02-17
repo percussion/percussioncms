@@ -24,6 +24,7 @@
 package com.percussion.sitemanage.service;
 
 import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteArchitecture;
 
 /**
@@ -39,5 +40,5 @@ public interface IPSSiteArchitectureDataService extends
    /**
     * Returns the site site architecture object.
     */
-   public PSSiteArchitecture find(String id) throws DataServiceLoadException,DataServiceNotFoundException;
+   PSSiteArchitecture find(String id) throws PSValidationException, DataServiceLoadException,DataServiceNotFoundException;
 }

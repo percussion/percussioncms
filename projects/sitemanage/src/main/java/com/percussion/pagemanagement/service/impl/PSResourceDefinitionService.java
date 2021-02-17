@@ -36,6 +36,7 @@ import com.percussion.share.dao.IPSGenericDao.SaveException;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.IPSThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +63,12 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
     /**
      * {@inheritDoc}
      */
-    public String createUniqueId(String groupId, String id)
-    {
+    public String createUniqueId(String groupId, String id) throws PSResourceDefinitionInvalidIdException {
         PSResourceDefinitionUniqueId uid = new PSResourceDefinitionUniqueId(groupId, id);
         return uid.getUniqueId();
     }
 
-    public void delete(String id) throws DeleteException
-    {
+    public void delete(String id) throws DeleteException, LoadException {
         dao.delete(id);
     }
     
@@ -111,7 +110,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
     /**
      * {@inheritDoc}
      */
-    public PSResourceDefinition findResource(String uniqueId) throws DataServiceNotFoundException, DataServiceLoadException {
+    public PSResourceDefinition findResource(String uniqueId) throws DataServiceNotFoundException, DataServiceLoadException, PSValidationException, PSResourceDefinitionInvalidIdException {
         PSParameterValidationUtils.rejectIfBlank("findResource", "uniqueId", uniqueId);
         PSResourceDefinition rd = findThemeCSSResource(uniqueId);
         if (rd != null) return rd;
@@ -121,8 +120,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
         return rd;
     }
 
-    public PSResourceDefinitionGroup save(PSResourceDefinitionGroup object) throws SaveException
-    {
+    public PSResourceDefinitionGroup save(PSResourceDefinitionGroup object) throws SaveException, LoadException, DeleteException {
         return dao.save(object);
     }
 
@@ -163,7 +161,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * @param uniqueId valid unique id, never <code>null</code> or empty.
      * @return maybe <code>null</code> if no theme is found for the given unique id..
      */
-    private PSResourceDefinition findThemeCSSResource(String uniqueId) throws DataServiceLoadException, DataServiceNotFoundException {
+    private PSResourceDefinition findThemeCSSResource(String uniqueId) throws DataServiceLoadException, DataServiceNotFoundException, PSResourceDefinitionInvalidIdException, PSValidationException {
         PSResourceDefinitionUniqueId uid = new PSResourceDefinitionUniqueId(uniqueId);
         if (THEME_GROUP_NAME.equals(uid.getGroupId())) {
             PSThemeSummary sum = themeService.find(uid.getLocalId());
