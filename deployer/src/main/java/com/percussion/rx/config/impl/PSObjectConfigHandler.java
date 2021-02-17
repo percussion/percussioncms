@@ -97,7 +97,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     */
    public Map<String, Object> getPropertyDefs(Object obj)
    {
-      Map<String, Object> propDefs = new HashMap<String, Object>();
+      Map<String, Object> propDefs = new HashMap<>();
       for (IPSPropertySetter setter : m_setters)
       {
          setter.addPropertyDefs(obj, propDefs);
@@ -211,7 +211,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
       if (getType() == null)
          return Collections.emptyList();
       
-      PSPair<String, ObjectState> pair = new PSPair<String, ObjectState>(
+      PSPair<String, ObjectState> pair = new PSPair<>(
             getName(), ObjectState.BOTH);
       return Collections.singletonList(pair);
    }
@@ -230,7 +230,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     */
    private List<PSPair<String, ObjectState>> getObjectNamesFromHandlerImpl()
    {
-      List<PSPair<String, ObjectState>> result = new ArrayList<PSPair<String, ObjectState>>();
+      List<PSPair<String, ObjectState>> result = new ArrayList<>();
       Collection<String> curNames = getCurNames();
       Collection<String> prevNames = getPrevNames();
       
@@ -242,30 +242,30 @@ public class PSObjectConfigHandler implements IPSConfigHandler
       {
          for (String name : curNames)
             result
-                  .add(new PSPair<String, ObjectState>(name, ObjectState.CURRENT));
+                  .add(new PSPair<>(name, ObjectState.CURRENT));
          return result;
       }
 
       // get object names in both current and previous
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       names.addAll(curNames);
       names.retainAll(prevNames);
       for (String name : names)
-         result.add(new PSPair<String, ObjectState>(name, ObjectState.BOTH));
+         result.add(new PSPair<>(name, ObjectState.BOTH));
       
       // get object names in current only
       names.clear();
       names.addAll(curNames);
       names.removeAll(prevNames);
       for (String name : names)
-         result.add(new PSPair<String, ObjectState>(name, ObjectState.CURRENT));
+         result.add(new PSPair<>(name, ObjectState.CURRENT));
       
       // get object names in previous only
       names.clear();
       names.addAll(prevNames);
       names.removeAll(curNames);
       for (String name : names)
-         result.add(new PSPair<String, ObjectState>(name, ObjectState.PREVIOUS));
+         result.add(new PSPair<>(name, ObjectState.PREVIOUS));
       
       return result;
    }
@@ -355,7 +355,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
    public List<PSConfigValidation> validate(IPSConfigHandler other)
    {
       List<PSPair<String, ObjectState>> commonNames = getCommonObjectNames(other);
-      List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+      List<PSConfigValidation> result = new ArrayList<>();
       List<PSConfigValidation> subResult;
       for (PSPair<String, ObjectState> pair : commonNames)
       {
@@ -385,7 +385,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
          IPSConfigHandler.ObjectState state, List<IPSPropertySetter> oSetters)
    {
       // validate all setters, one at a time
-      List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+      List<PSConfigValidation> result = new ArrayList<>();
       for (IPSPropertySetter mySetter : getPropertySetters())
       {
          List<PSConfigValidation> setterResult;
@@ -432,14 +432,14 @@ public class PSObjectConfigHandler implements IPSConfigHandler
          return Collections.emptyList();
 
       // find names in both names
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       names.addAll(myNames.keySet());
       names.retainAll(otherNames.keySet());
 
-      List<PSPair<String, ObjectState>> result = new ArrayList<PSPair<String, ObjectState>>();
+      List<PSPair<String, ObjectState>> result = new ArrayList<>();
       for (String name : names)
       {
-         PSPair<String, ObjectState> pair = new PSPair<String, ObjectState>(
+         PSPair<String, ObjectState> pair = new PSPair<>(
                name, myNames.get(name));
          result.add(pair);
       }
@@ -457,7 +457,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
    private Map<String, ObjectState> getObjectNames(IPSConfigHandler h)
    {
       List<PSPair<String, ObjectState>> pairs = h.getObjectNames();
-      Map<String, ObjectState> map = new HashMap<String, ObjectState>();
+      Map<String, ObjectState> map = new HashMap<>();
       for (PSPair<String, ObjectState> p : pairs)
       {
          map.put(p.getFirst(), p.getSecond());
@@ -482,7 +482,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     * List of property setters, wired in by spring from bean definition.
     */   
    private List<IPSPropertySetter> m_setters = 
-      new ArrayList<IPSPropertySetter>();
+      new ArrayList<>();
    
    /**
     * The handler specific properties used in previous configuration. It may

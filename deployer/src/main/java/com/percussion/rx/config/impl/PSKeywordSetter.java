@@ -70,11 +70,11 @@ public class PSKeywordSetter extends PSSimplePropertySetter
       if (CHOICES_PAIRS.equals(propName))
       {
          PSKeyword kw = (PSKeyword) obj;
-         List<PSPair<String, String>> choices = new ArrayList<PSPair<String, String>>();
+         List<PSPair<String, String>> choices = new ArrayList<>();
          for (PSKeywordChoice c : kw.getChoices())
          {
             choices
-                  .add(new PSPair<String, String>(c.getLabel(), c.getValue()));
+                  .add(new PSPair<>(c.getLabel(), c.getValue()));
          }
          return choices;
       }
@@ -96,7 +96,7 @@ public class PSKeywordSetter extends PSSimplePropertySetter
 
       List<PSPair<String, String>> choices = 
          (List<PSPair<String, String>>) propValue;
-      List<PSKeywordChoice> kwchoices = new ArrayList<PSKeywordChoice>();
+      List<PSKeywordChoice> kwchoices = new ArrayList<>();
       for (int i = 0; i < choices.size(); i++)
       {
          PSPair<String, String> pair = choices.get(i);

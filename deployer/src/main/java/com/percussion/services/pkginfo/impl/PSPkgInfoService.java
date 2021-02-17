@@ -312,8 +312,8 @@ implements IPSPkgInfoService
          throw new IllegalArgumentException("parentPkgInfoId may not be null");
       
       
-      List<Long> longList = new ArrayList<Long>();
-      List<IPSGuid> guidList = new ArrayList<IPSGuid>();
+      List<Long> longList = new ArrayList<>();
+      List<IPSGuid> guidList = new ArrayList<>();
       Session session = sessionFactory.getCurrentSession();
 
          Criteria criteria = session.createCriteria(PSPkgElement.class);
@@ -406,7 +406,7 @@ implements IPSPkgInfoService
    @SuppressWarnings(value = { "unchecked" })
    public List<PSPkgElement> loadPkgElements(List<IPSGuid> ids)
    {
-      List<Long> idList = new ArrayList<Long>();
+      List<Long> idList = new ArrayList<>();
 
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
@@ -510,8 +510,8 @@ implements IPSPkgInfoService
    {
       if (guid == null)
          throw new IllegalArgumentException("guid may not be null");
-      List<IPSGuid> dPkgGuids = new ArrayList<IPSGuid>();        
-      List<PSPkgDependency> pkgDeps = new ArrayList<PSPkgDependency>();
+      List<IPSGuid> dPkgGuids = new ArrayList<>();
+      List<PSPkgDependency> pkgDeps = new ArrayList<>();
       Session session = sessionFactory.getCurrentSession();
 
          Criteria criteria = session.createCriteria(PSPkgDependency.class);
@@ -535,8 +535,8 @@ implements IPSPkgInfoService
    {
       if (guid == null)
          throw new IllegalArgumentException("guid may not be null");
-      List<IPSGuid> oPkgGuids = new ArrayList<IPSGuid>();        
-      List<PSPkgDependency> pkgDeps = new ArrayList<PSPkgDependency>();
+      List<IPSGuid> oPkgGuids = new ArrayList<>();
+      List<PSPkgDependency> pkgDeps = new ArrayList<>();
       Session session = sessionFactory.getCurrentSession();
 
          Criteria criteria = session.createCriteria(PSPkgDependency.class);
@@ -577,7 +577,7 @@ implements IPSPkgInfoService
    {
       if (guid == null)
          throw new IllegalArgumentException("ownerGuid may not be null");
-      List<PSPkgDependency> pkgDeps = new ArrayList<PSPkgDependency>();
+      List<PSPkgDependency> pkgDeps = new ArrayList<>();
       String temp = depType?"ownerPackageGuid":"dependentPackageGuid";
       Session session = sessionFactory.getCurrentSession();
 

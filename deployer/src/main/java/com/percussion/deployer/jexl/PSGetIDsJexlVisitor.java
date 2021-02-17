@@ -46,7 +46,7 @@ public class PSGetIDsJexlVisitor extends PSBaseJexlParserVisitor
    /**
     * The list of ids if any that need to be mapped may be <code>empty</code>
     */
-   private List<String> m_ids = new ArrayList<String>();
+   private List<String> m_ids = new ArrayList<>();
 
    
    /**

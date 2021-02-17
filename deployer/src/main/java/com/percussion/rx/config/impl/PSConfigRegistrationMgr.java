@@ -150,7 +150,7 @@ public class PSConfigRegistrationMgr implements IPSConfigRegistrationMgr,
       IPSConfigService cfgSrvs = PSConfigServiceLocator.getConfigService();
       IPSPkgInfoService pkgServ = PSPkgInfoServiceLocator.getPkgInfoService();
       List<PSPkgInfo> pkgList = pkgServ.findAllPkgInfos();
-      Map<String, Boolean> pkgs = new HashMap<String, Boolean>();
+      Map<String, Boolean> pkgs = new HashMap<>();
       for (PSPkgInfo info : pkgList)
       {
          // We need not to configure or monitor the packages that have been
@@ -164,7 +164,7 @@ public class PSConfigRegistrationMgr implements IPSConfigRegistrationMgr,
                .isSuccessfullyInstalled());
       }
       Iterator<String> iter = pkgs.keySet().iterator();
-      List<String> sPkgs = new ArrayList<String>();
+      List<String> sPkgs = new ArrayList<>();
       while (iter.hasNext())
       {
          String pkgName = iter.next();
@@ -225,7 +225,7 @@ public class PSConfigRegistrationMgr implements IPSConfigRegistrationMgr,
    /**
     * List of the files this class monitors.
     */
-   private List<File> m_fileList = new ArrayList<File>();
+   private List<File> m_fileList = new ArrayList<>();
 
    /**
     * The logger for this class.

@@ -797,7 +797,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 
          File xsdFile = new File(PSServer.getRxDir(),
                IPSDeployConstants.DEPLOYMENT_ROOT + "/schema/localConfig.xsd");
-         List<Exception> errors = new ArrayList<Exception>();
+         List<Exception> errors = new ArrayList<>();
          boolean isValid = PSXmlValidator.validateXmlAgainstSchema(tempFile,
                xsdFile, errors);
 
@@ -910,8 +910,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             createRoot(respDoc, XML_AV_ROOT_NAME);
          
          
-         List<String> errorList = new ArrayList<String>();
-         List<String> warningList = new ArrayList<String>();
+         List<String> errorList = new ArrayList<>();
+         List<String> warningList = new ArrayList<>();
          errorList.addAll(validationMap.get(IPSDeployConstants.ERROR_KEY));
          warningList.addAll(validationMap.get(IPSDeployConstants.WARNING_KEY));
          
@@ -985,7 +985,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     {
          Validate.notNull(info);
         
-         PSMultiValueHashMap<String, String> validationMap = new PSMultiValueHashMap<String, String>();
+         PSMultiValueHashMap<String, String> validationMap = new PSMultiValueHashMap<>();
          String message = "";
     
          // Checks if the package is already installed and if version is greater
@@ -1108,8 +1108,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             .getPkgInfoService();
 
       List<Map<String, String>> pkgDepList = expDesc.getPkgDepList();
-      ArrayList<String> pkgNotInstalled = new ArrayList<String>();
-      ArrayList<String> pkgVersionMismatch = new ArrayList<String>();
+      ArrayList<String> pkgNotInstalled = new ArrayList<>();
+      ArrayList<String> pkgVersionMismatch = new ArrayList<>();
 
       // Loop through all dependency packages
       for (Map<String, String> pkgDep : pkgDepList)
@@ -1710,7 +1710,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       IPSPkgInfoService pkgInfoSvc = 
          PSPkgInfoServiceLocator.getPkgInfoService();
       List<PSPkgInfo> pkgInfos = pkgInfoSvc.findAllPkgInfos();
-      List<String[]> index = new ArrayList<String[]>();
+      List<String[]> index = new ArrayList<>();
       for(PSPkgInfo info : pkgInfos)
       {
         if(PackageAction.UNINSTALL.equals(info.getType()))
@@ -3986,12 +3986,12 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 
       // Create and save all elements
       // N.B. - these 'packages' are the old MSM concept, not the new concept
-      Set<IPSGuid> savedObjs = new HashSet<IPSGuid>();
+      Set<IPSGuid> savedObjs = new HashSet<>();
       Iterator<PSDeployableElement> it = desc.getPackages();
       while (it.hasNext())
       {
          PSDeployableElement elem = it.next();
-         Collection<PSDependency> deps = new ArrayList<PSDependency>();
+         Collection<PSDependency> deps = new ArrayList<>();
          getIncludedDependencies(elem.getDependencies(), deps);
          for (PSDependency d : deps)
          {
@@ -4017,7 +4017,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       }
       
       List<Map<String, String>> pkgDeps = desc.getPkgDepList();
-      Map<String, IPSGuid> pkgNameToGuid = new HashMap<String, IPSGuid>();
+      Map<String, IPSGuid> pkgNameToGuid = new HashMap<>();
       if (pkgDeps.size() > 0)
          pkgNameToGuid = getPkgNameToGuidMap();
       for (Map<String, String> pkgDep : pkgDeps)
@@ -4049,7 +4049,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       IPSPkgInfoService svc = PSPkgInfoServiceLocator
          .getPkgInfoService();
       List<PSPkgInfo> infos = svc.findAllPkgInfos();
-      Map<String, IPSGuid> results = new HashMap<String, IPSGuid>();
+      Map<String, IPSGuid> results = new HashMap<>();
       for (PSPkgInfo info : infos)
       {
          results.put(info.getPackageDescriptorName(), info.getGuid());

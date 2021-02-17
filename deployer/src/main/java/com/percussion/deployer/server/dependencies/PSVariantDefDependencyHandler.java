@@ -163,7 +163,7 @@ public class PSVariantDefDependencyHandler extends PSDataObjectDependencyHandler
    private List<PSDependency> getContentTypeDependencies(PSSecurityToken tok,
          IPSAssemblyTemplate tmp) throws PSDeployException
    {
-      List<PSDependency> depList = new ArrayList<PSDependency>();
+      List<PSDependency> depList = new ArrayList<>();
       init();
       List<IPSGuid> ctGuidList = m_assemblyHelper.getContentTypesByTemplate(tmp);
       PSDependencyHandler handler = getDependencyHandler(
@@ -189,7 +189,7 @@ public class PSVariantDefDependencyHandler extends PSDataObjectDependencyHandler
    private List<PSDependency> getSlotDependencies(PSSecurityToken tok,
          IPSAssemblyTemplate tmp) throws PSDeployException
    {
-      List<PSDependency> depList = new ArrayList<PSDependency>();
+      List<PSDependency> depList = new ArrayList<>();
       
       Set<IPSTemplateSlot> slots = tmp.getSlots();
       
@@ -316,7 +316,7 @@ public class PSVariantDefDependencyHandler extends PSDataObjectDependencyHandler
       init();
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       IPSAssemblyTemplate tmp = findVariantByDependencyID(dep.getDependencyId(), true);
 
@@ -402,7 +402,7 @@ public class PSVariantDefDependencyHandler extends PSDataObjectDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

@@ -298,7 +298,7 @@ public class PSConfigUtils
          PSExtensionRef ref = new PSExtensionRef(extFQN);
          IPSExtensionManager emgr = PSServer.getExtensionManager(null);
          IPSExtensionDef def = emgr.getExtensionDef(ref);
-         List<String> paramNames = new ArrayList<String>();
+         List<String> paramNames = new ArrayList<>();
          CollectionUtils.addAll(paramNames, def.getRuntimeParameterNames());
          return paramNames;
       }
@@ -408,7 +408,7 @@ public class PSConfigUtils
    {
       if (conditionsIter == null)
          throw new IllegalArgumentException("conditionsIter must not be null");
-      List<Map<String, Object>> conds = new ArrayList<Map<String, Object>>();
+      List<Map<String, Object>> conds = new ArrayList<>();
       while(conditionsIter.hasNext())
       {
          conds.add(getRuleDef((PSRule)conditionsIter.next()));
@@ -485,7 +485,7 @@ public class PSConfigUtils
 
    private static Map<String, Object> getRuleDef(PSRule rule)
    {
-      Map<String, Object> map = new HashMap<String, Object>();
+      Map<String, Object> map = new HashMap<>();
       if(rule.isExtensionSetRule())
       {
          map.put(PROP_TYPE, TYPE_EXTENSION);
@@ -506,10 +506,10 @@ public class PSConfigUtils
    
    private static List<Map<String, String>> createConditionalRuleDef(Iterator rulesIter)
    {
-      List<Map<String, String>> rulesDef = new ArrayList<Map<String,String>>();
+      List<Map<String, String>> rulesDef = new ArrayList<>();
       while(rulesIter.hasNext())
       {
-         Map<String, String> map = new HashMap<String, String>();
+         Map<String, String> map = new HashMap<>();
          PSConditional condRule = (PSConditional) rulesIter.next();
          String var1 = condRule.getVariable().getValueDisplayText();
          String var2 = condRule.getValue().getValueDisplayText();
@@ -584,9 +584,9 @@ public class PSConfigUtils
    public static Map<String, Object> getExtensionCallDef(PSExtensionCall call,
          String propName)
    {
-      Map<String, Object> map = new HashMap<String, Object>();
+      Map<String, Object> map = new HashMap<>();
       map.put(propName, call.getExtensionRef().getFQN());
-      List<String> params = new ArrayList<String>();
+      List<String> params = new ArrayList<>();
       PSExtensionParamValue[] paramVals = call.getParamValues();
       for (PSExtensionParamValue value : paramVals)
       {
@@ -651,7 +651,7 @@ public class PSConfigUtils
          Object[] args = { name };
          throw new PSConfigException(MessageFormat.format(msg, args));
       }
-      List<PSExtensionParamValue> paramValues = new ArrayList<PSExtensionParamValue>();
+      List<PSExtensionParamValue> paramValues = new ArrayList<>();
       if (params != null)
       {
          for (String param : params)
@@ -711,7 +711,7 @@ public class PSConfigUtils
     */
    public static Map getReverseMap(Map<String,String> map)
    {
-      Map<String,String> revMap = new HashMap<String,String>();
+      Map<String,String> revMap = new HashMap<>();
       Iterator i = map.entrySet().iterator();
       while(i.hasNext())
       {

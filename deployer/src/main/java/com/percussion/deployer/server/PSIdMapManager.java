@@ -121,6 +121,6 @@ public class PSIdMapManager
     * {@link #saveIdMap(PSIdMap)}. Never <code>null</code>.
     */
    private Map<String, PSIdMap> m_repToIdMap =
-      new HashMap<String, PSIdMap>();
+      new HashMap<>();
    
 }

@@ -105,5 +105,5 @@ public class PSUninstallMessages
     * The list of messages, never <code>null</code>, may
     * be empty.
     */
-   private List<PSUninstallMessage> m_messages = new ArrayList<PSUninstallMessage>();
+   private List<PSUninstallMessage> m_messages = new ArrayList<>();
 }
