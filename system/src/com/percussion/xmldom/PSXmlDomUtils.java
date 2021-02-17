@@ -93,8 +93,7 @@ public class PSXmlDomUtils
     * @throws Exception
     */
    public static Document loadXmlDocument(PSXmlDomContext cx, File incomingFile)
-         throws IOException, Exception
-   {
+           throws IOException, PSExtensionProcessingException, SAXException {
       String HTMLString = readInFile(incomingFile);
 
       return loadXmlDocument(cx, HTMLString);
@@ -118,8 +117,7 @@ public class PSXmlDomUtils
     **/
    public static Document loadXmlDocument(PSXmlDomContext cx, File incomingFile,
                                           String encoding)
-         throws IOException, Exception
-   {
+           throws IOException, PSExtensionProcessingException, SAXException {
       String HTMLString = readInFile(incomingFile, encoding);
 
       return loadXmlDocument(cx, HTMLString);
@@ -177,10 +175,10 @@ public class PSXmlDomUtils
       if (cx.isLogging())
       {
          cx.printTraceMessage("writing trace file xmldocbeforeparse.doc");
-         FileOutputStream beforeParse =
-               new FileOutputStream("xmldocbeforeparse.doc");
-         beforeParse.write(tidiedOutput.getBytes(DEBUG_ENCODING));
-         beforeParse.close();
+         try(FileOutputStream beforeParse =
+               new FileOutputStream("xmldocbeforeparse.doc")) {
+            beforeParse.write(tidiedOutput.getBytes(DEBUG_ENCODING));
+         }
       }
 
       //add all provisioned namespaces to the 'body' tag
@@ -209,14 +207,14 @@ public class PSXmlDomUtils
                                  errString.toString());
          }
          cx.printTraceMessage("writing trace file xmldocparsedout.doc");
-         FileOutputStream parsedOutput =
-               new FileOutputStream("xmldocparsedout.doc");
+         try(FileOutputStream parsedOutput =
+               new FileOutputStream("xmldocparsedout.doc")) {
 
-         PSXmlTreeWalker walk = new PSXmlTreeWalker(resultDoc);
-         walk.write(new BufferedWriter(
-               new OutputStreamWriter(parsedOutput, ENCODING)), true);
+            PSXmlTreeWalker walk = new PSXmlTreeWalker(resultDoc);
+            walk.write(new BufferedWriter(
+                    new OutputStreamWriter(parsedOutput, ENCODING)), true);
 
-         parsedOutput.close();
+         }
       }
 
       return resultDoc;
@@ -257,22 +255,17 @@ public class PSXmlDomUtils
       Tidy tidy = new Tidy();
       tidy.setConfigurationFromProps(cx.getTidyProperties());
       tidy.setInputEncoding("UTF-8");
-    //  tidy.getConfiguration().setRxCommentHandling(cx.rxCommentHandling());
 
       if (cx.isLogging())
       {
          cx.printTraceMessage("writing trace file xmldompretidy.doc");
-         FileOutputStream preTidy = new FileOutputStream("xmldompretidy.doc");
-         preTidy.write(htmlInput.getBytes(DEBUG_ENCODING));
-         preTidy.close();
+         try(FileOutputStream preTidy = new FileOutputStream("xmldompretidy.doc")) {
+            preTidy.write(htmlInput.getBytes(DEBUG_ENCODING));
+            preTidy.close();
+         }
       }
 
-      ByteArrayInputStream bystream = null;
-      ByteArrayInputStream xmlStream = null;
-      ByteArrayOutputStream tidiedStream = null;
-      try
-      {
-         bystream = new ByteArrayInputStream(htmlInput.getBytes(ENCODING));
+      try (ByteArrayInputStream bystream = new ByteArrayInputStream(htmlInput.getBytes(ENCODING))){
          StringWriter tidyErrors = new StringWriter();
          tidy.setErrout(new PrintWriter((Writer) tidyErrors));
          Document TidyXML = tidy.parseDOM(bystream, null);
@@ -326,11 +319,13 @@ public class PSXmlDomUtils
 
          if(cx.getUsePrettyPrint())
          {
-            xmlStream = new ByteArrayInputStream(result.getBytes(ENCODING));
-            TidyXML = tidy.parseDOM(xmlStream, null);
-            tidiedStream = new ByteArrayOutputStream();
-            tidy.pprint(TidyXML, (OutputStream) tidiedStream);
-            result = tidiedStream.toString(ENCODING);
+            try( ByteArrayInputStream xmlStream = new ByteArrayInputStream(result.getBytes(ENCODING))){
+               TidyXML = tidy.parseDOM(xmlStream, null);
+               try(ByteArrayOutputStream tidiedStream = new ByteArrayOutputStream()) {
+                  tidy.pprint(TidyXML, (OutputStream) tidiedStream);
+                  result = tidiedStream.toString(ENCODING);
+               }
+            }
          }
          if (cx.isLogging())
          {
@@ -342,39 +337,6 @@ public class PSXmlDomUtils
             pw.close();
          }
          return result;
-      }
-      finally
-      {
-         if (bystream != null)
-         {
-            try
-            {
-               bystream.close();
-            }
-            catch (Exception e)
-            {
-            }
-         }
-         if (xmlStream != null)
-         {
-            try
-            {
-               xmlStream.close();
-            }
-            catch (Exception e)
-            {
-            }
-         }
-         if (tidiedStream != null)
-         {
-            try
-            {
-               tidiedStream.close();
-            }
-            catch (Exception e)
-            {
-            }
-         }
       }
    }
 
@@ -393,7 +355,7 @@ public class PSXmlDomUtils
     **/
    protected static void addResultNode(PSXmlDomContext cx, Document resultDoc,
                                        String nodeName, String nodeValue)
-         throws Exception
+
    {
 
       Element docElement = resultDoc.getDocumentElement();
@@ -615,19 +577,18 @@ public class PSXmlDomUtils
    protected static String readInFile(File inFile, String encoding)
          throws FileNotFoundException, UnsupportedEncodingException, IOException
    {
-      StringBuffer buff = new StringBuffer(BUFFERSIZE);
-      InputStreamReader rdr =
-            new InputStreamReader(new FileInputStream(inFile), encoding);
+      StringBuilder buff = new StringBuilder(BUFFERSIZE);
+      try(InputStreamReader rdr =
+            new InputStreamReader(new FileInputStream(inFile), encoding)) {
 
-      char arry[] = new char[BUFFERSIZE];
-      int icnt = 1;
+         char arry[] = new char[BUFFERSIZE];
+         int icnt = 1;
 
-      while (rdr.ready() && icnt > 0)
-      {
-         icnt = rdr.read(arry, 0, BUFFERSIZE);
-         if (icnt > 0)
-         {
-            buff.append(arry, 0, icnt);
+         while (rdr.ready() && icnt > 0) {
+            icnt = rdr.read(arry, 0, BUFFERSIZE);
+            if (icnt > 0) {
+               buff.append(arry, 0, icnt);
+            }
          }
       }
 
@@ -649,19 +610,18 @@ public class PSXmlDomUtils
    protected static String readInFile(File inFile)
          throws FileNotFoundException, UnsupportedEncodingException, IOException
    {
-      StringBuffer buff = new StringBuffer(BUFFERSIZE);
-      InputStreamReader rdr =
-            new InputStreamReader(new FileInputStream(inFile));
+      StringBuilder buff = new StringBuilder(BUFFERSIZE);
+      try(InputStreamReader rdr =
+            new InputStreamReader(new FileInputStream(inFile))) {
 
-      char arry[] = new char[BUFFERSIZE];
-      int icnt = 1;
+         char arry[] = new char[BUFFERSIZE];
+         int icnt = 1;
 
-      while (rdr.ready() && icnt > 0)
-      {
-         icnt = rdr.read(arry, 0, BUFFERSIZE);
-         if (icnt > 0)
-         {
-            buff.append(arry, 0, icnt);
+         while (rdr.ready() && icnt > 0) {
+            icnt = rdr.read(arry, 0, BUFFERSIZE);
+            if (icnt > 0) {
+               buff.append(arry, 0, icnt);
+            }
          }
       }
 
@@ -852,8 +812,8 @@ public class PSXmlDomUtils
        */
       if (errHandler.numFatalErrors() > 1)
       {
-         Iterator errors = errHandler.fatalErrors();
-         SAXParseException ex = (SAXParseException) errors.next();
+         Iterator<SAXParseException> errors = errHandler.fatalErrors();
+         SAXParseException ex =  errors.next();
          throw ex;
       }
       return doc;
@@ -932,7 +892,7 @@ public class PSXmlDomUtils
       if (nsString==null || nsString.trim().length()<=0)
          return htmlString;
 
-      StringBuffer sb = new StringBuffer(htmlString);
+      StringBuilder sb = new StringBuilder(htmlString);
       bodyLoc += ("<" + htmlTagName).length();
 
       sb.insert(bodyLoc, " " + nsString);
