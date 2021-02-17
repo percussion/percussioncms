@@ -61,7 +61,7 @@ public class CommunityAdaptor implements ICommunityAdaptor {
     @Override
     public CommunityList createCommunities(List<String> names) {
         CommunityList ret=null;
-        ArrayList<Community> communities = new ArrayList<Community>();
+        ArrayList<Community> communities = new ArrayList<>();
 
         String session = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_JSESSIONID);
         String user = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
@@ -81,7 +81,7 @@ public class CommunityAdaptor implements ICommunityAdaptor {
     public CommunityList findCommunities(String name) {
 
         List<IPSCatalogSummary> ps_summaries = securityDesignWs.findCommunities(name);
-        ArrayList<Community> communities = new ArrayList<Community>();
+        ArrayList<Community> communities = new ArrayList<>();
         for(IPSCatalogSummary s : ps_summaries){
             communities.add(new Community(s.getGUID().longValue(),
                     ApiUtils.convertGuid(s.getGUID()),

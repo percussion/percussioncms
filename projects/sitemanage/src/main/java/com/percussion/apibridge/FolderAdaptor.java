@@ -326,7 +326,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 		if (StringUtils.startsWith(folder.getName(), EXTERNAL_SECTION_NAME_PREFIX))
 			folder.setName(StringUtils.substringAfter(folder.getName(), EXTERNAL_SECTION_NAME_PREFIX));
 
-		folder.setRecentUsers(new ArrayList<String>());
+		folder.setRecentUsers(new ArrayList<>());
 		
 		return folder;
 	}
@@ -337,12 +337,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 	}
 
 	private void extractSubPagesFolders(URI baseUri, PSPathItem pathItem, String pathUtilsPath, Folder folder) {
-		List<LinkRef> folderChildren = new ArrayList<LinkRef>();
+		List<LinkRef> folderChildren = new ArrayList<>();
 		folder.setSubfolders(folderChildren);
-		List<LinkRef> folderPages = new ArrayList<LinkRef>();
-		List<LinkRef> folderAssets = new ArrayList<LinkRef>();
+		List<LinkRef> folderPages = new ArrayList<>();
+		List<LinkRef> folderAssets = new ArrayList<>();
 
-		List<String> existingFolders = new ArrayList<String>();
+		List<String> existingFolders = new ArrayList<>();
 		if (folder.getSubsections() != null) {
 			for (SectionLinkRef section : folder.getSubsections()) {
 				existingFolders.add(section.getName());
@@ -401,7 +401,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 		folder.setAccessLevel(accessLevel.toString());
 
 		if (accessLevel.equals(Access.READ)) {
-			List<String> editUsers = new ArrayList<String>();
+			List<String> editUsers = new ArrayList<>();
 			folder.setEditUsers(editUsers);
 			if (permissions.getWritePrincipals() != null) {
 				for (Principal principal : permissions.getWritePrincipals()) {
@@ -431,7 +431,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 			sectionInfo.setDisplayTitle(section.getTitle());
 
 			if (sectionType == PSSectionTypeEnum.section) {
-				List<SectionLinkRef> sectionChildren = new ArrayList<SectionLinkRef>();
+				List<SectionLinkRef> sectionChildren = new ArrayList<>();
 				folder.setSubsections(sectionChildren);
 				List<PSSiteSection> childSections = sectionService.loadChildSections(section);
 
@@ -814,8 +814,8 @@ public class FolderAdaptor implements IFolderAdaptor {
 	}
 
 	private void reorderSiteSection(URI baseUri, String id, Folder folder, Folder existingFolder) {
-		List<String> existingSubSections = new ArrayList<String>();
-		List<String> requestedSubSections = new ArrayList<String>();
+		List<String> existingSubSections = new ArrayList<>();
+		List<String> requestedSubSections = new ArrayList<>();
 
 		if (folder.getSubsections() != null) {
 			if (folder.getSectionInfo() == null && existingFolder.getSectionInfo() == null)
@@ -1123,11 +1123,11 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 		List<String> editUsers = folder.getEditUsers();
 		if (editUsers != null) {
-			List<String> serverUsers = new ArrayList<String>();
+			List<String> serverUsers = new ArrayList<>();
 			List<Principal> writePrincipals = permission.getWritePrincipals();
 
 			if (writePrincipals == null)
-				writePrincipals = new ArrayList<Principal>();
+				writePrincipals = new ArrayList<>();
 
 			if (writePrincipals.size() > 0) {
 				for (Principal principal : writePrincipals) {
@@ -1148,7 +1148,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 				permission.setWritePrincipals(writePrincipals);
 				
 				//Clear any Read principals as CM1 doesn't support them in the UI, remove this if that feature is ever enabled.
-				permission.setReadPrincipals(new ArrayList<Principal>());
+				permission.setReadPrincipals(new ArrayList<>());
 			}
 		}
 		folderProperties.setPermission(permission);
@@ -1379,11 +1379,11 @@ public class FolderAdaptor implements IFolderAdaptor {
 		}else{
 			PSLegacyGuid guid = (PSLegacyGuid)idMapper.getGuid(sourceItem.getId());
 
-			List<IPSGuid> guids = new ArrayList<IPSGuid>();
+			List<IPSGuid> guids = new ArrayList<>();
 
 			guids.add(guid);
 
-			List<String> paths = new ArrayList<String>();
+			List<String> paths = new ArrayList<>();
 
 			paths.add(correctedTargetPath);
 
@@ -1411,7 +1411,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 		    throw new NotFoundException("Source Folder " + folderPath + " was not found.  Please check the path and try again.");
 
 		IPSGuid guid = idMapper.getGuid(item.getId());
-		List<IPSGuid> guids = new ArrayList<IPSGuid>();
+		List<IPSGuid> guids = new ArrayList<>();
 
 		IPSItemSummary targetItem = getFolderPathItem(correctedTarget);
 
