@@ -114,7 +114,7 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
             IPSSecurityWs sec = PSSecurityWsLocator.getSecurityWebservice();
             
             @SuppressWarnings("unchecked")
-            List<IPSGuid> templateGuids = new ArrayList<IPSGuid>(CollectionUtils.collect(templates, new Transformer() {
+            List<IPSGuid> templateGuids = new ArrayList<>(CollectionUtils.collect(templates, new Transformer() {
                public Object transform(Object input) {
                    return ((IPSAssemblyTemplate)input).getGUID();
                }
@@ -124,13 +124,13 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
            
              List<IPSGuid> filtered = sec.filterByRuntimeVisibility(templateGuids);
    
-            Map<String, List<PSMenuAction>> folderActions = new HashMap<String, List<PSMenuAction>>();
+            Map<String, List<PSMenuAction>> folderActions = new HashMap<>();
             String templatesGrouping = PSServer.getProperty(SERVER_PROP_GROUP_TEMPLATES);
             boolean structure = false;
             if (templatesGrouping != null)
                structure = templatesGrouping.trim().equalsIgnoreCase("true");
    
-            List<PSMenuAction> structuredActions = new ArrayList<PSMenuAction>();
+            List<PSMenuAction> structuredActions = new ArrayList<>();
             // Flag to identify templates
             boolean isAA = params.length > 0 && params[0] != null && (params[0].toString()).equalsIgnoreCase("true");
             for (IPSAssemblyTemplate template : templates)
@@ -153,7 +153,7 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
                         List<PSMenuAction> pathItems = folderActions.get(path);
                         if (pathItems == null)
                         {
-                           pathItems = new ArrayList<PSMenuAction>();
+                           pathItems = new ArrayList<>();
                            folderActions.put(path, pathItems);
                         }
                         pathItems.add(action);
@@ -191,7 +191,7 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
       String community = session.getUserCurrentCommunity();
       Collection<IPSGuid> visibleTemplates = svc.findObjectsVisibleToCommunities(Collections.singletonList(community),
             PSTypeEnum.TEMPLATE);
-      List<IPSGuid> filteredRet = new ArrayList<IPSGuid>(CollectionUtils.intersection(visibleTemplates, filtered));
+      List<IPSGuid> filteredRet = new ArrayList<>(CollectionUtils.intersection(visibleTemplates, filtered));
       return filteredRet;
    }
 
@@ -202,7 +202,7 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
       String skipFolders = PSServer.getProperty(SERVER_PROP_SKIP_FOLDERS);
       if (skipFolders != null)
          alwaysShowSubmenu = skipFolders.trim().equalsIgnoreCase("false");
-      List<PSMenuAction> retList = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> retList = new ArrayList<>();
 
       List<PSMenuAction> thisLevelActions = folderActions.get("");
       // add all without any further path
@@ -212,7 +212,7 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
          alwaysShowSubmenu = (thisLevelActions.size() > 0);
       }
       // split out the first part of the path
-      Map<String, List<String>> pathSplit = new HashMap<String, List<String>>();
+      Map<String, List<String>> pathSplit = new HashMap<>();
       for (String path : folderActions.keySet())
       {
          if (path.length() > 0)
@@ -232,7 +232,7 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
             List<String> rights = pathSplit.get(left);
             if (rights == null)
             {
-               rights = new ArrayList<String>();
+               rights = new ArrayList<>();
                pathSplit.put(left, rights);
             }
             rights.add(right);
@@ -245,7 +245,7 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
       for (String folder : folders)
       {
 
-         Map<String, List<PSMenuAction>> submenuActions = new HashMap<String, List<PSMenuAction>>();
+         Map<String, List<PSMenuAction>> submenuActions = new HashMap<>();
          // create a modified action map stripping off the first part of the
          // path
          for (String right : pathSplit.get(folder))
@@ -299,7 +299,7 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
 
       String il8nLabel = PSI18nUtils.getString(PSI18nUtils.makeLookupKey(list), lang);
 
-      HashMap<String, Object> paramMap = new HashMap<String, Object>();
+      HashMap<String, Object> paramMap = new HashMap<>();
 
       String sourceUrl = "../assembler/render";
 

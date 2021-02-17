@@ -365,7 +365,7 @@ public class PSFileInfo extends PSDefaultExtension implements
       }
       else
       {
-         final List<String> list = new ArrayList<String>();
+         final List<String> list = new ArrayList<>();
          while(st.hasMoreTokens())
             list.add(st.nextToken());
          obj = list;
@@ -398,7 +398,7 @@ public class PSFileInfo extends PSDefaultExtension implements
     * extension types.
     */
    private static final Map<String, String> ms_wellKnownExts =
-         new HashMap<String, String>(2);   
+         new HashMap<>(2);
    static
    {
       ms_wellKnownExts.put("htm", "text/html");

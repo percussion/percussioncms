@@ -99,7 +99,7 @@ public class PSGetAadItemTypeIconPaths implements IPSResultDocumentProcessor
     */
    private List<PSLocator> buildLocators(NodeList nl, String userName)
    {
-      List<PSLocator> locs = new ArrayList<PSLocator>();
+      List<PSLocator> locs = new ArrayList<>();
       String uname = StringUtils.defaultString(userName);
       for (int i = 0; i < nl.getLength(); i++)
       {
@@ -128,7 +128,7 @@ public class PSGetAadItemTypeIconPaths implements IPSResultDocumentProcessor
     */
    private Map<String, String> getIconPaths(List<PSLocator> locs)
    {
-      Map<String, String> result = new HashMap<String, String>();
+      Map<String, String> result = new HashMap<>();
       PSItemDefManager defMgr = PSItemDefManager.getInstance();
       Map<PSLocator, String> icmap = defMgr.getContentTypeIconPaths(locs);
       for (PSLocator loc : icmap.keySet())

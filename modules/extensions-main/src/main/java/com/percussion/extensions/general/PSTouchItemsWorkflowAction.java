@@ -94,7 +94,7 @@ public class PSTouchItemsWorkflowAction extends PSDefaultExtension implements IP
 
       try
       {
-         Collection<Integer> cids = new ArrayList<Integer>();
+         Collection<Integer> cids = new ArrayList<>();
          cids.add(contentId);
          IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
          pub.touchActiveAssemblyParents(cids);
