@@ -112,14 +112,14 @@ public class PSStylesheetCacheManager
       }
       catch (IOException e)
       {
-         StringBuffer errorMsg = new StringBuffer(styleFile.toString());
+         StringBuilder errorMsg = new StringBuilder(styleFile.toString());
          errorMsg.append("\r\n");
          errorMsg.append(e.toString());
          throw new PSExtensionProcessingException(0, errorMsg.toString());
       }
       catch (TransformerFactoryConfigurationError e)
       {
-         StringBuffer errorMsg = new StringBuffer(styleFile.toString());
+         StringBuilder errorMsg = new StringBuilder(styleFile.toString());
          errorMsg.append("\r\n");
          errorMsg.append(e.toString());
          throw new PSExtensionProcessingException(0, errorMsg.toString());
@@ -137,7 +137,7 @@ public class PSStylesheetCacheManager
     *    cannot be <code>null</code>
     * @param   iter   where to find the objects; cannot be <code>null</code>
     */
-   private static void appendFromIterator(StringBuffer buf,
+   private static void appendFromIterator(StringBuilder buf,
                                           Iterator iter)
    {
       while (iter.hasNext())
@@ -175,7 +175,7 @@ public class PSStylesheetCacheManager
     * @param   errors   where to find the errors; if null or not our
     *    implementation, return quietly.
     */
-   public static void appendErrorMessages(StringBuffer buf,
+   public static void appendErrorMessages(StringBuilder buf,
                                           ErrorListener errors)
    {
       if (null == buf || null == errors) return;
@@ -212,9 +212,8 @@ public class PSStylesheetCacheManager
    private static String getExceptionContextData(Exception e)
       throws IOException
    {
-      StringBuffer errorMsg = new StringBuffer();
-      String resource = "";
 
+      String resource = "";
       if(e instanceof TransformerException)
       {
          TransformerException te = (TransformerException)e;
@@ -266,7 +265,7 @@ public class PSStylesheetCacheManager
    private static String getExceptionContextData(Exception e, URL url)
       throws IOException
    {
-      StringBuffer errorMsg = new StringBuffer();
+      StringBuilder errorMsg = new StringBuilder();
       int errorLine = 0;
 
       if(e instanceof TransformerException)
@@ -283,11 +282,10 @@ public class PSStylesheetCacheManager
 
       errorMsg.append("  [Error data in range: ");
 
-        BufferedReader reader = new BufferedReader(
-           new InputStreamReader(url.openStream()) );
-
-        getExceptionContextData(errorMsg, reader, errorLine);
-      reader.close();
+        try(BufferedReader reader = new BufferedReader(
+           new InputStreamReader(url.openStream()) )){
+               getExceptionContextData(errorMsg, reader, errorLine);
+         }
 
         errorMsg.append("]");
       return errorMsg.toString();
@@ -306,18 +304,16 @@ public class PSStylesheetCacheManager
     * @param   errorLine the error line number
     */
    private static void getExceptionContextData(
-         StringBuffer buf, BufferedReader source, int errorLine)
+           StringBuilder buf, BufferedReader source, int errorLine)
    {
       if (errorLine > 0)
       {
          String curLine;
          try
          {
-            for (int i = 0; i <= errorLine;)
+            for (int i = 0; i <= errorLine;i++)
             {
-               i++;
                curLine = source.readLine();
-
                if (i >= (errorLine - 1))
                   buf.append(curLine);
             }
