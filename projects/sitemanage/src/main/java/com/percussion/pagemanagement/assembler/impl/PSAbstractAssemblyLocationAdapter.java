@@ -73,13 +73,13 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
     private IPSAssemblyService assemblyService;
     private PSItemDefManager itemDefManager;
     
-    private List<String> parameterNames = new ArrayList<String>();
+    private List<String> parameterNames = new ArrayList<>();
     
     @Override
     public String createLocation(Object[] parameters, IPSRequestContext request)
     {
         PSAssemblyLocationRequest lr = new PSAssemblyLocationRequest();
-        Map<String, String> paramMap = new HashMap<String, String>();
+        Map<String, String> paramMap = new HashMap<>();
         addParameters(paramMap, getParameterNames(), parameters);
         addParameters(paramMap, request);
         lr.setParameters(paramMap);
@@ -268,7 +268,7 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
         private String itemFilter;
         
         private Integer page;
-        private Map<String, String> parameters = new HashMap<String, String>();
+        private Map<String, String> parameters = new HashMap<>();
         
         public String getParameter(String name) {
             return parameters.get(name);

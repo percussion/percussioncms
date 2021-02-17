@@ -183,7 +183,7 @@ public class PSAntEditionTask implements IPSEditionTask
 
         String siteRootTemp = prepareSiteRootTemp(jobId, edition.getName(), site, pubServer, root);
 
-        Map<String, String> props = new HashMap<String, String>();
+        Map<String, String> props = new HashMap<>();
         props.put("perc.site.name", site.getName());
         props.put("perc.site.baseUrl", site.getBaseUrl());
         props.put("perc.site.cmsFolderPath", site.getFolderRoot());
@@ -216,7 +216,7 @@ public class PSAntEditionTask implements IPSEditionTask
         a.setFile(f.getPath());
         a.setProperties(props);
 
-        List<BuildListener> listeners = new ArrayList<BuildListener>();
+        List<BuildListener> listeners = new ArrayList<>();
 
         // Pass the siteRootTemp if the site will be published on FTP or SFTP
         String deliveryType = pubServer.getPublishType();
