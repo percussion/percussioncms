@@ -35,7 +35,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.jpa.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
@@ -113,7 +112,6 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             Session session = getSession();
             
             Criteria crit = session.createCriteria(PSDbCookieConsent.class);
-            crit.addQueryHint(QueryHints.HINT_READONLY).addQueryHint(QueryHints.HINT_CACHEABLE);
 
             @SuppressWarnings("unchecked")
             List<IPSCookieConsent> result = crit.list();
@@ -137,7 +135,6 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             Session session = getSession();
             
             Criteria crit = session.createCriteria(PSDbCookieConsent.class);
-            crit.addQueryHint(QueryHints.HINT_READONLY).addQueryHint(QueryHints.HINT_CACHEABLE);
 
             crit.add(Restrictions.eq("siteName", siteName));
             
@@ -204,8 +201,6 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             criteriaQuery.select(root);
 
             List<PSDbCookieConsent> cookieConsents = session.createQuery(criteriaQuery).
-                    addQueryHint(QueryHints.HINT_READONLY).
-                    addQueryHint(QueryHints.HINT_CACHEABLE).
                     getResultList();
 
             for (PSDbCookieConsent cookieConsent : cookieConsents) {
@@ -237,8 +232,6 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             Criteria crit = session.createCriteria(PSDbCookieConsent.class);
             crit.add(Restrictions.eq("siteName", siteName));
             crit.setProjection(Projections.projectionList().add(Projections.property("serviceName")));
-            crit.addQueryHint(QueryHints.HINT_READONLY).addQueryHint(QueryHints.HINT_CACHEABLE);
-
             @SuppressWarnings("unchecked")
             List<String> serviceNames = crit.list();
             
