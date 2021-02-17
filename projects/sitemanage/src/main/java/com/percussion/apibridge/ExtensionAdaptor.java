@@ -98,14 +98,14 @@ public class ExtensionAdaptor implements IExtensionAdaptor {
              }
              ret.setMethods(methods);
              it = def.getRequiredApplications();
-             List<String> apps = new ArrayList<String>();
+             List<String> apps = new ArrayList<>();
              while(it.hasNext()){
                apps.add((String)it.next() );
              }
              ret.setRequiredApplications(apps);
 
              it = def.getResourceLocations();
-             List<String> resources = new ArrayList<String>();
+             List<String> resources = new ArrayList<>();
              while(it.hasNext()){
                 resources.add(((URL)it.next()).toString());
              }
@@ -113,14 +113,14 @@ public class ExtensionAdaptor implements IExtensionAdaptor {
 
 
             it = def.getSuppliedResources();
-            List<String> supplied = new ArrayList<String>();
+            List<String> supplied = new ArrayList<>();
             while(it.hasNext()){
                 resources.add(((URL)it.next()).toString());
             }
             ret.setSuppliedResources(supplied);
 
             it = def.getRuntimeParameterNames();
-            List<ExtensionParameter> runParams = new ArrayList<ExtensionParameter>();
+            List<ExtensionParameter> runParams = new ArrayList<>();
             while(it.hasNext()){
                 String name = (String)it.next();
                 ExtensionParameter runP = new ExtensionParameter();
@@ -145,7 +145,7 @@ public class ExtensionAdaptor implements IExtensionAdaptor {
     @Override
     public List<Extension> getExtensions(URI baseURI, ExtensionFilterOptions filter) {
 
-        List<Extension> response = new ArrayList<Extension>();
+        List<Extension> response = new ArrayList<>();
         try {
             Iterator it = extensionService.getExtensionNames(filter.getHandlerNamePattern(), filter.getContext(), filter.getInterfacePattern(), filter.getExtensionNamePattern());
 
