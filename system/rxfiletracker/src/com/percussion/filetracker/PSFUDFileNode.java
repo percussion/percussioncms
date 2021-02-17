@@ -38,6 +38,7 @@ import java.io.PrintStream;
 import java.io.SequenceInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,7 +70,7 @@ public class PSFUDFileNode extends PSFUDAbstractNode
     *
     * @param parent node as IPSFUDNode
     *
-    * @param content item element in the XML document as DOM Element
+    * @param elem item element in the XML document as DOM Element
     *
     * @throws PSFUDNullElementException that is thrown by the base class
     *
@@ -120,12 +121,13 @@ public class PSFUDFileNode extends PSFUDAbstractNode
     * @see IPSFUDNode class for status values
     *
     */
+   @Override
    public int getStatusCode()
    {
       if(null != m_Parent && !m_Parent.isRemoteExists())
          return STATUS_CODE_ABSENT;
 
-      int code = this.STATUS_CODE_NORMAL;
+      int code = STATUS_CODE_NORMAL;
       if(null  == m_ElementStatus)
          return code;
       String tmp = m_ElementStatus.getAttribute(IPSFUDNode.ATTRIB_CODE);
@@ -332,7 +334,6 @@ public class PSFUDFileNode extends PSFUDAbstractNode
          PSFUDAuthenticationFailureException
    {
       URL urlQuery = null;
-      InputStream content = null;
       int nPort = MainFrame.getConfig().getPort();
       String urlString = getDownloadURL();
       String sHost = MainFrame.getConfig().getHost();
@@ -375,7 +376,7 @@ public class PSFUDFileNode extends PSFUDAbstractNode
       }
 
       // here we don't check for the status range!!!
-      if(nStatus != MainFrame.getConfig().HTTP_STATUS_OK)
+      if(nStatus != PSFUDConfig.HTTP_STATUS_OK)
       {
          String sError = MessageFormat.format(MainFrame.getRes().getString(
             "errorHTTP"), new String[]{Integer.
@@ -383,18 +384,19 @@ public class PSFUDFileNode extends PSFUDAbstractNode
 
          throw new PSFUDServerException(sError);
       }
-      content = httpRequest.getResponseContent();
+      try(InputStream content = httpRequest.getResponseContent()) {
 
-      File parent = m_LocalFile.getParentFile();
-      if(null != parent)
-         parent.mkdirs();
+         File parent = m_LocalFile.getParentFile();
+         if (null != parent)
+            parent.mkdirs();
 
-      FileOutputStream fos = new FileOutputStream(m_LocalFile);
+         FileOutputStream fos = new FileOutputStream(m_LocalFile);
 
-      PSCopyStream.copyStream(content, fos);
+         PSCopyStream.copyStream(content, fos);
 
-      fos.flush();
-      fos.close();
+         fos.flush();
+         fos.close();
+      }
 
       updateTimestamp(); //make sure you do this.
       getStatusCode(); //update status code
@@ -419,139 +421,124 @@ public class PSFUDFileNode extends PSFUDAbstractNode
          PSFUDServerException,
          PSFUDAuthenticationFailureException
    {
-      FileInputStream fis = new FileInputStream(m_LocalFile);
-      int nPort = MainFrame.getConfig().getPort();
-      URL postURL = null;
-      String urlString = getUploadURL();
-      String sHost = MainFrame.getConfig().getHost();
-      if(nPort > 0)
-         sHost += ":" + Integer.toString(nPort);
-      try
-      {
-         if(urlString.toLowerCase().startsWith("http://") ||
-            urlString.toLowerCase().startsWith("https://")) //Absolute URL specified
+      try(FileInputStream fis = new FileInputStream(m_LocalFile)) {
+         int nPort = MainFrame.getConfig().getPort();
+         URL postURL = null;
+         String urlString = getUploadURL();
+         String sHost = MainFrame.getConfig().getHost();
+         if (nPort > 0)
+            sHost += ":" + Integer.toString(nPort);
+
+         if (urlString.toLowerCase().startsWith("http://") ||
+                 urlString.toLowerCase().startsWith("https://")) //Absolute URL specified
          {
             postURL = new URL(urlString);
-         }
-         else
-         {
-            if( nPort > 0 )
+         } else {
+            if (nPort > 0)
                postURL = new URL(MainFrame.getConfig().getProtocol(),
-                              MainFrame.getConfig().getHost(), nPort, urlString);
+                       MainFrame.getConfig().getHost(), nPort, urlString);
             else
                postURL = new URL(MainFrame.getConfig().getProtocol(),
-                              MainFrame.getConfig().getHost(), urlString);
+                       MainFrame.getConfig().getHost(), urlString);
          }
 
-         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-         PrintStream ps = new PrintStream(bos);
-         ps.println(); //blank line
+         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            PrintStream ps = new PrintStream(bos);
+            ps.println(); //blank line
 
-         ps.println(UPLOAD_BOUNDARY);
-         ps.println("Content-Disposition: form-data; name=\"contentbody\"; " +
-            "filename=\"" + getFileName() + "\"");
-         ps.println("Content-Type: " + getMimeType());
-         ps.println(); //blank line
+            ps.println(UPLOAD_BOUNDARY);
+            ps.println("Content-Disposition: form-data; name=\"contentbody\"; " +
+                    "filename=\"" + getFileName() + "\"");
+            ps.println("Content-Type: " + getMimeType());
+            ps.println(); //blank line
 
-         SequenceInputStream sis = new SequenceInputStream(
-            new ByteArrayInputStream(bos.toByteArray()), fis);
-         bos = new ByteArrayOutputStream();
-         PSCopyStream.copyStream(sis, bos);
-         ps = new PrintStream(bos);
+            SequenceInputStream sis = new SequenceInputStream(
+                    new ByteArrayInputStream(bos.toByteArray()), fis);
+            try (ByteArrayOutputStream bos2 = new ByteArrayOutputStream()) {
+               PSCopyStream.copyStream(sis, bos2);
+               ps = new PrintStream(bos2);
 
-         ps.println(); //blank line
-         ps.println(UPLOAD_BOUNDARY);
-         ps.println("Content-Disposition: form-data; name=\"DBActionType\"");
-         ps.println(); //blank line
-         ps.println("UPDATE");
+               ps.println(); //blank line
+               ps.println(UPLOAD_BOUNDARY);
+               ps.println("Content-Disposition: form-data; name=\"DBActionType\"");
+               ps.println(); //blank line
+               ps.println("UPDATE");
 
-         ps.println(UPLOAD_BOUNDARY + "--"); //end
-         PSHttpRequest postRequest  = new PSHttpRequest(postURL.toString(),
-                        "POST", new ByteArrayInputStream(bos.toByteArray()));
-         postRequest.addRequestHeader( "Content-Type",
-                        "multipart/form-data; boundary=" + UPLOAD_BOUNDARYX);
-         postRequest.addRequestHeader( "HOST", sHost);
-         postRequest.addRequestHeader( "REFERER", postURL.toString());
-         if(MainFrame.getConfig().getIsAuthenticationRequired())
-         {
-            postRequest.addRequestHeader("Authorization","Basic " +
-                        MainFrame.getConfig().getEncryptedUseridPassword());
-         }
-         postRequest.addRequestHeader( "USER_AGENT",
-            PSFUDApplication.HTTP_USERAGENT);
-         postRequest.addRequestHeader( "Content-Length",
-                        Integer.toString(bos.size()));
-         postRequest.sendRequest();
-
-         int nStatus = postRequest.getResponseCode();
-         if(nStatus == MainFrame.getConfig().
-                        HTTP_STATUS_BASIC_AUTHENTICATION_FAILED)
-         {
-            String sError = MessageFormat.format(MainFrame.getRes().getString(
-               "errorHTTPAuthentication"), new String[]{Integer.
-               toString(nStatus), postURL.toString()});
-
-            throw new PSFUDAuthenticationFailureException(sError);
-         }
-
-         if(MainFrame.getConfig().HTTP_STATUS_OK != nStatus)
-         {
-            String sError = MessageFormat.format(MainFrame.getRes().getString(
-               "errorHTTP"), new String[]{Integer.
-               toString(nStatus), postURL.toString()});
-
-            throw new PSFUDServerException(sError);
-         }
-
-         InputStream content = postRequest.getResponseContent();
-         if(null != content)
-         {
-            try
-            {
-               DocumentBuilder db = RXFileTracker.getDocumentBuilder();
-               Document doc = null;
-               Element elem = null;
-               Node node = null;
-               NodeList nl = null;
-
-               doc = db.parse(new InputSource(content));
-               if (doc != null)
-                     nl = doc.getElementsByTagName(PSFUDApplication.ELEM_SIZE);
-               if(null != nl && nl.getLength() > 0)
-               {
-                  elem = (Element)nl.item(0);
-                  node = elem.getFirstChild();
-                  if(node instanceof Text)
-                     m_Element.setAttribute(PSFUDApplication.ATTRIB_SIZE,
-                        ((Text)node).getData());
+               ps.println(UPLOAD_BOUNDARY + "--"); //end
+               PSHttpRequest postRequest = new PSHttpRequest(postURL.toString(),
+                       "POST", new ByteArrayInputStream(bos2.toByteArray()));
+               postRequest.addRequestHeader("Content-Type",
+                       "multipart/form-data; boundary=" + UPLOAD_BOUNDARYX);
+               postRequest.addRequestHeader("HOST", sHost);
+               postRequest.addRequestHeader("REFERER", postURL.toString());
+               if (MainFrame.getConfig().getIsAuthenticationRequired()) {
+                  postRequest.addRequestHeader("Authorization", "Basic " +
+                          MainFrame.getConfig().getEncryptedUseridPassword());
                }
-               if (doc != null)
-                  nl = doc.getElementsByTagName(PSFUDApplication.ELEM_MODIFIED);
-               if(null != nl && nl.getLength() > 0)
-               {
-                  elem = (Element)nl.item(0);
-                  node = elem.getFirstChild();
-                  if(node instanceof Text)
-                     m_Element.setAttribute(PSFUDApplication.ATTRIB_MODIFIED,
-                        ((Text)node).getData());
+               postRequest.addRequestHeader("USER_AGENT",
+                       PSFUDApplication.HTTP_USERAGENT);
+               postRequest.addRequestHeader("Content-Length",
+                       Integer.toString(bos2.size()));
+               postRequest.sendRequest();
+
+
+               int nStatus = postRequest.getResponseCode();
+               if (nStatus == PSFUDConfig.HTTP_STATUS_BASIC_AUTHENTICATION_FAILED) {
+                  String sError = MessageFormat.format(MainFrame.getRes().getString(
+                          "errorHTTPAuthentication"), new String[]{Integer.
+                          toString(nStatus), postURL.toString()});
+
+                  throw new PSFUDAuthenticationFailureException(sError);
                }
-               this.updateTimestamp();
-            }
-            // status  document (as InputStream) received from the server is
-            // not parseable
-            catch(SAXException e)
-            {
-               throw new PSFUDServerException(e.getMessage());
+
+               if (PSFUDConfig.HTTP_STATUS_OK != nStatus) {
+                  String sError = MessageFormat.format(MainFrame.getRes().getString(
+                          "errorHTTP"), new String[]{Integer.
+                          toString(nStatus), postURL.toString()});
+
+                  throw new PSFUDServerException(sError);
+               }
+
+               InputStream content = postRequest.getResponseContent();
+               if (null != content) {
+                  try {
+                     DocumentBuilder db = RXFileTracker.getDocumentBuilder();
+                     Document doc = null;
+                     Element elem = null;
+                     Node node = null;
+                     NodeList nl = null;
+
+                     doc = db.parse(new InputSource(content));
+                     if (doc != null)
+                        nl = doc.getElementsByTagName(PSFUDApplication.ELEM_SIZE);
+                     if (null != nl && nl.getLength() > 0) {
+                        elem = (Element) nl.item(0);
+                        node = elem.getFirstChild();
+                        if (node instanceof Text)
+                           m_Element.setAttribute(PSFUDApplication.ATTRIB_SIZE,
+                                   ((Text) node).getData());
+                     }
+                     if (doc != null)
+                        nl = doc.getElementsByTagName(PSFUDApplication.ELEM_MODIFIED);
+                     if (null != nl && nl.getLength() > 0) {
+                        elem = (Element) nl.item(0);
+                        node = elem.getFirstChild();
+                        if (node instanceof Text)
+                           m_Element.setAttribute(PSFUDApplication.ATTRIB_MODIFIED,
+                                   ((Text) node).getData());
+                     }
+                     this.updateTimestamp();
+                  }
+                  // status  document (as InputStream) received from the server is
+                  // not parseable
+                  catch (SAXException e) {
+                     throw new PSFUDServerException(e.getMessage());
+                  }
+               }
             }
          }
       }
-      finally
-      {
-         if(null != fis)
-         {
-            fis.close();
-         }
-      }
+
    }
 
    /**
@@ -578,12 +565,13 @@ public class PSFUDFileNode extends PSFUDAbstractNode
    {
       if(!m_LocalFile.exists())
          return true;
-
-      if(m_LocalFile.delete())
-      {
+      try {
+         Files.delete(m_LocalFile.toPath());
          m_ElementTimestamp.removeAttribute(PSFUDApplication.ATTRIB_REMOTE);
          m_ElementTimestamp.removeAttribute(PSFUDApplication.ATTRIB_LOCAL);
-          return true;
+         return true;
+      } catch (IOException e) {
+         e.printStackTrace();
       }
       return false;
    }
@@ -632,8 +620,7 @@ public class PSFUDFileNode extends PSFUDAbstractNode
                   m_Element.getAttribute(PSFUDApplication.ATTRIB_MODIFIED));
 
       long date = m_LocalFile.lastModified();
-      String sDate = "0";
-      try{ sDate = Long.toString(date); }catch(Exception e){}
+      String sDate = Long.toString(date);
 
       m_ElementTimestamp.setAttribute(PSFUDApplication.ATTRIB_LOCAL, sDate);
    }
@@ -664,7 +651,7 @@ public class PSFUDFileNode extends PSFUDAbstractNode
    /**
     * Default date format for display.
     */
-   static public SimpleDateFormat ms_DateFormat =
+    public SimpleDateFormat ms_DateFormat =
                   new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
 
 
