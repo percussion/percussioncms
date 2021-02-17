@@ -182,7 +182,7 @@ public class PSTouchAutoIndex extends PSDefaultExtension
    private Set<IPSGuid> buildContentTypeSet(IPSRequestContext req)
          throws PSCmsException, PSUnknownNodeTypeException, PSCacheException
    {
-      Set<IPSGuid> ctSet = new HashSet<IPSGuid>();
+      Set<IPSGuid> ctSet = new HashSet<>();
 
       PSRelationshipHelper helper = new PSRelationshipHelper(req);
       Iterator variants = helper.getVariantSet().iterator();
