@@ -30,15 +30,19 @@ import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.tablefactory.PSJdbcTableDataCollection;
 import com.percussion.tablefactory.PSJdbcTableFactory;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
 import com.percussion.tablefactory.install.RxLogTables;
+import com.percussion.utils.container.IPSJdbcDbmsDefConstants;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -82,26 +86,23 @@ import java.util.stream.Collectors;
  */
 public class PSExportDatabase extends PSAction
 {
+    private static final String ERROR = "ERROR :";
    // see base class
    @Override
    public void execute()
    {
-      FileInputStream in = null;
-      Connection conn = null;
-
-      try
-      {
+        Connection conn = null;
          String propFile = getRootDir() + File.separator
          + "rxconfig/Installer/rxrepository.properties";
 
          File f = new File(propFile);
          if (!(f.exists() && f.isFile()))
             return;
+        try(FileInputStream in = new FileInputStream(f)){
 
-         in = new FileInputStream(f);
          Properties props = new Properties();
          props.load(in);
-         props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+         props.setProperty(IPSJdbcDbmsDefConstants.PWD_ENCRYPTED_PROPERTY, "Y");
          PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
          PSJdbcDataTypeMap dataTypeMap = new PSJdbcDataTypeMap(
                props.getProperty("DB_BACKEND"),
@@ -120,38 +121,20 @@ public class PSExportDatabase extends PSAction
           PSJdbcTableData tableData = null;
 
           List<PSJdbcTableSchema> schemasToSort = new ArrayList<>();
-          for (int i=0; i <tableNames.size(); i++)
-         {
+        for (int i=0; i <tableNames.size(); i++) {
+            String tblName = tableNames.get(i).trim();
 
-
-          try
-          {
-              String tblName = tableNames.get(i).trim();
-
-              tableSchema = PSJdbcTableFactory.catalogTable(conn, dbmsDef,
-                      dataTypeMap, tblName, true);
-              if(tableSchema == null)
-                  continue;
-              schemasToSort.add(tableSchema);
-
-              //collSchema.add(tableSchema);
-
-              //tableData = tableSchema.getTableData();
-              //if(tableData == null)
-               //   continue;
-              //collData.add(tableData);
-
-          }
-          catch (Exception ex)
-          {
-              PSLogger.logInfo("ERROR : " + ex.getMessage());
-              PSLogger.logInfo(ex);
-          }
-
-
-
-
-      }
+            try {
+                tableSchema = PSJdbcTableFactory.catalogTable(conn, dbmsDef,
+                dataTypeMap, tblName, true);
+                if(tableSchema != null) {
+                    schemasToSort.add(tableSchema);
+                }
+            } catch (PSJdbcTableFactoryException ex) {
+                PSLogger.logInfo(ERROR + ex.getMessage());
+                PSLogger.logInfo(ex);
+            }
+        }
 
           Collections.sort(schemasToSort);
 
@@ -160,12 +143,11 @@ public class PSExportDatabase extends PSAction
               collSchema.add(sortedSchema);
 
               tableData = sortedSchema.getTableData();
-              if(tableData == null)
-                  continue;
-              collData.add(tableData);
+              if(tableData != null) {
+                  collData.add(tableData);
+              }
 
           }
-
 
           schemaDoc.appendChild(collSchema.toXml(schemaDoc));
           dataDoc.appendChild(collData.toXml(dataDoc));
@@ -182,35 +164,20 @@ public class PSExportDatabase extends PSAction
           try (OutputStream os = new FileOutputStream(new File(tableDataFile))) {
               PSXmlDocumentBuilder.write(dataDoc, os);
           }
+        } catch (IOException | PSJdbcTableFactoryException | SAXException | SQLException ex) {
+            PSLogger.logInfo(ERROR + ex.getMessage());
+            PSLogger.logInfo(ex);
+        }
 
-
-      }
-      catch (Exception ex)
-      {
-         PSLogger.logInfo("ERROR : " + ex.getMessage());
-         PSLogger.logInfo(ex);
-      }
       finally
       {
-         try
-         {
-            if (in != null)
-               in.close();
-         }
-         catch(Exception e)
-         {
-         }
-         if (conn != null)
-         {
-
-
-           try
-            {
+         if (conn != null){
+           try{
                conn.close();
-            }
-            catch (SQLException e)
-            {
-            }
+           }catch (SQLException ex){
+               PSLogger.logInfo("ERROR : " + ex.getMessage());
+               PSLogger.logInfo(ex);
+           }
          }
       }
    }
@@ -258,7 +225,7 @@ public class PSExportDatabase extends PSAction
    /**
     * Sets the name of tables whose backup is to be created.
     *
-    * @param tables name of tables whose backup is to be created,
+    * @param tableIncludes name of tables whose backup is to be created,
     * never <code>null</code>, may be empty array
     */
    public void setTableIncludes(String tableIncludes)
@@ -274,13 +241,13 @@ public class PSExportDatabase extends PSAction
      */
     public String[] getTableExcludes()
     {
-        return tableIncludes;
+        return this.tableExcludes;
     }
 
     /**
      * Sets the name of tables whose backup is to be created.
      *
-     * @param tables name of tables whose backup is to be created,
+     * @param tableExcludes name of tables whose backup is to be created,
      * never <code>null</code>, may be empty array
      */
     public void setTableExcludes(String tableExcludes)
