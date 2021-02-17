@@ -106,7 +106,7 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
          
       
       // catalog the table names
-      List<String> tableList = new ArrayList<String>();            
+      List<String> tableList = new ArrayList<>();
       String filterAll = "%";
       String db = dbmsInfo.getDatabase();
       if (db.trim().length() == 0)
@@ -151,7 +151,7 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
       excludeTables.add("PSLOGDATA");
       
       // create dependency objects from the table names
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       for (String tablename : tableList)
       {
          if (excludeTables.contains(tablename) || 

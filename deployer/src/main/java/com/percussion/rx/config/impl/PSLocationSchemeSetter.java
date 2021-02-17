@@ -168,11 +168,11 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
       }
       else if (GENERATOR_PARAMS.equals(propName))
       {
-         List<PSPair<String, String>> params = new ArrayList<PSPair<String, String>>();
+         List<PSPair<String, String>> params = new ArrayList<>();
          for (String n : scheme.getParameterNames())
          {
             String value = scheme.getParameterValue(n);
-            params.add(new PSPair<String, String>(n, value));
+            params.add(new PSPair<>(n, value));
          }
          return params;
       }
@@ -209,7 +209,7 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
             .getGenerator(), propValue);
 
       // cleanup existing parameters
-      List<String> pnames = new ArrayList<String>();
+      List<String> pnames = new ArrayList<>();
       pnames.addAll(scheme.getParameterNames());
       for (String n : pnames)
          scheme.removeParameter(n);
@@ -242,7 +242,7 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
                + "\" property must be defined by pvalues, as a list of pairs.");
 
       List<PSPair<String, String>> props = (List<PSPair<String, String>>) propValue;
-      List<PSPair<String, String>> params = new ArrayList<PSPair<String, String>>();
+      List<PSPair<String, String>> params = new ArrayList<>();
       List<String> names = PSConfigUtils.getExtensionParameterNames(extFQN);
       for (PSPair<String, String> p : props)
       {

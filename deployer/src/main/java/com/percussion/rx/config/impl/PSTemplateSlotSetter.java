@@ -92,7 +92,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
       if (FINDER_ARGUMENTS.equals(propName) || FINDER_PARAMS.equals(propName))
       {
          IPSTemplateSlot slot = (IPSTemplateSlot) obj;
-         Map<String, Object> srcMap = new HashMap<String, Object>();
+         Map<String, Object> srcMap = new HashMap<>();
          srcMap.putAll(slot.getFinderArguments());
          addPropertyDefsForMap(propName, pvalue, srcMap, defs);
       }
@@ -113,7 +113,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
       else if (SLOT_ASSOCIATION.equals(propName))
       {
          Collection<PSPair<IPSGuid, IPSGuid>> pairs = slot.getSlotAssociations();
-         List<PSPair<String, String>> assocs = new ArrayList<PSPair<String, String>>();
+         List<PSPair<String, String>> assocs = new ArrayList<>();
          IPSDesignModelFactory factory = PSDesignModelFactoryLocator
                .getDesignModelFactory();
          IPSDesignModel ctModel = factory.getDesignModel(PSTypeEnum.NODEDEF);
@@ -123,7 +123,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
          {
             String ctName = ctModel.guidToName(pair.getFirst());
             String tpName = tpModel.guidToName(pair.getSecond());
-            assoc = new PSPair<String, String>(ctName, tpName);
+            assoc = new PSPair<>(ctName, tpName);
             assocs.add(assoc);
          }
          return assocs;
@@ -144,7 +144,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
       if (curAssoc.isEmpty() || otherAssoc.isEmpty())
          return Collections.emptyList();
       
-      Collection<PSPair<String, String>> commons = new ArrayList<PSPair<String, String>>();
+      Collection<PSPair<String, String>> commons = new ArrayList<>();
       commons.addAll(curAssoc);
       commons.retainAll(otherAssoc);
       if (commons.isEmpty())
@@ -241,7 +241,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
          Object propValue)
    {
       Map<String, String> props = (Map<String, String>)propValue; 
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       params.putAll(props);
       List<String> names = PSConfigUtils.getExtensionParameterNames(slot
             .getFinderName());
@@ -277,7 +277,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
       if (curAssoc.isEmpty() && prevAssoc.isEmpty())
          return;
       
-      List<PSPair<String, String>> assoc = new ArrayList<PSPair<String,String>>();
+      List<PSPair<String, String>> assoc = new ArrayList<>();
       
       // get previous only associations
       assoc.addAll(prevAssoc);

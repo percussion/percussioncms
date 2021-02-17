@@ -80,7 +80,7 @@ public class PSPackageVisibility
    {
       if (guids == null)
          throw new IllegalArgumentException("guids must not be null");
-      Map<IPSGuid, String> objComms = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> objComms = new HashMap<>();
       List<IPSAcl> acls = loadAcl(guids);
       for (int i = 0; i < acls.size(); i++)
       {
@@ -107,7 +107,7 @@ public class PSPackageVisibility
    {
       if (id == null)
          throw new IllegalArgumentException("id must not be null");
-      Set<String> comms = new HashSet<String>();
+      Set<String> comms = new HashSet<>();
       List<IPSAcl> acls = loadAcl(Collections.singletonList(id));
       if (acls.get(0) != null)
       {
@@ -131,7 +131,7 @@ public class PSPackageVisibility
    {
       List<IPSGuid> guids = getConvertedGuids(ids);
       IPSAclService aclServ = PSAclServiceLocator.getAclService();
-      List<IPSAcl> acls = new ArrayList<IPSAcl>();
+      List<IPSAcl> acls = new ArrayList<>();
       try
       {
          acls = aclServ.loadAclsForObjects(guids);
@@ -173,7 +173,7 @@ public class PSPackageVisibility
     */
    private Collection<String> getCommunityListFromAcl(IPSAcl acl)
    {
-      Set<String> comms = new HashSet<String>();
+      Set<String> comms = new HashSet<>();
       Enumeration<AclEntry> entries = acl.entries();
       while (entries != null && entries.hasMoreElements())
       {
@@ -199,7 +199,7 @@ public class PSPackageVisibility
     */
    public List<String> getAllCommunities()
    {
-      List<String> allComms = new ArrayList<String>();
+      List<String> allComms = new ArrayList<>();
       IPSSecurityDesignWs secWs = PSSecurityWsLocator
             .getSecurityDesignWebservice();
       List<IPSCatalogSummary> sums = secWs.findCommunities(null);
@@ -235,7 +235,7 @@ public class PSPackageVisibility
             .get(0);
 
       IPSAclService aclServ = PSAclServiceLocator.getAclService();
-      List<IPSAcl> acls = new ArrayList<IPSAcl>();
+      List<IPSAcl> acls = new ArrayList<>();
       try
       {
          acls = aclServ.loadAclsForObjectsModifiable(Collections
@@ -364,18 +364,18 @@ public class PSPackageVisibility
       if (objectGuids == null)
          throw new IllegalArgumentException("objectGuids must not be null");
       IPSAclService aclServ = PSAclServiceLocator.getAclService();
-      List<IPSGuid> guids = new ArrayList<IPSGuid>();
+      List<IPSGuid> guids = new ArrayList<>();
       for (IPSGuid guid : objectGuids)
       {
          if (isVisibilitySupportedType(guid))
             guids.add(guid);
       }
       guids = getConvertedGuids(guids);
-      List<IPSAcl> acls = new ArrayList<IPSAcl>();
+      List<IPSAcl> acls = new ArrayList<>();
       try
       {
          acls = aclServ.loadAclsForObjectsModifiable(guids);
-         List<IPSAcl> aclsToSave = new ArrayList<IPSAcl>();
+         List<IPSAcl> aclsToSave = new ArrayList<>();
          for (IPSAcl acl : acls)
          {
             if (acl == null)
@@ -418,7 +418,7 @@ public class PSPackageVisibility
       throws NotOwnerException
    {
       Enumeration<AclEntry> entries = acl.entries();
-      List<IPSAclEntry> currEntries = new ArrayList<IPSAclEntry>();
+      List<IPSAclEntry> currEntries = new ArrayList<>();
       while (entries != null && entries.hasMoreElements())
       {
          IPSAclEntry aclEntry = (IPSAclEntry) entries.nextElement();
@@ -446,7 +446,7 @@ public class PSPackageVisibility
    {
       if (guids == null)
          throw new IllegalArgumentException("guids must not be null");
-      List<IPSGuid> results = new ArrayList<IPSGuid>();
+      List<IPSGuid> results = new ArrayList<>();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       for (IPSGuid guid : guids)
       {
@@ -487,7 +487,7 @@ public class PSPackageVisibility
    /**
     * List of type {@link PSTypeEnum} types that support visibility.
     */
-   public static List<PSTypeEnum> ms_visibilitySupportedTypes = new ArrayList<PSTypeEnum>();
+   public static List<PSTypeEnum> ms_visibilitySupportedTypes = new ArrayList<>();
    static
    {
       ms_visibilitySupportedTypes.add(PSTypeEnum.NODEDEF);

@@ -206,7 +206,7 @@ public class Property {
      */
     public List<PropertySet> getPropertySet() {
         if (propertySet == null) {
-            propertySet = new ArrayList<PropertySet>();
+            propertySet = new ArrayList<>();
         }
         return this.propertySet;
     }
@@ -342,7 +342,7 @@ public class Property {
          */
         public List<String> getPvalue() {
             if (pvalue == null) {
-                pvalue = new ArrayList<String>();
+                pvalue = new ArrayList<>();
             }
             return this.pvalue;
         }
@@ -371,7 +371,7 @@ public class Property {
          */
         public List<Pair> getPair() {
             if (pair == null) {
-                pair = new ArrayList<Pair>();
+                pair = new ArrayList<>();
             }
             return this.pair;
         }

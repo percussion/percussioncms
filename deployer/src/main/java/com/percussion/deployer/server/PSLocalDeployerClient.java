@@ -151,7 +151,7 @@ public class PSLocalDeployerClient implements IPSPackageInstaller
         validationJob.validate(importDesc, new PSMockJobHandle(), new PSSecurityToken(getRequest().getUserSession()));
         List<PSImportPackage> packageList = importDesc.getImportPackageList();
         
-        List<String> validationErrors = new ArrayList<String>();
+        List<String> validationErrors = new ArrayList<>();
         for (PSImportPackage importPackage : packageList)
         {
             Iterator<PSValidationResult> valResults = importPackage.getValidationResults().getResults();

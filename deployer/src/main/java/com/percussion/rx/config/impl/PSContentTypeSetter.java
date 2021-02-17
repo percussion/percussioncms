@@ -197,7 +197,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
                .getGuid());
          if (nodeDef == null)
             return null;
-         List<String> names = new ArrayList<String>();
+         List<String> names = new ArrayList<>();
          for (IPSGuid id : nodeDef.getVariantGuids())
          {
             String name = getTemplateName(id);
@@ -212,7 +212,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
                .getGuid());
          if (nodeDef == null)
             return null;
-         List<String> names = new ArrayList<String>();
+         List<String> names = new ArrayList<>();
          for (IPSGuid id : nodeDef.getWorkflowGuids())
          {
             IPSWorkflowService wfSrv = PSWorkflowServiceLocator.getWorkflowService();
@@ -228,8 +228,8 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
             return Collections.emptyMap();
 
          // return the 1st (parent) field
-         Map<String, Object> resultMap = new HashMap<String, Object>();
-         Map<String, String> fieldMap = new HashMap<String, String>();
+         Map<String, Object> resultMap = new HashMap<>();
+         Map<String, String> fieldMap = new HashMap<>();
          PSField fd = fields.get(0);
          fieldMap.put(PSContentTypeFieldSetter.SEQUENCE, "0");
          resultMap.put(fd.getSubmitName(), fieldMap);
@@ -342,7 +342,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
    {
       if (type == PSField.TYPE_SYSTEM)
       {
-         ArrayList<String> names = new ArrayList<String>();
+         ArrayList<String> names = new ArrayList<>();
          Iterator excludes;
          excludes = itemDef.getContentEditorMapper().getSystemFieldExcludes();
          CollectionUtils.addAll(names, excludes);         
@@ -431,7 +431,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
    @SuppressWarnings("unchecked")
    private ArrayList<String> iteratorToList(Iterator it)
    {
-      ArrayList<String> list = new ArrayList<String>();
+      ArrayList<String> list = new ArrayList<>();
       CollectionUtils.addAll(list, it);
 
       return list;

@@ -173,7 +173,7 @@ public class PSContentTypeTemplateDefDependencyHandler
 
       if (! dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       
       return childDeps.iterator();
    }
@@ -182,7 +182,7 @@ public class PSContentTypeTemplateDefDependencyHandler
    // Empty Implementation
    public Iterator<PSDependency> getDependencies(PSSecurityToken tok) throws PSDeployException
    {    
-      List<PSDependency> deps = new ArrayList<PSDependency>(); 
+      List<PSDependency> deps = new ArrayList<>();
       return deps.iterator();
    }
 
@@ -200,7 +200,7 @@ public class PSContentTypeTemplateDefDependencyHandler
 
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       files.add(getEmptyDepFile());
       return files.iterator();
@@ -263,7 +263,7 @@ public class PSContentTypeTemplateDefDependencyHandler
          IPSNodeDefinition nodeDef = contentMgr.findNodeDefinitionByName(dep
                .getDisplayName());
          nodeDef.addVariantGuid(tmpGuid);
-         List<IPSNodeDefinition> newList = new ArrayList<IPSNodeDefinition>();
+         List<IPSNodeDefinition> newList = new ArrayList<>();
          newList.add(nodeDef);
          contentMgr.saveNodeDefinitions(newList);
       }
@@ -367,5 +367,5 @@ public class PSContentTypeTemplateDefDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 }

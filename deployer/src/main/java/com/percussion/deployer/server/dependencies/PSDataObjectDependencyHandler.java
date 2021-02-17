@@ -213,7 +213,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException(
             "depType must be one of the PSDependency.TYPE_XXX values");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       PSDependencyHandler handler = getDependencyHandler(dependencyType);
       String id;
@@ -259,7 +259,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("col may not be null or empty");
    
       // use "Set" to make sure it is a distinct list
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
 
       if (data != null && data.getRows().hasNext())
       {
@@ -307,7 +307,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("col may not be null or empty");
 
       // get a distinct list of app names
-      Set<String> appNames = new HashSet<String>();
+      Set<String> appNames = new HashSet<>();
 
       if (data != null && data.getRows().hasNext())
       {
@@ -502,7 +502,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("nameCol may not be null or empty");
 
       // get all registered content types
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
 
       Iterator regEntries = PSDbmsHelper.getInstance().getRegistrationEntries(
          table, idCol, nameCol, null).iterator();
@@ -996,7 +996,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          mapping);
 
       // set the update key to be the id column in case there's no primary key
-      List<String> cols = new ArrayList<String>();
+      List<String> cols = new ArrayList<>();
       cols.add(idCol);
       PSDbmsHelper dbmsHelper = PSDbmsHelper.getInstance();
       dbmsHelper.setUpdateKeyForSchema(cols.iterator(), schema);
@@ -1531,7 +1531,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          table, columns, filter);
 
       // use "Set" to make sure it is a distinct list
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
 
       if (data != null && data.getRows().hasNext())
       {

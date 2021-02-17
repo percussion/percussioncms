@@ -109,12 +109,12 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
          IPSSite site = (IPSSite) obj;
          IPSSiteManager mgr = PSSiteManagerLocator.getSiteManager();
          
-         List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+         List<Map<String, String>> result = new ArrayList<>();
          for (IPSPublishingContext ctx : mgr.findAllContexts())
          {
             for (String pname : site.getPropertyNames(ctx.getGUID()))
             {
-               Map<String, String> sp = new HashMap<String, String>();
+               Map<String, String> sp = new HashMap<>();
                String value = site.getProperty(pname, ctx.getGUID());
                sp.put(NAME, pname);
                sp.put(CONTEXT, ctx.getName());
@@ -147,7 +147,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
          return Collections.emptyList();
 
       PSConfigValidation vError;
-      List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+      List<PSConfigValidation> result = new ArrayList<>();
       for (Map<String, Object> var : myVars)
       {
          PSPair<String, IPSGuid> pair = getSiteVariableNameCtx(var);
@@ -239,7 +239,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
 
       // collect variables in previous, but not in current
       List<Map<String, Object>> curVars = convertObjectToMaps(propValue);
-      List<Map<String, Object>> deletedVars = new ArrayList<Map<String, Object>>();
+      List<Map<String, Object>> deletedVars = new ArrayList<>();
       for (Map<String, Object> var : prevVars)
       {
          boolean found = false;
@@ -405,7 +405,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
 
       IPSPublishingContext ctx = getSiteMgr().loadContext(context);
 
-      return new PSPair<String, IPSGuid>(name, ctx.getGUID());
+      return new PSPair<>(name, ctx.getGUID());
    }
    
    /**
@@ -452,7 +452,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     * This maps the logic property name to an actual property name defined in
     * {@link IPSSite}.
     */
-   private static final Map<String, String> ms_propNameMap = new HashMap<String, String>();
+   private static final Map<String, String> ms_propNameMap = new HashMap<>();
    
    static
    {

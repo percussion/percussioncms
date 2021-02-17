@@ -164,7 +164,7 @@ public class PSIdNameHelper
    /**
     * See {@link #isSupported(PSTypeEnum)}.  Never <code>null</code>.
     */
-   private static Set<PSTypeEnum> ms_supportedTypes = new HashSet<PSTypeEnum>(); 
+   private static Set<PSTypeEnum> ms_supportedTypes = new HashSet<>();
    
    /**
     * The id-name service, may be <code>null</code>.

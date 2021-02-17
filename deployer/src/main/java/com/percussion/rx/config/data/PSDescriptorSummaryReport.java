@@ -242,7 +242,7 @@ public class PSDescriptorSummaryReport
           List<String> obs = map.get(cat);
           if(!obs.isEmpty())
           {
-             Set<String> sorted = new TreeSet<String>(obs);
+             Set<String> sorted = new TreeSet<>(obs);
              buff.append(cat);
              buff.append(NEWLINE);
              for(String o : sorted)
@@ -286,10 +286,10 @@ public class PSDescriptorSummaryReport
     
     private void handleElements(PSExportDescriptor desc)
     {
-       m_designObjects =  new PSMultiValueHashMap<String, String>();
-       m_dependsMap = new PSMultiValueHashMap<String, String>();
-       m_assocMap = new PSMultiValueHashMap<String, String>();
-       m_cats = new TreeSet<String>();
+       m_designObjects =  new PSMultiValueHashMap<>();
+       m_dependsMap = new PSMultiValueHashMap<>();
+       m_assocMap = new PSMultiValueHashMap<>();
+       m_cats = new TreeSet<>();
        
        Iterator<? extends PSDependency> elements = desc.getPackages();
        while(elements.hasNext())

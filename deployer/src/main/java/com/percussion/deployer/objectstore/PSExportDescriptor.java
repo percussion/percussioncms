@@ -622,7 +622,7 @@ public class PSExportDescriptor extends PSDescriptor
     * <code>setPackages()</code>.
     */
    private List<PSDeployableElement> m_packages = 
-      new ArrayList<PSDeployableElement>();
+      new ArrayList<>();
 
    /**
     * List of names of packages that have been modified since this descriptor
