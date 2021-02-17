@@ -32,18 +32,18 @@ public class PSContentSecurityPolicyUtils {
     public static String editContentSecurityPolicy(List<PSDeliveryInfo> psDeliveryInfoList, String contentSecurityString ) {
 
 
-        StringBuffer serverString=new StringBuffer();
+        StringBuilder serverString=new StringBuilder();
 
         for(PSDeliveryInfo psDeliveryInfo : psDeliveryInfoList)
         {
             serverString.append(psDeliveryInfo.getUrl());
             serverString.append(" ");
-            serverString.append(psDeliveryInfo.getUrl()+"/*");
+            serverString.append(psDeliveryInfo.getUrl()).append("/*");
             serverString.append(" ");
         }
         if(contentSecurityString.contains("frame-src")) {
 
-            contentSecurityString=contentSecurityString.replaceAll("frame-src", "frame-src "+" "+serverString.toString());
+            contentSecurityString=contentSecurityString.replace("frame-src", "frame-src "+" "+serverString.toString());
 
         }else {
             if(contentSecurityString.endsWith(";")) {
