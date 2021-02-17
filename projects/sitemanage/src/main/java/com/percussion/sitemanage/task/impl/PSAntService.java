@@ -49,7 +49,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Component("antService")
 public class PSAntService implements IPSAntService {
 
-    private  Vector<String> runningFiles = new Vector<String>();
+    private  Vector<String> runningFiles = new Vector<>();
     
     /**
      * The log instance to use for this class, never <code>null</code>.
@@ -79,14 +79,14 @@ public class PSAntService implements IPSAntService {
         
         notEmpty(file);
         if (targets == null) {
-            targets = new ArrayList<String>();
+            targets = new ArrayList<>();
         }
         else {
             noNullElements(targets);
         }
         
         if (listeners == null) {
-            listeners = new ArrayList<BuildListener>();
+            listeners = new ArrayList<>();
         }
         else {
             noNullElements(listeners);
@@ -104,7 +104,7 @@ public class PSAntService implements IPSAntService {
         String defaultTarget = project.getDefaultTarget();
         if (targets.isEmpty())
             targets.add(defaultTarget);
-        final Vector<String> targetList = new Vector<String>(targets);
+        final Vector<String> targetList = new Vector<>(targets);
         
         for (BuildListener bl : listeners) {
             project.addBuildListener(bl);

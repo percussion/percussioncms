@@ -32,6 +32,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 
 /**
  * The PSModifyStyleSheet class is used to modify user-defined style-sheets
@@ -49,6 +52,7 @@ import java.io.IOException;
  */
 public class PSModifyStyleSheet
 {
+   Logger log = LogManager.getLogger(PSModifyStyleSheet.class);
    /**
     * External construction needed for installer.
     */
@@ -74,13 +78,9 @@ public class PSModifyStyleSheet
          fIn = new FileInputStream(xslFile);
          inDoc = PSXmlDocumentBuilder.createXmlDocument(fIn, false);
          fIn.close();
-      } catch (java.io.IOException ioE) {
-         System.out.println("An IO exception occurred accessing the file.");
-         System.out.println(ioE.toString());
-         return true;
-      } catch (org.xml.sax.SAXException parseE) {
-         System.out.println("A parsing exception occurred accessing the file.");
-         System.out.println(parseE.toString());
+      } catch (java.io.IOException | org.xml.sax.SAXException ioE) {
+         log.error("An IO exception occurred accessing the file.");
+         log.error(ioE.toString());
          return true;
       }
 
@@ -89,12 +89,12 @@ public class PSModifyStyleSheet
 
       if (e == null)
       {
-         System.out.println("No root element specified in this document!");
+         log.error("No root element specified in this document!");
          return true;
       } else {
          if (!e.getTagName().equals("xsl:stylesheet"))
          {
-            System.out.println("Document not stylesheet!");
+           log.error("Document not stylesheet!");
             return true;
          }
 
@@ -103,7 +103,7 @@ public class PSModifyStyleSheet
          String version = e.getAttribute(XSL_VERSION_ATTRIBUTE_NAME);
          if ((version == null) || (version.equals("")))
          {
-            System.out.println("Updating stylesheet attributes");
+            log.info("Updating stylesheet attributes");
             e.setAttribute(XSL_VERSION_ATTRIBUTE_NAME, CURRENT_XSL_VERSION);
             e.setAttribute(XSL_NAMESPACE_ATTRIBUTE_NAME, CURRENT_XSL_NAMESPACE_REF);
          } else
@@ -119,8 +119,7 @@ public class PSModifyStyleSheet
          PSXmlDocumentBuilder.write(inDoc, fOut);
          fOut.close();
       } catch (java.io.IOException ioE) {
-         System.out.println("Error writing updated file");
-         System.out.println(ioE.toString());
+         log.error("Error writing updated file: {}", ioE);
          return true;
       }
 
@@ -138,33 +137,31 @@ public class PSModifyStyleSheet
    public boolean convertServerRoot(String strStyleSheet)
    {
       File xslFile = null;
-      FileInputStream fIn = null;
-      StringBuffer buffer;
-      try
-      {
-         xslFile = new File(strStyleSheet);
-         fIn = new FileInputStream(xslFile);
-         ByteArrayOutputStream out = new ByteArrayOutputStream();
-         int read = 0;
-         byte[] buf = new byte[1024];
-         while ((read = fIn.read(buf)) >= 0)
-         {
-            out.write(buf, 0, read);
-            if (read < buf.length)
-               break;
-         }
-         out.flush();
-         fIn.close();
 
-         buffer = new StringBuffer(out.toString(PSCharSets.getStdName("UTF-8")));
-      } 
-      catch (IOException e) 
+      StringBuilder buffer;
+
+         xslFile = new File(strStyleSheet);
+         try(FileInputStream fIn = new FileInputStream(xslFile)){
+            try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+               int read = 0;
+               byte[] buf = new byte[1024];
+               while ((read = fIn.read(buf)) >= 0) {
+                  out.write(buf, 0, read);
+                  if (read < buf.length)
+                     break;
+               }
+               out.flush();
+               fIn.close();
+
+               buffer = new StringBuilder(out.toString(PSCharSets.getStdName("UTF-8")));
+            }
+      }
+      catch (IOException e)
       {
          String fileName = "";
          if (xslFile != null)
             fileName = xslFile.toString();
-         System.out.println("An IO exception occurred accessing the file: " + fileName);
-         System.out.println(e.toString());
+         log.error("An IO exception occurred accessing the file: " + fileName,e);
          return true;
       } 
       
@@ -186,19 +183,14 @@ public class PSModifyStyleSheet
          buffer.replace(index, index+strTest.length(), 
                         "/Rhythmyx/DTD/HTMLspecialx.ent");
 
-      try 
-      {
-         FileOutputStream fOut = new FileOutputStream(xslFile);
-         fOut.write(buffer.toString().getBytes());
-         fOut.flush();
-         fOut.close();
-      } 
-      catch (IOException e) 
-      {
-         System.out.println("Error writing updated file");
-         System.out.println(e.toString());
-         return true;
-      }
+
+         try(FileOutputStream fOut = new FileOutputStream(xslFile)){
+            fOut.write(buffer.toString().getBytes());
+            fOut.flush();
+         } catch (IOException e) {
+            log.error("Error writing updated file",e);
+            return true;
+         }
 
       return false;
    }

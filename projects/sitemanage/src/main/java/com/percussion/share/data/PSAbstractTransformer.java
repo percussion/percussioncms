@@ -36,7 +36,7 @@ public abstract class PSAbstractTransformer<OLD,NEW> implements Transformer
 
     @SuppressWarnings("unchecked")
     public List<NEW> collect(Collection<OLD> old) {
-        List<NEW> newList = new ArrayList<NEW>();
+        List<NEW> newList = new ArrayList<>();
         newList.addAll(CollectionUtils.collect(old, this));
         return newList;
     }

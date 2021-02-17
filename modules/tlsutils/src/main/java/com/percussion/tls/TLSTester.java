@@ -333,9 +333,9 @@ public class TLSTester {
         SSLSocket csf = (SSLSocket) SSLSocketFactory.getDefault().createSocket();
 
 
-        Set<String> enabledCiphers = new HashSet<String>(Arrays.asList(csf.getEnabledCipherSuites()));
-        Set<String> defaultCiphers =  new HashSet<String>(Arrays.asList(ssf.getDefaultCipherSuites()));
-        Set<String> availableCiphers = new HashSet<String>(Arrays.asList(ssf.getSupportedCipherSuites()));
+        Set<String> enabledCiphers = new HashSet<>(Arrays.asList(csf.getEnabledCipherSuites()));
+        Set<String> defaultCiphers =  new HashSet<>(Arrays.asList(ssf.getDefaultCipherSuites()));
+        Set<String> availableCiphers = new HashSet<>(Arrays.asList(ssf.getSupportedCipherSuites()));
 
 
         System.out.println("Default\tCipher");

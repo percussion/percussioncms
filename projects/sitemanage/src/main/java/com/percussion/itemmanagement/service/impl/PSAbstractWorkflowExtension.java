@@ -214,12 +214,12 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
     {
         private Map<String, String> params;
         // used to keep track of template ids that have already been searched for shared assets
-        private final HashSet<String> seenIds = new HashSet<String>();
+        private final HashSet<String> seenIds = new HashSet<>();
         
         /**
          * @see #isAlreadyWorkflowed(WorkflowItem)
          */
-        private Set<IPSGuid> successfullyWorkflowedIds = new HashSet<IPSGuid>();
+        private Set<IPSGuid> successfullyWorkflowedIds = new HashSet<>();
         
         public void processItem(IPSPubItemStatus item)
         {
@@ -613,7 +613,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
         }
         
         private List<WorkflowItem> loadWorkflowItems(Collection<String> ids, AssetType assetType) {
-            List<WorkflowItem> items = new ArrayList<WorkflowItem>();
+            List<WorkflowItem> items = new ArrayList<>();
             for (String id : ids) {
                 IPSGuid guid = getIdMapper().getGuid(id);
                 WorkflowItem item = getWorkflowItem(guid);

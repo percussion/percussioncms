@@ -75,9 +75,9 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
     @Override
     public List<DisplayFormat> findAllDisplayFormats() throws PSCmsException, PSErrorResultsException, PSUnknownNodeTypeException {
 
-        List<DisplayFormat> ret = new ArrayList<DisplayFormat>();
+        List<DisplayFormat> ret = new ArrayList<>();
         List<IPSCatalogSummary> displayFormats = designWs.findDisplayFormats(null, null);
-        List<IPSGuid> guids = new ArrayList<IPSGuid>();
+        List<IPSGuid> guids = new ArrayList<>();
 
         for(IPSCatalogSummary c: displayFormats){
             guids.add(c.getGUID());
@@ -96,7 +96,7 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
     }
 
     private DisplayFormatPropertyList copyDisplayFormatProps(PSDFProperties props){
-        DisplayFormatPropertyList ret = new DisplayFormatPropertyList(new ArrayList<DisplayFormatProperty>());
+        DisplayFormatPropertyList ret = new DisplayFormatPropertyList(new ArrayList<>());
 
 
         return ret;
@@ -144,7 +144,7 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
 
     private Map<Guid, String> copyAllowedCommunities(Map<IPSGuid, String> allowedCommunities) {
 
-        Map<Guid,String> ret = new HashMap<Guid,String>();
+        Map<Guid,String> ret = new HashMap<>();
 
         for(Map.Entry<IPSGuid,String>  e : allowedCommunities.entrySet()){
             IPSGuid g = e.getKey();
@@ -156,7 +156,7 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
 
     private DisplayFormatColumnList copyDisplayFormatColumns(PSDFColumns columnContainer) {
 
-        DisplayFormatColumnList ret = new DisplayFormatColumnList(new ArrayList<DisplayFormatColumn>());
+        DisplayFormatColumnList ret = new DisplayFormatColumnList(new ArrayList<>());
 
         for(int i=0;i<columnContainer.size();i++){
             PSDisplayColumn col = (PSDisplayColumn)columnContainer.get(i);
