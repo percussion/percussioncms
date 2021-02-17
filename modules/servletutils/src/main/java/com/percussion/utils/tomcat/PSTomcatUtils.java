@@ -97,7 +97,7 @@ public class PSTomcatUtils
       int nextFlag = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS | 
          PSXmlTreeWalker.GET_NEXT_RESET_CURRENT; 
 
-      List<IPSConnector> connList = new ArrayList<IPSConnector>();
+      List<IPSConnector> connList = new ArrayList<>();
       Element connEl = tree.getNextElement(
          PSTomcatConnector.CONNECTOR_NODE_NAME, firstFlag);
       while (connEl != null)

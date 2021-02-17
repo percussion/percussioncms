@@ -118,7 +118,7 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
          try
          {
             ctwfs = cdws.loadAssociatedWorkflows(ctGuid, true, false);
-            List<IPSGuid> wfguids = new ArrayList<IPSGuid>();
+            List<IPSGuid> wfguids = new ArrayList<>();
             for (PSContentTypeWorkflow ctwf : ctwfs)
             {
                if (!ctwf.getWorkflowId().equals(wfGuid))

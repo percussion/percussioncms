@@ -192,7 +192,7 @@ public class PSCreateTranslations implements IPSWorkflowAction
          PSRelationshipSet dependents = relProxy.getRelationships(filter);
          if (dependents != null && !dependents.isEmpty())
          {
-            Set<Integer> ids = new HashSet<Integer>(dependents.size());
+            Set<Integer> ids = new HashSet<>(dependents.size());
             Iterator iter = dependents.iterator();
             int i = 0;
             while (iter.hasNext())
