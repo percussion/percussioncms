@@ -24,36 +24,12 @@
 package com.percussion.widgetbuilder.utils.xform;
 
 import com.percussion.cms.objectstore.PSItemDefinition;
-import com.percussion.design.objectstore.PSApplyWhen;
-import com.percussion.design.objectstore.PSBackEndColumn;
-import com.percussion.design.objectstore.PSBackEndTable;
-import com.percussion.design.objectstore.PSConditionalExit;
-import com.percussion.design.objectstore.PSControlDependencyMap;
-import com.percussion.design.objectstore.PSControlMeta;
-import com.percussion.design.objectstore.PSControlRef;
-import com.percussion.design.objectstore.PSDependency;
-import com.percussion.design.objectstore.PSDisplayMapper;
-import com.percussion.design.objectstore.PSDisplayMapping;
-import com.percussion.design.objectstore.PSDisplayText;
-import com.percussion.design.objectstore.PSExtensionCall;
-import com.percussion.design.objectstore.PSExtensionCallSet;
-import com.percussion.design.objectstore.PSExtensionParamValue;
-import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSFieldTranslation;
-import com.percussion.design.objectstore.PSFieldValidationRules;
-import com.percussion.design.objectstore.PSInputTranslations;
-import com.percussion.design.objectstore.PSParam;
-import com.percussion.design.objectstore.PSRule;
-import com.percussion.design.objectstore.PSSearchProperties;
-import com.percussion.design.objectstore.PSSingleHtmlParameter;
-import com.percussion.design.objectstore.PSTableRef;
-import com.percussion.design.objectstore.PSTableSet;
-import com.percussion.design.objectstore.PSTextLiteral;
-import com.percussion.design.objectstore.PSUISet;
+import com.percussion.design.objectstore.*;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.tablefactory.PSJdbcColumnDef;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
+import com.percussion.tablefactory.PSJdbcTableComponent;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSCollection;
@@ -166,19 +142,19 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 	}
 
 	private Reader transformSchema(Reader reader,
-			PSWidgetPackageSpec packageSpec) throws Exception {
+			PSWidgetPackageSpec packageSpec) throws PSJdbcTableFactoryException, SAXException, IOException {
 		PSJdbcTableSchema schema = getSchema(reader);
 		List<PSWidgetBuilderFieldData> fields = packageSpec.getFields();
 		for (PSWidgetBuilderFieldData field : fields) {
 			schema.setColumn(new PSJdbcColumnDef(getDataTypeMap(), field
-					.getName().toUpperCase(), PSJdbcColumnDef.ACTION_CREATE,
+					.getName().toUpperCase(), PSJdbcTableComponent.ACTION_CREATE,
 					getDbType(field), getSize(field), true, ""));
 			if (field.getType().equals(FieldType.IMAGE.name())
 			        || field.getType().equals(FieldType.FILE.name()) 
 			        || field.getType().equals(FieldType.PAGE.name())) {
 				schema.setColumn(new PSJdbcColumnDef(getDataTypeMap(), field
 						.getName().toUpperCase() + "_LINKID",
-						PSJdbcColumnDef.ACTION_CREATE, Types.INTEGER,
+						PSJdbcTableComponent.ACTION_CREATE, Types.INTEGER,
 						getSize(field), true, ""));
 			}
 		}
@@ -187,7 +163,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 	}
 
 	private Reader transformItemDef(Reader reader,
-			PSWidgetPackageSpec packageSpec) throws Exception {
+			PSWidgetPackageSpec packageSpec) throws IOException, SAXException, PSValidationException, PSUnknownNodeTypeException {
 		PSItemDefinition itemDef = getItemDef(reader);
 
 		// workflow id is automatically updated, need to set token so that
@@ -212,7 +188,6 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 			throw new RuntimeException(
 					"Package spec must contain at least one field");
 
-		boolean addedImageProcessors = false;
 		for (PSWidgetBuilderFieldData field : fields) {
 			//Widget Builder fields should not be required by default.
 			PSField psfield = addField(beTable, field, fieldSet, false);
@@ -225,9 +200,8 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 				addReservedHtmlClassCleanerExtension(psfield, itemDef);
 				addRichTextLinkFieldTranslations(psfield);
 			} else if (field.getType().equals(FieldType.FILE.name())) {
-				// add managed link processors/transformers
-				if (!addedImageProcessors)
-					addImageProcessors(itemDef);
+
+				addImageProcessors(itemDef);
 
 				// add "_linkId" field and transforms needed for manage links
 				PSWidgetBuilderFieldData linkIdField = new PSWidgetBuilderFieldData();
@@ -241,9 +215,8 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 
 				
 			} else if (field.getType().equals(FieldType.IMAGE.name())) {
-				// add managed link processors/transformers
-				if (!addedImageProcessors)
-					addImageProcessors(itemDef);
+
+				addImageProcessors(itemDef);
 				
 				// add "_linkId" field and transforms needed for manage links
 				PSWidgetBuilderFieldData linkIdField = new PSWidgetBuilderFieldData();
@@ -257,15 +230,14 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 				addMapping(linkIdField, mapper);
 
 			} else if (field.getType().equals(FieldType.PAGE.name())) {
-                // add managed link processors/transformers
-                if (!addedImageProcessors)
-                    addImageProcessors(itemDef);
-                
+
+               addImageProcessors(itemDef);
+
                 // add "_linkId" field and transforms needed for manage links
                 PSWidgetBuilderFieldData linkIdField = new PSWidgetBuilderFieldData();
                 linkIdField.setName(field.getName() + "_linkId");
                 linkIdField.setLabel(linkIdField.getName());
-                linkIdField.setType(FieldType.IMAGE_LINK.name());
+                linkIdField.setType(FieldType.PAGE_LINK.name());
                 PSField psLinkField = addField(beTable, linkIdField, fieldSet,
                         false);
                 addImgLinkFieldTranslations(psfield, psLinkField);
@@ -326,7 +298,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 
 	private PSField addField(PSBackEndTable beTable,
 			PSWidgetBuilderFieldData field, PSFieldSet fieldSet,
-			boolean required) throws Exception {
+			boolean required) throws PSValidationException {
 		// create locator
 		PSBackEndColumn col = new PSBackEndColumn(beTable, field.getName()
 				.toUpperCase());
@@ -347,7 +319,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 	}
 
 	private PSDisplayMapping addMapping(PSWidgetBuilderFieldData field,
-			PSDisplayMapper mapper) throws Exception {
+			PSDisplayMapper mapper)  {
 		// add mapping to ui set
 		PSUISet uiSet = new PSUISet();
 		uiSet.setLabel(new PSDisplayText(field.getLabel() + ":"));
@@ -438,7 +410,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 	 * Adds the sys_xdTextCleanup extension to the input data exits, and a
 	 * corresponding set of control dependency user properties
 	 * 
-	 * @param field
+	 * @param mapping
 	 *            The field to add it for, not <code>null</code>
 	 * @param itemDef
 	 *            The item def to add to, not <code>null</code>.
@@ -507,7 +479,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 
 	}
 
-	private PSItemDefinition getItemDef(Reader reader) throws Exception {
+	private PSItemDefinition getItemDef(Reader reader) throws IOException, SAXException, PSUnknownNodeTypeException {
 		return new PSItemDefinition(getElementFromReader(reader));
 	}
 
@@ -548,14 +520,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 			return IMG_PATH_LEN;
 		else if (FieldType.PAGE.name().equals(field.getType()))
             return PAGE_PATH_LEN;
-		/*  Should set size and type of _link fields,  tests need resolving
-		else if (FieldType.FILE_LINK.name().equals(field.getType()))
-            return LINK_LEN;
-		else if (FieldType.IMAGE_LINK.name().equals(field.getType()))
-            return LINK_LEN;
-		else if (FieldType.PAGE_LINK.name().equals(field.getType()))
-            return LINK_LEN;
-        */
+
 		return null;
 	}
 
@@ -563,12 +528,12 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 		return dbColumnTypeMap.get(field.getType());
 	}
 
-	PSJdbcTableSchema getSchema(Reader reader) throws Exception {
+	PSJdbcTableSchema getSchema(Reader reader) throws IOException, SAXException, PSJdbcTableFactoryException {
 		return new PSJdbcTableSchema(getElementFromReader(reader),
 				getDataTypeMap());
 	}
 
-	private PSJdbcDataTypeMap getDataTypeMap() throws Exception {
+	private PSJdbcDataTypeMap getDataTypeMap() throws PSJdbcTableFactoryException, IOException, SAXException {
 		if (dataTypeMap == null)
 			dataTypeMap = new PSJdbcDataTypeMap("DERBY", "", "");
 
