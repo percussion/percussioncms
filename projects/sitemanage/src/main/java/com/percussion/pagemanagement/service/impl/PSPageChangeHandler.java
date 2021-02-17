@@ -38,6 +38,9 @@ import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.impl.PSContentItem;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -173,7 +176,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
 
                             break;
                         }
-                    } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+                    } catch (PSDataServiceException e) {
                         log.warn("Error updating Linked Title. Error:{}", e.getMessage());
                         log.debug(e.getMessage(), e);
                     }
@@ -250,7 +253,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                pageFields.put(PAGE_SUMMARY_FIELD_NAME, newSummary);
                contentItemDao.save(page);
            }
-       } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+       } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
            log.warn("Error update Page summary for Page: {} Error: {}",page.getId(),e.getMessage() );
            log.debug(e.getMessage(),e);
        }
@@ -275,7 +278,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                    contentItemDao.save(page);
                }
            }
-       } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+       } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
            log.warn("Error update Author for Page: {} Error: {}",page.getId(),e.getMessage());
            log.debug(e.getMessage(),e);
        }
@@ -294,16 +297,21 @@ public class PSPageChangeHandler implements IPSPageChangeListener
            Set<String> assetIds = widgetAssetRelationshipService.getLocalAssets(pageId);
            assetIds.addAll(widgetAssetRelationshipService.getSharedAssets(pageId));
            for (String assetId : assetIds) {
-               PSContentItem asset = contentItemDao.find(assetId, false);
-               //If the asset exists and its type is a more link supported type then get extract the summary.
-               if (asset != null && moreLinkSupportTypes.containsKey(asset.getType())) {
-                   Map<String,Object> assetFields = asset.getFields();
-                   String text = (String) assetFields.get(moreLinkSupportTypes.get(asset.getType()));
-                   int moreIndex = StringUtils.indexOf(text, MORE_LINK_TEXT);
-                   if (moreIndex != -1) {
-                       summary = text.substring(0, moreIndex + MORE_LINK_TEXT.length());
-                       break;
+               try {
+                   PSContentItem asset = contentItemDao.find(assetId, false);
+                   //If the asset exists and its type is a more link supported type then get extract the summary.
+                   if (asset != null && moreLinkSupportTypes.containsKey(asset.getType())) {
+                       Map<String, Object> assetFields = asset.getFields();
+                       String text = (String) assetFields.get(moreLinkSupportTypes.get(asset.getType()));
+                       int moreIndex = StringUtils.indexOf(text, MORE_LINK_TEXT);
+                       if (moreIndex != -1) {
+                           summary = text.substring(0, moreIndex + MORE_LINK_TEXT.length());
+                           break;
+                       }
                    }
+               } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+                   log.warn(e.getMessage());
+                   log.debug(e.getMessage(),e);
                }
            }
        } catch (IPSGenericDao.LoadException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {

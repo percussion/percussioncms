@@ -23,11 +23,14 @@
  */
 package com.percussion.share.dao;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -75,7 +78,7 @@ public abstract class PSFileDataRepository<T>
 
     private String fileExt = "xml";
     
-    private AtomicReference<Data<T>> data = new AtomicReference<Data<T>>();
+    private AtomicReference<Data<T>> data = new AtomicReference<>();
     
     private boolean initialized = false;
     
@@ -185,17 +188,16 @@ public abstract class PSFileDataRepository<T>
      * Called to initialize the directory that represents the file repository
      * by polling the files for the first time.
      */
-    public void init()
-    {
+    public void init() throws PSDataServiceException {
         if (initialized == true) return;
         
         try
         {
             poll();
         }
-        catch (IOException e)
+        catch (IOException | PSValidationException e)
         {
-            throw new RuntimeException(e);
+            throw new PSDataServiceException(e);
         }
         
         initialized = true;
@@ -206,7 +208,7 @@ public abstract class PSFileDataRepository<T>
      * Retrieve the currently loaded repository data.
      * @return never <code>null</code>.
      */
-    public T getData() {
+    public T getData() throws PSDataServiceException {
         init();
         return data.get().data;
     }
@@ -215,8 +217,8 @@ public abstract class PSFileDataRepository<T>
         if (root != null) return root;
         root = new File(getRepositoryDirectory());
         if (!root.exists()) {
-            log.error("Repository directory: " + getRepositoryDirectory() + " does not exist.");
-            log.info("Creating directory: " + root);
+            log.error("Repository directory: {} does not exist.",getRepositoryDirectory());
+            log.info("Creating directory: {}",  root);
             FileUtils.forceMkdir(root);
         }
         
@@ -230,7 +232,7 @@ public abstract class PSFileDataRepository<T>
      * Poll should be called from quartz or some other scheduler.
      * @throws IOException 
      */
-    public synchronized void poll() throws IOException {
+    public synchronized void poll() throws IOException, PSValidationException {
         if (log.isTraceEnabled()) {
             log.trace(format("Polling folder: {0} for file ext: {1}", getRoot(), getFileExt()));
         }
@@ -337,6 +339,6 @@ public abstract class PSFileDataRepository<T>
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
 
 }

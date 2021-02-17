@@ -48,6 +48,7 @@ import com.percussion.share.async.PSAsyncJobStatus;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.PSLightWeightObject;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.service.IPSSiteSectionMetaDataService;
 import com.percussion.utils.request.PSRequestInfo;
@@ -181,8 +182,7 @@ public class PSFolderService implements IPSFolderService
     
     
     @Override
-    public String startGetAssignedFoldersJob(String workflowName, String path, boolean includeFoldersWithDifferentWorkflow)
-    {
+    public String startGetAssignedFoldersJob(String workflowName, String path, boolean includeFoldersWithDifferentWorkflow) throws PSWorkflowNotFoundException {
         long jobId = asyncJobService.startJob("getAssignedFoldersJob", new Object[] {workflowName, path, includeFoldersWithDifferentWorkflow});
         return String.valueOf(jobId);
     }
@@ -519,8 +519,7 @@ public class PSFolderService implements IPSFolderService
      * @return a list of {@link PSPathItem} objects. May be empty, but never
      *         <code>null</code>
      */
-    private List<PSPathItem> getSubfolders(String path)
-    {
+    private List<PSPathItem> getSubfolders(String path) throws IPSPathService.PSPathServiceException, PSDataServiceException {
         List<PSPathItem> children = pathService.findChildren(path);
         List<PSPathItem> subfolders = new ArrayList<>();
 

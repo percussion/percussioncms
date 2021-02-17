@@ -90,7 +90,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @return
      * @throws PSAssetServiceException
      */
-    public PSNoContent promoteAssetWidget(PSAssetWidgetRelationship rel) throws PSAssetServiceException, DataServiceSaveException, DataServiceNotFoundException, PSValidationException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException;
+    public PSNoContent promoteAssetWidget(PSAssetWidgetRelationship rel) throws PSDataServiceException;
     
     /**
      * Clears the specified relationship.  If no other asset widget relationships exist for the asset, the item will
@@ -163,7 +163,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @param readonly - flag indicating the url should be for a view only asset.
      * @return never <code>null</code>.
      */
-    public String getAssetUrl(String id, boolean readonly) throws DataServiceLoadException, DataServiceNotFoundException;
+    public String getAssetUrl(String id, boolean readonly) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
     
     /** 
      * Adds the specified asset to the specified folder.
@@ -292,7 +292,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @return List of newly created html assets, Never <code>null</code> may be empty.
      * @throws PSAssetServiceException
      */
-    public List<PSAsset> updateInspectedElements(PSInspectedElementsData inspectedElementsData) throws PSAssetServiceException, DataServiceLoadException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSValidationException, DataServiceSaveException, IPSPageService.PSPageException;
+    public List<PSAsset> updateInspectedElements(PSInspectedElementsData inspectedElementsData) throws PSDataServiceException;
     
     /***
      * Will return an Image report that lists all images. 

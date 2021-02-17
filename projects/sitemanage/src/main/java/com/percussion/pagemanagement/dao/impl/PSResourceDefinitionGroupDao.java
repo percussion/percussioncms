@@ -27,6 +27,7 @@ import com.percussion.pagemanagement.dao.IPSResourceDefinitionGroupDao;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionNotFoundException;
 import com.percussion.share.dao.PSFileDataRepository;
 import com.percussion.share.dao.PSXmlFileDataRepository;
@@ -98,8 +99,7 @@ public class PSResourceDefinitionGroupDao
         return new ArrayList<PSResourceDefinition>(getData().getResourceDefinitions().values());
     }
 
-    public PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException
-    {
+    public PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException {
         PSResourceDefinitionUniqueId uid = new PSResourceDefinitionUniqueId(uniqueId);
         return getData().getResourceDefinitions().get(uid);
     }

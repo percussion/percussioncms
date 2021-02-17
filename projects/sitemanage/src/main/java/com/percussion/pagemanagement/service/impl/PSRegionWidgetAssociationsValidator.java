@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 
+import com.percussion.share.service.exception.PSPropertiesValidationException;
 import org.springframework.validation.ObjectError;
 
 import com.percussion.pagemanagement.data.PSRegionWidgetAssociations;
@@ -72,7 +73,7 @@ public abstract class PSRegionWidgetAssociationsValidator<BEAN> extends PSAbstra
     
     
     protected void doWidgetAssociations(PSRegionWidgetAssociations a, PSBeanValidationException e) {
-        Set<String> ids = new HashSet<String>();
+        Set<String> ids = new HashSet<>();
         for (PSRegionWidgets ws : a.getRegionWidgetAssociations()) {
             if (ids.contains(ws.getRegionId())) {
                 e.reject("regionWidgetAssocations.dupIds", "Duplicate ids for region");
@@ -91,22 +92,23 @@ public abstract class PSRegionWidgetAssociationsValidator<BEAN> extends PSAbstra
     }
     
     protected void validateWidgetItem(PSWidgetItem widgetItem, PSBeanValidationException e) {
-        PSSpringValidationException we = widgetService.validateWidgetItem(widgetItem);
-        List<ObjectError> errors = we.getAllErrors();
-        StringBuilder messageBuilder = new StringBuilder();
-        if (errors!=null && !errors.isEmpty())
-        {
-            Iterator<ObjectError> iter = errors.iterator();
-            while(iter.hasNext())
-            {
-                ObjectError error = iter.next();
-                messageBuilder.append(error.getDefaultMessage());
-                if(iter.hasNext())
-                {
-                    messageBuilder.append(",");
-                }
-            }
-            e.reject("regionWidgetAssocations.widgetItem", messageBuilder.toString());
-        }
+       try {
+           PSSpringValidationException we = widgetService.validateWidgetItem(widgetItem);
+           List<ObjectError> errors = we.getAllErrors();
+           StringBuilder messageBuilder = new StringBuilder();
+           if (errors != null && !errors.isEmpty()) {
+               Iterator<ObjectError> iter = errors.iterator();
+               while (iter.hasNext()) {
+                   ObjectError error = iter.next();
+                   messageBuilder.append(error.getDefaultMessage());
+                   if (iter.hasNext()) {
+                       messageBuilder.append(",");
+                   }
+               }
+               e.reject("regionWidgetAssocations.widgetItem", messageBuilder.toString());
+           }
+       } catch (PSPropertiesValidationException psPropertiesValidationException) {
+           e.addSuppressed(psPropertiesValidationException);
+       }
     }
 }

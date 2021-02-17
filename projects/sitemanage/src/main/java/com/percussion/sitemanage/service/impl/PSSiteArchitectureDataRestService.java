@@ -26,6 +26,7 @@ package com.percussion.sitemanage.service.impl;
 
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteArchitecture;
 import com.percussion.sitemanage.service.IPSSiteArchitectureDataService;
 
@@ -63,7 +64,7 @@ public class PSSiteArchitectureDataRestService
     {
         try {
             return ds.find(id);
-        } catch (DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException();

@@ -28,6 +28,6 @@ import com.percussion.share.data.PSNoContent;
 
 public interface IPSPathRecycleService {
 
-    PSNoContent restoreFolder(String guid);
+    PSNoContent restoreFolder(String guid) throws IPSPathService.PSPathServiceException;
 
 }

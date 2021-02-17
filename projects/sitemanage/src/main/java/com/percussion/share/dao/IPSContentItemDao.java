@@ -29,15 +29,18 @@ import java.util.Collection;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSItemSummary;
 
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import org.springframework.validation.Errors;
 
 public interface IPSContentItemDao extends IPSGenericDao<PSContentItem, String>, IPSRelationshipCataloger
 {
 
     public void validateDelete(String id, Errors errors);
-    public PSContentItem findItemByPath(String name, String folderPath);
-    public PSContentItem findItemByPath(String fullPath);
-    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath);
+    public PSContentItem findItemByPath(String name, String folderPath) throws PSDataServiceException;
+    public PSContentItem findItemByPath(String fullPath) throws PSDataServiceException;
+    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath) throws PSDataServiceException;
 
     /**
      * Gets the content item from its identifier, similar with 
@@ -53,19 +56,19 @@ public interface IPSContentItemDao extends IPSGenericDao<PSContentItem, String>,
      * 
      * @throws LoadException if error occurs during the find operation.
      */
-    PSContentItem find(String id, boolean isSummary) throws LoadException;
+    PSContentItem find(String id, boolean isSummary) throws LoadException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException;
     
     /**
      * Turns revision control on for the item with the given id.
      * @param id Id of the item.
      */
-    public void revisionControlOn(String id);
+    public void revisionControlOn(String id) throws LoadException;
 
     /**
      * @param item may not be <code>null</code>.
      * @param folderPath may not be <code>null</code> or empty.
      */
-    public void removeItemFromPath(IPSItemSummary item, String folderPath);
+    public void removeItemFromPath(IPSItemSummary item, String folderPath) throws PSDataServiceException;
     
     /**
      * Gets all item IDs for a specified Content Type.
@@ -75,5 +78,5 @@ public interface IPSContentItemDao extends IPSGenericDao<PSContentItem, String>,
      * @return a list of item IDs with the specified Content Type name, 
      * not <code>null</code>, but may empty.
      */
-    public Collection<Integer> findAllItemIdsByType(String name);
+    public Collection<Integer> findAllItemIdsByType(String name) throws PSDataServiceException;
 }

@@ -345,7 +345,7 @@ public class PSResourceInstanceHelper
      * @param pageId never <code>null</code>.
      * @return site  never <code>null</code>.
      */
-    public PSSiteSummary getSiteForPageId(String pageId) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException {
+    public PSSiteSummary getSiteForPageId(String pageId) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         /*
          * TODO should return page summary not whole page.
          */

@@ -37,6 +37,7 @@ import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSLinkableItem;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.List;
 import java.util.Set;
@@ -64,7 +65,7 @@ public interface IPSRenderLinkService
      * @param linkableItem never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException;
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException;
     
     
     /**
@@ -74,7 +75,7 @@ public interface IPSRenderLinkService
      * @param resourceDefinitionId never <code>null</code>, empty, or blank.
      * @return never <code>null</code>.
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem, String resourceDefinitionId) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException;
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem, String resourceDefinitionId) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException;
     
     /**
      * Renders a link to the region CSS file of specified theme.
@@ -86,7 +87,7 @@ public interface IPSRenderLinkService
      * @return the link, never <code>null</code>.
      */
     public PSRenderLink renderLinkThemeRegionCSS(PSRenderLinkContext context, String themeName, 
-            boolean isEdit, EditType editType) throws IPSDataService.PSThemeNotFoundException;
+            boolean isEdit, EditType editType) throws IPSDataService.PSThemeNotFoundException, PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException;
     
     /**
      * Renders a link to a file or folder.
@@ -130,7 +131,7 @@ public interface IPSRenderLinkService
      * @param renderType this is the rendered type, "html", "xml" or "database". It is default to "html".
      * @return the link to a page, never blank.
      */
-    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException;
+    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException;
     
     /**
      * Creates a preview image link.
@@ -176,6 +177,6 @@ public interface IPSRenderLinkService
     public PSAssetResource resolveResourceDefinition(
             String resourceDefinitionId,  
             String legacyTemplate,
-            String contentType) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException;
+            String contentType) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException;
     
 }

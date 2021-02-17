@@ -43,6 +43,7 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 
@@ -172,7 +173,7 @@ public class PSCommentsService implements IPSCommentsService
      * (non-Javadoc)
      * @see com.percussion.comments.service.IPSCommentsService#getCommentsSummary(java.lang.String)
      */
-    public PSCommentsSummary getCommentsSummary(String id) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException {
+    public PSCommentsSummary getCommentsSummary(String id) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException {
         isNotBlank(id);
 
         PSCommentsSummary summary = new PSCommentsSummary();
@@ -224,7 +225,7 @@ public class PSCommentsService implements IPSCommentsService
     public List<PSComment> getCommentsOnPage(@PathParam("site") String site, @PathParam("pagePath") String pagePath,
                                              @QueryParam("max") Integer max, @QueryParam("start") Integer start)
     {
-        List<PSComment> aggregatedComments = new ArrayList<PSComment>();
+        List<PSComment> aggregatedComments = new ArrayList<>();
 
         if (isBlank(pagePath))
             pagePath = "";

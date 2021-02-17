@@ -57,8 +57,7 @@ public class PSAssetPathItemService extends PSPathItemService
     }
 
     @Override
-    protected String getFullFolderPath(String path)
-    {
+    protected String getFullFolderPath(String path) throws PSPathNotFoundServiceException {
         PSPathUtils.validatePath(path);
         
         String fullFolderPath = ASSET_ROOT;

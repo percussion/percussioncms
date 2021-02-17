@@ -52,6 +52,7 @@ import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.task.impl.PSWorkflowEditionTask;
 import com.percussion.utils.guid.IPSGuid;
@@ -627,7 +628,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
          * @param page never <code>null</code>.
          * @return never <code>null</code>.
          */
-        protected List<WorkflowItem> getSharedAssetWorkflowItems(WorkflowItem page) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
+        protected List<WorkflowItem> getSharedAssetWorkflowItems(WorkflowItem page) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException {
             IPSGuid guid = page.guid;
             String newId = getIdMapper().getString(guid);
             Set<String> ids =  getWidgetAssetRelationshipService().getSharedAssets(newId);

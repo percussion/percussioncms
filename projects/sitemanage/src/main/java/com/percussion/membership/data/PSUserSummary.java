@@ -70,8 +70,7 @@ public class PSUserSummary
         this.email = email;
     }
     
-    public void setCreatedDate(String createdDate)
-    {
+    public void setCreatedDate(String createdDate) throws DataServiceLoadException {
         Validate.notNull(createdDate);
         Date formattedDate;
         try {

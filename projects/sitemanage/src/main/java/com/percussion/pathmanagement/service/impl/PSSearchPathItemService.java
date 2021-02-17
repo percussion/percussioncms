@@ -54,16 +54,14 @@ public class PSSearchPathItemService extends PSPathItemService
         this.setRootName("Search");
     }
 
+    //TODO: Implement me.
     @Override
-    protected String getFolderRoot()
-    {
-        // TODO Auto-generated method stub
-        return null;
+    protected String getFolderRoot() throws PSPathServiceException {
+        throw new PSPathServiceException("Not implemented");
     }
 
     @Override
-    protected String getFullFolderPath(String path)
-    {
+    protected String getFullFolderPath(String path) throws PSPathNotFoundServiceException {
         PSPathUtils.validatePath(path);
         
         String fullFolderPath = SEARCH_ROOT;
@@ -74,26 +72,23 @@ public class PSSearchPathItemService extends PSPathItemService
         
         return fullFolderPath;
     }
-    
+
+    //TODO: Implement me.
     @Override
-    protected String getInUsePagesResult()
-    {
-        // TODO Auto-generated method stub
-        return null;
+    protected String getInUsePagesResult() throws PSPathServiceException {
+        throw new PSPathServiceException("Not implemented");
     }
 
+    //TODO: Implement me.
     @Override
-    protected String getInUseTemplatesResult()
-    {
-        // TODO Auto-generated method stub
-        return null;
+    protected String getInUseTemplatesResult() throws PSPathServiceException {
+        throw new PSPathServiceException("Not implemented");
     }
 
+    //TODO: Implement me.
     @Override
-    protected String getNotAuthorizedResult()
-    {
-        // TODO Auto-generated method stub
-        return null;
+    protected String getNotAuthorizedResult() throws PSPathServiceException {
+        throw new PSPathServiceException("Not implemented");
     }
     
 

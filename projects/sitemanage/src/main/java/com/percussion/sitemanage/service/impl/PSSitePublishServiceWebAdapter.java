@@ -40,8 +40,8 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
-import com.percussion.services.relationship.data.PSRelationshipData;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.service.IPSIdMapper;
@@ -52,18 +52,20 @@ import com.percussion.sitemanage.service.IPSSitePublishService.PubType;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +98,7 @@ public class PSSitePublishServiceWebAdapter
     @Autowired
     IPSRelationshipService relationshipService;
 
-   private static Logger ms_logger = Logger.getLogger(PSSitePublishServiceWebAdapter.class);
+   private static final Logger log = LogManager.getLogger(PSSitePublishServiceWebAdapter.class);
 
    /**
     * Constructs a PSSitePublishServiceWebAdapter object.
@@ -123,10 +125,16 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse publish(@PathParam("name") String name, @PathParam("server") String server)
    {
-      if (StringUtils.isBlank(name))
-         throw new IllegalArgumentException("name may not be blank");
-      
-      return sitePublishService.publish(name, PubType.FULL, null, false, server);
+      try {
+         if (StringUtils.isBlank(name))
+            throw new IllegalArgumentException("name may not be blank");
+
+         return sitePublishService.publish(name, PubType.FULL, null, false, server);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
+         throw new WebApplicationException(e.getMessage());
+      }
    }
 
    
@@ -142,10 +150,16 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse publishPage(@PathParam("id") String id)
    {
-      if (StringUtils.isBlank(id))
-          throw new IllegalArgumentException("id may not be blank");
-      
-      return sitePublishService.publish(null, PubType.PUBLISH_NOW, id, false, null);
+      try {
+         if (StringUtils.isBlank(id))
+            throw new IllegalArgumentException("id may not be blank");
+
+         return sitePublishService.publish(null, PubType.PUBLISH_NOW, id, false, null);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
+         throw new WebApplicationException(e.getMessage());
+      }
    }
 
    /**
@@ -160,10 +174,16 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse publishResource(@PathParam("id") String id)
    {
-      if (StringUtils.isBlank(id))
-         throw new IllegalArgumentException("name may not be blank");
-      
-      return sitePublishService.publish(null, PubType.PUBLISH_NOW, id, true, null);
+      try {
+         if (StringUtils.isBlank(id))
+            throw new IllegalArgumentException("name may not be blank");
+
+         return sitePublishService.publish(null, PubType.PUBLISH_NOW, id, true, null);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
+         throw new WebApplicationException(e.getMessage());
+      }
    }
 
    /**
@@ -178,10 +198,16 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse publishPageToStaging(@PathParam("id") String id)
    {
-      if (StringUtils.isBlank(id))
-          throw new IllegalArgumentException("id may not be blank");
-      
-      return sitePublishService.publish(null, PubType.STAGE_NOW, id, false, null);
+      try {
+         if (StringUtils.isBlank(id))
+            throw new IllegalArgumentException("id may not be blank");
+
+         return sitePublishService.publish(null, PubType.STAGE_NOW, id, false, null);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
+         throw new WebApplicationException(e.getMessage());
+      }
    }
 
    /**
@@ -196,10 +222,14 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse publishResourceToStaging(@PathParam("id") String id)
    {
-      if (StringUtils.isBlank(id))
-         throw new IllegalArgumentException("name may not be blank");
-      
-      return sitePublishService.publish(null, PubType.STAGE_NOW, id, true, null);
+      try {
+         if (StringUtils.isBlank(id))
+            throw new IllegalArgumentException("name may not be blank");
+
+         return sitePublishService.publish(null, PubType.STAGE_NOW, id, true, null);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         throw new WebApplicationException(e.getMessage());
+      }
    }
 
    /**
@@ -213,9 +243,13 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSPublishingActionList getPublishingActions(@PathParam("id") String id)
    {
-      if (StringUtils.isBlank(id))
-          throw new IllegalArgumentException("id may not be blank");
-      return new PSPublishingActionList(sitePublishService.getPublishingActions(id));
+      try {
+         if (StringUtils.isBlank(id))
+            throw new IllegalArgumentException("id may not be blank");
+         return new PSPublishingActionList(sitePublishService.getPublishingActions(id));
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         throw new WebApplicationException(e);
+      }
    }
 
    @PUT
@@ -225,7 +259,7 @@ public class PSSitePublishServiceWebAdapter
    public PSSitePublishResponse takeDownPage(@PathParam("id") String id, ArrayList<PSPageLinkedToItem> linkedPages) {
       if (linkedPages != null) {
          IPSRelationshipService relsvc = PSRelationshipServiceLocator.getRelationshipService();
-         List<Integer> contentIds = new ArrayList<Integer>();
+         List<Integer> contentIds = new ArrayList<>();
          PSRelationshipSet relationshipSet = new PSRelationshipSet();
 
           for (PSPageLinkedToItem item : linkedPages) {
@@ -250,7 +284,7 @@ public class PSSitePublishServiceWebAdapter
                         }
                      }
                   } catch (PSException e) {
-                      ms_logger.error("Unable to load related Relationships",e);
+                      log.error("Unable to load related Relationships",e);
                   }
                 }
          }
@@ -269,9 +303,13 @@ public class PSSitePublishServiceWebAdapter
             changeEvent.setContentId(contentId);
              List<IPSSite> siteIds =  folderHelper.getItemSites(idMapper.getGuidFromContentId(contentId).toString());
              //Because if owner of relationship is already deleted, before child, then it will not return site.
-             if(siteIds != null && siteIds.size()>0) {
-                 changeEvent.setSiteId(siteIds.get(0).getSiteId());
-                 changeSvc.contentChanged(changeEvent);
+             if(siteIds != null && !siteIds.isEmpty()) {
+                try {
+                   changeEvent.setSiteId(siteIds.get(0).getSiteId());
+                   changeSvc.contentChanged(changeEvent);
+                } catch (IPSGenericDao.SaveException e) {
+                   log.warn("Error creating change event for takedown change. Error: {}", e.getMessage());
+                }
              }
          }
       }
@@ -290,10 +328,14 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse takeDownPage(@PathParam("id") String id)
    {
-      if (StringUtils.isBlank(id))
-         throw new IllegalArgumentException("id may not be blank");
-      
-      return sitePublishService.publish(null, PubType.TAKEDOWN_NOW, id, false, null);
+      try {
+         if (StringUtils.isBlank(id))
+            throw new IllegalArgumentException("id may not be blank");
+
+         return sitePublishService.publish(null, PubType.TAKEDOWN_NOW, id, false, null);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         throw new WebApplicationException(e.getMessage());
+      }
    }
    
    /**
@@ -308,10 +350,14 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse takeDownResource(@PathParam("id") String id)
    {
-      if (StringUtils.isBlank(id))
-         throw new IllegalArgumentException("id may not be blank");
-      
-      return sitePublishService.publish(null, PubType.TAKEDOWN_NOW, id, true, null);
+      try {
+         if (StringUtils.isBlank(id))
+            throw new IllegalArgumentException("id may not be blank");
+
+         return sitePublishService.publish(null, PubType.TAKEDOWN_NOW, id, true, null);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         throw new WebApplicationException(e.getMessage());
+      }
    }
    
    /**
@@ -326,10 +372,14 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse takeDownPageFromStaging(@PathParam("id") String id)
    {
-      if (StringUtils.isBlank(id))
-         throw new IllegalArgumentException("id may not be blank");
-      
-      return sitePublishService.publish(null, PubType.REMOVE_FROM_STAGING_NOW, id, false, null);
+      try {
+         if (StringUtils.isBlank(id))
+            throw new IllegalArgumentException("id may not be blank");
+
+         return sitePublishService.publish(null, PubType.REMOVE_FROM_STAGING_NOW, id, false, null);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         throw new WebApplicationException(e.getMessage());
+      }
    }
    
    /**
@@ -344,10 +394,14 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse takeDownResourceFromStaging(@PathParam("id") String id)
    {
-      if (StringUtils.isBlank(id))
-         throw new IllegalArgumentException("id may not be blank");
-      
-      return sitePublishService.publish(null, PubType.REMOVE_FROM_STAGING_NOW, id, true, null);
+      try {
+         if (StringUtils.isBlank(id))
+            throw new IllegalArgumentException("id may not be blank");
+
+         return sitePublishService.publish(null, PubType.REMOVE_FROM_STAGING_NOW, id, true, null);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         throw new WebApplicationException(e.getMessage());
+      }
    }
    
    
@@ -367,7 +421,11 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSPagedItemList getQueuedIncrementalContent(@PathParam("name") String siteName, @PathParam("server") String serverName, @QueryParam("startIndex") int startIndex, @QueryParam("pageSize") int pageSize)
    {
-       return sitePublishService.getQueuedIncrementalContent(siteName, serverName, startIndex, pageSize);
+      try {
+         return sitePublishService.getQueuedIncrementalContent(siteName, serverName, startIndex, pageSize);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         throw new WebApplicationException(e.getMessage());
+      }
    }
    
    /**
@@ -386,7 +444,13 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSPagedItemList getQueuedIncrementalRelatedContent(@PathParam("name") String siteName, @PathParam("server") String serverName, @QueryParam("startIndex") int startIndex, @QueryParam("pageSize") int pageSize)
    {
-       return sitePublishService.getQueuedIncrementalRelatedContent(siteName, serverName, startIndex, pageSize);
+      try {
+         return sitePublishService.getQueuedIncrementalRelatedContent(siteName, serverName, startIndex, pageSize);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
+         throw new WebApplicationException(e.getMessage());
+      }
    }
    
    
@@ -402,10 +466,16 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse publishIncremental(@PathParam("name") String name, @PathParam("server") String server)
    {
-        Validate.notEmpty(name);
-        Validate.notEmpty(server);
+      try {
+         Validate.notEmpty(name);
+         Validate.notEmpty(server);
 
-        return sitePublishService.publishIncremental(name, null, false, server);
+         return sitePublishService.publishIncremental(name, null, false, server);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
+         throw new WebApplicationException(e.getMessage());
+      }
    }
 
    /**
@@ -420,10 +490,16 @@ public class PSSitePublishServiceWebAdapter
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSSitePublishResponse publishIncrementalWithApproval(@PathParam("name") String name, @PathParam("server") String server, @PathParam("itemsToApprove") String itemsToApprove)
    {
-      Validate.notEmpty(name);
-      Validate.notEmpty(server);
+      try {
+         Validate.notEmpty(name);
+         Validate.notEmpty(server);
 
-      return sitePublishService.publishIncrementalWithApproval(name, null, false, server,itemsToApprove);
+         return sitePublishService.publishIncrementalWithApproval(name, null, false, server, itemsToApprove);
+      } catch (IPSSitePublishService.PSSitePublishException e) {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
+         throw new WebApplicationException(e.getMessage());
+      }
    }
 
    /**

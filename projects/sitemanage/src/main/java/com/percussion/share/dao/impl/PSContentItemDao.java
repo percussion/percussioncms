@@ -44,7 +44,10 @@ import com.percussion.share.dao.PSJcrNodeMap;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemSummaryUtils;
 import com.percussion.share.service.IPSDataItemSummaryService;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.exceptions.PSORMException;
@@ -62,6 +65,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -117,8 +121,7 @@ public class PSContentItemDao implements IPSContentItemDao
     }
     
 
-    public Collection<Integer> findAllItemIdsByType(String name)
-    {
+    public Collection<Integer> findAllItemIdsByType(String name) throws PSDataServiceException {
         List<IPSNodeDefinition> nodes = PSContentTypeHelper.loadNodeDefs(name);
         if (nodes.isEmpty())
             return new ArrayList<Integer>();
@@ -130,12 +133,11 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (PSORMException e)
         {
-            throw new RuntimeException("failed to find item IDs by content type name: " + name, e);
+            throw new PSDataServiceException("failed to find item IDs by content type name: " + name, e);
         }
     }
     
-   public PSContentItem findItemByPath(String name, String folderPath)
-    {
+   public PSContentItem findItemByPath(String name, String folderPath) throws PSDataServiceException {
         notEmpty(name, "name");
         notEmpty(folderPath, "folderPath");
         
@@ -146,12 +148,12 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (Exception e)
         {
-            throw new RuntimeException("find item by path failed", convertException(e));
+            throw new PSDataServiceException("find item by path failed", convertException(e));
         }
     }
     
     
-    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath) {
+    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath) throws PSDataServiceException {
         try
         {
             folderHelper.addItem(folderPath, item.getId());
@@ -159,12 +161,11 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (Exception e)
         {
-            throw new RuntimeException("Trying to add item to the folder failed", convertException(e));
+            throw new PSDataServiceException("Trying to add item to the folder failed", convertException(e));
         }
     }
     
-    public void removeItemFromPath(IPSItemSummary item, String folderPath)
-    {
+    public void removeItemFromPath(IPSItemSummary item, String folderPath) throws PSDataServiceException {
         notNull(item, "item");
         notNull(folderPath, "folderPath");
         notEmpty(folderPath, "folderPath");
@@ -175,12 +176,11 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (Exception e)
         {
-            throw new RuntimeException("Trying to remove item from the folder failed", convertException(e));
+            throw new PSDataServiceException("Trying to remove item from the folder failed", convertException(e));
         }
     }
     
-    public PSContentItem findItemByPath(String fullPath)
-    {
+    public PSContentItem findItemByPath(String fullPath) throws PSDataServiceException {
         notNull(fullPath, "fullPath");
         try
         {
@@ -192,7 +192,7 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (Exception e)
         {
-            throw new RuntimeException(convertException(e));
+            throw new PSDataServiceException(convertException(e));
         }
     }
 
@@ -217,7 +217,7 @@ public class PSContentItemDao implements IPSContentItemDao
         }
     }
     
-    public void revisionControlOn(String id) {
+    public void revisionControlOn(String id) throws LoadException {
         notEmpty(id);
         IPSGuid guid = idMapper.getGuid(id);
         try
@@ -279,13 +279,15 @@ public class PSContentItemDao implements IPSContentItemDao
         }
     }
 
-    public PSContentItem find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
-        return find(id, false);
+    public PSContentItem find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException{
+        try {
+            return find(id, false);
+        } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+            throw new LoadException(e);
+        }
     }
         
-    public PSContentItem find(String id, boolean isSummary) throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
+    public PSContentItem find(String id, boolean isSummary) throws com.percussion.share.dao.IPSGenericDao.LoadException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         notNull(id, "id");
         IPSItemSummary itemSummary = itemSummaryService.find(id);
         if (itemSummary == null) return null;
@@ -294,10 +296,6 @@ public class PSContentItemDao implements IPSContentItemDao
         try
         {
             nodes = contentDesignWs.findNodesByIds(asList(guid), isSummary);
-        }
-        catch (OutOfMemoryError e)
-        {
-            throw new LoadException(e);
         }
         catch (Exception e)
         {
@@ -326,8 +324,7 @@ public class PSContentItemDao implements IPSContentItemDao
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
 
-    public PSContentItem save(PSContentItem contentItem) throws com.percussion.share.dao.IPSGenericDao.SaveException
-    {
+    public PSContentItem save(PSContentItem contentItem) throws com.percussion.share.dao.IPSGenericDao.SaveException, DeleteException {
         if (log.isDebugEnabled())
             log.debug("Saving object: " + contentItem);
         

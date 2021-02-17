@@ -33,6 +33,9 @@ import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.share.data.PSPagedItemList;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.thumbnail.PSScreenCapture;
@@ -43,13 +46,18 @@ import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.service.impl.PSSiteConfigUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,7 +65,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PSThumbnailRunner implements Runnable {
 
-	private static volatile AtomicInteger activeWorkers = new AtomicInteger(0);
+	private static AtomicInteger activeWorkers = new AtomicInteger(0);
 
 	private IPSSiteTemplateService siteTemplateService;
 
@@ -71,28 +79,27 @@ public class PSThumbnailRunner implements Runnable {
 
 	private Set<Map.Entry<String, String>> sessionParameterMap = null;
 
-	private static volatile AtomicInteger activeWorkerLimit = new AtomicInteger(1);
+	private static  AtomicInteger activeWorkerLimit = new AtomicInteger(1);
 	
-	private static volatile AtomicBoolean shutdownFlag = new AtomicBoolean();
+	private static  AtomicBoolean shutdownFlag = new AtomicBoolean();
 
 	PSRequestContext requestContext = null;
 
 	// Nota Bene - LinkedHashMap is FIFO:
 	// http://docs.oracle.com/javase/6/docs/api/java/util/LinkedHashMap.html
-	private static ConcurrentHashMap <String, Function> inProcess = new ConcurrentHashMap <String, Function>();
+	private static ConcurrentHashMap <String, Function> inProcess = new ConcurrentHashMap <>();
 
 	private static final String PAGE_STRING = "-page.jpg";
 
 	private static final String TEMPLATE_STRING = "-template.jpg";
 
-	private final static String TPL_IMAGES_DIR = "rx_resources/images/TemplateImages";
+	private static final String TPL_IMAGES_DIR = "rx_resources/images/TemplateImages";
 
 	public enum Function {
 		GENERATE_TEMPLATE_THUMBNAIL, DELETE_TEMPLATE_THUMBNAIL, GENERATE_PAGE_THUMBNAIL, DELETE_PAGE_THUMBNAIL, CHECK_FOR_PAGE_THUMBNAIL, CHECK_FOR_TEMPLATE_THUMBNAIL
 	}
 
-	private static final Log log = LogFactory
-			.getLog(PSThumbnailRunner.class);
+	private static final Logger log = LogManager.getLogger(PSThumbnailRunner.class);
 
 	public static void setActiveWorkerLimit(Integer limit) {
 		if(limit!=null){
@@ -105,7 +112,7 @@ public class PSThumbnailRunner implements Runnable {
 	public static synchronized boolean scheduleThumbnailJob(String id,
 			Function function) {
 		boolean proceed = false;
-		//FB:AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION NC 1-16-16
+
 		if (!shutdownFlag.get() && id != null && !inProcess.containsKey(id)) {
 			inProcess.putIfAbsent(id, function);
 			proceed = true;
@@ -123,7 +130,7 @@ public class PSThumbnailRunner implements Runnable {
 			activeWorkers.incrementAndGet();
 			return true;
 		}
-		log.debug("Active Thumbnail Runners: " + activeWorkers);
+		log.debug("Active Thumbnail Runners: {}", activeWorkers);
 		return false;
 	}
 
@@ -197,32 +204,37 @@ public class PSThumbnailRunner implements Runnable {
 	}
 
 	private void performWork(PSWorkPackage workPackage) {
-		workPackage.setPage(getPage(workPackage));
-		workPackage.setTemplate(getTemplate(workPackage));
-		workPackage.setSite(getSite(workPackage.getId(),
-				workPackage.getFunction()));
-		workPackage.setSiteFolderPath(getSiteFolder(workPackage));
-		workPackage.setFileSuffix(getFileSuffix(workPackage
-				.getFunction()));
-		switch (workPackage.getFunction()) {
-		case GENERATE_PAGE_THUMBNAIL:
-			generateThumbnail(workPackage);
-			break;
-		case GENERATE_TEMPLATE_THUMBNAIL:
-			generateThumbnail(workPackage);
-			break;
-		case CHECK_FOR_PAGE_THUMBNAIL:
-			checkForPageThumbnail(workPackage);
-			break;
-		case CHECK_FOR_TEMPLATE_THUMBNAIL:
-			checkForTemplateThumbnail(workPackage);
-			break;
-		case DELETE_PAGE_THUMBNAIL:
-			delete(workPackage);
-			break;
-		case DELETE_TEMPLATE_THUMBNAIL:
-			deleteTemplateThumbnail(workPackage);
-			break;
+		try {
+			workPackage.setPage(getPage(workPackage));
+			workPackage.setTemplate(getTemplate(workPackage));
+			workPackage.setSite(getSite(workPackage.getId(),
+					workPackage.getFunction()));
+			workPackage.setSiteFolderPath(getSiteFolder(workPackage));
+			workPackage.setFileSuffix(getFileSuffix(workPackage
+					.getFunction()));
+			switch (workPackage.getFunction()) {
+				case GENERATE_PAGE_THUMBNAIL:
+					generateThumbnail(workPackage);
+					break;
+				case GENERATE_TEMPLATE_THUMBNAIL:
+					generateThumbnail(workPackage);
+					break;
+				case CHECK_FOR_PAGE_THUMBNAIL:
+					checkForPageThumbnail(workPackage);
+					break;
+				case CHECK_FOR_TEMPLATE_THUMBNAIL:
+					checkForTemplateThumbnail(workPackage);
+					break;
+				case DELETE_PAGE_THUMBNAIL:
+					delete(workPackage);
+					break;
+				case DELETE_TEMPLATE_THUMBNAIL:
+					deleteTemplateThumbnail(workPackage);
+					break;
+			}
+		} catch (PSDataServiceException e) {
+			log.error(e.getMessage());
+			log.debug(e.getMessage(),e);
 		}
 	}
 
@@ -245,7 +257,7 @@ public class PSThumbnailRunner implements Runnable {
 						workPackage.getId() + TEMPLATE_STRING)
 						|| file.getName().contains(
 								workPackage.getId() + PAGE_STRING))
-					file.delete();
+					Files.delete(file.toPath());
 			}
 		} catch (Exception e) {
 			//FB: DMI_INVOKING_TOSTRING_ON_ARRAY NC 1-16-16
@@ -323,7 +335,7 @@ public class PSThumbnailRunner implements Runnable {
 					
 
 			} catch (Exception e) {
-				log.error("Thumbnail Exception: " + e.getMessage());
+				log.error("Thumbnail Exception: {}" , e.getMessage());
 				log.debug(e);
 			}
 			File thumbNail = new File(thumbnailFilePath);
@@ -331,7 +343,7 @@ public class PSThumbnailRunner implements Runnable {
 				try {
 					PSScreenCapture.generateEmptyThumb(thumbnailFilePath);
 				} catch (Exception e1) {
-					log.error("Thumbnail Exception for empty thumb:" + e1.getMessage());
+					log.error("Thumbnail Exception for empty thumb: {}" , e1.getMessage());
 					log.debug(e1);
 				}
 			}
@@ -352,9 +364,10 @@ public class PSThumbnailRunner implements Runnable {
 		return valid;
 	}
 
-	private void buildThumbnailsForTemplatesPages(PSWorkPackage workPackage) {
+	private void buildThumbnailsForTemplatesPages(PSWorkPackage workPackage) throws PSDataServiceException {
 
-		if (workPackage.getTemplate().getName() != "Unassigned" && workPackage.getFunction() == Function.GENERATE_TEMPLATE_THUMBNAIL) {
+		if ((!workPackage.getTemplate().getName().equals("Unassigned"))
+				&& workPackage.getFunction() == Function.GENERATE_TEMPLATE_THUMBNAIL) {
 		    
 			PSPagedItemList pages = pageService.findPagesByTemplate(workPackage
 					.getTemplate().getId(), 1, 10000, null, null, null);
@@ -370,7 +383,7 @@ public class PSThumbnailRunner implements Runnable {
 					PSPage thisPage = pageService.find(pagePath.getId());
 					scheduleThumbnailJob(thisPage.getId(), Function.GENERATE_PAGE_THUMBNAIL);
 				} catch (Exception e) {
-					//FB: DMI_INVOKING_TOSTRING_ON_ARRAY NC 1-16-16
+
 					log.debug("Unable to generate thumbnail for a templates's child page with id: "
 							+ pagePath.getId()
 							+ " "
@@ -415,12 +428,12 @@ public class PSThumbnailRunner implements Runnable {
 				.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
 		String sessionId = request.getUserSessionId();
 		requestContext = new PSRequestContext(request);
-		HashMap<String, String> paramMap = new HashMap<String, String>();
+		HashMap<String, String> paramMap = new HashMap<>();
 		paramMap.put(IPSHtmlParameters.SYS_SESSIONID, sessionId);
 		sessionParameterMap = paramMap.entrySet();
 	}
 
-	private String getSiteFolder(PSWorkPackage work) {
+	private String getSiteFolder(PSWorkPackage work) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException {
 		if (work.getSite() == null)
 			work.setSite(getSite(work.getId(), work.getFunction()));
 		String siteFolder = PSSiteConfigUtils.getRootDirectory()
@@ -444,23 +457,23 @@ public class PSThumbnailRunner implements Runnable {
 
 	private boolean isTemplateFunction(Function function) {
 		boolean isTemplateFunc = false;
-		if (function == function.GENERATE_TEMPLATE_THUMBNAIL
-				|| function == function.CHECK_FOR_TEMPLATE_THUMBNAIL
-				|| function == function.DELETE_TEMPLATE_THUMBNAIL)
+		if (function == Function.GENERATE_TEMPLATE_THUMBNAIL
+				|| function == Function.CHECK_FOR_TEMPLATE_THUMBNAIL
+				|| function == Function.DELETE_TEMPLATE_THUMBNAIL)
 			isTemplateFunc = true;
 		return isTemplateFunc;
 	}
 
 	private boolean isPageFunction(Function function) {
 		boolean isPageFunc = false;
-		if (function == function.GENERATE_PAGE_THUMBNAIL
-				|| function == function.CHECK_FOR_PAGE_THUMBNAIL
-				|| function == function.DELETE_PAGE_THUMBNAIL)
+		if (function == Function.GENERATE_PAGE_THUMBNAIL
+				|| function == Function.CHECK_FOR_PAGE_THUMBNAIL
+				|| function == Function.DELETE_PAGE_THUMBNAIL)
 			isPageFunc = true;
 		return isPageFunc;
 	}
 
-	private PSTemplateSummary getTemplate(PSWorkPackage workPackage) {
+	private PSTemplateSummary getTemplate(PSWorkPackage workPackage) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException {
 		PSTemplateSummary template = null;
 		if (workPackage.getTemplate() == null) {
 
@@ -478,7 +491,7 @@ public class PSThumbnailRunner implements Runnable {
 		return template;
 	}
 
-	private PSPage getPage(PSWorkPackage workPackage) {
+	private PSPage getPage(PSWorkPackage workPackage) throws PSDataServiceException {
 		PSPage page = null;
 		if (workPackage.getPage() == null) {
 			if (isPageFunction(workPackage.getFunction())) {
@@ -510,7 +523,7 @@ public class PSThumbnailRunner implements Runnable {
 		return fileSuffix;
 	}
 
-	private PSSiteSummary getSite(String id, Function function) {
+	private PSSiteSummary getSite(String id, Function function) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException {
 		String templateId = id;
 		PSSiteSummary site = null;
 		if (isPageFunction(function)) {
@@ -518,7 +531,7 @@ public class PSThumbnailRunner implements Runnable {
 		}
 		List<PSSiteSummary> sites = siteTemplateService
 				.findSitesByTemplate(templateId);
-		if (sites.size() > 0) {
+		if (!sites.isEmpty()) {
 			site = sites.get(0);
 		}
 		return site;

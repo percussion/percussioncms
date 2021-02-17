@@ -40,6 +40,7 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.filter.PSFilterException;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
@@ -242,7 +243,7 @@ public class PSAssemblyItemBridge {
 
         try {
             return resourceLinkandLocationService.createResourceInstance(context, linkableItem, resourceDefinitionId);
-        } catch (IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | IPSAssetService.PSAssetServiceException e) {
+        } catch (IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | IPSAssetService.PSAssetServiceException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e) {
             throw new PSAssemblyException(22,e,id);
         }
     }
@@ -370,8 +371,12 @@ public class PSAssemblyItemBridge {
         }
     }
     
-    protected PSRenderLinkContext getRenderLinkContext(IPSAssemblyItem assemblyItem, IPSLinkableItem item) {
-        return renderLinkContextFactory.create(assemblyItem, item);
+    protected PSRenderLinkContext getRenderLinkContext(IPSAssemblyItem assemblyItem, IPSLinkableItem item) throws PSAssemblyException {
+        try {
+            return renderLinkContextFactory.create(assemblyItem, item);
+        } catch (IPSDataService.DataServiceLoadException | PSFilterException | IPSDataService.DataServiceNotFoundException e) {
+            throw new PSAssemblyException(23,e);
+        }
     }
     
     
@@ -562,7 +567,7 @@ public class PSAssemblyItemBridge {
             if (tp.page == null) {
                 try {
                     tp.page = pageService.load(idTemplateOrPage);
-                } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
+                } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
                     throw new RepositoryException(e.getMessage(),e);
                 }
             }

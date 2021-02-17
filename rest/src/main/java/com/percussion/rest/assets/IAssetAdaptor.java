@@ -215,7 +215,7 @@ public interface IAssetAdaptor
      * @param folder A valid Folder resource.
      * @return  A count of the number of assets that were approved.
      */
-    public int approveAllAssets(URI baseUri, String folder);
+    public int approveAllAssets(URI baseUri, String folder) throws BackendException;
     
     /***
      * Archives all Assets in the specified folder.
@@ -224,7 +224,7 @@ public interface IAssetAdaptor
      * @param folder
      * @return
      */
-    public int archiveAllAsets(URI baseUri, String folder);
+    public int archiveAllAssets(URI baseUri, String folder) throws BackendException;
     
     /***
      * Submits all Assets to the Review state in the specified folder.
@@ -233,7 +233,7 @@ public interface IAssetAdaptor
      * @param folder
      * @return
      */
-    public int submitForReviewAllAsets(URI baseUri, String folder);
+    public int submitForReviewAllAssets(URI baseUri, String folder) throws BackendException;
     
     
    /***

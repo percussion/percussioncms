@@ -29,6 +29,7 @@ import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.publisher.data.PSContentListItem;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
@@ -37,7 +38,6 @@ import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -55,10 +55,7 @@ public class PSRenderLinkContextFactory implements IPSRenderLinkContextFactory
         this.siteDataService = siteDataService;
     }
 
-    /**
-     * @{inheritDoc}
-     */
-    public PSAssemblyRenderLinkContext create(PSContentListItem listItem, IPSLinkableItem item) {
+    public PSAssemblyRenderLinkContext create(PSContentListItem listItem, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException {
         PSAssemblyRenderLinkContext linkContext = new PSAssemblyRenderLinkContext();
         
         linkContext.setFolderPath(item.getFolderPath());
@@ -71,33 +68,19 @@ public class PSRenderLinkContextFactory implements IPSRenderLinkContextFactory
         return linkContext;        
     }
 
-    /**
-     * @{inheritDoc}
-     */
-    public PSAssemblyRenderLinkContext create(IPSAssemblyItem assemblyItem, IPSLinkableItem item) {
+    public PSAssemblyRenderLinkContext create(IPSAssemblyItem assemblyItem, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException, PSFilterException {
         PSAssemblyRenderLinkContext linkContext = new PSAssemblyRenderLinkContext();
         
         linkContext.setFolderPath(item.getFolderPath());
         linkContext.setLegacyFileContext(assemblyItem.getDeliveryContext());
         linkContext.setLegacyLinkContext(assemblyItem.getContext());
         linkContext.setSite(getSite(assemblyItem.getSiteId(), item));
-        
-        try
-        {
-            //God knows why this throws an exception.
-            linkContext.setFilter(assemblyItem.getFilter().getName());
-        }
-        catch (PSFilterException e)
-        {
-            throw new RuntimeException(e);
-        }
+        linkContext.setFilter(assemblyItem.getFilter().getName());
+
         return linkContext;
     }
-    
-    /**
-     * @{inheritDoc}
-     */
-    public PSAssemblyRenderLinkContext createPreview(PSPage page) {
+
+    public PSAssemblyRenderLinkContext createPreview(PSPage page) throws DataServiceNotFoundException {
         PSAssemblyRenderLinkContext linkContext = new PSAssemblyRenderLinkContext();
         
         linkContext.setFolderPath(page.getFolderPath());
@@ -108,10 +91,7 @@ public class PSRenderLinkContextFactory implements IPSRenderLinkContextFactory
         
         return linkContext;
     }
-    
-    /**
-     * @{inheritDoc}
-     */
+
     public PSAssemblyRenderLinkContext createAssetPreview(String folderPath, PSAssetSummary asset) {
         PSAssemblyRenderLinkContext linkContext = new PSAssemblyRenderLinkContext();
         
@@ -135,8 +115,7 @@ public class PSRenderLinkContextFactory implements IPSRenderLinkContextFactory
      * @return the site, which may be {@link PSNullSiteSummary} if the site
      * is unknown from both parameters, never <code>null</code>.
      */
-    private PSSiteSummary getSite(IPSGuid siteId, IPSLinkableItem item) 
-    {
+    private PSSiteSummary getSite(IPSGuid siteId, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException {
         PSSiteSummary rvalue = null;
         if (siteId != null && siteId.getUUID() != 0) {
             String legacySiteId = idMapper.getString(siteId);
@@ -144,14 +123,7 @@ public class PSRenderLinkContextFactory implements IPSRenderLinkContextFactory
                 rvalue = siteDataService.findByLegacySiteId(legacySiteId, false);
         }
         else if (item.getFolderPath() != null) {
-            try
-            {
-                rvalue = siteDataService.findByPath(item.getFolderPath());
-            }
-            catch (DataServiceNotFoundException e)
-            {
-                //Cannot find site for items folder path.
-            }
+            rvalue = siteDataService.findByPath(item.getFolderPath());
         }
         if (rvalue == null)
             rvalue = PSNullSiteSummary.getInstance();

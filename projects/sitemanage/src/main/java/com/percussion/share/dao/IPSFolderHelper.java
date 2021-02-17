@@ -28,6 +28,7 @@ import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.pathmanagement.data.PSFolderPermission;
 import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.pathmanagement.data.PSPathItem;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.data.IPSItemSummary;
@@ -254,7 +255,7 @@ public interface IPSFolderHelper {
      * @param baseName must not be blank and must contain at least one valid character.
      * @return String unique and valid name never blank.
      */
-    public String getUniqueFolderName(String parentPath, String baseName);
+    public String getUniqueFolderName(String parentPath, String baseName) throws IPSPathService.PSPathNotFoundServiceException;
     
        
     /**
@@ -269,7 +270,7 @@ public interface IPSFolderHelper {
      * @param skipFirstIndex whether the first index should be skipped
      * @return String  unique name never blank.
      */
-    public String getUniqueNameInFolder(String parentPath, String baseName, String suffix, int startingIndex, boolean skipFirstIndex);
+    public String getUniqueNameInFolder(String parentPath, String baseName, String suffix, int startingIndex, boolean skipFirstIndex) throws IPSPathService.PSPathNotFoundServiceException;
 
     /**
      * The target of a path.

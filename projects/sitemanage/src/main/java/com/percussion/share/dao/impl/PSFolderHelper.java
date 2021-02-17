@@ -1331,8 +1331,7 @@ public class PSFolderHelper implements IPSFolderHelper
     }
 
     @Override
-    public String getUniqueFolderName(String parentPath, String baseName) 
-    {
+    public String getUniqueFolderName(String parentPath, String baseName) throws PSPathNotFoundServiceException {
         notEmpty(baseName);
         
         String folderBase = baseName;
@@ -1375,7 +1374,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * @param startingIndex to append to copy, e.g., "MyFileName-copy-1", "MyFileName-copy-2", "MyFileName-copy-3", etc.
      * @param skipFirstIndex set to true to not append first index, e.g., "MyFileName-copy", "MyFileName-copy-2", "MyFileName-copy-3", etc.
      */
-    public String getUniqueNameInFolder(String parentPath, String baseName, String suffix, int startingIndex, boolean skipFirstIndex) {
+    public String getUniqueNameInFolder(String parentPath, String baseName, String suffix, int startingIndex, boolean skipFirstIndex) throws PSPathNotFoundServiceException {
         List<IPSItemSummary> summaries;
         try
         {
