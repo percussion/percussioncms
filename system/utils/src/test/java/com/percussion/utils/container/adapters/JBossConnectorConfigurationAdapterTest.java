@@ -95,8 +95,8 @@ public class JBossConnectorConfigurationAdapterTest {
         Files.copy(srcJbossRxDsXml,root.resolve("AppServer/server/rx/deploy/rx-ds.xml"));
         Files.copy(srcJbossServerBeans,root.resolve("AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/spring/server-beans.xml"));
 
-        DefaultConfigurationContextImpl fromCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getPartTwoKey());
-        DefaultConfigurationContextImpl toCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getPartTwoKey());
+        DefaultConfigurationContextImpl fromCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getInstance(null).getPartTwoKey());
+        DefaultConfigurationContextImpl toCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getInstance(null).getPartTwoKey());
 
         JBossConnectorConfigurationAdapter adapter = new JBossConnectorConfigurationAdapter();
 
