@@ -69,7 +69,7 @@ public abstract class PSAbstractRegion extends PSRegionNode {
     private String cssClass;
     
    
-    private List<PSRegionNode> children = new ArrayList<PSRegionNode>();
+    private List<PSRegionNode> children = new ArrayList<>();
 
 
     private List<PSRegionAttribute> attributes = new ArrayList<>();

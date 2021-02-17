@@ -247,12 +247,12 @@ public class PSAnalyticsQueryResult implements IPSAnalyticsQueryResult
    /**
     * Value map for this query result. Never <code>null</code>, may be empty.
     */
-   private Map<String, Object> values = new java.util.HashMap<String, Object>();
+   private Map<String, Object> values = new java.util.HashMap<>();
    
    /**
     * Type map for this query result. Never <code>null</code>, may be empty.
     */
    private Map<String, DataType> types = 
-      new java.util.HashMap<String, DataType>();
+      new java.util.HashMap<>();
 
 }
