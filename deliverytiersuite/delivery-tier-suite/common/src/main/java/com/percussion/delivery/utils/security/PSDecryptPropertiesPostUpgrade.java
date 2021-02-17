@@ -66,6 +66,17 @@ public class PSDecryptPropertiesPostUpgrade {
            }
         }
 
+        if(stageDTSConf.toFile().exists() && stageDTSConf.toFile().isDirectory()){
+            try (Stream<Path> files = Files.list(stageDTSConf)){
+
+                files.forEach(p -> decryptProperties(p));
+
+            } catch (IOException e) {
+                log.error(e.getMessage());
+                log.debug(e);
+            }
+        }
+
 
     }
 

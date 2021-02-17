@@ -220,4 +220,13 @@ $Revision: 1.12 $
             </login-module>
         </authentication>
     </application-policy>
+    <application-policy name="rx.datasource.jdbc_database_-_300">
+        <authentication>
+            <login-module code="com.percussion.services.security.loginmods.PSSecureIdentityLoginModule" flag="required">
+                <module-option name="username">sa</module-option>
+                <module-option name="password">-394cc906712f35af335aaf29cd167c51</module-option>
+                <module-option name="managedConnectionFactoryName">jboss.jca:service=LocalTxCM,name=jdbc/database_-_300</module-option>
+            </login-module>
+        </authentication>
+    </application-policy>
 </policy>

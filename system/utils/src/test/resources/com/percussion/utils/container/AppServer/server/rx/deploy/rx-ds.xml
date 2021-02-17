@@ -50,6 +50,29 @@
             <type-mapping>MS SQLSERVER2000</type-mapping>
         </metadata>
     </local-tx-datasource>
+    <local-tx-datasource>
+        <jndi-name>jdbc/database_-_300</jndi-name>
+        <connection-url>jdbc:jtds:sqlserver://ts-trees6:1433;Database=INACAP_PROD_10162019</connection-url>
+        <driver-class>net.sourceforge.jtds.jdbc.Driver</driver-class>
+       <!-- <security-domain>rx.datasource.jdbc_database_-_300</security-domain> -->
+        <user-name>sa</user-name>
+        <password>support</password>
+        <min-pool-size>5</min-pool-size>
+        <max-pool-size>200</max-pool-size>
+        <idle-timeout-minutes>15</idle-timeout-minutes>
+        <new-connection-sql>SELECT 1</new-connection-sql>
+        <check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+        <background-validation>true</background-validation>
+        <background-validation-millis>60000</background-validation-millis>
+        <validate-on-match>false</validate-on-match>
+        <maxReconnects>3</maxReconnects>
+        <initialTimeout>15</initialTimeout>
+        <autoReconnect>true</autoReconnect>
+        <failOverReadOnly>false</failOverReadOnly>
+        <metadata>
+            <type-mapping>MS SQLSERVER2000</type-mapping>
+        </metadata>
+    </local-tx-datasource>
 </datasources>
 
 
