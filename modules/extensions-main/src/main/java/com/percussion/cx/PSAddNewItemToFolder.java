@@ -149,7 +149,7 @@ public class PSAddNewItemToFolder implements IPSResultDocumentProcessor
          PSServerFolderProcessor proxy = PSServerFolderProcessor.getInstance();
 
          PSLocator locatorParent = new PSLocator(folderid, "1");
-         List<PSLocator> locatorList = new ArrayList<PSLocator>();
+         List<PSLocator> locatorList = new ArrayList<>();
          locatorList.add(new PSLocator(contentid, "1"));
          proxy.addChildren(
             locatorList, locatorParent);

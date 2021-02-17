@@ -185,7 +185,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
            method.setDoAuthentication(true);
            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(user, password);
            client.getState().setCredentials(AuthScope.ANY, credentials);
-           List<String> authPrefs = new ArrayList<String>(1);
+           List<String> authPrefs = new ArrayList<>(1);
            authPrefs.add(AuthPolicy.BASIC);
            client.getParams().setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, authPrefs);              
         }
@@ -245,7 +245,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
     @SuppressWarnings({ "unused", "unchecked" })
     private String buildUrlQueryString(IPSRequestContext request, List<String> ignore) {
         Iterator it = request.getParametersIterator();
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         while (it.hasNext()) {
             Entry<String, Object> element = (Entry<String, Object>) it.next();
             String name = element.getKey();

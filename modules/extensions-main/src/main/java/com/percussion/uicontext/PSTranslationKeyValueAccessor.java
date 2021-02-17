@@ -177,7 +177,7 @@ public class PSTranslationKeyValueAccessor implements IPSResultDocumentProcessor
    private String getActiveLocale(String lang)
    {
       IPSCmsObjectMgr mgr = PSCmsObjectMgrLocator.getObjectManager();
-      List<String> langs = new ArrayList<String>();
+      List<String> langs = new ArrayList<>();
       List<PSLocale> locales = 
          mgr.findLocaleByStatus(PSLocale.STATUS_ACTIVE);
       for(PSLocale locale : locales)

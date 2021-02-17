@@ -110,7 +110,7 @@ public class PSSearchCommunityHandler implements IPSRequestPreProcessor
 
       PSAclImpl object_acl = null;
 
-      List<Element> toremove = new ArrayList<Element>();
+      List<Element> toremove = new ArrayList<>();
 
       for (int i = 0; i < len; i++)
       {
@@ -183,7 +183,7 @@ public class PSSearchCommunityHandler implements IPSRequestPreProcessor
          
          if (object_acl != null)
          {
-            List<IPSAcl> acls = new ArrayList<IPSAcl>();
+            List<IPSAcl> acls = new ArrayList<>();
             acls.add(object_acl);
             asvc.saveAcls(acls);
          }
