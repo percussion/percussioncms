@@ -83,7 +83,7 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
     {
         
         Collection<Integer> ids = getContentItemDao().findAllItemIdsByType(getType());
-        List<T> results = new ArrayList<T>();
+        List<T> results = new ArrayList<>();
         for (Integer id : ids)
         {
             PSLegacyGuid guid = new PSLegacyGuid(id, -1);

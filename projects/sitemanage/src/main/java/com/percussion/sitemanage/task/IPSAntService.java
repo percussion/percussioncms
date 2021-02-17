@@ -72,7 +72,7 @@ public interface IPSAntService
         private boolean blocking = true;
         
         @NotNull
-        private Map<String, String> properties = new HashMap<String, String>();
+        private Map<String, String> properties = new HashMap<>();
         
         /**
          * The file name of the script.

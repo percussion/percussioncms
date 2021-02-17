@@ -50,7 +50,7 @@ public class ContentTypeAdaptor implements IContentTypesAdaptor {
      */
     @Override
     public List<ContentType> listContentTypes(URI baseUri) {
-        List<ContentType> ret = new ArrayList<ContentType>();
+        List<ContentType> ret = new ArrayList<>();
 
             List<IPSCatalogSummary> types = designSvc.findContentTypes("*");
             for(IPSCatalogSummary s : types){
