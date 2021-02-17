@@ -33,6 +33,7 @@ import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSServletRequestWrapper;
 import com.percussion.util.IPSHtmlParameters;
+import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.security.PSRemoteUserCallback;
@@ -77,6 +78,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSAuthenticationEvent;
+import org.xml.sax.SAXException;
 
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -106,8 +108,13 @@ public class PSSecurityFilter implements Filter
    protected static final String NON_SECURE_HTTP_BIND_ADDRESS = "perc.http.bind.address";
 
    private PSSecurityUtility securityUtil = new PSSecurityUtility();
-    private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
-    private PSAuthenticationEvent psAuthenticationEvent;
+   private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
+   private PSAuthenticationEvent psAuthenticationEvent;
+
+   private static final String ERROR_HEADER_NULL="headers may not be null";
+   private static final String THREAD="thread ";
+   private static final String ERROR_REQUEST_NULL= "request may not be null";
+   private static final String ERROR_RESPONSE_NULL="response may not be null";
 
    /**
     * Represent the kind of authentication to use
@@ -482,25 +489,21 @@ public class PSSecurityFilter implements Filter
     */
    static boolean loadConfig(File securityConfig, boolean isUser, 
          List<SecurityEntry> configs)
-         throws ServletException
-   {
-      InputStream in = null;
-      try
-      {
-         in = new FileInputStream(securityConfig);
+         throws ServletException {
+
+      try (InputStream in = new FileInputStream(securityConfig)) {
          Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
          PSXmlTreeWalker tree = new PSXmlTreeWalker(doc);
          Element root = (Element) tree.getCurrent();
 
          boolean forceSecure = "yes".equals(root
-               .getAttribute("forceSecureLogin"));
+                 .getAttribute("forceSecureLogin"));
 
          NodeList paths = root.getChildNodes();
          int len = paths.getLength();
-         for (int i = 0; i < len; i++)
-         {
+         for (int i = 0; i < len; i++) {
             Node n = paths.item(i);
-            if (! (n instanceof Element)) continue;
+            if (!(n instanceof Element)) continue;
             Element path = (Element) n;
             String pathVal = PSXmlTreeWalker.getElementData(path);
             if (StringUtils.isEmpty(pathVal))
@@ -508,30 +511,17 @@ public class PSSecurityFilter implements Filter
             String name = path.getNodeName();
             String type = path.getAttribute("authType");
             SecurityEntry entry = new SecurityEntry(isUser,
-                  name.equals("path"), AuthType.valueOf(type.toUpperCase()),
-                  pathVal);
+                    name.equals("path"), AuthType.valueOf(type.toUpperCase()),
+                    pathVal);
             configs.add(entry);
          }
 
          return forceSecure;
-      }
-      catch (Exception e)
-      {
+      } catch (SAXException |IOException e) {
          throw new ServletException(e);
       }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
-      }
+
+
    }
 
    /**
@@ -550,11 +540,11 @@ public class PSSecurityFilter implements Filter
    {
       if (request == null)
       {
-         throw new IllegalArgumentException("request may not be null");
+         throw new IllegalArgumentException(ERROR_REQUEST_NULL);
       }
       if (response == null)
       {
-         throw new IllegalArgumentException("response may not be null");
+         throw new IllegalArgumentException(ERROR_RESPONSE_NULL);
       }
       if (chain == null)
       {
@@ -621,9 +611,9 @@ public class PSSecurityFilter implements Filter
                httpResp.sendRedirect(newUrl.toExternalForm());
                return;
             }
-            updateSessionTimeout(httpReq,httpResp);
+            updateSessionTimeout(httpReq);
             
-            if (! PSRequestInfo.isInited())
+            if (! PSRequestInfoBase.isInited())
             {
                PSRequestInfo.initRequestInfo(httpReq);
                needsReset = true;
@@ -644,16 +634,18 @@ public class PSSecurityFilter implements Filter
       if (httpReq.getServletPath().equals("/__validateSession__"))
          ssorequest = true;
    }
-         if (!ssorequest)
-        chain.doFilter(request, response);
+         if (!ssorequest) {
+            chain.doFilter(request, response);
+         }
 
-         if (psReq != null && psReq.getUserSession() != null)
-        psReq.getUserSession().requestFinished();
+         if (psReq != null && psReq.getUserSession() != null) {
+            psReq.getUserSession().requestFinished();
+         }
 }
       finally
       {
          if (needsReset)
-            PSRequestInfo.resetRequestInfo();
+            PSRequestInfoBase.resetRequestInfo();
       }
    }
 
@@ -749,9 +741,8 @@ public class PSSecurityFilter implements Filter
     * sessions.
     * 
     * @param httpReq The current request, assumed not <code>null</code>.
-    * @param httpResp The current response, assumed not <code>null</code>.
     */
-   private void updateSessionTimeout(HttpServletRequest httpReq, HttpServletResponse httpResp)
+   private void updateSessionTimeout(HttpServletRequest httpReq)
    {
       httpReq.getSession().setMaxInactiveInterval(
             PSServer.getServerConfiguration().getUserSessionTimeout());
@@ -912,14 +903,12 @@ public class PSSecurityFilter implements Filter
       if (statusRequest || statusSupportFiles) {
          // Force session not to be updated during request.
          PSRequest psrequest = initRequest(request, response);
-         String extendSession = SecureStringUtils.stripAllLineBreaks(
-                 request.getParameter("extendSession"));
 
          long lastActivity = NumberUtils.toLong(
                  SecureStringUtils.stripAllLineBreaks(
                          request.getParameter("lastActivity")), -1);
 
-            PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_NOSESSIONTOUCH, Boolean.TRUE);
+            PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_NOSESSIONTOUCH, Boolean.TRUE);
 
          if (statusRequest)
          {
@@ -942,9 +931,6 @@ public class PSSecurityFilter implements Filter
                long current = System.currentTimeMillis();
                long timeout = PSServer.getServerConfiguration().getUserSessionTimeout()*1000L;
                remaining = idleSince + timeout - current;
-
-               long calculatedLastActivity = current - idleSince;
-
 
             }
             if (remaining<0)
@@ -1094,7 +1080,7 @@ public class PSSecurityFilter implements Filter
    private HttpServletRequest handleExistingUserSession(
       HttpServletRequest request, HttpServletResponse response, String sessId) 
    {
-      ms_log.debug("thread: " + Thread.currentThread().getName()
+      ms_log.debug(THREAD + Thread.currentThread().getName()
          + " found user session id specified by html param: " + sessId);
       
       initRequest(request, response);
@@ -1104,7 +1090,7 @@ public class PSSecurityFilter implements Filter
       }
       catch (LoginException e)
       {
-         ms_log.debug("thread: " + Thread.currentThread().getName()
+         ms_log.debug(THREAD + Thread.currentThread().getName()
             + " invalid user session id specified by html param: " + sessId);
          return null;
       }
@@ -1159,9 +1145,9 @@ public class PSSecurityFilter implements Filter
       String[] errorMessages) throws IOException
    {
       if (request == null)
-         throw new IllegalArgumentException("request may not be null");
+         throw new IllegalArgumentException(ERROR_REQUEST_NULL);
       if (response == null)
-         throw new IllegalArgumentException("response may not be null");
+         throw new IllegalArgumentException(ERROR_RESPONSE_NULL);
       if (StringUtils.isBlank(errorType))
          throw new IllegalArgumentException(
             "errorType may not be null or empty");
@@ -1251,7 +1237,7 @@ public class PSSecurityFilter implements Filter
    public static String getAuthType(Map<String, String> headers)
    {
       if (headers == null)
-         throw new IllegalArgumentException("headers may not be null");
+         throw new IllegalArgumentException(ERROR_HEADER_NULL);
       
       return getNormalizedHeader(IPSCgiVariables.CGI_AUTH_TYPE, headers);
    }
@@ -1267,7 +1253,7 @@ public class PSSecurityFilter implements Filter
    public static String getCertAuth(Map<String, String> headers)
    {
       if (headers == null)
-         throw new IllegalArgumentException("headers may not be null");
+         throw new IllegalArgumentException(ERROR_HEADER_NULL);
       
       return getNormalizedHeader(IPSCgiVariables.CGI_CERT_SUBJECT, headers);
    }
@@ -1283,7 +1269,7 @@ public class PSSecurityFilter implements Filter
    public static String getCertIssuer(Map<String, String> headers)
    {
       if (headers == null)
-         throw new IllegalArgumentException("headers may not be null");
+         throw new IllegalArgumentException(ERROR_HEADER_NULL);
       
       return getNormalizedHeader(IPSCgiVariables.CGI_CERT_ISSUER, headers);
    }   
@@ -1342,7 +1328,7 @@ public class PSSecurityFilter implements Filter
    {
       if (ms_log.isDebugEnabled()) 
       {
-         ms_log.debug("thread: " + Thread.currentThread().getName()
+         ms_log.debug(THREAD + Thread.currentThread().getName()
                + " found 'public credentials': " + sub.getPublicCredentials());
       }
       HttpServletRequest newReq = new PSServletRequestWrapper(request, sub);
@@ -1537,13 +1523,13 @@ public class PSSecurityFilter implements Filter
                if (isLoginRequest(request))
                {
                   response.setStatus(200);
-                  ms_log.debug("Return 200 response on thread "
-                        + Thread.currentThread().getName() + " doing basic");
+                  ms_log.debug("Doing Basic.Return 200 response on thread "
+                        + Thread.currentThread().getName() );
                   return null;
                }
                
-               ms_log.debug("Successfully authenticated subject on thread "
-                     + Thread.currentThread().getName() + " doing basic");
+               ms_log.debug("Doing Basic: Successfully authenticated subject on thread "
+                     + Thread.currentThread().getName() );
                return authReq;
             }
          }
@@ -1567,7 +1553,7 @@ public class PSSecurityFilter implements Filter
    {
       // Has to use EMPTY realm here; otherwise it will break current 
       // HTTPClient API which is used by Workbench, ECC and MSM
-      response.addHeader(PSResponse.RHDR_WWW_AUTH, "Basic realm=\"\"");
+      response.addHeader(PSBaseResponse.RHDR_WWW_AUTH, "Basic realm=\"\"");
       response.sendError(401, "Must authenticate");
       ms_log.debug("Return 401 response on thread "
             + Thread.currentThread().getName() + " doing basic");
@@ -1691,9 +1677,9 @@ public class PSSecurityFilter implements Filter
          throws IOException, LoginException, ServletException
    {
       if (request == null)
-         throw new IllegalArgumentException("request may not be null");
+         throw new IllegalArgumentException(ERROR_REQUEST_NULL);
       if (response == null)
-         throw new IllegalArgumentException("response may not be null");
+         throw new IllegalArgumentException(ERROR_RESPONSE_NULL);
 
       Subject sub;
       
@@ -1742,10 +1728,10 @@ public class PSSecurityFilter implements Filter
       HttpServletResponse response) throws LoginException
    {
       if (request == null)
-         throw new IllegalArgumentException("request may not be null");
+         throw new IllegalArgumentException(ERROR_REQUEST_NULL);
 
       if (response == null)
-         throw new IllegalArgumentException("response may not be null");
+         throw new IllegalArgumentException(ERROR_RESPONSE_NULL);
 
       PSRequest rxRequest = initRequest(request, response);
       PSUserSession rxSession = rxRequest.getUserSession();
@@ -1770,7 +1756,7 @@ public class PSSecurityFilter implements Filter
       String sessionId) throws LoginException
    {
       if (request == null)
-         throw new IllegalArgumentException("request may not be null");
+         throw new IllegalArgumentException(ERROR_REQUEST_NULL);
       
       if (StringUtils.isBlank(sessionId))
          throw new IllegalArgumentException("sessionId cannot be null or empty");
@@ -1804,7 +1790,7 @@ public class PSSecurityFilter implements Filter
    public static void logout(HttpServletRequest request, String sessionId)
    {
       if (request == null)
-         throw new IllegalArgumentException("request may not be null");
+         throw new IllegalArgumentException(ERROR_REQUEST_NULL);
 
       PSUserSession rxSession = PSUserSessionManager.getUserSession(sessionId);
       if (rxSession != null)
@@ -1824,7 +1810,7 @@ public class PSSecurityFilter implements Filter
          PSUserSession sess)
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(ERROR_REQUEST_NULL);
       if (sess == null)
          throw new IllegalArgumentException("sess may not be null");
 
@@ -1841,8 +1827,8 @@ public class PSSecurityFilter implements Filter
       if (req instanceof PSServletRequestWrapper)
          ((PSServletRequestWrapper) req).setSubject(subject);
       
-      if (PSRequestInfo.isInited())
-         PSRequestInfo.setRequestInfo(PSRequestInfo.SUBJECT, subject);
+      if (PSRequestInfoBase.isInited())
+         PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.SUBJECT, subject);
       
       httpSession.setAttribute(IPSHtmlParameters.SYS_SESSIONID, sess.getId());
    }
@@ -1870,8 +1856,8 @@ public class PSSecurityFilter implements Filter
       if (sess == null)
          return false;
       
-      if (!PSRequestInfo.isInited())
-         PSRequestInfo.initRequestInfo(new HashMap<String, Object>());
+      if (!PSRequestInfoBase.isInited())
+         PSRequestInfoBase.initRequestInfo(new HashMap<String, Object>());
       
       PSRequest psreq = getCurrentRequest();
       if (psreq != null && psreq.hasUserSession() && 
@@ -1901,18 +1887,18 @@ public class PSSecurityFilter implements Filter
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
       
-      PSRequest curReq = (PSRequest) PSRequestInfo.getRequestInfo(
-         PSRequestInfo.KEY_PSREQUEST);
+      PSRequest curReq = (PSRequest) PSRequestInfoBase.getRequestInfo(
+              PSRequestInfoBase.KEY_PSREQUEST);
       if (req == curReq)
          return;
-      
-      PSRequestInfo.resetRequestInfo();
+
+      PSRequestInfoBase.resetRequestInfo();
       PSRequestInfo.initRequestInfo(req.getServletRequest());
       updateRequestInfo(req);
       
       HttpSession httpSession = req.getServletRequest().getSession(true);
       Subject s = (Subject) httpSession.getAttribute(PSSecurityFilter.SUBJECT);
-      PSRequestInfo.setRequestInfo(PSRequestInfo.SUBJECT, s); 
+      PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.SUBJECT, s);
    }
 
    /**
@@ -1948,7 +1934,7 @@ public class PSSecurityFilter implements Filter
          {
             // Create a PSRequest
             psreq = new PSRequest(req, res, null, null);
-            PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_PSREQUEST, psreq);
+            PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_PSREQUEST, psreq);
             req.setAttribute("RX_REQUEST_CONTEXT", new PSRequestContext(psreq));
          }
       }
@@ -1964,11 +1950,11 @@ public class PSSecurityFilter implements Filter
     */
    public static PSRequest getCurrentRequest()
    {
-      if (!PSRequestInfo.isInited())
+      if (!PSRequestInfoBase.isInited())
          return null;
       
-      PSRequest req = (PSRequest) PSRequestInfo.getRequestInfo(
-         PSRequestInfo.KEY_PSREQUEST);
+      PSRequest req = (PSRequest) PSRequestInfoBase.getRequestInfo(
+              PSRequestInfoBase.KEY_PSREQUEST);
       return req;
    }
    
@@ -2025,11 +2011,11 @@ public class PSSecurityFilter implements Filter
       HttpSession httpSession = req.getSession(true);
       Subject s = (Subject) httpSession.getAttribute(PSSecurityFilter.SUBJECT);
       String locale = (String) httpSession.getAttribute(PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
-      
-      PSRequestInfo.setRequestInfo(PSRequestInfo.SUBJECT, s);
+
+      PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.SUBJECT, s);
       
       if(locale!=null)
-         PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_LOCALE, locale);
+         PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_LOCALE, locale);
        
       
       PSRequest psreq = initRequest(req, res);
@@ -2059,7 +2045,7 @@ public class PSSecurityFilter implements Filter
     */
    private static void updateRequestInfo(PSRequest req)
    {
-      PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_PSREQUEST, req);
+      PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_PSREQUEST, req);
       
       if (req.hasUserSession())
       {
@@ -2076,12 +2062,12 @@ public class PSSecurityFilter implements Filter
          }
          
          if(locale!= null){
-            PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_LOCALE, locale);
+            PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_LOCALE, locale);
          }
       }
       String username = req.getServletRequest().getRemoteUser();
       if (!StringUtils.isBlank(username))
-         PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_USER, username);      
+         PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_USER, username);
    }
 
    /**
@@ -2209,6 +2195,9 @@ public class PSSecurityFilter implements Filter
     */
    public void destroy()
    {
+      /**
+       * Nothing to do here but can be overridden
+       */
 
    }
 
@@ -2237,11 +2226,6 @@ public class PSSecurityFilter implements Filter
       ms_log.info("System SAXParserFactory = "+parser + " setting to com.percussion.xml.PSSaxParserFactoryImpl");
       ms_log.info("System TransformerFactory = "+transformer + " setting to com.icl.saxon.TransformerFactoryImpl");
 
-      /*System.setProperty("javax.xml.parsers.SAXParserFactory",
-            "com.percussion.xml.PSSaxParserFactoryImpl");
-      System.setProperty("javax.xml.transform.TransformerFactory",
-            "com.icl.saxon.TransformerFactoryImpl");
-      */
    }
 
    /**
