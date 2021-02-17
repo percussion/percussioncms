@@ -62,7 +62,7 @@ public class PSAutoWidgetContentFinder extends PSWidgetContentFinder
     protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem, 
             PSWidgetInstance widget, Map<String, Object> params)
     {
-    	Set<ContentItem> items = new HashSet<ContentItem>();
+    	Set<ContentItem> items = new HashSet<>();
     	try
     	{
 

@@ -92,7 +92,7 @@ public class PSCategoryUnMarshaller {
 	
 	private void removeTopLevelNode(PSCategory category)
     {
-	    ArrayList<PSCategoryNode> nodes = new ArrayList<PSCategoryNode>();
+	    ArrayList<PSCategoryNode> nodes = new ArrayList<>();
 	    
 	    for (PSCategoryNode node : category.getTopLevelNodes())
 	    {
@@ -133,7 +133,7 @@ public class PSCategoryUnMarshaller {
 		// If none of the files exist then create an empty structure for a new category xml that will be created using the category editor.
 		PSCategory category = new PSCategory();
 		
-		category.setTopLevelNodes(new ArrayList<PSCategoryNode>());
+		category.setTopLevelNodes(new ArrayList<>());
 		
 		return category;
 	}
