@@ -101,7 +101,7 @@ public class PSControlElementDependencyHandler extends
     * List of child types supported by this handler, never <code>null</code> or
     * empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

@@ -92,7 +92,7 @@ public class PSDefaultConfigGenerator
       String defaultConfig = "";
 
       PSImplConfigLoader loader = new PSImplConfigLoader(configDefPath);
-      List<IPSConfigHandler> handlers = new ArrayList<IPSConfigHandler>();
+      List<IPSConfigHandler> handlers = new ArrayList<>();
       for (String bean : loader.getAllBeanNames())
       {
          handlers.add(loader.getBean(bean));
@@ -106,7 +106,7 @@ public class PSDefaultConfigGenerator
       List<String> errors = null;
       if (!propertyDefs.getSecond().isEmpty())
       {
-         errors = new ArrayList<String>();
+         errors = new ArrayList<>();
          ms_logger.error("The following errors occurred while generating the "
                + "default configuration file for package \"" + packageName
                + "\"");

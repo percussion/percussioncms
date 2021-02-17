@@ -107,7 +107,7 @@ public class PSEditionSetter extends PSSimplePropertySetter
    private List<Map<String, Object>> convertListTaskToListMap(
          List<IPSEditionTaskDef> tasks)
    {
-      List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+      List<Map<String, Object>> result = new ArrayList<>();
       for (IPSEditionTaskDef def : tasks)
       {
          Map<String, Object> tmap = convertTaskToMap(def);
@@ -126,17 +126,17 @@ public class PSEditionSetter extends PSSimplePropertySetter
     */
    private Map<String, Object> convertTaskToMap(IPSEditionTaskDef taskDef)
    {
-      Map<String, Object> taskMap = new HashMap<String, Object>();
+      Map<String, Object> taskMap = new HashMap<>();
     
       if (StringUtils.isNotBlank(taskDef.getExtensionName()))
       {
          taskMap.put(EXT_NAME, taskDef.getExtensionName());
          
          Map<String, String> params = taskDef.getParams();
-         List<PSPair<String, String>> pairs = new ArrayList<PSPair<String, String>>();
+         List<PSPair<String, String>> pairs = new ArrayList<>();
          for (String k : params.keySet())
          {
-            pairs.add(new PSPair<String, String>(k, params.get(k)));
+            pairs.add(new PSPair<>(k, params.get(k)));
          }
          taskMap.put(EXT_PARAMS, pairs);
       }
@@ -148,7 +148,7 @@ public class PSEditionSetter extends PSSimplePropertySetter
    private void setTasks(PSEditionWrapper wrapper, Object propValue,
          boolean isPreTasks)
    {
-      List<Map> srcTasks = new ArrayList<Map>();
+      List<Map> srcTasks = new ArrayList<>();
       if (propValue instanceof List)
       {
          srcTasks.addAll((List<Map>) propValue);
@@ -160,7 +160,7 @@ public class PSEditionSetter extends PSSimplePropertySetter
       }
       
       IPSGuid id = wrapper.getEdition().getGUID();
-      List<IPSEditionTaskDef> tasks = new ArrayList<IPSEditionTaskDef>();
+      List<IPSEditionTaskDef> tasks = new ArrayList<>();
       // backwards process pre-tasks, so that the seq# of 1st task is smallest 
       if (isPreTasks)
          Collections.reverse(srcTasks);

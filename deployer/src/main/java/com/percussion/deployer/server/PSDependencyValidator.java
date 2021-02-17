@@ -502,7 +502,7 @@ public class PSDependencyValidator
     * If a deployable element is encountered, its local dependencies are added
     * to this list to be validated at the end.  Never <code>null</code>.
     */
-   private List<PSDependency> m_localDeps = new ArrayList<PSDependency>();
+   private List<PSDependency> m_localDeps = new ArrayList<>();
    
    /**
     * Set of dependency keys that have been validated for the current package.
@@ -510,7 +510,7 @@ public class PSDependencyValidator
     * added to this list. Used to avoid re-validating dependencies that appear
     * multiple times in the same package.
     */
-   private Set<String> m_validatedDeps = new HashSet<String>();
+   private Set<String> m_validatedDeps = new HashSet<>();
    
    /**
     * The name of the import descriptor corresponding to the package being

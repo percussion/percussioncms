@@ -97,7 +97,7 @@ public class PSSlotDependencyHandler extends PSElementDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
    static
    {
       ms_childTypes.add(PSSlotDefDependencyHandler.DEPENDENCY_TYPE);

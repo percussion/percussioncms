@@ -171,12 +171,12 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       if (m_namedSites != null)
          m_namedSites.clear();
       else
-         m_namedSites = new HashMap<String, IPSSite>();
+         m_namedSites = new HashMap<>();
       
       if (m_guidSites != null)
          m_namedSites.clear();
       else
-         m_guidSites  = new HashMap<IPSGuid, IPSSite>();
+         m_guidSites  = new HashMap<>();
  
       List<IPSSite> sites = m_siteMgr.findAllSites();
     
@@ -246,7 +246,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
          throws PSDeployException
    {
             
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       Iterator<IPSAssemblyTemplate> it = 
          ((PSSite) site).getAssociatedTemplates().iterator();
 
@@ -287,7 +287,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
          PSSecurityToken tok, PSDependency dep, IPSSite site) 
          throws PSDeployException
    {
-      Set<PSDependency> deps = new HashSet<PSDependency>();
+      Set<PSDependency> deps = new HashSet<>();
       PSDependencyHandler  ctxHandler = getDependencyHandler(
             PSContextDefDependencyHandler.DEPENDENCY_TYPE);
       Set<PSSiteProperty> props = ((PSSite)site).getProperties();
@@ -323,7 +323,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
          PSSecurityToken tok, PSDependency dep, IPSSite site) 
          throws PSDeployException
    {
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       PSDependencyHandler  edtnHandler = getDependencyHandler(
             PSEditionDefDependencyHandler.DEPENDENCY_TYPE);
       
@@ -390,7 +390,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       Set<String> siteNames = m_namedSites.keySet();
       Iterator<String> it = siteNames.iterator();
       
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       while (it.hasNext())
       {
          String sName = it.next();
@@ -521,7 +521,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       IPSSite site = findSiteByDependencyID(dep.getDependencyId());
       if (site == null)
       {
@@ -574,7 +574,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
          Set<IPSGuid> tmpGuids = PSSite.getTemplateIdsFromSite(tmpStr);
          // Transform the templates of this site.
          // Templates not found on the target system will be dropped.
-         Set<IPSGuid> newGuids = new HashSet<IPSGuid>();
+         Set<IPSGuid> newGuids = new HashSet<>();
          for (IPSGuid g : tmpGuids)
          {
             PSIdMapping tmpMap = getTemplateOrVariantMapping(tok, ctx, 
@@ -700,7 +700,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
          while ( tmpIt.hasNext() )
          {
             IPSAssemblyTemplate t = tmpIt.next();
-            t.setSlots(new HashSet<IPSTemplateSlot>());
+            t.setSlots(new HashSet<>());
          }
       }   
       IPSDeployService depSvc = PSDeployServiceLocator.getDeployService();
@@ -865,7 +865,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    /**
     * Get the site manager

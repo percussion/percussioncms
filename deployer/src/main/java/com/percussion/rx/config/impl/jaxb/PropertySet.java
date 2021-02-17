@@ -146,7 +146,7 @@ public class PropertySet {
      */
     public List<Object> getPropertySetOrProperty() {
         if (propertySetOrProperty == null) {
-            propertySetOrProperty = new ArrayList<Object>();
+            propertySetOrProperty = new ArrayList<>();
         }
         return this.propertySetOrProperty;
     }

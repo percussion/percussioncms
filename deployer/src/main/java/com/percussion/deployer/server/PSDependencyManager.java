@@ -347,7 +347,7 @@ public class PSDependencyManager
       /**
        * A list of ordered elements with the {@link #mi_objType} object type.
        */
-      List<PSImportPackage> mi_elements = new ArrayList<PSImportPackage>();
+      List<PSImportPackage> mi_elements = new ArrayList<>();
    }
 
    /**
@@ -358,7 +358,7 @@ public class PSDependencyManager
     */
    private OrderedElement[] getInitialOrderedElements()
    {
-      List<OrderedElement> result = new ArrayList<OrderedElement>();
+      List<OrderedElement> result = new ArrayList<>();
       for (String type : m_deployOrder)
       {
          OrderedElement elem = new OrderedElement();
@@ -468,7 +468,7 @@ public class PSDependencyManager
          addPkgElement(orderList, elem);
       }
 
-      List<PSImportPackage> result = new ArrayList<PSImportPackage>();
+      List<PSImportPackage> result = new ArrayList<>();
       for (OrderedElement elem : orderList)
       {
          if (!elem.mi_elements.isEmpty())
@@ -2257,8 +2257,8 @@ public class PSDependencyManager
    private void createTypeMappings()
    {
       // create the maps
-      m_depToGuidTypeMap = new HashMap<String, PSTypeEnum>();
-      m_guidToDepTypeMap = new HashMap<PSTypeEnum, List<String>>();
+      m_depToGuidTypeMap = new HashMap<>();
+      m_guidToDepTypeMap = new HashMap<>();
 
       // add all mappings
       Iterator defs = m_depMap.getDefs();
@@ -2287,7 +2287,7 @@ public class PSDependencyManager
       List<String> typeList = m_guidToDepTypeMap.get(guidType);
       if (typeList == null)
       {
-         typeList = new ArrayList<String>();
+         typeList = new ArrayList<>();
          m_guidToDepTypeMap.put(guidType, typeList);
       }
       typeList.add(depType);

@@ -72,9 +72,9 @@ public class PSPackageUninstall implements IPSPackageUninstaller
     @Override
     public List<PSUninstallMessage> uninstallPackages(String packageName,
             boolean isRevertEntry) {
-        List<PSUninstallMessage> messages = new ArrayList<PSUninstallMessage>();
+        List<PSUninstallMessage> messages = new ArrayList<>();
         String[] pkgNames = packageName.split(PSPackageService.NAME_SEPARATOR);
-        List<String> pkgNameList = new ArrayList<String>();
+        List<String> pkgNameList = new ArrayList<>();
         for (String pkgname : pkgNames)
         {
             if (StringUtils.isNotBlank(pkgname))
@@ -144,7 +144,7 @@ public class PSPackageUninstall implements IPSPackageUninstaller
    {
       if (StringUtils.isBlank(packageName))
          throw new IllegalArgumentException("packageName must not be blank");
-      List<PSUninstallMessage> messages = new ArrayList<PSUninstallMessage>();
+      List<PSUninstallMessage> messages = new ArrayList<>();
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
       PSPkgInfo pinfo = pkgService.findPkgInfo(packageName);
@@ -268,7 +268,7 @@ public class PSPackageUninstall implements IPSPackageUninstaller
       .getPkgInfoService();
       List<IPSGuid> pkgElems = pkgService.findPkgElementGuids(pkgInfo
             .getGuid());
-      List<IPSGuid> objGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> objGuids = new ArrayList<>();
       for (IPSGuid guid : pkgElems)
       {
          PSPkgElement pkgElem = pkgService.loadPkgElement(guid);
