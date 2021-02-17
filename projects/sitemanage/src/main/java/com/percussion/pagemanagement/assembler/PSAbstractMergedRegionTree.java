@@ -70,7 +70,7 @@ public abstract class PSAbstractMergedRegionTree {
     /**
      * Widget items overlay: template widgets with the page widgets overlayed.
      */
-    private Map<String, List<PSWidgetItem>> mergedWidgetItems = new HashMap<String, List<PSWidgetItem>>();
+    private Map<String, List<PSWidgetItem>> mergedWidgetItems = new HashMap<>();
     
     /**
      * The widgets associated to a page.
@@ -98,11 +98,11 @@ public abstract class PSAbstractMergedRegionTree {
     private PSRegionTree templateRegionTree;
     
     
-    private Map<String, PSMergedRegion> mergedRegionMap = new HashMap<String, PSMergedRegion>();
+    private Map<String, PSMergedRegion> mergedRegionMap = new HashMap<>();
     /**
      * Regions that can be override by the page.
      */
-    private List<PSMergedRegion> overriddenRegions = new ArrayList<PSMergedRegion>();
+    private List<PSMergedRegion> overriddenRegions = new ArrayList<>();
 
 
     /**
@@ -124,7 +124,7 @@ public abstract class PSAbstractMergedRegionTree {
     }
     
     private void createPageRegionMap(Collection<? extends PSAbstractRegion> pageRegionBranches) {
-        pageRegionMap = new HashMap<String, PSAbstractRegion>();
+        pageRegionMap = new HashMap<>();
         
         if (pageRegionBranches == null)
            return;
@@ -184,7 +184,7 @@ public abstract class PSAbstractMergedRegionTree {
         }
         else {
             //We recurse on the sub regions.
-            List<PSMergedRegion> mergedSubRegions = new ArrayList<PSMergedRegion>();
+            List<PSMergedRegion> mergedSubRegions = new ArrayList<>();
             for ( PSAbstractRegion subRegion : getChildRegions(rvalue.getOriginalRegion())) {
                 PSMergedRegion child = mergeTree(subRegion, rvalue);
                 notNull(child);
@@ -292,7 +292,7 @@ public abstract class PSAbstractMergedRegionTree {
      * @return never <code>null</code>.
      */
     public Collection<PSMergedRegion> getWidgetRegions() {
-        List<PSMergedRegion> regions = new ArrayList<PSMergedRegion>();
+        List<PSMergedRegion> regions = new ArrayList<>();
         for(String id : mergedWidgetItems.keySet()) {
             PSMergedRegion r = mergedRegionMap.get(id);
             if (r != null)

@@ -117,7 +117,7 @@ public class DeliveryTypeAdaptor implements IDeliveryTypeAdaptor {
     @Override
     public List<DeliveryType> getDeliveryTypes(URI baseURI) {
        List<IPSDeliveryType> types  = pubService.findAllDeliveryTypes();
-       List<DeliveryType> response = new ArrayList<DeliveryType>();
+       List<DeliveryType> response = new ArrayList<>();
        for(IPSDeliveryType t : types){
            response.add(copyDeliveryType(t));
        }

@@ -55,7 +55,7 @@ public class ItemFilterAdaptor implements IItemFilterAdaptor {
      */
     @Override
     public List<ItemFilter> getItemFilters() {
-        List<ItemFilter> ret = new ArrayList<ItemFilter>();
+        List<ItemFilter> ret = new ArrayList<>();
         List<IPSItemFilter> filters = filterService.findAllFilters();
 
         for(IPSItemFilter i : filters){
@@ -77,7 +77,7 @@ public class ItemFilterAdaptor implements IItemFilterAdaptor {
         }
 
         Set<IPSItemFilterRuleDef> ruleDefs = filter.getRuleDefs();
-        Set<ItemFilterRuleDefinition> rules = new HashSet<ItemFilterRuleDefinition>();
+        Set<ItemFilterRuleDefinition> rules = new HashSet<>();
         for(IPSItemFilterRuleDef def : ruleDefs){
             ItemFilterRuleDefinition r = copyItemFilterRuleDef(def);
             if(r != null)
@@ -95,7 +95,7 @@ public class ItemFilterAdaptor implements IItemFilterAdaptor {
             ret.setRuleId(ApiUtils.convertGuid(def.getGUID()));
 
             Map<String,String> params = def.getParams();
-            List<ItemFilterRuleDefinitionParam> retParams = new ArrayList<ItemFilterRuleDefinitionParam>();
+            List<ItemFilterRuleDefinitionParam> retParams = new ArrayList<>();
             for(Map.Entry<String,String> pair : params.entrySet()){
                 ItemFilterRuleDefinitionParam p = new ItemFilterRuleDefinitionParam();
                 p.setName(pair.getKey());

@@ -94,7 +94,7 @@ public class Data {
      */
     public List<Request> getRequest() {
         if (request == null) {
-            request = new ArrayList<Request>();
+            request = new ArrayList<>();
         }
         return this.request;
     }
