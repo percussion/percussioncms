@@ -92,7 +92,7 @@ public class PSPackageUninstaller
    {
       if (packageNames == null)
          throw new IllegalArgumentException("packageNames must not be null");
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
+      List<IPSUninstallResult> messages = new ArrayList<>();
       PSPair<List<PSPkgInfo>, List<IPSUninstallResult>> pkgPair = 
          loadPackages(packageNames);
       messages.addAll(pkgPair.getSecond());
@@ -161,10 +161,10 @@ public class PSPackageUninstaller
    private PSPair<List<PSPkgInfo>, List<IPSUninstallResult>> loadPackages(
          List<String> packageNames)
    {
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
-      List<PSPkgInfo> pkgInfos = new ArrayList<PSPkgInfo>();
+      List<IPSUninstallResult> messages = new ArrayList<>();
+      List<PSPkgInfo> pkgInfos = new ArrayList<>();
       PSPair<List<PSPkgInfo>, List<IPSUninstallResult>> result = 
-         new PSPair<List<PSPkgInfo>, List<IPSUninstallResult>>(
+         new PSPair<>(
             pkgInfos, messages);
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
@@ -211,7 +211,7 @@ public class PSPackageUninstaller
       cfgSrvc.deApplyConfiguration(pkgInfo.getPackageDescriptorName());
       boolean wasContentTypeDeleted = false;
       
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
+      List<IPSUninstallResult> messages = new ArrayList<>();
       messages.addAll(deletePackageElements(pkgInfo));
       
       // 'skipped deletion' warnings were previously errors.  now being flagged
@@ -245,7 +245,7 @@ public class PSPackageUninstaller
       if (pkgInfo == null)
          throw new IllegalArgumentException("pckInfo must not be null");
       
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
+      List<IPSUninstallResult> messages = new ArrayList<>();
       IPSConfigService cfgSrvc = PSConfigServiceLocator.getConfigService();
       String configName = pkgInfo.getPackageDescriptorName();
       Map<File, Exception> cfgErrors = cfgSrvc
@@ -274,7 +274,7 @@ public class PSPackageUninstaller
     */
    private List<IPSUninstallResult> deletePackageElements(PSPkgInfo pkgInfo)
    {
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
+      List<IPSUninstallResult> messages = new ArrayList<>();
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
       List<IPSGuid> pkgElems = pkgService.findPkgElementGuids(pkgInfo

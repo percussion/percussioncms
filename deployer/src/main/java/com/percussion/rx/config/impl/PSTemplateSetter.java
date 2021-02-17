@@ -125,7 +125,7 @@ public class PSTemplateSetter extends PSSimplePropertySetter
       }
       else if (SLOTS.equals(propName))
       {
-         List<String> slots = new ArrayList<String>();
+         List<String> slots = new ArrayList<>();
          for (IPSTemplateSlot s : template.getSlots())
          {
             slots.add(s.getName());
@@ -134,10 +134,10 @@ public class PSTemplateSetter extends PSSimplePropertySetter
       }
       else if (BINDING_SET.equals(propName))
       {
-         List<PSPair<String, String>> bList = new ArrayList<PSPair<String, String>>();
+         List<PSPair<String, String>> bList = new ArrayList<>();
          for (IPSTemplateBinding b : template.getBindings())
          {
-            bList.add(new PSPair<String, String>(b.getVariable(), b
+            bList.add(new PSPair<>(b.getVariable(), b
                   .getExpression()));
          }
          return bList;
@@ -160,8 +160,8 @@ public class PSTemplateSetter extends PSSimplePropertySetter
     */
    private Map<String, Object> getBindings(IPSAssemblyTemplate template)
    {
-      List<String> seq = new ArrayList<String>();
-      Map<String, Object> bindings = new HashMap<String, Object>();
+      List<String> seq = new ArrayList<>();
+      Map<String, Object> bindings = new HashMap<>();
       for (IPSTemplateBinding b : template.getBindings())
       {
          bindings.put(b.getVariable(), b.getExpression());

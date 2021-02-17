@@ -88,7 +88,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
       List<PSPair<String, ObjectState>> commonNames = getCommonObjectNames(other);
 
       PSConfigValidation vError;
-      List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+      List<PSConfigValidation> result = new ArrayList<>();
       for (PSPair<String, ObjectState> pair : commonNames)
       {
          String msg = " Context / Location Scheme pair \"" + pair.getFirst()
@@ -237,12 +237,12 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
                "Location Scheme name may not be null or empty.");
 
       PSLocationSchemeModel model = PSConfigUtils.getSchemeModel();
-      List<PSPair<Object, ObjectState>> result = new ArrayList<PSPair<Object, ObjectState>>();
+      List<PSPair<Object, ObjectState>> result = new ArrayList<>();
       
       for (PSPair<String, ObjectState> sname : getObjectNames())
       {
          Object scheme = getLocationScheme(sname.getFirst(), model, cachedObjs);
-         result.add(new PSPair<Object, ObjectState>(scheme, sname.getSecond()));
+         result.add(new PSPair<>(scheme, sname.getSecond()));
       }
       return result;
    }
@@ -345,7 +345,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
       Collection<String> ctxNames = PSConfigUtils.getObjectNames(
             ctxValue, PSConfigUtils.getContextModel(), CONTEXTS);
 
-      List<String> result = new ArrayList<String>();      
+      List<String> result = new ArrayList<>();
       PSLocationSchemeModel model = PSConfigUtils.getSchemeModel(); 
       for (String ctxName : ctxNames)
       {
@@ -631,7 +631,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
                + "\" does not associate with Template \"" + template + "\".");
       }
       
-      return new PSPair<IPSGuid, IPSGuid>(ctGuid, tpGuid);
+      return new PSPair<>(ctGuid, tpGuid);
    }
 
    /**
@@ -751,7 +751,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
    /**
     * Holds the {@link #CONTEXTS} property, which is a list of Context names
     */
-   private Map<String, Object> m_extraProperties = new HashMap<String, Object>();
+   private Map<String, Object> m_extraProperties = new HashMap<>();
 
    /**
     * Determines if the {@link #unprocess(Object, List)} was called.

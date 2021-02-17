@@ -1672,7 +1672,7 @@ public abstract class PSDependencyHandler
    {
       if (m_idTypes == null)
       {
-         List<String> types = new ArrayList<String>();
+         List<String> types = new ArrayList<>();
          Iterator defs = m_map.getDefs();
          while (defs.hasNext())
          {

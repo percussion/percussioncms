@@ -142,11 +142,11 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
    public List<PSPair<Object, ObjectState>> getDesignObjects(
          Map<String, Object> cachedObjs)
    {
-      List<PSPair<Object, ObjectState>> result = new ArrayList<PSPair<Object, ObjectState>>();
+      List<PSPair<Object, ObjectState>> result = new ArrayList<>();
       for (PSPair<String, ObjectState> name : getObjectNames())
       {
          Object site = getSite(name.getFirst(), cachedObjs, getSiteModel());
-         result.add(new PSPair<Object, ObjectState>(site, name.getSecond()));
+         result.add(new PSPair<>(site, name.getSecond()));
       }
       return result;
    }
@@ -189,7 +189,7 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
       Collection<String> names;
       if (StringUtils.isNotBlank(getName()))
       {
-         names = new ArrayList<String>();
+         names = new ArrayList<>();
          names.add(getName());
       }
       else
@@ -208,7 +208,7 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
       Collection<String> names = null;
       if (StringUtils.isNotBlank(getName()))
       {
-         names = new ArrayList<String>();
+         names = new ArrayList<>();
          names.add(getName());
       }
       else
@@ -290,7 +290,7 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
     * value is a list of Site names, a string with pattern names, or 
     * <code>null</code> if the property is not defined. 
     */
-   private Map<String, Object> m_siteNames = new HashMap<String, Object>();
+   private Map<String, Object> m_siteNames = new HashMap<>();
    
    /**
     * The list of Site names property. See {@link #getNames()} for detail.

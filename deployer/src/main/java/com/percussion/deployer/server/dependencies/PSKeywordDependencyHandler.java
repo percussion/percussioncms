@@ -97,7 +97,7 @@ public class PSKeywordDependencyHandler extends PSDataObjectDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
          
       //Acl deps
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       addAclDependency(tok, PSTypeEnum.KEYWORD_DEF, dep, childDeps);
 
       // no children
@@ -112,7 +112,7 @@ public class PSKeywordDependencyHandler extends PSDataObjectDependencyHandler
          throw new IllegalArgumentException("tok may not be null");
          
       // get all keyword lookup categories
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       List<PSKeyword> keywords = ms_contentSvc.findKeywordsByLabel(null, null);
       for (PSKeyword keyword : keywords)
@@ -183,7 +183,7 @@ public class PSKeywordDependencyHandler extends PSDataObjectDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
       
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       
       String keyId = dep.getDependencyId();
       PSKeyword keyword = findKeywordByDependencyID(keyId);
@@ -609,7 +609,7 @@ public class PSKeywordDependencyHandler extends PSDataObjectDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
    static
    {
       ms_childTypes.add(PSAclDefDependencyHandler.DEPENDENCY_TYPE);

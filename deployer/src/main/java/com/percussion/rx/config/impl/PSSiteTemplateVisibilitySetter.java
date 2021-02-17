@@ -82,7 +82,7 @@ public class PSSiteTemplateVisibilitySetter extends PSPropertySetterWithValidati
       if (VISIBILITY.equals(propName))
       {
          IPSSite site = getSite(obj, propName);
-         List<String> templates = new ArrayList<String>();
+         List<String> templates = new ArrayList<>();
          for (IPSAssemblyTemplate t : site.getAssociatedTemplates())
          {
             templates.add(t.getName());
@@ -147,7 +147,7 @@ public class PSSiteTemplateVisibilitySetter extends PSPropertySetterWithValidati
       if (curList.isEmpty() || otherList.isEmpty())
          return Collections.emptyList();
 
-      Collection<String> commons = new ArrayList<String>();
+      Collection<String> commons = new ArrayList<>();
       commons.addAll(curList);
       commons.retainAll(otherList);
       if (commons.isEmpty())
@@ -189,7 +189,7 @@ public class PSSiteTemplateVisibilitySetter extends PSPropertySetterWithValidati
          return true;
       }
       
-      List<String> templates = new ArrayList<String>();
+      List<String> templates = new ArrayList<>();
       templates.addAll(prevList);
       templates.removeAll(curList);
       mergeOrRemoveTemplates(site, templates, true);

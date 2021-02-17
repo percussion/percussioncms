@@ -153,7 +153,7 @@ public class PSTemplateCommunityDefDependencyHandler
    // Empty Implementation
    public Iterator getDependencies(PSSecurityToken tok) throws PSDeployException
    {    
-      List<PSDependency> deps = new ArrayList<PSDependency>(); 
+      List<PSDependency> deps = new ArrayList<>();
       return deps.iterator();
    }
 
@@ -171,7 +171,7 @@ public class PSTemplateCommunityDefDependencyHandler
 
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       // get the first dep data for the slot object of itself
       PSDependencyData vrData = getDepDataFromTable(dep, VARCOMMUNITYTABLE,
             TEMPLATEID, true);
@@ -244,7 +244,7 @@ public class PSTemplateCommunityDefDependencyHandler
          IPSNodeDefinition nodeDef = contentMgr.findNodeDefinitionByName(dep
                .getDisplayName());
          nodeDef.addVariantGuid(tmpGuid);
-         List<IPSNodeDefinition> newList = new ArrayList<IPSNodeDefinition>();
+         List<IPSNodeDefinition> newList = new ArrayList<>();
          newList.add(nodeDef);
          contentMgr.saveNodeDefinitions(newList);
       }
@@ -324,7 +324,7 @@ public class PSTemplateCommunityDefDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
    static
    {
       ms_childTypes.add(PSCommunityDependencyHandler.DEPENDENCY_TYPE);

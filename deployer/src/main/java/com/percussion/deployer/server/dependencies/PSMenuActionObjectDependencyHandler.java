@@ -86,7 +86,7 @@ public abstract class PSMenuActionObjectDependencyHandler
       if (! dep.getObjectType().equals(getType()))
          throw new IllegalArgumentException("dep wrong type");
 
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
 
       PSComponentProcessorProxy proc = getComponentProcessor(tok);
 
@@ -190,7 +190,7 @@ public abstract class PSMenuActionObjectDependencyHandler
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
 
       PSComponentProcessorProxy proc = getComponentProcessor(tok);
       Iterator<PSAction> actions = loadActions(proc, isLeaf(), null);
@@ -371,7 +371,7 @@ public abstract class PSMenuActionObjectDependencyHandler
 
       try
       {
-         List<PSAction> result = new ArrayList<PSAction>();
+         List<PSAction> result = new ArrayList<>();
          Element[] elements = proc.load(PSAction.getComponentType(
             PSAction.class), null);
          for (int i = 0; i < elements.length; i++)
@@ -454,7 +454,7 @@ public abstract class PSMenuActionObjectDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

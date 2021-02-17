@@ -105,5 +105,5 @@ public class PSPackages
     * The list of packages, never <code>null</code>, may
     * be empty.
     */
-   private List<PSPackage> m_packages = new ArrayList<PSPackage>();
+   private List<PSPackage> m_packages = new ArrayList<>();
 }

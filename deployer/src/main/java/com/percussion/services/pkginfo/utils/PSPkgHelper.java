@@ -76,7 +76,7 @@ public class PSPkgHelper
       Collection<String> comms = getCommunityVisibility(guid);            
       
       // validating each package element
-      Set<String> objects = new HashSet<String>();
+      Set<String> objects = new HashSet<>();
       List<IPSGuid> pkgElemGuids = getPkgInfoService().findPkgElementGuids(
             guid);
       for (IPSGuid pkgElemGuid : pkgElemGuids)
@@ -139,7 +139,7 @@ public class PSPkgHelper
    public static Set<String> validatePackage(String pkgName)
    {
       if (!ms_enabled)
-         return new HashSet<String>();
+         return new HashSet<>();
       
       if (StringUtils.isBlank(pkgName))
       {
@@ -270,7 +270,7 @@ public class PSPkgHelper
          throw new IllegalArgumentException("pkgElem may not be null");
       }
             
-      List<String> warnList = new ArrayList<String>();
+      List<String> warnList = new ArrayList<>();
       
       IPSGuid objGuid = pkgElem.getObjectGuid();
       PSTypeEnum objType = PSTypeEnum.valueOf(pkgElem.getObjectType());
