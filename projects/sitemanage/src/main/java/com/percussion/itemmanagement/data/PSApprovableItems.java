@@ -53,7 +53,7 @@ public class PSApprovableItems extends PSAbstractDataObject
 
     private List<PSApprovableItem> processedItems;
 
-    private Map<String, String> errors = new HashMap<String, String>();
+    private Map<String, String> errors = new HashMap<>();
 
     public PSApprovableItems() {
         // empty for jax-rs

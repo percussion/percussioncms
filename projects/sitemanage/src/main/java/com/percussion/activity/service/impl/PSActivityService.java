@@ -209,7 +209,7 @@ public class PSActivityService implements IPSActivityService
         if (dates == null || dates.size() < 2)
             throw new IllegalArgumentException("dates must contain more than 1 Date elements.");
         
-        List<Integer> counts = new ArrayList<Integer>(dates.size()-1);
+        List<Integer> counts = new ArrayList<>(dates.size()-1);
         if (contentIds.isEmpty())
         {
             return Collections.nCopies(dates.size()-1, new Integer(0));
@@ -235,7 +235,7 @@ public class PSActivityService implements IPSActivityService
         if (dates == null || dates.size() < 2)
             throw new IllegalArgumentException("dates must contain more than 1 Date elements.");
         
-        List<Integer> counts = new ArrayList<Integer>();
+        List<Integer> counts = new ArrayList<>();
         if (contentIds.isEmpty())
         {
             return Collections.nCopies(dates.size()-1, new Integer(0));
@@ -261,8 +261,8 @@ public class PSActivityService implements IPSActivityService
         if (beginDate == null || endDate == null)
             throw new IllegalArgumentException("date must not be empty");
         
-        List<Long> pageIds = new ArrayList<Long>();
-        List<String> pageStringIds = new ArrayList<String>();
+        List<Long> pageIds = new ArrayList<>();
+        List<String> pageStringIds = new ArrayList<>();
         
         if (contentIds.isEmpty())
         {
@@ -289,7 +289,7 @@ public class PSActivityService implements IPSActivityService
         if (dates == null || dates.size() < 2)
             throw new IllegalArgumentException("dates must contain more than 1 Date elements.");
         
-        List<Integer> counts = new ArrayList<Integer>();
+        List<Integer> counts = new ArrayList<>();
         if (contentIds.isEmpty())
         {
             return Collections.nCopies(dates.size()-1, new Integer(0));
@@ -311,7 +311,7 @@ public class PSActivityService implements IPSActivityService
      */
     public Collection<Long> findPublishedItems(Collection<Integer> contentIds)
     {
-        Collection<Long> ids = new ArrayList<Long>();
+        Collection<Long> ids = new ArrayList<>();
         
         if (!contentIds.isEmpty())
         {
@@ -381,7 +381,7 @@ public class PSActivityService implements IPSActivityService
         try
         {
             Query query = contentMgr.createQuery(jcrQuery, Query.SQL);
-            QueryResult queryResult = contentMgr.executeQuery(query, -1, new HashMap<String, Object>(), null);
+            QueryResult queryResult = contentMgr.executeQuery(query, -1, new HashMap<>(), null);
             itemCount = queryResult.getRows().getSize();
         }
         catch(Exception e)
@@ -395,7 +395,7 @@ public class PSActivityService implements IPSActivityService
     {
         notEmpty(path);
         
-        List<IPSSite> cm1Sites = new ArrayList<IPSSite>();
+        List<IPSSite> cm1Sites = new ArrayList<>();
         List<IPSSite> sites = siteMgr.findAllSites();
         for (IPSSite site : sites)
         {
@@ -423,7 +423,7 @@ public class PSActivityService implements IPSActivityService
         }
      
         // get all sites
-        List<PSActivityNode> result = new ArrayList<PSActivityNode>();
+        List<PSActivityNode> result = new ArrayList<>();
         for (IPSSite site : cm1Sites)
         {
             String siteName = site.getName();
@@ -435,7 +435,7 @@ public class PSActivityService implements IPSActivityService
 
     private List<PSActivityNode> createActivityNodesBySite(IPSSite site, boolean includeSite)
     {
-        List<PSActivityNode> result = new ArrayList<PSActivityNode>();
+        List<PSActivityNode> result = new ArrayList<>();
         
         String siteName = site.getName();
         if (includeSite)
@@ -451,7 +451,7 @@ public class PSActivityService implements IPSActivityService
     
     private List<PSActivityNode> createActivityChildNodes(String path, String siteName)
     {
-        List<PSActivityNode> result = new ArrayList<PSActivityNode>();
+        List<PSActivityNode> result = new ArrayList<>();
         
         String folderPath = (!path.startsWith("//") ? '/' + path : path);
         List<PSItemSummary> sums = contentWs.findFolderChildren(folderPath, false);
@@ -474,7 +474,7 @@ public class PSActivityService implements IPSActivityService
      */
     public List<String> getResourceAssets()
     {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         
         for (PSResourceDefinitionGroup resGrp : resDao.findAll())
         {
@@ -500,7 +500,7 @@ public class PSActivityService implements IPSActivityService
     {
         notNull(resAssets);
         
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         
         result.addAll(asList(itemDefMgr.getContentTypeNames(-1)));
         result.removeAll(resAssets);
@@ -543,7 +543,7 @@ public class PSActivityService implements IPSActivityService
     @SuppressWarnings("unchecked")
     private Collection<Integer> getContentIdsByPath(String path, Collection<String> contentTypes)
     {
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         String query = createJCRQuery(path, contentTypes);
         try
         {

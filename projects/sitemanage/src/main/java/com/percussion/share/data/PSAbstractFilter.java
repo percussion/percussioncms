@@ -34,7 +34,7 @@ public abstract class PSAbstractFilter<T> implements Predicate {
 
     
     public List<T> filter(Collection<T> resources) {
-        List<T> rvalue = new ArrayList<T>(resources);
+        List<T> rvalue = new ArrayList<>(resources);
         CollectionUtils.filter(rvalue, this);
         return rvalue;
     }

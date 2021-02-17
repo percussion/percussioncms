@@ -103,7 +103,7 @@ public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTem
     {
         notNull(results, "results");
         notEmpty(parameters, "parameters");
-        List<PSContentListItem> contentListItems = new ArrayList<PSContentListItem>();
+        List<PSContentListItem> contentListItems = new ArrayList<>();
         IPSGuid siteId = getSiteId(parameters);
         int context = getContext(parameters);
         
