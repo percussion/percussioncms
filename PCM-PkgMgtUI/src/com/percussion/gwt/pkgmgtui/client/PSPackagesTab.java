@@ -525,10 +525,10 @@ public class PSPackagesTab
     */
    private List<List<String>> getPkgsForConfigReapply()
    {
-      List<List<String>> result = new ArrayList<List<String>>();
+      List<List<String>> result = new ArrayList<>();
       final ListGridRecord[] selectedRecords = m_packagesGrid.getSelection();
-      List<String> noConfigPakcages = new ArrayList<String>();
-      List<String> configPakcages = new ArrayList<String>();
+      List<String> noConfigPakcages = new ArrayList<>();
+      List<String> configPakcages = new ArrayList<>();
       for (int i = 0; i < selectedRecords.length; i++)
       {
          ListGridRecord selectedRecord = selectedRecords[i];
