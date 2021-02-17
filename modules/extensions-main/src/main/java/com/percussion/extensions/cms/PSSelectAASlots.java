@@ -78,10 +78,10 @@ public class PSSelectAASlots implements IPSResultDocumentProcessor
       // Walk the slot elements, removing those whose finder is not null and
       // not in the list of AA finder
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
-      Map<String, Boolean> aafinder = new HashMap<String, Boolean>();
+      Map<String, Boolean> aafinder = new HashMap<>();
 
       NodeList children = resultDoc.getDocumentElement().getChildNodes();
-      Set<Element> nodesToRemove = new HashSet<Element>();
+      Set<Element> nodesToRemove = new HashSet<>();
       int count = children.getLength();
       try
       {

@@ -419,7 +419,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       sws.start("PSGeneratePubLocation#generatePreviewLocation");
       try
       {
-         Map<String, String> paramMap = new HashMap<String, String>(5);
+         Map<String, String> paramMap = new HashMap<>(5);
          paramMap.put(IPSHtmlParameters.SYS_CONTENTID, contentid.toString());
          paramMap.put(IPSHtmlParameters.SYS_REVISION, revision.toString());
          paramMap.put(IPSHtmlParameters.SYS_VARIANTID, variantid.toString());
@@ -483,7 +483,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
     * The custom preview URL generator map, which maps the name of the generator to its UDF instance. 
     * It is default to empty and lazily loaded UDF extension as needed.
     */
-    Map<String, PSExtensionWrapper> m_previewUrlGeneratorMap = new HashMap<String, PSExtensionWrapper>();
+    Map<String, PSExtensionWrapper> m_previewUrlGeneratorMap = new HashMap<>();
 
    /**
     * Generates the preview URL from a specified UDF extension.
