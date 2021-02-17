@@ -85,7 +85,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 	private IPSControlManager ctrlMgr;
 
 	static {
-		dbColumnTypeMap = new HashMap<String, Integer>();
+		dbColumnTypeMap = new HashMap<>();
 		dbColumnTypeMap.put(FieldType.DATE.name(), Types.TIMESTAMP);
 		dbColumnTypeMap.put(FieldType.RICH_TEXT.name(), Types.CLOB);
 		dbColumnTypeMap.put(FieldType.TEXT.name(), Types.VARCHAR);
@@ -100,7 +100,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 		//TODO : FILE_LINK, IMAGE_LINK and PAGE_LINK should be Types.INTEGER
 		// Need to make sure does not break on upgrade.
 		
-		controlTypeMap = new HashMap<String, String>();
+		controlTypeMap = new HashMap<>();
 		controlTypeMap.put(FieldType.DATE.name(), "sys_CalendarSimple");
 		controlTypeMap.put(FieldType.RICH_TEXT.name(), RTE_CONTROL);
 		controlTypeMap.put(FieldType.TEXT.name(), "sys_EditBox");
@@ -423,7 +423,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 				.getControlDependencyMap();
 		PSControlMeta ctrlMeta = ctrlMgr.getControl(mapping.getUISet()
 				.getControl().getName());
-		List<PSDependency> deps = new ArrayList<PSDependency>();
+		List<PSDependency> deps = new ArrayList<>();
 		deps.addAll(ctrlMeta.getDependencies());
 		for (PSDependency dep : deps) {
 			dep.setId(getNextObjectId());

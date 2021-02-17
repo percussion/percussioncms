@@ -156,7 +156,7 @@ public class PSAssetDao implements IPSAssetDao
     {
         isTrue(isNotBlank(type), "type may not be blank");
         
-        Map<String, String> whereFields = new HashMap<String, String>();
+        Map<String, String> whereFields = new HashMap<>();
         whereFields.put("sys_workflowid", String.valueOf(workflowId));
         if (stateId != -1)
         {
@@ -171,7 +171,7 @@ public class PSAssetDao implements IPSAssetDao
         isTrue(isNotBlank(type), "type may not be blank");
         isTrue(isNotBlank(name), "name may not be blank");
         
-        Map<String, String> whereFields = new HashMap<String, String>();
+        Map<String, String> whereFields = new HashMap<>();
         whereFields.put("sys_title", name);
                 
         return find(type, whereFields);
@@ -181,7 +181,7 @@ public class PSAssetDao implements IPSAssetDao
     {
         isTrue(isNotBlank(type), "type may not be blank");
         
-        Map<String, String> whereFields = new HashMap<String, String>();
+        Map<String, String> whereFields = new HashMap<>();
                 
         return find(type, whereFields);
     }
@@ -203,7 +203,7 @@ public class PSAssetDao implements IPSAssetDao
     private Collection<PSAsset> find(String type, Map<String, String> whereFields)
     {
     	
-    	List<PSAsset> assets = new ArrayList<PSAsset>();
+    	List<PSAsset> assets = new ArrayList<>();
         
         PSJcrNodeFinder jcrNodeFinder = new PSJcrNodeFinder(contentMgr, type, "sys_title");
         List<IPSNode> nodes = jcrNodeFinder.find(whereFields);
@@ -254,7 +254,7 @@ public class PSAssetDao implements IPSAssetDao
 	}
 	
     private List<PSAsset> runReport(String query, String reportName) throws PSReportFailedToRunException{
-	ArrayList<PSAsset> ret = new ArrayList<PSAsset>();
+	ArrayList<PSAsset> ret = new ArrayList<>();
 		
 		Query q = null;
 		try {

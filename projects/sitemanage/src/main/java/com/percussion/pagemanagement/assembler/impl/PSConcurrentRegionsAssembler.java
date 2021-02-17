@@ -92,8 +92,8 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
             Collection<PSMergedRegion> mergedRegions)
     {
         StopWatch sw = new StopWatch(getClass().getSimpleName()+"#assembleRegions");
-        List<RegionResultsCallable> calls = new ArrayList<RegionResultsCallable>();
-        List<PSMergedRegion> mrList = new ArrayList<PSMergedRegion>(mergedRegions);
+        List<RegionResultsCallable> calls = new ArrayList<>();
+        List<PSMergedRegion> mrList = new ArrayList<>(mergedRegions);
         sw.start("cloneRequest");
         for(PSMergedRegion mr : mergedRegions) {
             notNull(mr, "Merged Region");
@@ -111,7 +111,7 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
                 results = executorService.invokeAll(calls);
             }
             else {
-                results = new ArrayList<Future<List<PSRegionResult>>>();
+                results = new ArrayList<>();
                 for(RegionResultsCallable c : calls) {
                     Future<List<PSRegionResult>> f = executorService.submit(c);
                     results.add(f);
@@ -119,7 +119,7 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
             }
             for(Future<List<PSRegionResult>> f : results) {
                 PSMergedRegion mr = mrList.get(i);
-                List<PSRegionResult> regions = new FutureList<PSRegionResult>(f);
+                List<PSRegionResult> regions = new FutureList<>(f);
                 context.getRegions().put(mr.getRegionId(), regions);
                 ++i;
             }

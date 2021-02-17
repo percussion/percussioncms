@@ -53,7 +53,7 @@ public class PSBlogYear {
         Integer currentYear = cal.get(Calendar.YEAR);
         Integer currentMonth = cal.get(Calendar.MONTH);
                 
-        List<PSBlogMonth> emptyMonths = new ArrayList<PSBlogMonth>();
+        List<PSBlogMonth> emptyMonths = new ArrayList<>();
         String[] localeMonths = new DateFormatSymbols(Locale.getDefault()).getMonths();
         Integer indexMonth = localeMonths.length-2;
         if (currentYear.equals(year))

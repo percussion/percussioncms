@@ -258,7 +258,7 @@ public class PSAssetRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSAssetEditorList getAssetEditors(@PathParam("parentFolderPath") String parentFolderPath, @QueryParam("filterDisabledWidgets") String filterDisabledWidgets, @QueryParam("widgetId") String widgetId)
     {
-        List<PSAssetEditor> assetEditors = new ArrayList<PSAssetEditor>();
+        List<PSAssetEditor> assetEditors = new ArrayList<>();
                 
         if(StringUtils.isNotBlank(widgetId)){
             assetEditors = Collections.singletonList(assetService.getAssetEditor(widgetId, parentFolderPath));
@@ -450,7 +450,7 @@ public class PSAssetRestService
      */
     public Collection<PSFormSummary> getForms(@PathParam("site") String site)
     {
-        List<PSFormSummary> sums = new ArrayList<PSFormSummary>();
+        List<PSFormSummary> sums = new ArrayList<>();
         
         Map<String, PSFormSummary> formAssetSums = getPublishedForms();
         List<PSFormSummary> formDataSums = formDataService.getAllFormData(site);
@@ -521,8 +521,8 @@ public class PSAssetRestService
         PSTemplate template = templateService.load(page.getTemplateId());
         Set<PSOrphanedAssetSummary> unused = getOrphanedAssetsSummaries(page, template);
         
-        List<PSUnusedAssetSummary> unusedAssets = new ArrayList<PSUnusedAssetSummary>();
-        Map<String, Integer> assetOcurrences = new HashMap<String, Integer>();
+        List<PSUnusedAssetSummary> unusedAssets = new ArrayList<>();
+        Map<String, Integer> assetOcurrences = new HashMap<>();
         for(PSOrphanedAssetSummary orphanedAsset : unused)
         {
             PSDataItemSummary summary = assetService.load(orphanedAsset.getId(), true);
@@ -855,10 +855,10 @@ public class PSAssetRestService
      */
     private Map<String, PSFormSummary> getPublishedForms()
     {
-        Map<String, PSFormSummary> sumMap = new HashMap<String, PSFormSummary>();
+        Map<String, PSFormSummary> sumMap = new HashMap<>();
         
-        Map<Long, PSAsset> assetMap = new HashMap<Long, PSAsset>();
-        Collection<Integer> assetIds = new ArrayList<Integer>();
+        Map<Long, PSAsset> assetMap = new HashMap<>();
+        Collection<Integer> assetIds = new ArrayList<>();
         IPSWorkflowService workflowService = PSWorkflowServiceLocator.getWorkflowService();
         Collection<PSAsset> sharedForms = assetService.findByTypeAndWf(FORM_CONTENT_TYPE, 
                 workflowService.getDefaultWorkflowName(), null);

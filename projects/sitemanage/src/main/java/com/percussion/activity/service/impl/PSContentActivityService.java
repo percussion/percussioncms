@@ -122,7 +122,7 @@ public class PSContentActivityService implements IPSContentActivityService
                         CAUSETYPE.ANALYTICS_NOT_CONFIG);
             }
             
-            List<PSEffectiveness> eList = new ArrayList<PSEffectiveness>();
+            List<PSEffectiveness> eList = new ArrayList<>();
             String durationType = request.getDurationType();
             String duration = request.getDuration();
             String path = request.getPath();
@@ -211,7 +211,7 @@ public class PSContentActivityService implements IPSContentActivityService
     private List<PSContentActivity> getContentActivity(String path, String durationType, String duration,
             boolean includeSite)
     {
-        List<PSContentActivity> caList = new ArrayList<PSContentActivity>();
+        List<PSContentActivity> caList = new ArrayList<>();
         
         int timeoutSeconds = NumberUtils.toInt(systemProperties.getProperty(IPSSystemProperties.CONTENT_ACTIVITY_TIME_OUT), DEFAULT_TIMEOUT);
         if (timeoutSeconds <= 0)

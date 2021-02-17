@@ -1071,7 +1071,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * //see base interface method for details
      */
     public List<PSAssetEditor> getAssetEditors(String parentFolderPath, String filterDisabledWidgets) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
-        List<PSAssetEditor> assetEditors = new ArrayList<PSAssetEditor>();
+        List<PSAssetEditor> assetEditors = new ArrayList<>();
         List<PSWidgetSummary> widgetList = widgetService.findByType("All", filterDisabledWidgets);
 
         //Loop all widgets
@@ -1137,7 +1137,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 
     @Override
     public List<PSWidgetContentType> getAssetTypes(String filterDisabledWidgets) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
-        List<PSWidgetContentType> results = new ArrayList<PSWidgetContentType>();
+        List<PSWidgetContentType> results = new ArrayList<>();
         List<PSWidgetSummary> widgetList = widgetService.findByType("All", filterDisabledWidgets);
         //Loop all widgets
         for(PSWidgetSummary widget:widgetList)
@@ -1273,7 +1273,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
            .rejectIfBlank("id", id)
            .rejectIfNull("isPage", isPage)
            .throwIfInvalid();
-      List<PSAssetDropCriteria> criteriaList = new ArrayList<PSAssetDropCriteria>();
+      List<PSAssetDropCriteria> criteriaList = new ArrayList<>();
 
       if (isPage)
       {
@@ -1299,7 +1299,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
        */
     private String getEditView(PSWidgetItem w, List<String> additionalFields)
     {
-        List<String> hiddenFields = new ArrayList<String>();
+        List<String> hiddenFields = new ArrayList<>();
         for (Entry<String, Object> p : w.getProperties().entrySet())
         {
             if (p.getKey().startsWith(PSWidgetProperty.HIDE_FIELD_PREFIX))
@@ -1987,7 +1987,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             IPSGuid guid = idMapper.getGuid(itemId);
 
             if(forceCheckOut) {
-            	List<IPSGuid> ids = new ArrayList<IPSGuid>();
+            	List<IPSGuid> ids = new ArrayList<>();
             	ids.add(guid);
             	contentWs.checkinItems(ids, "Force check-in to update the binary in the asset.", true);
             }

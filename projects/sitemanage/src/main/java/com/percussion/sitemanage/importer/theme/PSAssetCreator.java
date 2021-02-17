@@ -62,7 +62,7 @@ public class PSAssetCreator
      * Mapping of asset type string name to the AssetType.
      */
     private static Map<String, AssetType> ms_assetTypeMap = 
-       new HashMap<String, AssetType>();
+       new HashMap<>();
 
     public IPSAssetService getAssetService()
     {
