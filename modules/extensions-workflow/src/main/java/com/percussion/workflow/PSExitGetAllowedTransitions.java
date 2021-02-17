@@ -126,7 +126,7 @@ public class PSExitGetAllowedTransitions extends PSDefaultExtension
     */
    private List<IPSGuid> getContentIds(IPSRequestContext request) 
    {
-      List<IPSGuid> contentids = new ArrayList<IPSGuid>();
+      List<IPSGuid> contentids = new ArrayList<>();
       IPSGuidManager guidMgr = PSGuidManagerLocator.getGuidMgr();
       Object[] ids = request.getParameterList(IPSHtmlParameters.SYS_CONTENTID);
       if (ids == null)
@@ -160,7 +160,7 @@ public class PSExitGetAllowedTransitions extends PSDefaultExtension
       throws PSSystemException
    {
       List<PSAssignmentTypeEnum> assignmentTypes = 
-         new ArrayList<PSAssignmentTypeEnum>();
+         new ArrayList<>();
       Object[] types = request.getParameterList(
          IPSHtmlParameters.SYS_ASSIGNMENTTYPEID);
       if (types == null)
