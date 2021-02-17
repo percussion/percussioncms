@@ -179,7 +179,7 @@ public class PSSharedGroupDependencyHandler
       }
       
       // use set to ensure we don't add dupes
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       
       // get dependencies specified by id type map
       childDeps.addAll(getIdTypeDependencies(tok, dep));
@@ -218,7 +218,7 @@ public class PSSharedGroupDependencyHandler
       PSDependencyHandler schemaHandler = getDependencyHandler(
          PSSchemaDependencyHandler.DEPENDENCY_TYPE);
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       for (String tableName : PSDependencyUtils.getLocatorTables(locator))
       {
          PSDependency schemaDep =
@@ -250,7 +250,7 @@ public class PSSharedGroupDependencyHandler
       checkServerControls(tok, dep);
       
       // Build list of dependency files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();         
+      List<PSDependencyFile> files = new ArrayList<>();
       PSServerXmlObjectStore os = PSServerXmlObjectStore.getInstance();
       
       // get group and figure out which file it's from

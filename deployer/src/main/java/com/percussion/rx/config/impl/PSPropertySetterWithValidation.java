@@ -58,7 +58,7 @@ public class PSPropertySetterWithValidation extends PSSimplePropertySetter
       
       try
       {
-         List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+         List<PSConfigValidation> result = new ArrayList<>();
          for (Map.Entry<String, Object> prop : properties.entrySet())
          {
             List<PSConfigValidation> subResult = validate(objName, state, prop

@@ -82,7 +82,7 @@ public class PSContentAssemblerDependencyHandler
          throw new IllegalArgumentException("Dependency may not be null");
       
       String appPattern = "../" + dep.getDependencyId() + "/%";
-      Set<IPSGuid> tmpGuids = new HashSet<IPSGuid>();
+      Set<IPSGuid> tmpGuids = new HashSet<>();
       List<IPSAssemblyTemplate> tmps = m_asHelper
             .findTemplatesByAssemblyURL(appPattern);
       for (IPSAssemblyTemplate t : tmps)
@@ -102,7 +102,7 @@ public class PSContentAssemblerDependencyHandler
 
       if (! dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       init();
       // 1. get templates(legacy) that have reference to the appname in url
       Set<IPSGuid> tmpIds = getTemplateIdsByAssemblyUrl(tok, dep);
@@ -149,7 +149,7 @@ public class PSContentAssemblerDependencyHandler
       
       Iterator names = appNames.iterator();
       // creates the dependencies from the app names
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       PSDependency dep;
       while (names.hasNext())
       {
@@ -177,7 +177,7 @@ public class PSContentAssemblerDependencyHandler
    {
       if ( tmps == null )
          throw new IllegalArgumentException("templates may not be null");
-      Set<String> appNames = new HashSet<String>();
+      Set<String> appNames = new HashSet<>();
       for (IPSAssemblyTemplate template : tmps)
       {
          String url = template.getAssemblyUrl();
@@ -251,7 +251,7 @@ public class PSContentAssemblerDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

@@ -73,7 +73,7 @@ public class PSConfigService implements IPSConfigService
    {
       if (configNames == null)
          throw new IllegalArgumentException("configNames must not be null");
-      List<PSPair<String, Exception>> results = new ArrayList<PSPair<String, Exception>>();
+      List<PSPair<String, Exception>> results = new ArrayList<>();
       for (String cfg : configNames)
       {
          if (!isValidConfiguartion(cfg))
@@ -81,7 +81,7 @@ public class PSConfigService implements IPSConfigService
             String msg = "Missing one or more configuration files for "
                   + "configuration {0}. Skipping configuration.";
             Object[] args = { cfg };
-            PSPair<String, Exception> error = new PSPair<String, Exception>(
+            PSPair<String, Exception> error = new PSPair<>(
                   cfg, new PSConfigException(MessageFormat.format(msg, args)));
             results.add(error);
             continue;
@@ -93,7 +93,7 @@ public class PSConfigService implements IPSConfigService
          }
          catch (Exception e)
          {
-            PSPair<String, Exception> error = new PSPair<String, Exception>(
+            PSPair<String, Exception> error = new PSPair<>(
                   cfg, e);
             results.add(error);
          }
@@ -111,7 +111,7 @@ public class PSConfigService implements IPSConfigService
       if (StringUtils.isBlank(configName))
          throw new IllegalArgumentException("configName must not be null or empty.");
       
-      Map<File, Exception> undelMap = new HashMap<File, Exception>();
+      Map<File, Exception> undelMap = new HashMap<>();
 
       m_configRegMgr.unregister(configName);
       deleteConfigFile(configName, ConfigTypes.CONFIG_DEF, undelMap);
@@ -151,7 +151,7 @@ public class PSConfigService implements IPSConfigService
       if (StringUtils.isBlank(configName))
          throw new IllegalArgumentException("configName must not be empty");
       List<PSConfigValidation> validationErrors = 
-         new ArrayList<PSConfigValidation>();
+         new ArrayList<>();
       try
       {
          validationErrors = validateConfig(configName);
@@ -272,7 +272,7 @@ public class PSConfigService implements IPSConfigService
             .indexOf(LOCAL_CONFIG_FILE_SUFFIX));
       PSPair<String, Map<String, Object>> prevCfg = getLastSuccessConfig(configName);
       Map<String, Object> prevProps = prevCfg != null ? prevCfg.getSecond()
-            : new HashMap<String, Object>();
+            : new HashMap<>();
 
       applyLocalConfiguration(localConfigFile, prevProps, changesOnly);
    }
@@ -482,7 +482,7 @@ public class PSConfigService implements IPSConfigService
    private List<PSConfigValidation> validateHandlers(String pkgName,
          List<IPSConfigHandler> hdls)
    {
-      List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+      List<PSConfigValidation> result = new ArrayList<>();
       IPSConfigStatusMgr mgr = getConfigStatusManager();
       for (PSConfigStatus status : mgr.findLatestConfigStatus("%"))
       {
@@ -747,7 +747,7 @@ public class PSConfigService implements IPSConfigService
    private Map<String, Object> applyDefaultProps(
          Map<String, Object> localConfig, Map<String, Object> defaultConfig)
    {
-      Map<String, Object> nm = new HashMap<String, Object>();
+      Map<String, Object> nm = new HashMap<>();
       nm.putAll(defaultConfig);
       nm.putAll(localConfig);
       return nm;
@@ -813,7 +813,7 @@ public class PSConfigService implements IPSConfigService
                   .getLocalConfig()), normalizeConfig(sucCfg
                   .getDefaultConfig()));
             
-            return new PSPair<String, Map<String, Object>>(sucCfg
+            return new PSPair<>(sucCfg
                   .getConfigDef(), results);
          }
       }
@@ -844,7 +844,7 @@ public class PSConfigService implements IPSConfigService
       throws UnsupportedEncodingException, JAXBException
    {
       if (StringUtils.isBlank(config))
-         return new HashMap<String, Object>();
+         return new HashMap<>();
 
       PSConfigNormalizer normalizer = new PSConfigNormalizer();
       return normalizer.getNormalizedMap(new ByteArrayInputStream(config
@@ -1045,7 +1045,7 @@ public class PSConfigService implements IPSConfigService
          String pkgName, boolean isReplace)
    {
       File f = getConfigFile(ConfigTypes.VISIBILITY, pkgName);
-      Set<String> commSet = new HashSet<String>(communities);
+      Set<String> commSet = new HashSet<>(communities);
       if (!isReplace)
       {
          // merge the specified communities into the existing ones
@@ -1088,5 +1088,5 @@ public class PSConfigService implements IPSConfigService
    /**
     * Configuration change listeners.
     */
-   private List<IPSConfigChangeListener> m_configChangeListeners = new ArrayList<IPSConfigChangeListener>();
+   private List<IPSConfigChangeListener> m_configChangeListeners = new ArrayList<>();
 }

@@ -92,7 +92,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
       // thus, this method is only here as a placeholder (a required 
       // implementation of abstract method in PSDependencyHandler class )
       // It returns an empty list.
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       return childDeps.iterator();         
     }
@@ -104,7 +104,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       List<IPSPublishingContext> contexts = m_siteMgr.findAllContexts();
       for (IPSPublishingContext context : contexts)
@@ -194,7 +194,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
          
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       
       String depId = dep.getDependencyId();
       IPSPublishingContext context = findPublishingContext(depId);
@@ -416,7 +416,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

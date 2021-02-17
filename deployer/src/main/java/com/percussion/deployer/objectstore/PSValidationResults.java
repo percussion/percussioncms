@@ -267,7 +267,7 @@ public class PSValidationResults  implements IPSDeployComponent
     * A list of <code>PSValidationResult</code> objects. It will never be
     * <code>null</code>, but may be empty.
     */
-   private List<PSValidationResult> m_validateResults = new ArrayList<PSValidationResult>();
+   private List<PSValidationResult> m_validateResults = new ArrayList<>();
 
    /**
     * flags to walk to a child node of a XML tree

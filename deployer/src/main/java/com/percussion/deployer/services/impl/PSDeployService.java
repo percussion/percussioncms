@@ -241,7 +241,7 @@ public class PSDeployService
          if ( !isNew )
          {
             fName = filter.getName();
-            List<IPSGuid> ids = new ArrayList<IPSGuid>();
+            List<IPSGuid> ids = new ArrayList<>();
             ids.add(filter.getGUID());
             IPSFilterService filterSvc = 
                PSFilterServiceLocator.getFilterService();
@@ -310,7 +310,7 @@ public class PSDeployService
          t = th.generateTemplateFromFile(archive, depFile, t, ctx);
          t = dh.doTransforms(t, ctx, dep);
          PSTemplateDefDependencyHandler.saveTemplate(t, ver,
-               new HashMap<Long, Integer>());
+               new HashMap<>());
       }
       catch (PSDeployException e)
       {

@@ -142,7 +142,7 @@ public class PSImportJob extends PSDeployJob
 
     private void initDepCount()
     {
-        List<PSDeployableElement> pkgList = new ArrayList<PSDeployableElement>();
+        List<PSDeployableElement> pkgList = new ArrayList<>();
          Iterator importPkgs = m_descriptor.getImportPackageList().iterator();
          while (importPkgs.hasNext())
          {

@@ -132,7 +132,7 @@ public class SolutionConfig {
      */
     public List<Object> getPropertyOrPropertySet() {
         if (propertyOrPropertySet == null) {
-            propertyOrPropertySet = new ArrayList<Object>();
+            propertyOrPropertySet = new ArrayList<>();
         }
         return this.propertyOrPropertySet;
     }

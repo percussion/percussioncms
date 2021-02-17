@@ -118,7 +118,7 @@ public class PSRelationshipDefDependencyHandler
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       PSRelationshipConfigSet cfgSet = 
          PSRelationshipCommandHandler.getConfigurationSet();
@@ -193,7 +193,7 @@ public class PSRelationshipDefDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       PSRelationshipConfigSet cfgSet = 
          PSRelationshipCommandHandler.getConfigurationSet();
@@ -327,7 +327,7 @@ public class PSRelationshipDefDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

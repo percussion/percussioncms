@@ -121,5 +121,5 @@ public class PSPackageCommunities
     * empty.
     */
    private List<PSPackageCommunity> m_packageCommunities = 
-      new ArrayList<PSPackageCommunity>();
+      new ArrayList<>();
 }

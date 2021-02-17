@@ -150,9 +150,9 @@ public class PSPackageConfiguration
     */
    class ValidateOrderedElement
    {
-      Set<String> mi_deployableEls = new HashSet<String>();
+      Set<String> mi_deployableEls = new HashSet<>();
 
-      Map<String, Set<String>> mi_nonDepEls = new HashMap<String, Set<String>>();
+      Map<String, Set<String>> mi_nonDepEls = new HashMap<>();
 
       /**
        * Adds the given type for validation.
@@ -172,7 +172,7 @@ public class PSPackageConfiguration
          {
             Set<String> cList = mi_nonDepEls.get(types[1]);
             if (cList == null)
-               cList = new HashSet<String>();
+               cList = new HashSet<>();
             cList.add(types[0]);
             mi_nonDepEls.put(types[1], cList);
          }
@@ -186,7 +186,7 @@ public class PSPackageConfiguration
        */
       Set<String> getDeplyableDefTypes()
       {
-         Set<String> result = new HashSet<String>();
+         Set<String> result = new HashSet<>();
          Iterator<PSDependencyDef> defs = m_depMap.getDefs();
          while (defs.hasNext())
          {
@@ -249,7 +249,7 @@ public class PSPackageConfiguration
    private void parseDeployOrder(Element orderElem)
       throws PSUnknownNodeTypeException, PSDeployException
    {
-      m_deployOrder = new ArrayList<String>();
+      m_deployOrder = new ArrayList<>();
 
       // collects the elements for validation later
       ValidateOrderedElement vOrderedElements = new ValidateOrderedElement();
@@ -279,7 +279,7 @@ public class PSPackageConfiguration
    private void parseUninstallIgnoreTypes(Element ignoreElem)
       throws PSUnknownNodeTypeException
    {
-      m_uninstallIgnoreTypes = new ArrayList<String>();
+      m_uninstallIgnoreTypes = new ArrayList<>();
       PSXMLDomUtil.checkNode(ignoreElem, XML_ElEM_IGNORE_FOR_UNINSTALL_NAME);
       Element elem = PSXMLDomUtil.getFirstElementChild(ignoreElem);
       while (elem != null)

@@ -178,7 +178,7 @@ public class PSPackageService
    private Map<IPSGuid, String> getPkgCommsMap(Map<IPSGuid, String> pkgInfomap)
    {
       IPSConfigService srv = PSConfigServiceLocator.getConfigService();
-      Map<IPSGuid, String> result = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> result = new HashMap<>();
       for (Map.Entry<IPSGuid, String> pkg : pkgInfomap.entrySet())
       {
          Collection<String> names = srv.loadCommunityVisibility(pkg.getValue());         
@@ -342,7 +342,7 @@ public class PSPackageService
          updatePkgComms(pkg, commList, false);
       }
       List<PSPkgInfo> pInfos = getPkgService().findAllPkgInfos();
-      List<IPSGuid> objectGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> objectGuids = new ArrayList<>();
       for (PSPkgInfo info : pInfos)
       {
          if (pkgs.contains(info.getPackageDescriptorName()))
@@ -390,7 +390,7 @@ public class PSPackageService
     */
    private List<String> getListFromString(String commaList)
    {
-      List<String> nameList = new ArrayList<String>();
+      List<String> nameList = new ArrayList<>();
       if (StringUtils.isNotBlank(commaList))
       {
          String[] commNames = commaList.split(NAME_SEPARATOR);

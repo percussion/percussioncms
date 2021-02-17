@@ -165,7 +165,7 @@ public class PSRelationshipConfigEffectSetter extends
     */
    private List<String> getEffectNames(List<PSConditionalEffect> effects)
    {
-      List<String> effNames = new ArrayList<String>();
+      List<String> effNames = new ArrayList<>();
       for (PSConditionalEffect effect : effects)
       {
          effNames.add(effect.getEffect().getName());
@@ -200,7 +200,7 @@ public class PSRelationshipConfigEffectSetter extends
 
    private List<Map<String,Object>> getEffectProperty(PSRelationshipConfig relConfig)
    {
-      List<Map<String,Object>> effects = new ArrayList<Map<String,Object>>();
+      List<Map<String,Object>> effects = new ArrayList<>();
       Iterator iter = relConfig.getEffects();
       while(iter.hasNext())
       {
@@ -212,9 +212,9 @@ public class PSRelationshipConfigEffectSetter extends
 
    private Map<String, Object> getEffectPropertyDef(PSConditionalEffect effect)
    {
-      Map<String, Object> efPropDef = new HashMap<String, Object>();
+      Map<String, Object> efPropDef = new HashMap<>();
       // ExecutionContext prop
-      List<String> execCtxtsList = new ArrayList<String>();
+      List<String> execCtxtsList = new ArrayList<>();
       Collection<Integer> execCtxts = effect.getExecutionContexts();
       for (Integer integer : execCtxts)
       {
@@ -250,7 +250,7 @@ public class PSRelationshipConfigEffectSetter extends
    private void removeEffects(PSRelationshipConfig relConfig, Object propValue)
    {
       Iterator iter = relConfig.getEffects();
-      List<PSConditionalEffect> curEffects = new ArrayList<PSConditionalEffect>();
+      List<PSConditionalEffect> curEffects = new ArrayList<>();
       while (iter.hasNext())
       {
          curEffects.add((PSConditionalEffect) iter.next());
@@ -272,29 +272,29 @@ public class PSRelationshipConfigEffectSetter extends
       if (propValue == null && prevPropValue == null)
          return;
       Iterator iter = relConfig.getEffects();
-      List<PSConditionalEffect> curEffects = new ArrayList<PSConditionalEffect>();
+      List<PSConditionalEffect> curEffects = new ArrayList<>();
       while (iter.hasNext())
       {
          curEffects.add((PSConditionalEffect) iter.next());
       }
 
-      List<PSConditionalEffect> newEffects = new ArrayList<PSConditionalEffect>();
+      List<PSConditionalEffect> newEffects = new ArrayList<>();
       if (propValue != null)
          newEffects = createEffects(propValue);
 
       // Find the old effects that are not in new effects anymore.
-      List<PSConditionalEffect> oldEffects = new ArrayList<PSConditionalEffect>();
+      List<PSConditionalEffect> oldEffects = new ArrayList<>();
       if (prevPropValue != null)
          oldEffects = createEffects(prevPropValue);
 
-      List<PSConditionalEffect> removals = new ArrayList<PSConditionalEffect>();
+      List<PSConditionalEffect> removals = new ArrayList<>();
       for (PSConditionalEffect effect : oldEffects)
       {
          if (getCorrespondingEffect(effect, newEffects) == null)
             removals.add(effect);
       }
 
-      List<PSConditionalEffect> mergedEffects = new ArrayList<PSConditionalEffect>();
+      List<PSConditionalEffect> mergedEffects = new ArrayList<>();
       // add the current effects to the merged list, if an effect exists in the
       // new effects use that effect instead of current effect and remove it
       // from the new effects.
@@ -356,7 +356,7 @@ public class PSRelationshipConfigEffectSetter extends
     */
    private List<PSConditionalEffect> createEffects(Object propValue)
    {
-      List<PSConditionalEffect> effects = new ArrayList<PSConditionalEffect>();
+      List<PSConditionalEffect> effects = new ArrayList<>();
       if(propValue == null)
          return effects;
       if (!(propValue instanceof List))
@@ -437,7 +437,7 @@ public class PSRelationshipConfigEffectSetter extends
          throw new PSConfigException("The effect is missing required "
                + "property \"executionContext\".");
       }
-      List<Integer> ecs = new ArrayList<Integer>();
+      List<Integer> ecs = new ArrayList<>();
       for (String ec : execCtxts)
       {
          Integer ectx = PSConditionalEffect
@@ -458,7 +458,7 @@ public class PSRelationshipConfigEffectSetter extends
 
    // The the UI the end points as direction, the following map consists of the
    // mapping values between UI and actual end point constants
-   private static final Map<String, String> ms_directionConsts = new HashMap<String, String>();
+   private static final Map<String, String> ms_directionConsts = new HashMap<>();
 
    static
    {

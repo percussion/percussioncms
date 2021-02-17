@@ -322,7 +322,7 @@ public class PSDependencyMap
     * never <code>null</code>, entries are added during ctor, never modified
     * after that.
     */
-   private Map<String, PSDependencyDef> m_dependencyMap = new HashMap<String, PSDependencyDef>();
+   private Map<String, PSDependencyDef> m_dependencyMap = new HashMap<>();
    
    /**
     * Map of dependency handlers by type.  Key is the dependency type as a

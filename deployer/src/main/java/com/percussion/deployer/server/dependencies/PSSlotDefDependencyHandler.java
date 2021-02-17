@@ -180,7 +180,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
       boolean isLegacy = isLegacySlot(slot);
       
       // OK, we have the slot, now package its dependencies..
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       
       PSTemplateTypeSlotAssociation[] slotRelations = 
          ((PSTemplateSlot)slot).getSlotTypeAssociations();
@@ -281,7 +281,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("tok may not be null");
       
       init();
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       List<IPSTemplateSlot> slots = m_assemblyHelper.getSlots();
       PSDependency dep = null;
       for (IPSTemplateSlot slot : slots)
@@ -308,7 +308,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
 
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       IPSTemplateSlot slot  = findSlotByDependencyID(dep.getDependencyId());
       PSDependencyFile f = getDepFileFromSlot(slot);
       files.add(f);
@@ -532,7 +532,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
       List<PSTemplateTypeSlotAssociation> aList = Arrays.asList(assoc);
       Iterator<PSTemplateTypeSlotAssociation> it = aList.iterator();
       List<PSTemplateTypeSlotAssociation> addList = 
-         new ArrayList<PSTemplateTypeSlotAssociation>();
+         new ArrayList<>();
       while (it.hasNext())
       {
          PSTemplateTypeSlotAssociation a = it.next();
@@ -584,7 +584,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
       for (PSTemplateTypeSlotAssociation a : assoc)
       {
          PSPair<IPSGuid, IPSGuid> ctPair = 
-            new PSPair<IPSGuid, IPSGuid>
+            new PSPair<>
             (new PSGuid(PSTypeEnum.NODEDEF, a.getContentTypeId()),
                new PSGuid(PSTypeEnum.TEMPLATE, a.getTemplateId()));
          ((PSTemplateSlot)slot).removeSlotAssociation(ctPair);
@@ -795,7 +795,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
    
    /**
     * Assembly Helper instance
