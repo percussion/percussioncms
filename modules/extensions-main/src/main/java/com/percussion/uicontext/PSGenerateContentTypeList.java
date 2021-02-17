@@ -110,9 +110,9 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
          // Map to store menu action String key is the path of the action in the
          // hierarchy node
          // and value is the menu action
-         Map<String, List<PSMenuAction>> folderActions = new HashMap<String, List<PSMenuAction>>();
+         Map<String, List<PSMenuAction>> folderActions = new HashMap<>();
 
-         List<PSItemDefSummary> summaryList = new ArrayList<PSItemDefSummary>();
+         List<PSItemDefSummary> summaryList = new ArrayList<>();
 
          PSItemDefManager defMgr = PSItemDefManager.getInstance();
 
@@ -125,7 +125,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
             summaryList.add((PSItemDefSummary) summary);
 
          // List to store structured actions based on the content type path
-         List<PSMenuAction> structuredActions = new ArrayList<PSMenuAction>();
+         List<PSMenuAction> structuredActions = new ArrayList<>();
 
          for (long contentTypeId : contentTypeIds)
          {
@@ -144,7 +144,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
                List<PSMenuAction> pathItems = folderActions.get(path);
                if (pathItems == null)
                {
-                  pathItems = new ArrayList<PSMenuAction>();
+                  pathItems = new ArrayList<>();
                   folderActions.put(path, pathItems);
                }
                pathItems.add(action);
@@ -195,7 +195,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
       String contentTypeId = Integer.toString(itemDefSummary.getGUID().getUUID());
       List<String> list = Arrays.asList("psx.contenttype", contentTypeId, itemDefSummary.getLabel());
       String il8nLabel = PSI18nUtils.getString(PSI18nUtils.makeLookupKey(list), lang);
-      HashMap<String, String> paramMap = new HashMap<String, String>();
+      HashMap<String, String> paramMap = new HashMap<>();
       String sourceUrl = itemDefSummary.getEditorUrl();
       paramMap.put(IPSHtmlParameters.SYS_COMMAND, "edit");
       paramMap.put(IPSHtmlParameters.SYS_VIEW, "sys_All");
@@ -221,7 +221,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
 
    private String getPath(PSItemDefSummary itemDefSummary) throws PSExtensionProcessingException
    {
-      Map<IPSGuid, String> itemPaths = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> itemPaths = new HashMap<>();
       String path = "";
       IPSGuid guid = null;
       try
@@ -265,7 +265,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
       String skipFolders = PSServer.getProperty(SERVER_PROP_SKIP_FOLDERS);
       if (skipFolders != null)
          alwaysShowSubmenu = skipFolders.trim().equalsIgnoreCase("false");
-      List<PSMenuAction> retList = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> retList = new ArrayList<>();
       List<PSMenuAction> thisLevelActions = folderActions.get("");
       // add all without any further path
       if (thisLevelActions != null)
@@ -274,7 +274,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
          alwaysShowSubmenu = (thisLevelActions.size() > 0);
       }
       // split out the first part of the path
-      Map<String, List<String>> pathSplit = new HashMap<String, List<String>>();
+      Map<String, List<String>> pathSplit = new HashMap<>();
       for (String path : folderActions.keySet())
       {
          if (path.length() > 0)
@@ -294,7 +294,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
             List<String> rights = pathSplit.get(left);
             if (rights == null)
             {
-               rights = new ArrayList<String>();
+               rights = new ArrayList<>();
                pathSplit.put(left, rights);
             }
             rights.add(right);
@@ -306,7 +306,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
 
       for (String folder : folders)
       {
-         Map<String, List<PSMenuAction>> submenuActions = new HashMap<String, List<PSMenuAction>>();
+         Map<String, List<PSMenuAction>> submenuActions = new HashMap<>();
          // create a modified action map stripping off the first part of the
          // path
          for (String right : pathSplit.get(folder))

@@ -60,7 +60,7 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
      * @see com.percussion.soln.linkback.codec.LinkbackTokenCodec#decode(java.lang.String)
      */
     public Map<String, String> decode(String token) throws IllegalArgumentException {
-        Map<String, String> oparm = new HashMap<String, String>();
+        Map<String, String> oparm = new HashMap<>();
         String codedToken;
         try {
             byte[] tokenBytes = Base64.decodeBase64(token.getBytes(ASCII));

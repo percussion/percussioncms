@@ -314,7 +314,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
          request.printTraceMessage(msg);
          return params;
       }
-      params = new HashMap<String, String>();
+      params = new HashMap<>();
       params.put(CONTENTID, contentid);
       params.put(VARIANTID, variantid);
       params.put(IPSHtmlParameters.SYS_SITEID, siteid);
@@ -338,7 +338,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
    {
       if (request == null)
          throw new IllegalArgumentException("request must not be null");
-      Map<String, String> siteFolderRoot = new HashMap<String, String>();
+      Map<String, String> siteFolderRoot = new HashMap<>();
       IPSInternalRequest lookupRequest =
          request.getInternalRequest(LOOKUP_SITE_FOLDER_ROOT, null, false);
       if (lookupRequest == null)
@@ -421,10 +421,10 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
          throw new IllegalArgumentException("request must not be null");
       if (doc == null)
          throw new IllegalArgumentException("doc must not be null");
-      Map<String, String> folderPaths = new HashMap<String, String>();
+      Map<String, String> folderPaths = new HashMap<>();
       //Get all folderids and the component summary for them.
       NodeList nl = doc.getElementsByTagName(LINKURL);
-      Set<Integer> folderIdSet = new HashSet<Integer>();
+      Set<Integer> folderIdSet = new HashSet<>();
       String folderId;
       for (int i = 0; i < nl.getLength(); i++)
       {

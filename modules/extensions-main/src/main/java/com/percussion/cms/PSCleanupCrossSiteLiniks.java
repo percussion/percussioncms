@@ -504,7 +504,7 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
       else
          filter.setDependent(locator);
       PSRelationshipSet relset = m_relProcessor.getRelationships(filter);
-      List<PSLocator> parent = new ArrayList<PSLocator>();
+      List<PSLocator> parent = new ArrayList<>();
 
       Iterator rels = relset.iterator();
       while (rels.hasNext()) 
@@ -582,7 +582,7 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
       PSRelationshipSet relset = m_relProcessor.getRelationships(filter);
 
       // get all folders that exist under the target site
-      List<PSLocator> siteFolders = new ArrayList<PSLocator>();
+      List<PSLocator> siteFolders = new ArrayList<>();
       Iterator rels = relset.iterator();
       while (rels.hasNext()) 
       {
@@ -1142,13 +1142,13 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
     * It maps the site id (as {@link Integer}) to the site def (as
     * {@link PSSite}). Set by {@link #populateSites()}.
     */
-   private Map<Integer, PSSite> m_siteDefMap = new HashMap<Integer, PSSite>();
+   private Map<Integer, PSSite> m_siteDefMap = new HashMap<>();
 
    /**
     * It maps the site id (as {@link Integer}) to the locator of the site root
     * (as {@link PSLocator}). Set by {@link #populateSites()}.
     */
-   private Map<Integer, PSLocator> m_siteRootMap = new HashMap<Integer, PSLocator>();
+   private Map<Integer, PSLocator> m_siteRootMap = new HashMap<>();
 
    /**
     * The logger instance for this class, never <code>null</code>.

@@ -72,7 +72,7 @@ public class PSAddUserControlsToTree extends PSDefaultExtension
             new PSXmlDomContext(this.getClass().toString(), request);
 
       // collect user control files
-      Set<File> ctrlFiles = new HashSet<File>();
+      Set<File> ctrlFiles = new HashSet<>();
       String rootDir = 
          (String) PSRhythmyxInfoLocator.getRhythmyxInfo().getProperty(
             IPSRhythmyxInfo.Key.ROOT_DIRECTORY);
