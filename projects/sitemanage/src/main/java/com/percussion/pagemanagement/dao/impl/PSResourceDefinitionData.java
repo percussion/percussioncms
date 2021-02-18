@@ -54,11 +54,11 @@ import static org.apache.commons.lang.Validate.notNull;
 @Lazy
 public class PSResourceDefinitionData
 {
-    private Map<PSResourceDefinitionUniqueId, PSResourceDefinition> resourceDefinitions = new HashMap<PSResourceDefinitionUniqueId, PSResourceDefinition>();
-    private Map<String, PSResourceDefinitionGroup> resourceDefinitionGroups = new HashMap<String, PSResourceDefinitionGroup>();
-    private Map<String, PSAssetResource> primaryAssetResources = new HashMap<String, PSAssetResource>();
-    private Map<String, Set<PSAssetResource>> contentTypeAssetResources = new HashMap<String, Set<PSAssetResource>>();
-    private Map<String, Set<PSAssetResource>> legacyTemplateAssetResources = new HashMap<String, Set<PSAssetResource>>();
+    private Map<PSResourceDefinitionUniqueId, PSResourceDefinition> resourceDefinitions = new HashMap<>();
+    private Map<String, PSResourceDefinitionGroup> resourceDefinitionGroups = new HashMap<>();
+    private Map<String, PSAssetResource> primaryAssetResources = new HashMap<>();
+    private Map<String, Set<PSAssetResource>> contentTypeAssetResources = new HashMap<>();
+    private Map<String, Set<PSAssetResource>> legacyTemplateAssetResources = new HashMap<>();
     
     private IPSResourceDefinitionVisitor resourceVisitor = new ResourceVisitor();
     
@@ -66,7 +66,7 @@ public class PSResourceDefinitionData
         notNull(group);
         notEmpty(group.getId());
         resourceDefinitionGroups.put(group.getId(), group);
-        List<PSResourceDefinition> rds = new ArrayList<PSResourceDefinition>();
+        List<PSResourceDefinition> rds = new ArrayList<>();
         add(rds, group.getAssetResources());
         add(rds, group.getFileResources());
         add(rds, group.getFolderResources());
@@ -145,7 +145,7 @@ public class PSResourceDefinitionData
              * Add content type asset resources assocations.
              */
             Set<PSAssetResource> ars = contentTypeAssetResources.get(ct);
-            ars = ars == null ? new HashSet<PSAssetResource>() : ars;
+            ars = ars == null ? new HashSet<>() : ars;
             ars.add(resource);
             contentTypeAssetResources.put(ct, ars);
             
@@ -162,7 +162,7 @@ public class PSResourceDefinitionData
              */
             if (template != null) {
                 Set<PSAssetResource> trs = legacyTemplateAssetResources.get(template);
-                trs = trs == null ? new HashSet<PSAssetResource>() : trs;
+                trs = trs == null ? new HashSet<>() : trs;
                 trs.add(resource);
                 legacyTemplateAssetResources.put(template, trs);
             }

@@ -183,7 +183,7 @@ public class PSRecycleService implements IPSRecycleService {
         PSRelationshipProcessor m_relProc = PSRelationshipProcessor.getInstance();
         PSRelationshipFilter filter = new PSRelationshipFilter();
         List<PSRelationship> relSet = null;
-        HashMap<IPSGuid,Boolean> matchedFolders = new HashMap<IPSGuid,Boolean>();
+        HashMap<IPSGuid,Boolean> matchedFolders = new HashMap<>();
 
         if(path.startsWith(PSRecycleService.SITES)) {
             owner = new PSLocator(PSFolder.SYS_SITES_ID, -1);
@@ -594,7 +594,7 @@ public class PSRecycleService implements IPSRecycleService {
                 id=Integer.parseInt(guid);//This has been done in case some one case pass content ID directly
             }
 
-            Collection<Integer> ids = new ArrayList<Integer>();
+            Collection<Integer> ids = new ArrayList<>();
             ids.add(id);
 
             PSRelationshipFilter filter = new PSRelationshipFilter();

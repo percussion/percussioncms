@@ -62,7 +62,7 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
     {
         List<PSRecent> returnRecents = recentDao.find(user, siteName, type);
         
-        List<String> returnValues = new ArrayList<String>();
+        List<String> returnValues = new ArrayList<>();
 
         if (returnRecents != null)
         {
@@ -91,7 +91,7 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
 
         // Add new item with index 0;
         PSRecent newRecent = new PSRecent(user, siteName, type, 0, value);
-        List<PSRecent> updatedRecents = new ArrayList<PSRecent>();
+        List<PSRecent> updatedRecents = new ArrayList<>();
         updatedRecents.add(newRecent);
 
         // update index of existing values
@@ -129,7 +129,7 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
     private List<PSRecent> deleteExtraRecents(RecentType type, List<PSRecent> recents, String value, boolean forAdd)
     {
         int numOfElementsToKeep = forAdd ? type.MaxSize() - 1 : type.MaxSize();
-        List<PSRecent> toDelete = new ArrayList<PSRecent>();
+        List<PSRecent> toDelete = new ArrayList<>();
         // remove other entries of
         Iterator<PSRecent> it = recents.iterator();
         if (value != null)

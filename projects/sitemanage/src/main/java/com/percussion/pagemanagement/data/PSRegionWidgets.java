@@ -61,7 +61,7 @@ public class PSRegionWidgets extends PSAbstractPersistantObject
     private String regionId;
     
     @AssertValid(requireValidElements=true)
-    private List<PSWidgetItem> widgetItems = new ArrayList<PSWidgetItem>();
+    private List<PSWidgetItem> widgetItems = new ArrayList<>();
     
     /**
      * The id of the region.

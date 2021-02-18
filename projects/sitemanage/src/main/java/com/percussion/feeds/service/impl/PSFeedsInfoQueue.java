@@ -265,7 +265,7 @@ public class PSFeedsInfoQueue implements InitializingBean
 
             try
             {
-                Set<Integer> successfullHttpStatusCodes = new HashSet<Integer>();
+                Set<Integer> successfullHttpStatusCodes = new HashSet<>();
                 successfullHttpStatusCodes.add(204);
                 deliveryClient.push(
                         new PSDeliveryActionOptions()
@@ -311,7 +311,7 @@ public class PSFeedsInfoQueue implements InitializingBean
             if( evt != null && evt.getPropertyName().equalsIgnoreCase(PSEncryptor.SECRETKEY_PROPNAME)){
                     lastChangeEvent = evt;
                     List<PSDeliveryInfo> servers = deliveryInfoService.findAll();
-                    List<String> processed = new ArrayList<String>();
+                    List<String> processed = new ArrayList<>();
                     //There can be more than one DTS server.  Make sure we process each one.
                     boolean failed = false;
                     for(PSDeliveryInfo info : servers) {
@@ -321,7 +321,7 @@ public class PSFeedsInfoQueue implements InitializingBean
                                 PSDeliveryClient deliveryClient = new PSDeliveryClient();
 
                                 try {
-                                    Set<Integer> successfullHttpStatusCodes = new HashSet<Integer>();
+                                    Set<Integer> successfullHttpStatusCodes = new HashSet<>();
                                     successfullHttpStatusCodes.add(204);
                                     deliveryClient.push(
                                             new PSDeliveryActionOptions()

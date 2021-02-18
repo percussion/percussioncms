@@ -123,8 +123,8 @@ public class PSSearchService implements IPSSearchService
         List<IPSItemEntry> pagedItemEntries = result.getChildrenInPage();
         resultingStartIndex = result.getStartIndex();
         
-        List<Integer> pagedContentIdList = new ArrayList<Integer>();
-        List<PSItemProperties> itemsInPage = new ArrayList<PSItemProperties>();
+        List<Integer> pagedContentIdList = new ArrayList<>();
+        List<PSItemProperties> itemsInPage = new ArrayList<>();
         for (IPSItemEntry itemEntry : pagedItemEntries)
         {
             IPSGuid myGuid = PSGuidUtils.makeGuid(itemEntry.getContentId(), PSTypeEnum.LEGACY_CONTENT);
@@ -178,7 +178,7 @@ public class PSSearchService implements IPSSearchService
             Map<String, String> searchFields = criteria.getSearchFields();
             if (searchFields != null && !searchFields.isEmpty())
             {
-                List<PSWSSearchField> wsSearchFields = new ArrayList<PSWSSearchField>();
+                List<PSWSSearchField> wsSearchFields = new ArrayList<>();
                 for (Map.Entry<String, String> entry : searchFields.entrySet())
                 {
                     wsSearchFields.add(new PSWSSearchField(entry.getKey(), "=", entry.getValue(), PSWSSearchField.CONN_ATTR_AND));
@@ -254,8 +254,8 @@ public class PSSearchService implements IPSSearchService
         resultingStartIndex = result.getStartIndex();
         
         // PSItemEntry -> PSPathItem
-        List<Integer> pagedContentIdList = new ArrayList<Integer>();
-        List<PSPathItem> itemsInPage = new ArrayList<PSPathItem>();
+        List<Integer> pagedContentIdList = new ArrayList<>();
+        List<PSPathItem> itemsInPage = new ArrayList<>();
         for (IPSItemEntry itemEntry : pagedItemEntries)
         {
             IPSGuid myGuid = PSGuidUtils.makeGuid(itemEntry.getContentId(), PSTypeEnum.LEGACY_CONTENT);
@@ -521,7 +521,7 @@ public class PSSearchService implements IPSSearchService
     
     private List<Integer> getSearchableWorkflowIds()
     {
-        List<Integer> wfIds = new ArrayList<Integer>();
+        List<Integer> wfIds = new ArrayList<>();
         int localWorkflowId = getLocalContentWfId();
         
         List<PSObjectSummary> workflowSums = workflowService.findWorkflowSummariesByName(null);

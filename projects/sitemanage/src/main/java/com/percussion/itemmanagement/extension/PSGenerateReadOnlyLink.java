@@ -127,7 +127,7 @@ public class PSGenerateReadOnlyLink extends com.percussion.extension.PSSimpleJav
             pathType = "asset";
         }
        
-        Map<String, String> urlParams = new HashMap<String, String>();
+        Map<String, String> urlParams = new HashMap<>();
         urlParams.put("view", view);
         
         if (site != null)

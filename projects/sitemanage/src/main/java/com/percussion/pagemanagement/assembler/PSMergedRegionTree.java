@@ -150,7 +150,7 @@ public class PSMergedRegionTree extends PSAbstractMergedRegionTree {
     
     @Override
     protected List<PSWidgetInstance> loadWidgets(List<PSWidgetItem> widgetItems) {
-        List<PSWidgetInstance> wis = new ArrayList<PSWidgetInstance>();
+        List<PSWidgetInstance> wis = new ArrayList<>();
         for(PSWidgetItem wi : widgetItems) {
             wis.add(loadWidget(wi));
         }

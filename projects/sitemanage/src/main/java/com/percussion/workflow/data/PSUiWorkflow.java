@@ -68,11 +68,11 @@ public class PSUiWorkflow extends PSAbstractDataObject
      */
     private String previousStepName = "";
         
-    private List<PSUiWorkflowStep> workflowSteps = new ArrayList<PSUiWorkflowStep>();
+    private List<PSUiWorkflowStep> workflowSteps = new ArrayList<>();
     
     public PSUiWorkflow()
     {
-        this("", new ArrayList<PSUiWorkflowStep>());
+        this("", new ArrayList<>());
     }
     
     public PSUiWorkflow(String workflowName, List<PSUiWorkflowStep> workflowSteps)

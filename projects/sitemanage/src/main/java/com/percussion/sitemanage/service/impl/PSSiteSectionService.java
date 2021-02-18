@@ -359,7 +359,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
 
         updateExternalLinkSection(req.getLinkTitle(), idMapper.getString(navonId), req.getExternalUrl(),
                 PSSectionTargetEnum._self, null);
-        Set<String> idSet = new HashSet<String>();
+        Set<String> idSet = new HashSet<>();
         idSet.add(idMapper.getString(navonId));
         workflowHelper.transitionToPending(idSet);
         PSSiteSection section = new PSSiteSection();
@@ -524,7 +524,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             PSCreateExternalLinkSection req) throws PSSiteSectionException {
         notNull(sectionGuid);
         updateExternalLinkSection(req.getLinkTitle(), sectionGuid, req.getExternalUrl(), req.getTarget(), req.getCssClassNames());
-        Set<String> idSet = new HashSet<String>();
+        Set<String> idSet = new HashSet<>();
         idSet.add(sectionGuid);
         workflowHelper.transitionToPending(idSet);
         PSSiteSection section = loadSiteSection(idMapper.getGuid(sectionGuid), null, null, true, false, null);
@@ -565,7 +565,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             builder.reject("siteName", msg).throwIfInvalid();
         }
         
-        List<PSSiteBlogProperties> siteBlogsList = new ArrayList<PSSiteBlogProperties>();
+        List<PSSiteBlogProperties> siteBlogsList = new ArrayList<>();
         try
         {
         	siteBlogsList = getBlogsForSingleSite(site.getName());
@@ -580,11 +580,11 @@ public class PSSiteSectionService implements IPSSiteSectionService
     
     @Override
     public List<PSSiteBlogProperties> getAllBlogs() throws PSDataServiceException {
-        List<PSSiteBlogProperties> allBlogsList = new ArrayList<PSSiteBlogProperties>();
+        List<PSSiteBlogProperties> allBlogsList = new ArrayList<>();
         List<PSSite> sites = siteDao.findAll();
         for(PSSite site:sites)
         {
-            List<PSSiteBlogProperties> siteBlogsList = new ArrayList<PSSiteBlogProperties>();
+            List<PSSiteBlogProperties> siteBlogsList = new ArrayList<>();
             try
             {
                 siteBlogsList = getBlogsForSingleSite(site.getName());
@@ -604,8 +604,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
     @Override
     public List<String> findAllTemplatesUsedByBlogs(String siteName) throws PSDataServiceException
     {
-       List<String> blogTemplateId = new ArrayList<String>();
-       List<PSSite> sites = new ArrayList<PSSite>();
+       List<String> blogTemplateId = new ArrayList<>();
+       List<PSSite> sites = new ArrayList<>();
        if(StringUtils.isNotBlank(siteName))
        {
            //load the site
@@ -643,7 +643,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         blogPosts.setBlogSectionPath(blogPath);
         blogPosts.setBlogTitle(blog.getTitle());
         
-        List<PSItemProperties> posts = new ArrayList<PSItemProperties>();
+        List<PSItemProperties> posts = new ArrayList<>();
         if (blog.getSectionType() == PSSectionTypeEnum.section)
         {
             String blogPostTemplateId = getBlogPostTemplateId(blogPath);
@@ -658,7 +658,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
                     PSComponentSummary summary = getItemSummary(((PSLegacyGuid) postPage.getGuid()).getContentId());
 
                     final String tagsError = "Error getting tags from node with id: " + postPage.getGuid();
-                    Collection<String> multiValues = new ArrayList<String>();
+                    Collection<String> multiValues = new ArrayList<>();
                     Value[] values;
                     try {
                         values = postPage.getProperty("page_tags").getValues();
@@ -749,7 +749,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      */
     private Map<String, PSCommentsSummary> getSiteCommentCounts(String siteName)
     {
-        Map<String, PSCommentsSummary> commentsMap = new HashMap<String, PSCommentsSummary>();
+        Map<String, PSCommentsSummary> commentsMap = new HashMap<>();
         
         try
         {
@@ -804,7 +804,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
                 .getFoldersByProperty("blogPostTemplate");
 
         // Only return blogs for the specified site
-        List<PSFolder> filteredBlogs = new ArrayList<PSFolder>();
+        List<PSFolder> filteredBlogs = new ArrayList<>();
         for (PSFolder f : allBlogs) {
             List<IPSSite> sites = this.folderHelper.getItemSites(f.getGuid()
                     .toString());
@@ -815,7 +815,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
         }
 
-        List<PSSiteBlogProperties> blogList = new ArrayList<PSSiteBlogProperties>();
+        List<PSSiteBlogProperties> blogList = new ArrayList<>();
         PSSiteBlogProperties blogProperties = null;
 
         for (PSFolder folder : filteredBlogs) {
@@ -921,7 +921,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * @return list of blog template ids never null may be empty.
      */
     private List<String> getBlogTemplateIdsForSite(String siteName) throws PSSiteSectionException {
-       List<String> blogTemplateIds = new ArrayList<String>();
+       List<String> blogTemplateIds = new ArrayList<>();
        List<PSSiteSection> allSections =loadAllSectionsForSingleSite(siteName);
        
        for(PSSiteSection siteSection : allSections)
@@ -1286,7 +1286,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
 
         IPSGuid folderId = contentSrv.getIdByPath(paths[0]);
         PSFolder folder = contentSrv.loadFolder(folderId, false);
-        List<String> temp = new ArrayList<String>();
+        List<String> temp = new ArrayList<>();
         temp.add(NAVON_FIELD_TARGET);
         temp.add(NAVON_FIELD_REQUIRESLOGIN);
         temp.add(NAVON_FIELD_ALLOWACCESSTO);
@@ -1368,7 +1368,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      */
     private Map<String, String> getSectionSecurityProperties(String guid)
     {
-        List<String> temp = new ArrayList<String>();
+        List<String> temp = new ArrayList<>();
         temp.add(NAVON_FIELD_REQUIRESLOGIN);
         temp.add(NAVON_FIELD_ALLOWACCESSTO);
         return  navSrv.getNavonProperties(idMapper.getGuid(guid), temp);
@@ -1392,7 +1392,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         PSSectionTargetEnum target = req.getTarget();
         String tgt = target == null || target == PSSectionTargetEnum._self ? "" : target.name();
        
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(NAVON_FIELD_DISPLAYTITLE, req.getTitle());
         map.put(NAVON_FIELD_TARGET, tgt);
         map.put(NAVON_FIELD_REQUIRESLOGIN, Boolean.toString(req.isRequiresLogin()));
@@ -1493,7 +1493,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
 
         IPSGuid navonId = idMapper.getGuid(sectionTree.getId());
         
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(NAVON_FIELD_REQUIRESLOGIN, Boolean.toString(false));
         map.put(NAVON_FIELD_ALLOWACCESSTO, null);
         
@@ -1590,7 +1590,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      */
     public List<PSSiteSection> loadChildSections(PSSiteSection section)
     {
-        List<PSSiteSection> result = new ArrayList<PSSiteSection>();
+        List<PSSiteSection> result = new ArrayList<>();
         
         if (section.getSectionType() == PSSectionTypeEnum.section)
         {
@@ -1655,7 +1655,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
                 childIds.add(ids);
             }
         }
-        List<String> temp = new ArrayList<String>();
+        List<String> temp = new ArrayList<>();
         temp.add(NAVON_FIELD_DISPLAYTITLE);
         temp.add(NAVON_FIELD_TYPE);
         temp.add(NAVON_FIELD_TARGET);
@@ -1836,14 +1836,14 @@ public class PSSiteSectionService implements IPSSiteSectionService
      */
     private List<PSSiteSection> loadAllSectionsForSingleSite(String siteName) throws PSSiteSectionException {
         PSSiteSection  rootSection = new PSSiteSection();
-        List<PSSiteSection> allSections = new ArrayList<PSSiteSection>();
-        List<PSSiteSection> childSections = new ArrayList<PSSiteSection>();
+        List<PSSiteSection> allSections = new ArrayList<>();
+        List<PSSiteSection> childSections = new ArrayList<>();
         rootSection = loadRoot(siteName);
         childSections = loadChildSections(rootSection);
         for(PSSiteSection section :childSections)
         {
             allSections.add(section);
-            List<PSSiteSection> sections = new ArrayList<PSSiteSection>();
+            List<PSSiteSection> sections = new ArrayList<>();
             sections = getAllDescendantSections(sections,section);
             allSections.addAll(sections);
         }
@@ -1985,13 +1985,13 @@ public class PSSiteSectionService implements IPSSiteSectionService
             throw new RuntimeException("Failed to find the selected section, it might have been deleted in another session.",e);
         }
         //Group all child sections as different type of sections require different treatment
-        List<String> externalLinkSections = new ArrayList<String>();
-        Map<String, String> sectionLinks = new HashMap<String, String>();
-        List<String> sections = new ArrayList<String>();
+        List<String> externalLinkSections = new ArrayList<>();
+        Map<String, String> sectionLinks = new HashMap<>();
+        List<String> sections = new ArrayList<>();
         groupChildSectionsByType(section, externalLinkSections,sectionLinks,sections);
         
         //For external links we need to delete the parent folders
-        List<IPSGuid> parentFolderIds = new ArrayList<IPSGuid>();
+        List<IPSGuid> parentFolderIds = new ArrayList<>();
         for (String guid : externalLinkSections) {
             parentFolderIds.add(folderHelper.getParentFolderId(idMapper.getGuid(guid)));
         }
@@ -2004,7 +2004,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         
         //For sections we need to delete the navons
-        List<IPSGuid> sectionIds = new ArrayList<IPSGuid>();
+        List<IPSGuid> sectionIds = new ArrayList<>();
         for (String guid : sections) {
             sectionIds.add(idMapper.getGuid(guid));
         }
@@ -2151,7 +2151,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     
     private List<IPSNode> getPostPages(String path, String templateId)
     {
-        Map<String, String> whereFields = new HashMap<String, String>();
+        Map<String, String> whereFields = new HashMap<>();
         whereFields.put("templateid", templateId);
         List<IPSNode> nodes = jcrNodeFinder.find(path, whereFields);
         return nodes;

@@ -37,12 +37,12 @@ public class PSPathOptions
     /**
      * Track if current operation loading children should check what types of children they have
      */
-    private static ThreadLocal<Boolean> checkChildTypes = new ThreadLocal<Boolean>();
+    private static ThreadLocal<Boolean> checkChildTypes = new ThreadLocal<>();
     
     /**
      * Track if current operation loading children should be restricted to folder children
      */
-    private static ThreadLocal<Boolean> folderChildrenOnly = new ThreadLocal<Boolean>();
+    private static ThreadLocal<Boolean> folderChildrenOnly = new ThreadLocal<>();
     
     /**
      * Get Thread local setting for checking child types (section, folder, item) when loading path items.

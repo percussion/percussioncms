@@ -1323,7 +1323,7 @@ public class PSSiteConfigUtils
         private String sitename;
         private String loginPage;
         private Map<String, Map<String, String>> secureAndMemberSectionsUrls;
-        private Set<String> secureAndMemberSectionsFilters = new TreeSet<String>();
+        private Set<String> secureAndMemberSectionsFilters = new TreeSet<>();
         private boolean useHttpsForSecureSite;
 
         public String getSitename()
@@ -1379,7 +1379,7 @@ public class PSSiteConfigUtils
         {
             if(secureAndMemberSectionsUrls == null)
             {
-                secureAndMemberSectionsUrls = new HashMap<String, Map<String, String>>();
+                secureAndMemberSectionsUrls = new HashMap<>();
             }
             secureAndMemberSectionsUrls.put(sectionUrl + "**", buildTagAttributes(allowAccessTo));
 
@@ -1402,7 +1402,7 @@ public class PSSiteConfigUtils
          */
         private Map<String, String> buildTagAttributes(String allowAccessTo)
         {
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
 
             if(isBlank(allowAccessTo))
             {

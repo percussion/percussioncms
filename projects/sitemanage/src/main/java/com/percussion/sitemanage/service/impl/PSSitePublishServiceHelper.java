@@ -84,13 +84,13 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 
 	@Override
 	public Collection<Integer> findRelatedItemIds(Set<Integer> contentIds) {
-		Set<Integer> results = new HashSet<Integer>();
+		Set<Integer> results = new HashSet<>();
 		if (contentIds.isEmpty()) {
 			return results;
 		}
 		Session sess = getSession();
 		try {
-			Set<Integer> cids = new HashSet<Integer>();
+			Set<Integer> cids = new HashSet<>();
 			cids.addAll(contentIds);
 			int l=0;
 			for (; l<MAX_LOOPS; l++) {
@@ -118,7 +118,7 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 	
 
     private Set<Integer> getRelatedItemIds(Session sess, Set<Integer> cids) throws SQLException {
-		Set<Integer> results = new HashSet<Integer>();
+		Set<Integer> results = new HashSet<>();
 		for (int i = 0; i < cids.size(); i += MAX_IDS) {
 			int end = (i + MAX_IDS > cids.size()) ? cids.size() : i + MAX_IDS;
 			// lets get the direct publishable related items
@@ -164,8 +164,8 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 			long pageContentTypeId = defMgr
 					.contentTypeNameToId(IPSPageService.PAGE_CONTENT_TYPE);
 			List<PSWidgetContentType> assetTypes = assetService.getAssetTypes("no");
-			publishableContentTypeIds = new ArrayList<Integer>();
-			nonBinaryContentTypeIds = new ArrayList<Integer>();
+			publishableContentTypeIds = new ArrayList<>();
+			nonBinaryContentTypeIds = new ArrayList<>();
 			for (PSWidgetContentType type : assetTypes) {
 				try {
 					if (binaryAssetTypes.contains(type.getContentTypeName())) {

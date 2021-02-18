@@ -277,7 +277,7 @@ public class PSWidgetDefinition extends PSAbstractPersistantObject {
      */
     public List<PSWidgetDefinition.Resource> getResource() {
         if (resource == null) {
-            resource = new ArrayList<PSWidgetDefinition.Resource>();
+            resource = new ArrayList<>();
         }
         return this.resource;
     }
@@ -307,7 +307,7 @@ public class PSWidgetDefinition extends PSAbstractPersistantObject {
      */
     public List<PSWidgetDefinition.DnDPref> getDnDPref() {
         if (dnDPref == null) {
-            dnDPref = new ArrayList<PSWidgetDefinition.DnDPref>();
+            dnDPref = new ArrayList<>();
         }
         return this.dnDPref;
     }
@@ -337,7 +337,7 @@ public class PSWidgetDefinition extends PSAbstractPersistantObject {
      */
     public List<PSWidgetDefinition.UserPref> getUserPref() {
         if (userPref == null) {
-            userPref = new ArrayList<PSWidgetDefinition.UserPref>();
+            userPref = new ArrayList<>();
         }
         return this.userPref;
     }
@@ -347,7 +347,7 @@ public class PSWidgetDefinition extends PSAbstractPersistantObject {
     public List<PSWidgetDefinition.CssPref> getCssPref()
     {
         if (cssPref == null) {
-            cssPref = new ArrayList<PSWidgetDefinition.CssPref>();
+            cssPref = new ArrayList<>();
         }
         return cssPref;
     }
@@ -1059,7 +1059,7 @@ public class PSWidgetDefinition extends PSAbstractPersistantObject {
          */
         public List<PSWidgetDefinition.AbstractUserPref.EnumValue> getEnumValue() {
             if (enumValue == null) {
-                enumValue = new ArrayList<PSWidgetDefinition.AbstractUserPref.EnumValue>();
+                enumValue = new ArrayList<>();
             }
             return this.enumValue;
         }
@@ -1379,7 +1379,7 @@ public class PSWidgetDefinition extends PSAbstractPersistantObject {
          */
         public List<PSWidgetDefinition.WidgetPrefs.Icon> getIcon() {
             if (icon == null) {
-                icon = new ArrayList<PSWidgetDefinition.WidgetPrefs.Icon>();
+                icon = new ArrayList<>();
             }
             return this.icon;
         }

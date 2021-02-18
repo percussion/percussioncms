@@ -106,8 +106,8 @@ public class PSRecentService implements IPSRecentService
     {
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, null, RecentType.ITEM);
-        List<PSItemProperties> items = new ArrayList<PSItemProperties>();
-        List<String> toDelete = new ArrayList<String>();
+        List<PSItemProperties> items = new ArrayList<>();
+        List<String> toDelete = new ArrayList<>();
         for (String entry : recentEntries)
         {
             PSItemProperties itemProps = null;
@@ -142,10 +142,10 @@ public class PSRecentService implements IPSRecentService
     {
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, siteName, RecentType.TEMPLATE);
-        List<PSTemplateSummary> templates = new ArrayList<PSTemplateSummary>();
-        List<String> toDelete = new ArrayList<String>();
+        List<PSTemplateSummary> templates = new ArrayList<>();
+        List<String> toDelete = new ArrayList<>();
 
-        Map<String,PSTemplateSummary> siteTemplateMap = new HashMap<String,PSTemplateSummary>();
+        Map<String,PSTemplateSummary> siteTemplateMap = new HashMap<>();
         // if we do not find site we will remove all entries for site that no
         // longer exist
 
@@ -183,8 +183,8 @@ public class PSRecentService implements IPSRecentService
     {
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, siteName, RecentType.SITE_FOLDER);
-        List<PSPathItem> pathItems = new ArrayList<PSPathItem>();
-        List<String> toDelete = new ArrayList<String>();
+        List<PSPathItem> pathItems = new ArrayList<>();
+        List<String> toDelete = new ArrayList<>();
 
         for (String entry : recentEntries)
         {
@@ -214,9 +214,9 @@ public class PSRecentService implements IPSRecentService
     {
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, null, RecentType.ASSET_FOLDER);
-        List<PSPathItem> pathItems = new ArrayList<PSPathItem>();
+        List<PSPathItem> pathItems = new ArrayList<>();
 
-        List<String> toDelete = new ArrayList<String>();
+        List<String> toDelete = new ArrayList<>();
 
         for (String entry : recentEntries)
         {
@@ -319,11 +319,11 @@ public class PSRecentService implements IPSRecentService
     @Override
     public List<PSWidgetContentType> findRecentAssetType()
     {
-        List<PSWidgetContentType> resultList = new ArrayList<PSWidgetContentType>();
+        List<PSWidgetContentType> resultList = new ArrayList<>();
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, null, RecentType.ASSET_TYPE);
-        List<String> toDelete = new ArrayList<String>();
-        Map<String, PSWidgetContentType> widgetTypeMap = new HashMap<String, PSWidgetContentType>();
+        List<String> toDelete = new ArrayList<>();
+        Map<String, PSWidgetContentType> widgetTypeMap = new HashMap<>();
         List<PSWidgetContentType> widgetTypes = assetService.getAssetTypes("yes");
         for (PSWidgetContentType wt : widgetTypes)
         {

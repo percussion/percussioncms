@@ -45,7 +45,7 @@ public class PSPublishingProcessMonitor implements IPSPublishingJobStatusCallbac
     
     private static IPSMonitor monitor = null;
     
-    private static Set<Long> jobIds = new HashSet<Long>();
+    private static Set<Long> jobIds = new HashSet<>();
     
     private static IPSPublishingJobStatusCallback callback = null;
     

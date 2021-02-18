@@ -163,7 +163,7 @@ public class UsersResource {
 	    })
 	    public List<String> findUsers(@PathParam("pattern") String pattern)
 	    {
-	    	List<String> ret = new ArrayList<String>();
+	    	List<String> ret = new ArrayList<>();
 	    	
 	        try
 	        {
@@ -232,7 +232,7 @@ public class UsersResource {
 	    	ret = userAdaptor.searchDirectory(pattern);
 	    
 	    	if(ret == null)
-	    		ret = new ArrayList<String>();
+	    		ret = new ArrayList<>();
 	    	return ret;
 	    }
 	    

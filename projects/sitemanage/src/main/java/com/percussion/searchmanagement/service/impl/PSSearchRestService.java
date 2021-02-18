@@ -87,7 +87,7 @@ public class PSSearchRestService
 
             if (SEARCH_TYPE_MY_PAGES.equalsIgnoreCase(criteria.getSearchType())) {
                 List<PSUserItem> userItems = itemService.getUserItems(PSWebserviceUtils.getUserName());
-                List<Integer> contentIds = new ArrayList<Integer>();
+                List<Integer> contentIds = new ArrayList<>();
                 for (PSUserItem userItem : userItems) {
                     contentIds.add(new Integer(userItem.getItemId()));
                 }

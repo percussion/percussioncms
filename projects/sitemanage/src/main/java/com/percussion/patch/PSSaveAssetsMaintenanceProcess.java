@@ -141,7 +141,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         this.managedLinkService = managedLinkService;
         this.idMapper = idMapper;
         this.pageService = pageService;
-        assetListSet = new HashSet<ItemWrapper>();
+        assetListSet = new HashSet<>();
     }
 
     /**
@@ -151,7 +151,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     public PSSaveAssetsMaintenanceProcess(IPSMaintenanceManager maintenanceManager)
     {
         this.maintenanceManager = maintenanceManager;
-        assetListSet = new HashSet<ItemWrapper>();
+        assetListSet = new HashSet<>();
     }
     
     /**
@@ -282,7 +282,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         else
         {
             log.info("Found previous assets file not processing assets.");
-            assetListSet = new HashSet<ItemWrapper>();
+            assetListSet = new HashSet<>();
         }   
         return assetListSet;
     }
@@ -356,7 +356,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     @SuppressWarnings("unchecked")
     public void loadFailedAssetsFromFile(File f)
     {   
-        assetListSet = new HashSet<ItemWrapper>();
+        assetListSet = new HashSet<>();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             addAssets((Set<ItemWrapper>) objectMapper.readValue(f, 
@@ -422,7 +422,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     private Set<ItemWrapper> getQualifiedPages(ResultSet result)
     {
-        Set<ItemWrapper> list = new HashSet<ItemWrapper>();
+        Set<ItemWrapper> list = new HashSet<>();
         try
         {
             while(result.next())
@@ -498,7 +498,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     public List<String>  getManagedLinkFields(String type)
     {
-        List<String> managedFields = new ArrayList<String>();
+        List<String> managedFields = new ArrayList<>();
         PSItemDefManager defMgr = PSItemDefManager.getInstance();
         try
         {
@@ -574,7 +574,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             hasUnmanagedLinks = qualifyLinkPaths(anchors, imgs);
         }
         
-        PSPair<Boolean, String> result = new PSPair<Boolean, String>(hasUnmanagedLinks, doc.html());
+        PSPair<Boolean, String> result = new PSPair<>(hasUnmanagedLinks, doc.html());
         return result;
     }
     
@@ -677,7 +677,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     public Set<ItemWrapper> getAssetFromResult(ResultSet result, String colName)
     {
-        Set<ItemWrapper> list = new HashSet<ItemWrapper>();
+        Set<ItemWrapper> list = new HashSet<>();
         try
         {
             while(result.next())
@@ -917,7 +917,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         else if(logFile.exists())
         {
-            qualifiedPages = new HashSet<ItemWrapper>();
+            qualifiedPages = new HashSet<>();
             log.info("Found previously processed pages log file, skipping them in this run.");
         }
         else
@@ -933,7 +933,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     private void loadPagesFromFile(File readFile) 
     {
-        qualifiedPages = new HashSet<ItemWrapper>();
+        qualifiedPages = new HashSet<>();
         ObjectMapper objectMapper = new ObjectMapper();
         try 
         {

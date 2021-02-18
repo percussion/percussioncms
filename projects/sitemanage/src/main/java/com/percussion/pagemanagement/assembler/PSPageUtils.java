@@ -463,7 +463,7 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         notNull(regionTree, "regionTree");
 
-        List<PSWidgetInstance> instances = new ArrayList<PSWidgetInstance>();
+        List<PSWidgetInstance> instances = new ArrayList<>();
         Map<String, PSMergedRegion> regionMap = regionTree.getMergedRegionMap();
         if (regionName != null)
         {
@@ -522,7 +522,7 @@ public class PSPageUtils extends PSJexlUtilBase
      */
     private Set<String> getWidgetDefIds(IPSAssemblyItem item)
     {
-        Set<String> widgetDefIds = new HashSet<String>();
+        Set<String> widgetDefIds = new HashSet<>();
         if (item == null)
             return widgetDefIds;
         try
@@ -778,7 +778,7 @@ public class PSPageUtils extends PSJexlUtilBase
                 }
             }
 
-            return new ArrayList<PSRenderAsset>();
+            return new ArrayList<>();
 
         }
         return widgetContents;
@@ -886,7 +886,7 @@ public class PSPageUtils extends PSJexlUtilBase
     public Map<String, String> parseSoProMetadata(String metadata)
     {
         JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(metadata);
-        Map<String, String> map = new Hashtable<String, String>();
+        Map<String, String> map = new Hashtable<>();
 
         for (Object key : jsonObject.keySet())
         {
@@ -1240,7 +1240,7 @@ public class PSPageUtils extends PSJexlUtilBase
      */
     private Map<String, String> getCategoryMap()
     {
-        Map<String, String> catMap = new HashMap<String, String>();
+        Map<String, String> catMap = new HashMap<>();
         String url = CATEGORY_URL;
 
 

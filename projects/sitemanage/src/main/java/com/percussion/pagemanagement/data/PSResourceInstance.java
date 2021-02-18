@@ -65,7 +65,7 @@ public class PSResourceInstance  {
     private PSRenderLinkContext linkContext;
     private IPSLinkableContentItem item;
     private PSSiteSummary site;
-    private List<PSResourceLinkAndLocation> linkAndLocations = new ArrayList<PSResourceLinkAndLocation>();
+    private List<PSResourceLinkAndLocation> linkAndLocations = new ArrayList<>();
     private URL baseUrl;
     private String locationFolderPath;
     

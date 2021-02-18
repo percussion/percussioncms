@@ -90,13 +90,13 @@ public class PSResourceDefinitionGroupDao
 
     public List<PSResourceDefinitionGroup> findAll() throws com.percussion.share.dao.IPSGenericDao.LoadException
     {
-        return new ArrayList<PSResourceDefinitionGroup>(getData().getResourceDefinitionGroups().values());
+        return new ArrayList<>(getData().getResourceDefinitionGroups().values());
     }
     
     @Override
     public List<PSResourceDefinition> findAllResources()
     {
-        return new ArrayList<PSResourceDefinition>(getData().getResourceDefinitions().values());
+        return new ArrayList<>(getData().getResourceDefinitions().values());
     }
 
     public PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException {
@@ -115,7 +115,7 @@ public class PSResourceDefinitionGroupDao
         notEmpty(contentType, "contentType");
         Set<PSAssetResource> rvalue = getData().getContentTypeAssetResources().get(contentType);
         if(rvalue == null) return emptyList();
-        return new ArrayList<PSAssetResource>(rvalue);
+        return new ArrayList<>(rvalue);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class PSResourceDefinitionGroupDao
         notEmpty(template, "template");
         Set<PSAssetResource> rvalue = getData().getLegacyTemplateAssetResources().get(template);
         if(rvalue == null) return emptyList();
-        return new ArrayList<PSAssetResource>(rvalue);
+        return new ArrayList<>(rvalue);
     }
 
     public void delete(@SuppressWarnings("unused") String id) throws com.percussion.share.dao.IPSGenericDao.DeleteException

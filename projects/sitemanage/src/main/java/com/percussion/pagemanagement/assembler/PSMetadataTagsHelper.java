@@ -73,7 +73,7 @@ public class PSMetadataTagsHelper
         // Initialize array used for unduplicated tags
         List<ArrayList<String>> arrayPages = inicializeArray(results);
 
-        Map<String, Integer> tagsMap = new TreeMap<String, Integer>();
+        Map<String, Integer> tagsMap = new TreeMap<>();
         try
         {
             int i = 0;
@@ -199,11 +199,11 @@ public class PSMetadataTagsHelper
      */
     private List<ArrayList<String>> inicializeArray(List<PSMetadataEntry> results)
     {
-        List<ArrayList<String>> arrayPages = new ArrayList<ArrayList<String>>();
+        List<ArrayList<String>> arrayPages = new ArrayList<>();
 
         for (int j = 0; j < results.size(); j++)
         {
-            ArrayList<String> array = new ArrayList<String>();
+            ArrayList<String> array = new ArrayList<>();
             arrayPages.add(array);
         }
 

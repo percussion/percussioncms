@@ -477,7 +477,7 @@ public class PSTemplateService implements IPSTemplateService
      */
     private Map<String, PSPair<String, String>> getWidgetNamesChanged(PSTemplate template, PSTemplate savedTemplate)
     {
-        Map<String, PSPair<String, String>> changedWidgets = new HashMap<String, PSPair<String, String>>();
+        Map<String, PSPair<String, String>> changedWidgets = new HashMap<>();
 
         if (template.getWidgets() == null)
         {
@@ -499,7 +499,7 @@ public class PSTemplateService implements IPSTemplateService
 
             if (!(isBlank(newName) && isBlank(oldName)) && !equalsIgnoreCase(oldName, newName))
             {
-                changedWidgets.put(oldId, new PSPair<String, String>(oldName, newName));
+                changedWidgets.put(oldId, new PSPair<>(oldName, newName));
             }
         }
         return changedWidgets;
@@ -517,7 +517,7 @@ public class PSTemplateService implements IPSTemplateService
      */
     private Map<String, String> getWidgetIdsToNameMap(List<PSWidgetItem> list)
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         for (PSWidgetItem widgetItem : list)
         {
             map.put(widgetItem.getId(), widgetItem.getName());
@@ -536,7 +536,7 @@ public class PSTemplateService implements IPSTemplateService
      */
     private void checkDuplicatedNames(PSRegionTree region) throws DataServiceSaveException
     {
-        List<String> widgetNames = new ArrayList<String>();
+        List<String> widgetNames = new ArrayList<>();
         for(PSRegionWidgets regionWidget : region.getRegionWidgetAssociations())
         {
             for(PSWidgetItem widgetItem : regionWidget.getWidgetItems())
@@ -605,7 +605,7 @@ public class PSTemplateService implements IPSTemplateService
              * Then lets create the tree from the markup.
              */
             log.debug("Creating the region tree from markup.");
-            Map<String, PSRegion> regions = new HashMap<String, PSRegion>();
+            Map<String, PSRegion> regions = new HashMap<>();
 
             PSTemplateRegionParser parser = new PSTemplateRegionParser(regions);
             PSParsedRegionTree<PSRegion, PSRegionCode> pt = parser.parse(object.getBodyMarkup());
@@ -743,7 +743,7 @@ public class PSTemplateService implements IPSTemplateService
         public <T extends PSTemplateSummary> List<T> sort(List<T> items) {
             notNull(items);
             noNullElements(items);
-            ArrayList<T> sorted = new ArrayList<T>(items);
+            ArrayList<T> sorted = new ArrayList<>(items);
             Collections.sort(sorted, this);
             return sorted;
         }
@@ -832,13 +832,13 @@ public class PSTemplateService implements IPSTemplateService
     private Set<PSRegionWidgets> cleanRegionWidgets(PSTemplate template) {
         PSRegionTree tree = template.getRegionTree();
         Collection<PSRegionWidgets> regionWidgetsToValidate = tree.getRegionWidgetAssociations();
-        Set<PSRegionWidgets> sets = new HashSet<PSRegionWidgets>();
+        Set<PSRegionWidgets> sets = new HashSet<>();
         if (regionWidgetsToValidate == null) return null;
         //Get the list of widgets in the system
         List<PSWidgetDefinition> fulls = widgetDao.findAll();
         //Validate the widgets included in the template and just consider the valid widgets
         for(PSRegionWidgets w: regionWidgetsToValidate) {
-            List<PSWidgetItem> widgetValidItems = new ArrayList<PSWidgetItem>();
+            List<PSWidgetItem> widgetValidItems = new ArrayList<>();
             List<PSWidgetItem> widgetItems = w.getWidgetItems();
             if (widgetItems != null) {
                  for(PSWidgetItem item : widgetItems) {

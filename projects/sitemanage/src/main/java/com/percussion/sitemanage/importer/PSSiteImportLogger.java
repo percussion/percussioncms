@@ -85,7 +85,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
         
         if (type.equals(PSLogEntryType.ERROR) && errorLogMessages != null)
         {
-            errorLogMessages.add(new PSPair<String, String>(category, message));
+            errorLogMessages.add(new PSPair<>(category, message));
         }
     }
     
@@ -107,7 +107,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
     public void logErrors()
     {
 
-        errorLogMessages = new ArrayList<PSPair<String,String>>();
+        errorLogMessages = new ArrayList<>();
     }
     
     @Override
@@ -120,7 +120,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
         if (errorLogMessages == null)
             return null;
         
-        List<PSImportLogEntry> result = new ArrayList<PSImportLogEntry>();
+        List<PSImportLogEntry> result = new ArrayList<>();
         for (PSPair<String,String> message : errorLogMessages)
         {
             result.add(new PSImportLogEntry(objectId, type.name(), new Date(), description, message.getFirst(), message.getSecond()));

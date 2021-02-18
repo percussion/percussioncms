@@ -40,7 +40,7 @@ import static org.apache.commons.lang.Validate.notEmpty;
 public class PSEnumVals
 {
     @NotNull
-    private List<EnumVal> entries = new ArrayList<EnumVal>();
+    private List<EnumVal> entries = new ArrayList<>();
    
     /**
      * @return list of entry objects, never <code>null</code>, may be empty.

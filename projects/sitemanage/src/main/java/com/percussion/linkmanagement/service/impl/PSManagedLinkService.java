@@ -442,7 +442,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         Validate.notNull(source);
         
         // set up new link id list
-        newLinkIds.set(new ArrayList<Long>());
+        newLinkIds.set(new ArrayList<>());
         return manageLinks(getNewItemParentId(), source);
     }
 
@@ -450,7 +450,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     public void initNewItemLinks()
     {
         // set up new link id list
-        newLinkIds.set(new ArrayList<Long>());
+        newLinkIds.set(new ArrayList<>());
     }
     
     @Override
@@ -546,7 +546,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     }
     private Map<Integer, Integer> convertGuidToIntegerMap(Map<String, String> guidMap)
     {
-        Map<Integer, Integer> integerMap = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> integerMap = new HashMap<>();
         for (Map.Entry<String, String> entry : guidMap.entrySet())
         {
             int intKey = idMapper.getContentId(entry.getKey());
@@ -1465,7 +1465,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     
     public void cleanupDeletedLinks(List<Element> validLinks, Integer parentId) {
         List<PSManagedLink> currentLinks = dao.findLinksByParentId(parentId);
-        Collection<PSManagedLink> linksToDelete = new ArrayList<PSManagedLink>();
+        Collection<PSManagedLink> linksToDelete = new ArrayList<>();
         
         for (PSManagedLink currentLink : currentLinks) {
             boolean linkMatched = false;
@@ -1498,7 +1498,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     {
         notNull(parentIds);
 
-        List<Integer> convertedParentIds = new ArrayList<Integer>();
+        List<Integer> convertedParentIds = new ArrayList<>();
         for (String parentId : parentIds)
         {
             IPSGuid guid = guidMgr.makeGuid(parentId);
@@ -1506,7 +1506,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         List<PSManagedLink> links = dao.findLinksByParentIds(convertedParentIds);
         
-        List<String> linkIds = new ArrayList<String>();
+        List<String> linkIds = new ArrayList<>();
         for(PSManagedLink link : links)
         {
             PSLegacyGuid guid = new PSLegacyGuid(link.getChildId());
@@ -1714,7 +1714,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     private Node getAssetNode(int childId, PSRenderLinkContext linkContext, Boolean isStaging, String value) {
         IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
         IPSGuid guid = getCorrectRevisionGuid(childId, linkContext, isStaging);
-        List<IPSGuid> guidList = new ArrayList<IPSGuid>();
+        List<IPSGuid> guidList = new ArrayList<>();
         List<Node> nodeList;
         guidList.add(guid);
         try

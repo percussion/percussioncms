@@ -94,9 +94,9 @@ public class PSUiService implements IPSUiService
         sdf.setDescription(df.getDescription());
         sdf.setSortby(df.getSortedColumnName());
         
-        List<PSDisplayFormatColumn> columns = new ArrayList<PSDisplayFormatColumn>();
+        List<PSDisplayFormatColumn> columns = new ArrayList<>();
         Iterator cols = df.getColumns();
-        List<PSDisplayColumn> temp = new ArrayList<PSDisplayColumn>();
+        List<PSDisplayColumn> temp = new ArrayList<>();
         while(cols.hasNext())
         {
             temp.add((PSDisplayColumn)cols.next());

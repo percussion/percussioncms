@@ -144,7 +144,7 @@ public class PSSitePublishDao
     public List<PSSiteSummary> findAllSummaries() {
         List<IPSSite> sites = publishWs.findAllSites();
 
-        List<PSSiteSummary> sums = new ArrayList<PSSiteSummary>();
+        List<PSSiteSummary> sums = new ArrayList<>();
         for(IPSSite site : sites) {
             PSSiteSummary summary = new PSSiteSummary();
             convertToSummary(site, summary);
@@ -600,8 +600,8 @@ public class PSSitePublishDao
         String siteName = site.getName();
         String siteRoot = site.getFolderRoot();
 
-        Map<String, String> searchGenParams = new HashMap<String, String>();
-        Map<String, String> assetSearchGenParams = new HashMap<String, String>();
+        Map<String, String> searchGenParams = new HashMap<>();
+        Map<String, String> assetSearchGenParams = new HashMap<>();
 
         String queryKey = "query";
         searchGenParams.put(queryKey, PSSitePublishDaoHelper.makeJcrSearchQuery(siteRoot));
@@ -684,8 +684,8 @@ public class PSSitePublishDao
         String fullSiteName = PSSitePublishDaoHelper.createName(pubServer.getName(), suffix + FULL_SITE);
         String assetsName = PSSitePublishDaoHelper.createName(pubServer.getName(), suffix + FULL_ASSET);
 
-        Map<String, String> searchGenParams = new HashMap<String, String>();
-        Map<String, String> assetSearchGenParams = new HashMap<String, String>();
+        Map<String, String> searchGenParams = new HashMap<>();
+        Map<String, String> assetSearchGenParams = new HashMap<>();
         
         String queryKey = "query";
         searchGenParams.put(queryKey, PSSitePublishDaoHelper.makeJcrSearchQuery(siteRoot));
@@ -868,7 +868,7 @@ public class PSSitePublishDao
     private void updateFullSiteContentList(IPSContentList fullSiteCList, IPSSite site)
     {
         // update the content list with the new site name
-        Map<String, String> searchGenParams = new HashMap<String, String>();
+        Map<String, String> searchGenParams = new HashMap<>();
         
         String queryKey = "query";
         searchGenParams.put(queryKey, PSSitePublishDaoHelper.makeJcrSearchQuery(site.getFolderRoot()));
@@ -1513,8 +1513,8 @@ public class PSSitePublishDao
         String siteRoot = site.getFolderRoot();
         String suffix = site.getSiteId() + "_" + FULL_ASSET;
 
-        Map<String, String> searchGenParams = new HashMap<String, String>();
-        Map<String, String> assetSearchGenParams = new HashMap<String, String>();
+        Map<String, String> searchGenParams = new HashMap<>();
+        Map<String, String> assetSearchGenParams = new HashMap<>();
 
         String queryKey = "query";
         searchGenParams.put(queryKey, PSSitePublishDaoHelper.makeJcrSearchQuery(siteRoot));
@@ -1542,7 +1542,7 @@ public class PSSitePublishDao
      */
     private void deleteFullAssetContentList(IPSEdition edition)
     {
-        Set<IPSContentList> cLists = new HashSet<IPSContentList>();
+        Set<IPSContentList> cLists = new HashSet<>();
 
         List<IPSEditionContentList> ecls = publishWs.loadEditionContentLists(edition.getGUID());
         for (IPSEditionContentList ecl : ecls)
@@ -1553,7 +1553,7 @@ public class PSSitePublishDao
                 cLists.add(cList);
 
                 publishWs.deleteEditionContentList(ecl);
-                publishWs.deleteContentLists(new ArrayList<IPSContentList>(cLists));
+                publishWs.deleteContentLists(new ArrayList<>(cLists));
                 break;
             }
         }
@@ -1768,7 +1768,7 @@ public class PSSitePublishDao
                 publishWs.purgeJobLog(pubStatus.getStatusId());
             }
             
-            Set<IPSContentList> cLists = new HashSet<IPSContentList>();
+            Set<IPSContentList> cLists = new HashSet<>();
 
             // delete editions
             List<IPSEdition> edtns = publishWs.findAllEditionsBySite(site.getGUID());
@@ -1801,7 +1801,7 @@ public class PSSitePublishDao
             try
             {
                 if (!cLists.isEmpty()) {
-                    publishWs.deleteContentLists(new ArrayList<IPSContentList>(cLists));
+                    publishWs.deleteContentLists(new ArrayList<>(cLists));
                 }
             }
             catch (Exception e)
@@ -2036,7 +2036,7 @@ public class PSSitePublishDao
         // delete server entry in the site's tch file
         handleDeleteServerEntryFromTchFile(pubServer);
         
-        Set<IPSContentList> cLists = new HashSet<IPSContentList>();
+        Set<IPSContentList> cLists = new HashSet<>();
         // delete editions and status logs
         List<IPSEdition> edtns = publishWs.findAllEditionsByPubServer(pubServer.getGUID());
         for (IPSEdition edtn : edtns)
@@ -2080,7 +2080,7 @@ public class PSSitePublishDao
             }
             else
             {
-                publishWs.deleteContentLists(new ArrayList<IPSContentList>(cLists));
+                publishWs.deleteContentLists(new ArrayList<>(cLists));
             }
         }
         catch (Exception e)
@@ -2158,7 +2158,7 @@ public class PSSitePublishDao
      */
     private static final Log log = LogFactory.getLog(PSSitePublishDao.class);
     
-    private static final Map<String, String> descriptionTexts = new HashMap<String, String>();
+    private static final Map<String, String> descriptionTexts = new HashMap<>();
     static{
     	descriptionTexts.put("CLIST-" + PSSitePublishDaoHelper.PUBLISH_NOW, "Site Publish Now");
     	descriptionTexts.put("CLIST-" + PSSitePublishDaoHelper.UNPUBLISH_NOW, "Site Unpublish Now");

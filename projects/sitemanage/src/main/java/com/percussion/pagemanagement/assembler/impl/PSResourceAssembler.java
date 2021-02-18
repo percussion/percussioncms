@@ -87,7 +87,7 @@ public class PSResourceAssembler extends PSAssemblerBase implements IPSAssembler
             
             assemblyItem.setTemplate(template);
             
-            List<IPSAssemblyItem> items = new ArrayList<IPSAssemblyItem>();
+            List<IPSAssemblyItem> items = new ArrayList<>();
             items.add(assemblyItem);
             List<IPSAssemblyResult> results = getAssemblyService().assemble(items);
             return results.get(0);

@@ -152,7 +152,7 @@ public class PSResourceDefinitionGroup extends PSAbstractPersistantObject
          */
         private String uniqueId;
         
-        private List<PSResourceDependency> dependencies = new ArrayList<PSResourceDependency>();
+        private List<PSResourceDependency> dependencies = new ArrayList<>();
 
         @XmlElement(name="dependency")
         public List<PSResourceDependency> getDependencies()
