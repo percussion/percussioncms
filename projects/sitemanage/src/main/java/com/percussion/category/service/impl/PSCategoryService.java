@@ -39,7 +39,6 @@ import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
-import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.sitemanage.data.PSSiteSummary;
@@ -355,23 +354,24 @@ public class PSCategoryService implements IPSCategoryService {
 
         if (PSCategoryLockInfo.isFileLocked())
             jsonObject = PSCategoryLockInfo.getLockInfo();
+        try {
+            if (jsonObject != null) {
 
-        if (jsonObject != null) {
-            try {
-                if (!( jsonObject.get("userName")).equals(userService.getCurrentUser().getName())) {
-                    PSCategoryLockInfo.removeLockInfo();
-                    PSCategoryLockInfo.writeLockInfoToFile(userService, date);
-                } else if (!( jsonObject.get("creationDate")).equals(date)) {
-                    PSCategoryLockInfo.removeLockInfo();
-                    PSCategoryLockInfo.writeLockInfoToFile(userService, date);
-                }
+                    if (!( jsonObject.get("userName")).equals(userService.getCurrentUser().getName())) {
+                        PSCategoryLockInfo.removeLockInfo();
+                        PSCategoryLockInfo.writeLockInfoToFile(userService, date);
+                    } else if (!( jsonObject.get("creationDate")).equals(date)) {
+                        PSCategoryLockInfo.removeLockInfo();
+                        PSCategoryLockInfo.writeLockInfoToFile(userService, date);
+                    }
 
-            } catch (JSONException | PSDataServiceException e) {
-                log.error("JSON Exception occurred while reading from the json object - PSCategoryService.overrideCatTabLock()",
-                        new WebApplicationException("Could not read lock information file"));
+
+            } else {
+                PSCategoryLockInfo.writeLockInfoToFile(userService, date);
             }
-        } else {
-            PSCategoryLockInfo.writeLockInfoToFile(userService, date);
+        } catch (JSONException | PSDataServiceException e) {
+            log.error("JSON Exception occurred while reading from the json object - PSCategoryService.overrideCatTabLock()",
+                    new WebApplicationException("Could not read lock information file"));
         }
     }
 

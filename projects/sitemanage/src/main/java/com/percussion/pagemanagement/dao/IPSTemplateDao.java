@@ -32,6 +32,7 @@ import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.utils.guid.IPSGuid;
 
 /**
@@ -53,7 +54,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * 
      * @return the saved template, not <code>null</code>.
      */
-    public PSTemplate save(PSTemplate template, String siteId) throws SaveException, LoadException;
+    public PSTemplate save(PSTemplate template, String siteId) throws PSDataServiceException;
  
     /**
      * Loads the specified base template by ID.
@@ -74,7 +75,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      */
     public PSAssemblyTemplate loadBaseTemplateByName(String name) throws IPSTemplateService.PSTemplateException;
     
-    public PSTemplate createTemplate(String name, String sourceTemplateId) throws IPSTemplateService.PSTemplateException, LoadException;
+    public PSTemplate createTemplate(String name, String sourceTemplateId) throws PSDataServiceException;
     
     /**
      * Find all readonly system templates for the supplied type.
@@ -133,7 +134,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * can be used for different site. This is only used by unit test for now
      * and should be removed along with related unit test.
      */
-    public PSTemplate findUserTemplateByName_UsedByUnitTestOnly(String name) throws IPSTemplateService.PSTemplateException, LoadException;
+    public PSTemplate findUserTemplateByName_UsedByUnitTestOnly(String name) throws PSDataServiceException;
     
     /**
      * Finds the user template for the specified name and site.

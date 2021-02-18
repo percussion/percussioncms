@@ -25,6 +25,7 @@ package com.percussion.design.objectstore.server;
 
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSObjectFactory;
+import com.percussion.error.PSException;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -93,7 +94,7 @@ public class PSXmlObjectStoreLockManagerTest
     */
    @Test
    @Ignore("TODO: This test has a logic problem.  Please fix it.")
-   public void testBackFile() throws IOException {
+   public void testBackFile() throws IOException, PSException {
       PSServerXmlObjectStore.RecoverableFile dirBkup;
       
       // cleanup both source and destination directories if exist

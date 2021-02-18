@@ -24,51 +24,46 @@
 
 package com.percussion.sitemanage.servlet;
 
-import static com.percussion.pathmanagement.service.impl.PSPathUtils.ASSETS_FINDER_ROOT;
-import static com.percussion.pathmanagement.service.impl.PSPathUtils.SITES_FINDER_ROOT;
-
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
-
+import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.pagemanagement.data.PSInlineLinkRequest;
 import com.percussion.pagemanagement.data.PSInlineRenderLink;
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.pagemanagement.service.impl.PSRenderLinkService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
-import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestParsingException;
 import com.percussion.server.webservices.PSServerFolderProcessor;
-import com.percussion.services.assembly.impl.PSReplacementFilter;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
-import com.percussion.share.dao.impl.PSFolderHelper;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.PSCharSets;
 import com.percussion.util.PSMutableUrl;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.pathmanagement.service.impl.PSPathUtils.SITES_FINDER_ROOT;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * The servlet used to preview content of the item, where the item is specified by its folder path.
@@ -78,7 +73,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSPreviewItemContent extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
-    private static Log ms_log = LogFactory.getLog(PSPreviewItemContent.class);
+    private static final Logger log = LogManager.getLogger(PSPreviewItemContent.class);
     private static PSRenderLinkService linkService;
     private IPSiteDao siteDao;
     
@@ -108,17 +103,17 @@ public class PSPreviewItemContent extends HttpServlet
         catch (PSNotFoundException notFoundEx)
         {
             if (!requestUri.endsWith("favicon.ico"))
-                ms_log.warn(notFoundEx);
+                log.warn(notFoundEx);
             responseWithError(response, SC_NOT_FOUND, notFoundEx);
         }
         catch (UnsupportedOperationException unsupportedOpEx)
         {
-            ms_log.warn(unsupportedOpEx,unsupportedOpEx);
+            log.warn(unsupportedOpEx,unsupportedOpEx);
             responseWithError(response, SC_BAD_REQUEST, unsupportedOpEx);
         }
         catch (Exception e)
         {
-            ms_log.error("Preview Exception", e);
+            log.error("Preview Exception", e);
             responseWithError(response, SC_INTERNAL_SERVER_ERROR, e);
         }
     }
@@ -131,7 +126,7 @@ public class PSPreviewItemContent extends HttpServlet
         }
         catch (IOException ioEx)
         {
-            ms_log.error(ioEx);
+            log.error(ioEx);
         }
     }
 
@@ -142,7 +137,7 @@ public class PSPreviewItemContent extends HttpServlet
         PSMutableUrl mutableUrl = new PSMutableUrl(url);
         Map<String, String> params = mutableUrl.getParamMap();
 
-        Map<String, String[]> params2 = new HashMap<String, String[]>();
+        Map<String, String[]> params2 = new HashMap<>();
         for (Map.Entry<String, String> entry : params.entrySet())
         {
             params2.put(entry.getKey(), new String[]{entry.getValue()});
@@ -161,8 +156,7 @@ public class PSPreviewItemContent extends HttpServlet
      * @param renderType it is "xml", "html" or "database", assumed not blank.
      * @return the assembly URL, not blank.
      */
-    private String createAssemblyUrl(String path, String revision, String renderType)
-    {
+    private String createAssemblyUrl(String path, String revision, String renderType) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException {
         IPSGuid id = getItemId(path, revision);
         if (id!=null)
         {
@@ -262,6 +256,8 @@ public class PSPreviewItemContent extends HttpServlet
             }
         }
         catch (UnsupportedEncodingException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
         }
         return ret;
     }

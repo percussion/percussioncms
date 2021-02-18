@@ -26,7 +26,7 @@ package com.percussion.share.service;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemSummaryUtils;
-import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 public abstract class PSAbstractFullDataService<FULL,SUM extends IPSItemSummary> 
     extends PSAbstractDataService<FULL, SUM, String> implements IPSDataService<FULL, SUM, String>
@@ -40,8 +40,7 @@ public abstract class PSAbstractFullDataService<FULL,SUM extends IPSItemSummary>
         this.itemSummaryService = itemSummaryService;
     }
 
-    public SUM find(String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException,
-            com.percussion.share.service.IPSDataService.DataServiceNotFoundException, PSValidationException {
+    public SUM find(String id) throws PSDataServiceException {
 
         validateIdParameter("find", id);
         IPSItemSummary itemSummary = itemSummaryService.find(id);

@@ -33,6 +33,7 @@ import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.designmanagement.service.IPSFileSystemService;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
@@ -78,14 +79,27 @@ import com.percussion.share.service.PSAbstractDataService;
 import com.percussion.share.service.PSSiteCopyUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
-import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
-import com.percussion.sitemanage.data.*;
+import com.percussion.sitemanage.data.PSPubInfo;
+import com.percussion.sitemanage.data.PSSaasSiteConfig;
+import com.percussion.sitemanage.data.PSSite;
+import com.percussion.sitemanage.data.PSSiteCopyRequest;
+import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.data.PSSiteInfo;
+import com.percussion.sitemanage.data.PSSiteIssueSummary;
+import com.percussion.sitemanage.data.PSSiteProperties;
+import com.percussion.sitemanage.data.PSSitePublishProperties;
+import com.percussion.sitemanage.data.PSSiteSection;
+import com.percussion.sitemanage.data.PSSiteSectionProperties;
+import com.percussion.sitemanage.data.PSSiteStatistics;
+import com.percussion.sitemanage.data.PSSiteStatisticsSummary;
+import com.percussion.sitemanage.data.PSSiteSummary;
+import com.percussion.sitemanage.data.PSValidateCopyFoldersRequest;
 import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
@@ -108,8 +122,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -120,12 +134,24 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.percussion.share.dao.PSFolderPermissionUtils.getFolderPermission;
 import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.*;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.copySecureSiteConfiguration;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeSiteConfigurationAndTouchedFile;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeTouchedFile;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.updateSiteConfiguration;
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
 
@@ -245,16 +271,15 @@ import static org.apache.commons.lang.Validate.notNull;
         this.contentChangeService = contentChangeService;
         this.recentService = recentService;
     }
-    public PSSite load(String id) throws DataServiceLoadException, DataServiceNotFoundException {
+    public PSSite load(String id) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         return super.load(id);
     }
 
-    public PSSiteSummary find(String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException
-    {
+    public PSSiteSummary find(String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException, PSValidationException {
         return find(id, false);
     }
 
-    public PSSiteSummary findByName(String name)throws DataServiceLoadException{
+    public PSSiteSummary findByName(String name) throws DataServiceLoadException, PSValidationException {
         PSParameterValidationUtils.rejectIfBlank("findByName", "name", name);
 
         PSSiteSummary sum = siteDao.findByName(name);
@@ -265,8 +290,7 @@ import static org.apache.commons.lang.Validate.notNull;
         return sum;
     }
 
-    public PSSiteSummary find(String id, boolean includePubInfo) throws com.percussion.share.service.IPSDataService.DataServiceLoadException
-    {
+    public PSSiteSummary find(String id, boolean includePubInfo) throws com.percussion.share.service.IPSDataService.DataServiceLoadException, PSValidationException {
         PSParameterValidationUtils.rejectIfBlank("find", "id", id);
         PSSiteSummary sum = siteDao.findSummary(id);
         if (sum == null)
@@ -285,8 +309,7 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
     
-    public PSSiteProperties getSiteProperties(String siteName)
-    {
+    public PSSiteProperties getSiteProperties(String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException {
         IPSSite site = siteMgr.findSite(siteName);
         if (site == null)
         {
@@ -341,8 +364,7 @@ import static org.apache.commons.lang.Validate.notNull;
         props.setMobilePreviewEnabled(site.isMobilePreviewEnabled());
     }
 
-    public PSSitePublishProperties getSitePublishProperties(String siteName)
-    {
+    public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException {
         IPSSite site = siteMgr.findSite(siteName);
         if (site == null)
         {
@@ -375,8 +397,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param site the site, assumed not <code>null</code>.
      * @return the folder permission, never <code>null</code>.
      */
-    private PSFolderPermission getSiteRootPermission(IPSSite site)
-    {
+    private PSFolderPermission getSiteRootPermission(IPSSite site) throws PSValidationException {
         IPSGuid folderId = contentWs.getIdByPath(site.getFolderRoot());
         if (folderId == null)
         {
@@ -388,7 +409,7 @@ import static org.apache.commons.lang.Validate.notNull;
         return getFolderPermission(folder);
     }
 
-    public PSSiteProperties updateSiteProperties(PSSiteProperties props) throws DataServiceSaveException {
+    public PSSiteProperties updateSiteProperties(PSSiteProperties props) throws PSDataServiceException {
         notNull(props, "Properties cannot be null");
         IPSSite site = siteMgr.loadSiteModifiable(idMapper.getGuid(props.getId()));
         String newSiteName = props.getName();
@@ -539,7 +560,7 @@ import static org.apache.commons.lang.Validate.notNull;
      */
   
     @Override
-    public String isSiteBeingImported(String sitename) throws IPSGenericDao.LoadException {
+    public String isSiteBeingImported(String sitename) throws PSDataServiceException {
         PSSite site = siteDao.find(sitename);
         List<Integer> importingPages = null;
         if (site!=null)
@@ -555,8 +576,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param site the source site, assumed not <code>null</code>.
      * @param props the new site properties, assumed not <code>null</code>.
      */
-    private void validateSiteProperties(IPSSite site, PSSiteProperties props)
-    {
+    private void validateSiteProperties(IPSSite site, PSSiteProperties props) throws PSValidationException {
         notNull(props.getName(), "Name cannot be null.");
         notEmpty(props.getName(), "Name cannot be empty.");
         notNull(props.getHomePageLinkText(), "Home page link text cannot be null.");
@@ -604,8 +624,7 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
     @Override
-    public PSSiteSummary findByLegacySiteId(String id, boolean isValidate) throws DataServiceLoadException
-    {
+    public PSSiteSummary findByLegacySiteId(String id, boolean isValidate) throws DataServiceLoadException, PSValidationException {
         PSParameterValidationUtils.rejectIfBlank("findByLegacySiteId", "id", id);
         PSSiteSummary sum = siteDao.findByLegacySiteId(id, isValidate);
         if (sum == null)
@@ -825,7 +844,7 @@ import static org.apache.commons.lang.Validate.notNull;
         }
     }
 
-    public PSSite save(PSSite site) throws DataServiceSaveException, DataServiceNotFoundException, DataServiceLoadException, PSSpringValidationException {
+    public PSSite save(PSSite site) throws PSDataServiceException {
         PSSiteCopyUtils.throwCopySiteMessageIfSameTargetName(site.getName(), "save",
                 PSSiteCopyUtils.CAN_NOT_CREATE_SAME_COPIED_SITE_NAME);
         validateNewSite(site);
@@ -833,8 +852,7 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
  
-    public PSSite createSiteFromUrl(HttpServletRequest request, PSSite site) throws PSSiteImportException
-    {
+    public PSSite createSiteFromUrl(HttpServletRequest request, PSSite site) throws PSSiteImportException, PSValidationException {
         validateNewSite(site);
 
         // Get the user agent
@@ -845,8 +863,7 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
   
-    public Long createSiteFromUrlAsync(HttpServletRequest request, PSSite site)
-    {
+    public Long createSiteFromUrlAsync(HttpServletRequest request, PSSite site) throws PSValidationException, IPSFolderService.PSWorkflowNotFoundException {
         validateNewSite(site);
 
         // Get the user agent
@@ -860,9 +877,8 @@ import static org.apache.commons.lang.Validate.notNull;
         importContext.setUserAgent(userAgent);
 
         // Execute import job
-        long jobId = asyncJobService.startJob(SITE_IMPORT_JOB_BEAN, importContext);
+        return asyncJobService.startJob(SITE_IMPORT_JOB_BEAN, importContext);
 
-        return new Long(jobId);
     }
 
   
@@ -894,8 +910,7 @@ import static org.apache.commons.lang.Validate.notNull;
         validateCopyFolders(StringUtils.removeEnd(srcAssetFolder, "/"), StringUtils.removeEnd(destAssetFolder, "/"));
     }
 
-    public PSSite copy(PSSiteCopyRequest req)
-    {
+    public PSSite copy(PSSiteCopyRequest req) throws IPSItemService.PSItemServiceException, PSDataServiceException {
         boolean paused = false;
         notNull(req, "req cannot be null");
         Collection<String> createdLocalAssets = new ArrayList<>();
@@ -932,7 +947,7 @@ import static org.apache.commons.lang.Validate.notNull;
         	log.debug("Validating New Site for Site Copy....");
             validateNewSite(copy);
 
-            log.debug("Starting Process Monitor Site Copy of ...." + newName);
+            log.debug("Starting Process Monitor Site Copy of ....{}" ,newName);
             PSSiteCopyProcessMonitor.startSiteCopy(newName);
 
             assetMap = new HashMap<>();
@@ -960,15 +975,10 @@ import static org.apache.commons.lang.Validate.notNull;
             String origId = orig.getId();
             deleteSiteOnRollback = true;
             
-            log.debug("Create Site With Content origId:" + origId + " " + newName);
-            try{
-            	copy = siteDao.createSiteWithContent(origId, newName);
-            	copiedFolderPath = copy.getFolderPath();
-            }catch(Exception e){
-            	log.error("An error occurred while copying Site Content for Site "+ origId, e);
-            	throw(e);
-            }
+            log.debug("Create Site With Content origId: {} newName: {}",origId ,newName);
 
+            copy = siteDao.createSiteWithContent(origId, newName);
+            copiedFolderPath = copy.getFolderPath();
             // copy the templates
             try{
 	            log.info("Copying Site Template...");
@@ -1107,13 +1117,13 @@ import static org.apache.commons.lang.Validate.notNull;
                     }
                     catch (DeleteException | IPSGenericDao.LoadException e1)
                     {
-                        log.error("Cannot delete all site resources for site " + siteName, e1);
+                        log.error("Cannot delete all site resources for site {} Error:  {}" , siteName, e1.getMessage());
                     }
                 }
             }
 
             log.error("An error occurred copying site " + siteName,e);
-            throw new RuntimeException("There was an error copying the site " + siteName
+            throw new PSDataServiceException("There was an error copying the site " + siteName
                     + ", review the logs for details", e);
         }
         finally
@@ -1158,7 +1168,7 @@ import static org.apache.commons.lang.Validate.notNull;
         }
     }
 
-    public PSValidationErrors validate(PSSite site) throws PSSpringValidationException {
+    public PSValidationErrors validate(PSSite site) throws PSValidationException {
         return super.validate(site);
     }
 
@@ -1451,8 +1461,7 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
     @Override
-    public PSSiteSummary findByPath(String path) throws DataServiceNotFoundException
-    {
+    public PSSiteSummary findByPath(String path) throws DataServiceNotFoundException, PSValidationException {
         PSParameterValidationUtils.rejectIfNull("findByPath", "path", path);
         PSSiteSummary sum = siteDao.findByPath(path);
         if (sum != null)
@@ -1505,8 +1514,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * 
      * @param site the site in question, not <code>null</code>.
      */
-    private void validateNewSite(PSSite site)
-    {
+    private void validateNewSite(PSSite site) throws PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("save").rejectIfNull("site", site).throwIfInvalid();
 
         // is the site name valid?
@@ -1593,8 +1601,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * 
      * @param folder the path of the folder in question, not <code>null</code>.
      */
-    private void validateFolder(String folder)
-    {
+    private void validateFolder(String folder) throws PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("copy").rejectIfNull("folder", folder).throwIfInvalid();
 
         IPSItemSummary item = null;
@@ -1655,8 +1662,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param tempMap map of original to copied template id's.
      */
     private void updateListAssets(String copiedFolderPath, String originalFolderPath, String newName,
-            String assetFolder, String id, Map<String, String> tempMap)
-    {
+            String assetFolder, String id, Map<String, String> tempMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
         // get all the local content items related to this item
         Set<String> contentIds = widgetAssetRelationshipService.getLocalAssets(id);
 
@@ -1664,7 +1670,7 @@ import static org.apache.commons.lang.Validate.notNull;
         {
             try {
                 updateListAsset(contentId, originalFolderPath, copiedFolderPath, assetFolder, newName, tempMap);
-            } catch (IPSGenericDao.LoadException e) {
+            } catch (PSDataServiceException e) {
                 //log the error and continue to that 1 bad asset doesn't prevent all assets from getting updated.
                 log.error("Error updating list asset with ID: {} Error: {}",contentId,e.getMessage());
             }
@@ -1693,7 +1699,7 @@ import static org.apache.commons.lang.Validate.notNull;
 
             try {
                 updateListAsset(asset, replaceMappings, siteListAssetMap.get(type));
-            } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+            } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
             }
@@ -1718,7 +1724,7 @@ import static org.apache.commons.lang.Validate.notNull;
 
             try {
                 updateListAsset(asset, replaceMappings, assetListAssetMap.get(type));
-            } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+            } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
                 log.error("Error updating Asset: {} at Path: {} with New Path: {} Error: {}",
                 asset.getId(),originalPath,replacementPath,e.getMessage());
                 log.debug(e.getMessage(),e);
@@ -1735,7 +1741,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param replaceMappings map of source to replacement string.
      * @param replaceFields list of asset field names to be updated.
      */
-    private void updateListAsset(PSAsset asset, Map<String, String> replaceMappings, List<String> replaceFields) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
+    private void updateListAsset(PSAsset asset, Map<String, String> replaceMappings, List<String> replaceFields) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         if (replaceFields != null)
         {
             Map<String, Object> fields = asset.getFields();
@@ -1796,7 +1802,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param tempMap map of original to copied template id's.
      */
     private void updateListAsset(String assetId, String origSitePath, String copiedSitePath, String origAssetPath,
-            String copiedAssetPath, Map<String, String> tempMap) throws IPSGenericDao.LoadException {
+            String copiedAssetPath, Map<String, String> tempMap) throws PSDataServiceException {
         PSAsset asset = assetDao.find(assetId);
         String type = asset.getType();
         if (siteListAssetMap.containsKey(type))
@@ -1853,7 +1859,7 @@ import static org.apache.commons.lang.Validate.notNull;
                 page.setWorkflowId(origPage.getWorkflowId());
             }
             return assetIds;
-        } catch (IPSPageService.PSPageException e) {
+        } catch (IPSPageService.PSPageException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
             log.error("Error updating Page. Error: {}",e.getMessage() );
             log.debug(e.getMessage(),e);
             throw new DataServiceSaveException(e.getMessage(),e);
@@ -1911,8 +1917,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param copySiteName the name of the copied site.
      * @param assetMap map of original asset id (string) to copied asset id.
      */
-    private void updateTemplate(String id, PSSiteSummary origSite, String copySiteName, Map<String, String> assetMap)
-    {
+    private void updateTemplate(String id, PSSiteSummary origSite, String copySiteName, Map<String, String> assetMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
         updateLinks(id, origSite, copySiteName, assetMap);
         updateSharedAssets(id, assetMap);
     }
@@ -1926,8 +1931,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param copySiteName the name of the copied site.
      * @param assetMap map of original asset id (string) to copied asset id.
      */
-    private void updateLinks(String id, PSSiteSummary origSite, String copySiteName, Map<String, String> assetMap)
-    {
+    private void updateLinks(String id, PSSiteSummary origSite, String copySiteName, Map<String, String> assetMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
         for (String assetId : widgetAssetRelationshipService.getLocalAssets(id))
         {
             updateLinkedPages(assetId, origSite, copySiteName);
@@ -1964,7 +1968,7 @@ import static org.apache.commons.lang.Validate.notNull;
                         }
                     }
                 }
-            } catch (IPSPageService.PSPageException | IPSGenericDao.LoadException e) {
+            } catch (PSDataServiceException e) {
                 log.error("Error while processing linked pages. Linked Page ID: {} Error: {}",linkedPageId,e.getMessage());
                 log.debug(e.getMessage(),e);
             }
@@ -1998,8 +2002,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param id of the page/template.
      * @param assetMap map of original asset id (string) to copied asset id.
      */
-    private void updateSharedAssets(String id, Map<String, String> assetMap)
-    {
+    private void updateSharedAssets(String id, Map<String, String> assetMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
     	//Shared assets should be checked out
         
     	boolean checkInOut = true;
@@ -2140,8 +2143,7 @@ import static org.apache.commons.lang.Validate.notNull;
         }
     }
 
-    private List<String> getAssetsByItem(String itemId)
-    {
+    private List<String> getAssetsByItem(String itemId) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
         List<String> resourceAssets = new ArrayList<>();
 
         // get all the local content items related to this item

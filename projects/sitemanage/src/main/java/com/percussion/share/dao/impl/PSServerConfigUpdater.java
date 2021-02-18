@@ -49,6 +49,7 @@ import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.share.dao.IPSServerConfigUpdater;
 import com.percussion.share.dao.PSXmlFileDataRepository.PSXmlFileDataRepositoryException;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.user.data.PSLdapConfig;
 import com.percussion.user.data.PSLdapConfig.PSLdapServer;
 import com.percussion.user.data.PSLdapConfig.PSLdapServer.CatalogType;
@@ -64,8 +65,8 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.ext.Provider;
@@ -110,7 +111,7 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
     
     private static final String SECURE_PROVIDER_URL_PREFIX = "ldaps://";
     
-    private static Log log = LogFactory.getLog(PSServerConfigUpdater.class);
+    private static final Logger log = LogManager.getLogger(PSServerConfigUpdater.class);
 
     /**
      * Constructs the updater.
@@ -193,7 +194,7 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
                 String user = "";
                 String objAttrName = "";
                 String catalog = "";
-                String orgUnits = "";
+                StringBuilder orgUnits = new StringBuilder("");
                 
                 // load the server configuration and log the LDAP properties
                 PSServerConfiguration newConfig = os.getServerConfigObject(stok);
@@ -206,9 +207,9 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
                     Iterator<?> iter = newConfig.getDirectories();
                     while (iter.hasNext())
                     {
-                        if (orgUnits.trim().length() > 0)
+                        if (orgUnits.length() > 0)
                         {
-                            orgUnits += ", ";
+                            orgUnits.append(", ");
                         }
                         
                         PSDirectory dir = (PSDirectory) iter.next();
@@ -232,17 +233,18 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
                         }
                         
                         String orgUnit = StringUtils.removeStart(providerUri.getPath(), "/");
-                        orgUnits += "organizationalUnit:" + orgUnit;
+                        orgUnits.append("organizationalUnit:").append(orgUnit);
                     }
                 }
                 
-                if (StringUtils.isBlank(orgUnits))
+                if (StringUtils.isBlank(orgUnits.toString()))
                 {
-                    orgUnits = "organizationalUnit:";
+                    orgUnits.append("organizationalUnit:");
                 }
                 
                 log.debug("LDAP configuration properties [host:" + host + ", port:" + port + ", user:" + user
                         + ", catalog:" + catalog + ", objectAttributeName:" + objAttrName + ", " + orgUnits + "].");
+                //TODO:  What is this code doing with the parsed data other than writing this debug entry?
             }
         }
         finally
@@ -332,8 +334,7 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
      * 
      * @throws PSXmlFileDataRepositoryException if the file is invalid.
      */
-    private PSLdapServer loadLdapConfig() throws PSXmlFileDataRepositoryException
-    {
+    private PSLdapServer loadLdapConfig() throws PSXmlFileDataRepositoryException, PSDataServiceException {
         log.info("Loading LDAP configuration...");
         
         PSLdapServer ldapServer = null;

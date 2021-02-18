@@ -23,6 +23,7 @@
  */
 package com.percussion.linkmanagement.service.impl;
 
+import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.cms.PSSingleValueBuilder;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
@@ -35,6 +36,7 @@ import com.percussion.pagemanagement.data.PSRenderLinkContext.Mode;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSRenderLinkService;
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.services.assembly.impl.AssemblerInfoUtils;
 import com.percussion.services.assembly.impl.PSReplacementFilter;
@@ -51,8 +53,11 @@ import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.PSJsoupPreserver;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
@@ -122,7 +127,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     
     private IPSPageCatalogService pageCatalogService;
     
-    private ThreadLocal<List<Long>> newLinkIds = new ThreadLocal<List<Long>>();
+    private ThreadLocal<List<Long>> newLinkIds = new ThreadLocal<>();
     
     @Autowired
     public PSManagedLinkService(IPSManagedLinkDao dao, IPSIdMapper idMapper, IPSContentWs contentWs,
@@ -221,7 +226,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     public String renderLinks(PSRenderLinkContext linkContext, String source, Boolean isStaging, Integer parentId)
     {
         String returnHTML = source;
-        ArrayList<Element> managedLinks = new ArrayList<Element>();
+        ArrayList<Element> managedLinks = new ArrayList<>();
         
         if(parentId == null || parentId == 0){
             log.warn("Rendering managed links for parent item with an invalid contentid");
@@ -556,12 +561,17 @@ public class PSManagedLinkService implements IPSManagedLinkService
         List<PSManagedLink> links = dao.findLinksByParentId(assetId);
         for (PSManagedLink link : links)
         {
-            updateCopyAssetLink(link, origSiteRoot, copySiteRoot, assetIdMap);
+            try {
+                updateCopyAssetLink(link, origSiteRoot, copySiteRoot, assetIdMap);
+            } catch (IPSGenericDao.SaveException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+                //Continue processing
+            }
         }
     }
     
-    private void updateCopyAssetLink(PSManagedLink link, String origSiteRoot, String copySiteRoot, Map<Integer, Integer> assetIdMap)
-    {
+    private void updateCopyAssetLink(PSManagedLink link, String origSiteRoot, String copySiteRoot, Map<Integer, Integer> assetIdMap) throws IPSGenericDao.SaveException {
         // handle a cloned asset
         Integer copiedAssetId = assetIdMap.get(link.getChildId());
         if (copiedAssetId != null)
@@ -899,7 +909,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
 	 * @return Our completed url to our link.
 	 */
 	private String createHref(PSManagedLink link,
-			PSRenderLinkContext linkContext, Boolean isStaging, String href) {
+			PSRenderLinkContext linkContext, Boolean isStaging, String href) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException {
 		IPSLinkableItem linkItem = getLinkItem(linkContext, link.getChildId(), isStaging);
 		//  Add orphaned manage link cleanup somewhere.  catch errors when child does not exist
 		if (linkItem != null)
@@ -1284,8 +1294,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
      * @return The link id of the newly created link.
      *
      */
-    private long createLink(String parentId, int dependentId, String anchor)
-    {
+    private long createLink(String parentId, int dependentId, String anchor) throws IPSGenericDao.SaveException {
         int cid;
         int rev;
         List<Long> newIds = newLinkIds.get();

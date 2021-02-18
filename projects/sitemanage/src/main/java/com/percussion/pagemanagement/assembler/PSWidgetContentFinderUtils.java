@@ -36,6 +36,7 @@ import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
@@ -198,7 +199,7 @@ public class PSWidgetContentFinderUtils
                 return null;
 
             return rels.first();
-        } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSDataServiceException e) {
             log.error("Error getting Widget Definition for: {} Error: {}",widget.getDefinitionId(),e.getMessage());
             log.debug(e.getMessage(),e);
         }

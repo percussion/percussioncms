@@ -51,6 +51,7 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
 import com.percussion.sitemanage.data.PSPubInfo;
@@ -65,13 +66,14 @@ import com.percussion.sitemanage.service.IPSSitePublishStatusService;
 import com.percussion.tools.Base64;
 import com.percussion.utils.PSNamedLockManager;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.security.ToDoVulnerability;
 import com.percussion.utils.security.deprecated.PSAesCBC;
 import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -117,7 +119,7 @@ public class PSPubServerService implements IPSPubServerService
     //Our Placeholder for the FTP password
     public static final String PASSWORD_ENTRY = "passwordEntry";
 
-    private static Log log = LogFactory.getLog(PSPubServerService.class);
+    private static final Logger log = LogManager.getLogger(PSPubServerService.class);
 
     private IPSPubServerDao pubServerDao;
     private IPSSiteManager siteMgr;
@@ -157,7 +159,7 @@ public class PSPubServerService implements IPSPubServerService
         this.contentChangeService = contentChangeService;
         this.utilityService = utilityService;
         //Create map of handler types to handle checking of pubserver configuration.
-        this.handlerMap = new HashMap<String, Object>();
+        this.handlerMap = new HashMap<>();
         handlerMap.putAll(generatePubServerHandlerMap());
 
 
@@ -174,7 +176,7 @@ public class PSPubServerService implements IPSPubServerService
 
         IPSPublisherService pubsvc = PSPublisherServiceLocator.getPublisherService();
 
-        Map<String, Object> handlerMap = new HashMap<String, Object>();
+        Map<String, Object> handlerMap = new HashMap<>();
 
         IPSDeliveryType tmp = pubsvc.loadDeliveryType("ftp");
         handlerMap.put("ftp",
@@ -224,8 +226,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public PSPublishServerInfo getPubServer(String siteId, String serverId)
-    {
+    public PSPublishServerInfo getPubServer(String siteId, String serverId) throws PSPubServerServiceException {
         if (isBlank(siteId))
             throw new IllegalArgumentException("Site id cannot be blank.");
         if (isBlank(serverId))
@@ -312,8 +313,7 @@ public class PSPubServerService implements IPSPubServerService
 
     @Override
     public synchronized PSPublishServerInfo createPubServer(String siteId, String serverName, PSPublishServerInfo pubServerInfo)
-            throws PSPubServerServiceException
-    {
+            throws PSPubServerServiceException, PSDataServiceException {
         if (isBlank(siteId))
             throw new IllegalArgumentException("Site id cannot be blank.");
 
@@ -408,8 +408,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public PSPublishServerInfo updatePubServer(String siteId, String serverId, PSPublishServerInfo pubServerInfo) throws PSPubServerServiceException
-    {
+    public PSPublishServerInfo updatePubServer(String siteId, String serverId, PSPublishServerInfo pubServerInfo) throws PSPubServerServiceException, PSDataServiceException {
         if (isBlank(siteId))
             throw new IllegalArgumentException("Site id cannot be blank.");
         if (isBlank(serverId))
@@ -541,11 +540,10 @@ public class PSPubServerService implements IPSPubServerService
 
     /**
      * Gets the publish server name and validate the name.
-     * @param pubServerInfo the info contains the publish server name in question, assumed not <code>null</code>.
+     * @param serverName the info contains the publish server name in question, assumed not <code>null</code>.
      * @return the publish server name. It may be <code>null</code> or empty if the info does not contain the name.
      */
-    private String getPubServerName(String serverName)
-    {
+    private String getPubServerName(String serverName) throws PSPubServerServiceException {
         serverName = StringUtils.trim(serverName);
 
         if (StringUtils.isBlank(serverName))
@@ -555,8 +553,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public List<PSPublishServerInfo> deleteServer(String siteId, String serverId) throws PSPubServerServiceException
-    {
+    public List<PSPublishServerInfo> deleteServer(String siteId, String serverId) throws PSPubServerServiceException, PSDataServiceException {
         boolean locked = tryToLockSite(siteId);
 
         try
@@ -609,7 +606,13 @@ public class PSPubServerService implements IPSPubServerService
 
         for (PSPubServer pubServer : pubServers)
         {
-            deletePubServer(pubServer);
+            try {
+                deletePubServer(pubServer);
+            } catch (PSPubServerServiceException e) {
+                log.error("Error deleting publishing server: {} Error:{}",
+                        pubServer.getName(),e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
         }
     }
 
@@ -829,8 +832,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     private PSDatabasePubServer createDatabasePubServer(String siteName, String serverName, PSPublishServerInfo pubServerInfo,
-                                                        IPSSite site)
-    {
+                                                        IPSSite site) throws PSDataServiceException {
         PSDatabasePubServer dbPubServer = generateDBPubServer(site.getSiteId(), siteName, serverName, pubServerInfo);
         String error = serverFileService.testDatabasePubServer(dbPubServer);
         if (error != null)
@@ -844,8 +846,7 @@ public class PSPubServerService implements IPSPubServerService
      * Deletes the specified publish-server.
      * @param pubServer the publish-server, assumed not <code>null</code>.
      */
-    private void deletePubServer(PSPubServer pubServer)
-    {
+    private void deletePubServer(PSPubServer pubServer) throws PSPubServerServiceException {
         siteDataService.deletePublishingItemsByPubServer(pubServer);
 
         pubServerDao.deletePubServer(pubServer);
@@ -865,8 +866,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     private String updateDBConfigFiles(IPSSite site, String oldType, String currentServerName, String newServerName,
-                                       PSPublishServerInfo pubServerInfo)
-    {
+                                       PSPublishServerInfo pubServerInfo) throws PSDataServiceException {
         if (isDatabaseType(pubServerInfo.getType()))
         {
             PSDatabasePubServer dbPubServer = generateDBPubServer(site.getSiteId(), site.getName(), currentServerName, pubServerInfo);
@@ -912,12 +912,12 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     /**
-     * Add the properties to the server
      *
-     * @param pubServer the wrapper object supplied as parameter
+     * @param server
+     * @param pubServerInfo
+     * @param site
      */
-    private void setProperties(PSPubServer server, PSPublishServerInfo pubServerInfo, IPSSite site)
-    {
+    private void setProperties(PSPubServer server, PSPublishServerInfo pubServerInfo, IPSSite site) throws PSPubServerServiceException {
         //Grab old password for FTP in case we need it
         PSPubServerProperty oldPasswordProperty = server.getProperty(IPSPubServerDao.PUBLISH_PASSWORD_PROPERTY);
 
@@ -957,7 +957,7 @@ public class PSPubServerService implements IPSPubServerService
      * Helper method to set the properties related to folder and own server settings
      *
      * @param server the server to be updated
-     * @param pubServer the wrapper object supplied as parameter
+     * @param pubServerInfo the wrapper object supplied as parameter
      * @param site the site associated with the server
      *
      */
@@ -968,8 +968,8 @@ public class PSPubServerService implements IPSPubServerService
         String publishFolderVal = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_FOLDER_PROPERTY);
         String ownServerVal = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY);
 
-        Boolean isOwnServerSet = Boolean.valueOf(ownServerFlagVal) ? true : false;
-        Boolean isDefaultServerSet = Boolean.valueOf(defaultServerVal) ? true : false;
+        Boolean isOwnServerSet = Boolean.parseBoolean(ownServerFlagVal);
+        Boolean isDefaultServerSet = Boolean.parseBoolean(defaultServerVal);
 
         setFolderProperty(server, site, publishFolderVal, isOwnServerSet, ownServerVal, isDefaultServerSet);
     }
@@ -1049,12 +1049,10 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     /**
-     * Helper method to set the properties related to password
      *
-     * @param server the server to be updated
-     * @param pubServer the wrapper object supplied as parameter
-     * @param oldPasswordProperty. The old password which we will keep if the password was unchanged.
-     *
+     * @param server
+     * @param pubServerInfo
+     * @param oldPasswordProperty
      */
     private void setPasswordProperty(PSPubServer server, PSPublishServerInfo pubServerInfo, PSPubServerProperty oldPasswordProperty)
     {
@@ -1097,7 +1095,7 @@ public class PSPubServerService implements IPSPubServerService
      * Helper method to set the properties related to format
      *
      * @param server the server to be updated
-     * @param pubServer the wrapper object supplied as parameter
+     * @param pubServerInfo the wrapper object supplied as parameter
      * @param site the site associated with the server
      *
      */
@@ -1113,11 +1111,10 @@ public class PSPubServerService implements IPSPubServerService
      * Converts a <code>PSPubServer</code> object to <code>PSPublishServerInfo</code>
      * @param pubServer
      * @param site
-     * @param inludeProperties
+     * @param includeProperties
      * @return a <code>PSPublishServer</code> object
      */
-    private PSPublishServerInfo toPSPublishServerInfo(IPSPubServer pubServer, IPSSite site, boolean includeProperties)
-    {
+    private PSPublishServerInfo toPSPublishServerInfo(IPSPubServer pubServer, IPSSite site, boolean includeProperties) throws PSPubServerServiceException {
         PSPublishServerInfo serverInfo = new PSPublishServerInfo();
 
         Set<PSPubServerProperty> properties = pubServer.getProperties();
@@ -1257,8 +1254,8 @@ public class PSPubServerService implements IPSPubServerService
     /**
      * Helper method to set the flag properties related to password
      *
-     * @param serverInfo the wrapper object to be updated
-     * @param pubServerProperty the server property to be handled
+     * @param pubServer the wrapper object to be updated
+     * @param serverInfo the server info to be handled
      *
      */
     private void setPasswordFlags(IPSPubServer pubServer, PSPublishServerInfo serverInfo)
@@ -1437,12 +1434,9 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     /**
-     * Helper method to set the flag properties related to the publishing format
      *
-     * @param pubServer the publishing server
-     * @param site the site associated to the server
-     * @param serverInfo the wrapper object to be updated
-     *
+     * @param pubServer
+     * @param serverInfo
      */
     private void setFormatFlags(IPSPubServer pubServer, PSPublishServerInfo serverInfo)
     {
@@ -1558,15 +1552,14 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     /**
-     * Validate the server name. Cannot be empty, must be unique and only contain valid characters
-     * a-z, -, _ and <space>, strip leading and trailing spaces.
      *
-     * @param servername the name for the new server, may not <code>null</code>
+     * @param serverName
      * @param previousServername
-     * @param siteName
+     * @param siteId
+     * @throws PSPubServerServiceException
+     * @throws PSValidationException
      */
-    private void validateServerName(String serverName, String previousServername, String siteId)
-    {
+    private void validateServerName(String serverName, String previousServername, String siteId) throws PSPubServerServiceException, PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("validateServerName").rejectIfNull("SERVER_NAME_FIELD",
                 serverName).throwIfInvalid();
 
@@ -1623,8 +1616,7 @@ public class PSPubServerService implements IPSPubServerService
      *
      * @param port the port value, may not <code>null</code>
      */
-    private void validatePort(String port)
-    {
+    private void validatePort(String port) throws PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("validatePort").rejectIfNull("PORT_FIELD", port)
                 .throwIfInvalid();
 
@@ -1663,8 +1655,7 @@ public class PSPubServerService implements IPSPubServerService
      *
      * @param pubServerInfo
      */
-    private void validateProperties(PSPublishServerInfo pubServerInfo, String siteId, boolean isNew)
-    {
+    private void validateProperties(PSPublishServerInfo pubServerInfo, String siteId, boolean isNew) throws PSValidationException, PSPubServerServiceException {
         String driver = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_DRIVER_PROPERTY);
         String type = pubServerInfo.getType();
         String serverType = pubServerInfo.getServerType();
@@ -1757,8 +1748,7 @@ public class PSPubServerService implements IPSPubServerService
      * @param pubServerInfo
      * @param requieredProperties
      */
-    private void validatePropertiesByDriver(PSPublishServerInfo pubServerInfo, String[] requieredProperties)
-    {
+    private void validatePropertiesByDriver(PSPublishServerInfo pubServerInfo, String[] requieredProperties) throws PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("validatePropertiesByDriver");
         for (String property : requieredProperties)
         {
@@ -1780,18 +1770,12 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     /**
-     * If needed update the previous default server defined in the system to
-     * change the publishing type, and update the content list editions
-     * associated to the server properly.
      *
-     * @param previousDefaultServer the publishing server set as the default.
-     *            Can be the same that the current one being edited
-     * @param currentServer the publishing server being updated
-     * @param siteName the site name to find the server associated to.
-     * @param isDefaultServer boolean flag that indicates if the new current server is the default one
-     *
-     * @return <code>true</code> if the default server is changed, <code>false</code> if it is still the same
-     * server.
+     * @param previousDefaultServer
+     * @param currentServer
+     * @param site
+     * @param isDefaultServer
+     * @return
      */
     private boolean updatePreviousDefaultPubServer(PSPubServer previousDefaultServer, PSPubServer currentServer,
                                                    IPSSite site, boolean isDefaultServer)
@@ -1997,13 +1981,14 @@ public class PSPubServerService implements IPSPubServerService
     public static final String[] encryptableProperties =
             {IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY};
 
-    private String encrypt(String estr) throws Exception
-    {
+    @ToDoVulnerability
+    private String encrypt(String estr) throws Exception {
         PSAesCBC aes = new PSAesCBC();
         return aes.encrypt(estr, IPSPubServerDao.encryptionKey);
     }
-    private String decrypt(String dstr) throws Exception
-    {
+
+    @ToDoVulnerability
+    private String decrypt(String dstr) throws Exception {
         PSAesCBC aes = new PSAesCBC();
         return aes.decrypt(dstr, IPSPubServerDao.encryptionKey);
     }
@@ -2054,7 +2039,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public PSPubInfo getS3PubInfo(IPSGuid siteId) throws Exception {
+    public PSPubInfo getS3PubInfo(IPSGuid siteId) throws PSPubServerServiceException {
         if (siteId == null)
             throw new IllegalArgumentException("siteId must not be null");
         PSPubInfo pubInfo = null;
@@ -2074,15 +2059,24 @@ public class PSPubServerService implements IPSPubServerService
         String accessKey = null;
         if (accessKeyProp != null) {
             accessKey = accessKeyProp.getValue();
-            if (accessKey != null)
-                accessKey = decrypt(accessKey);
+
+            try {
+                if (accessKey != null)
+                    accessKey = decrypt(accessKey);
+            } catch (Exception e) {
+                throw new PSPubServerServiceException(e);
+            }
         }
 
         String securityKey = null;
         PSPubServerProperty securityKeyProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY);
         if (securityKeyProp != null) {
             securityKey = securityKeyProp.getValue();
-            securityKey = decrypt(securityKey);
+            try {
+                securityKey = decrypt(securityKey);
+            } catch (Exception e) {
+                throw new PSPubServerServiceException(e);
+            }
         }
         String region = null;
         PSPubServerProperty regioProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_EC2_REGION);

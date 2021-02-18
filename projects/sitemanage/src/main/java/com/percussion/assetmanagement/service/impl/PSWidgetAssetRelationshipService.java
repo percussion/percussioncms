@@ -387,7 +387,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
                 // delete asset
                 assetDao.delete(assetId);
                 log.debug("Deleted asset with id: {}", assetId);
-            } catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException e) {
+            } catch (PSDataServiceException e) {
                 log.error("Error deleting Asset with id: {} Error: {}",assetId,e.getMessage());
                 log.debug(e.getMessage(),e);
             }
@@ -485,7 +485,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
                 try {
                     assetDao.delete(assetId);
                     log.debug("Deleted local asset with id: {}", assetId);
-                } catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException e) {
+                } catch (PSDataServiceException e) {
                     log.error("Error deleting local asset with id: {} Error: {}",assetId,e.getMessage());
                     log.debug(e.getMessage(),e);
                     //Continue processing so one bad asset doesn't prevent the reset from being processing.
@@ -1216,7 +1216,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
             } else {
                 criteria.setSupportedCtypes(ctypes);
             }
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error("Error loading Widget definition for id: {} Error: {}",
                     widgetDefId,
                     e.getMessage());

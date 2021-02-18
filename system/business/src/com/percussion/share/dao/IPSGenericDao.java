@@ -47,7 +47,7 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * same as lookup up all rows in a table.
      * 
      * @return List of populated objects
-     * @throws LoadException 
+     * @throws PSDataServiceException
      */
     List<T> findAll() throws PSDataServiceException;
 
@@ -70,7 +70,7 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * @return the persisted object
      * @throws SaveException 
      */
-    T save(T object) throws SaveException, LoadException, DeleteException;
+    T save(T object) throws PSDataServiceException;
 
     /**
      * Generic method to delete an object based on class and id
@@ -78,7 +78,7 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * @param id the identifier (primary key) of the object to remove
      * @throws DeleteException 
      */
-    void delete(PK id) throws DeleteException, LoadException;
+    void delete(PK id) throws PSDataServiceException;
 
     /**
      * DataServiceSaveException is thrown when a site cannot be saved

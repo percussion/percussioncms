@@ -104,6 +104,10 @@ public class PSException extends java.lang.Exception
       super();
    }
 
+   public PSException(Throwable cause){
+      super(cause);
+   }
+
    /**
     * Constructor that takes the error message
     * @param msg should not be <code>null</code>
@@ -508,6 +512,8 @@ public class PSException extends java.lang.Exception
       m_overridingMessage = StringUtils.isBlank(overridingMessage)
             ? null : overridingMessage;
    }
+
+
 
    protected int        m_code;
    protected Object[]   m_args;

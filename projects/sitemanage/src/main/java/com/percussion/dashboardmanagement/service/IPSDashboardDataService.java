@@ -24,12 +24,13 @@
 package com.percussion.dashboardmanagement.service;
 
 import com.percussion.dashboardmanagement.data.PSDashboard;
+import com.percussion.error.PSException;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.IPSNotFoundException;
 
 public interface IPSDashboardDataService extends IPSDataService<PSDashboard,PSDashboard, String> {
 
-    public static class PSDashboardUserServiceException extends RuntimeException {
+    public static class PSDashboardUserServiceException extends PSException {
 
         private static final long serialVersionUID = 1L;
 

@@ -34,6 +34,8 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.share.IPSSitemanageConstants;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSTemplateImportException;
@@ -42,6 +44,8 @@ import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -76,13 +80,13 @@ public class PSTemplateCreationHelper extends PSImportHelper
 
     public static final String LOG_ENTRY_PREFIX = "Import Template From Url";
 
-    private final String STATUS_MESSAGE = "creating template";
+    private static final String STATUS_MESSAGE = "creating template";
 
     /**
      * Server logger for the helper (It's a mandatory helper so context log will
      * be erased if an error occurs).
      */
-    public static Log log = LogFactory.getLog(PSTemplateCreationHelper.class);
+    public static final Logger log = LogManager.getLogger(PSTemplateCreationHelper.class);
 
     @Autowired
     public PSTemplateCreationHelper(IPSTemplateService templateService, IPSPageDao pageDao,
@@ -99,8 +103,7 @@ public class PSTemplateCreationHelper extends PSImportHelper
 
     @SuppressWarnings("unused")
     @Override
-    public void process(PSPageContent pageContent, PSSiteImportCtx context) throws PSTemplateImportException
-    {
+    public void process(PSPageContent pageContent, PSSiteImportCtx context) throws PSTemplateImportException, IPSPageService.PSPageException {
         startTimer();
         // Initial names, using site-wide naming conventions.
         String pageName = PSPageManagementUtils.PAGE_NAME;
@@ -143,16 +146,7 @@ public class PSTemplateCreationHelper extends PSImportHelper
 
             // Assign the new template id to the context object
             context.setTemplateId(newTemplate.getId());
-        }
-        catch (SaveException e)
-        {
-            // Errors in mandatory helpers are not logged in siteImportLogger,
-            // because that log is discarded. Log the error in the server log.
-            String message = "There was an unexpected error importing the template from the provided URL.";
-            log.error(message + ". Caused by: " + e.getMessage());
-            throw new PSTemplateImportException(message, e);
-        }
-        catch (PSAssemblyException e)
+        } catch (PSAssemblyException | PSDataServiceException e)
         {
             String message = "There was an unexpected error importing the template from the provided URL.";
             log.error(message + ". Caused by: " + e.getMessage());
@@ -163,8 +157,7 @@ public class PSTemplateCreationHelper extends PSImportHelper
 
     @SuppressWarnings("unused")
     @Override
-    public void rollback(PSPageContent pageContent, PSSiteImportCtx context)
-    {
+    public void rollback(PSPageContent pageContent, PSSiteImportCtx context) throws PSDataServiceException {
         if (context.getSite() == null)
         {
             return;
@@ -274,8 +267,7 @@ public class PSTemplateCreationHelper extends PSImportHelper
      * @return PSPage Class that holds information of the created page.
      * 
      */
-    public PSPage createNewPage(String name, String templateId, String folderPath)
-    {
+    public PSPage createNewPage(String name, String templateId, String folderPath) throws PSDataServiceException {
         PSPage page = new PSPage();
         page.setName(name);
         page.setFolderPath(folderPath);

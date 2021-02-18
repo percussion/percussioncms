@@ -23,17 +23,12 @@
  */
 package com.percussion.sitemanage.service.impl;
 
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
-import static org.apache.commons.lang.StringUtils.isBlank;
-
-import com.percussion.apibridge.ApiUtils;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.itemmanagement.data.PSItemDates;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
-import com.percussion.licensemanagement.data.PSLicenseStatus;
 import com.percussion.licensemanagement.service.impl.PSLicenseService;
 import com.percussion.monitor.process.PSPublishingProcessMonitor;
 import com.percussion.pagemanagement.data.PSPage;
@@ -43,7 +38,6 @@ import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.pubserver.data.PSPublishServerInfo;
 import com.percussion.rest.Guid;
-import com.percussion.rest.util.APIUtilities;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
 import com.percussion.rx.publisher.data.PSDemandWork;
@@ -67,6 +61,7 @@ import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedObjectList;
 import com.percussion.share.service.IPSDataItemSummaryService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
 import com.percussion.sitemanage.data.PSPublishingAction;
@@ -81,6 +76,16 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.publishing.IPSPublishingWs;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,16 +97,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.json.JSONArray;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
  * Implements the {@link IPSSitePublishService} interface
@@ -171,8 +167,7 @@ public class PSSitePublishService implements IPSSitePublishService
     }
 
     public PSSitePublishResponse publish(String siteName, PubType type, String id, boolean isResource, String server)
-            throws PSSitePublishException
-    {
+            throws PSDataServiceException, IPSPubServerService.PSPubServerServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSItemService.PSItemServiceException {
         type = type == null ? PubType.FULL : type;
         String edtn = publishTypeMap.get(type);
         if (edtn == null)
@@ -234,7 +229,7 @@ public class PSSitePublishService implements IPSSitePublishService
     
 	@Override
 	public PSSitePublishResponse publishIncremental(String siteName, String id,
-			boolean isResource, String server) throws PSSitePublishException {
+			boolean isResource, String server) throws PSDataServiceException, IPSPubServerService.PSPubServerServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSItemService.PSItemServiceException {
 
 		PSPublishServerInfo pubServerInfo = findPubServerInfo(siteName, server, true);
         boolean isStaging = PSPubServer.STAGING.equalsIgnoreCase( (pubServerInfo.getServerType()));
@@ -244,7 +239,7 @@ public class PSSitePublishService implements IPSSitePublishService
 
     @Override
     public PSSitePublishResponse publishIncrementalWithApproval(String siteName, String id, boolean isResource,
-                                                                String server,String itemsToApprove) throws PSSitePublishException{
+                                                                String server,String itemsToApprove) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSPubServerService.PSPubServerServiceException, IPSItemService.PSItemServiceException {
 
         PSPublishServerInfo pubServerInfo = findPubServerInfo(siteName, server, true);
         String relatedProp = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_RELATED_PROPERTY);
@@ -256,7 +251,7 @@ public class PSSitePublishService implements IPSSitePublishService
         return publish(siteName, type, null, false, server);
     }
 	
-	private void approveRelatedItems(String siteName, String server,String itemsToApprove) {
+	private void approveRelatedItems(String siteName, String server,String itemsToApprove) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         JSONArray arr = new JSONArray(itemsToApprove);
         List<Integer> listForApproval = new ArrayList<Integer>();
         for(int i = 0; i < arr.length(); i++){
@@ -271,8 +266,7 @@ public class PSSitePublishService implements IPSSitePublishService
     }
 	
     private boolean checkConnectionForAllPublishTypes(StringBuilder connectionWarning, String siteName, PubType type,
-            String id, boolean isResource, String server)
-    {
+            String id, boolean isResource, String server) throws IPSPubServerService.PSPubServerServiceException, PSSitePublishException {
         boolean connection = true;
         IPSSite site = null;
         PSPublishServerInfo pubServerInfo = null;
@@ -295,9 +289,9 @@ public class PSSitePublishService implements IPSSitePublishService
             else
             {
                 boolean con = false;
-                List<IPSSite> sites = new ArrayList<IPSSite>();
-                List<String> notAllowedServers = new ArrayList<String>();
-                List<PSPublishServerInfo> pubServerInfos = new ArrayList<PSPublishServerInfo>();
+                List<IPSSite> sites = new ArrayList<>();
+                List<String> notAllowedServers = new ArrayList<>();
+                List<PSPublishServerInfo> pubServerInfos = new ArrayList<>();
 
                 // Calculate the List notAllowedServers and siteNames.
                 getPubServerInfos(notAllowedServers, sites, pubServerInfos, type);
@@ -329,8 +323,7 @@ public class PSSitePublishService implements IPSSitePublishService
         return connection;
     }
 
-    private boolean isPublishValid(String siteName, String server, PubType type)
-    {
+    private boolean isPublishValid(String siteName, String server, PubType type) throws IPSPubServerService.PSPubServerServiceException, PSSitePublishException {
         boolean isValid = true;
         if (type.equals(PubType.INCREMENTAL))
         {
@@ -342,8 +335,7 @@ public class PSSitePublishService implements IPSSitePublishService
         return isValid;
     }
 
-    private PSPair<Long, String> publishTakedownNow(String id, PubType type, boolean isResource, String edtn)
-    {
+    private PSPair<Long, String> publishTakedownNow(String id, PubType type, boolean isResource, String edtn) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSItemService.PSItemServiceException {
         if (isBlank(id))
         {
             throw new PSSitePublishException("Invalid request for "
@@ -374,7 +366,7 @@ public class PSSitePublishService implements IPSSitePublishService
             addWorkItem(work, resource);
         }
 
-        List<String> siteNames = new ArrayList<String>();
+        List<String> siteNames = new ArrayList<>();
 
         if (!isResource)
         {
@@ -387,7 +379,7 @@ public class PSSitePublishService implements IPSSitePublishService
         }
         else
         {
-            List<String> notAllowedServers = new ArrayList<String>();
+            List<String> notAllowedServers = new ArrayList<>();
 
             // Calculate the List notAllowedServers and siteNames.
             getNotAllowedOnDemandServers(notAllowedServers, siteNames, type);
@@ -407,11 +399,10 @@ public class PSSitePublishService implements IPSSitePublishService
             // do not wait for status.  We do not need to know the job id for publish now
             // be careful if adding multiple sites there may be more than one jobId
         }
-        return new PSPair<Long, String>(jobId, warningMessage);
+        return new PSPair<>(jobId, warningMessage);
     }
 
-    private void clearScheduledDate(String id, PubType type)
-    {
+    private void clearScheduledDate(String id, PubType type) throws IPSItemService.PSItemServiceException {
         PSItemDates dates = itemService.getItemDates(id);
 
         int cid = idMapper.getGuid(id).getUUID();
@@ -433,8 +424,7 @@ public class PSSitePublishService implements IPSSitePublishService
         }
     }
 
-    private void transitionIfNeeded(String id, PubType type)
-    {
+    private void transitionIfNeeded(String id, PubType type) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         String trigger = (type == PubType.PUBLISH_NOW)
                 ? IPSItemWorkflowService.TRANSITION_TRIGGER_APPROVE
                 : IPSItemWorkflowService.TRANSITION_TRIGGER_ARCHIVE;
@@ -490,8 +480,7 @@ public class PSSitePublishService implements IPSSitePublishService
      * @param pubInfos
      */
     private void getPubServerInfos(List<String> notAllowedServers, List<IPSSite> sites,
-            List<PSPublishServerInfo> pubInfos, PubType type)
-    {
+            List<PSPublishServerInfo> pubInfos, PubType type) throws IPSPubServerService.PSPubServerServiceException {
         for (PSSiteSummary site : siteDao.findAllSummaries())
         {
             PSGuid siteGuid = new PSGuid(PSTypeEnum.SITE, site.getSiteId());
@@ -565,24 +554,10 @@ public class PSSitePublishService implements IPSSitePublishService
      * 
      * @return the existing or created edition, never <code>null</code>.
      */
-    private IPSGuid getOndemandEdition(String siteName, String suffix, PubType type)
-    {
+    private IPSGuid getOndemandEdition(String siteName, String suffix, PubType type) throws PSSitePublishException {
         IPSGuid editionId;
-        try
-        {
-            
-            editionId = findEditionBySite(siteName, suffix).getGUID();
-        }
-        catch (PSSitePublishException e)
-        {
-            // create the publish-now infrastructure for the site
-            if (type == PubType.PUBLISH_NOW)
-                siteDao.addPublishNow(pubWs.findSite(siteName));
-            else if (type == PubType.TAKEDOWN_NOW)
-                siteDao.addUnpublishNow(pubWs.findSite(siteName));
 
-            editionId = findEditionBySite(siteName, suffix).getGUID();
-        }
+        editionId = findEditionBySite(siteName, suffix).getGUID();
         return editionId;
     }
 
@@ -593,9 +568,9 @@ public class PSSitePublishService implements IPSSitePublishService
      * com.percussion.sitemanage.service.IPSSitePublishService#getPublishingActions
      * (java.lang.String)
      */
-    public List<PSPublishingAction> getPublishingActions(String id) throws PSSitePublishException
+    public List<PSPublishingAction> getPublishingActions(String id) throws PSDataServiceException
     {
-        List<PSPublishingAction> pubActions = new ArrayList<PSPublishingAction>();
+        List<PSPublishingAction> pubActions = new ArrayList<>();
         IPSItemSummary sum = itemSummaryService.find(id);
 
         if ((sum.isPage() || sum.isResource()))
@@ -657,8 +632,7 @@ public class PSSitePublishService implements IPSSitePublishService
      * @param id item id assumed not <code>null</code>
      * @return <code>true</code> if at least one staging server is available otherwise <code>false</code>
      */
-    private boolean isStagingServerAvailable(String id)
-    {
+    private boolean isStagingServerAvailable(String id) throws PSDataServiceException {
         IPSItemSummary sum = itemSummaryService.find(id);
         return isStagingServerAvailable(sum);
     }
@@ -709,8 +683,7 @@ public class PSSitePublishService implements IPSSitePublishService
      * 
      * @return the specified edition, never <code>null</code>.
      */
-    private IPSEdition findEditionBySite(String siteName, String suffix)
-    {
+    private IPSEdition findEditionBySite(String siteName, String suffix) throws PSSitePublishException {
         IPSSite site = pubWs.findSite(siteName);
         List<IPSEdition> editions = pubWs.findAllEditionsBySite(site.getGUID());
         boolean staging = suffix.contains("STAGING");
@@ -737,8 +710,7 @@ public class PSSitePublishService implements IPSSitePublishService
      * 
      * @return the specified edition, never <code>null</code>.
      */
-    private IPSEdition findEditionBySiteServer(String siteName, String serverName, PubType pubType)
-    {
+    private IPSEdition findEditionBySiteServer(String siteName, String serverName, PubType pubType) throws PSSitePublishException, IPSPubServerService.PSPubServerServiceException {
         long serverId = findPubServerInfo(siteName, serverName).getServerId();
 
         IPSEdition edition = sitePublishDao.findEdition(PSGuidUtils.makeGuid(serverId, PSTypeEnum.PUBLISHING_SERVER),
@@ -753,13 +725,11 @@ public class PSSitePublishService implements IPSSitePublishService
         return edition;
     }
 
-    private PSPublishServerInfo findPubServerInfo(String siteName, String serverName)
-    {
+    private PSPublishServerInfo findPubServerInfo(String siteName, String serverName) throws IPSPubServerService.PSPubServerServiceException, PSSitePublishException {
         return findPubServerInfo(siteName, serverName, false);
     }
 
-    private PSPublishServerInfo findPubServerInfo(String siteName, String serverName, boolean loadProperties)
-    {
+    private PSPublishServerInfo findPubServerInfo(String siteName, String serverName, boolean loadProperties) throws IPSPubServerService.PSPubServerServiceException, PSSitePublishException {
         IPSSite site = pubWs.findSite(siteName);
         List<PSPublishServerInfo> servers = pubServerService.getPubServerList(site.getSiteId().toString());
 
@@ -907,7 +877,7 @@ public class PSSitePublishService implements IPSSitePublishService
         }
     }
 
-    private PSPagedItemList getPagedItems(int startIndex, int pageSize, List<Integer> changedContent) {
+    private PSPagedItemList getPagedItems(int startIndex, int pageSize, List<Integer> changedContent) throws PSDataServiceException {
         List<IPSItemEntry> allItemEntries = cmsObjectMgr.findItemEntries(changedContent, new CompareItemEntry());
 
         int realStartIndex = startIndex < 1 ? 1 : startIndex;
@@ -968,7 +938,7 @@ public class PSSitePublishService implements IPSSitePublishService
         return pagesByTemplatePagedList;
     }
 
-    private List<Integer> getChangedContentIds(String siteName, String serverName) {
+    private List<Integer> getChangedContentIds(String siteName, String serverName) throws IPSPubServerService.PSPubServerServiceException, PSSitePublishException {
         IPSSite site = pubWs.findSite(siteName);
         
         PSContentChangeType changeType = PSContentChangeType.PENDING_LIVE;
@@ -1075,7 +1045,7 @@ public class PSSitePublishService implements IPSSitePublishService
     /**
      * Maps publishing type to associated edition.
      */
-    private static Map<PubType, String> publishTypeMap = new HashMap<PubType, String>();
+    private static Map<PubType, String> publishTypeMap = new HashMap<>();
 
     static
     {
@@ -1088,6 +1058,6 @@ public class PSSitePublishService implements IPSSitePublishService
         publishTypeMap.put(PubType.REMOVE_FROM_STAGING_NOW, PSSitePublishDaoHelper.STAGING_UNPUBLISH_NOW);
     }
 
-    public static Log log = LogFactory.getLog(PSSitePublishService.class);
+    public static final Logger log = LogManager.getLogger(PSSitePublishService.class);
 
 }
