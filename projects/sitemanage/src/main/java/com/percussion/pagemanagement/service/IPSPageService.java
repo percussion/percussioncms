@@ -87,7 +87,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @throws PSPageException if an error occurs finding the page.
     */
    PSPage findPage(String name, String folderPath)
-           throws PSPageException, IPSGenericDao.LoadException;
+           throws PSDataServiceException;
 
     /**
      * See {@link #findPage(String, String)}.

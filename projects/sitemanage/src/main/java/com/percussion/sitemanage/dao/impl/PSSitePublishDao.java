@@ -26,6 +26,7 @@ package com.percussion.sitemanage.dao.impl;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
+import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.pubserver.impl.PSPubServerService;
 import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -184,7 +185,7 @@ public class PSSitePublishDao
     }
     
     
-    public PSSiteSummary findSummary(String name) {
+    public PSSiteSummary findSummary(String name) throws IPSGenericDao.LoadException {
         try
         {
             notEmpty(name, "name");
@@ -286,8 +287,7 @@ public class PSSitePublishDao
         publishWs.saveSite(site);
     }
     
-    protected boolean saveSite(PSSite site) throws PSErrorException
-    {
+    protected boolean saveSite(PSSite site) throws PSErrorException, IPSPubServerService.PSPubServerServiceException {
         notNull(site,"site may not be null");
         
 

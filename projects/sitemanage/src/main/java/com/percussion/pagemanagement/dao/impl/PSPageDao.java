@@ -44,6 +44,7 @@ import com.percussion.share.dao.PSJcrNodeFinder;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSPropertiesValidationException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.util.IPSHtmlParameters;
@@ -161,7 +162,7 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	}
 
 	public PSPage findPage(String name, String folderPath)
-			throws LoadException {
+			throws PSDataServiceException {
 		PSContentItem contentItem = getContentItemDao().findItemByPath(name,
 				folderPath);
 		if (contentItem == null || !contentItem.isPage())

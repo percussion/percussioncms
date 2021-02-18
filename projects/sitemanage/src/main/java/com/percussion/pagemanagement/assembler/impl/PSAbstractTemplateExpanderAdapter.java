@@ -37,6 +37,9 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
 
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.lang.StringUtils;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -73,7 +76,7 @@ public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTem
      * @param templateCache never <code>null</code>..
      * @return a template id that can be <code>null</code>.
      */
-    protected abstract IPSGuid getTemplateId(Map<String, String> parameters, CACHE templateCache);
+    protected abstract IPSGuid getTemplateId(Map<String, String> parameters, CACHE templateCache) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException;
     
     /**
      * Creates a new template cache that will be used for the current publishing job.

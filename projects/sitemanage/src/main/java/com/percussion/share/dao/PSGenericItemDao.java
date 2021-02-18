@@ -35,8 +35,6 @@ import java.util.List;
 import javax.xml.bind.JAXB;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSFieldValue;
@@ -52,6 +50,8 @@ import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.PSUnknownContentTypeException;
 import com.percussion.webservices.content.IPSContentWs;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A Generic Content Item Dao that will store a serialized object in 
@@ -161,7 +161,7 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
 
 
     
-    private void handleLoadException(String id, Exception e) {
+    private void handleLoadException(String id, Exception e) throws LoadException {
         String error = errorMessage("load", id);
         throw new LoadException(error, e);
     }
@@ -265,8 +265,7 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
 
     public T save(T object) throws SaveException
     {
-        if(log.isDebugEnabled())
-            log.debug("Save " +  type.getSimpleName() +  ":" + object);
+            log.debug("Save {}: {}",type.getSimpleName() , object);
         
         notNull(object);
         try {
@@ -279,7 +278,7 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
              */
             if (coreItem == null) {
                 if(log.isDebugEnabled())
-                    log.debug("Creating content item for object: " + object);
+                    log.debug("Creating content item for object: {}", object);
                 coreItem = contentWs.createItems(getContentType(), 1).get(0);
                 if (id == null) {
                     String fakeId = createSurrogateId(coreItem, object);
@@ -305,10 +304,7 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
         } catch (PSUnknownContentTypeException e) {
             String err = "Could not save because content type does not exist";
             throw new SaveException(err,e);
-        } catch (PSErrorException e) {
-            String error = errorMessage("save", object);
-            throw new SaveException(error, e);
-        } catch (PSErrorResultsException e) {
+        } catch (PSErrorException | PSErrorResultsException e) {
             String error = errorMessage("save", object);
             throw new SaveException(error, e);
         }
@@ -317,7 +313,7 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
     /**
      * When an item is created, right before its saved
      * a unique id is needed. Sometimes the object does not
-     * specify its id on {@link #save(Object)} and a surrogate
+     * specify its id on {@link #save(PSAbstractPersistantObject)} and a surrogate
      * must be used till the item is updated.
      *  
      * @param item never <code>null</code>.
@@ -327,11 +323,10 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
     //TODO: Fix me on getting the guid. The coreitem should have the guid.
     protected String createSurrogateId(PSCoreItem item, T object) 
     {
-        if(log.isDebugEnabled())
-            log.debug("Creating surrogate id for object: " + object);
+        log.debug("Creating surrogate id for object: {}" , object);
         String surrogateId = RandomStringUtils.randomAlphabetic(20);
-        if(log.isDebugEnabled())
-            log.debug("Surrogate id: " + surrogateId);
+
+        log.debug("Surrogate id: {}" , surrogateId);
         return surrogateId;
     }
     
@@ -417,6 +412,6 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected static final Logger log = LogManager.getLogger(PSGenericItemDao.class);
 
 }

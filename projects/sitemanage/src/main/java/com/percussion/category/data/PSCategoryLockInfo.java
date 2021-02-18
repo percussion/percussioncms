@@ -30,7 +30,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jettison.json.JSONException;
@@ -44,21 +46,20 @@ public class PSCategoryLockInfo {
 	private static Log log = LogFactory.getLog(PSCategoryLockInfo.class);
 	private static final String LOCKINFOFILE =  "lock_info.json";
 	
-	public static void writeLockInfoToFile(IPSUserService userService, String date) {
+	public static void writeLockInfoToFile(IPSUserService userService, String date) throws PSDataServiceException {
 		
 		JSONObject lockInfo = new JSONObject();
 		File file = new File(LOCKINFOFILE);
-		FileOutputStream os = null;
 
 		String userName = userService.getCurrentUser().getName();
 		String sessionId = PSRequest.getContextForRequest().getUserSessionId();
-		try {
+		try (FileOutputStream os = new FileOutputStream(file)){
 			lockInfo.put("userName", userName);
 			lockInfo.put("sessionId", sessionId);
 			lockInfo.put("creationDate", date);
  		
-			os = new FileOutputStream(file);
-			os.write(lockInfo.toString().getBytes("UTF-8"));
+
+			os.write(lockInfo.toString().getBytes(StandardCharsets.UTF_8));
 			
 			log.debug("Created file that has user information who has locked the Categories Tab.");
 			
@@ -68,18 +69,6 @@ public class PSCategoryLockInfo {
 			log.error("Json exception with the Json Object - PSCategoryService.writeLockInfoToFile()", e);
 		} catch (IOException e) {
 			log.error("IO exception with FileWriter - PSCategoryService.writeLockInfoToFile()", e);
-		} finally {
-			try {
-				//FB: NP_ALWAYS_NULL_EXCEPTION NC 1-16-16
-				if(os != null){
-					os.flush();
-					os.close();
-					os = null;
-				}
-			} catch (IOException e) {
-				log.error("IO exception while flushing/closing the FileWriter - PSCategoryService.writeLockInfoToFile()", e);
-			}
-			
 		}
 	}
 	

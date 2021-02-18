@@ -32,6 +32,7 @@ import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -39,6 +40,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.share.rx.PSLegacyExtensionUtils;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 
@@ -57,6 +59,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * An adapter for legacy location scheme generators.
@@ -76,8 +80,7 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
     private List<String> parameterNames = new ArrayList<>();
     
     @Override
-    public String createLocation(Object[] parameters, IPSRequestContext request)
-    {
+    public String createLocation(Object[] parameters, IPSRequestContext request) throws PSExtensionException {
         PSAssemblyLocationRequest lr = new PSAssemblyLocationRequest();
         Map<String, String> paramMap = new HashMap<>();
         addParameters(paramMap, getParameterNames(), parameters);
@@ -94,9 +97,13 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
         lr.setAssemblyContext(getAssemblyContext(lr));
         lr.setDeliveryContext(getDeliveryContext(lr));
         
-        if (log.isDebugEnabled())
-            log.debug("Validating location request: " + lr);
-        PSBeanValidationUtils.validate(lr).throwIfInvalid();
+
+        log.debug("Validating location request: {}", lr);
+        try {
+            PSBeanValidationUtils.validate(lr).throwIfInvalid();
+        } catch (PSSpringValidationException e) {
+            throw new PSExtensionException(e.getMessage(),e);
+        }
         return createLocation(lr);
     }
     
@@ -394,7 +401,7 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
             }
             catch (Exception e)
             {
-                throw new RuntimeException("Cannot clone", e);
+              throw new RuntimeException(e);
             }
         }
     }
@@ -403,7 +410,7 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
 
 }
 

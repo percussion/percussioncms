@@ -38,6 +38,7 @@ import com.percussion.pagemanagement.data.PSRenderLinkContext;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetItem;
+import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
@@ -48,6 +49,7 @@ import com.percussion.services.assembly.PSTemplateNotImplementedException;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
 import com.percussion.services.filter.PSFilterException;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.webservices.PSWebserviceUtils;
@@ -61,6 +63,7 @@ import org.springframework.util.StopWatch;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.RepositoryException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -176,7 +179,7 @@ public class PSPageAssemblyContextFactory
      */
     public PSPageAssemblyContext createContext(IPSAssemblyItem assemblyItem, TemplateAndPage templateAndPage, boolean isHtml)
             throws ItemNotFoundException, PSAssemblyException, PSFilterException, RepositoryException,
-            PSTemplateNotImplementedException {
+            PSTemplateNotImplementedException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSTemplateService.PSTemplateException {
 
         StopWatch sw = new StopWatch("#createContext");
         /*
@@ -309,8 +312,7 @@ public class PSPageAssemblyContextFactory
 
         @Override
         public List<PSRegionResult> assembleRegion(IPSAssemblyItem assemblyItem, PSPageAssemblyContext context,
-                PSMergedRegion mr)
-        {
+                PSMergedRegion mr) throws IPSTemplateService.PSTemplateException {
             return assembleRegionOverride(assemblyItem, context, mr);
         }
     
@@ -320,8 +322,7 @@ public class PSPageAssemblyContextFactory
 
         @Override
         public List<PSRegionResult> assembleRegion(IPSAssemblyItem assemblyItem, PSPageAssemblyContext context,
-                PSMergedRegion mr)
-        {
+                PSMergedRegion mr) throws IPSTemplateService.PSTemplateException {
             return assembleWidgetRegion(assemblyItem, context, mr);
         }
     }
@@ -337,7 +338,7 @@ public class PSPageAssemblyContextFactory
     protected List<PSRegionResult> assembleRegionOverride(
             IPSAssemblyItem assemblyItem, 
             PSPageAssemblyContext context, 
-            PSMergedRegion mr) {
+            PSMergedRegion mr) throws IPSTemplateService.PSTemplateException {
         notNull(assemblyItem, "assemblyItem");
         notNull(mr, "mr");
         if (log.isDebugEnabled())
@@ -383,8 +384,7 @@ public class PSPageAssemblyContextFactory
     protected List<PSRegionResult> assembleWidgetRegion(
             IPSAssemblyItem assemblyItem, 
             PSPageAssemblyContext context,
-            PSMergedRegion mr)
-    {
+            PSMergedRegion mr) throws IPSTemplateService.PSTemplateException {
 
         /*
          * Using the merged region tree we then assemble each of the regions.
@@ -410,12 +410,12 @@ public class PSPageAssemblyContextFactory
     protected List<String> assembleResultsToString(List<IPSAssemblyResult> assemblyResults)
     {
         notNull(assemblyResults, "assemblyResults");
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         for (IPSAssemblyResult ar : assemblyResults)
         {
             try
             {
-                String result = IOUtils.toString(ar.getResultStream());
+                String result = IOUtils.toString(ar.getResultStream(), StandardCharsets.UTF_8);
                 results.add(result);
             }
             catch (IOException e)
@@ -430,8 +430,7 @@ public class PSPageAssemblyContextFactory
     protected List<PSRegionResult> assembleWidgets(
             IPSAssemblyItem assemblyItem, 
             PSWidgetAssemblyContext widgetContext,
-            List<PSWidgetInstance> wis)
-    {
+            List<PSWidgetInstance> wis) throws IPSTemplateService.PSTemplateException {
         /*
          * The leaf regions are assembled by calling the assembly service
          * #assemble on each of the widgets in the region with their respective
@@ -496,15 +495,13 @@ public class PSPageAssemblyContextFactory
         return context.clone();
     }
 
-    private IPSAssemblyTemplate getAssemblyTemplate(String templateName, String templateCode)
-    {
+    private IPSAssemblyTemplate getAssemblyTemplate(String templateName, String templateCode) throws IPSTemplateService.PSTemplateException {
         notEmpty(templateName, "templateName");
         notEmpty(templateCode, "templateCode");        
         if (log.isDebugEnabled())
             log.debug(format("Creating assembly template with templateName:{0} and templateCode:{1}", 
                     templateName, templateCode));
         IPSAssemblyTemplate baseTpl = getProxyAssemblyTemplate(templateName);
-        //baseTpl = (IPSAssemblyTemplate) baseTpl.clone();
         baseTpl.setTemplate(templateCode);
         return baseTpl;
     }
@@ -519,8 +516,7 @@ public class PSPageAssemblyContextFactory
      * 
      * @return the widget template, never <code>null</code>.
      */
-    public IPSAssemblyTemplate getWidgetTemplate(PSWidgetInstance widgetInstance)
-    {
+    public IPSAssemblyTemplate getWidgetTemplate(PSWidgetInstance widgetInstance) throws IPSTemplateService.PSTemplateException {
 
        IPSAssemblyTemplate widgetBaseTmpl = 
            getProxyAssemblyTemplate(widgetService.getBaseTemplate());
@@ -533,7 +529,7 @@ public class PSPageAssemblyContextFactory
        return template;
     }
     
-    protected IPSAssemblyTemplate getProxyAssemblyTemplate(String name) {
+    protected IPSAssemblyTemplate getProxyAssemblyTemplate(String name) throws IPSTemplateService.PSTemplateException {
         PSAssemblyTemplate template = templateDao.loadBaseTemplateByName(name);
         return new PSProxyAssemblyTemplate(template);
     }

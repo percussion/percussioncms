@@ -27,10 +27,13 @@ package com.percussion.sitemanage.service;
 import java.util.List;
 import java.util.Map;
 
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSCreateExternalLinkSection;
 import com.percussion.sitemanage.data.PSCreateSectionFromFolderRequest;
 import com.percussion.sitemanage.data.PSCreateSiteSection;
@@ -57,7 +60,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @return the created site section, never <code>null</code>.
      */
-    public PSSiteSection create(PSCreateSiteSection req);
+    public PSSiteSection create(PSCreateSiteSection req) throws PSValidationException, DataServiceSaveException, IPSGenericDao.SaveException, IPSGenericDao.DeleteException, IPSGenericDao.LoadException, PSSiteSectionException;
 
     /**
      * Creates an external link section according to the specified request info.
@@ -66,7 +69,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @return the created site section, never <code>null</code>.
      */
-    public PSSiteSection createExternalLinkSection(PSCreateExternalLinkSection req);
+    public PSSiteSection createExternalLinkSection(PSCreateExternalLinkSection req) throws PSValidationException, IPSPathService.PSPathNotFoundServiceException, PSSiteSectionException;
 
     /**
      * Creates a section link with between the supplied parent and target. Adds the targetSectionGuid to the submenu 
@@ -76,7 +79,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * @param parentSectionGuid, the guid of the parent section, must not be <code>null</code>.
      * @return the created site section, never <code>null</code>.
      */
-    public PSSiteSection createSectionLink(String targetSectionGuid, String parentSectionGuid);
+    public PSSiteSection createSectionLink(String targetSectionGuid, String parentSectionGuid) throws PSSiteSectionException;
     
 
     /**
@@ -86,7 +89,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @return The created section, not <code>null</code>.
      */
-    PSSiteSection createSectionFromFolder(PSCreateSectionFromFolderRequest req);
+    PSSiteSection createSectionFromFolder(PSCreateSectionFromFolderRequest req) throws PSDataServiceException;
 
 
     /**
@@ -105,7 +108,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @return the updated section object, never <code>null</code>.
      */
-    public PSSiteSection update(PSSiteSectionProperties req);
+    public PSSiteSection update(PSSiteSectionProperties req) throws PSDataServiceException;
     
     /**
      * Updates a section according to the specified request info.
@@ -114,7 +117,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @return the updated section object, never <code>null</code>.
      */
-    public PSSiteSection updateSectionLink(PSUpdateSectionLink req);
+    public PSSiteSection updateSectionLink(PSUpdateSectionLink req) throws PSSiteSectionException;
     
     /**
      * Updates a section according to the specified request info.
@@ -123,7 +126,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @return the updated section object, never <code>null</code>.
      */
-    public PSSiteSection updateExternalLink(String sectionGuid, PSCreateExternalLinkSection req);
+    public PSSiteSection updateExternalLink(String sectionGuid, PSCreateExternalLinkSection req) throws PSSiteSectionException;
     
     /**
      * Replaces the landing page for the specified section.
@@ -133,7 +136,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @return the result of the operation, never <code>null</code>.
      */
-    public PSReplaceLandingPage replaceLandingPage(PSReplaceLandingPage request);
+    public PSReplaceLandingPage replaceLandingPage(PSReplaceLandingPage request) throws PSDataServiceException;
     
     /**
      * Moves a section to different location. The new target location may or
@@ -144,7 +147,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * @return the target section, which contains re-arranged child nodes, 
      * never <code>null</code>.
      */
-    public PSSiteSection move(PSMoveSiteSection req);
+    public PSSiteSection move(PSMoveSiteSection req) throws PSValidationException, PSSiteSectionException;
     
     /**
      * Deletes the specified section and all its descendant (child, grand-child,
@@ -156,7 +159,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @param id the ID of the section, never <code>null</code> or empty.
      */
-     public void delete(String id);
+     public void delete(String id) throws PSValidationException, DataServiceSaveException;
 
      /**
       * Converts the specified section and all its descendant (child, grand-child,
@@ -165,7 +168,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
       * 
       * @param id the ID of the section, never <code>null</code> or empty.
       */
-      public void convertToFolder(String id);
+      public void convertToFolder(String id) throws PSValidationException;
 
       /**
       * Loads the root of the navigation for the specified site.
@@ -174,7 +177,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
       * 
       * @return the root of the navigation, never <code>null</code>.
       */
-     public PSSiteSection loadRoot(String siteName);
+     public PSSiteSection loadRoot(String siteName) throws PSSiteSectionException;
 
      /**
       * Loads the entire tree nodes for the specified site.
@@ -183,7 +186,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
       * 
       * @return the tree nodes of the site, never <code>null</code>.
       */
-     public PSSectionNode loadTree(String siteName);
+     public PSSectionNode loadTree(String siteName) throws PSSiteSectionException;
 
      /**
       * Loads all child sections of the specified site section.
@@ -200,13 +203,13 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
       * @param siteName never <code>null</code>, not empty
       * @return returns the list of PSSiteBlogProperties objects.
       */
-     public List<PSSiteBlogProperties> getBlogsForSite(String siteName);
+     public List<PSSiteBlogProperties> getBlogsForSite(String siteName) throws PSValidationException;
      
      /**
       * Gets blogs for all sites on the system
       * @return a list of PSSiteBlogProperties objects for all sites on the system
       */
-     public List<PSSiteBlogProperties> getAllBlogs();
+     public List<PSSiteBlogProperties> getAllBlogs() throws PSDataServiceException;
      
      
      /**
@@ -216,7 +219,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
       * @return The list of the template ids, never <code>null</code> may be empty.
       * @throws PSSiteSectionException if the supplied siteName is not blank and failed to load that site.
       */
-     public List<String> findAllTemplatesUsedByBlogs(String siteName) throws PSSiteSectionException;
+     public List<String> findAllTemplatesUsedByBlogs(String siteName) throws PSDataServiceException;
 
      /**
       * Gets posts for the specified blog.
@@ -224,7 +227,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
       * @param id of the blog, never blank.
       * @return blog posts, ordered alphabetically by title (post link text).
       */
-     public PSSiteBlogPosts getBlogPosts(String id);
+     public PSSiteBlogPosts getBlogPosts(String id) throws PSValidationException, PSSiteSectionException;
      
      /**
       * Gets the blog post template id for the specified blog.
@@ -243,18 +246,18 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * @param site the site (assumed not <code>null</code>) for which we want to
      *            create the configuration files.
      */
-   public void generateSecurityConfigurationFiles(IPSSite site);
+   public void generateSecurityConfigurationFiles(IPSSite site) throws DataServiceSaveException, PSSiteSectionException;
 
     /**
      * @param sitename
      */
-    public void clearSectionsSecurityInfo(String sitename);
+    public void clearSectionsSecurityInfo(String sitename) throws PSSiteSectionException;
     
     /**
-     * @param sitename
+     * @param siteName
      * @param tempMap a map of to and from template ids to modify.
      */
-    public void updateSectionBlogTemplates(String siteName, Map<String, String> tempMap);
+    public void updateSectionBlogTemplates(String siteName, Map<String, String> tempMap) throws PSSiteSectionException;
 
     /**
      * (Runtime) Exception is thrown when an unexpected error occurs in this

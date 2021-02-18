@@ -134,7 +134,7 @@ public abstract class PSGenericMetadataExtractorHelper extends PSImportHelper
      * @param context
      * @return
      */
-    protected abstract IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) throws IPSPageService.PSPageException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSGenericDao.LoadException, IPSDataService.DataServiceLoadException;
+    protected abstract IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) throws PSDataServiceException;
 
 
     /**

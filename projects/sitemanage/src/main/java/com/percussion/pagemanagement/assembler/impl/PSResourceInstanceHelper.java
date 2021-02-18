@@ -59,6 +59,7 @@ import com.percussion.share.data.IPSLinkableContentItem;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
@@ -266,7 +267,7 @@ public class PSResourceInstanceHelper
         return assetService.load(assetId, true);
     }
     
-    public IPSItemSummary findResourceAsset(String assetId) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
+    public IPSItemSummary findResourceAsset(String assetId) throws PSDataServiceException {
         return assetService.find(assetId);
     }
     

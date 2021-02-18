@@ -319,14 +319,25 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         PSLocator locator = (PSLocator)newPageCoreItem.getLocator();
         String newPageId = idMapper.getString(locator);
 
-        itemWorkflowService.checkOut(newPageId);
+        try {
+            itemWorkflowService.checkOut(newPageId);
+        } catch (PSItemWorkflowServiceException e) {
+            log.warn(e.getMessage());
+            log.debug(e.getMessage(),e);
+        }
         PSPage newPage = load(newPageId);
         newPage.setName(newName);
         newPage.setWorkflowId(page.getWorkflowId());
         save(newPage);
         if(addToRecent)
             recentService.addRecentItem(newPage.getId());
-        itemWorkflowService.checkIn(newPageId);
+
+        try {
+            itemWorkflowService.checkIn(newPageId);
+        } catch (PSItemWorkflowServiceException e) {
+            log.warn(e.getMessage());
+            log.debug(e.getMessage(),e);
+        }
         log.info("newPageId: {}",newPageId);
         
         String pagePath = newPage.getFolderPath();
@@ -400,7 +411,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
                 log.info("Page: '{}' has been recycled by: {}",page.getFolderPath() + '/' + page.getName(),  currentUser);
             }
         }
-        catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException | DataServiceLoadException | DataServiceNotFoundException e)
+        catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException | DataServiceLoadException | DataServiceNotFoundException | PSItemWorkflowServiceException e)
         {
             log.error("Page: {} not found for delete. Error: {}",id,e.getMessage());
             log.debug(e.getMessage(), e);
@@ -647,7 +658,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         return index < list.size() ? index : null;
     }
     
-    public PSPage findPage(String name, String folderPath) throws PSPageException, IPSGenericDao.LoadException {
+    public PSPage findPage(String name, String folderPath) throws PSDataServiceException {
         return pageDao.findPage(name, folderPath);
     }
     
@@ -770,7 +781,7 @@ try {
             PSPage page = super.load(id);
             validateForDelete(page, builder);  
         }
-        catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException e)
+        catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException | PSItemWorkflowServiceException e)
         {
             log.debug("Page: " + id + " not found for delete validation.", e);
         }
@@ -798,7 +809,7 @@ try {
             workflowId = itemWorkflowService.getWorkflowId(request.getWorkflow());
             stateId = itemWorkflowService.getStateId(request.getWorkflow(),request.getState());
         }
-        catch (PSItemWorkflowServiceException e)
+        catch (PSItemWorkflowServiceException | PSValidationException e)
         {
             throw new PSPageException(e);
         }
@@ -952,7 +963,7 @@ try {
      * @param page the page to validate, assumed not <code>null</code>.
      * @param builder used to capture and throw validation errors, assumed not <code>null</code>.
      */
-    private void validateForDelete(PSPage page, PSValidationErrorsBuilder builder) throws PSValidationException {
+    private void validateForDelete(PSPage page, PSValidationErrorsBuilder builder) throws PSValidationException, PSItemWorkflowServiceException {
         String id = page.getId();
         
         if (!itemWorkflowService.isModifiableByUser(id))
@@ -1024,7 +1035,7 @@ try {
         public Iterator<PSRegion> getRegions(PSPage wa, PSBeanValidationException e)
         {
             
-            List<PSRegion> regions = new ArrayList<PSRegion>();
+            List<PSRegion> regions = new ArrayList<>();
             if (wa.getRegionBranches() != null && wa.getRegionBranches().getRegions() != null) {
                 
                 List<PSRegion> br = wa.getRegionBranches().getRegions();
@@ -1091,7 +1102,7 @@ try {
        private CompareItemEntry(String sortColumn, String sortOrder)
        {
            this.sortColumn = sortColumn;
-           this.sortOrderNumber =  sortOrder.toLowerCase().equals("desc") ? -1 : 1;
+           this.sortOrderNumber =  sortOrder.equalsIgnoreCase("desc") ? -1 : 1;
        }
        
        @Override

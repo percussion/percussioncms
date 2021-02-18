@@ -55,7 +55,7 @@ public abstract class PSAbstractBeanValidator<FULL> implements Validator
         return e;
     }
 
-    protected abstract void doValidation(FULL obj, PSBeanValidationException e);
+    protected abstract void doValidation(FULL obj, PSBeanValidationException e) throws PSValidationException;
 
     public boolean supports(Class clazz)
     {

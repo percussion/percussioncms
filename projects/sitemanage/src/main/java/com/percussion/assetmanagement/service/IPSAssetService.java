@@ -39,8 +39,10 @@ import com.percussion.assetmanagement.data.PSFileAssetReportLine;
 import com.percussion.assetmanagement.data.PSImageAssetReportLine;
 import com.percussion.assetmanagement.data.PSInspectedElementsData;
 import com.percussion.assetmanagement.data.PSReportFailedToRunException;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.data.PSWidgetContentType;
 import com.percussion.pagemanagement.service.IPSPageService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -72,7 +74,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @throws PSAssetServiceException if the relationship cannot be created.
      */    
-    public String createAssetWidgetRelationship(PSAssetWidgetRelationship rel) throws PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, DataServiceNotFoundException, PSValidationException, DataServiceLoadException;
+    public String createAssetWidgetRelationship(PSAssetWidgetRelationship rel) throws PSDataServiceException;
 
     /**
      * Updates the relationship defined by the specified asset widget relationship.
@@ -90,7 +92,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @return
      * @throws PSAssetServiceException
      */
-    public PSNoContent promoteAssetWidget(PSAssetWidgetRelationship rel) throws PSDataServiceException;
+    public PSNoContent promoteAssetWidget(PSAssetWidgetRelationship rel) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException;
     
     /**
      * Clears the specified relationship.  If no other asset widget relationships exist for the asset, the item will
@@ -121,7 +123,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * used.
      * @return never <code>null</code>.
      */
-    public List<PSAssetEditor> getAssetEditors(String parentFolderPath) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
+    public List<PSAssetEditor> getAssetEditors(String parentFolderPath) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException;
     
     /**
      * Gets list of asset editors and their URLs.
@@ -132,7 +134,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @param filterDisabledWidgets if not null and equals ignore case to "yes", then disabled widgets are filtered.
      * @return never <code>null</code>.
      */
-    public List<PSAssetEditor> getAssetEditors(String parentFolderPath, String filterDisabledWidgets) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
+    public List<PSAssetEditor> getAssetEditors(String parentFolderPath, String filterDisabledWidgets) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException;
     
     /**
      * Gets list of asset type names and their internal ids.
@@ -140,21 +142,21 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @param filterDisabledWidgets if not null and equals ignore case to "yes", then disabled widgets are filtered.
      * @return never <code>null</code> may be empty.
      */
-    public List<PSWidgetContentType> getAssetTypes(String filterDisabledWidgets) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
+    public List<PSWidgetContentType> getAssetTypes(String filterDisabledWidgets) throws PSDataServiceException;
     
     /**
      * Gets the asset editor for the widgetId
      * @param widgetId must not be <code>null</code>
      * @return never <code>null</code>.
      */
-    public PSAssetEditor getAssetEditor(String widgetId) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
+    public PSAssetEditor getAssetEditor(String widgetId) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException;
     
     /**
      * Gets the asset editor for the widgetId and specified folder path
      * @param widgetId must not be <code>null</code>
      * @return never <code>null</code>.
      */
-    public PSAssetEditor getAssetEditor(String widgetId, String folderPath) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException, PSValidationException;
+    public PSAssetEditor getAssetEditor(String widgetId, String folderPath) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException;
     
     /**
      * Gets edit URL for an asset.
@@ -163,19 +165,19 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * @param readonly - flag indicating the url should be for a view only asset.
      * @return never <code>null</code>.
      */
-    public String getAssetUrl(String id, boolean readonly) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
+    public String getAssetUrl(String id, boolean readonly) throws PSDataServiceException;
     
     /** 
      * Adds the specified asset to the specified folder.
      * @param assetFolderRelationship never <code>null</code>. 
      */
-    public void addAssetToFolder(PSAssetFolderRelationship assetFolderRelationship) throws PSAssetServiceException, PSValidationException, DataServiceLoadException, DataServiceNotFoundException;
+    public void addAssetToFolder(PSAssetFolderRelationship assetFolderRelationship) throws PSDataServiceException;
        
     /** 
      * Removes the specified asset from the specified folder.
      * @param assetFolderRelationship never <code>null</code>.
      */
-    public void removeAssetFromFolder(PSAssetFolderRelationship assetFolderRelationship) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException, PSAssetServiceException;
+    public void removeAssetFromFolder(PSAssetFolderRelationship assetFolderRelationship) throws PSDataServiceException;
     
     /**
      * Gets an object of {@link PSContentEditCriteria} for the given
@@ -186,7 +188,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @return the content editor criteria, never <code>null</code>.
      */
-    public PSContentEditCriteria getContentEditCriteria(PSAssetEditUrlRequest request) throws DataServiceLoadException, DataServiceNotFoundException, PSAssetServiceException, PSValidationException;
+    public PSContentEditCriteria getContentEditCriteria(PSAssetEditUrlRequest request) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException;
     
     /**
      * Creates a new asset for the specified request.  Any required parent folders will also be created if necessary.
@@ -208,7 +210,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @return collection of assets, never <code>null</code>, may be empty.
      */
-    public Collection<PSAsset> findByTypeAndWf(String type, String workflow, String state) throws PSAssetServiceException;
+    public Collection<PSAsset> findByTypeAndWf(String type, String workflow, String state) throws PSAssetServiceException, IPSGenericDao.LoadException;
     
     /**
      * Similar with load(String), except caller has to specify if the returned
@@ -230,7 +232,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @return collection of assets, never <code>null</code>, may be empty.
      */
-    public Collection<PSAsset> findLocalByType(String type) throws PSAssetServiceException, PSValidationException;
+    public Collection<PSAsset> findLocalByType(String type) throws PSAssetServiceException, PSValidationException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSGenericDao.LoadException;
     
     
     /**

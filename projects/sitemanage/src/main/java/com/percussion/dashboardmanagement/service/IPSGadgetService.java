@@ -24,19 +24,21 @@
 package com.percussion.dashboardmanagement.service;
 
 import com.percussion.dashboardmanagement.data.PSGadget;
+import com.percussion.error.PSException;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.IPSNotFoundException;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 import java.util.List;
 
 public interface IPSGadgetService extends IPSDataService<PSGadget,PSGadget, String> {
 
-    PSGadget save(PSGadget gadget) throws PSGadgetServiceException;
-    List<PSGadget> findAll() throws PSGadgetNotFoundException, PSGadgetServiceException; 
-    PSGadget find(String id) throws PSGadgetNotFoundException, PSGadgetServiceException; 
-    void delete(String id)throws PSGadgetNotFoundException, PSGadgetServiceException;
+    PSGadget save(PSGadget gadget);
+    List<PSGadget> findAll();
+    PSGadget find(String id);
+    void delete(String id);
     
-    public static class PSGadgetServiceException extends RuntimeException {
+    public static class PSGadgetServiceException extends PSDataServiceException {
 
         private static final long serialVersionUID = 1L;
 

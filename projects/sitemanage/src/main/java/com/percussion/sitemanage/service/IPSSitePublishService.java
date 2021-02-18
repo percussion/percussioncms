@@ -23,6 +23,10 @@
  */
 package com.percussion.sitemanage.service;
 
+import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
+import com.percussion.itemmanagement.service.IPSItemService;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
+import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPublishingAction;
@@ -115,7 +119,7 @@ public interface IPSSitePublishService
     *  not be found or if an invalid request is supplied for demand publishing.
     */
    public PSSitePublishResponse publishIncremental(String siteName, String id, boolean isResource, String server)
-		      throws PSSitePublishException;
+           throws PSDataServiceException, IPSPubServerService.PSPubServerServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSItemService.PSItemServiceException;
 
     /**
      * Helper method that calls {@link #publish(String, PubType, String, boolean, String)} by passing the right pub type.
@@ -134,7 +138,7 @@ public interface IPSSitePublishService
      *  not be found or if an invalid request is supplied for demand publishing.
      */
     public PSSitePublishResponse publishIncrementalWithApproval(String siteName, String id, boolean isResource, String server,String itemsToApprove)
-            throws PSSitePublishException;
+            throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSPubServerService.PSPubServerServiceException, IPSItemService.PSItemServiceException;
    
    /**
     * Invokes publishing for the specified site, type, and item.
@@ -154,7 +158,7 @@ public interface IPSSitePublishService
     *  not be found or if an invalid request is supplied for demand publishing.
     */
    public PSSitePublishResponse publish(String siteName, PubType type, String id, boolean isResource, String server)
-      throws PSSitePublishException;
+           throws PSDataServiceException, IPSPubServerService.PSPubServerServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSItemService.PSItemServiceException;
    /**
     * Returns the list of PSPublishingActionProperties available for the logged in user for the supplied item.
     * @param id The guid representation of the item id.
@@ -162,7 +166,7 @@ public interface IPSSitePublishService
     * @throws PSSitePublishException, in case of an error.
     */
    public List<PSPublishingAction> getPublishingActions(String id)
-   throws PSSitePublishException;
+           throws PSDataServiceException;
    
    /**
     * Get a paged list of items that are queued for incremental publish

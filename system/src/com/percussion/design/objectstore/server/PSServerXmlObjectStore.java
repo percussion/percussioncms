@@ -65,6 +65,7 @@ import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUnknownDocTypeException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.error.PSException;
 import com.percussion.security.PSAclHandler;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
@@ -206,8 +207,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
        * 
        * @param src the source file or directory, never <code>null</code>.
        */
-      RecoverableFile(File src)
-      {
+      RecoverableFile(File src) throws PSException {
          if (src == null)
             throw new IllegalArgumentException("src may not be null.");
 
@@ -219,8 +219,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
        * Renames the original file or directory to a temporary file or directory
        * if the original file or directory exists; otherwise does nothing.
        */
-      void renameSrcToBackup()
-      {
+      void renameSrcToBackup() throws PSException {
          if (!m_src.exists())
             return;
 
@@ -242,7 +241,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          String errorMsg = "failed to make backup for '"
                + m_src.getAbsolutePath() + "' file/directory.";
          ms_log.error(errorMsg);
-         throw new RuntimeException(errorMsg);
+         throw new PSException(errorMsg);
       }
 
       /**
@@ -951,8 +950,6 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * @param overWrite If <code>true</code> and file already exists, it will
     * be overwritten. If <code>false</code> and the file already exists, no
     * action will be taken.
-    * @param lockId The id used to lock the app. It must already be locked with
-    * this id.
     * @param tok The security token to use for authorization, may not be
     * <code>null</code>.
     * @param isFolder flag indicating that this app file is a folder
@@ -1780,7 +1777,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          m_objectStoreHandler.notifyApplicationListeners(app, isNewApp, false);
          success = true;
       }
-      catch (IllegalArgumentException e)
+      catch (IllegalArgumentException | PSException e)
       {
          throw new PSServerException(e);
       }

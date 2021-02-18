@@ -31,6 +31,7 @@ import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSPageSummary;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 
 public interface IPSPageDao extends IPSGenericDao<PSPage, String>
@@ -40,7 +41,7 @@ public interface IPSPageDao extends IPSGenericDao<PSPage, String>
     
     List<PSPageSummary> findAllSummaries() throws IPSPageService.PSPageException;
     
-    PSPage findPage(String name, String folderPath) throws LoadException;
+    PSPage findPage(String name, String folderPath) throws PSDataServiceException;
     
     PSPage findPageByPath(String fullFolderPath) throws IPSPageService.PSPageException;
   

@@ -30,6 +30,9 @@ import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSReportFailedToRunException;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 
 /**
  * CRUDs and Asset. This is not a public API.
@@ -37,8 +40,8 @@ import com.percussion.share.data.IPSItemSummary;
  */
 public interface IPSAssetDao extends IPSGenericDao<PSAsset, String>
 {
-    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath);
-    public void removeItemFromPath(IPSItemSummary item, String folderPath);
+    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath) throws PSDataServiceException;
+    public void removeItemFromPath(IPSItemSummary item, String folderPath) throws PSDataServiceException;
     
     /**
      * Gets the asset from its identifier, similar with 
@@ -54,7 +57,7 @@ public interface IPSAssetDao extends IPSGenericDao<PSAsset, String>
      * 
      * @throws LoadException if error occurs during the find operation.
      */
-    PSAsset find(String id, boolean isSummary) throws LoadException;
+    PSAsset find(String id, boolean isSummary) throws LoadException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException;
     
     /**
      * Finds all assets of the specified type in the specified workflow and state.
@@ -65,7 +68,7 @@ public interface IPSAssetDao extends IPSGenericDao<PSAsset, String>
      * 
      * @return collection of assets, never <code>null</code>, may be empty.
      */
-    public Collection<PSAsset> findByTypeAndWf(String type, int workflowId, int stateId);
+    public Collection<PSAsset> findByTypeAndWf(String type, int workflowId, int stateId) throws LoadException;
     
     /**
      * Finds all assets of the specified type with the specified name.
@@ -75,7 +78,7 @@ public interface IPSAssetDao extends IPSGenericDao<PSAsset, String>
      * 
      * @return collection of assets, never <code>null</code>, may be empty.
      */
-    public Collection<PSAsset> findByTypeAndName(String type, String name);
+    public Collection<PSAsset> findByTypeAndName(String type, String name) throws LoadException;
     
     /**
      * Finds all assets of the specified type
@@ -84,14 +87,14 @@ public interface IPSAssetDao extends IPSGenericDao<PSAsset, String>
      * 
      * @return collection of assets, never <code>null</code>, may be empty.
      */
-    public Collection<PSAsset> findByType(String type);
+    public Collection<PSAsset> findByType(String type) throws LoadException;
     
     /**
      * Turns revision control on for the asset. 
      * For efficiency reasons this will not load the whole asset.
      * @param id not <code>null</code> or empty.
      */
-    public void revisionControlOn(String id);
+    public void revisionControlOn(String id) throws LoadException;
     
 
     /**

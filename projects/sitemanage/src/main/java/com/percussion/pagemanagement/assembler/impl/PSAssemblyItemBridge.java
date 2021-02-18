@@ -42,6 +42,7 @@ import javax.jcr.RepositoryException;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.lang.Validate;
@@ -165,7 +166,7 @@ public class PSAssemblyItemBridge {
      * @param resourceId the unique resource ID. It may be blank or <code>null</code> if the resource is determined by the content type of the item.
      * @return never <code>null</code>.
      */
-    public PSResourceInstance createResourceInstance(PSContentListItem item, String resourceId) throws Exception {
+    public PSResourceInstance createResourceInstance(PSContentListItem item, String resourceId) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException {
 
         IPSLinkableItem linkableItem = createLinkableItem(item.getItemId());
         PSRenderLinkContext context = this.renderLinkContextFactory.create(item, linkableItem);
@@ -185,7 +186,7 @@ public class PSAssemblyItemBridge {
      * @param resourceId the resource ID. It may be blank if the resource is determined by the content type of the item.
      * @return never <code>null</code>.
      */
-    public PSResourceLocation getResourceLocation(PSContentListItem listItem, String resourceId) throws Exception {
+    public PSResourceLocation getResourceLocation(PSContentListItem listItem, String resourceId) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException {
         PSResourceInstance resource;
 
         resource = createResourceInstance(listItem, resourceId);
@@ -217,7 +218,7 @@ public class PSAssemblyItemBridge {
      * @return The item, never <code>null</code>.
      * @see IPSLinkableItem
      */
-    public IPSLinkableItem createLinkableItem(IPSGuid guid) throws Exception
+    public IPSLinkableItem createLinkableItem(IPSGuid guid)
     {
         Validate.notNull(guid);
         
@@ -298,7 +299,7 @@ public class PSAssemblyItemBridge {
      * @return never <code>null</code>.
      * @see PSRenderAsset
      */
-    public PSRenderAsset createRenderAsset(IPSAssemblyItem assemblyItem) throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
+    public PSRenderAsset createRenderAsset(IPSAssemblyItem assemblyItem) throws PSDataServiceException {
         PSRenderAsset asset = new PSRenderAsset();
         String id = idMapper.getString(assemblyItem.getId());
         PSAssetSummary sum = assetService.find(id);

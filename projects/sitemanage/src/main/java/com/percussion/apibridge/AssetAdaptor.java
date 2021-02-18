@@ -472,7 +472,12 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         //Checkin the item before we leave.
         if (this.itemWorkflowService.isCheckedOutToCurrentUser(id))
         {
-            this.itemWorkflowService.checkIn(id);
+            try {
+                this.itemWorkflowService.checkIn(id);
+            } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                log.warn("Unable to check in: {} Error: {}", id,e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
         }
 
         // Get an updated asset after the updates
@@ -609,7 +614,12 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         //Checkin the item before we leave.
         if (this.itemWorkflowService.isCheckedOutToCurrentUser(newAsset.getId()))
         {
-            this.itemWorkflowService.checkIn(newAsset.getId());
+            try {
+                this.itemWorkflowService.checkIn(newAsset.getId());
+            } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                log.warn("Unable to check in id: {} Error: {}",newAsset.getId(),e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
         }
         
         return this.psAssetToAsset(baseURI, newAsset);
@@ -671,7 +681,13 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         
         if (this.itemWorkflowService.isCheckedOutToCurrentUser(resource.getId()))
         {
-            this.itemWorkflowService.checkIn(resource.getId());
+            try {
+                this.itemWorkflowService.checkIn(resource.getId());
+            } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                log.warn("Unable to check in item with id: {} Error: {}",
+                        resource.getId(),
+                        e.getMessage());
+            }
         }
         
         return this.psAssetToAsset(baseURI, resource);
@@ -981,8 +997,15 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         //Check it out
 	        if (!workflowHelper.isCheckedOutToCurrentUser(update.getId()))
 	        {
-	            itemWorkflowService.forceCheckOut(update.getId());
-	        }
+	            try {
+                    itemWorkflowService.forceCheckOut(update.getId());
+                } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                    log.warn("Unable to check out item with id: {} Error: {}",
+                            update.getId(),
+                            e.getMessage());
+                    log.debug(e.getMessage(),e);
+                }
+            }
 	        
 	        update.setName(newName);
 	        
@@ -1003,8 +1026,14 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         //Check it in
 	        if (workflowHelper.isCheckedOutToCurrentUser(update.getId()))
 	        {
-	            itemWorkflowService.checkIn(update.getId());
-	        }
+	            try {
+                    itemWorkflowService.checkIn(update.getId());
+                } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                    log.warn("Unable to checkin item with id: {} Error: {}",
+                            update.getId(),e.getMessage());
+                    log.debug(e.getMessage(),e);
+                }
+            }
 	        
 	        return this.psAssetToAsset(baseUri,update);
 	        
@@ -1024,7 +1053,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 		 for(PSImageAssetReportLine row : images){
        	  String csvData = row.toCSVRow();
        	  
-		   	if(ret.size()==0)
+		   	if(ret.isEmpty())
 				  ret.add(row.getHeaderRow());
 		   	
        	  if(csvData != null)
@@ -1048,8 +1077,9 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 				files = assetService.findNonCompliantFileAssets();
 		
 			 for(PSFileAssetReportLine row : files){
-	       		  if(ret.size()==0)
+	       		  if(ret.isEmpty())
 	       			  ret.add(row.getHeaderRow());
+
 	       	  String csvData = row.toCSVRow();
 	       	  if(csvData != null)
 	       		  ret.add(row.toCSVRow());
@@ -1072,7 +1102,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 				images = assetService.findAllImageAssets();
 		
 			 for(PSImageAssetReportLine row : images){
-				 if(ret.size()==0)
+				 if(ret.isEmpty())
 	       			 ret.add(row.getHeaderRow());
 				 
 		       	  String csvData = row.toCSVRow();
@@ -1100,7 +1130,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 		 for(PSFileAssetReportLine row : files){
        	  String csvData = row.toCSVRow();
        	  
-       	  if(ret.size()==0)
+       	  if(ret.isEmpty())
  			  ret.add(row.getHeaderRow());
        	
        	  if(csvData != null)
@@ -1151,8 +1181,13 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 				if(child.isFolder()){
 					ctr += recursivelyWorkflowAllAssets(state, ctr,path + "/"+ child.getName());
 				}else if(workflowHelper.isAsset(child.getId()) && !workflowHelper.isArchived(child.getId())){
-						this.itemWorkflowService.checkIn(child.getId());
-						workflowList.add(child.getId());
+						try {
+                            this.itemWorkflowService.checkIn(child.getId());
+                        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                            log.warn("Enable to check in item with id: {} Error: {}",child.getId(),e.getMessage());
+                            log.debug(e.getMessage(),e);
+						}
+                    workflowList.add(child.getId());
 						ctr++;
 				}
 			}
@@ -1220,26 +1255,15 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 		return ret;
 	}
 
+
 	private void walkFileTree(PSPathItem rootAsset, String relativePath, File[] fileList){
-	
-	/*	String assetPath = "";
-		for(int i=0;i<fileList.length;i++){
-			if(fileList[i].isDirectory() && fileList[i].listFiles().length>0){
-				walkFileTree(rootAsset, relativePath + "/" + fileList[i].getName(), fileList[i].listFiles());
-			}else{
-				assetPath = (rootAsset.getFolderPath() + "/" + relativePath + "/" + fileList[i].getName()).replace("//", "/");
-				uploadBinary(URI baseURI, String path, String assetTypeStr, InputStream inputStream,
-			     String uploadFilename, String fileMimeType, boolean forceCheckOut)
-				
-			}
-		} */
+        //TODO: Implement me
 	}
 	
 	@Override
 	public void assetImport(URI baseUri, String osFolder, String assetFolder, boolean replace, boolean onlyIfDifferent,
 			boolean autoApprove) {
-		// TODO Auto-generated method stub
-		
+		// TODO Implement me
 	}
 
 	@Override

@@ -29,6 +29,7 @@ import com.percussion.pagemanagement.data.PSWidgetPackageInfoRequest;
 import com.percussion.pagemanagement.data.PSWidgetPackageInfoResult;
 import com.percussion.pagemanagement.data.PSWidgetSummary;
 import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSPropertiesValidationException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 
@@ -89,7 +90,7 @@ public interface IPSWidgetService extends IPSDataService<PSWidgetDefinition, PSW
      * @param type The type of the widgets, widget types are set to one of the PSWidgetTypeEnum.
      * @return List of widget summaries never <code>null</code> may be empty.
      */
-    public List<PSWidgetSummary> findByType(String type);
+    public List<PSWidgetSummary> findByType(String type) throws PSDataServiceException;
     
     /**
      * Finds all the widgets of the supplied type.
@@ -97,7 +98,7 @@ public interface IPSWidgetService extends IPSDataService<PSWidgetDefinition, PSW
      * @param filterDisabledWidgets if the value is equals case in sensitive "yes", then disabled widgets are filtered from returned list
      * @return List of widget summaries never <code>null</code> may be empty.
      */
-    public List<PSWidgetSummary> findByType(String type, String filterDisabledWidgets);
+    public List<PSWidgetSummary> findByType(String type, String filterDisabledWidgets) throws PSDataServiceException;
     
     /**
      * Find the additional information about a widget from the package that installed it.

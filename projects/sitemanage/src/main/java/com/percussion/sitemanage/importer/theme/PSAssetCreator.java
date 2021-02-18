@@ -42,6 +42,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -104,8 +105,7 @@ public class PSAssetCreator
      */
     public PSAsset createAsset(String folderpath, AssetType type, InputStream fileInput, String fileName,
             String selector, boolean includeOuterHtml, boolean approveOnUpload) throws IOException,
-            PSExtractHTMLException
-    {
+            PSExtractHTMLException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSAssetService.PSAssetServiceException, PSValidationException {
         try
         {
             PSAbstractAssetRequest ar;
@@ -162,8 +162,7 @@ public class PSAssetCreator
      * @throws IOException
      */
     public PSAsset createAssetIfNeeded(InputStream fileInput, String destinationPath) throws PSExtractHTMLException,
-            IOException
-    {
+            IOException, IPSAssetService.PSAssetServiceException, PSValidationException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         File destination = new File(destinationPath);
         if (!isAsset(destinationPath))
             return null;
@@ -218,7 +217,7 @@ public class PSAssetCreator
      * Helper method to guess the string asset type based on the MIME type of
      * the file. Default asset type is <b>file</b>".
      * 
-     * @param filename the filename including extension. Assumed not
+     * @param fileName the filename including extension. Assumed not
      *            <code>null</code> or empty.
      * @return the appropriate string asset type. By default is <b>file</b>, never
      *         <code>null</code>.

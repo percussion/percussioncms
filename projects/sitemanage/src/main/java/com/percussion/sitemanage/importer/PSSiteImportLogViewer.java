@@ -23,38 +23,31 @@
  */
 package com.percussion.sitemanage.importer;
 
+import com.percussion.pagemanagement.data.PSTemplateSummary;
+import com.percussion.pagemanagement.service.IPSPageService;
+import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.services.sitemgr.IPSSiteManager;
+import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import com.percussion.sitemanage.dao.IPSiteDao;
+import com.percussion.sitemanage.data.PSSite;
+import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
+import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
+import com.percussion.sitemanage.importer.data.PSImportLogEntry;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.percussion.pagemanagement.data.PSPage;
-import com.percussion.pagemanagement.data.PSTemplateSummary;
-import com.percussion.pagemanagement.service.IPSPageService;
-import com.percussion.pagemanagement.service.IPSPageService.PSPageException;
-import com.percussion.pagemanagement.service.impl.PSTemplateService;
-import com.percussion.pagemanagement.service.IPSTemplateService;
-import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.share.dao.IPSFolderHelper;
-import com.percussion.share.dao.IPSGenericDao.LoadException;
-import com.percussion.share.service.IPSIdMapper;
-import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
-import com.percussion.sitemanage.dao.IPSiteDao;
-import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
-import com.percussion.sitemanage.data.PSSite;
-import com.percussion.sitemanage.data.PSSiteSummary;
-import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
-import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
-import com.percussion.sitemanage.importer.data.PSImportLogEntry;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Servlet that returns the content of a specific template's import log
@@ -97,7 +90,7 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                 }
                 templateId = site.getBaseTemplateName();
             }
-            catch (LoadException e)
+            catch (PSDataServiceException e)
             {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site: " + siteName);
                 return;                
@@ -135,7 +128,7 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                 siteName = siteMgr.getItemSites(idMapper.getGuid(templateId)).get(0).getName();
                 site = siteDao.find(siteName);
             }
-            catch (LoadException e)
+            catch (PSDataServiceException e)
             {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load for template: " + templateName);
                 return; 
