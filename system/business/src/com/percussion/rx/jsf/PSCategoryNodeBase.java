@@ -131,7 +131,7 @@ public class PSCategoryNodeBase extends PSNodeBase
       notNullNode(node);
       if (m_children == null)
       {
-         m_children = new ArrayList<PSNodeBase>();
+         m_children = new ArrayList<>();
       }
       m_children.add(node);
       node.setParent(this);
@@ -332,7 +332,7 @@ public class PSCategoryNodeBase extends PSNodeBase
          return Collections.unmodifiableList(m_children);
       }
 
-      List<PSNodeBase> rval = new ArrayList<PSNodeBase>();
+      List<PSNodeBase> rval = new ArrayList<>();
       final String star = "*";
       final String allPattern = ".*";
       String pattern = m_filter.replaceAll("\\*", allPattern);

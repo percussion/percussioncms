@@ -192,7 +192,7 @@ public class PSContextNode extends PSDesignNode
     */
    public SelectItem[] getDefaultSchemeChoices()
    {
-      List<SelectItem> schemeNames = new ArrayList<SelectItem>();
+      List<SelectItem> schemeNames = new ArrayList<>();
       for (PSLocationSchemeWrapper s : getLocationSchemes())
       {
          schemeNames.add(new SelectItem(s.getName()));
@@ -300,7 +300,7 @@ public class PSContextNode extends PSDesignNode
       copiedContext.setDefaultSchemeId(null);
       IPSGuid defSchemeId = getContext().getDefaultSchemeId();
       
-      List<IPSLocationScheme> schemes = new ArrayList<IPSLocationScheme>();
+      List<IPSLocationScheme> schemes = new ArrayList<>();
       for (PSLocationSchemeWrapper wrapper : getLocationSchemes())
       {         
          IPSLocationScheme copiedScheme = copyScheme(wrapper.getScheme(),
@@ -395,7 +395,7 @@ public class PSContextNode extends PSDesignNode
       if (m_ctypeLabels != null)
          return m_ctypeLabels;
       
-      Map<IPSGuid, String> results = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> results = new HashMap<>();
       try
       {
          IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
@@ -429,7 +429,7 @@ public class PSContextNode extends PSDesignNode
       if (m_templateLabels != null)
          return m_templateLabels;
       
-      Map<IPSGuid, String> results = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> results = new HashMap<>();
       try
       {
          IPSAssemblyService svc = PSAssemblyServiceLocator.getAssemblyService();
@@ -527,7 +527,7 @@ public class PSContextNode extends PSDesignNode
          List<IPSLocationScheme> schemes, boolean isNew)
    {
       List<PSLocationSchemeWrapper> wrappedSchemes = 
-         new ArrayList<PSLocationSchemeWrapper>();
+         new ArrayList<>();
       for (IPSLocationScheme scheme : schemes)
          wrappedSchemes.add(new PSLocationSchemeWrapper(scheme, isNew));
       Collections.sort(wrappedSchemes, new Comparator<PSLocationSchemeWrapper>()
@@ -622,7 +622,7 @@ public class PSContextNode extends PSDesignNode
     */
    private List<String> getSchemeNames()
    {
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       for (PSLocationSchemeWrapper wrapper : m_schemes)
       {
          names.add(wrapper.getName());
@@ -1116,7 +1116,7 @@ public class PSContextNode extends PSDesignNode
     * persisted when the context is saved. Never <code>null</code>.
     */
    private Collection<IPSLocationScheme> m_deletedSchemes = 
-      new ArrayList<IPSLocationScheme>();
+      new ArrayList<>();
 
    /**
     * Lazily set by {@link #catalogContentTypes()}, then never modified. See
