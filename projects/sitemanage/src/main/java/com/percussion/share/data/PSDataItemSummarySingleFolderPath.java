@@ -49,6 +49,6 @@ public abstract class PSDataItemSummarySingleFolderPath extends PSDataItemSummar
         if (folderPath != null)
             setFolderPaths(asList(folderPath));
         else
-            setFolderPaths(new ArrayList<String>());
+            setFolderPaths(new ArrayList<>());
     }
 }

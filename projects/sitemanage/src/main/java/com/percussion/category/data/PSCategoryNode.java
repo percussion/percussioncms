@@ -97,7 +97,7 @@ public class PSCategoryNode extends PSAbstractDataObject implements Comparable<P
     private boolean deleted = false;
 
     @JsonProperty("children")
-    private List<PSCategoryNode> childNodes = new ArrayList<PSCategoryNode>();
+    private List<PSCategoryNode> childNodes = new ArrayList<>();
 
     @JsonProperty
     private boolean selected = false;
@@ -318,7 +318,7 @@ public class PSCategoryNode extends PSAbstractDataObject implements Comparable<P
         categoryNode.setOldId(this.getOldId());
         categoryNode.setAllowedSites(this.getAllowedSites());
         if (this.getChildNodes() != null) {
-            categoryNode.setChildNodes(new ArrayList<PSCategoryNode>(this.getChildNodes()));
+            categoryNode.setChildNodes(new ArrayList<>(this.getChildNodes()));
         }
         return categoryNode;
     }

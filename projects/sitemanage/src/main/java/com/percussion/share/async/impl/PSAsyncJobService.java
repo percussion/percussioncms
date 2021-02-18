@@ -43,7 +43,7 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
 {
     private IPSAsyncJobFactory m_jobFactory;
     
-    private ConcurrentMap<Long, IPSAsyncJob> m_jobMap = new ConcurrentHashMap<Long, IPSAsyncJob>();
+    private ConcurrentMap<Long, IPSAsyncJob> m_jobMap = new ConcurrentHashMap<>();
     
     private final AtomicLong m_jobIdCounter = new AtomicLong();
 

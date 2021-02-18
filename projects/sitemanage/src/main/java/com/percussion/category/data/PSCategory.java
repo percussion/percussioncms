@@ -55,7 +55,7 @@ public class PSCategory extends PSAbstractDataObject implements Cloneable {
     @JsonProperty
     private String allowedSites;
 
-    private List<PSCategoryNode> topLevelNodes = new ArrayList<PSCategoryNode>();
+    private List<PSCategoryNode> topLevelNodes = new ArrayList<>();
 
     @XmlElement(name = "Children")
     @JsonProperty("topLevelNodes")
@@ -97,7 +97,7 @@ public class PSCategory extends PSAbstractDataObject implements Cloneable {
         PSCategory category = (PSCategory) super.clone();
         category.setTitle(this.getTitle());
         if (this.getTopLevelNodes() != null) {
-            category.setTopLevelNodes(new ArrayList<PSCategoryNode>(this.getTopLevelNodes()));
+            category.setTopLevelNodes(new ArrayList<>(this.getTopLevelNodes()));
         }
         return category;
     }

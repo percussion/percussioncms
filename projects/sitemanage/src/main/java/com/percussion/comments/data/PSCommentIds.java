@@ -40,7 +40,7 @@ public class PSCommentIds
     
     public PSCommentIds()
     {
-        comments = new ArrayList<String>();
+        comments = new ArrayList<>();
     }
 
     /**
