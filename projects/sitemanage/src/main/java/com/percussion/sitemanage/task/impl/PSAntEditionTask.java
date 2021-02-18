@@ -50,6 +50,7 @@ import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.pubserver.data.PSPubServerProperty;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
 import com.percussion.sitemanage.service.IPSSiteDataService.PublishType;
@@ -69,7 +70,8 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
@@ -99,7 +101,7 @@ public class PSAntEditionTask implements IPSEditionTask
 
     private IPSPubServerDao pubServerMgr;
 
-    private static Logger m_log = Logger.getLogger(PSAntEditionTask.class.getName());
+    private static final Logger log = LogManager.getLogger(PSAntEditionTask.class);
 
     @Override
     public TaskType getType()
@@ -178,7 +180,10 @@ public class PSAntEditionTask implements IPSEditionTask
         }
         catch(Exception e)
         {
-            m_log.error("Failed to get the publishing server properties for server id '" + edition.getPubServerId().getUUID() + "'.");
+            log.error("Failed to get the publishing server properties for server id '{}'.  Error: {}",
+                    edition.getPubServerId().getUUID(),
+                    e.getMessage());
+            log.debug(e.getMessage(),e);
         }
 
         String siteRootTemp = prepareSiteRootTemp(jobId, edition.getName(), site, pubServer, root);
@@ -307,8 +312,7 @@ public class PSAntEditionTask implements IPSEditionTask
      * @param site The site to get the properties from.
      * @throws IOException if an error occurs when comparing the files
      */
-    private void preparePublishConfigFiles(Map<String, String> props, IPSSite site, long serverId) throws IOException
-    {
+    private void preparePublishConfigFiles(Map<String, String> props, IPSSite site, long serverId) throws IOException, IPSDataService.DataServiceSaveException, IPSSiteSectionService.PSSiteSectionException {
         if (filesModifiedAfterPublished(site.getName(), serverId))
         {
             if (configFilesExist(site))
@@ -365,7 +369,7 @@ public class PSAntEditionTask implements IPSEditionTask
         }
         catch (Exception e)
         {
-            m_log.warn("Failed to create temporary directory for ftp resource files.", e);
+            log.warn("Failed to create temporary directory for ftp resource files.", e);
         }
 
         return site.getRoot();
@@ -377,8 +381,7 @@ public class PSAntEditionTask implements IPSEditionTask
      * @param site the site (assumed not <code>null</code>) for which the
      *            configuration files are going to be created.
      */
-    private void createSecurityUrlPatternFile(IPSSite site)
-    {
+    private void createSecurityUrlPatternFile(IPSSite site) throws IPSDataService.DataServiceSaveException, IPSSiteSectionService.PSSiteSectionException {
         IPSSiteSectionService sectionService = (IPSSiteSectionService) getWebApplicationContext().getBean(
                 "siteSectionService");
         if (sectionService != null)
@@ -394,7 +397,6 @@ public class PSAntEditionTask implements IPSEditionTask
      * @param props the map of the publish properties.
      * @param site the current site.
      * @param pubServer the publishing server
-     * @param serverProps the publishing server properties
      */
     private void prepareFtpProperties(Map<String, String> props, IPSSite site, IPSPubServer pubServer)
     {

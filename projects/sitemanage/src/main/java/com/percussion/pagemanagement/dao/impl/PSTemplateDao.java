@@ -23,16 +23,6 @@
  */
 package com.percussion.pagemanagement.dao.impl;
 
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.TEMPLATES;
-
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.isNumeric;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.pagemanagement.dao.IPSTemplateDao;
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSMetadataDocType;
@@ -61,19 +51,28 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.IPSFolderHelper;
-import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSContentItem;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.IPSThemeService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.service.impl.PSSiteConfigUtils;
 import com.percussion.webservices.assembly.IPSAssemblyDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,17 +83,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.TEMPLATES;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.isNumeric;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -174,7 +169,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         m_imgFileExts.add(".png");
     }
 
-    public void delete(String id) throws com.percussion.share.dao.IPSGenericDao.DeleteException, com.percussion.share.dao.IPSGenericDao.LoadException {
+    public void delete(String id) throws PSDataServiceException {
         PSTemplate template = find(id);
         contentItemDao.delete(id);
         PSNotificationEvent notifyEvent = new PSNotificationEvent(EventType.TEMPLATE_DELETE, id);
@@ -182,7 +177,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         srv.notifyEvent(notifyEvent);
     }
 
-    public PSTemplate find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException {
+    public PSTemplate find(String id) throws PSDataServiceException {
         notNull(id, "id");
 
         IPSGuid assemblyTemplateGuid = getAssemblyTemplateGuid(id);
@@ -271,7 +266,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         return TPL_CONTENT_TYPE.equals(contentItem.getType());
     }
 
-    public List<PSTemplate> findAll() throws com.percussion.share.dao.IPSGenericDao.LoadException {
+    public List<PSTemplate> findAll() throws PSDataServiceException {
         Collection<Integer> ids = contentItemDao.findAllItemIdsByType(TPL_CONTENT_TYPE);
         List<PSTemplate> results = new ArrayList<>();
         for (Integer id : ids)
@@ -308,12 +303,12 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     }
 
     @Override
-    public PSTemplate save(PSTemplate template) throws com.percussion.share.dao.IPSGenericDao.SaveException, com.percussion.share.dao.IPSGenericDao.LoadException {
+    public PSTemplate save(PSTemplate template) throws PSDataServiceException {
            return save(template, null);
     }
 
     public PSTemplate save(PSTemplate template, String siteId)
-            throws com.percussion.share.dao.IPSGenericDao.SaveException, com.percussion.share.dao.IPSGenericDao.LoadException {
+            throws PSDataServiceException {
         if (log.isDebugEnabled())
             log.debug("Saving template: " + template);
 
@@ -404,7 +399,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     /*
      * //see base interface method for details
      */
-    public PSTemplate createTemplate(String name, String srcId) throws PSTemplateException, com.percussion.share.dao.IPSGenericDao.LoadException {
+    public PSTemplate createTemplate(String name, String srcId) throws PSDataServiceException {
         return createTemplateFromSrc(srcId, name);
     }
 
@@ -417,7 +412,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @return the core item, never <code>null</code>.
      */
-    private PSTemplate createTemplateFromSrc(String srcId, String name) throws PSTemplateException, com.percussion.share.dao.IPSGenericDao.LoadException {
+    private PSTemplate createTemplateFromSrc(String srcId, String name) throws PSDataServiceException {
         PSTemplate template;
         IPSGuid templateGuid = getAssemblyTemplateGuid(srcId);
         if (templateGuid != null)
@@ -516,7 +511,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @return the created core item, never <code>null</code>.
      */
-    private PSTemplate createTemplateFromUserTemplate(String srcId, String name) throws PSTemplateException, com.percussion.share.dao.IPSGenericDao.LoadException {
+    private PSTemplate createTemplateFromUserTemplate(String srcId, String name) throws PSDataServiceException {
         PSTemplate srcTpl = find(srcId);
         PSTemplate copy = srcTpl.clone();
         copy.setId(null);
@@ -587,10 +582,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
 
     public List<IPSCatalogSummary> findAssemblyTemplate(String name)
     {
-        List<IPSCatalogSummary> templates = assemblyDesignWs.findAssemblyTemplates(name, null, null, null, null, null,
+        return assemblyDesignWs.findAssemblyTemplates(name, null, null, null, null, null,
                 PAGE_ASSEMBLER);
-        return templates;
-
     }
 
     /**
@@ -698,7 +691,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                 } else if (type.equals(PSTemplateTypeEnum.getEnum(template.getType()))) {
                     results.add(item);
                 }
-            } catch (com.percussion.share.dao.IPSGenericDao.LoadException e) {
+            } catch (PSDataServiceException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
                 //Allow loop to continue so that one bad item doesn't prevent all from being processed.
@@ -722,7 +715,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                 } else if (type.equals(PSTemplateTypeEnum.getEnum(template.getType()))) {
                     results.add(item);
                 }
-            } catch (com.percussion.share.dao.IPSGenericDao.LoadException e) {
+            } catch (PSDataServiceException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
                 //Allow processing to continue.
@@ -753,7 +746,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                 } else if (type.equals(PSTemplateTypeEnum.getEnum(template.getType()))) {
                     results.add(template);
                 }
-            } catch (com.percussion.share.dao.IPSGenericDao.LoadException e) {
+            } catch (PSDataServiceException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
                 //Continue
@@ -781,7 +774,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * used for different site. This is only used by unit test for now and
      * should be removed along with related unit test.
      */
-    public PSTemplate findUserTemplateByName_UsedByUnitTestOnly(String name) throws PSTemplateException, com.percussion.share.dao.IPSGenericDao.LoadException {
+    public PSTemplate findUserTemplateByName_UsedByUnitTestOnly(String name) throws PSDataServiceException {
         for (PSTemplateSummary template : findAllUserTemplates())
         {
             if (template.getName().equalsIgnoreCase(name))
@@ -791,10 +784,6 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         return null;
     }
 
-    /**
-     * @deprecated This is used by unit test only. It cannot be used by
-     *             production code
-     */
     public IPSGuid findUserTemplateIdByName(String templateName, String siteName)
     {
         IPSSite site = siteMgr.findSite(siteName);
@@ -833,7 +822,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                summary.setImageThumbPath(imgPath);
            }
            return summary;
-       } catch (com.percussion.share.dao.IPSGenericDao.LoadException e) {
+       } catch (PSDataServiceException e) {
            throw new PSTemplateException(e.getMessage(),e);
        }
     }
@@ -923,7 +912,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      */
     public PSTemplate generateTemplateToExport(String id, String name) throws PSTemplateException {
         notNull(id, "id");
-        PSTemplate template = new PSTemplate();
+        PSTemplate template;
         // Set the server version
         String serverVersion = PSServer.getVersionString();
         // Strip out the build details
@@ -934,7 +923,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         }
         try {
             template = find(id);
-        } catch (com.percussion.share.dao.IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new PSTemplateException(e.getMessage(),e);
@@ -980,7 +969,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
 
         try {
             return save(template, site.getName());
-        } catch (com.percussion.share.dao.IPSGenericDao.SaveException | com.percussion.share.dao.IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new PSTemplateException(e.getMessage(),e);
@@ -1041,6 +1030,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                     for (PSThemeSummary theme : themes) {
                         if (theme.getName().equals(object.getTheme())) {
                             existTheme = true;
+                            break;
                         }
                     }
                     if (!existTheme) {
@@ -1048,7 +1038,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                     }
                 }
             }
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | com.percussion.share.dao.IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             throw new PSTemplateException(e.getMessage(),e);
         }
     }

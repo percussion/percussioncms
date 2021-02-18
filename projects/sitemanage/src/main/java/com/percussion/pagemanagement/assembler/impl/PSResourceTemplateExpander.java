@@ -44,6 +44,8 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.publisher.IPSTemplateExpander;
 import com.percussion.services.publisher.data.PSContentListItem;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.utils.guid.IPSGuid;
 
@@ -131,8 +133,12 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     
     private void setLocation(PSContentListItem contentListItem, Map<String, String> parameters)
     {
-        PSResourceLocation loc = assemblyItemBridge.getResourceLocation(contentListItem, getResourceId(parameters));
-        contentListItem.setLocation(loc.getFilePath());
+        try{
+            PSResourceLocation loc = assemblyItemBridge.getResourceLocation(contentListItem, getResourceId(parameters));
+            contentListItem.setLocation(loc.getFilePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     @Override
@@ -167,8 +173,7 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     }
 
     @Override
-    protected IPSGuid getTemplateId(Map<String, String> parameters, TemplateCache cache)
-    {
+    protected IPSGuid getTemplateId(Map<String, String> parameters, TemplateCache cache) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException {
         if (cache.templateId != null)
             return cache.templateId;
         

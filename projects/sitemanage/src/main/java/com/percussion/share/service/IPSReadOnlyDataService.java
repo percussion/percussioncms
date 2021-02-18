@@ -26,9 +26,10 @@ package com.percussion.share.service;
 import java.io.Serializable;
 
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 
 public interface IPSReadOnlyDataService<FULL, PK extends Serializable>
 {
-    FULL load(PK id) throws DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException;
+    FULL load(PK id) throws PSDataServiceException;
 }

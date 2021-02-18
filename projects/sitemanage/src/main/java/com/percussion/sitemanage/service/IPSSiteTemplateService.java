@@ -31,6 +31,7 @@ import javax.ws.rs.core.Context;
 
 import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.data.PSSiteSummary;
 
@@ -73,7 +74,7 @@ public interface IPSSiteTemplateService
      * @param type - the type of template. Never <code>null</code>
      * @return list of template summaries, never <code>null</code>, may be <code>empty</code>.
      */
-    List<PSTemplateSummary> findTypedTemplatesBySite(String siteId, PSTemplateTypeEnum type);
+    List<PSTemplateSummary> findTypedTemplatesBySite(String siteId, PSTemplateTypeEnum type) throws PSValidationException;
     
     List<PSSiteSummary> findSitesByTemplate(String templateId);
     
@@ -142,7 +143,7 @@ public interface IPSSiteTemplateService
      * @return map whose key is the source template id (guid string) and associated value is the id (guid string) of the
      * newly created template, never <code>null</code>.
      */
-    Map<String, String> copyTemplates(String site1Id, String site2Id);
+    Map<String, String> copyTemplates(String site1Id, String site2Id) throws PSValidationException;
 
     PSTemplateSummary createTemplateFromPage(PSPageToTemplatePair pair);
 

@@ -28,6 +28,7 @@ import com.percussion.activity.data.PSContentTraffic;
 import com.percussion.activity.data.PSContentTrafficRequest;
 import com.percussion.activity.data.PSTrafficDetails;
 import com.percussion.activity.data.PSTrafficDetailsRequest;
+import com.percussion.error.PSException;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public interface IPSTrafficService
     /**
      * (Runtime) Exception is thrown when an unexpected error occurs in this service.
      */
-    public static class PSTrafficServiceException extends RuntimeException
+    public static class PSTrafficServiceException extends PSException
     {
        /**
         * Generated serial number.

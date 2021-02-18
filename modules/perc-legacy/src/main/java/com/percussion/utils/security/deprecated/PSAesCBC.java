@@ -42,6 +42,7 @@ public class PSAesCBC
     /**
      * Create a new AES. Sets initial values of byte array.
      */
+    @Deprecated
     public PSAesCBC() {
         super();
         InitialVector = new byte[] { 0x04, 0x38, 0x40, 0x33, 0x17, 0x65, 0x32,
@@ -59,6 +60,7 @@ public class PSAesCBC
      * @return The resultant String of encrypted text
      * @throws Exception
      */
+    @Deprecated
     public String encrypt(String plainText, String encryptionKey)
             throws Exception {
         if(isBlank(plainText))
@@ -90,6 +92,7 @@ public class PSAesCBC
      * @return The resultant String of decrypted and decoded text.
      * @throws Exception
      */
+    @Deprecated
     public String decrypt(String secretText, String encryptionKey)
             throws Exception {
         if(isBlank(secretText))

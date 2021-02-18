@@ -25,6 +25,7 @@ package com.percussion.pagemanagement.assembler;
 
 import java.util.List;
 
+import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.services.assembly.IPSAssemblyItem;
 
 /**
@@ -46,7 +47,7 @@ public interface IPSRegionAssembler
     public List<PSRegionResult> assembleRegion(
             IPSAssemblyItem assemblyItem, 
             PSPageAssemblyContext context,
-            PSMergedRegion mr);
+            PSMergedRegion mr) throws IPSTemplateService.PSTemplateException;
 
 }
 

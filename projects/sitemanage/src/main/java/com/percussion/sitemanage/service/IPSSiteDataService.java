@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.service;
 
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.dao.IPSGenericDao;
@@ -31,6 +32,7 @@ import com.percussion.share.data.PSMapWrapper;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.data.PSPubInfo;
 import com.percussion.sitemanage.data.PSSaasSiteConfig;
@@ -110,7 +112,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
         }
      }
     
-    public PSSiteSummary find(String id) throws DataServiceLoadException;
+    public PSSiteSummary find(String id) throws DataServiceLoadException, PSValidationException;
 
     /**
      * Finds the site and adds the publishing info based on the includePubInfo flag.
@@ -119,7 +121,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @return site summary 
      * @throws DataServiceLoadException
      */
-    public PSSiteSummary find(String id, boolean includePubInfo) throws DataServiceLoadException;
+    public PSSiteSummary find(String id, boolean includePubInfo) throws DataServiceLoadException, PSValidationException;
     
     /**
      * Finds the site summary by the legacy ID.
@@ -133,9 +135,9 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * 
      * @throws DataServiceLoadException if cannot find the specified site.
      */
-    public PSSiteSummary findByLegacySiteId(String id, boolean isValidate) throws DataServiceLoadException;
+    public PSSiteSummary findByLegacySiteId(String id, boolean isValidate) throws DataServiceLoadException, PSValidationException;
     
-    public PSSiteSummary findByPath(String path) throws DataServiceNotFoundException;
+    public PSSiteSummary findByPath(String path) throws DataServiceNotFoundException, PSValidationException;
 
     public List<PSSiteSummary> findAll();
 
@@ -163,7 +165,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * 
      * @return the created site, never <code>null</code>.
      */
-    public PSSite save(PSSite site) throws DataServiceSaveException, DataServiceNotFoundException, DataServiceLoadException, PSSpringValidationException;
+    public PSSite save(PSSite site) throws PSDataServiceException;
     
     /**
      * Creates the specified site importing its content from an external URL.
@@ -178,7 +180,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @throws PSSiteImportException if an unexpected error occurred during site
      *             import.
      */
-    public PSSite createSiteFromUrl(@Context HttpServletRequest request, PSSite site) throws PSSiteImportException;
+    public PSSite createSiteFromUrl(@Context HttpServletRequest request, PSSite site) throws PSSiteImportException, PSValidationException;
     
     /**
      * Creates the specified site importing its content from an external URL.
@@ -194,7 +196,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @throws PSSiteImportException if an unexpected error occurred during site
      *             import.
      */
-    public Long createSiteFromUrlAsync(@Context HttpServletRequest request, PSSite site);
+    public Long createSiteFromUrlAsync(@Context HttpServletRequest request, PSSite site) throws PSValidationException, IPSFolderService.PSWorkflowNotFoundException;
     
     /**
      * Once the import from url job is completed, it gets the site that was
@@ -209,7 +211,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      */
     public PSSite getImportedSite(Long jobId);
 
-    public PSValidationErrors validate(PSSite site) throws PSSpringValidationException;
+    public PSValidationErrors validate(PSSite site) throws PSValidationException;
 
     /**
      * Gets the properties of the specified site.
@@ -218,7 +220,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * 
      * @return the specified site properties, never <code>null</code>.
      */
-    public PSSiteProperties getSiteProperties(String siteName);
+    public PSSiteProperties getSiteProperties(String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException;
     
     /**
      * Updates the specified site properties.
@@ -227,14 +229,14 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * 
      * @return the updated properties, never <code>null</code>.
      */
-    public PSSiteProperties updateSiteProperties(PSSiteProperties props) throws DataServiceSaveException;
+    public PSSiteProperties updateSiteProperties(PSSiteProperties props) throws PSDataServiceException;
     
     /**
      * Gets the publishing properties of the specified site
      * @param siteName name of the site, not blank
      * @return sites publishing properties never <code>null</code>.
      */
-    public PSSitePublishProperties getSitePublishProperties(String siteName);
+    public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException;
    
     /**
      * Updates the specified site with publish properties, the specified site is
@@ -349,7 +351,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
    
     public PSSaasSiteConfig getSaasSiteConfig(String siteName) throws DataServiceLoadException;
     
-    public String isSiteBeingImported(String sitename) throws IPSGenericDao.LoadException;
+    public String isSiteBeingImported(String sitename) throws PSDataServiceException;
 
     /***
      * Finds a site by name;
@@ -357,7 +359,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @param name  The site name, never null
      * @return the Site
      */
-    public PSSiteSummary findByName(String name) throws DataServiceLoadException;
+    public PSSiteSummary findByName(String name) throws DataServiceLoadException, PSValidationException;
 
     /**
      * Constant for the folder path where the site configuration is stored.

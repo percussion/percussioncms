@@ -23,27 +23,27 @@
  */
 package com.percussion.sitemanage.error;
 
-import com.percussion.error.PSRuntimeException;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 /**
  * @author LucasPiccoli
  *
  */
-public class PSTemplateImportException extends PSRuntimeException
+public class PSTemplateImportException extends PSDataServiceException
 {
-
-    @Deprecated
-    public PSTemplateImportException(String message)
-    {
-
-        super(-1, message);
+    public PSTemplateImportException() {
+        super();
     }
 
-    @Deprecated
-    public PSTemplateImportException(String message, Throwable cause)
-    {
-
-        super(-1, new Object[]{message}, cause);
+    public PSTemplateImportException(String message) {
+        super(message);
     }
 
+    public PSTemplateImportException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public PSTemplateImportException(Throwable cause) {
+        super(cause);
+    }
 }

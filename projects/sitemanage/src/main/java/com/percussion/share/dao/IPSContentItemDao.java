@@ -56,7 +56,7 @@ public interface IPSContentItemDao extends IPSGenericDao<PSContentItem, String>,
      * 
      * @throws LoadException if error occurs during the find operation.
      */
-    PSContentItem find(String id, boolean isSummary) throws LoadException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException;
+    PSContentItem find(String id, boolean isSummary) throws PSDataServiceException;
     
     /**
      * Turns revision control on for the item with the given id.

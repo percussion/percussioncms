@@ -270,7 +270,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 	public void doPageExtraction(PSPageContent pageContent,
 			PSSiteImportCtx context, PSPage targetPage,
 			IPSPageCatalogService pageCatalogService)
-			throws PSSiteImportException, PSDataServiceException {
+			throws PSSiteImportException, PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
 		if (extractMetaData) {
 			doExtractMetaData(pageContent, context);
 		} else {
@@ -297,9 +297,20 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 		PSPair<PSWidgetItem, PSAsset> widgetAssetPair = new PSPair<PSWidgetItem, PSAsset>(
 				widgets.get(0), localAsset);
 
-		itemWorkflowService.checkOut(targetPage.getId());
+		try {
+			itemWorkflowService.checkOut(targetPage.getId());
+		} catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+			log.warn(e.getMessage());
+			log.debug(e.getMessage(),e);
+		}
 		addContentToWidgetOnPage(targetPage, widgetAssetPair, assetService);
-		itemWorkflowService.checkIn(targetPage.getId());
+
+		try {
+			itemWorkflowService.checkIn(targetPage.getId());
+		} catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+			log.warn(e.getMessage());
+			log.debug(e.getMessage(),e);
+		}
 
 		importPageIfNecessary(context, pageCatalogService, pageImport);
 	}
@@ -425,7 +436,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 	 */
 	private static List<PSAssetWidgetRelationship> addContentToWidgetOnPage(
 			PSPage targetPage, PSPair<PSWidgetItem, PSAsset> widgetAssetPair,
-			IPSAssetService assetService) throws PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
+			IPSAssetService assetService) throws PSDataServiceException {
 		List<PSAssetWidgetRelationship> relationships = new ArrayList<PSAssetWidgetRelationship>();
 		String ownerId = targetPage.getId();
 
@@ -442,7 +453,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 		return relationships;
 	}
 
-	private PSPage getTargetPage(PSSiteImportCtx context) throws IPSPageService.PSPageException, IPSGenericDao.LoadException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
+	private PSPage getTargetPage(PSSiteImportCtx context) throws PSDataServiceException {
 		if (isBlank(context.getCatalogedPageId())) {
 			return pageService.findPage(context.getPageName(), context
 					.getSite().getFolderPath());
@@ -519,7 +530,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 
 	private static PSAsset createHTMLLocalContent(String htmlContent,
 			IPSItemWorkflowService itemWorkflowService,
-			IPSAssetService assetService, IPSNameGenerator nameGenerator) throws PSDataServiceException {
+			IPSAssetService assetService, IPSNameGenerator nameGenerator) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
 		PSAsset asset = new PSAsset();
 		String assetName = nameGenerator.generateLocalContentName();
 		asset.setName(assetName);
@@ -548,9 +559,19 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 
 		long workflowTimer = System.nanoTime();
 
-		itemWorkflowService.checkOut(page.getId());
+		try {
+			itemWorkflowService.checkOut(page.getId());
+		} catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+			log.warn(e.getMessage());
+			log.debug(e.getMessage(),e);
+		}
 		pageService.save(page);
-		itemWorkflowService.checkIn(page.getId());
+		try {
+			itemWorkflowService.checkIn(page.getId());
+		}catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+			log.warn(e.getMessage());
+			log.debug(e.getMessage(),e);
+		}
 
 		PSHelperPerformanceMonitor.updateStats(
 				"PSPageMetaDataExtractor:PageWorkflow",
@@ -616,7 +637,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 	 * #getTargetItem(com.percussion.sitemanage.data.PSSiteImportCtx)
 	 */
 	@Override
-	protected IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) throws IPSPageService.PSPageException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSGenericDao.LoadException, IPSDataService.DataServiceLoadException {
+	protected IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) throws PSDataServiceException {
 		return getTargetPage(context);
 	}
 

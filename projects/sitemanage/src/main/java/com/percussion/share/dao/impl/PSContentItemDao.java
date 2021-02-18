@@ -44,10 +44,8 @@ import com.percussion.share.dao.PSJcrNodeMap;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemSummaryUtils;
 import com.percussion.share.service.IPSDataItemSummaryService;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.exceptions.PSORMException;
@@ -56,7 +54,6 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.system.IPSSystemWs;
-import com.percussion.webservices.system.PSRelationship;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +62,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
 import javax.jcr.Node;
-import javax.jcr.RepositoryException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -76,7 +72,9 @@ import static com.percussion.share.dao.impl.PSLegacyExceptionUtils.convertExcept
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.*;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Manage R/W of the content item through a 
@@ -124,7 +122,7 @@ public class PSContentItemDao implements IPSContentItemDao
     public Collection<Integer> findAllItemIdsByType(String name) throws PSDataServiceException {
         List<IPSNodeDefinition> nodes = PSContentTypeHelper.loadNodeDefs(name);
         if (nodes.isEmpty())
-            return new ArrayList<Integer>();
+            return new ArrayList<>();
         
         IPSGuid ctypeId = nodes.get(0).getGUID();
         try
@@ -282,12 +280,12 @@ public class PSContentItemDao implements IPSContentItemDao
     public PSContentItem find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException{
         try {
             return find(id, false);
-        } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSDataServiceException e) {
             throw new LoadException(e);
         }
     }
         
-    public PSContentItem find(String id, boolean isSummary) throws com.percussion.share.dao.IPSGenericDao.LoadException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
+    public PSContentItem find(String id, boolean isSummary) throws PSDataServiceException {
         notNull(id, "id");
         IPSItemSummary itemSummary = itemSummaryService.find(id);
         if (itemSummary == null) return null;
@@ -348,7 +346,6 @@ public class PSContentItemDao implements IPSContentItemDao
                 coreItem = items.get(0);
             }
 
-            //coreItem.setFolderPaths(paths);
             for (Entry<String, Object> nvp : contentItem.getFields().entrySet()) {
                 PSItemField f = coreItem.getFieldByName(nvp.getKey());
                 Object value = nvp.getValue();

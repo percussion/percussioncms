@@ -25,6 +25,7 @@ package com.percussion.share.service;
 
 import java.io.Serializable;
 
+import com.percussion.dashboardmanagement.service.IPSGadgetService;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.exception.IPSNotFoundException;
 import com.percussion.share.service.exception.PSBeanValidationException;
@@ -53,7 +54,7 @@ public interface IPSDataService<FULL, SUMMARY, PK extends Serializable>
      * @return the persisted object
      * @throws PSBeanValidationException If the bean is not valid.
      */
-    FULL save(FULL object) throws PSDataServiceException;
+    FULL save(FULL object) throws PSDataServiceException, IPSGadgetService.PSGadgetServiceException;
 
     /**
      * Generic method to delete an object based on class and id
@@ -61,7 +62,7 @@ public interface IPSDataService<FULL, SUMMARY, PK extends Serializable>
      * @param id the identifier (primary key) of the object to remove
      * @throws DataServiceDeleteException
      */
-    void delete(PK id) throws PSDataServiceException;
+    void delete(PK id) throws PSDataServiceException, IPSGadgetService.PSGadgetNotFoundException, IPSGadgetService.PSGadgetServiceException;
 
     /**
      * Validate.

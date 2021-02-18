@@ -36,6 +36,31 @@ public class PSExtensionException extends PSException
     */
    private static final long serialVersionUID = 1L;
 
+   public PSExtensionException(Throwable cause) {
+      super(cause);
+   }
+
+   /**
+    * Constructor that takes the error message
+    *
+    * @param msg should not be <code>null</code>
+    */
+   public PSExtensionException(String msg) {
+      super(msg);
+   }
+
+   /**
+    * Create a chained exception with a specific message
+    *
+    * @param message message to use in exception. If
+    *                <code>null</code> then use the localized message from the original
+    *                exception
+    * @param e       the original exception, never <code>null</code>
+    */
+   public PSExtensionException(String message, Throwable e) {
+      super(message, e);
+   }
+
    /**
     * Construct an exception for messages taking only a single argument.
     *

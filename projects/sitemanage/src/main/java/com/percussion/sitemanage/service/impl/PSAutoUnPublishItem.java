@@ -34,16 +34,19 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.service.IPSDataItemSummaryService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.service.IPSSitePublishService;
 import com.percussion.sitemanage.service.IPSSitePublishService.PubType;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
 /**
  * This is a workflow action that gets executed by the aging agent, Gets the locator from the supplied workflow context 
- * and calls the {@link IPSSitePublishService#publish(String, PubType, String, boolean)} to do the actual work.
+ * and calls the {@link IPSSitePublishService#publish(String, PubType, String, boolean, String)} to do the actual work.
  * Uses the type as PubType.TAKEDOWN_NOW.
  *
  */
@@ -68,12 +71,17 @@ public class PSAutoUnPublishItem extends PSDefaultExtension implements
    public void performAction(IPSWorkFlowContext arg0, IPSRequestContext arg1)
       throws PSExtensionProcessingException
    {
-      PSLocator loc = new PSLocator(arg0.getContentID(), arg0
-            .getBaseRevisionNum());
-      String cguid = idMapper.getString(loc);
-      PSWebserviceUtils.setUserName("rxserver");
-      IPSItemSummary sum = itemSummaryService.find(cguid);
-      sitePublishService.publish(null, PubType.TAKEDOWN_NOW, cguid, sum.isResource(), null);
+      try {
+         PSLocator loc = new PSLocator(arg0.getContentID(), arg0
+                 .getBaseRevisionNum());
+         String cguid = idMapper.getString(loc);
+         PSWebserviceUtils.setUserName("rxserver");
+         IPSItemSummary sum = itemSummaryService.find(cguid);
+         sitePublishService.publish(null, PubType.TAKEDOWN_NOW, cguid, sum.isResource(), null);
+      } catch (PSDataServiceException e) {
+         log.error("Error un publishing content id: {} Error: {}", arg0.getContentID(),e.getMessage());
+         throw new PSExtensionProcessingException(e.getMessage(),e);
+      }
    }
    
    //Services getters and setters used by spring to inject
@@ -106,6 +114,8 @@ public class PSAutoUnPublishItem extends PSDefaultExtension implements
    {
       this.idMapper = idMapper;
    }
+
+   private static final Logger log = LogManager.getLogger(PSAutoUnPublishItem.class);
 
    //Services used
    private IPSSitePublishService sitePublishService;

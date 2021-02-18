@@ -154,7 +154,7 @@ public interface IPSActivityService
      */
     public Collection<Long> findPublishedItems(Collection<Integer> contentIds);
     
-    public static class PSActivityServiceException extends RuntimeException
+    public static class PSActivityServiceException extends Exception
     {
         /**
          * @param string

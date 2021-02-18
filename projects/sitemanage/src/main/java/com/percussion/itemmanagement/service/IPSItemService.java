@@ -28,8 +28,11 @@ import com.percussion.itemmanagement.data.PSItemDates;
 import com.percussion.itemmanagement.data.PSRevisionsSummary;
 import com.percussion.itemmanagement.data.PSSoProMetadata;
 import com.percussion.services.useritems.data.PSUserItem;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.webservices.PSErrorResultsException;
 
 import java.util.List;
 import java.util.Map;
@@ -126,7 +129,7 @@ public interface IPSItemService
      * or empty.
      *
      */
-    public Map<String,String> copyFolder(String srcFolder, String destFolder, String name) throws PSItemServiceException;
+    public Map<String,String> copyFolder(String srcFolder, String destFolder, String name) throws PSItemServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, PSErrorResultsException, PSDataServiceException;
     
     /**
      * Calculates the site impact of an asset and returns its result as a String representation of a JSONObject, the json object will have
@@ -195,7 +198,7 @@ public interface IPSItemService
      * @param itemId assumed to be a valid contentid (raw)
      * @param type user item type
      */
-    public void addUserItem(String userName, int itemId, PSUserItemTypeEnum type);
+    public void addUserItem(String userName, int itemId, PSUserItemTypeEnum type) throws IPSGenericDao.SaveException;
     
     /**
      * Removes a user item corresponding to the supplied user name and item id, if no user item
@@ -240,7 +243,7 @@ public interface IPSItemService
      * @author Jose Annunziato
      *
      */
-    public static class PSItemServiceException extends RuntimeException
+    public static class PSItemServiceException extends Exception
     {
         private static final long serialVersionUID = 1L;
         

@@ -25,6 +25,7 @@ package com.percussion.sitemanage.service.impl;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplate;
@@ -43,30 +44,52 @@ import com.percussion.share.async.IPSAsyncJobService;
 import com.percussion.share.async.PSAsyncJobStatus;
 import com.percussion.share.data.IPSFolderPath;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.data.PSSiteSummaryList;
-import com.percussion.sitemanage.error.PSTemplateImportException;
-import com.percussion.sitemanage.service.*;
+import com.percussion.sitemanage.error.PSSiteImportException;
+import com.percussion.sitemanage.service.AssignTemplate;
+import com.percussion.sitemanage.service.AssignTemplateList;
+import com.percussion.sitemanage.service.IPSSiteImportService;
+import com.percussion.sitemanage.service.IPSSiteSectionMetaDataService;
+import com.percussion.sitemanage.service.IPSSiteTemplateService;
+import com.percussion.sitemanage.service.PSPageToTemplatePair;
+import com.percussion.sitemanage.service.PSSiteTemplates;
 import com.percussion.sitemanage.service.PSSiteTemplates.CreateTemplate;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
@@ -142,21 +165,27 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSTemplateSummary> findTemplatesWithNoSite()
     {
-        List<PSTemplateSummary> sums = templateService.findAllUserTemplates();
-        List<PSTemplateSummary> rvalue = new ArrayList<PSTemplateSummary>();
-        for (PSTemplateSummary sum : sums) {
-            List<IPSFolderPath> paths = findFolderPaths(sum.getId());
-            if(paths == null || paths.isEmpty()) {
-                rvalue.add(sum);
+        try {
+            List<PSTemplateSummary> sums = templateService.findAllUserTemplates();
+            List<PSTemplateSummary> rvalue = new ArrayList<>();
+            for (PSTemplateSummary sum : sums) {
+                List<IPSFolderPath> paths = findFolderPaths(sum.getId());
+                if (paths == null || paths.isEmpty()) {
+                    rvalue.add(sum);
+                }
             }
+
+            return new PSTemplateSummaryList(rvalue);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
         }
-        
-        return new PSTemplateSummaryList(rvalue);
-        
+
     }
 
 
-    private List<IPSFolderPath> findFolderPaths(String templateId) {
+    private List<IPSFolderPath> findFolderPaths(String templateId) throws PSValidationException {
         rejectIfBlank("findSitesByTemplate", "templateId", templateId);
         PSTemplateSummary sum =  templateService.find(templateId);
         return siteSectionMetaDataService.findSections(TEMPLATES, sum.getId());
@@ -167,25 +196,27 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSSiteSummary> findSitesByTemplate(@PathParam("id") String templateId)
     {
-        List<IPSFolderPath> folderPaths =  findFolderPaths(templateId);
-        
-        //FB: RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT NC 1-16-16
+        try {
+            List<IPSFolderPath> folderPaths = findFolderPaths(templateId);
 
-        List<String> paths = new ArrayList<String>();
-        for (IPSFolderPath fp : folderPaths) 
-        { 
-        	paths.add(fp.getFolderPath()); 
+            List<String> paths = new ArrayList<>();
+            for (IPSFolderPath fp : folderPaths) {
+                paths.add(fp.getFolderPath());
+            }
+
+            List<PSSiteSummary> rvalue = new ArrayList<>();
+            List<PSSiteSummary> sites = siteDao.findAllSummaries();
+            for (PSSiteSummary site : sites) {
+                if (paths.contains(site.getFolderPath()))
+                    rvalue.add(site);
+            }
+
+            return new PSSiteSummaryList(rvalue);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
         }
-        
-        List<PSSiteSummary> rvalue = new ArrayList<PSSiteSummary>();
-        List<PSSiteSummary> sites = siteDao.findAllSummaries();
-        for (PSSiteSummary site : sites) {
-            if ( paths.contains(site.getFolderPath()) )
-                rvalue.add(site);
-        }
-                
-        return new PSSiteSummaryList(rvalue);
-        
     }
 
     /**
@@ -211,9 +242,13 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSTemplateSummary> findTemplatesBySite(@PathParam("id") String siteId)
     {
-        rejectIfBlank("findTemplatesBySite", "siteId", siteId);
-                
-        return new PSTemplateSummaryList(findTemplates(siteId, null, null));
+        try {
+            rejectIfBlank("findTemplatesBySite", "siteId", siteId);
+
+            return new PSTemplateSummaryList(findTemplates(siteId, null, null));
+        } catch (PSValidationException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     @GET
@@ -222,10 +257,14 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     public List<PSTemplateSummary> findTemplatesBySite(@PathParam("id") String siteId,
           @PathParam("widgetId") String widgetId)
     {
-        rejectIfBlank("findTemplatesBySite", "siteId", siteId);
-        rejectIfBlank("findTemplatesBySite", "widgetId", widgetId);
-        
-        return new PSTemplateSummaryList(findTemplates(siteId, widgetId, null));
+        try {
+            rejectIfBlank("findTemplatesBySite", "siteId", siteId);
+            rejectIfBlank("findTemplatesBySite", "widgetId", widgetId);
+
+            return new PSTemplateSummaryList(findTemplates(siteId, widgetId, null));
+        } catch (PSValidationException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     /*
@@ -233,8 +272,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
      * @see com.percussion.sitemanage.service.IPSSiteTemplateService#findTypedTemplatesBySite
      *  (java.lang.String, com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum)
      */
-    public List<PSTemplateSummary> findTypedTemplatesBySite(String siteId, PSTemplateTypeEnum type)
-    {
+    public List<PSTemplateSummary> findTypedTemplatesBySite(String siteId, PSTemplateTypeEnum type) throws PSValidationException {
         rejectIfBlank("findTemplatesBySite", "siteId", siteId);
                 
         return  new PSTemplateSummaryList(findTemplates(siteId, null, type));
@@ -258,14 +296,12 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
         }
         catch (Exception e)
         {
-            if (log.isDebugEnabled())
-                log.debug("Failed to load site: " + siteId, e);
+            log.error("Failed to load site: {} Error: {}" , siteId, e.getMessage());
         }
         if (site==null)
         {
-            if (log.isDebugEnabled())
-                log.debug("Failed to load site: " + siteId);
-            return new ArrayList<PSTemplateSummary>();
+            log.debug("Failed to load site: {}" , siteId);
+            return new ArrayList<>();
         }
 
         FolderPath folderPath = new FolderPath();
@@ -316,14 +352,18 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSTemplateSummary> save(PSSiteTemplates siteTemplates)
     {
-        validate(siteTemplates);
-        List<CreateTemplate> createTemplates =  siteTemplates.getCreateTemplates();
-        List<AssignTemplate> assignTemplates = siteTemplates.getAssignTemplates();
-        List<AssignTemplate> created = createTemplates(createTemplates);
-        
-        List<AssignTemplate> total = new ArrayList<AssignTemplate>(assignTemplates);
-        total.addAll(created);
-        return  new PSTemplateSummaryList(assignTemplates(total));
+        try {
+            validate(siteTemplates);
+            List<CreateTemplate> createTemplates = siteTemplates.getCreateTemplates();
+            List<AssignTemplate> assignTemplates = siteTemplates.getAssignTemplates();
+            List<AssignTemplate> created = createTemplates(createTemplates);
+
+            List<AssignTemplate> total = new ArrayList<>(assignTemplates);
+            total.addAll(created);
+            return new PSTemplateSummaryList(assignTemplates(total));
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     
@@ -334,37 +374,39 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSTemplateSummary createTemplateFromUrl(@Context HttpServletRequest request, PSSiteTemplates siteTemplates)
     {
-        // Validation of required parameters
-        notNull(siteTemplates);
-        notNull(siteTemplates.getImportTemplate());
-        notEmpty(siteTemplates.getImportTemplate().getSiteIds());
-        notEmpty(siteTemplates.getImportTemplate().getUrl());
-        
-        // Get the user agent from request
-        String userAgent = request.getHeader("User-Agent"); 
+        try {
+            // Validation of required parameters
+            notNull(siteTemplates);
+            notNull(siteTemplates.getImportTemplate());
+            notEmpty(siteTemplates.getImportTemplate().getSiteIds());
+            notEmpty(siteTemplates.getImportTemplate().getUrl());
 
-        // Get site name from parameter
-        String siteName = siteTemplates.getImportTemplate().getSiteIds().get(0);
-        PSSite site = findSiteById(siteName);
-        if (site == null)
-        {
-            throw new PSTemplateImportException("There was an unexpected error retrieving the selected site." + siteName);
+            // Get the user agent from request
+            String userAgent = request.getHeader("User-Agent");
+
+            // Get site name from parameter
+            String siteName = siteTemplates.getImportTemplate().getSiteIds().get(0);
+            PSSite site = findSiteById(siteName);
+            if (site == null) {
+                throw new WebApplicationException("There was an unexpected error retrieving the selected site." + siteName);
+            }
+
+            // Set url to use to import the template
+            site.setBaseUrl(siteTemplates.getImportTemplate().getUrl());
+
+            // Import the template from URL
+            PSSiteImportCtx importContext = templateImportService.importSiteFromUrl(site, userAgent);
+
+            // Load created template to return it.
+            PSTemplateSummary newTemplate = findTemplateById(importContext.getTemplateId());
+            if (newTemplate == null) {
+                throw new WebApplicationException("There was an unexpected error creating the new template.");
+            }
+
+            return newTemplate;
+        } catch (PSSiteImportException e) {
+            throw new WebApplicationException(e.getMessage());
         }
-
-        // Set url to use to import the template
-        site.setBaseUrl(siteTemplates.getImportTemplate().getUrl());
-
-        // Import the template from URL
-        PSSiteImportCtx importContext = templateImportService.importSiteFromUrl(site, userAgent);
-
-        // Load created template to return it.
-        PSTemplateSummary newTemplate = findTemplateById(importContext.getTemplateId());
-        if (newTemplate == null)
-        {
-            throw new PSTemplateImportException("There was an unexpected error creating the new template.");
-        }
-
-        return newTemplate;
     }
     
     @Override
@@ -381,7 +423,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
         }
         catch (Exception e)
         {
-            throw new PSTemplateImportException("There was an unexpected error creating the new template from the page.");
+            throw new WebApplicationException("There was an unexpected error creating the new template from the page.");
         }
       
         return templateSummary;
@@ -437,8 +479,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
 
    
 
-    private PSPage getPageForPageId(String pageId) throws PSPageToTemplateException
-    {
+    private PSPage getPageForPageId(String pageId) throws PSPageToTemplateException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         PSPage page = null;
         if (pageId != null && !pageId.isEmpty())
             page = pageService.find(pageId);
@@ -455,34 +496,39 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Long createTemplateFromUrlAsync(@Context HttpServletRequest request, PSSiteTemplates siteTemplates)
     {
-        // Validation of required parameters
-        notNull(siteTemplates);
-        notNull(siteTemplates.getImportTemplate());
-        notEmpty(siteTemplates.getImportTemplate().getSiteIds());
-        notEmpty(siteTemplates.getImportTemplate().getUrl());
-        
-        // Get the user agent from request
-        String userAgent = request.getHeader("User-Agent");
+        try {
+            // Validation of required parameters
+            notNull(siteTemplates);
+            notNull(siteTemplates.getImportTemplate());
+            notEmpty(siteTemplates.getImportTemplate().getSiteIds());
+            notEmpty(siteTemplates.getImportTemplate().getUrl());
 
-        // Get site name from parameter
-        String siteName = siteTemplates.getImportTemplate().getSiteIds().get(0);
-        PSSite site = findSiteById(siteName);
-        if (site == null)
-        {
-            throw new PSTemplateImportException("There was an unexpected error retrieving the selected site." + siteName);
+            // Get the user agent from request
+            String userAgent = request.getHeader("User-Agent");
+
+            // Get site name from parameter
+            String siteName = siteTemplates.getImportTemplate().getSiteIds().get(0);
+            PSSite site = findSiteById(siteName);
+            if (site == null) {
+                throw new WebApplicationException("There was an unexpected error retrieving the selected site." + siteName);
+            }
+
+            PSSiteImportCtx importContext = new PSSiteImportCtx();
+            importContext.setSite(site);
+            // Set url to use to import the template
+            importContext.setSiteUrl(siteTemplates.getImportTemplate().getUrl());
+            importContext.setStatusMessagePrefix(IMPORT_STATUS_MESSAGE_PREFIX);
+            importContext.setUserAgent(userAgent);
+
+            // Execute the Job to import the template from URL
+            Long jobId = asyncJobService.startJob(IMPORT_TEMPLATE_JOB_BEAN, importContext);
+
+            return new Long(jobId);
+        } catch (IPSFolderService.PSWorkflowNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
         }
-
-        PSSiteImportCtx importContext = new PSSiteImportCtx();
-        importContext.setSite(site);
-        // Set url to use to import the template
-        importContext.setSiteUrl(siteTemplates.getImportTemplate().getUrl());
-        importContext.setStatusMessagePrefix(IMPORT_STATUS_MESSAGE_PREFIX);
-        importContext.setUserAgent(userAgent);
-
-        // Execute the Job to import the template from URL
-        Long jobId = asyncJobService.startJob(IMPORT_TEMPLATE_JOB_BEAN, importContext);
-        
-        return new Long(jobId);
     }
     
     @Override
@@ -546,7 +592,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
         {
             return siteDao.find(siteName);
         }
-        catch (RuntimeException e)
+        catch (RuntimeException | PSDataServiceException e)
         {
             log.error(e.getMessage(), e);
             return null;
@@ -585,8 +631,8 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
         return sum;
     }
     
-    protected List<PSTemplateSummary> assignTemplates(List<AssignTemplate> assignTemplates) {
-        List<PSTemplateSummary> templates = new ArrayList<PSTemplateSummary>();
+    protected List<PSTemplateSummary> assignTemplates(List<AssignTemplate> assignTemplates) throws PSDataServiceException {
+        List<PSTemplateSummary> templates = new ArrayList<>();
         for(AssignTemplate t : assignTemplates) {
             PSTemplateSummary ts = assignTemplate(t);
             templates.add(ts);
@@ -595,13 +641,13 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     }
     
     @SuppressWarnings("unchecked")
-    protected PSTemplateSummary assignTemplate(AssignTemplate assignTemplate) {
+    protected PSTemplateSummary assignTemplate(AssignTemplate assignTemplate) throws PSDataServiceException {
         String templateId = assignTemplate.getTemplateId();
         PSTemplateSummary template = templateService.find(templateId);
         List<String> siteIds = assignTemplate.getSiteIds();
         
         List<PSSiteSummary> oldSites = findSitesByTemplate(templateId);
-        List<PSSiteSummary> newSites = new ArrayList<PSSiteSummary>();
+        List<PSSiteSummary> newSites = new ArrayList<>();
 
         for (String siteId : siteIds) {
             PSSite site = siteDao.find(siteId);
@@ -665,17 +711,16 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
         siteSectionMetaDataService.addItem(site, TEMPLATES, templateId);
     }
     
-    public Map<String, String> copyTemplates(String site1Id, String site2Id)
-    {
+    public Map<String, String> copyTemplates(String site1Id, String site2Id) throws PSValidationException {
         rejectIfBlank("copyTemplates", "site1Id", site1Id);
         rejectIfBlank("copyTemplates", "site2Id", site2Id);
         
-        Map<String, String> tempMap = new HashMap<String, String>();
+        Map<String, String> tempMap = new HashMap<>();
 
         PSSiteSummary site2 = siteDao.findSummary(site2Id);
         if (site2 != null)
         {
-            Set<String> site2TempSet = new HashSet<String>();
+            Set<String> site2TempSet = new HashSet<>();
             for (PSTemplateSummary site2Template : findTemplatesBySite(site2Id))
             {
                 site2TempSet.add(site2Template.getName());
@@ -742,7 +787,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteTemplateService.class);
+    private static final Logger log = LogManager.getLogger(PSSiteTemplateService.class);
 
     /**
      * Generates a name for a new template, using site-wide naming conventions.
