@@ -285,15 +285,18 @@ public abstract class StartWrapper {
             try {
                 debug("The commands being used to start the server are: %s", Arrays.toString(startCmd));
                 final Process tomcatProc = Runtime.getRuntime().exec(startCmd, null, currentDirectory);
-
-                new PSStreamGobbler(name, tomcatProc.getInputStream()).start();
-                if (startupCheckString != null) {
-                    new PSStreamGobbler(name, tomcatProc.getErrorStream(), startupCheckString, () -> setState(ProcState.STARTED)).start();
+                try(InputStream is = tomcatProc.getInputStream()) {
+                    new PSStreamGobbler(name,is ).start();
+                    if (startupCheckString != null) {
+                        try(InputStream eis = tomcatProc.getErrorStream() ) {
+                            new PSStreamGobbler(name, eis, startupCheckString, () -> setState(ProcState.STARTED)).start();
+                        }
+                    } else {
+                        try(InputStream eis = tomcatProc.getErrorStream() ) {
+                            new PSStreamGobbler(name, eis).start();
+                        }
+                    }
                 }
-                else {
-                    new PSStreamGobbler(name, tomcatProc.getErrorStream()).start();
-                }
-
                 updatePid();
 
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -374,16 +377,18 @@ public abstract class StartWrapper {
 
                 if (stopTimeout > 0 && stopResponse != null) {
                     info("Waiting for stop response '%s'", stopResponse);
-                    LineNumberReader lin = new LineNumberReader(new InputStreamReader(s.getInputStream()));
-                    String response;
-                    while ((response = lin.readLine()) != null) {
+                    try(InputStreamReader isr = new InputStreamReader(s.getInputStream())) {
+                        LineNumberReader lin = new LineNumberReader();
+                        String response;
+                        while ((response = lin.readLine()) != null) {
 
-                        // "Stopped" for jetty
-                        if (stopResponse.equals(response)) {
-                            info("Server reports itself as Stopped");
-                            return true;
-                        } else {
-                            debug("Received \"%s\"", response);
+                            // "Stopped" for jetty
+                            if (stopResponse.equals(response)) {
+                                info("Server reports itself as Stopped");
+                                return true;
+                            } else {
+                                debug("Received \"%s\"", response);
+                            }
                         }
                     }
                 }

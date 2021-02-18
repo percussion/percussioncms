@@ -255,7 +255,9 @@ public class PSScreenCapture {
                 if (!parent.exists()) {
                     parent.mkdirs();
                 }
-                IOUtils.copy(fin, new FileOutputStream(curfile));
+                try(FileOutputStream fos = new FileOutputStream(curfile)) {
+                    IOUtils.copy(fin,fos );
+                }
             }
         } catch (FileNotFoundException e) {
             log.error("Cannot find file extracting tar for phantomjs install: " + e.getMessage());

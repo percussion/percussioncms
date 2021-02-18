@@ -259,11 +259,14 @@ public class PSDESEncryptor implements IPSEncryptor
          }
 
          // convert the input string to a stream of bytes
-         ByteArrayInputStream iBuf = new ByteArrayInputStream(
-                 in.getBytes(StandardCharsets.UTF_8));
+         try(ByteArrayInputStream iBuf = new ByteArrayInputStream(
+                 in.getBytes(StandardCharsets.UTF_8))) {
 
-         // do the encryption
-         encrypt(iBuf, out);
+            // do the encryption
+            encrypt(iBuf, out);
+         } catch (IOException e) {
+            throw new PSEncryptionException(e.getMessage(),e);
+         }
    }
 
    /**
@@ -283,23 +286,22 @@ public class PSDESEncryptor implements IPSEncryptor
             return new byte[0];
          }
 
-      ByteArrayOutputStream oBuf;
       // convert the input string to a stream of bytes
          try(ByteArrayInputStream iBuf = new ByteArrayInputStream(
                  in.getBytes(StandardCharsets.UTF_8))) {
 
             // we'll use a byte array for the output stream
-            oBuf = new ByteArrayOutputStream();
+           try(ByteArrayOutputStream oBuf = new ByteArrayOutputStream()) {
 
-            // do the encryption
-            encrypt(iBuf, oBuf);
+              // do the encryption
+              encrypt(iBuf, oBuf);
+
+              // and return the resulting byte array
+              return oBuf.toByteArray();
+           }
          } catch (IOException e) {
             throw new PSEncryptionException(e.getMessage(),e);
          }
-
-      // and return the resulting byte array
-         return oBuf.toByteArray();
-
    }
 
    public byte[] encryptWithPassword(String in, String password) throws PSEncryptionException {
