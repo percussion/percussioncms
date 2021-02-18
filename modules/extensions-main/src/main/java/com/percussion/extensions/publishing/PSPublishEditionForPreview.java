@@ -121,46 +121,40 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
        */
       public void run()
       {
-         InputStream content = null;
-         InputStreamReader inputReader = null;
          Logger l = LogManager.getLogger(getClass());
 
-         try
-         {
+
             int count = 0;
             String stat = null;
             while (true)
             {
                count++;
-               content = mi_requestPath.openStream();
-               //possible performance hit, returns an InputStream
+               try(InputStream content = mi_requestPath.openStream()) {
+                  //possible performance hit, returns an InputStream
 
-               // JDS - the following MAY be more efficient then PSCopyStream to
-               // read the info.
-               inputReader = new InputStreamReader(content);
-               BufferedReader reader = new BufferedReader(inputReader);
-               String tmpStatus = toString(reader);
-               reader.close();
+                  // JDS - the following MAY be more efficient then PSCopyStream to
+                  // read the info.
+                  try (InputStreamReader inputReader = new InputStreamReader(content)) {
+                     try(BufferedReader reader = new BufferedReader(inputReader)) {
+                        String tmpStatus = toString(reader);
+                        reader.close();
 
-               stat = tmpStatus;
-               content.close();
-
-               content = null;
-               
-               // TODO: Ideally this code should check for the edition
-               // being in an in process state and continue rather than 
-               // counting down.
-               if (stat != null && stat.indexOf("notInProgress") >= 0)
-                  break;
-               Thread.sleep(1000);
-               if (count > 10)
-                  break;
+                        stat = tmpStatus;
+                        content.close();
+                        // TODO: Ideally this code should check for the edition
+                        // being in an in process state and continue rather than
+                        // counting down.
+                        if (stat != null && stat.indexOf("notInProgress") >= 0)
+                           break;
+                        Thread.sleep(1000);
+                        if (count > 10)
+                           break;
+                     }
+                  }
+               } catch (IOException | InterruptedException e) {
+                  l.error("Error while reading status from publisher", e);
+               }
             }
-         }
-         catch (Exception e)
-         {
-            l.error("Error while reading status from publisher", e);
-         }
          return;
       }
    }

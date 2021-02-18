@@ -33,6 +33,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystemNotFoundException;
@@ -110,9 +111,9 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
             File f = secureKeyFile.toFile();
             f.getParentFile().mkdirs();
-            FileOutputStream writer = new FileOutputStream(f);
-            writer.write(secureKey);
-            writer.close();
+            try(FileOutputStream writer = new FileOutputStream(f)) {
+                writer.write(secureKey);
+            }
         } catch (IOException e) {
             log.error("Error writing instance secure key file: (" + secureKeyFile.toAbsolutePath().toString() + ")" + ") :" + e.getMessage());
             log.debug(e);
@@ -379,8 +380,10 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
         //Try to get the key from resource - fail over to file system if not found
         try {
-            ret = IOUtils.toByteArray(this.getClass().getResourceAsStream(
-                    "/com/percussion/security/encryption/.legacy-key"));
+            try(InputStream is = this.getClass().getResourceAsStream(
+                    "/com/percussion/security/encryption/.legacy-key")) {
+                ret = IOUtils.toByteArray(is);
+            }
         } catch (IOException | FileSystemNotFoundException e) {
            log.debug("Unable to load .legacy-key from classpath.",e);
         }

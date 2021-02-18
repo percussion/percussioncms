@@ -78,16 +78,17 @@ class PSStreamGobbler extends Thread {
     @Override
     public void run() {
         try {
-            final BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(m_in));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                info("{%s} %s",name,line);
-                // TODO: line.contains should probably be changed to a regex
-                // to detect INFO: bla bla Server startup in...
-                if (waitForStartString && line.contains(startupString)) {
-                    this.startedCallback.run();
-                    waitForStartString = false;
+            try(final BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(m_in))) {
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    info("{%s} %s", name, line);
+                    // TODO: line.contains should probably be changed to a regex
+                    // to detect INFO: bla bla Server startup in...
+                    if (waitForStartString && line.contains(startupString)) {
+                        this.startedCallback.run();
+                        waitForStartString = false;
+                    }
                 }
             }
         } catch (IOException e) {

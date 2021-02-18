@@ -130,12 +130,12 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
    /**
     * This method is called recursively to render the child and/or parent items
     * to render their children or parents.
-    * @param iemsRendered is a list all items rendered so far. List is different
+    * @param itemsRendered is a list all items rendered so far. List is different
     *    for child treeand parent tree.
     * @param indent to be used to indicate the child-parent relationship. Each
     * recursive call increments the indent by INDENT.
     * @param parent is the result element being built
-    * @param connection HTTPConnection object to extract the child XML document.
+    * @param request HTTPConnection object to extract the child XML document.
     * @param url the URL object for the child or parent item of the current
     * item
     */
@@ -307,10 +307,9 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
     */
    public static void main(String[] args)
    {
-      try
-      {
-         PSDependencyTree pSDependencyTree = new PSDependencyTree();
-         FileInputStream fis = new FileInputStream("c:/depend.xml");
+
+      PSDependencyTree pSDependencyTree = new PSDependencyTree();
+      try(FileInputStream fis = new FileInputStream("c:/depend.xml")){
          Document doc = PSXmlDocumentBuilder.createXmlDocument(new InputSource(fis), false);
          doc = pSDependencyTree.processResultDocument(null, null, doc);
 
