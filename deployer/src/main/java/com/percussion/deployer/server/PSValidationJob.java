@@ -46,7 +46,6 @@ import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -86,10 +85,10 @@ public class PSValidationJob extends PSDeployJob
       {
          m_descriptor = new PSImportDescriptor(descriptor.getDocumentElement());
          List pkgList = new ArrayList();
-         Iterator importPkgs = m_descriptor.getImportPackageList().iterator();
+         Iterator<PSImportPackage> importPkgs = m_descriptor.getImportPackageList().iterator();
          while (importPkgs.hasNext())
          {
-            PSImportPackage importPkg = (PSImportPackage)importPkgs.next();
+            PSImportPackage importPkg = importPkgs.next();
             pkgList.add(importPkg.getPackage());
          }
          initDepCount(pkgList.iterator(), false);
@@ -123,19 +122,11 @@ public class PSValidationJob extends PSDeployJob
                + ".xml");
             resultsFile.getParentFile().mkdirs();
             resultsFile.deleteOnExit();
-            
-            FileOutputStream out = null;
-            try 
-            {
-               out = new FileOutputStream(resultsFile);
+
+            try(FileOutputStream out = new FileOutputStream(resultsFile)){
                PSXmlDocumentBuilder.write(doc, out);
             }
-            finally 
-            {
-               if (out != null)
-                  try {out.close();} catch (IOException e){}
-            }
-            
+
             setStatus(100);  
             setStatusMessage(PSDeploymentManager.getBundle().getString("completed"));       
          }
