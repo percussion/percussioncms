@@ -155,7 +155,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
             .loadEditionContentLists(srcEdition.getGUID());
       
       // deep clone both association and ContentList
-      List<PSEditionContentListWrapper> eclists = new ArrayList<PSEditionContentListWrapper>();
+      List<PSEditionContentListWrapper> eclists = new ArrayList<>();
       PSEditionContentListWrapper ecWrapper;
       for (IPSEditionContentList association : associations)
       {
@@ -359,7 +359,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
    public CandidateEdition[] getEditionsFromOtherSites()
    {
       int siteId = m_siteParent.getSiteId().intValue();
-      List<CandidateEdition> edList = new ArrayList<CandidateEdition>();
+      List<CandidateEdition> edList = new ArrayList<>();
       List<IPSEdition> edAll = getPublisherService().findAllEditions(
             m_editionListFilter);
       IPSSite site = null;
@@ -428,7 +428,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
    {
       final IPSSiteManager siteManager =
             PSSiteManagerLocator.getSiteManager();
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
 
       for (final IPSSite site : siteManager.findAllSites())
       {

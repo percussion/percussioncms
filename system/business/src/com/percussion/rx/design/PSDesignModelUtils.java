@@ -77,7 +77,7 @@ public class PSDesignModelUtils
    {
       if (list == null)
          throw new IllegalArgumentException("list must not be null");
-      List<String> temp = new ArrayList<String>();
+      List<String> temp = new ArrayList<>();
       for (Object object : list)
       {
          if(object instanceof String)
@@ -312,7 +312,7 @@ public class PSDesignModelUtils
    public static String checkDependencies(IPSGuid id)
    {
       IPSSystemService sysService = PSSystemServiceLocator.getSystemService();
-      List<IPSGuid> depIds = new ArrayList<IPSGuid>(1);
+      List<IPSGuid> depIds = new ArrayList<>(1);
       depIds.add(id);
       
       List<PSDependency> deps = sysService.findDependencies(
@@ -343,7 +343,7 @@ public class PSDesignModelUtils
             "children may not be null or empty");
       
       IPSSystemService sysService = PSSystemServiceLocator.getSystemService();
-      List<IPSGuid[]> compIds = new ArrayList<IPSGuid[]>(children.size());
+      List<IPSGuid[]> compIds = new ArrayList<>(children.size());
       for (IPSGuid childId : children)
       {
          IPSGuid[] compid = new IPSGuid[2];
@@ -355,8 +355,8 @@ public class PSDesignModelUtils
       List<PSDependency> deps = sysService.findCompositeDependencies(
          compIds);
       
-      Set<PSDependent> depSet = new HashSet<PSDependent>();
-      List<String> depIdList = new ArrayList<String>();
+      Set<PSDependent> depSet = new HashSet<>();
+      List<String> depIdList = new ArrayList<>();
       for (PSDependency dep : deps)
       {
          if (dep.getDependents().isEmpty())
@@ -375,7 +375,7 @@ public class PSDesignModelUtils
          
          depTypes += dependent.getDisplayType();
       }
-      PSPair<List<String>,String> pair = new PSPair<List<String>, String>();
+      PSPair<List<String>,String> pair = new PSPair<>();
       pair.setFirst(depIdList);
       pair.setSecond(depTypes);
       return pair;
@@ -407,7 +407,7 @@ public class PSDesignModelUtils
       IPSAssemblyService service = PSAssemblyServiceLocator
             .getAssemblyService();
       List<IPSTemplateSlot> allSlots = service.findSlotsByName(null);
-      List<IPSTemplateSlot> modSlots = new ArrayList<IPSTemplateSlot>();
+      List<IPSTemplateSlot> modSlots = new ArrayList<>();
       for (IPSTemplateSlot slot : allSlots)
       {
          Collection<PSPair<IPSGuid, IPSGuid>> slotAssociations = slot

@@ -96,7 +96,7 @@ public class PSJobStatusServlet extends HttpServlet
          if (StringUtils.isNotBlank(stopjob))
          {
             psvc.cancelPublishingJob(Long.parseLong(stopjob));
-            Map<String, Object> data = new HashMap<String, Object>();
+            Map<String, Object> data = new HashMap<>();
             data.put("cancelled", stopjob);
             arr.put(data);
          }
@@ -111,7 +111,7 @@ public class PSJobStatusServlet extends HttpServlet
                }
                catch (IllegalStateException e)
                {
-                  data = new HashMap<String, Object>();
+                  data = new HashMap<>();
                   data.put("statename", IPSPublisherJobStatus.State.INACTIVE
                         .name());
                }
@@ -122,7 +122,7 @@ public class PSJobStatusServlet extends HttpServlet
       }
       catch (Exception e)
       {
-         Map<String, Object> data = new HashMap<String, Object>();
+         Map<String, Object> data = new HashMap<>();
          data.put("exception", e.getLocalizedMessage());
          arr.put(data);
       }
@@ -156,7 +156,7 @@ public class PSJobStatusServlet extends HttpServlet
    private Collection<Long> getJobs(String edition,
          String requestid, IPSRxPublisherServiceInternal psvc)
    {
-      Collection<Long> jobs = new ArrayList<Long>();
+      Collection<Long> jobs = new ArrayList<>();
       if (edition != null)
       {
          IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -197,7 +197,7 @@ public class PSJobStatusServlet extends HttpServlet
    {
       IPSPublisherJobStatus stat = psvc.getPublishingJobStatus(job);
       IPSEdition ed = pubsvc.loadEdition(stat.getEditionId());
-      Map<String, Object> data = new HashMap<String, Object>();
+      Map<String, Object> data = new HashMap<>();
       data.put("job_id", job);
       data.put("percent", PSPublishingStatusHelper.getJobCompletionPercent(stat));
       data.put("assembled", stat.countAssembledItems());

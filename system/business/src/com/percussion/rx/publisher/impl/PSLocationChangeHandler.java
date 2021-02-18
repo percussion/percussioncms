@@ -97,7 +97,7 @@ public class PSLocationChangeHandler
     * It maps delivery name to its delivery type, used to cache the delivery
     * type during this process, never <code>null</code>, but may be empty.
     */
-   private Map<String, IPSDeliveryType> m_typeMap = new HashMap<String, IPSDeliveryType>();
+   private Map<String, IPSDeliveryType> m_typeMap = new HashMap<>();
 
    /**
     * Publishing service, never <code>null</code> and can be reset by .
@@ -178,7 +178,7 @@ public class PSLocationChangeHandler
          return getUnpublishExtraPages(item1, siteItems, paths);
       }
 
-      List<IPSAssemblyItem> result = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> result = new ArrayList<>();
       for (IPSSiteItem sItem : siteItems)
       {
          if (!isSamePaginateSiteItem(theSItem, sItem))
@@ -208,7 +208,7 @@ public class PSLocationChangeHandler
          IPSAssemblyItem item1, Collection<IPSSiteItem> siteItems,
          Set<String> paths)
    {
-      List<IPSAssemblyItem> result = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> result = new ArrayList<>();
       for (IPSSiteItem sItem : siteItems)
       {
          if (isSamePublishItem(item1, sItem)
@@ -250,7 +250,7 @@ public class PSLocationChangeHandler
    private Set<String> getDeliveryPaths(List<IPSAssemblyItem> pagedItems,
          int contentId)
    {
-      Set<String> result = new HashSet<String>();
+      Set<String> result = new HashSet<>();
       for (IPSAssemblyItem item : pagedItems)
       {
          if (item.getId().getUUID() != contentId)
@@ -406,8 +406,8 @@ public class PSLocationChangeHandler
       // processing the work items in chunks as a way to reduces memory usage
       int processedSize = 1000;
 
-      List<IPSAssemblyItem> result = new ArrayList<IPSAssemblyItem>();
-      List<IPSAssemblyItem> subResult = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> result = new ArrayList<>();
+      List<IPSAssemblyItem> subResult = new ArrayList<>();
       for (IPSAssemblyItem item : publishItems)
       {
          if ( ! isPosssibleLocationChange(item) )
@@ -484,7 +484,7 @@ public class PSLocationChangeHandler
          Collection<IPSAssemblyItem> items,
          Map<Integer, List<IPSSiteItem>> idToSiteItems, boolean isPaginated)
    {
-      List<IPSAssemblyItem> result = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> result = new ArrayList<>();
 
       for (IPSAssemblyItem item : items)
       {
@@ -647,7 +647,7 @@ public class PSLocationChangeHandler
     */
    private Set<Integer> limitToSite(Set<Integer> parentIds, Integer siteId)
    {
-      Set<Integer> result = new HashSet<Integer>();
+      Set<Integer> result = new HashSet<>();
       for (Integer id : parentIds)
       {
          if (isUnderSite(siteId, id))
@@ -701,14 +701,14 @@ public class PSLocationChangeHandler
    private Map<Integer, List<IPSSiteItem>> groupItemsByFolderIds(
          List<IPSSiteItem> siteItems)
    {
-      Map<Integer, List<IPSSiteItem>> result = new HashMap<Integer, List<IPSSiteItem>>();
+      Map<Integer, List<IPSSiteItem>> result = new HashMap<>();
       for (IPSSiteItem item : siteItems)
       {
          Integer id = item.getFolderId() == null ? 0 : item.getFolderId();
          List<IPSSiteItem> items = result.get(id);
          if (items == null)
          {
-            items = new ArrayList<IPSSiteItem>();
+            items = new ArrayList<>();
             result.put(id, items);
          }
          items.add(item);
@@ -727,7 +727,7 @@ public class PSLocationChangeHandler
    private Set<Integer> getParentFolderIds(IPSAssemblyItem item)
    {
       PSLocator iloc = ((PSLegacyGuid) item.getId()).getLocator();
-      Set<Integer> ids = new HashSet<Integer>();
+      Set<Integer> ids = new HashSet<>();
       List<PSLocator> locs = m_relService.getParents(TYPE_FOLDER_CONTENT, iloc,
             FILTER_TYPE_NONE);
       for (PSLocator loc : locs)
@@ -992,7 +992,7 @@ public class PSLocationChangeHandler
     */
    private Collection<Integer> getIdsFromItems(Collection<IPSAssemblyItem> items)
    {
-      Collection<Integer> result = new HashSet<Integer>();
+      Collection<Integer> result = new HashSet<>();
       for (IPSAssemblyItem item : items)
       {
          result.add(item.getId().getUUID());
@@ -1014,7 +1014,7 @@ public class PSLocationChangeHandler
    private Map<Integer, List<IPSSiteItem>> mapIdToSiteItems(
          Collection<IPSSiteItem> items, Set<PSSiteItemKey> unpublishKeys)
    {
-      Map<Integer, List<IPSSiteItem>> result = new HashMap<Integer, List<IPSSiteItem>>();
+      Map<Integer, List<IPSSiteItem>> result = new HashMap<>();
       for (IPSSiteItem item : items)
       {
          if (unpublishKeys != null && (!unpublishKeys.isEmpty()))
@@ -1028,7 +1028,7 @@ public class PSLocationChangeHandler
          List<IPSSiteItem> pubItems = result.get(contentId);
          if (pubItems == null)
          {
-            pubItems = new ArrayList<IPSSiteItem>();
+            pubItems = new ArrayList<>();
             result.put(contentId, pubItems);
          }
          pubItems.add(item);
