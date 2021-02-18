@@ -24,10 +24,13 @@
 package com.percussion.delivery.caching.utils;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
@@ -36,6 +39,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.lang.Validate;
+import org.xml.sax.SAXException;
 
 /**
  * Helper utilities for Jaxb.
@@ -60,8 +64,7 @@ public class PSJaxbUtils
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public static <T> T unmarshall(InputStream stream, Class<T> type, boolean validate) throws Exception
-    {
+    public static <T> T unmarshall(InputStream stream, Class<T> type, boolean validate) throws JAXBException, SAXException {
         Validate.notNull(stream, "stream");
         
         JAXBContext context = JAXBContext.newInstance(type);
@@ -81,26 +84,18 @@ public class PSJaxbUtils
      * Takes an xml string and unmarshalls it into the given
      * type.
      * 
-     * @param stream an InputStream of an XML file.
+     * @param input an InputStream of an XML file.
      * @param type the class to be unmarshalled to, cannot be  <code>null</code>.
      * @param validate if true then validation will be performed against schema.
      * @return An object of the given type, which has been unmarshalled from
      * the XML file.
      * @throws Exception
      */
-    public static <T> T unmarshall(String input, Class<T> type, boolean validate) throws Exception
-    {
-        InputStream is = null;
-        try
-        {
-            is = new ByteArrayInputStream(input.getBytes("UTF8"));
+    public static <T> T unmarshall(String input, Class<T> type, boolean validate) throws JAXBException, SAXException, IOException {
+        try(InputStream  is = new ByteArrayInputStream(input.getBytes("UTF8"))){
             return unmarshall(is, type, validate);
         }
-        finally
-        {
-            if(is != null)
-                is.close();
-        }
+
     }
     
     /**
@@ -110,8 +105,7 @@ public class PSJaxbUtils
      * @return xml representation of the jaxb object. Never<code>null</code>.
      * @throws Exception
      */
-    public static String marshall(Object obj,  boolean validate) throws Exception
-    {
+    public static String marshall(Object obj,  boolean validate) throws JAXBException, SAXException {
         if(obj == null)
             throw new IllegalArgumentException("obj cannot be null.");
         Class clazz = obj.getClass();

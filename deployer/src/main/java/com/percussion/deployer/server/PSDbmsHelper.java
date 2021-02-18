@@ -69,7 +69,6 @@ import org.w3c.dom.Document;
 import javax.naming.NamingException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1412,10 +1411,7 @@ public class PSDbmsHelper
       if (file == null)
          throw new IllegalArgumentException("file may not be null");
       
-      FileInputStream in = null;
-      try 
-      {
-         in = new FileInputStream(file);
+      try(FileInputStream in = new FileInputStream(file)){
          return PSXmlDocumentBuilder.createXmlDocument(in, false);
       }
       catch (Exception e) 
@@ -1423,11 +1419,7 @@ public class PSDbmsHelper
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
             e.getLocalizedMessage());
       }
-      finally 
-      {
-         if (in != null)
-            try {in.close();} catch (IOException e) {}
-      }
+
    }
    
    /**

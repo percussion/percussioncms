@@ -65,7 +65,6 @@ import org.w3c.dom.Document;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,42 +140,27 @@ public class PSDependencyManager
     * empty.
     * @throws Exception if an error occurs.
     */
-   private void loadConfigFiles(String dir, boolean buildDepMaps)
-      throws Exception
-   {
-      FileInputStream in = null;
+   private void loadConfigFiles(String dir, boolean buildDepMaps) throws PSDeployException {
 
-      try
-      {
          File rootDir = new File(dir);
          File depMapFile = new File(rootDir, CONFIG_FILE_NAME);
-         in = new FileInputStream(depMapFile);
-         Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
-         PSPackageConfiguration config = new PSPackageConfiguration(doc
-               .getDocumentElement(), buildDepMaps);
+         try(FileInputStream in = new FileInputStream(depMapFile)){
+            Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+            PSPackageConfiguration config = new PSPackageConfiguration(doc
+                  .getDocumentElement(), buildDepMaps);
 
-         m_deployOrder = config.getDeployOrder();
-         m_uninstallIgnoreTypes = config.getUninstallIgnoreTypes();
-         m_depMap = config.getDependencyMap();
-         createTypeMappings();
-         ms_instance = this;
+            m_deployOrder = config.getDeployOrder();
+            m_uninstallIgnoreTypes = config.getUninstallIgnoreTypes();
+            m_depMap = config.getDependencyMap();
+            createTypeMappings();
+            ms_instance = this;
       }
       catch (Exception e)
       {
          throw new PSDeployException(IPSDeploymentErrors.DEPENDENCY_MGR_INIT,
                e.toString());
       }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException e)
-            {
-            }
-      }
+
    }
 
    /**
@@ -1165,35 +1149,21 @@ public class PSDependencyManager
    {
       if (dep == null)
          throw new IllegalArgumentException("dep may not be null");
-
-      FileOutputStream out = null;
-      try
-      {
          // save dep as Xml file in directory named using its parent's key
          String name = "UserDep" + dep.getKey();
          File depDir = new File(USER_DEP_DIR, dep.getParentKey());
          depDir.mkdirs();
          File depFile = new File(depDir, name + ".xml");
-         out = new FileOutputStream(depFile);
-         Document doc = PSXmlDocumentBuilder.createXmlDocument();
-         PSXmlDocumentBuilder.write(dep.toXml(doc), out);
-      }
+         try(FileOutputStream out = new FileOutputStream(depFile)){
+            Document doc = PSXmlDocumentBuilder.createXmlDocument();
+            PSXmlDocumentBuilder.write(dep.toXml(doc), out);
+         }
       catch (Exception e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
                .getLocalizedMessage());
       }
-      finally
-      {
-         if (out != null)
-            try
-            {
-               out.close();
-            }
-            catch (IOException ex)
-            {
-            }
-      }
+
    }
 
    /**
@@ -1613,10 +1583,7 @@ public class PSDependencyManager
          File[] depFiles = depDir.listFiles();
          for (int i = 0; i < depFiles.length; i++)
          {
-            FileInputStream in = null;
-            try
-            {
-               in = new FileInputStream(depFiles[i]);
+            try(FileInputStream in = new FileInputStream(depFiles[i])){
                Document doc = PSXmlDocumentBuilder
                      .createXmlDocument(in, false);
                PSUserDependency userDep = new PSUserDependency(doc
@@ -1633,17 +1600,6 @@ public class PSDependencyManager
                throw new PSDeployException(
                      IPSDeploymentErrors.UNEXPECTED_ERROR, e
                            .getLocalizedMessage());
-            }
-            finally
-            {
-               if (in != null)
-                  try
-                  {
-                     in.close();
-                  }
-                  catch (IOException e)
-                  {
-                  }
             }
          }
       }
@@ -1675,12 +1631,12 @@ public class PSDependencyManager
       }
 
       // now process children
-      Iterator deps = dep.getDependencies();
+      Iterator<PSDependency> deps = dep.getDependencies();
       if (deps != null)
       {
          while (deps.hasNext())
          {
-            PSDependency childDep = (PSDependency) deps.next();
+            PSDependency childDep =  deps.next();
             reserveNewIds(childDep, idMap);
          }
       }
@@ -1736,7 +1692,7 @@ public class PSDependencyManager
                "treeCtx must contain the supplied dependency");
       }
 
-      Iterator deps = dep.getDependencies();
+      Iterator<PSDependency> deps = dep.getDependencies();
 
       /*
        * see if we have a local dep of an element and checkElements is false
@@ -1756,7 +1712,7 @@ public class PSDependencyManager
          deps = getDependencies(tok, dep);
          while (deps.hasNext())
          {
-            PSDependency child = (PSDependency) deps.next();
+            PSDependency child =  deps.next();
 
             // only include the child if it passes the suppression filter
             if (!treeCtx.shouldSuppressDependency(child))
@@ -1872,7 +1828,7 @@ public class PSDependencyManager
    {
       boolean isMod = false;
 
-      Iterator deps = pkg.getDependencies();
+      Iterator<PSDependency> deps = pkg.getDependencies();
       if (deps != null)
       {
          boolean exists = doesDependencyExist(tok, pkg);
@@ -1886,7 +1842,7 @@ public class PSDependencyManager
                List newList = new ArrayList();
                while (deps.hasNext())
                {
-                  PSDependency childDep = (PSDependency) deps.next();
+                  PSDependency childDep =  deps.next();
                   PSDependency localDep = getActualDependency(tok, childDep);
                   if (localDep == null)
                      isMod = true;

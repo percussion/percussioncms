@@ -284,12 +284,9 @@ public class PSAuthTypeDependencyHandler extends PSDependencyHandler
     */
    private Properties getAuthTypesProps() throws PSDeployException
    {
-      FileInputStream in = null;
-      try
-      {
-         Properties props = new Properties();
-         in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + "/"
-               + IPSConstants.AUTHTYPE_PROP_FILE);
+      Properties props = new Properties();
+      try(FileInputStream in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + "/"
+               + IPSConstants.AUTHTYPE_PROP_FILE)){
          props.load(in);
          return props;
       }
@@ -298,13 +295,7 @@ public class PSAuthTypeDependencyHandler extends PSDependencyHandler
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
             e.getLocalizedMessage());
       }
-      finally
-      {
-         if (in != null)
-         {
-            try {in.close();} catch (IOException e) {}
-         }
-      }
+
    }
 
    /**
