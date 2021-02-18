@@ -36,11 +36,8 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.share.dao.IPSContentItemDao;
-import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.impl.PSContentItem;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -176,7 +173,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
 
                             break;
                         }
-                    } catch (PSDataServiceException e) {
+                    } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
                         log.warn("Error updating Linked Title. Error:{}", e.getMessage());
                         log.debug(e.getMessage(), e);
                     }
@@ -232,7 +229,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                // just return if this is not a title widget or a blog post widget
                return;
            }
-       } catch (IPSGenericDao.LoadException | IPSGenericDao.DeleteException | IPSGenericDao.SaveException e) {
+       } catch (PSDataServiceException e) {
            e.printStackTrace();
        }
    }
@@ -253,7 +250,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                pageFields.put(PAGE_SUMMARY_FIELD_NAME, newSummary);
                contentItemDao.save(page);
            }
-       } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
+       } catch (PSDataServiceException e) {
            log.warn("Error update Page summary for Page: {} Error: {}",page.getId(),e.getMessage() );
            log.debug(e.getMessage(),e);
        }
@@ -278,7 +275,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                    contentItemDao.save(page);
                }
            }
-       } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
+       } catch (PSDataServiceException e) {
            log.warn("Error update Author for Page: {} Error: {}",page.getId(),e.getMessage());
            log.debug(e.getMessage(),e);
        }
@@ -309,12 +306,12 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                            break;
                        }
                    }
-               } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+               } catch (PSDataServiceException e) {
                    log.warn(e.getMessage());
                    log.debug(e.getMessage(),e);
                }
            }
-       } catch (IPSGenericDao.LoadException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+       } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
           log.warn("Error generating Page summary for Page: {} Error: {}",pageId,e.getMessage());
           log.debug(e.getMessage(),e);
        }

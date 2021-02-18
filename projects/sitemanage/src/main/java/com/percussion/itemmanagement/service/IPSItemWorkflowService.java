@@ -68,7 +68,7 @@ public interface IPSItemWorkflowService
      * @param ignoreRevisionCheck flag to ignore revisions while checking in or not.
      * @return PSNoContent
      */
-     PSNoContent checkIn(String id, boolean ignoreRevisionCheck) throws PSItemWorkflowServiceException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException;
+     PSNoContent checkIn(String id, boolean ignoreRevisionCheck) throws PSItemWorkflowServiceException, PSDataServiceException;
     
     /**
      * Performs a check-out of the item identified by the specified id to the current user.  The item will be

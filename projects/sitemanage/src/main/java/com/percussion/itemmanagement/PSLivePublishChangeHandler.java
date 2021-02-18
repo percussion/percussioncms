@@ -41,6 +41,7 @@ import com.percussion.services.contentchange.IPSContentChangeHandler;
 import com.percussion.services.contentchange.IPSContentChangeService;
 import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangeType;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
@@ -48,6 +49,8 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.impl.PSSitePublishDaoHelper;
 import com.percussion.sitemanage.service.IPSSiteDataService;
@@ -93,9 +96,8 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         this.pageTemplateService = pageTemplateService;
         this.resourceDefinitionService = resourceDefinitionService;
     }
-    
-    @Override
-    public void handleEvent(PSEditorChangeEvent e) throws IPSGenericDao.SaveException {
+
+    public void handleEvent(PSEditorChangeEvent e) throws PSDataServiceException, PSNotFoundException {
         switch (e.getActionType())
         {
            case PSEditorChangeEvent.ACTION_TRANSITION:
@@ -139,7 +141,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     /**
      * @param e
      */
-    private void handleTransition(PSEditorChangeEvent e) throws IPSGenericDao.SaveException {
+    private void handleTransition(PSEditorChangeEvent e) throws IPSGenericDao.SaveException, PSValidationException, PSNotFoundException {
         IPSGuid guid = idMapper.getGuid(new PSLocator(e.getContentId()));
         String id = guid.toString();
         long contentTypeId = e.getContentTypeId();
@@ -195,7 +197,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     /**
      * @param e
      */
-    private void handleUpdate(PSEditorChangeEvent e) throws IPSGenericDao.SaveException {
+    private void handleUpdate(PSEditorChangeEvent e) throws IPSGenericDao.SaveException, PSValidationException, PSNotFoundException {
         IPSGuid guid = idMapper.getGuid(new PSLocator(e.getContentId()));
         String id = guid.toString();
         if (wfHelper.isLocalAsset(id))
@@ -226,7 +228,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     }
 
 
-    private void handleAdd(String id, PSItemTypeEnum itemType, PSContentChangeType changeType, long contentTypeId) throws IPSGenericDao.SaveException {
+    private void handleAdd(String id, PSItemTypeEnum itemType, PSContentChangeType changeType, long contentTypeId) throws IPSGenericDao.SaveException, PSValidationException {
         if (itemType.equals(PSItemTypeEnum.PAGE))
         {
             // page approved
@@ -244,8 +246,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     }
 
 
-    private void handleRemove(String id, PSItemTypeEnum itemType, long contentTypeId)
-    {
+    private void handleRemove(String id, PSItemTypeEnum itemType, long contentTypeId) throws PSValidationException {
         if (itemType.equals(PSItemTypeEnum.PAGE))
         {
             doRemove(id);
@@ -263,8 +264,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     /**
      * @param assetId
      */
-    private void handleAssetChangeForPages(String assetId)
-    {
+    private void handleAssetChangeForPages(String assetId) throws PSValidationException {
         // shared asset is approved (all live pages, all templates using it-their pages)
         Set<String> owners = widgetAssetRelationshipService.getRelationshipOwners(assetId);
         Set<String> pageOwners = new HashSet<>();
@@ -272,18 +272,19 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         Set<String> templateOwners = new HashSet<>();
         for (String owner : owners)
         {
+            try {
 
-            if (isPublishedPage(owner))
-            {
-                pageOwners.add(owner);
-            }
-            else if(isStagingItem(owner))
-            {
-            	pageOwnersStaging.add(owner);
-            }
-            else if (wfHelper.isTemplate(owner))
-            {
-                templateOwners.add(owner);
+                if (isPublishedPage(owner)) {
+                    pageOwners.add(owner);
+                } else if (isStagingItem(owner)) {
+                    pageOwnersStaging.add(owner);
+                } else if (wfHelper.isTemplate(owner)) {
+                    templateOwners.add(owner);
+                }
+            } catch (PSNotFoundException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+                //continue
             }
         }
         
@@ -322,25 +323,19 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         for (Integer id : pageIds)
         {
             String pageId = idMapper.getString(new PSLocator(id));
+            try {
             if (isPublishedPage(pageId))
             {
-                try {
                     doAdd(pageId, getPageSiteId(pageId));
-                } catch (IPSGenericDao.SaveException e) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage());
-                    //continue loop
-                }
             }
             else if(wfHelper.isItemInStagingState(id))
             {
-                try {
                     doAdd(pageId, PSContentChangeType.PENDING_STAGED, getPageSiteId(pageId));
-                } catch (IPSGenericDao.SaveException e) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage());
-                    //continue loop
-                }
+            }
+            } catch (IPSGenericDao.SaveException | PSValidationException | PSNotFoundException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage());
+                //continue loop
             }
         }
     }
@@ -381,13 +376,11 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
 
     }
 
-    private boolean isPublishedPage(String id)
-    {
+    private boolean isPublishedPage(String id) throws PSValidationException, PSNotFoundException {
         return wfHelper.isPage(id) && wfHelper.isLive(id);
     }
 
-    private boolean isStagingItem(String id)
-    {
+    private boolean isStagingItem(String id) throws PSValidationException, PSNotFoundException {
     	return (wfHelper.isPage(id) || wfHelper.isAsset(id)) && isStagingItem(idMapper.getContentId(id));
     }
     
@@ -396,8 +389,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     	return wfHelper.isItemInStagingState(contentId);
     }
     
-    private boolean isPending(String id)
-    {
+    private boolean isPending(String id) throws PSValidationException {
         return wfHelper.isPending(id);
     }
     
@@ -435,7 +427,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
                         PSSiteSummary sum = siteDataService.findByLegacySiteId(guid.toString(),false);
                         log.debug("Found site with id "+guid.toString());
                     }
-                    catch(DataServiceLoadException de){
+                    catch(DataServiceLoadException | PSValidationException de){
                         //Ignore if the site doesn't exist, we don't update folder properties on site delete.
                         log.debug("Folder property has a site with ID " + id + " but it doesn't exist in the system and ignored.");
                         continue;

@@ -399,7 +399,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         lr.setThumbResourceDefinitionId(thumbResourceDefinitionId);
 
             return renderPreviewResourceLink(lr);
-        } catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -609,7 +609,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     private PSRenderLink renderLinkHelper(
             PSRenderLinkContext context,
             PSAssetResource resourceDefinition,
-            IPSLinkableItem item) throws IPSAssetService.PSAssetServiceException, DataServiceNotFoundException {
+            IPSLinkableItem item) throws IPSAssetService.PSAssetServiceException, DataServiceNotFoundException, PSValidationException {
         PSRenderLink rl = new PSRenderLink();
         renderLinkHelper(rl, context, resourceDefinition, item);
         return rl;
@@ -628,7 +628,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
             T renderLink, 
             PSRenderLinkContext context, 
             PSAssetResource resourceDefinition,
-            IPSLinkableItem item) throws IPSAssetService.PSAssetServiceException, DataServiceNotFoundException {
+            IPSLinkableItem item) throws IPSAssetService.PSAssetServiceException, DataServiceNotFoundException, PSValidationException {
         notNull(resourceDefinition, "resourceDefinition");
         if (log.isTraceEnabled())
             log.trace(format("Generating link for context:{0} resourceDefinitionId:{1} item:{2}", context, resourceDefinition, item));

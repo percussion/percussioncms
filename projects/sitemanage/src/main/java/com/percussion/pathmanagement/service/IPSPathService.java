@@ -23,6 +23,7 @@
  */
 package com.percussion.pathmanagement.service;
 
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
 import com.percussion.pathmanagement.data.PSMoveFolderItem;
@@ -35,6 +36,7 @@ import com.percussion.share.service.exception.IPSNotFoundException;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
 
 import java.util.List;
@@ -108,7 +110,7 @@ public interface IPSPathService
      * @throws PSPathServiceException If the item properties or workflow could not be found, or other system failure.
      */
     List<PSItemProperties> findItemProperties(PSItemByWfStateRequest request) throws PSPathNotFoundServiceException,
-            PSPathServiceException, IPSDataService.DataServiceNotFoundException;
+            PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException;
 
     /**
      * Adds a folder {@link PSPathItem} for a given path.
@@ -117,7 +119,7 @@ public interface IPSPathService
      * @throws PSPathNotFoundServiceException If the created folder item could not be found.
      * @throws PSPathServiceException If the folder could not be created or other system failure.
      */
-    PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException;
+    PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException;
     
     /**
      * Adds a new folder {@link PSPathItem} as a child of the given folder path or as a sibling of the given item path.
@@ -154,7 +156,7 @@ public interface IPSPathService
      * @return no content object where operation = "moveItem" if the item is
      * successfully moved.
      */    
-    PSNoContent moveItem(PSMoveFolderItem request) throws PSDataServiceException, PSPathServiceException;
+    PSNoContent moveItem(PSMoveFolderItem request) throws PSDataServiceException, PSPathServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException;
     
     /**
      * Deletes a folder accordingly as specified by a given {@link PSDeleteFolderCriteria}.
@@ -165,7 +167,7 @@ public interface IPSPathService
      * 
      * @throws PSPathServiceException If the folder could not be deleted or other system failure.
      */
-    int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException;
+    int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException;
     
     /**
      * Validates a folder for deletion by the current user.
@@ -177,7 +179,7 @@ public interface IPSPathService
      * @throws PSPathNotFoundServiceException If the folder path could not be found.
      * @throws PSPathServiceException If the folder could not be validated or other system failure.
      */
-    String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException;
+    String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSItemWorkflowService.PSItemWorkflowServiceException;
     
     /**
      * Checks for the existence of a path and finds the last portion of the path which exists.  Never blank.

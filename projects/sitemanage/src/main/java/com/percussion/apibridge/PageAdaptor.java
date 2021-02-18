@@ -63,7 +63,6 @@ import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.pagemanagement.service.impl.PSPageChangeHandler;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.IPSPathService;
-import com.percussion.pathmanagement.service.IPSPathService.PSPathNotFoundServiceException;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.recent.service.rest.IPSRecentService;
 import com.percussion.redirect.data.PSCreateRedirectRequest;
@@ -93,11 +92,9 @@ import com.percussion.share.dao.PSDateUtils;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.PSItemProperties;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSNameGenerator;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
@@ -222,7 +219,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             pathItem = pathService.find(pathServicePath);
 
         }
-        catch (PSPathNotFoundServiceException e)
+        catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
         {
             // Change to say that path is not a page
             throw new PageNotFoundException();
@@ -237,11 +234,16 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         PSPage psPage;
         try {
              psPage = pageService.findPageByPath(url.getUrl());
-        } catch (IPSPageService.PSPageException e) {
+        } catch (IPSPageService.PSPageException | PSValidationException e) {
             throw new BackendException(e.getMessage(),e);
         }
 
-        PSItemProperties itemProperties = pathService.findItemProperties(StringUtils.substring(url.getUrl(), 1));
+        PSItemProperties itemProperties = null;
+        try {
+            itemProperties = pathService.findItemProperties(StringUtils.substring(url.getUrl(), 1));
+        } catch (PSDataServiceException | IPSPathService.PSPathServiceException e) {
+            throw new BackendException(e.getMessage(),e);
+        }
         PSComponentSummary summ = wfHelper.getComponentSummary(itemProperties.getId());
 
         page.setName(psPage.getName());
@@ -281,7 +283,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         PSContentItem contentItem;
         try {
              contentItem = contentItemDao.find(psPage.getId());
-        } catch (IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
 
@@ -685,7 +687,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
           {
         	  pathService.find(pathServicePath);
           }
-          catch (PSPathNotFoundServiceException e)
+          catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
           {
               throw new FolderNotFoundException();
           }
@@ -697,7 +699,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         PSPage psPage;
         try {
             psPage = pageService.findPageByPath(url.getUrl());
-        } catch (IPSPageService.PSPageException e) {
+        } catch (IPSPageService.PSPageException | PSValidationException e) {
             throw new BackendException(e.getMessage(),e);
         }
 
@@ -709,7 +711,11 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
           if (!wfHelper.isCheckedOutToCurrentUser(psPage.getId()))
           {
-              itemWorkflowService.forceCheckOut(psPage.getId());
+              try {
+                  itemWorkflowService.forceCheckOut(psPage.getId());
+              } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                  throw new BackendException(e.getMessage(),e);
+              }
           }
           
           psPage.setName(newName);
@@ -717,7 +723,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
           //Save the Page
         try {
             psPage = pageService.save(psPage);
-        } catch (IPSDataService.DataServiceSaveException | IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSSpringValidationException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
 
@@ -726,7 +732,11 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
           
           if (wfHelper.isCheckedOutToCurrentUser(psPage.getId()))
           {
-              itemWorkflowService.checkIn(psPage.getId());
+              try {
+                  itemWorkflowService.checkIn(psPage.getId());
+              } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                  throw new BackendException(e.getMessage(),e);
+              }
           }
           
           //Check if Redirects are turned on - if they are - generate a redirect.
@@ -774,14 +784,14 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
            pathService.find(pathServicePath);
 
         }
-        catch (PSPathNotFoundServiceException e)
+        catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
         {
             throw new FolderNotFoundException();
         }
         PSPage psPage;
         try {
              psPage = pageService.findPageByPath(url.getUrl());
-        } catch (IPSPageService.PSPageException e) {
+        } catch (IPSPageService.PSPageException | PSValidationException e) {
            throw new BackendException(e.getMessage(),e);
         }
         if (psPage == null)
@@ -848,7 +858,11 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
         if (!newPage && !wfHelper.isCheckedOutToCurrentUser(page.getId()))
         {
-            itemWorkflowService.forceCheckOut(page.getId());
+            try {
+                itemWorkflowService.forceCheckOut(page.getId());
+            } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                throw new BackendException(e.getMessage(),e);
+            }
         }
 
         UrlParts folderUrl = new UrlParts(toPage.getSiteName(), toPage.getFolderPath(), null);
@@ -929,7 +943,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         updateRegionInfo(toPage, page, template);
         try {
             page = pageService.save(page);
-        } catch (IPSDataService.DataServiceSaveException | IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSSpringValidationException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
 
@@ -954,7 +968,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         PSContentItem contentItem;
         try {
              contentItem = contentItemDao.find(page.getId());
-        } catch (IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
         Map<String, Object> fields = contentItem.getFields();
@@ -991,7 +1005,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         if(isUpdated){
             try {
                 contentItemDao.save(contentItem);
-            } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+            } catch (PSDataServiceException e) {
                 throw new BackendException(e.getMessage(),e);
             }
             PSPageChangeHandler ph = new PSPageChangeHandler();
@@ -1012,7 +1026,11 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
         if (wfHelper.isCheckedOutToCurrentUser(page.getId()))
         {
-            itemWorkflowService.checkIn(page.getId());
+            try {
+                itemWorkflowService.checkIn(page.getId());
+            } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                throw new BackendException(e.getMessage(),e);
+            }
         }
     }
 
@@ -1164,7 +1182,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                             assetItem.getFields().putAll(fields);
                             PSAsset savedAsset = assetService.save(assetItem);
                             guidString = savedAsset.getId();
-                        } catch (IPSDataService.DataServiceNotFoundException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSSpringValidationException | IPSAssetService.PSAssetServiceException | IPSDataService.DataServiceLoadException | IPSDataService.DataServiceSaveException e) {
+                        } catch (PSDataServiceException e) {
                             throw new BackendException(e.getMessage(),e);
                         }
                     }
@@ -1183,13 +1201,18 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                     assetItem.getFields().putAll(fields);
                     PSAsset savedAsset = assetService.save(assetItem);
                     guidString = savedAsset.getId();
-                } catch (IPSDataService.DataServiceNotFoundException | IPSAssetService.PSAssetServiceException | PSSpringValidationException | IPSDataService.DataServiceSaveException | IPSDataService.DataServiceLoadException e) {
+                } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
                     throw new BackendException(e.getMessage(),e);
                 }
             }
             
-            if (guidString!=null)
-                itemWorkflowService.checkIn(guidString);
+            if (guidString!=null) {
+                try {
+                    itemWorkflowService.checkIn(guidString);
+                } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                    throw new BackendException(e.getMessage(),e);
+                }
+            }
            
         }
        
@@ -1205,7 +1228,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             pathItem = pathService.find(fullPath);
             pathNotFound = pathItem==null;
         }
-        catch (PSPathNotFoundServiceException e)
+        catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
         {
             // We rethrow if the path not found later.
         }
@@ -1221,7 +1244,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                 assetService.createAssetWidgetRelationship(awRel);
             } else if (assetRels.getConfig().getName().equals("LocalContent")) {
                 if (!pathNotFound)
-                    throw new RuntimeException("Cannot convert local asset to shared asset, asset already exists at " + fullPath);
+                    throw new BackendException("Cannot convert local asset to shared asset, asset already exists at " + fullPath);
                 PSAssetWidgetRelationship awRel = new PSAssetWidgetRelationship(page.getId(),
                         Long.parseLong(widget.getId()), widget.getType(), idMapper.getString(assetRels.getDependent()), 0);
                 assetService.shareLocalContent(asset.getName(), StringUtils.substringAfter(asset.getFolderPath(), "/"),
@@ -1242,7 +1265,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                 // else same so nothing to do.
 
             }
-        } catch (IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | IPSAssetService.PSAssetServiceException | PSSpringValidationException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
     }
@@ -1268,7 +1291,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             pathItem = pathService.find(pathServicePath);
 
         }
-        catch (PSPathNotFoundServiceException e)
+        catch (IPSPathService.PSPathServiceException | PSDataServiceException e)
         {
             // Change to say that path is not a page
             throw new PageNotFoundException();
@@ -1279,7 +1302,11 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             throw new PageNotFoundException();
         }
 
-        pageService.delete(pathItem.getId());
+        try {
+            pageService.delete(pathItem.getId());
+        } catch (PSValidationException e) {
+            throw new BackendException(e);
+        }
     }
 
     @Override
@@ -1392,7 +1419,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
             // TODO: Populate Page
             return page;
-        } catch (IPSGenericDao.LoadException | IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSDataServiceException | IPSPathService.PSPathServiceException e) {
            throw  new BackendException(e.getMessage(),e);
         }
     }
@@ -1426,12 +1453,12 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                 return newAsset.getId();
             else
                 return null;
-        } catch (IPSAssetService.PSAssetServiceException | IPSDataService.DataServiceSaveException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSValidationException e) {
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
             throw new BackendException(e.getMessage(), e);
         }
     }
 
-	private int recursivelyWorkflowAllPages(WorkflowStates state, int counter, String path){
+	private int recursivelyWorkflowAllPages(WorkflowStates state, int counter, String path) throws IPSPathService.PSPathServiceException, PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
 		int ctr = counter;
 		
 		if(path == null)
@@ -1466,63 +1493,70 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 	}
 	
 	@Override
-	public int approveAllPages(URI baseUri, String folderPath) {
-		int counter = 0;
-		
-		if(folderPath == null)
-			folderPath = "";
-		
-		String path = folderPath;
-	
-		counter = recursivelyWorkflowAllPages(WorkflowStates.APPROVE,0, path);
-		return counter;
-	}
+	public int approveAllPages(URI baseUri, String folderPath) throws BackendException {
+        try {
+            int counter = 0;
+
+            if (folderPath == null)
+                folderPath = "";
+
+            String path = folderPath;
+
+            counter = recursivelyWorkflowAllPages(WorkflowStates.APPROVE, 0, path);
+            return counter;
+        } catch (IPSPathService.PSPathServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
+            throw new BackendException(e);
+        }
+    }
 
 	@Override
-	public Page changePageTemplate(URI baseUri, Page p) throws ContentMigrationException, BackendException {
+	public Page changePageTemplate(URI baseUri, Page p) throws BackendException {
+        try {
+            Page ret = null;
 
-        Page ret = null;
+            if (p != null && p.getTemplateName() != null && !p.getTemplateName().isEmpty() && p.getId() != null && !p.getId().isEmpty()) {
 
-        if (p != null && p.getTemplateName() != null && !p.getTemplateName().isEmpty() && p.getId() != null && !p.getId().isEmpty()) {
+                if (!wfHelper.isCheckedOutToCurrentUser(p.getId())) {
+                    itemWorkflowService.forceCheckOut(p.getId());
+                }
 
-            if (!wfHelper.isCheckedOutToCurrentUser(p.getId())) {
-                itemWorkflowService.forceCheckOut(p.getId());
-            }
+                String templateName = p.getTemplateName();
+                String templateId = null;
 
-            String templateName = p.getTemplateName();
-            String templateId = null;
+                templateId = idMapper
+                        .getString(templateService.findUserTemplateIdByName(templateName, p.getSiteName()));
 
-            templateId = idMapper
-                    .getString(templateService.findUserTemplateIdByName(templateName, p.getSiteName()));
+                if ((templateId != null) && p.getId() != null) {
+                    //	pageService.changeTemplate(p.getId(), templateId);
+                    ArrayList<String> pageIds = new ArrayList<String>();
+                    pageIds.add(p.getId());
+                    try {
+                        migrationService.migrateContentOnTemplateChange(templateId, null, pageIds);
+                    } catch (PSContentMigrationException e) {
+                        log.error("An error occurred change Page " + p.getId() + " to template " + templateName, e);
+                        throw new ContentMigrationException();
+                    } catch (PSDataServiceException e) {
+                        throw new BackendException(e.getMessage(), e);
+                    }
 
-            if ((templateId != null) && p.getId() != null) {
-                //	pageService.changeTemplate(p.getId(), templateId);
-                ArrayList<String> pageIds = new ArrayList<String>();
-                pageIds.add(p.getId());
-                try {
-                    migrationService.migrateContentOnTemplateChange(templateId, null, pageIds);
-                } catch (PSContentMigrationException e) {
-                    log.error("An error occurred change Page " + p.getId() + " to template " + templateName, e);
-                    throw new ContentMigrationException();
-                } catch (IPSDataService.DataServiceNotFoundException | IPSAssetService.PSAssetServiceException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSSpringValidationException | IPSDataService.DataServiceSaveException | IPSDataService.DataServiceLoadException e) {
-                    throw new BackendException(e.getMessage(),e);
+                } else {
+                    throw new TemplateNotFoundException(p.getTemplateName());
                 }
 
             } else {
-                throw new TemplateNotFoundException(p.getTemplateName());
+                throw new PageNotFoundException();
             }
 
-        } else {
-            throw new PageNotFoundException();
-        }
+            if (wfHelper.isCheckedOutToCurrentUser(p.getId())) {
+                itemWorkflowService.checkIn(p.getId());
+            }
+            ret = getPage(baseUri, p.getId());
 
-        if (wfHelper.isCheckedOutToCurrentUser(p.getId())) {
-            itemWorkflowService.checkIn(p.getId());
+            return ret;
+        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | BackendException e) {
+            throw new BackendException(e);
         }
-        ret = getPage(baseUri, p.getId());
-
-        return ret;
-	}
+    }
 
 	@Override
 	public List<String> allPagesReport(URI baseUri, String siteFolderPath) throws BackendException {
@@ -1543,8 +1577,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 	       	  if(csvData != null)
 	       		  ret.add(row.toCSVRow());
 	         }
-			} catch (PSReportFailedToRunException | IPSPageService.PSPageException e) {
+			} catch (PSReportFailedToRunException | IPSPageService.PSPageException | IPSGenericDao.LoadException e) {
 				log.error("An error occurred while running the All Pages Report", e);
+		        throw new BackendException(e);
 			}
 				
 			return ret;
@@ -1552,29 +1587,37 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 	}
 
 	@Override
-	public int archiveAllPages(URI baseUri, String folderPath) {
-		int counter = 0;
-		
-		if(folderPath == null)
-			folderPath = "";
-		
-		String path = folderPath;
-	
-		counter = recursivelyWorkflowAllPages(WorkflowStates.ARCHIVE,0, path);
-		return counter;
-	}
+	public int archiveAllPages(URI baseUri, String folderPath) throws BackendException {
+		try {
+            int counter = 0;
+
+            if (folderPath == null)
+                folderPath = "";
+
+            String path = folderPath;
+
+            counter = recursivelyWorkflowAllPages(WorkflowStates.ARCHIVE, 0, path);
+            return counter;
+        } catch (IPSPathService.PSPathServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
+            throw new BackendException(e);
+        }
+    }
 
 	@Override
-	public int submitForReviewAllPages(URI baseUri, String folderPath) {
-		int counter = 0;
-		
-		if(folderPath == null)
-			folderPath = "";
-		
-		String path = folderPath;
-	
-		counter = recursivelyWorkflowAllPages(WorkflowStates.REVIEW,0, path);
-		return counter;
-	}	
+	public int submitForReviewAllPages(URI baseUri, String folderPath) throws BackendException {
+		try {
+            int counter = 0;
+
+            if (folderPath == null)
+                folderPath = "";
+
+            String path = folderPath;
+
+            counter = recursivelyWorkflowAllPages(WorkflowStates.REVIEW, 0, path);
+            return counter;
+        } catch (IPSPathService.PSPathServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
+            throw new BackendException(e);
+        }
+    }
 
 }

@@ -66,8 +66,6 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSDataItemSummaryService;
-import com.percussion.share.service.IPSDataService;
-import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
@@ -184,7 +182,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             rejectIfBlank("checkIn", "id", id);
 
             return checkIn(id, false);
-        } catch (PSValidationException | PSItemWorkflowServiceException | IPSDataService.DataServiceLoadException | DataServiceNotFoundException e) {
+        } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -197,7 +195,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @param ignoreRevisionCheck flag to ignore revisions while checking in or not.
      * @return PSNoContent
      */
-    public PSNoContent checkIn(String id, boolean ignoreRevisionCheck) throws PSItemWorkflowServiceException, IPSDataService.DataServiceLoadException, PSValidationException, DataServiceNotFoundException {
+    public PSNoContent checkIn(String id, boolean ignoreRevisionCheck) throws PSItemWorkflowServiceException, PSDataServiceException {
             List<String> ids = new ArrayList<>();
             ids.add(id);
 
@@ -524,7 +522,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
             return new PSItemUserInfo(summary.getName(), summary.getCheckoutUserName(), currentUser,
                     getAssignmentType(id).getLabel());
-        } catch (IPSDataService.DataServiceLoadException | PSItemWorkflowServiceException | PSValidationException | DataServiceNotFoundException e) {
+        } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -539,7 +537,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
             checkIn(id, true);
             return checkOut(id);
-        } catch (IPSDataService.DataServiceLoadException | PSValidationException | PSItemWorkflowServiceException | DataServiceNotFoundException e) {
+        } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -813,7 +811,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @return list of {@link PSAsset} objects representing assets which could not be transitioned either due to an
      * error or if the items are checked out to a different user.  Never <code>null</code>, may be empty.
      */
-    private List<PSDataItemSummary> approveSharedAssets(String id) throws PSValidationException, IPSDataService.DataServiceLoadException, DataServiceNotFoundException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
+    private List<PSDataItemSummary> approveSharedAssets(String id) throws PSDataServiceException {
         Set<String> sharedAssetIds = new HashSet<>();
         sharedAssetIds.addAll(widgetAssetRelationshipService.getSharedAssets(id));
         sharedAssetIds.addAll(widgetAssetRelationshipService.getLinkedAssets(id));
