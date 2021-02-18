@@ -41,6 +41,7 @@ import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.ui.service.IPSListViewHelper;
@@ -89,18 +90,18 @@ public class PSSitePathItemService extends PSPathItemService
     }
 
     @Override
-    protected PSPathItem findItem(String path) throws PSPathNotFoundServiceException, IPSDataService.DataServiceNotFoundException {
+    protected PSPathItem findItem(String path) throws PSPathNotFoundServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
         SiteIdAndFolderPath sfp = getSiteIdAndFolderPath(path);
         PSSiteSummary site = null;
         try
         {
             site = siteDataService.find(sfp.getSiteId());
         }
-        catch (DataServiceLoadException e)
+        catch (DataServiceLoadException | PSValidationException e)
         {
             try {
                 site = siteDataService.findByPath(("/Sites/" + path).replace("//","/"));
-            }catch ( IPSDataService.DataServiceNotFoundException e1){
+            }catch (IPSDataService.DataServiceNotFoundException | PSValidationException e1){
                 // Site not found, if we have assume we have a valid path and the path item is orphaned
                 String msg = sfp.isOnlySiteId() ? "Oops.  We can't find the site " + sfp.getSiteId() + ".  It may have been deleted." : "Oops. We're sorry. This page should have been deleted when its site was deleted. Please contact Customer Success for assistance.";
                 throw new PSPathNotFoundServiceException(msg);
@@ -161,14 +162,14 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    protected List<PSPathItem> findItems(String path) throws IPSDataService.DataServiceNotFoundException, PSPathNotFoundServiceException {
+    protected List<PSPathItem> findItems(String path) throws IPSDataService.DataServiceNotFoundException, PSPathNotFoundServiceException, PSValidationException {
         if ("/".equals(path)) return findRootChildren();
                
         return super.findItems(path);
     }
     
     @Override
-    protected String getFullFolderPath(String path) throws IPSDataService.DataServiceNotFoundException, PSPathNotFoundServiceException {
+    protected String getFullFolderPath(String path) throws IPSDataService.DataServiceNotFoundException, PSPathNotFoundServiceException, PSValidationException {
         notEmpty(path, "path");
         
         String fullFolderPath = SITE_ROOT;
@@ -183,7 +184,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    public PSPathItem addNewFolder(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException {
+    public PSPathItem addNewFolder(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
         PSPathUtils.validatePath(path);
         
         if ("/".equals(path))
@@ -195,7 +196,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSSpringValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException {
+    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException {
         String path = item.getPath();
         if (getSiteIdAndFolderPath(path).isOnlySiteId())
         {
@@ -206,7 +207,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
 
     @Override
-    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException {
+    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
         String path = criteria.getPath();
         if (getSiteIdAndFolderPath(path).isOnlySiteId())
         {
@@ -224,6 +225,7 @@ public class PSSitePathItemService extends PSPathItemService
                 // purgeItem is false so item is recycled.
                 folderHelper.removeItem(folderPath, idMapper.getString(
                         navService.findNavigationIdFromFolder(folderPath)), false);
+
             }
             catch (IllegalArgumentException e) {
                 throw new PSPathServiceException(e.getMessage());
@@ -235,6 +237,7 @@ public class PSSitePathItemService extends PSPathItemService
         }
 
         return super.deleteFolder(criteria);
+
     }
 
     @Override
@@ -284,8 +287,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    protected Set<String> getApprovedPages(PSPathItem item)
-    {
+    protected Set<String> getApprovedPages(PSPathItem item) throws PSValidationException {
         notNull(item);
         
         return itemWorkflowService.getApprovedPages(item.getId(), PSFolderPathUtils.parentPath(item.getFolderPath()));
@@ -341,14 +343,14 @@ public class PSSitePathItemService extends PSPathItemService
     {
         if (filteredItemNames == null)
         {
-            filteredItemNames = new ArrayList<String>();
+            filteredItemNames = new ArrayList<>();
             filteredItemNames.add(".system");
         }
                 
         return filteredItemNames;
     }
     
-    private PSSiteSummary getSite(String id) throws PSPathNotFoundServiceException, DataServiceLoadException {
+    private PSSiteSummary getSite(String id) throws PSPathNotFoundServiceException, DataServiceLoadException, PSValidationException {
         PSSiteSummary site = siteDataService.find(id);
         if(log.isDebugEnabled())
             log.debug("Loaded site: " + site);

@@ -225,62 +225,61 @@ public class PSCommentsService implements IPSCommentsService
     public List<PSComment> getCommentsOnPage(@PathParam("site") String site, @PathParam("pagePath") String pagePath,
                                              @QueryParam("max") Integer max, @QueryParam("start") Integer start)
     {
-        List<PSComment> aggregatedComments = new ArrayList<>();
+        try {
+            List<PSComment> aggregatedComments = new ArrayList<>();
 
-        if (isBlank(pagePath))
-            pagePath = "";
+            if (isBlank(pagePath))
+                pagePath = "";
 
-        pagePath = "/" + pagePath;
+            pagePath = "/" + pagePath;
 
-        String adminURl= pubServerService.getDefaultAdminURL(site);
-        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);
-        if (server == null)
-            throw new RuntimeException("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_COMMENTS);
+            String adminURl = pubServerService.getDefaultAdminURL(site);
+            PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS, null, adminURl);
+            if (server == null)
+                throw new RuntimeException("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_COMMENTS);
 
-        JSONObject postJson = new JSONObject();
-        postJson.element("site", site);
-        postJson.elementOpt("pagepath", pagePath);
+            JSONObject postJson = new JSONObject();
+            postJson.element("site", site);
+            postJson.elementOpt("pagepath", pagePath);
 
-        try
-        {
-            PSDeliveryClient deliveryClient = new PSDeliveryClient();
-            deliveryClient.setLicenseOverride(licenseId);
+            try {
+                PSDeliveryClient deliveryClient = new PSDeliveryClient();
+                deliveryClient.setLicenseOverride(licenseId);
 
-            JSONArray commentsOnPage = deliveryClient.getJsonObject(
-                    new PSDeliveryActionOptions(server, COMMENT_GET_COMMENTS_ON_PAGE, HttpMethodType.POST, true),
-                    postJson.toString()).getJSONArray("comments");
+                JSONArray commentsOnPage = deliveryClient.getJsonObject(
+                        new PSDeliveryActionOptions(server, COMMENT_GET_COMMENTS_ON_PAGE, HttpMethodType.POST, true),
+                        postJson.toString()).getJSONArray("comments");
 
-            for (int i = 0; i < commentsOnPage.size(); i++)
-            {
-                JSONObject jsonComment = commentsOnPage.getJSONObject(i);
-                PSComment currentComment = new PSComment();
-                currentComment.setPagePath(jsonComment.getString("pagePath"));
-                currentComment.setSiteName(jsonComment.getString("site"));
-                if (jsonComment.get("username").getClass() != JSONNull.class)
-                {
-                    currentComment.setUserName(jsonComment.getString("username"));
+                for (int i = 0; i < commentsOnPage.size(); i++) {
+                    JSONObject jsonComment = commentsOnPage.getJSONObject(i);
+                    PSComment currentComment = new PSComment();
+                    currentComment.setPagePath(jsonComment.getString("pagePath"));
+                    currentComment.setSiteName(jsonComment.getString("site"));
+                    if (jsonComment.get("username").getClass() != JSONNull.class) {
+                        currentComment.setUserName(jsonComment.getString("username"));
+                    }
+                    currentComment.setCommentCreateDate(jsonComment.getString("createdDate"));
+                    currentComment.setCommentTitle(jsonComment.getString("title"));
+                    currentComment.setCommentText(jsonComment.getString("text"));
+                    currentComment.setUserEmail(jsonComment.getString("email"));
+                    currentComment.setUserLinkUrl(jsonComment.getString("url"));
+                    currentComment.setCommentApprovalState(jsonComment.getString("approvalState"));
+                    currentComment.setCommentModerated(jsonComment.getBoolean("moderated"));
+                    currentComment.setCommentViewed(jsonComment.getBoolean("viewed"));
+                    currentComment.setCommentId(jsonComment.getString("id"));
+
+                    aggregatedComments.add(currentComment);
                 }
-                currentComment.setCommentCreateDate(jsonComment.getString("createdDate"));
-                currentComment.setCommentTitle(jsonComment.getString("title"));
-                currentComment.setCommentText(jsonComment.getString("text"));
-                currentComment.setUserEmail(jsonComment.getString("email"));
-                currentComment.setUserLinkUrl(jsonComment.getString("url"));
-                currentComment.setCommentApprovalState(jsonComment.getString("approvalState"));
-                currentComment.setCommentModerated(jsonComment.getBoolean("moderated"));
-                currentComment.setCommentViewed(jsonComment.getBoolean("viewed"));
-                currentComment.setCommentId(jsonComment.getString("id"));
-
-                aggregatedComments.add(currentComment);
+            } catch (Exception e) {
+                String serviceUrl = server.getUrl() + COMMENT_GET_COMMENTS_ON_PAGE;
+                log.warn("Error getting all comments data from processor at : " + serviceUrl, e);
+                throw new WebApplicationException(e, Response.serverError().build());
             }
-        }
-        catch (Exception e)
-        {
-            String serviceUrl = server.getUrl() + COMMENT_GET_COMMENTS_ON_PAGE;
-            log.warn("Error getting all comments data from processor at : " + serviceUrl, e);
-            throw new WebApplicationException(e, Response.serverError().build());
-        }
 
-        return new PSCommentList(aggregatedComments);
+            return new PSCommentList(aggregatedComments);
+        } catch (IPSPubServerService.PSPubServerServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     /*
@@ -514,7 +513,12 @@ public class PSCommentsService implements IPSCommentsService
         // Loop through all available servers. We don't actually know which
         // server the given site is on,
         // so we take the brute force approach, and just try them all.
-        String adminURl= pubServerService.getDefaultAdminURL(name);
+        String adminURl= null;
+        try {
+            adminURl = pubServerService.getDefaultAdminURL(name);
+        } catch (IPSPubServerService.PSPubServerServiceException e) {
+            throw new WebApplicationException(e);
+        }
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);
         if (server == null)
             throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_COMMENTS);

@@ -29,6 +29,7 @@ import com.percussion.pagemanagement.assembler.IPSRegionsAssembler;
 import com.percussion.pagemanagement.assembler.PSMergedRegion;
 import com.percussion.pagemanagement.assembler.PSPageAssemblyContext;
 import com.percussion.pagemanagement.assembler.PSRegionResult;
+import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.server.PSRequest;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -74,8 +75,7 @@ public class PSSerialRegionsAssembler implements IPSRegionsAssembler
             IPSRegionAssembler regionAssembler, 
             IPSAssemblyItem assemblyItem,
             PSPageAssemblyContext context, 
-            Collection<PSMergedRegion> mergedRegions)
-    {
+            Collection<PSMergedRegion> mergedRegions) throws IPSTemplateService.PSTemplateException {
         // hack pulled in from PSConcurrentRegionsAssembler
         setPreviewUrlGenerator();
         

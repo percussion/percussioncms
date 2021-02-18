@@ -27,6 +27,7 @@ import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSContentEvent;
 import com.percussion.i18n.ui.PSI18NTranslationKeyValues;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
@@ -358,7 +359,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
            log.debug("Attempting to add folder: {}", path);
            PSPathItem folder = super.addFolder(path);
            return folderHelper.setFolderAccessLevel(folder);
-       } catch (PSPathServiceException | PSValidationException e) {
+       } catch (PSPathServiceException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
           log.error(e.getMessage());
           log.debug(e.getMessage(),e);
           throw new WebApplicationException(e.getMessage());
@@ -417,7 +418,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
                     PSSiteCopyUtils.CAN_NOT_MOVE_FOLDER);
             stripLeadingSlashForPaths(request);
             return super.moveItem(request);
-        } catch (PSPathServiceException | PSDataServiceException e) {
+        } catch (PSPathServiceException | PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -473,7 +474,11 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
                 "deleteFolderService" , PSSiteCopyUtils.CAN_NOT_DELETE_FOLDER);
         psContentEvent=new PSContentEvent(criteria.getGuid(),String.valueOf(iGuid),criteria.getPath(), PSContentEvent.ContentEventActions.delete, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
         psAuditLogService.logContentEvent(psContentEvent);
-        return String.valueOf( super.deleteFolder(criteria) );
+        try {
+            return String.valueOf(super.deleteFolder(criteria));
+        } catch (PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @PUT
@@ -491,8 +496,12 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN})
     public String validateFolderDelete(@PathParam("path") String path) throws PSPathNotFoundServiceException,
             PSPathServiceException {
-        log.debug("Attempting to validate folder: {} for delete",path);
-        return super.validateFolderDelete(path);
+       try {
+           log.debug("Attempting to validate folder: {} for delete", path);
+           return super.validateFolderDelete(path);
+       } catch (PSValidationException | IPSDataService.DataServiceNotFoundException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+           throw new WebApplicationException(e);
+       }
     }
 
     @Override
@@ -501,14 +510,16 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSItemProperties> findItemProperties(PSItemByWfStateRequest request)
-            throws PSPathNotFoundServiceException, PSPathServiceException
+            throws PSPathServiceException
     {
-        if(log.isDebugEnabled())
-        {
+        try {
             log.debug("Attempting to find item properties for: " + request.getPath() + ", " + request.getWorkflow()
                     + ", " + request.getState());
+
+            return new PSItemPropertiesList(super.findItemProperties(request));
+        } catch (PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+            throw new WebApplicationException(e);
         }
-        return new PSItemPropertiesList(super.findItemProperties(request));
     }
 
     /**

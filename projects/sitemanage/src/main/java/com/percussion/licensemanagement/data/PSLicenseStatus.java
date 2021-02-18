@@ -308,8 +308,7 @@ public class PSLicenseStatus implements Serializable
         this.lastRefresh = lastRefresh;
     }
 
-    public void setLastRefresh(String lastRefresh)
-    {
+    public void setLastRefresh(String lastRefresh) throws DataServiceLoadException {
         Date formattedDate;
         try {
             formattedDate = getDateFromString(lastRefresh);

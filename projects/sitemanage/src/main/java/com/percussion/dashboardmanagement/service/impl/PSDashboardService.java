@@ -73,7 +73,7 @@ public class PSDashboardService implements IPSDashboardService {
 		PSDashboard dashboard;
 		try {
 			dashboard = dashboardDataService.find(user);
-		} catch (DataServiceNotFoundException | IPSDataService.DataServiceLoadException | PSValidationException e) {
+		} catch (PSDataServiceException e) {
 			log.debug("Creating default dashboard for user: {}", user);
 			dashboard = createDefaultDashboard(user);
 		}

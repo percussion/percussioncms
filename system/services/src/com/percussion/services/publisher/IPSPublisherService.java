@@ -87,7 +87,7 @@ public interface IPSPublisherService extends IPSCataloger
     * 
     * @throws PSNotFoundException if cannot find the specified Content List.
     */
-   IPSContentList loadContentList(IPSGuid id);
+   IPSContentList loadContentList(IPSGuid id) throws PSNotFoundException;
 
    /**
     * Load the content list specified by the ID. The returned object can be
@@ -149,7 +149,7 @@ public interface IPSPublisherService extends IPSCataloger
     * @return the single matching content list. It may be <code>null</code>
     *    if cannot find a Content List with the specified name.
     */
-   IPSContentList findContentListByName(String name);
+   IPSContentList findContentListByName(String name) throws PSNotFoundException;
 
    /**
     * Find the content list whose Id matches the given Id
@@ -158,7 +158,7 @@ public interface IPSPublisherService extends IPSCataloger
     * @return the single matching content list. It may be <code>null</code>
     *    if cannot find a Content List with the specified Id.
     */
-   IPSContentList findContentListById(IPSGuid contListID);
+   IPSContentList findContentListById(IPSGuid contListID) throws PSNotFoundException;
 
    /**
     * Get all the content lists, sorted by the passed criteria
@@ -494,7 +494,7 @@ public interface IPSPublisherService extends IPSCataloger
     * {@link com.percussion.rx.publisher.IPSRxPublisherService#queueDemandWork(int, com.percussion.rx.publisher.data.PSDemandWork)}
     */
    boolean executeDemandPublish(String ids[], String parentFolderId,
-         String edition, boolean wait);
+         String edition, boolean wait) throws PSNotFoundException;
 
    /**
     * Fetch the last content list's content item element count. This method will
@@ -669,7 +669,7 @@ public interface IPSPublisherService extends IPSCataloger
     *            <code>null</code>.
     * @param edition the edition guid, never <code>null</code>.
     */
-   void initPublishingStatus(long statusid, Date start, IPSGuid edition);
+   void initPublishingStatus(long statusid, Date start, IPSGuid edition) throws PSNotFoundException;
 
    /**
     * This method is called at the end of a publishing run. It updates the
@@ -747,7 +747,7 @@ public interface IPSPublisherService extends IPSCataloger
     *    never <code>null</code>.
     * @return a list of content lists, may be empty but never <code>null</code>.
     */
-   List<IPSContentList> findAllContentListsBySite(IPSGuid siteId);
+   List<IPSContentList> findAllContentListsBySite(IPSGuid siteId) throws PSNotFoundException;
 
    /**
     * Save the given edition. If the edition already exists then update the
@@ -789,7 +789,7 @@ public interface IPSPublisherService extends IPSCataloger
     * 
     * @return the task data or <code>null</code> if the task data isn't found.
     */
-   IPSEditionTaskDef findEditionTaskById(IPSGuid id);
+   IPSEditionTaskDef findEditionTaskById(IPSGuid id) throws PSNotFoundException;
 
    /**
     * Save an edition task. The save method will assign ids to the task and

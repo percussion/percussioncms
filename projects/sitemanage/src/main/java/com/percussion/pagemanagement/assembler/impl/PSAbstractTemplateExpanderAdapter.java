@@ -53,12 +53,13 @@ import com.percussion.services.publisher.PSPublisherException;
 import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * An adapter to the Template expander extension point in cm system
  * which makes it easier to implement template expanders.
- * See {@link #getTemplateId(IPSGuid, IPSGuid, IPSGuid, Integer, Object)},
- * {@link #expandContentListItem(PSContentListItem)} and
+
  * {@link #createTemplateCache()}.
  * @author adamgent
  * @param <CACHE> template cache
@@ -67,10 +68,12 @@ import com.percussion.utils.guid.IPSGuid;
 public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTemplateExpander
 {
 
+    private static final Logger log = LogManager.getLogger(PSAbstractTemplateExpanderAdapter.class);
+
     /**
      * Return a template guid or <code>null</code>.
      * If <code>null</code> the item will not be expanded which means
-     * {@link #expandContentListItem(PSContentListItem)} will not be run and the
+     *  will not be run and the
      * item will be skipped. 
      * @param parameters the parameters of the expander, never <code>null</code>.
      * @param templateCache never <code>null</code>..
@@ -121,7 +124,14 @@ public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTem
                 Row r = riter.nextRow();
                 IPSGuid contentId = getContentItemGuid(r, summaryMap);
                 IPSGuid folderId = getFolderGuid(r);
-                IPSGuid templateId  = getTemplateId(parameters, cache);
+                IPSGuid templateId=null;
+                try {
+                    templateId = getTemplateId(parameters, cache);
+                } catch (PSValidationException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException e) {
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(),e);
+                    //Continue processing
+                }
                 if (templateId != null) {
                     PSContentListItem item = createContentListItem(contentId, folderId, templateId, siteId, context);
                     List<PSContentListItem> items = expandContentListItem(item, parameters);

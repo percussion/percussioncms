@@ -2085,7 +2085,7 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         try {
             return assemblyItemBridge.createRenderAsset(assemblyItem);
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error(LOG_ERROR_DEFAULT,"toAsset", e.getMessage());
             log.debug(e.getMessage(),e);
             return new PSRenderAsset();
@@ -2881,8 +2881,14 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         String serverBase = "";
         PSPubServer pubServer = null;
-        if (serverId != null)
-            pubServer = pubServerService.findPubServer(serverId);
+        if (serverId != null) {
+            try {
+                pubServer = pubServerService.findPubServer(serverId);
+            } catch (IPSPubServerService.PSPubServerServiceException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
+        }
         if (serverId != null && pubServer != null && pubServer.getServerType().equals(PSPubServer.STAGING))
         {
             serverBase = deliveryInfoService.findBaseByServerType(PSPubServer.STAGING);

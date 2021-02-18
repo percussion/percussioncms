@@ -33,6 +33,7 @@ import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.util.PSSiteManageBean;
@@ -55,7 +56,7 @@ public class PSRenderLinkContextFactory implements IPSRenderLinkContextFactory
         this.siteDataService = siteDataService;
     }
 
-    public PSAssemblyRenderLinkContext create(PSContentListItem listItem, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException {
+    public PSAssemblyRenderLinkContext create(PSContentListItem listItem, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         PSAssemblyRenderLinkContext linkContext = new PSAssemblyRenderLinkContext();
         
         linkContext.setFolderPath(item.getFolderPath());
@@ -68,7 +69,7 @@ public class PSRenderLinkContextFactory implements IPSRenderLinkContextFactory
         return linkContext;        
     }
 
-    public PSAssemblyRenderLinkContext create(IPSAssemblyItem assemblyItem, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException, PSFilterException {
+    public PSAssemblyRenderLinkContext create(IPSAssemblyItem assemblyItem, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException, PSFilterException, PSValidationException {
         PSAssemblyRenderLinkContext linkContext = new PSAssemblyRenderLinkContext();
         
         linkContext.setFolderPath(item.getFolderPath());
@@ -80,7 +81,7 @@ public class PSRenderLinkContextFactory implements IPSRenderLinkContextFactory
         return linkContext;
     }
 
-    public PSAssemblyRenderLinkContext createPreview(PSPage page) throws DataServiceNotFoundException {
+    public PSAssemblyRenderLinkContext createPreview(PSPage page) throws DataServiceNotFoundException, PSValidationException {
         PSAssemblyRenderLinkContext linkContext = new PSAssemblyRenderLinkContext();
         
         linkContext.setFolderPath(page.getFolderPath());
@@ -115,7 +116,7 @@ public class PSRenderLinkContextFactory implements IPSRenderLinkContextFactory
      * @return the site, which may be {@link PSNullSiteSummary} if the site
      * is unknown from both parameters, never <code>null</code>.
      */
-    private PSSiteSummary getSite(IPSGuid siteId, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException {
+    private PSSiteSummary getSite(IPSGuid siteId, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         PSSiteSummary rvalue = null;
         if (siteId != null && siteId.getUUID() != 0) {
             String legacySiteId = idMapper.getString(siteId);

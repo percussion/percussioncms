@@ -304,10 +304,14 @@ public class PagesResource
             @ApiResponse(code = 200, message = "Update OK")})
     public Status approveAllPages(@PathParam("folderPath")String folderPath){
     	Status status = new Status("OK");
-    	
-    	 int ctr = pageAdaptor.approveAllPages(uriInfo.getBaseUri(), folderPath);
-    	 status.setMessage("Approved " + ctr + " Pages");
-    	return status;
+
+    	try {
+            int ctr = pageAdaptor.approveAllPages(uriInfo.getBaseUri(), folderPath);
+            status.setMessage("Approved " + ctr + " Pages");
+            return status;
+        } catch (BackendException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -319,11 +323,15 @@ public class PagesResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status submitAllPages(@PathParam("folderPath")String folderPath){
-    	Status status = new Status("OK");
-    	
-    	 int ctr = pageAdaptor.submitForReviewAllPages(uriInfo.getBaseUri(), folderPath);
-    	 status.setMessage("Submitted " + ctr + " Pages");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = pageAdaptor.submitForReviewAllPages(uriInfo.getBaseUri(), folderPath);
+            status.setMessage("Submitted " + ctr + " Pages");
+            return status;
+        } catch (BackendException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @POST
@@ -335,11 +343,15 @@ public class PagesResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status archiveAllPages(@PathParam("folderPath")String folderPath){
-    	Status status = new Status("OK");
-    	
-    	 int ctr = pageAdaptor.archiveAllPages(uriInfo.getBaseUri(), folderPath);
-    	 status.setMessage("Archived " + ctr + " Pages");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = pageAdaptor.archiveAllPages(uriInfo.getBaseUri(), folderPath);
+            status.setMessage("Archived " + ctr + " Pages");
+            return status;
+        } catch (BackendException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     
