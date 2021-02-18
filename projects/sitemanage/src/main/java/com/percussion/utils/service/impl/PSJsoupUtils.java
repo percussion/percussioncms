@@ -82,7 +82,7 @@ public class PSJsoupUtils
         String classNames = elem.attr("class");
         classNames = classNames.replaceAll("\u00A0", " ");
         String[] names = classNames.split("\\s+");
-        Set<String> result = new LinkedHashSet<String>(Arrays.asList(names));
+        Set<String> result = new LinkedHashSet<>(Arrays.asList(names));
         return result;        
     }
 }

@@ -124,7 +124,7 @@ public class PSWidgetContentFinderUtils
         if (relationshipName == null)
             return rels;
         
-        Set<PSRelationship> sortSet = new HashSet<PSRelationship>();
+        Set<PSRelationship> sortSet = new HashSet<>();
         for (PSRelationship r : rels)
         {
             String name = r.getConfig().getName();
@@ -134,7 +134,7 @@ public class PSWidgetContentFinderUtils
             }
         }
         
-        return new ArrayList<PSRelationship>(sortSet);
+        return new ArrayList<>(sortSet);
     }
     
     /**
@@ -148,7 +148,7 @@ public class PSWidgetContentFinderUtils
      */
     public static Collection<PSRelationship> getMatchRelationships(Collection<PSRelationship> srcRels, Collection<PSWidgetItem> widgets)
     {
-        List<PSRelationship> result = new ArrayList<PSRelationship>();
+        List<PSRelationship> result = new ArrayList<>();
         for (PSWidgetItem w : widgets)
         {
             PSRelationship r = getMatchRelationship(srcRels, w);
@@ -177,7 +177,7 @@ public class PSWidgetContentFinderUtils
             wi.setDefinition(widgetDef);
             WidgetCriteria criteria = new WidgetCriteria(wi);
 
-            TreeSet<PSRelationship> rels = new TreeSet<PSRelationship>(new RelationshipOrder(criteria));
+            TreeSet<PSRelationship> rels = new TreeSet<>(new RelationshipOrder(criteria));
             for (PSRelationship r : srcRels) {
                 if (getFinder().isMatchRelationship(r, criteria, null)) {
                     if (StringUtils.isNotBlank(widget.getId())

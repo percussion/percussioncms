@@ -135,7 +135,7 @@ public class PSErrorCause
     @XmlTransient
     public StackTraceElement[] getStackTrace()
     {
-        List<StackTraceElement> stack = new ArrayList<StackTraceElement>();
+        List<StackTraceElement> stack = new ArrayList<>();
         if (getErrorCauseStackTrace() != null) {
             for(PSErrorCauseElement element : getErrorCauseStackTrace()) {
                 stack.add(element.getStackTraceElement());
@@ -152,7 +152,7 @@ public class PSErrorCause
     {
         this.stackTrace = stackTrace;
         if (stackTrace != null) {
-            errorCauseStackTrace = new ArrayList<PSErrorCauseElement>();
+            errorCauseStackTrace = new ArrayList<>();
             for(StackTraceElement st : stackTrace) {
                 errorCauseStackTrace.add(new PSErrorCauseElement(st));
             }

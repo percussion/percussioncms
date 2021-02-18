@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PSTransformCategory {
 
    private String label;
-   private List<PSTransformCategoryNode> topNodes = new ArrayList<PSTransformCategoryNode>();
+   private List<PSTransformCategoryNode> topNodes = new ArrayList<>();
    
    @XmlAttribute(name="label")
    public String getLabel()

@@ -264,7 +264,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
             Set<Integer> userRoleIds = wf.getRoleIds(userRoles);
 
             int stateId = item.getContentStateId();
-            List<String> triggers = new ArrayList<String>();
+            List<String> triggers = new ArrayList<>();
             PSState state = getState(id);
             for (PSTransition t : state.getTransitions()) {
                 if (isAllowedTransition(t, userRoleIds)) {
@@ -645,7 +645,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     @Override
     public List<String> getStagingRoles(int workflowId) 
     {
-    	List<String> roleNames = new ArrayList<String>();
+    	List<String> roleNames = new ArrayList<>();
     	PSMetadata md = metadataService.find(IPSSteppedWorkflowService.METADATA_STAGING_ROLES_KEY_PREFIX + workflowId);
     	if(md != null)
     	{
@@ -721,7 +721,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
 	public void transitionToArchive(Set<String> ids) throws PSValidationException {
 		 rejectIfNull("transitionToArchive", "ids", ids);
 	        
-	        Set<String> tids = new HashSet<String>();
+	        Set<String> tids = new HashSet<>();
 	        
 	        for (String id : ids)
 	        {
@@ -750,7 +750,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
 	public void transitionToReview(Set<String> ids) throws PSValidationException {
 		 rejectIfNull("transitionToReview", "ids", ids);
 	        
-	        Set<String> tids = new HashSet<String>();
+	        Set<String> tids = new HashSet<>();
 	        
 	        for (String id : ids)
 	        {

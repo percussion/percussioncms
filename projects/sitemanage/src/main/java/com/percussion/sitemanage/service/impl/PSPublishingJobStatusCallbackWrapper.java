@@ -37,7 +37,7 @@ import org.apache.commons.lang.Validate;
  */
 public class PSPublishingJobStatusCallbackWrapper implements IPSPublishingJobStatusCallback
 {
-    private List<IPSPublishingJobStatusCallback> callBacks = new ArrayList<IPSPublishingJobStatusCallback>();
+    private List<IPSPublishingJobStatusCallback> callBacks = new ArrayList<>();
     
     @Override
     public void notifyStatus(IPSPublisherJobStatus status)

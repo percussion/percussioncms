@@ -78,7 +78,7 @@ public class PSUser extends PSAbstractNamedObject
     
     public PSUser()
     {
-        roles = new ArrayList<String>(); 
+        roles = new ArrayList<>();
     }
     
     /**
@@ -175,7 +175,7 @@ public class PSUser extends PSAbstractNamedObject
     {
         PSUser user = (PSUser) super.clone();
         if (this.getRoles() != null) {
-            user.setRoles(new ArrayList<String>(this.getRoles()));
+            user.setRoles(new ArrayList<>(this.getRoles()));
         }
         return user;
     }  

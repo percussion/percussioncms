@@ -57,7 +57,7 @@ public class PSModuleLicenses
     public void addModuleLicense(PSModuleLicense moduleLicense){
         notNull(moduleLicense);
         if(this.moduleLicenses == null)
-            this.moduleLicenses = new ArrayList<PSModuleLicense>();
+            this.moduleLicenses = new ArrayList<>();
         for (Iterator<PSModuleLicense> iter = this.moduleLicenses.iterator();iter.hasNext();)
         {
             PSModuleLicense ml = iter.next();
@@ -71,7 +71,7 @@ public class PSModuleLicenses
     public void removeModuleLicense(PSModuleLicense moduleLicense){
         notNull(moduleLicense);
         if(this.moduleLicenses == null)
-            this.moduleLicenses = new ArrayList<PSModuleLicense>();
+            this.moduleLicenses = new ArrayList<>();
         for (Iterator<PSModuleLicense> iter = this.moduleLicenses.iterator();iter.hasNext();)
         {
             PSModuleLicense ml = iter.next();

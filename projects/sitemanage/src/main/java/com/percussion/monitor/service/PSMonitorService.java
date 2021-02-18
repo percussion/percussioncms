@@ -41,7 +41,7 @@ import java.util.TreeMap;
 @Lazy
 public class PSMonitorService {
 	
-	private static Map<String, PSMonitor> monitors = new TreeMap<String, PSMonitor>(String.CASE_INSENSITIVE_ORDER);
+	private static Map<String, PSMonitor> monitors = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	
 	private static PSMonitorDesignators designatorNames = new PSMonitorDesignators();
 	

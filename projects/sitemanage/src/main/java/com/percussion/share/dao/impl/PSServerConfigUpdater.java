@@ -432,7 +432,7 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
         CatalogType catalog = ldapServer.getCatalogType();
        
         // add directories
-        List<PSReference> dirRefs = new ArrayList<PSReference>();
+        List<PSReference> dirRefs = new ArrayList<>();
         int i = 0;
         for (String orgUnit : ldapServer.getOrganizationalUnits())
         {

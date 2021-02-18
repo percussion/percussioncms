@@ -95,7 +95,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
         boolean returnMap = params.length > 1 && Boolean.parseBoolean(ep.getStringParam(1, "false", false));
         if(StringUtils.isBlank(value))
             return value;
-        Map<String, String> attribs = new HashMap<String, String>();
+        Map<String, String> attribs = new HashMap<>();
         String updatedValue = processLinksAndImages(value, attribs);
         return returnMap?attribs:updatedValue;
     }

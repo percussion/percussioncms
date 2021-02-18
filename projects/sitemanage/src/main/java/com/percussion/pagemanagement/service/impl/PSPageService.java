@@ -1157,7 +1157,7 @@ try {
      */
     private class PSUnassignedPagesDataHelper
     {
-        private Map<String, PSMockDataForUnassignedPages> mockDataMap = new HashMap<String, PSMockDataForUnassignedPages>();
+        private Map<String, PSMockDataForUnassignedPages> mockDataMap = new HashMap<>();
         
         public PSUnassignedResults getUnassignedResults(String siteName, int startIndex, int maxResults) throws Exception
         {
@@ -1221,7 +1221,7 @@ try {
          */
         private PSUnassignedResults buildUnassignedResults(List<Integer> catalogedIds, List<Integer> importedIds, List<Integer> importingIds, Integer startIndex, Integer maxResults) throws PSPageException {
             // Build a unique list
-            List<Integer> pageIds = new ArrayList<Integer>();
+            List<Integer> pageIds = new ArrayList<>();
             pageIds.addAll(catalogedIds);
             pageIds.addAll(importedIds);
             pageIds.addAll(importingIds);
@@ -1235,7 +1235,7 @@ try {
             // build Item list
             PSPagedObjectList<Integer> pageGroup = PSPagedObjectList.getPage(pageIds, startIndex, maxResults);
 
-            List<UnassignedItem> items = new ArrayList<UnassignedItem>();
+            List<UnassignedItem> items = new ArrayList<>();
             for (Integer id : pageGroup.getChildrenInPage())
             {
                 items.add(getUnassignedPage(id, importingIds, importedIds));
@@ -1399,14 +1399,14 @@ try {
     }
 	@Override
 	public List<PSPageReportLine> findAllPages(String sitePath) throws PSReportFailedToRunException, PSPageException, IPSGenericDao.LoadException {
-		List<PSPageReportLine> ret = new ArrayList<PSPageReportLine>();
+		List<PSPageReportLine> ret = new ArrayList<>();
 		List<PSPage> pages = pageDao.findAllPagesBySite(sitePath);
 		
 		List<PSCoreItem> nodes = null;
 		for(PSPage p : pages){
 			PSPageReportLine line = new PSPageReportLine();
 			try {
-				nodes = this.contentWs.loadItems(new ArrayList<IPSGuid>(), false, true, false, true);
+				nodes = this.contentWs.loadItems(new ArrayList<>(), false, true, false, true);
 			} catch (PSErrorResultsException e) {
 				log.error("Error retrieving");
 			}

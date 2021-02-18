@@ -48,7 +48,7 @@ public class PSWidgetPackageResolver implements IPSTokenResolver
     private Map<String, String> tokenMap;
     private Set<String> optionalTokens;
     private PSWidgetPackageSpec packageSpec;
-    private static List<IPSBindingGenerator> bindingGenerators = new ArrayList<IPSBindingGenerator>();
+    private static List<IPSBindingGenerator> bindingGenerators = new ArrayList<>();
     
     static
     {
@@ -65,7 +65,7 @@ public class PSWidgetPackageResolver implements IPSTokenResolver
     {
         Validate.notNull(packageSpec);
 
-        tokenMap = new HashMap<String, String>();
+        tokenMap = new HashMap<>();
         tokenMap.put("WIDGET_PKG_NAME", packageSpec.getPackageName());
         tokenMap.put("PROPERCASE_WIDGET_NAME", packageSpec.getFullWidgetName());
         tokenMap.put("WIDGET_VERSION", packageSpec.getWidgetVersion());
@@ -78,7 +78,7 @@ public class PSWidgetPackageResolver implements IPSTokenResolver
         tokenMap.put("WIDGET_HTML", packageSpec.getWidgetHtml()); 
         tokenMap.put("FIELD_BINDINGS", generateFieldBindings(packageSpec.getFields()));
         tokenMap.put("IS_RESPONSIVE", Boolean.toString(packageSpec.isResponsive()));
-        optionalTokens = new HashSet<String>();
+        optionalTokens = new HashSet<>();
         optionalTokens.add("WIDGET_DESCRIPTION");
         String defaultToolTipMessage="This widget is showing sample content";
         String defaultIconPath="/rx_resources/widgets/"+packageSpec.getFullWidgetName()+"/images/"+packageSpec.getFullWidgetName()+"Icon.png";

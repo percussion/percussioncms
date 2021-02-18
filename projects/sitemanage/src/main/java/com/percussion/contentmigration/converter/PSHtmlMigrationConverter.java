@@ -45,7 +45,7 @@ public class PSHtmlMigrationConverter implements IPSContentMigrationConverter
     @Override
     public Map<String, Object> convert(String source)
     {
-        Map<String, Object> fields = new HashMap<String, Object>();
+        Map<String, Object> fields = new HashMap<>();
         fields.put(WIDGET_FIELD_HTML, source);
         return fields;
     }

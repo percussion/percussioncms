@@ -70,7 +70,7 @@ public class PSIntegrityStatus extends PSAbstractDataObject
     @JoinColumn(name = "TOKEN", nullable = false, insertable = false, updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSIntegrityTask")
     @Fetch(FetchMode. SUBSELECT)
-    private Set<PSIntegrityTask> tasks = new HashSet<PSIntegrityTask>();  
+    private Set<PSIntegrityTask> tasks = new HashSet<>();
     
     @Transient
     private long elapsedTime;

@@ -44,7 +44,7 @@ public class PSWidgetInstance
     
     private PSWidgetDefinition definition;
     private PSWidgetItem item;
-    private List<PSPair<String, String>> ownerAssetIds = new ArrayList<PSPair<String, String>>();
+    private List<PSPair<String, String>> ownerAssetIds = new ArrayList<>();
     
     /**
      * Temporary for sprint.
@@ -58,7 +58,7 @@ public class PSWidgetInstance
     @Deprecated
     public List<String> getAssetIds()
     {
-        List<String> assetIds = new ArrayList<String>();
+        List<String> assetIds = new ArrayList<>();
         for (PSPair<String,String> idPair : getOwnerAssetIds())
         {
             assetIds.add(idPair.getSecond());

@@ -60,7 +60,7 @@ public class PSRegion extends PSAbstractRegion {
     @JsonIgnoreProperties("allRegions")
     public List<PSRegion> getAllRegions()
     {
-        List<PSRegion> results = new ArrayList<PSRegion>();
+        List<PSRegion> results = new ArrayList<>();
         collectRegions(this, results);
         return results;
     }

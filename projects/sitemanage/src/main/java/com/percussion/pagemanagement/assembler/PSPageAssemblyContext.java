@@ -47,7 +47,7 @@ public class PSPageAssemblyContext extends PSAbstractAssemblyContext
      * never <code>null</code>.
      * @see #getRegions()
      */
-    private Map<String, List<PSRegionResult>> regions = new ConcurrentHashMap<String, List<PSRegionResult>>();
+    private Map<String, List<PSRegionResult>> regions = new ConcurrentHashMap<>();
 
     private RenderResult renderResult = null;
     
@@ -107,7 +107,7 @@ public class PSPageAssemblyContext extends PSAbstractAssemblyContext
 
         public RenderResult()
         {
-            renderedWidgets = new ArrayList<RenderedWidget>();
+            renderedWidgets = new ArrayList<>();
             for (String regionId : regions.keySet())
             {
                 for (PSRegionResult r : regions.get(regionId))
@@ -124,7 +124,7 @@ public class PSPageAssemblyContext extends PSAbstractAssemblyContext
          */
         public List<Long> getWidgetIds()
         {
-            List<Long> result = new ArrayList<Long>();
+            List<Long> result = new ArrayList<>();
             for (RenderedWidget w : renderedWidgets)
                 result.add(w.widgetId);
             
@@ -137,7 +137,7 @@ public class PSPageAssemblyContext extends PSAbstractAssemblyContext
          */
         public List<String> getWidgetNames()
         {
-            List<String> result = new ArrayList<String>();
+            List<String> result = new ArrayList<>();
             for (RenderedWidget w : renderedWidgets)
                 result.add(w.widgetName);
             
@@ -150,7 +150,7 @@ public class PSPageAssemblyContext extends PSAbstractAssemblyContext
          */
         public List<String> getWidgetContents()
         {
-            List<String> result = new ArrayList<String>();
+            List<String> result = new ArrayList<>();
             for (RenderedWidget w : renderedWidgets)
                 result.add(w.content);
             
@@ -163,7 +163,7 @@ public class PSPageAssemblyContext extends PSAbstractAssemblyContext
          */
         public List<String> getWidgetTypes()
         {
-            List<String> result = new ArrayList<String>();
+            List<String> result = new ArrayList<>();
             for (RenderedWidget w : renderedWidgets)
                 result.add(w.widgetType);
             
@@ -176,7 +176,7 @@ public class PSPageAssemblyContext extends PSAbstractAssemblyContext
          */
         public List<String> getRegionIds()
         {
-            List<String> result = new ArrayList<String>();
+            List<String> result = new ArrayList<>();
             for (RenderedWidget w : renderedWidgets)
                 result.add(w.regionId);
             

@@ -155,7 +155,7 @@ public class PSURLConverter
         
         String[] linkAndParameters = convertedLink.split("\\?");
         
-        Set<String> suffixes = new HashSet<String>();
+        Set<String> suffixes = new HashSet<>();
         suffixes.add(FileSuffixes.Css.getSuffix());
         suffixes.add(FileSuffixes.CssGz.getSuffix());
         
@@ -191,7 +191,7 @@ public class PSURLConverter
     {
         String fullThemePath = getConvertedFileSystemPath(remoteUrl, true);
         
-        Set<String> suffixes = new HashSet<String>();
+        Set<String> suffixes = new HashSet<>();
         suffixes.add(FileSuffixes.Css.getSuffix());
         suffixes.add(FileSuffixes.CssGz.getSuffix());
         

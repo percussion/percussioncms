@@ -418,7 +418,7 @@ public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
      */
     public List<PSWidgetItem> getWidgets()
     {
-        ArrayList<PSWidgetItem> widgetList = new ArrayList<PSWidgetItem>();
+        ArrayList<PSWidgetItem> widgetList = new ArrayList<>();
 
         PSRegionTree treeRegion = getRegionTree();
         if (treeRegion != null)

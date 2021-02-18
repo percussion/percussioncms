@@ -96,8 +96,8 @@ public class PSWorkflowEditionTask extends PSAbstractWorkflowExtension implement
         if (pubServerId != null && pubServerId.equals(getPubServerService().getDefaultPubServer(site.getGUID()).getGUID()))
             isDefaultPubServer = true;
         
-        Set<Integer> pubIds = new HashSet<Integer>();
-        Set<Integer> unpubIds = new HashSet<Integer>();
+        Set<Integer> pubIds = new HashSet<>();
+        Set<Integer> unpubIds = new HashSet<>();
         for(IPSPubItemStatus item : items) {
         	try
         	{

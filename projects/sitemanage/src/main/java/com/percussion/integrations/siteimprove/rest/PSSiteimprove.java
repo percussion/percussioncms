@@ -148,7 +148,7 @@ public class PSSiteimprove {
 	public Response storeSiteImproveToken(PSSiteImproveCredentials credentials) {
 		try {
 
-			Map<String, String> credentialsToValidate = new HashMap<String, String>();
+			Map<String, String> credentialsToValidate = new HashMap<>();
 
 			credentialsToValidate.put("token", credentials.getToken());
 			credentialsToValidate.put("sitename", credentials.getSiteName());

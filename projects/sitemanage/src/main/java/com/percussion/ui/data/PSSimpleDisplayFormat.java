@@ -44,7 +44,7 @@ public class PSSimpleDisplayFormat
     private String name;
     private String displayName;
     private String description;
-    private List<PSDisplayFormatColumn> columns = new ArrayList<PSDisplayFormatColumn>();
+    private List<PSDisplayFormatColumn> columns = new ArrayList<>();
     private String sortby;
     private boolean sortAscending = true;    
     

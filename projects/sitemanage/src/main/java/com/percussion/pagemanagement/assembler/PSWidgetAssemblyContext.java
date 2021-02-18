@@ -97,10 +97,10 @@ public class PSWidgetAssemblyContext extends PSAbstractAssemblyContext
         }
         if (this.widgetContents != null) 
         {
-            List<PSPair<String,String>> ownerAssetIds = new ArrayList<PSPair<String,String>>();
+            List<PSPair<String,String>> ownerAssetIds = new ArrayList<>();
             for(PSRenderAsset ai : widgetContents) 
             {
-                PSPair<String,String> pair = new PSPair<String,String>(ai.getOwnerId().toString(), ai.getId());
+                PSPair<String,String> pair = new PSPair<>(ai.getOwnerId().toString(), ai.getId());
                 ownerAssetIds.add(pair);
             }
             getWidget().setOwnerAssetIds(ownerAssetIds);
@@ -135,7 +135,7 @@ public class PSWidgetAssemblyContext extends PSAbstractAssemblyContext
         else
         {
             if (widgetContents == null)
-                widgetContents = new ArrayList<PSRenderAsset>();
+                widgetContents = new ArrayList<>();
             widgetContents.add(0, item);
         }
         if (log.isDebugEnabled())

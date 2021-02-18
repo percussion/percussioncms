@@ -293,15 +293,15 @@ public class PSPageCatalogService implements IPSPageCatalogService
         {
             //This happens if a site was never imported or if the site has been deleted.
             log.warn("Unable to find cataloged pages, the specified site was not found: " + siteName);
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
 
         // list of imported page ids to return
-        List<String> filteredPageIds = new ArrayList<String>();
+        List<String> filteredPageIds = new ArrayList<>();
         
         try
         {
-            List<String> importedPageIds = new ArrayList<String>();
+            List<String> importedPageIds = new ArrayList<>();
             
             String templateId = getCatalogTemplateIdBySite(siteName);
 
@@ -313,7 +313,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
             importedPageIds.removeAll(catalogedPageIds);
 
             // call query service to get the page IDs associated to unassigned template
-            List<Integer> intPageIds = new ArrayList<Integer>(importedPageIds.size());
+            List<Integer> intPageIds = new ArrayList<>(importedPageIds.size());
             for (String importedId : importedPageIds)
             {
                 int id = (new PSLegacyGuid(importedId)).getContentId();
@@ -602,8 +602,8 @@ public class PSPageCatalogService implements IPSPageCatalogService
 
     private class PSSiteCache
     {
-        private Map<Long, String> templateBySiteCache = new ConcurrentHashMap<Long, String>();
-        private Map<Long, AtomicInteger> catalogCountBySiteCache = new ConcurrentHashMap<Long, AtomicInteger>();
+        private Map<Long, String> templateBySiteCache = new ConcurrentHashMap<>();
+        private Map<Long, AtomicInteger> catalogCountBySiteCache = new ConcurrentHashMap<>();
         
         public String getSiteTemplateId(Long siteId)
         {

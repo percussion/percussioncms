@@ -73,7 +73,7 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     private IPSTemplateService templateService;
     private PSItemDefManager itemDefManager;
     private IPSGuidManager guidManager;
-    private List<String> excludedContentTypes = new ArrayList<String>();
+    private List<String> excludedContentTypes = new ArrayList<>();
     private IPSResourceDefinitionService resourceDefinitionService;
     private PSAssemblyItemBridge assemblyItemBridge;
     

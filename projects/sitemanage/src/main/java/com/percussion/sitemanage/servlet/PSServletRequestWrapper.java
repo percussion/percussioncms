@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
  */
 public class PSServletRequestWrapper extends HttpServletRequestWrapper
 {
-    private Map<String, String[]> wrappedparams = new LinkedHashMap<String, String[]>();
+    private Map<String, String[]> wrappedparams = new LinkedHashMap<>();
 
     /**
      * @param request
@@ -114,7 +114,7 @@ public class PSServletRequestWrapper extends HttpServletRequestWrapper
      */
     private Map<String, String[]> getMergedParameters()
     {
-        Map<String, String[]> mergedparams = new LinkedHashMap<String, String[]>(super.getParameterMap());
+        Map<String, String[]> mergedparams = new LinkedHashMap<>(super.getParameterMap());
         mergedparams.putAll(wrappedparams);
         return mergedparams;
     }

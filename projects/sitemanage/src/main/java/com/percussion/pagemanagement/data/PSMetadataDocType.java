@@ -47,7 +47,7 @@ public class PSMetadataDocType extends PSAbstractDataObject
 
     private String selected = "";
 
-    private List<PSMetadataDocTypeOptions> options = new ArrayList<PSMetadataDocTypeOptions>();
+    private List<PSMetadataDocTypeOptions> options = new ArrayList<>();
 
     /**
      * Constructor for new doc type. The default doc type set is html5.

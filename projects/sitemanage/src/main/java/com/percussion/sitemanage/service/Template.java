@@ -32,7 +32,7 @@ import java.util.List;
 
 public abstract class Template {
 
-    private List<String> siteIds = new ArrayList<String>();
+    private List<String> siteIds = new ArrayList<>();
 
     public List<String> getSiteIds()
     {
