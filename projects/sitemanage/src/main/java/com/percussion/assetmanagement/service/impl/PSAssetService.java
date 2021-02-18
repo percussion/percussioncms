@@ -1277,7 +1277,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
            .rejectIfBlank("id", id)
            .rejectIfNull("isPage", isPage)
            .throwIfInvalid();
-      List<PSAssetDropCriteria> criteriaList = new ArrayList<PSAssetDropCriteria>();
+      List<PSAssetDropCriteria> criteriaList = new ArrayList<>();
 
       if (isPage)
       {
@@ -1303,7 +1303,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
        */
     private String getEditView(PSWidgetItem w, List<String> additionalFields)
     {
-        List<String> hiddenFields = new ArrayList<String>();
+        List<String> hiddenFields = new ArrayList<>();
         for (Entry<String, Object> p : w.getProperties().entrySet())
         {
             if (p.getKey().startsWith(PSWidgetProperty.HIDE_FIELD_PREFIX))
@@ -1991,7 +1991,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             IPSGuid guid = idMapper.getGuid(itemId);
 
             if(forceCheckOut) {
-            	List<IPSGuid> ids = new ArrayList<IPSGuid>();
+            	List<IPSGuid> ids = new ArrayList<>();
             	ids.add(guid);
             	contentWs.checkinItems(ids, "Force check-in to update the binary in the asset.", true);
             }

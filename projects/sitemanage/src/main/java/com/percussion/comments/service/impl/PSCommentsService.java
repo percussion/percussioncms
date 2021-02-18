@@ -509,7 +509,7 @@ public class PSCommentsService implements IPSCommentsService
             postJson.element("maxResults", "");
             postJson.elementOpt("startIndex", "");
         }
-        List<PSCommentsSummary> summaries = new ArrayList<PSCommentsSummary>();
+        List<PSCommentsSummary> summaries = new ArrayList<>();
 
         // Loop through all available servers. We don't actually know which
         // server the given site is on,

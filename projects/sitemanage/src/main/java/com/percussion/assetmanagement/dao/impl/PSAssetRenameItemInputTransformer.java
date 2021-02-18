@@ -94,12 +94,12 @@ public class PSAssetRenameItemInputTransformer implements IPSItemInputTransforme
      * sys_title validation.
      */
     private static final int MAX_RENAME_TRIES = 1000;
-    private List<String> parameterNames = new ArrayList<String>();
+    private List<String> parameterNames = new ArrayList<>();
     
     @Override
     public void preProcessRequest(Object[] args, IPSRequestContext request)
     {
-        Map<String, String> p = new HashMap<String, String>();
+        Map<String, String> p = new HashMap<>();
         addParameters(p, parameterNames, args);
         addParameters(p, request);
         Integer contentId = getInteger(p, IPSHtmlParameters.SYS_CONTENTID);

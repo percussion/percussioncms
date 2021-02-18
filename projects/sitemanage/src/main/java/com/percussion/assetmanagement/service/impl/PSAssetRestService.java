@@ -1015,7 +1015,7 @@ public class PSAssetRestService
      * name of the form in lower-case.
      */
     private Map<String, PSFormSummary> getPublishedForms() throws PSAssetServiceException, IPSGenericDao.LoadException {
-        Map<String, PSFormSummary> sumMap = new HashMap<String, PSFormSummary>();
+        Map<String, PSFormSummary> sumMap = new HashMap<>();
         
         Map<Long, PSAsset> assetMap = new HashMap<Long, PSAsset>();
         Collection<Integer> assetIds = new ArrayList<Integer>();
