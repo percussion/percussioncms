@@ -373,8 +373,9 @@ public class PSFormatFileTree extends PSDefaultExtension
        Document TestDoc = PSXmlDocumentBuilder.createXmlDocument(fs, false);
 
        pSFT.ProcessResultDoc(TestDoc, pt);
-
-       PSXmlDocumentBuilder.write(TestDoc,new FileOutputStream(args[1]));
+        try(FileOutputStream fo = new FileOutputStream(args[1])) {
+            PSXmlDocumentBuilder.write(TestDoc, fo);
+        }
 
        }
     catch (Exception e){e.printStackTrace();};

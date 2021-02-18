@@ -397,13 +397,14 @@ public class PSCreateTranslations implements IPSWorkflowAction
    {
       try
       {
-         ms_props.load(
-            new FileInputStream(
-               "rxconfig"
-                  + File.separator
-                  + "I18n"
-                  + File.separator
-                  + CONFIG_FILE_NAME));
+         try(FileInputStream fis = new FileInputStream(
+                 "rxconfig"
+                         + File.separator
+                         + "I18n"
+                         + File.separator
+                         + CONFIG_FILE_NAME)) {
+            ms_props.load(fis);
+         }
       }
       catch (FileNotFoundException e)
       {

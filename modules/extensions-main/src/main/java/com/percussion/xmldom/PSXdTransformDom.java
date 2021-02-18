@@ -323,14 +323,17 @@ public class PSXdTransformDom extends PSDefaultExtension implements
          if (cx.isLogging())
          {
             cx.printTraceMessage("writing trace file xmldocxformout.doc");
-            FileOutputStream parsedOutput =
-                  new FileOutputStream("xmldocxformout.doc");
+            try(FileOutputStream parsedOutput =
+                  new FileOutputStream("xmldocxformout.doc")) {
 
-            PSXmlTreeWalker walk = new PSXmlTreeWalker(outputDoc);
-            walk.write(new BufferedWriter(new OutputStreamWriter(
-                  parsedOutput, "UTF-8")), true);
+               PSXmlTreeWalker walk = new PSXmlTreeWalker(outputDoc);
+               try(OutputStreamWriter osw = new OutputStreamWriter(parsedOutput, "UTF-8")) {
+                  try(BufferedWriter bw = new BufferedWriter(osw) ) {
+                     walk.write(bw, true);
+                  }
+               }
 
-            parsedOutput.close();
+            }
          }
 
          return outputDoc;

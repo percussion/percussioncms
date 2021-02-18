@@ -482,9 +482,9 @@ public class PSXdTextCleanup extends PSDefaultExtension
       {
          contxt.printTraceMessage("Writing file xmldombodyonly.txt");
          PSXmlTreeWalker outWalker = new PSXmlTreeWalker(resultDoc);
-         FileOutputStream fos = new FileOutputStream("xmldombodyonly.txt");
-         outWalker.write(fos);
-         fos.close();
+         try(FileOutputStream fos = new FileOutputStream("xmldombodyonly.txt")) {
+            outWalker.write(fos);
+         }
       }
 
       if (!inlineDisable)

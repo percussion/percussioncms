@@ -141,27 +141,25 @@ public class PSGetFileSize extends PSSimpleJavaUdfExtension
    {
       PSMakeIntLink link = new PSMakeIntLink();
       String fileLength = "0";
-      InputStream is = null;
       HttpURLConnection conn = null;
-      try
-      {
+      try{
          URL url = new URL(link.processUdf(params, request).toString());
 
          conn = new HttpURLConnection(url);
          conn.connect();
-         is = conn.getInputStream();
-         int len = 0;
-         byte[] buf = new byte[1024];
-         while (true)
-         {
-            int read = is.read(buf);
-            if (read == -1)
-               break;
+         try(InputStream is = conn.getInputStream()) {
+            int len = 0;
+            byte[] buf = new byte[1024];
+            while (true) {
+               int read = is.read(buf);
+               if (read == -1)
+                  break;
 
-            len += read;
+               len += read;
+            }
+
+            fileLength = Integer.toString(len);
          }
-
-         fileLength = Integer.toString(len);
       }
       catch (Throwable t)
       {
@@ -171,9 +169,6 @@ public class PSGetFileSize extends PSSimpleJavaUdfExtension
       {
          if (conn != null)
             conn.disconnect();
-
-         if (is != null)
-            try { is.close(); } catch (IOException e) { /* no-op */ }
       }
       return fileLength;
    }
