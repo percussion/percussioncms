@@ -210,8 +210,11 @@ public class PSXmlDomUtils
                new FileOutputStream("xmldocparsedout.doc")) {
 
             PSXmlTreeWalker walk = new PSXmlTreeWalker(resultDoc);
-            walk.write(new BufferedWriter(
-                    new OutputStreamWriter(parsedOutput, ENCODING)), true);
+            try(OutputStreamWriter osr = new OutputStreamWriter(parsedOutput, ENCODING)) {
+               try(BufferedWriter br = new BufferedWriter(osr)) {
+                  walk.write(br, true);
+               }
+            }
 
          }
       }
@@ -235,8 +238,7 @@ public class PSXmlDomUtils
     * 
     */
    public static String tidyInput(PSXmlDomContext cx, String htmlInput)
-         throws FileNotFoundException, IOException,
-         UnsupportedEncodingException, PSExtensionProcessingException
+         throws IOException,PSExtensionProcessingException
    {
       if(StringUtils.isBlank(htmlInput))
       {
@@ -328,11 +330,12 @@ public class PSXmlDomUtils
          if (cx.isLogging())
          {
             cx.printTraceMessage("writing trace file xmldomtidied.doc");
-            PrintWriter pw = new PrintWriter(
-                     new FileOutputStream("xmldomtidied.doc"));
-            pw.println(result);
-            pw.flush();
-            pw.close();
+            try(FileOutputStream fs = new FileOutputStream("xmldomtidied.doc")) {
+               PrintWriter pw = new PrintWriter(fs);
+               pw.println(result);
+               pw.flush();
+               pw.close();
+            }
          }
          return result;
       }
@@ -517,7 +520,7 @@ public class PSXmlDomUtils
    /**
     * check a Node to see if it contains only whitespace
     *
-    * @param inNode  the Node to test
+    * @param x  the Node to test
     *
     * @return  true if the node is a TEXT node with just whitespace in it
     **/
@@ -575,7 +578,7 @@ public class PSXmlDomUtils
     * @return     The file as a <code>String</code>, never <code>null</code>
     **/
    protected static String readInFile(File inFile, String encoding)
-         throws FileNotFoundException, UnsupportedEncodingException, IOException
+         throws  IOException
    {
       StringBuilder buff = new StringBuilder(BUFFERSIZE);
       try(InputStreamReader rdr =
@@ -608,19 +611,19 @@ public class PSXmlDomUtils
     * @return     The file as a <code>String</code>, never <code>null</code>
     **/
    protected static String readInFile(File inFile)
-         throws FileNotFoundException, UnsupportedEncodingException, IOException
+         throws IOException
    {
       StringBuilder buff = new StringBuilder(BUFFERSIZE);
-      try(InputStreamReader rdr =
-            new InputStreamReader(new FileInputStream(inFile))) {
+      try(FileInputStream fis = new FileInputStream(inFile)) {
+         try (InputStreamReader rdr = new InputStreamReader(fis)) {
+            char arry[] = new char[BUFFERSIZE];
+            int icnt = 1;
 
-         char arry[] = new char[BUFFERSIZE];
-         int icnt = 1;
-
-         while (rdr.ready() && icnt > 0) {
-            icnt = rdr.read(arry, 0, BUFFERSIZE);
-            if (icnt > 0) {
-               buff.append(arry, 0, icnt);
+            while (rdr.ready() && icnt > 0) {
+               icnt = rdr.read(arry, 0, BUFFERSIZE);
+               if (icnt > 0) {
+                  buff.append(arry, 0, icnt);
+               }
             }
          }
       }
