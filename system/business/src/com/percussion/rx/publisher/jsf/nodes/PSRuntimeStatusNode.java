@@ -179,7 +179,7 @@ public class PSRuntimeStatusNode extends PSNodeBase
          siteId = ((PSRuntimeSiteNode)m_runtimeNav.getCurrentNode()).getSiteID();
       }
       
-      List<Map<String, Object>> reval = new ArrayList<Map<String, Object>>();
+      List<Map<String, Object>> reval = new ArrayList<>();
       for (Long jobId : rxpub.getActiveJobIds())
       {
          IPSPublisherJobStatus stat = rxpub.getPublishingJobStatus(jobId);

@@ -71,7 +71,7 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
     * Holds the per thread SFTP client. Initialized in {@link #commit(long)} and
     * used in <code>doDelivery</code> and <code>doRemoval</code>
     */
-   protected ThreadLocal<PSSFtpClientJSch> ms_sftp = new ThreadLocal<PSSFtpClientJSch>();
+   protected ThreadLocal<PSSFtpClientJSch> ms_sftp = new ThreadLocal<>();
 
    /**
     * Sets the socket timeout in milliseconds for the underlying provider.

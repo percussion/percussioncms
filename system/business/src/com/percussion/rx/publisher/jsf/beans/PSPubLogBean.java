@@ -125,7 +125,7 @@ public class PSPubLogBean extends CollectionModel
          throw new IllegalArgumentException("runtimeNavigation may not be null");
       }
       
-      m_sortCriteria = new ArrayList<SortCriterion>();
+      m_sortCriteria = new ArrayList<>();
       m_sortCriteria.add(new SortCriterion("referenceId", true));
       m_runtimeNavigation = runtimeNavigation;
    }
@@ -285,7 +285,7 @@ public class PSPubLogBean extends CollectionModel
    {
       IPSPublisherService psvc = PSPublisherServiceLocator
             .getPublisherService();
-      List<PSSortCriterion> sortCrit = new ArrayList<PSSortCriterion>();
+      List<PSSortCriterion> sortCrit = new ArrayList<>();
       for (SortCriterion criteria : getSortCriteria())
       {
          sortCrit.add(new PSSortCriterion(criteria.getProperty(), criteria.isAscending()));
@@ -315,12 +315,12 @@ public class PSPubLogBean extends CollectionModel
 
       m_currRange.mi_entries = new PSPubItemEntry[m_currRange.mi_endRow
             - m_currRange.mi_startRow + 1];
-      List<Long> refs = new ArrayList<Long>();
+      List<Long> refs = new ArrayList<>();
       for (int j=m_currRange.mi_startRow; j<=m_currRange.mi_endRow; j++)
       {
          refs.add(m_refIds[j]);
       }
-      Map<Long, IPSPubItemStatus> idMap = new HashMap<Long, IPSPubItemStatus>();
+      Map<Long, IPSPubItemStatus> idMap = new HashMap<>();
       for (IPSPubItemStatus entry : psvc.findPubItemStatusForReferenceIds(refs))
       {
          idMap.put(entry.getReferenceId(), entry);

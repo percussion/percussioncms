@@ -192,14 +192,14 @@ public class PSRuntimeNavigation extends PSNavigation
        */
       public List<Map<String, Object>> getTasks()
       {
-         List<Map<String, Object>> rval = new ArrayList<Map<String,Object>>();
+         List<Map<String, Object>> rval = new ArrayList<>();
          IPSPublisherService pubsvc = PSPublisherServiceLocator.
             getPublisherService();
          List<IPSEditionTaskLog> entries =
             pubsvc.findEditionTaskLogEntriesByJobId(getJobId());
          for(IPSEditionTaskLog entry : entries)
          {
-            Map<String,Object> rec = new HashMap<String, Object>();
+            Map<String,Object> rec = new HashMap<>();
             rec.put("statusid", entry.getJobId());
             double elapsed = entry.getElapsed() / 1000.0;
             rec.put("elapsed", elapsed + "s");
@@ -312,7 +312,7 @@ public class PSRuntimeNavigation extends PSNavigation
       DateFormat fmt = DateFormat.getDateTimeInstance();
       IPSPublisherService pubsvc = PSPublisherServiceLocator.
          getPublisherService();
-      Map<String,Object> rval = new HashMap<String, Object>();
+      Map<String,Object> rval = new HashMap<>();
       IPSGuid edid = pubsvc.findEditionIdForJob(getJobId());
       if (edid != null)
       {
@@ -407,7 +407,7 @@ public class PSRuntimeNavigation extends PSNavigation
     */
    public Map<Long, EditionSiteName> getEditionIdNameMap()
    {
-      Map<Long, EditionSiteName> map = new HashMap<Long, EditionSiteName>();
+      Map<Long, EditionSiteName> map = new HashMap<>();
       for (PSNodeBase node : m_sites.getChildren())
       {
          PSRuntimeSiteNode snode = (PSRuntimeSiteNode) node;

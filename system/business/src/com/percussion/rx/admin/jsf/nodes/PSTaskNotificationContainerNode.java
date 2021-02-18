@@ -99,7 +99,7 @@ public class PSTaskNotificationContainerNode
    private void initChildrenNodes()
    {
       final List<PSNotificationTemplate> notifications =
-            new ArrayList<PSNotificationTemplate>(
+            new ArrayList<>(
                   getSchedulingService().findAllNotificationTemplates());
       Collections.sort(notifications, new ByLabelComparator());
       for (PSNotificationTemplate notification : notifications)
@@ -133,7 +133,7 @@ public class PSTaskNotificationContainerNode
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       for (final PSNotificationTemplate notificationTemplate
             : getSchedulingService().findAllNotificationTemplates())
       {

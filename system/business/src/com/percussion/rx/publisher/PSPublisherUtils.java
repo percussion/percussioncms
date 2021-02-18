@@ -98,7 +98,7 @@ public class PSPublisherUtils
       // If this is a legacy list, we need the full list, not paged
       String url = cList.getUrl();
 
-      Map<String, Object> additionalParams = new HashMap<String, Object>();
+      Map<String, Object> additionalParams = new HashMap<>();
       additionalParams.put(IPSHtmlParameters.SYS_CONTEXT, context);
       
       // ignore "sys_assembly_context" parameter in the URL of the Content List
@@ -253,7 +253,7 @@ public class PSPublisherUtils
    {
       IPSGuid editionGuid = new PSGuid(PSTypeEnum.EDITION, editionid);
       TreeSet<IPSEditionContentList> ecLists = getEditionContentList(editionGuid);
-      List<PSPair<String, Boolean>> isLastFlags = new ArrayList<PSPair<String, Boolean>>();
+      List<PSPair<String, Boolean>> isLastFlags = new ArrayList<>();
       for (IPSEditionContentList ecList : ecLists)
       {
          IPSContentList clist = getContentList(ecList);
@@ -261,7 +261,7 @@ public class PSPublisherUtils
          {
             Map<String, String> params = clist.getGeneratorParams();
             boolean isLast = isLastOnDemandGenerator(params);
-            PSPair<String, Boolean> pair = new PSPair<String, Boolean>(clist.getName(), isLast);
+            PSPair<String, Boolean> pair = new PSPair<>(clist.getName(), isLast);
             isLastFlags.add(pair);
          }
       }
@@ -288,7 +288,7 @@ public class PSPublisherUtils
    {
       final IPSPublisherService psvc = PSPublisherServiceLocator.getPublisherService();
       List<IPSEditionContentList> clists = psvc.loadEditionContentLists(editionId);
-      TreeSet<IPSEditionContentList> sortedclists = new TreeSet<IPSEditionContentList>(new EditionClistSorter());
+      TreeSet<IPSEditionContentList> sortedclists = new TreeSet<>(new EditionClistSorter());
       sortedclists.addAll(clists);
       return sortedclists;
    }

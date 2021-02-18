@@ -96,14 +96,14 @@ public class PSPublishingStatusHelper
             .getRxPublisherService();
       IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
       Collection<Long> ids = rxpub.getActiveJobIds();
-      List<Map<String,Object>> rval = new ArrayList<Map<String,Object>>();
+      List<Map<String,Object>> rval = new ArrayList<>();
       Map<Long, PSRuntimeNavigation.EditionSiteName> idmap = 
          navigation.getEditionIdNameMap();
       PSRuntimeNavigation.EditionSiteName names;
       for(IPSPubStatus status : stati)
       {
          Long jobId = status.getStatusId();
-         Map<String,Object> data = new HashMap<String, Object>();
+         Map<String,Object> data = new HashMap<>();
          data.put("statusid", jobId);
          
          // get the start time for display
@@ -367,7 +367,7 @@ public class PSPublishingStatusHelper
       {
          return Collections.emptyList();
       }
-      List<String> rval = new ArrayList<String>();
+      List<String> rval = new ArrayList<>();
       while (StringUtils.isNotBlank(msg))
       {
          MsgSpliter ms = splitIndex(msg);
