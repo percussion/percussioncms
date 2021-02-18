@@ -115,7 +115,7 @@ public abstract class PSBaseListViewHelper implements IPSListViewHelper
         Map<String, String> currentDisplayProperties = pathItem.getDisplayProperties();
 
         if (currentDisplayProperties == null)
-            currentDisplayProperties = new HashMap<String, String>();
+            currentDisplayProperties = new HashMap<>();
 
         for (Entry<String, String> entry : newDisplayProperties.entrySet())
         {

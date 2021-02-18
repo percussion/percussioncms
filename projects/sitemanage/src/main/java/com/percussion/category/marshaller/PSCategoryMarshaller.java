@@ -57,7 +57,7 @@ public class PSCategoryMarshaller {
 	
 	private static Log log = LogFactory.getLog(PSCategoryMarshaller.class);
 	private PSCategory category;
-	private static Map<String, PSCategoryFileLockData> lockMap = new HashMap<String, PSCategoryFileLockData>();
+	private static Map<String, PSCategoryFileLockData> lockMap = new HashMap<>();
 
 	public PSCategory getCategory() {
 		return category;

@@ -80,9 +80,9 @@ public class PSCSSParser
 
     private static final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
 
-    private List<String> processed = new ArrayList<String>();
+    private List<String> processed = new ArrayList<>();
 
-    private Map<String, String> imagesToDownload = new HashMap<String, String>();
+    private Map<String, String> imagesToDownload = new HashMap<>();
 
     private String siteName;
     
@@ -190,7 +190,7 @@ public class PSCSSParser
                     "Failed to process inline css for " + urlBase + ": " + e.getLocalizedMessage());
         }
 
-        return new PSPair<Map<String, String>, String>(imagesToDownload, cssParsed);
+        return new PSPair<>(imagesToDownload, cssParsed);
     }
 
     /**

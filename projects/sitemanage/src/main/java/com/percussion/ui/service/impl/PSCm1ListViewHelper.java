@@ -79,7 +79,7 @@ public class PSCm1ListViewHelper extends PSBaseListViewHelper
     
     private IPSFolderHelper folderHelper;
     
-    private static Map<String, String> contentIdMap = new HashMap<String, String>();
+    private static Map<String, String> contentIdMap = new HashMap<>();
     
     /*
      * Initialization of content type map values
@@ -168,7 +168,7 @@ public class PSCm1ListViewHelper extends PSBaseListViewHelper
     @Override
     protected Map<String, String> getDisplayProperties(PSPathItem pathItem)
     {
-        Map<String, String> displayProperties = new HashMap<String, String>();
+        Map<String, String> displayProperties = new HashMap<>();
         
         IPSItemEntry itemEntry = null;
         Object relatedObject = getRelatedObject(pathItem);

@@ -45,9 +45,9 @@ public class PSAssetSiteImpact {
 	private Set<IPSSite> ownerSites;
 	
 	public PSAssetSiteImpact() {
-		ownerPages = new HashSet<PSItemProperties>();
-		ownerTemplates = new HashSet<PSTemplateSummary>();
-		ownerSites = new HashSet<IPSSite>();
+		ownerPages = new HashSet<>();
+		ownerTemplates = new HashSet<>();
+		ownerSites = new HashSet<>();
 	}
 
 

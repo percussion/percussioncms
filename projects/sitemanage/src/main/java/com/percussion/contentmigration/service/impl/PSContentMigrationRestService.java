@@ -73,7 +73,7 @@ public class PSContentMigrationRestService
             }
             else
             {
-                pageIds = new ArrayList<String>();
+                pageIds = new ArrayList<>();
                 pageIds.add(pageId);
             }
             response = migrateContent("SAMETEMPLATE", templateId, null, pageIds, null);

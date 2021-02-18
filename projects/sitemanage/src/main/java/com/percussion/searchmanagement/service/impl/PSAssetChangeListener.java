@@ -79,7 +79,7 @@ public class PSAssetChangeListener implements IPSEditorChangeListener, IPSHandle
         }
         
         int contentId = changeEvent.getContentId();
-        Set<Integer> pageContentIds = new HashSet<Integer>();
+        Set<Integer> pageContentIds = new HashSet<>();
         
         IPSGuid myGuid = PSGuidUtils.makeGuid(contentId, PSTypeEnum.LEGACY_CONTENT);
         String myGuidStr =  idMapper.getString(myGuid);
@@ -134,7 +134,7 @@ public class PSAssetChangeListener implements IPSEditorChangeListener, IPSHandle
      */
     private Set<Integer> getAssetOwners(String assetId)
     {
-        Set<Integer> contentIds = new HashSet<Integer>(); 
+        Set<Integer> contentIds = new HashSet<>();
         
         Set<String> owners = widgetAssetRelationshipService.getRelationshipOwners(assetId);
         for (String owner : owners)

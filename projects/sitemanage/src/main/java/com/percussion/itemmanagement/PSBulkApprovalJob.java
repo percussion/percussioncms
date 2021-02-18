@@ -77,9 +77,9 @@ public class PSBulkApprovalJob extends PSAsyncJob
 
     PSApprovableItems items;
     
-    List<PSApprovableItem> processedItems = new ArrayList<PSApprovableItem>();
+    List<PSApprovableItem> processedItems = new ArrayList<>();
     
-    private Map<String, String> approvalErrors = new HashMap<String, String>();
+    private Map<String, String> approvalErrors = new HashMap<>();
 
     @Override
     protected void doInit(Object config)

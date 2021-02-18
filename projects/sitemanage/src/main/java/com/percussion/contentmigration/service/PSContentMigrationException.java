@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class PSContentMigrationException extends Exception
 {
-    private Map<String, String> failedItems = new HashMap<String, String>();
+    private Map<String, String> failedItems = new HashMap<>();
     
     public PSContentMigrationException()
     {
