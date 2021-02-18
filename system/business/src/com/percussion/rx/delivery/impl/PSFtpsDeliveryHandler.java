@@ -113,7 +113,7 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
      * Holds the per thread ftp client. Initialized in {@link #commit(long)} and
      * used in <code>doDelivery</code> and <code>doRemoval</code>
      */
-    protected ThreadLocal<PSFtpsClient> ms_ftps = new ThreadLocal<PSFtpsClient>();
+    protected ThreadLocal<PSFtpsClient> ms_ftps = new ThreadLocal<>();
     /**
      * Wraps {@link FTPClient} to manage login and logout from the FTP Server.
      */

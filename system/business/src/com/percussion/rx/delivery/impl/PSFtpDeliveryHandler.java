@@ -61,7 +61,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
     * Holds the per thread ftp client. Initialized in {@link #commit(long)} and
     * used in <code>doDelivery</code> and <code>doRemoval</code>
     */
-   protected ThreadLocal<PSFtpClient> ms_ftp = new ThreadLocal<PSFtpClient>();
+   protected ThreadLocal<PSFtpClient> ms_ftp = new ThreadLocal<>();
 
    /**
     * See {@link #getTimeout()}

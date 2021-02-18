@@ -190,7 +190,7 @@ public class PSEditionModel extends PSDesignModel
    private List<IPSEditionTaskDef> getTasks(List<IPSEditionTaskDef> allTasks,
          boolean isPreTask)
    {
-      List<IPSEditionTaskDef> tasks = new ArrayList<IPSEditionTaskDef>();
+      List<IPSEditionTaskDef> tasks = new ArrayList<>();
       for (IPSEditionTaskDef task : allTasks)
       {
          if (isPreTask)
@@ -214,7 +214,7 @@ public class PSEditionModel extends PSDesignModel
          throw new IllegalArgumentException("guid is not valid for this model");
       PSEditionWrapper wrapper = (PSEditionWrapper) loadModifiable(guid);
       loadTasks(wrapper);
-      List<IPSEditionTaskDef> tasks = new ArrayList<IPSEditionTaskDef>();
+      List<IPSEditionTaskDef> tasks = new ArrayList<>();
       deleteTasks(getTasks(tasks,true));
       deleteTasks(getTasks(tasks,false));
       IPSPublisherService srv = (IPSPublisherService) getService();

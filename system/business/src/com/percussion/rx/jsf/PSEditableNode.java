@@ -262,5 +262,5 @@ public abstract class PSEditableNode extends PSLockableNode
     * The properties are available primarily to add extra information for
     * use in list views of nodes. 
     */
-   private Map<String,String> m_properties = new HashMap<String, String>();
+   private Map<String,String> m_properties = new HashMap<>();
 }

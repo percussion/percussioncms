@@ -156,7 +156,7 @@ public class PSEditionNode extends PSDesignNode
       /**
        * Holds the parameters while the task is being edited.
        */
-      List<PSParameter> m_params = new ArrayList<PSParameter>();
+      List<PSParameter> m_params = new ArrayList<>();
 
       /**
        * Is this task selected for an action?
@@ -292,7 +292,7 @@ public class PSEditionNode extends PSDesignNode
     * Edition content lists to be removed on save.
     */
    private List<PSEditionContentListWrapper> m_deletedEclists =
-         new ArrayList<PSEditionContentListWrapper>();
+         new ArrayList<>();
 
    /**
     * The current pre-tasks for the edition, extracted on first access.
@@ -309,7 +309,7 @@ public class PSEditionNode extends PSDesignNode
     * The tasks that will be deleted when the edition is saved.
     */
    private List<IPSEditionTaskDef> m_removedTasks
-         = new ArrayList<IPSEditionTaskDef>();
+         = new ArrayList<>();
 
    /**
     * Ctor.
@@ -343,7 +343,7 @@ public class PSEditionNode extends PSDesignNode
       {
          IPSPublisherService psvc = PSPublisherServiceLocator
          .getPublisherService();
-         m_eclists = new ArrayList<PSEditionContentListWrapper>();
+         m_eclists = new ArrayList<>();
          m_edition = psvc.loadEditionModifiable(getGUID());
          List<IPSEditionContentList> associations = psvc
                .loadEditionContentLists(getGUID());
@@ -895,8 +895,8 @@ public class PSEditionNode extends PSDesignNode
       {
          List<IPSEditionTaskDef> editionTasks = psvc
                .loadEditionTasks(getGUID());
-         m_preTasks = new ArrayList<TaskEditItem>();
-         m_postTasks = new ArrayList<TaskEditItem>();
+         m_preTasks = new ArrayList<>();
+         m_postTasks = new ArrayList<>();
          for (IPSEditionTaskDef t : editionTasks)
          {
             if (t.getSequence() < 0)
@@ -1079,18 +1079,18 @@ public class PSEditionNode extends PSDesignNode
       /**
        * The current filtered and sorted list.
        */
-      private List<CListWrapper> mi_clists = new ArrayList<CListWrapper>();
+      private List<CListWrapper> mi_clists = new ArrayList<>();
       
       /**
        * This is used to cache the content lists belongs to others sites.
        */
-      private List<CListWrapper> mi_otherSiteCLists = new ArrayList<CListWrapper>();
+      private List<CListWrapper> mi_otherSiteCLists = new ArrayList<>();
       
       /**
        * This is used to cache the content lists belongs to current site and
        * unused.
        */
-      private List<CListWrapper> mi_siteAndUnusedCLists = new ArrayList<CListWrapper>();
+      private List<CListWrapper> mi_siteAndUnusedCLists = new ArrayList<>();
       
       /**
        * Reset common properties at the beginning of entering the 
@@ -1199,7 +1199,7 @@ public class PSEditionNode extends PSDesignNode
       {
          // get selected Content List & update the edited one if needed
          boolean foundSrcCList = false;
-         List<IPSContentList> selectedCLists = new ArrayList<IPSContentList>();
+         List<IPSContentList> selectedCLists = new ArrayList<>();
          for (CListWrapper w : mi_clists)
          {
             if (w.getSelected())
@@ -1240,7 +1240,7 @@ public class PSEditionNode extends PSDesignNode
          }
          else
          {
-            m_eclists = new ArrayList<PSEditionContentListWrapper>();
+            m_eclists = new ArrayList<>();
          }
          for (IPSContentList c : selectedCLists)
          {
@@ -1323,7 +1323,7 @@ public class PSEditionNode extends PSDesignNode
          boolean isFirstCall = mi_clists.isEmpty();
          
          IPSGuid siteId = m_edition.getSiteId();
-         List<CListWrapper> clists = new ArrayList<CListWrapper>(); 
+         List<CListWrapper> clists = new ArrayList<>();
          clists.addAll(getSiteAndUnusedCLists(siteId));
          if (!mi_limitContentListsToSite)
          {   
@@ -1349,7 +1349,7 @@ public class PSEditionNode extends PSDesignNode
        */
       private Set<CListWrapper> sortCLists(List<CListWrapper> clists)
       {
-         Set<CListWrapper> listset = new TreeSet<CListWrapper>(
+         Set<CListWrapper> listset = new TreeSet<>(
                new Comparator<CListWrapper>()
                {
                   public int compare(CListWrapper o1, CListWrapper o2)
@@ -1471,7 +1471,7 @@ public class PSEditionNode extends PSDesignNode
          if (StringUtils.isNotBlank(mi_contentListFilter))
             filter = mi_contentListFilter.toLowerCase();
          
-         List<CListWrapper> rval = new ArrayList<CListWrapper>();
+         List<CListWrapper> rval = new ArrayList<>();
          for (CListWrapper c : lists)
          {
             // is the current one
@@ -1672,7 +1672,7 @@ public class PSEditionNode extends PSDesignNode
       */
       public List<SelectItem> getCandidateAuthTypes()
       {
-         List<SelectItem> result = new ArrayList<SelectItem>();
+         List<SelectItem> result = new ArrayList<>();
          IPSContentService csvc = PSContentServiceLocator.getContentService();
          List<PSKeyword> keywords = csvc.findKeywordsByLabel(
                "Authorization_Types", "label");

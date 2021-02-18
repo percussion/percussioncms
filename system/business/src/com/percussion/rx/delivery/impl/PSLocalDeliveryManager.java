@@ -84,7 +84,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
     * deliver content and do abort and commit behavior.
     */
    private Map<Long, Map<String, IPSDeliveryHandler>> m_jobToHandler = 
-      new HashMap<Long, Map<String, IPSDeliveryHandler>>();
+      new HashMap<>();
 
    /**
     * A map recording the site used for each job.
@@ -92,7 +92,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
     * TODO: Consider caching delivery type beans in memory
     * in the publisher service
     */
-   private Map<Long, PSPair<IPSSite,IPSPubServer>> m_jobToSiteServer = new HashMap<Long, PSPair<IPSSite,IPSPubServer>>();
+   private Map<Long, PSPair<IPSSite,IPSPubServer>> m_jobToSiteServer = new HashMap<>();
 
    /**
     * The temporary directory for the assembled content (before deliver to
@@ -273,7 +273,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
          Map<String, IPSDeliveryHandler> hmap = m_jobToHandler.get(jobId);
          if (hmap == null)
          {
-            hmap = new HashMap<String, IPSDeliveryHandler>();
+            hmap = new HashMap<>();
             m_jobToHandler.put(jobId, hmap);
          }
          handler = hmap.get(loc.getBeanName());
@@ -362,7 +362,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
          hmap = m_jobToHandler.get(jobId);
       }
       Collection<IPSDeliveryResult> results = 
-         new ArrayList<IPSDeliveryResult>();
+         new ArrayList<>();
       
       if (hmap != null)
       {
@@ -399,7 +399,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
    {
       synchronized (m_jobToHandler)
       {
-         PSPair<IPSSite, IPSPubServer> siteServer = new PSPair<IPSSite, IPSPubServer>();
+         PSPair<IPSSite, IPSPubServer> siteServer = new PSPair<>();
          siteServer.setFirst(site);
          siteServer.setSecond(server);
          m_jobToSiteServer.put(jobid, siteServer);

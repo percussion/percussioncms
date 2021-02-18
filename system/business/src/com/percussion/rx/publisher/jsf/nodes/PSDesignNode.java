@@ -149,7 +149,7 @@ public abstract class PSDesignNode extends PSEditableNode
       PSCategoryNodeBase container = (PSCategoryNodeBase) getToplevelNode(name);
 
       // get all delivery type's title/names
-      List<SelectItem> rval = new ArrayList<SelectItem>();
+      List<SelectItem> rval = new ArrayList<>();
       for (PSNodeBase n : container.getChildren())
       {
          rval.add(new SelectItem(n.getTitle(), n.getTitle()));
