@@ -37,7 +37,7 @@ import org.apache.commons.lang.Validate;
 @XmlRootElement(name = "WidgetPackageInfoRequest")
 public class PSWidgetPackageInfoRequest
 {
-    List<String> widgetNames = new ArrayList<String>();
+    List<String> widgetNames = new ArrayList<>();
 
     /**
      * Get the list of widget names.

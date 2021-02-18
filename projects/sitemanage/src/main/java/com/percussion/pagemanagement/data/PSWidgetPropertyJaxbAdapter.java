@@ -50,8 +50,8 @@ public class PSWidgetPropertyJaxbAdapter extends XmlAdapter<PSWidgetProperties, 
     public PSWidgetProperties marshal(Map<String, Object> map) throws Exception
     {
         PSWidgetProperties props = new PSWidgetProperties();
-        props.setProperties(new ArrayList<PSWidgetProperty>());
-        List<String> names = new ArrayList<String>(map.keySet());
+        props.setProperties(new ArrayList<>());
+        List<String> names = new ArrayList<>(map.keySet());
         sort(names);
         for(String key : names) {
             PSWidgetProperty wp = new PSWidgetProperty();
@@ -71,7 +71,7 @@ public class PSWidgetPropertyJaxbAdapter extends XmlAdapter<PSWidgetProperties, 
     @Override
     public Map<String, Object> unmarshal(PSWidgetProperties props) throws Exception
     {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         List<PSWidgetProperty> ps = props.getProperties();
         if (ps == null) return map;
         for(PSWidgetProperty wp : ps) {

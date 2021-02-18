@@ -85,7 +85,7 @@ public class PSMetadataDocTypeUtils
         String docTypeName = XHTML;
         boolean customValue = false;
         PSMetadataDocType metaDocType = new PSMetadataDocType();
-        List<PSMetadataDocTypeOptions> optionsList = new ArrayList<PSMetadataDocTypeOptions>();
+        List<PSMetadataDocTypeOptions> optionsList = new ArrayList<>();
         optionsList.add(new PSMetadataDocTypeOptions(XHTML, PERC_XHTML_DOC_TYPE));
         optionsList.add(new PSMetadataDocTypeOptions(HTML5, PERC_HTML5_DOC_TYPE));
 

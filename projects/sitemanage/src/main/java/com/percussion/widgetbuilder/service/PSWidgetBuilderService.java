@@ -181,7 +181,7 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         try
         {
             List<PSWidgetBuilderDefinition> definitions = dao.getAll();
-            List<PSWidgetBuilderDefinitionData> returnResults = new ArrayList<PSWidgetBuilderDefinitionData>();
+            List<PSWidgetBuilderDefinitionData> returnResults = new ArrayList<>();
             if (definitions != null)
             {
                 for (PSWidgetBuilderDefinition definition : definitions)
@@ -207,7 +207,7 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         try
         {
             List<PSWidgetBuilderDefinition> definitions = dao.getAll();
-            List<PSWidgetBuilderSummaryData> returnResults = new ArrayList<PSWidgetBuilderSummaryData>();
+            List<PSWidgetBuilderSummaryData> returnResults = new ArrayList<>();
             if (definitions != null)
             {
                 for (PSWidgetBuilderDefinition definition : definitions)

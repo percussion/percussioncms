@@ -104,7 +104,7 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      * queued. We want to avoid sending empty lists for no reason, but we need to do it
      * at least once so that the feed service removes feeds that no longer exist.
      */
-    private Set<Long> emptyFeedSetSent = new HashSet<Long>();
+    private Set<Long> emptyFeedSetSent = new HashSet<>();
 
     /**
      * Logger for this service.
@@ -260,7 +260,7 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private Collection<String> getFeedContentTypes()
     {
-        Collection<String> cts = new ArrayList<String>();
+        Collection<String> cts = new ArrayList<>();
         try
         {
             String[] results = iDefMgr.getContentTypesUsingSharedFieldGroup("rssfeeds");
@@ -284,7 +284,7 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private Collection<PSFeedInfo> getFeedEnabledContentItems(Collection<String> contentTypes) throws InvalidQueryException, RepositoryException
     {
-        Collection<PSFeedInfo> feeds = new ArrayList<PSFeedInfo>();
+        Collection<PSFeedInfo> feeds = new ArrayList<>();
         for(String ct : contentTypes)
         {
             String queryString =
@@ -372,16 +372,16 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
         if (feeds.isEmpty())
             return;
 
-        Map<Integer, IPSSiteItem> sItems = new HashMap<Integer, IPSSiteItem>();
+        Map<Integer, IPSSiteItem> sItems = new HashMap<>();
         IPSGuid sGuid = PSGuidUtils.makeGuid(serverId, PSTypeEnum.PUBLISHING_SERVER);
-        Collection<PSFeedInfo> removeFeeds = new ArrayList<PSFeedInfo>();
+        Collection<PSFeedInfo> removeFeeds = new ArrayList<>();
         for(IPSSiteItem si : pubService.findSiteItemsByPubServer(sGuid, DELIVERY_CONTEXT))
         {
             sItems.put(si.getContentId(), si);
         }
         for(PSFeedInfo feed : feeds)
         {
-            Collection<Integer> remove = new ArrayList<Integer>();
+            Collection<Integer> remove = new ArrayList<>();
             Integer ownerPage = null;
             long pageDate = -1;
             for(Integer p : feed.getPages())

@@ -127,7 +127,7 @@ public class PSSiteCreationHelper extends PSImportHelper
             
             //Update the template count
             Map<IPSSiteImportSummaryService.SiteImportSummaryTypeEnum, Integer> summaryStats = 
-                    new HashMap<IPSSiteImportSummaryService.SiteImportSummaryTypeEnum, Integer>();
+                    new HashMap<>();
             if(context.getSummaryStats()!=null)
             {
                 summaryStats.putAll(context.getSummaryStats());

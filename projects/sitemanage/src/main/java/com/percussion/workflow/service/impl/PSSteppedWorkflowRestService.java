@@ -294,7 +294,7 @@ public class PSSteppedWorkflowRestService
     @SuppressWarnings("unchecked")
     private List<String> orderStateNames(List<PSState> states)
     {
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         
         for(PSState state : states)
         {

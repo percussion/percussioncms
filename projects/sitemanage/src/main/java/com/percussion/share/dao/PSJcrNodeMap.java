@@ -64,7 +64,7 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
 
     private Node node;
 
-    private Map<String, Object> override = new HashMap<String, Object>();
+    private Map<String, Object> override = new HashMap<>();
     
     private boolean allowBinary = false;
 
@@ -162,7 +162,7 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
             }
             if(p instanceof PSMultiProperty)
             {
-               List<String> multiValues = new ArrayList<String>();
+               List<String> multiValues = new ArrayList<>();
                Value[] values = p.getValues();
                for(Value value : values)
                {

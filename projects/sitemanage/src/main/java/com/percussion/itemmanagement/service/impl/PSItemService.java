@@ -225,7 +225,7 @@ public class PSItemService implements IPSItemService
                 revSummary.setRestorable(false);
             }
             // revisions for the client side
-            List<PSRevision> revisions = new ArrayList<PSRevision>();
+            List<PSRevision> revisions = new ArrayList<>();
             // get the history details (revisions) for the page or asset from Rhythmyx
             List<PSContentStatusHistory> _revisions = systemService.findContentStatusHistory(idMapper.getGuid(id));
             List<PSComment> comments = createCommentsFromHistory(_revisions);
@@ -1130,7 +1130,7 @@ catch (Exception e){
 
     private List<PSPageLinkedToItem> getPageLinkItem(PSLocator locator,String defaultString, PSRelationship relationship) throws Exception {
 
-        List<PSPageLinkedToItem> items = new ArrayList<PSPageLinkedToItem>();
+        List<PSPageLinkedToItem> items = new ArrayList<>();
         PSRelationshipFilter filter = new PSRelationshipFilter();
         filter.setDependent(locator);
         filter.setName(PSRelationshipConfig.TYPE_LOCAL_CONTENT);

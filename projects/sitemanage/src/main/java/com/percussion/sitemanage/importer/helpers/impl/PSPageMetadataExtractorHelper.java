@@ -60,7 +60,7 @@ public class PSPageMetadataExtractorHelper extends PSGenericMetadataExtractorHel
 
     private IPSItemWorkflowService itemWorkflowService;
 
-    private static HashMap<String, PSTemplate> unassignedTemplateCache = new HashMap<String, PSTemplate>();
+    private static HashMap<String, PSTemplate> unassignedTemplateCache = new HashMap<>();
 
     @Autowired
     public PSPageMetadataExtractorHelper(IPSTemplateService templateService, IPSPageService pageService,

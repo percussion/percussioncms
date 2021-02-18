@@ -126,7 +126,7 @@ public class SiteManageAdaptorBase
         return currentState;
     }
     
-    protected static HashMap<String, String[]> TRANSITION_MAP = new HashMap<String, String[]>();
+    protected static HashMap<String, String[]> TRANSITION_MAP = new HashMap<>();
     static
     {
         // Will get to live through approve if available, or through submit steps if not.
@@ -160,5 +160,5 @@ public class SiteManageAdaptorBase
                 	IPSItemWorkflowService.TRANSITION_TRIGGER_APPROVE});
     }
 
-	protected static final ArrayList<String> APPROVED_STATES = new ArrayList<String>(Arrays.asList(new String[] { DefaultWorkflowStates.live, DefaultWorkflowStates.pending }));
+	protected static final ArrayList<String> APPROVED_STATES = new ArrayList<>(Arrays.asList(new String[] { DefaultWorkflowStates.live, DefaultWorkflowStates.pending }));
 }

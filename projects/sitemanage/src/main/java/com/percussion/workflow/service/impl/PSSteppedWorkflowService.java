@@ -701,8 +701,8 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             }
 
             //Add roles to the state
-        	List<String> stepRoleNames = new ArrayList<String>();
-        	List<String> stepRoleNamesWithEnableNotification = new ArrayList<String>();
+        	List<String> stepRoleNames = new ArrayList<>();
+        	List<String> stepRoleNamesWithEnableNotification = new ArrayList<>();
             for (PSUiWorkflowStepRole stepRole : workflowUiStep.getStepRoles()) 
             {
             	stepRoleNames.add(stepRole.getRoleName());
@@ -795,28 +795,28 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                 throw new PSWorkflowEditorServiceException(MessageFormat.format(PSSteppedWorkflowService.STATE_NOT_FOUND, stepByPreviousName));
             
             //Update the step roles 
-            List<String> stepRoleNames = new ArrayList<String>();
+            List<String> stepRoleNames = new ArrayList<>();
             List<PSUiWorkflowStepRole> stepRoles = uiWorkflow.getWorkflowSteps().get(0).getStepRoles();
-            List<String> stepRoleNamesWithEnableNotification = new ArrayList<String>();
+            List<String> stepRoleNamesWithEnableNotification = new ArrayList<>();
             for (PSUiWorkflowStepRole stepRole : stepRoles) 
             {
                 stepRoleNames.add(stepRole.getRoleName());
                 if (stepRole.isEnableNotification())
                     stepRoleNamesWithEnableNotification.add(stepRole.getRoleName());
             }
-            currentState.setAssignedRoles(new ArrayList<PSAssignedRole>());
+            currentState.setAssignedRoles(new ArrayList<>());
             addWorkflowRolesToState(workflow, currentState, stepRoleNames, stepRoleNamesWithEnableNotification); 
       
             //Update the transition roles
             Map<String,List<String>> transRoles = convertStepRolesToTransitionRoles(stepRoles);
-            List<PSTransition> transitions = new ArrayList<PSTransition>();
+            List<PSTransition> transitions = new ArrayList<>();
             
             for(Entry<String, List<String>> entry : transRoles.entrySet()) 
             {
                 PSTransition transition = getTransitionByName(currentState, entry.getKey());
                 if(transition == null)
                     throw new PSWorkflowEditorServiceException("Can't find the transition by given name " + entry.getKey());
-                List<PSTransitionRole> transitionRoles = new ArrayList<PSTransitionRole>();
+                List<PSTransitionRole> transitionRoles = new ArrayList<>();
                 List<PSTransitionRole> tempRoles = createTransitionRoles(workflow, transition, entry.getValue());
                 transitionRoles.addAll(tempRoles);
                 transition.setTransitionRoles(transitionRoles);
@@ -1035,7 +1035,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     {
         PSEnumVals workflows = getWorkflowList();
 
-        List<String> workflowsList = new ArrayList<String>();
+        List<String> workflowsList = new ArrayList<>();
         for (EnumVal workflow : workflows.getEntries())
         {
             workflowsList.add(workflow.getValue());
@@ -1057,7 +1057,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     {
         List<PSState> workflowStates = getStates(workflowName);
 
-        List<String> workflowStatesArray = new ArrayList<String>();
+        List<String> workflowStatesArray = new ArrayList<>();
         for (PSState state : workflowStates)
         {
             workflowStatesArray.add(state.getLabel());
@@ -1077,7 +1077,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
      */
     private List<PSTransitionRole> createTransitionRoles(PSWorkflow workflow, PSTransition transition, List<String> roleNames)
     {
-    	List<PSTransitionRole> tranRoles = new ArrayList<PSTransitionRole>();
+    	List<PSTransitionRole> tranRoles = new ArrayList<>();
     	for (String roleName : roleNames) 
     	{
     		int roleId = getRoleIdByName(workflow.getRoles(), roleName);
@@ -1134,7 +1134,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
      */
     private Map<String,List<String>> convertStepRolesToTransitionRoles(List<PSUiWorkflowStepRole> stepRoles)
     {
-    	Map<String,List<String>> transitionAndRoles = new HashMap<String, List<String>>();
+    	Map<String,List<String>> transitionAndRoles = new HashMap<>();
         for (PSUiWorkflowStepRole stepRole : stepRoles)
         {
             for (PSUiWorkflowStepRoleTransition stepTrans : stepRole.getRoleTransitions())
@@ -1143,7 +1143,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             	List<String> roles = transitionAndRoles.get(transition);
             	if(roles == null)
             	{
-            		roles = new ArrayList<String>();
+            		roles = new ArrayList<>();
             		transitionAndRoles.put(transition, roles);
             	}
             	roles.add(stepRole.getRoleName());
@@ -1281,7 +1281,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             workflow = workflows.get(0);
 
             // Order the states list
-            List<PSState> workflowStatesList = new ArrayList<PSState>();
+            List<PSState> workflowStatesList = new ArrayList<>();
             workflowStatesList = workflow.getStates();
             WorkFlowStatesComparator comp = new WorkFlowStatesComparator();
             Collections.sort(workflowStatesList, comp);
@@ -1364,7 +1364,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         {
             uiWorkflow.setDefaultWorkflow(false);
         }        
-        List<PSUiWorkflowStep> uiWorkflowSteps = new ArrayList<PSUiWorkflowStep>();
+        List<PSUiWorkflowStep> uiWorkflowSteps = new ArrayList<>();
 
         // Flag for Approved state
         boolean addApprovedRole = true;
@@ -1377,7 +1377,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                 uiWorkflowStep.setStepName(state.getName());
                 
                 // Set the list of permission names for the current step
-                List<String> permissionNamesForStep = new ArrayList<String>();
+                List<String> permissionNamesForStep = new ArrayList<>();
                 
                 for (PSTransition transition : state.getTransitions())
                 {
@@ -1389,7 +1389,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                 uiWorkflowStep.setPermissionNames(permissionNamesForStep);
                 
                 // Set the list of roles allowed for the current step
-                List<PSUiWorkflowStepRole> uiWorkflowStepRoles = new ArrayList<PSUiWorkflowStepRole>();
+                List<PSUiWorkflowStepRole> uiWorkflowStepRoles = new ArrayList<>();
                 
                 for (PSAssignedRole assignedRole : state.getAssignedRoles())
                 {
@@ -1404,7 +1404,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                         PSUiWorkflowStepRole uiWorkflowStepRol = new PSUiWorkflowStepRole(roleName, roleId, isNotified);
                         uiWorkflowStepRoles.add(uiWorkflowStepRol);
 
-                        List<PSUiWorkflowStepRoleTransition> uiWorkflowStepRoleTransitions = new ArrayList<PSUiWorkflowStepRoleTransition>();
+                        List<PSUiWorkflowStepRoleTransition> uiWorkflowStepRoleTransitions = new ArrayList<>();
 
                         for (PSTransition transition : state.getTransitions())
                         {
@@ -1477,7 +1477,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         PSUiWorkflowStep workflowApprovedStep = new PSUiWorkflowStep();
         workflowApprovedStep.setStepName("Approved");
 
-        List<PSUiWorkflowStepRole> workflowApprovedStepRoles = new ArrayList<PSUiWorkflowStepRole>();
+        List<PSUiWorkflowStepRole> workflowApprovedStepRoles = new ArrayList<>();
         
         // Get the assigned roles from Quick Edit state, but notfications come from the Pending state
         Set<Integer> notificationRoles = getNotificationRoleIds(workflow, PENDING_STATE);

@@ -95,7 +95,7 @@ public class PSRegionTreeUtils
     
     public static Map<String, PSRegion> regionMap(PSRegionNode rootNode) {
         Iterator<PSRegion> regions = iterateRegions(rootNode);
-        Map<String, PSRegion> map = new HashMap<String, PSRegion>();
+        Map<String, PSRegion> map = new HashMap<>();
         while(regions.hasNext()) {
             PSRegion r = regions.next();
             map.put(r.getRegionId(), r);
@@ -105,7 +105,7 @@ public class PSRegionTreeUtils
     
     public static Iterator<PSRegion> iterateRegions(PSRegionNode rootNode) {
         PSRegionNodeWrapperIterator it = new PSRegionNodeWrapperIterator(rootNode);
-        List<PSRegion> regions = new ArrayList<PSRegion>();
+        List<PSRegion> regions = new ArrayList<>();
         while(it.hasNext())
         {
             PSRegionNodeWrapper nw = it.next();
@@ -125,12 +125,12 @@ public class PSRegionTreeUtils
                 return r.getChildren();
             }
         }
-        return new ArrayList<PSRegionNode>();
+        return new ArrayList<>();
     }
     
     @SuppressWarnings("unchecked")
     public static <T extends PSAbstractRegion> List<T> getChildRegions(PSRegionNode node) {
-        List<T> regions = new ArrayList<T>();
+        List<T> regions = new ArrayList<>();
         List<? extends PSRegionNode> children = getChildren(node);
         for(PSRegionNode child : children) {
             if(child instanceof PSAbstractRegion) {
@@ -195,10 +195,10 @@ public class PSRegionTreeUtils
 
         if (regionTree.getRootRegion() == null)
         {
-            return new HashSet<PSRegion>();
+            return new HashSet<>();
         }
 
-        Set<PSRegion> leafRegions = new HashSet<PSRegion>();
+        Set<PSRegion> leafRegions = new HashSet<>();
         List<PSRegion> nodes = getChildRegions(regionTree.getRootRegion());
         for (PSRegion region : nodes)
         {
@@ -240,7 +240,7 @@ public class PSRegionTreeUtils
     {
         notNull(regionTree);
         
-        Set<PSRegion> emptyLeafs = new HashSet<PSRegion>();
+        Set<PSRegion> emptyLeafs = new HashSet<>();
         Set<PSRegion> leafs = getWidgetRegions(regionTree);
         Set<String> notEmptyRegions = regionTree.getRegionWidgetsMap().keySet();
         
@@ -281,7 +281,7 @@ public class PSRegionTreeUtils
     }
     
     protected static class PSRegionNodeWrapperIterator implements Iterator<PSRegionNodeWrapper> {        
-        private Stack<PSRegionNodeWrapper> nodeStack = new Stack<PSRegionNodeWrapper>();
+        private Stack<PSRegionNodeWrapper> nodeStack = new Stack<>();
         
         
         public PSRegionNodeWrapperIterator(PSRegionNode rootNode)
@@ -307,7 +307,7 @@ public class PSRegionTreeUtils
                     PSAbstractRegion r = (PSAbstractRegion) node;
                     if ( r.getChildren() != null && ! r.getChildren().isEmpty()) {
                         List<? extends PSRegionNode> children = r.getChildren();
-                        children = new ArrayList<PSRegionNode>(children);
+                        children = new ArrayList<>(children);
                         Collections.reverse(children);
                         for( PSRegionNode child : children) {
                             nodeStack.push(new PSRegionNodeWrapper(child, Type.START));

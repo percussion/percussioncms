@@ -116,7 +116,7 @@ public class UserAdaptor extends SiteManageAdaptorBase implements IUserAdaptor{
 
             if(!StringUtils.isEmpty(communityId)){
                 IPSGuid guid = guidManager.makeGuid(Long.parseLong(communityId), PSTypeEnum.COMMUNITY_DEF);
-                ArrayList<IPSGuid> guids = new ArrayList<IPSGuid>();
+                ArrayList<IPSGuid> guids = new ArrayList<>();
                 guids.add(guid);
 
 
@@ -128,8 +128,8 @@ public class UserAdaptor extends SiteManageAdaptorBase implements IUserAdaptor{
 
             //Load up the available communities for this user
             if(userCommunities != null){
-                ArrayList<Community> availableComms = new ArrayList<Community>();
-                ArrayList<IPSGuid> availGuids = new ArrayList<IPSGuid>();
+                ArrayList<Community> availableComms = new ArrayList<>();
+                ArrayList<IPSGuid> availGuids = new ArrayList<>();
                 for(String s : userCommunities)
                 {
                     availGuids.add(new PSGuid(PSTypeEnum.COMMUNITY_DEF,Integer.parseInt(s)));
@@ -190,7 +190,7 @@ public class UserAdaptor extends SiteManageAdaptorBase implements IUserAdaptor{
 				newUser = userService.create(newUser);
 			}else if(user.getUserType().equalsIgnoreCase(PSUserProviderType.DIRECTORY.name())){
 				PSImportUsers newUsers = new PSImportUsers();
-				List<PSExternalUser> dirUsers = new ArrayList<PSExternalUser>();
+				List<PSExternalUser> dirUsers = new ArrayList<>();
 				dirUsers.add(new PSExternalUser(user.getUserName()));
 				newUsers.setExternalUsers(dirUsers);
 				List<PSImportedUser> importUsers = userService.importDirectoryUsers(newUsers);
@@ -279,7 +279,7 @@ public class UserAdaptor extends SiteManageAdaptorBase implements IUserAdaptor{
 
 	@Override
 	public List<String> searchDirectory(String pattern) {
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		
 		List<PSExternalUser> users = userService.findUsersFromDirectoryService(pattern);
 	

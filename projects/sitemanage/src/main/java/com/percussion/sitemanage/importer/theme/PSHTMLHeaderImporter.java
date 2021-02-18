@@ -133,7 +133,7 @@ public class PSHTMLHeaderImporter
     {
         Elements links = this.docSource.select("link");
         
-        Map<String, String> linkPaths = new HashMap<String, String>();
+        Map<String, String> linkPaths = new HashMap<>();
 
         appendHeaderImporterMessage("Starting to process CSS links in the document header.");
 
@@ -191,7 +191,7 @@ public class PSHTMLHeaderImporter
         // Get the script elements from Header and Body
         Elements scripts = docSource.select("script");
         
-        Map<String, String> scriptPaths = new HashMap<String, String>();
+        Map<String, String> scriptPaths = new HashMap<>();
 
         appendHeaderImporterMessage("Starting to process script paths in the document.");
         
@@ -235,7 +235,7 @@ public class PSHTMLHeaderImporter
      */
     public Map<String, String> processInlineStyles()
     {
-        Map<String, String> processedInlineImages = new HashMap<String, String>();
+        Map<String, String> processedInlineImages = new HashMap<>();
         
         // Process the URL for images in style tag from Header
         processedInlineImages.putAll(processHeaderInlineStyles());
@@ -288,7 +288,7 @@ public class PSHTMLHeaderImporter
      */
     public Map<String, String> processHeaderAndBodyImages()
     {
-        Map<String, String> imagesMapInline = new HashMap<String, String>();
+        Map<String, String> imagesMapInline = new HashMap<>();
 
         // Get all existing img tag elements in the header and body
         Elements imgElements = docSource.getElementsByTag("img");
@@ -339,7 +339,7 @@ public class PSHTMLHeaderImporter
     {
         Elements flashObjects = docSource.select("object");
         
-        Map<String, String> embedFlashPaths = new HashMap<String, String>();
+        Map<String, String> embedFlashPaths = new HashMap<>();
 
         appendHeaderImporterMessage("Starting to process swf files in <object> tags in the document.");
         
@@ -475,7 +475,7 @@ public class PSHTMLHeaderImporter
     private Map<String, String> processHeaderInlineStyles()
     {
         Elements styleElements = docHeader.select("style");
-        Map<String, String> inlineImagesHeader = new HashMap<String, String>();
+        Map<String, String> inlineImagesHeader = new HashMap<>();
         
         appendHeaderImporterMessage("Processing inline stypes included in document header.");
         
@@ -515,7 +515,7 @@ public class PSHTMLHeaderImporter
     private Map<String, String> processBodyInlineStyles()
     {
         Elements styleElements = docBody.getElementsByTag("style");
-        Map<String, String> imagesMapInline = new HashMap<String, String>();
+        Map<String, String> imagesMapInline = new HashMap<>();
         
         appendHeaderImporterMessage("Processing inline styles included in document body.");
         
@@ -554,7 +554,7 @@ public class PSHTMLHeaderImporter
     private Map<String, String> processBodyStyleAtributes()
     {
         Elements styleElements = docBody.getElementsByAttribute("style");
-        Map<String, String> imagesMapInline = new HashMap<String, String>();
+        Map<String, String> imagesMapInline = new HashMap<>();
         
         appendHeaderImporterMessage("Processing inline styles attributes in document body.");
         
@@ -597,7 +597,7 @@ public class PSHTMLHeaderImporter
     private Map<String, String> processFlashObject(Element flash, String cssQuery, String attribValue, String siteName)
     {
         Elements flashElements = flash.select(cssQuery);
-        Map<String, String> flashPaths = new HashMap<String, String>();
+        Map<String, String> flashPaths = new HashMap<>();
 
         for (Element movie : flashElements)
         {
@@ -633,7 +633,7 @@ public class PSHTMLHeaderImporter
      */
     private Map<String, String> processDataAttribute(Element flash, String siteName)
     {
-        Map<String, String> flashPaths = new HashMap<String, String>();
+        Map<String, String> flashPaths = new HashMap<>();
 
         // Process data attribute for flash object
         if (!isBlank(flash.attr("data")))

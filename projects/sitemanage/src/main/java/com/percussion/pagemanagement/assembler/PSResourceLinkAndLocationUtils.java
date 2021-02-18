@@ -282,7 +282,7 @@ public class PSResourceLinkAndLocationUtils
      */
     public static List<PSResourceLinkAndLocation> createDefaultLinkAndLocations(
             PSResourceScriptEvaluatorContext evalContext) {
-        List<PSResourceLinkAndLocation> locations = new ArrayList<PSResourceLinkAndLocation>();
+        List<PSResourceLinkAndLocation> locations = new ArrayList<>();
         locations.add(createDefaultLinkAndLocation(evalContext));
         return locations;
     }

@@ -57,7 +57,7 @@ public abstract class PSRegionWidgetAssociations
 {
 
     @AssertValid(requireValidElements=true)
-    private Set<PSRegionWidgets> regionWidgetAssociations = new HashSet<PSRegionWidgets>();
+    private Set<PSRegionWidgets> regionWidgetAssociations = new HashSet<>();
 
     public PSRegionWidgetAssociations()
     {
@@ -81,7 +81,7 @@ public abstract class PSRegionWidgetAssociations
     public void setRegionWidgetAssociations(Set<PSRegionWidgets> widgetRegions)
     {
         if (widgetRegions == null) return;
-        this.regionWidgetAssociations = new HashSet<PSRegionWidgets> (widgetRegions);
+        this.regionWidgetAssociations = new HashSet<> (widgetRegions);
     }
     
 //    public List<PSWidgetItem> getWidgetsForRegion(String regionId) {

@@ -322,7 +322,7 @@ public class PSSiteSection extends PSAbstractPersistantObject implements IPSFold
     /**
      * The IDs of sub-sections.
      */
-    private List<String> childIds = new ArrayList<String>();
+    private List<String> childIds = new ArrayList<>();
     
     /**
      * Field to note if the section requires login.

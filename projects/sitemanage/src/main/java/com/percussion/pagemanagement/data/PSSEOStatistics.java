@@ -69,7 +69,7 @@ public class PSSEOStatistics
      * See {@link #getIssues()}.
      */
     @NotNull
-    private Set<SEO_ISSUE> issues = new HashSet<SEO_ISSUE>();
+    private Set<SEO_ISSUE> issues = new HashSet<>();
     
     /**
      * See {@link #getSeverity()}.
@@ -514,22 +514,22 @@ public class PSSEOStatistics
     /**
      * The set of issues related to the page title which only count as one issue for the Page.
      */
-    private static Set<SEO_ISSUE> ms_titleIssues = new HashSet<SEO_ISSUE>();
+    private static Set<SEO_ISSUE> ms_titleIssues = new HashSet<>();
     
     /**
      * The set of issues related to the page description which only count as one issue for the Page.
      */
-    private static Set<SEO_ISSUE> ms_descriptionIssues = new HashSet<SEO_ISSUE>();
+    private static Set<SEO_ISSUE> ms_descriptionIssues = new HashSet<>();
     
     /**
      * The set of issues related to keywords.
      */
-    private static Set<SEO_ISSUE> ms_keywordIssues = new HashSet<SEO_ISSUE>();
+    private static Set<SEO_ISSUE> ms_keywordIssues = new HashSet<>();
     
     /**
      * The set of sets of issues which are to be counted as a single issue for the Page.
      */
-    private static Set<Set<SEO_ISSUE>> ms_singleWeightIssues = new HashSet<Set<SEO_ISSUE>>();
+    private static Set<Set<SEO_ISSUE>> ms_singleWeightIssues = new HashSet<>();
     
     /**
      * See {@link #getTotalIssueCount()}.

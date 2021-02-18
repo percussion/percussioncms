@@ -50,7 +50,7 @@ public class PSSiteStatisticsSummary extends PSAbstractDataObject
     
     private PSSiteStatistics statistics;
     
-    private List<PSSiteIssueSummary> issues = new ArrayList<PSSiteIssueSummary>();
+    private List<PSSiteIssueSummary> issues = new ArrayList<>();
 
     private String abridgedErrorMessage;
 

@@ -336,7 +336,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         boolean hideSearch = (psPage.getNoindex() != null && psPage.getNoindex().equalsIgnoreCase("true"));
         seo.setHideSearch(hideSearch);
         seo.setMetaDescription(psPage.getDescription());
-        seo.setTags(new ArrayList<String>(psPage.getTags()));
+        seo.setTags(new ArrayList<>(psPage.getTags()));
 
         page.setSeo(seo);
 
@@ -379,7 +379,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
                 List<PSWidgetInstance> existingInstances = existingRegion.getWidgetInstances();
                 if (existingInstances == null)
-                    existingInstances = new ArrayList<PSWidgetInstance>();
+                    existingInstances = new ArrayList<>();
 
                 int instanceSize = (existingInstances == null) ? 0 : existingInstances.size();
 
@@ -388,8 +388,8 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                 boolean regionEditable = (instanceSize == 0 || owner.equals(PSMergedRegionOwner.PAGE));
 
                 boolean clearRegion = updateRegion.getWidgets().isEmpty();
-                List<PSWidgetItem> updateWidgetList = new ArrayList<PSWidgetItem>();
-                List<PSWidgetItem> newWidgetList = new ArrayList<PSWidgetItem>();
+                List<PSWidgetItem> updateWidgetList = new ArrayList<>();
+                List<PSWidgetItem> newWidgetList = new ArrayList<>();
 
                 for (Widget updateWidget : updateRegion.getWidgets())
                 {
@@ -429,7 +429,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
                     // Manually remove items. remove method does not work due to
                     // hashcode/equals not correct D-01991
-                    Set<PSRegionWidgets> newWidgetAssoc = new HashSet<PSRegionWidgets>();
+                    Set<PSRegionWidgets> newWidgetAssoc = new HashSet<>();
                     for (Iterator<PSRegionWidgets> it = widgetAssoc.iterator(); it.hasNext();)
                     {
                         PSRegionWidgets widgetToAdd = it.next();
@@ -462,14 +462,14 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
         boolean existingPage = StringUtils.isNotEmpty(psPage.getId());
 
-        List<Region> itemRegions = new ArrayList<Region>();
+        List<Region> itemRegions = new ArrayList<>();
         page.setBody(itemRegions);
 
         PSAbstractMergedRegionTree tree = new PSMergedRegionTree(widgetService, template.getRegionTree(),
                 psPage.getRegionBranches());
 
         Map<String, PSRelationship> assetWidgets = (psPage.getId() == null)
-                ? new HashMap<String, PSRelationship>()
+                ? new HashMap<>()
                 : getUsedPageAssets(psPage, template);
 
         Set<PSWidgetItem> emptyTemplateWidgets = getEmptyTemplateWidgets(template);
@@ -513,7 +513,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             // end update regions
 
             itemRegion.setEditable(!readOnlyRegion);
-            List<Widget> regionWidgets = new ArrayList<Widget>();
+            List<Widget> regionWidgets = new ArrayList<>();
             itemRegion.setWidgets(regionWidgets);
 
             if (existingRegionWidgets != null)
@@ -576,7 +576,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                             if (assetItem != null)
                             {
 
-                                HashMap<String, String> restAssetFields = new HashMap<String, String>();
+                                HashMap<String, String> restAssetFields = new HashMap<>();
                                 asset.setFields(restAssetFields);
 
                                 Map<String, Object> assetFields = assetItem.getFields();
@@ -627,7 +627,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         List<PSRegion> currentRegions = psPage.getRegionBranches().getRegions();
 
         if (currentRegions == null)
-            currentRegions = new ArrayList<PSRegion>();
+            currentRegions = new ArrayList<>();
 
         boolean found = false;
         for (PSRegion checkRegion : currentRegions)
@@ -663,7 +663,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
     {
         List<PSWidgetInstance> existingRegionWidgetInstances = tree.getMergedRegionMap().get(regionName)
                 .getWidgetInstances();
-        List<PSWidgetItem> existingRegionWidgets = new ArrayList<PSWidgetItem>();
+        List<PSWidgetItem> existingRegionWidgets = new ArrayList<>();
         if (existingRegionWidgetInstances != null)
         {
             for (PSWidgetInstance existingRegionWidgetInstance : existingRegionWidgetInstances)
@@ -854,7 +854,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             endState = currentState;
 
         if (!newPage && wfHelper.isItemInApproveState(idMapper.getContentId(page.getId())))
-            currentState = setWorkflowState(page.getId(), "Quick Edit", new ArrayList<String>());
+            currentState = setWorkflowState(page.getId(), "Quick Edit", new ArrayList<>());
 
         if (!newPage && !wfHelper.isCheckedOutToCurrentUser(page.getId()))
         {
@@ -1022,7 +1022,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             shouldCheckin = !Boolean.TRUE.equals(toPage.getWorkflow().getCheckedOut());
         }
 
-        currentState = setWorkflowState(page.getId(), endState, new ArrayList<String>());
+        currentState = setWorkflowState(page.getId(), endState, new ArrayList<>());
 
         if (wfHelper.isCheckedOutToCurrentUser(page.getId()))
         {
@@ -1062,7 +1062,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                 page.getRegionBranches());
 
         Set<PSWidgetItem> emptyTemplateWidgets = getEmptyTemplateWidgets(template);
-        HashSet<String> emptyTemplateWidgetIds = new HashSet<String>();
+        HashSet<String> emptyTemplateWidgetIds = new HashSet<>();
         for (PSWidgetItem emptyTemplateWidgetId : emptyTemplateWidgets)
         {
             emptyTemplateWidgetIds.add(emptyTemplateWidgetId.getId());
@@ -1147,7 +1147,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         if (asset.getFields() != null)
         {
 
-            fields = new HashMap<String, String>();
+            fields = new HashMap<>();
             for (Entry<String, String> field : asset.getFields().entrySet())
             {
                 fields.put(field.getKey(), field.getValue());
@@ -1403,7 +1403,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             boolean hideSearch = (psPage.getNoindex() != null && psPage.getNoindex().equalsIgnoreCase("true"));
             seo.setHideSearch(hideSearch);
             seo.setMetaDescription(psPage.getDescription());
-            seo.setTags(new ArrayList<String>(psPage.getTags()));
+            seo.setTags(new ArrayList<>(psPage.getTags()));
 
             page.setSeo(seo);
 
@@ -1466,7 +1466,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 		
 		PSPathItem pi = pathService.find(path);
 		
-		Set<String> itemList = new HashSet<String>();
+		Set<String> itemList = new HashSet<>();
 		if(pi != null){
 		
 			List<PSPathItem> children = pathService.findChildren(path);
@@ -1528,7 +1528,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
                 if ((templateId != null) && p.getId() != null) {
                     //	pageService.changeTemplate(p.getId(), templateId);
-                    ArrayList<String> pageIds = new ArrayList<String>();
+                    ArrayList<String> pageIds = new ArrayList<>();
                     pageIds.add(p.getId());
                     try {
                         migrationService.migrateContentOnTemplateChange(templateId, null, pageIds);
@@ -1562,7 +1562,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 	public List<String> allPagesReport(URI baseUri, String siteFolderPath) throws BackendException {
 			checkAPIPermission();
 			 
-			List<String> ret = new ArrayList<String>();
+			List<String> ret = new ArrayList<>();
 			List<PSPageReportLine> pages;
 			
 			try {

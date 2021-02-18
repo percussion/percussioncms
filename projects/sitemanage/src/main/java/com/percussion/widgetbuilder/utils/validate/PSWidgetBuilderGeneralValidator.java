@@ -86,7 +86,7 @@ public class PSWidgetBuilderGeneralValidator
      */
     public static List<PSWidgetBuilderValidationResult> validate(PSWidgetBuilderDefinitionData definition, List<PSWidgetBuilderDefinitionData> existing)
     {
-        List<PSWidgetBuilderValidationResult> results = new ArrayList<PSWidgetBuilderValidationResult>();
+        List<PSWidgetBuilderValidationResult> results = new ArrayList<>();
         
         if (StringUtils.isBlank(definition.getAuthor()))
             results.add(new PSWidgetBuilderValidationResult(CATEGORY, AUTHOR, REQUIRED_MSG));

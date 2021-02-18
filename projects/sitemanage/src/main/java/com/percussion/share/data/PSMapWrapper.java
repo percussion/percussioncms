@@ -69,7 +69,7 @@ public class PSMapWrapper{
     }
     
 
-private Map<String, String> entries = new HashMap<String, String>();
+private Map<String, String> entries = new HashMap<>();
    
    private static final long serialVersionUID = 8252999104256582955L;
 }

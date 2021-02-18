@@ -76,7 +76,7 @@ public class PSPageIndexService implements IPSPageIndexService
     {
         notNull(ids);
 
-        Set<PSLocator> locators = new HashSet<PSLocator>();
+        Set<PSLocator> locators = new HashSet<>();
 
         for (Integer id : ids)
         {

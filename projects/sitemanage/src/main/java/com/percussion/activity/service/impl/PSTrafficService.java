@@ -91,13 +91,13 @@ public class PSTrafficService implements IPSTrafficService
 
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         
-        List<String> dates = new ArrayList<String>();
-        List<Integer> updateTotals = new ArrayList<Integer>();
-        List<Integer> newPages = new ArrayList<Integer>();
-        List<Integer> pageUpdates = new ArrayList<Integer>();
-        List<Integer> takeDowns = new ArrayList<Integer>();
-        List<Integer> livePages = new ArrayList<Integer>();
-        List<Integer> visits = new ArrayList<Integer>();
+        List<String> dates = new ArrayList<>();
+        List<Integer> updateTotals = new ArrayList<>();
+        List<Integer> newPages = new ArrayList<>();
+        List<Integer> pageUpdates = new ArrayList<>();
+        List<Integer> takeDowns = new ArrayList<>();
+        List<Integer> livePages = new ArrayList<>();
+        List<Integer> visits = new ArrayList<>();
         PSSiteSummary siteInfo = null;
         try
         {
@@ -143,7 +143,7 @@ public class PSTrafficService implements IPSTrafficService
         
         if(dataReq.contains(PSTrafficTypeEnum.UPDATED_PAGES.toString()))
         {
-          List<Integer> activity = new ArrayList<Integer>();
+          List<Integer> activity = new ArrayList<>();
           activity.addAll(activityService.findNumberContentActivities(pageIds, 
                   dateList, WF_STATE_LIVE, null));
           for(int i = 0; i < activity.size(); i++)
@@ -217,7 +217,7 @@ public class PSTrafficService implements IPSTrafficService
                 range.getStart(), range.getEnd(), WF_STATE_LIVE, null);
         
         //Get Item Properties
-        List<PSTrafficDetails> itemPropList = new ArrayList<PSTrafficDetails>();
+        List<PSTrafficDetails> itemPropList = new ArrayList<>();
         for(String pageId:activityIds)
         {
             PSPathItem pathItem = folderHelper.findItemById(pageId);
@@ -246,9 +246,9 @@ public class PSTrafficService implements IPSTrafficService
         //Get Analytics data
         PSSiteSummary siteInfo = siteDataService.findByPath(request.getPath());
         List<IPSAnalyticsQueryResult> currentAnalytics = 
-            new ArrayList<IPSAnalyticsQueryResult>();
+            new ArrayList<>();
         List<IPSAnalyticsQueryResult> previousAnalytics = 
-            new ArrayList<IPSAnalyticsQueryResult>();
+            new ArrayList<>();
         
         try
         {
@@ -395,7 +395,7 @@ public class PSTrafficService implements IPSTrafficService
     public List<Integer> createAnalyticsActivity(PSDateRange range, List<Date> dates, 
             String siteName, String usage) throws PSAnalyticsProviderException
     {
-        List<Integer> counts = new ArrayList<Integer>(dates.size() - 1);
+        List<Integer> counts = new ArrayList<>(dates.size() - 1);
         //Fill in array with 0
         for(int i=0;i < dates.size()-1;i++)
         {

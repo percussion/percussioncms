@@ -253,7 +253,7 @@ public class PSSitePublishService implements IPSSitePublishService
 	
 	private void approveRelatedItems(String siteName, String server,String itemsToApprove) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         JSONArray arr = new JSONArray(itemsToApprove);
-        List<Integer> listForApproval = new ArrayList<Integer>();
+        List<Integer> listForApproval = new ArrayList<>();
         for(int i = 0; i < arr.length(); i++){
             String id = (String)arr.get(i);
             Guid guid = new Guid(id);
@@ -890,7 +890,7 @@ public class PSSitePublishService implements IPSSitePublishService
         Integer resultingStartIndex = pageGroup.getStartIndex();
 
         // Get page of Path Items
-        List<PSPathItem> itemsInPage = new ArrayList<PSPathItem>();
+        List<PSPathItem> itemsInPage = new ArrayList<>();
         for (IPSItemEntry pageEntry : pagedItemEntries)
         {
             // Get path for each page entry.
@@ -965,9 +965,9 @@ public class PSSitePublishService implements IPSSitePublishService
         try
         {
             List<Integer> changedContent = getChangedContentIds(siteName, serverName);
-            Set<Integer> contentIds = new HashSet<Integer>(changedContent);
+            Set<Integer> contentIds = new HashSet<>(changedContent);
             Collection<Integer> relatedContent = sitePublishServiceHelper.findRelatedItemIds(contentIds);
-            return getPagedItems(startIndex, pageSize, new ArrayList<Integer>(relatedContent));
+            return getPagedItems(startIndex, pageSize, new ArrayList<>(relatedContent));
         }
         catch (Exception e)
         {

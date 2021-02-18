@@ -107,7 +107,7 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
      */
     private Map<String, PSPathItem> getPageMap(List<PSPathItem> items)
     {
-        Map<String, PSPathItem> pageMap = new HashMap<String, PSPathItem>();
+        Map<String, PSPathItem> pageMap = new HashMap<>();
         
         for (PSPathItem item : items)
         {
@@ -123,7 +123,7 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
 
     private List<Integer> getPageIdList(Set<String> pageIds)
     {
-        List<Integer> contentIds = new ArrayList<Integer>();
+        List<Integer> contentIds = new ArrayList<>();
         for (String id : pageIds)
         {
             contentIds.add(Integer.parseInt(id));
@@ -141,7 +141,7 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
      */
     private Map<String, String> getTemplateMap(Collection<String> templateIds)
     {
-        Map<String, String> templateMap = new HashMap<String, String>();
+        Map<String, String> templateMap = new HashMap<>();
         for (String templateId : templateIds)
         {
             String templateName = templateMap.get(templateId);

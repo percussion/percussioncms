@@ -65,7 +65,7 @@ public class PSPreviewPageUtils
     {
         notNull(template);
 
-        Set<PSWidgetItem> emptyTemplateWidgets = new HashSet<PSWidgetItem>();
+        Set<PSWidgetItem> emptyTemplateWidgets = new HashSet<>();
 
         // Get a list of asset/template relationships, templateAssets
         Collection<PSRelationship> templateAssets = getLocalSharedAssetRelationships(template.getId());
@@ -98,7 +98,7 @@ public class PSPreviewPageUtils
         notNull(page);
         notNull(template);
 
-        Set<PSWidgetItem> pageWidgets = new HashSet<PSWidgetItem>();
+        Set<PSWidgetItem> pageWidgets = new HashSet<>();
 
         if (template.getRegionTree() != null)
         {
@@ -150,7 +150,7 @@ public class PSPreviewPageUtils
      */
     public static Map<String, PSRelationship> getUsedPageAssets(PSPage page, PSTemplate template)
     {
-        Map<String, PSRelationship> widgetToAsset = new HashMap<String, PSRelationship>();
+        Map<String, PSRelationship> widgetToAsset = new HashMap<>();
         getPageAssets(page, template, widgetToAsset);
         return widgetToAsset;
     }
@@ -178,7 +178,7 @@ public class PSPreviewPageUtils
         {
             // for getting orphaned assets, then we have to clone the original list, 
             // to avoid modify original list object, which is cached
-            orphanAssets = new ArrayList<PSRelationship>(pageAssets);
+            orphanAssets = new ArrayList<>(pageAssets);
         }
 
         // For each widget in pageWidgets use widgetFinderUtils to find the
@@ -219,7 +219,7 @@ public class PSPreviewPageUtils
         notNull(page);
         notNull(template);
 
-        Set<PSOrphanedAssetSummary> unusedAssets = new HashSet<PSOrphanedAssetSummary>();
+        Set<PSOrphanedAssetSummary> unusedAssets = new HashSet<>();
         Collection<PSRelationship> orphanAssets = getOrphanedPageAssets(page, template);
         for (PSRelationship relationship : orphanAssets)
         {
@@ -238,7 +238,7 @@ public class PSPreviewPageUtils
      */
     private static Map<String, PSRelationship> getSlotIdToRelationshipMap(Collection<PSRelationship> templateAssets)
     {
-        Map<String, PSRelationship> map = new HashMap<String, PSRelationship>();
+        Map<String, PSRelationship> map = new HashMap<>();
         for (PSRelationship relationship : templateAssets)
         {
             map.put(relationship.getProperty(PSRelationshipConfig.PDU_SLOTID), relationship);

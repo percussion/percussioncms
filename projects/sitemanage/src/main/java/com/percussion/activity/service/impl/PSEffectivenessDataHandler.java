@@ -54,9 +54,9 @@ public class PSEffectivenessDataHandler extends PSXmlDataHandler implements IPSE
         notNull(request);
         notNull(activity);
         
-        List<PSEffectiveness> eList = new ArrayList<PSEffectiveness>();
+        List<PSEffectiveness> eList = new ArrayList<>();
                 
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("duration", request.getDuration());
         props.put("durationType", request.getDurationType());
         props.put("path", request.getPath());

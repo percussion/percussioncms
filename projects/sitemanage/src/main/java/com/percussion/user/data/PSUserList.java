@@ -49,7 +49,7 @@ public class PSUserList extends PSAbstractDataObject
     
     public PSUserList()
     {
-        users = new ArrayList<String>(); 
+        users = new ArrayList<>();
     }
 
     /**

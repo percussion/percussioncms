@@ -91,6 +91,6 @@ public class PSGadgetService implements IPSGadgetService {
     		"http://www.labpixies.com/campaigns/calendar/calendar.xml",
     		"http://www.labpixies.com/campaigns/wiki/wiki.xml",
    	};
-    ArrayList<PSGadget> alexGadgets = new ArrayList<PSGadget>();
-    ArrayList<PSGadget> bobGadgets = new ArrayList<PSGadget>();
+    ArrayList<PSGadget> alexGadgets = new ArrayList<>();
+    ArrayList<PSGadget> bobGadgets = new ArrayList<>();
 }

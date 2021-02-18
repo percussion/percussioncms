@@ -50,7 +50,7 @@ public class PSUserSummaries
     
     public PSUserSummaries()
     {
-        userSummaries = new ArrayList<PSUserSummary>();
+        userSummaries = new ArrayList<>();
     }
     
     /**
@@ -61,7 +61,7 @@ public class PSUserSummaries
     public PSUserSummaries(List<PSUserSummary> summaries)
     {
         if (summaries == null)
-            this.userSummaries = new ArrayList<PSUserSummary>();
+            this.userSummaries = new ArrayList<>();
         else
             this.userSummaries = summaries;
     }
